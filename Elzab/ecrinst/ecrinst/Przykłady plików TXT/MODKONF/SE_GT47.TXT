@@ -1,0 +1,25 @@
+;konfiguracja dla Sony-Ericsson GT47
+;restore factory configuration
+$AT&F
+;input PIN
+$AT+CPIN="2005"
+$
+$
+$
+$
+$
+$
+;no autoanswer
+$ATS0=0
+;set 
+$ATS12=0
+;no quiet 
+$ATQ0
+;echo on
+$ATE1
+;RTS-CTS control on
+$AT+IFC=2,2
+;ignore DTR
+$AT&D0
+;DCD on if carrier present
+$AT&C1
