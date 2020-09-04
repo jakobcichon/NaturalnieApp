@@ -1,5 +1,6 @@
 ﻿using System.Drawing.Text;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace NaturalnieApp.ElzabDriver
@@ -13,9 +14,6 @@ namespace NaturalnieApp.ElzabDriver
             Command,
             Null
         }
-
-
-
 
         /*========================================================================
          *====================== Method name = CheckElzabFilesExist ==============
@@ -80,7 +78,7 @@ namespace NaturalnieApp.ElzabDriver
         * 
         *Input parameters: path - full path or command name to be chack;
         *Output parameters: PathOrCommand - enum type;
-*/
+        */
         private PathOrCommand CheckPath(string path)
         {
             PathOrCommand re = PathOrCommand.Null;
@@ -100,6 +98,24 @@ namespace NaturalnieApp.ElzabDriver
         }
 
 
+        /*========================================================================
+        *====================== Method name = GetFilesFromPath ==============
+        *                              Descritpion
+        * Method used to list all files from given path
+        * 
+        *Input parameters: path - directory path with requested files;
+        *Output parameters: array of strings;
+        *
+        */
+
+        public string[] GetFilesFromPath(string path)
+        {
+            string[] allFilesInGivenPath;
+            allFilesInGivenPath = Directory.GetFiles(path);
+
+
+            return allFilesInGivenPath;
+        }
 
 
 

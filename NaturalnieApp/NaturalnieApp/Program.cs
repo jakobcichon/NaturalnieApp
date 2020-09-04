@@ -23,6 +23,10 @@ namespace NaturalnieApp
             ElzabDriverInst.CheckElzabFilesExist(currentDirectory, "");
 
             ElzabDriverInst.ExecuteCommand("F:\\Projekty\\02. NaturalnieApp\\NaturalnieApp\\Elzab\\winexe\\winexe\\Test\\OTowar.exe");
+            ElzabDriverInst.GetFilesFromPath("F:\\Projekty\\02. NaturalnieApp\\NaturalnieApp\\Pliki Elzab\\Komendy");
+
+            Application.EnableVisualStyles();
+            Application.Run(new MainWindow());
 
         }
     }
