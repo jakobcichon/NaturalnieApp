@@ -17,18 +17,12 @@ namespace NaturalnieApp
         static void Main()
         {
             string currentDirectory;
-            [DllImport("WinIP.dll", CallingConvention = CallingConvention.Cdecl)]
-            byte __TowarMax(string inputfile, string outputfile);
 
             ElzabFileOperation ElzabDriverInst = new ElzabFileOperation();
             currentDirectory = Directory.GetCurrentDirectory();
             ElzabDriverInst.CheckElzabFilesExist(currentDirectory, "");
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
-
-
+            ElzabDriverInst.ExecuteCommand("F:\\Projekty\\02. NaturalnieApp\\NaturalnieApp\\Elzab\\winexe\\winexe\\Test\\OTowar.exe");
 
         }
     }
