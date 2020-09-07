@@ -1,4 +1,5 @@
 ﻿using NaturalnieApp.ElzabDriver;
+using NaturalnieApp.Initialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +17,11 @@ namespace NaturalnieApp
         [STAThread]
         static void Main()
         {
+
             string currentDirectory;
+
+            ConfigFile ConfigFileInst = new ConfigFile();
+            ConfigFileInst.InitializeConfigFile();
 
             ElzabFileOperation ElzabDriverInst = new ElzabFileOperation();
             currentDirectory = Directory.GetCurrentDirectory();
@@ -27,6 +32,8 @@ namespace NaturalnieApp
 
             Application.EnableVisualStyles();
             Application.Run(new MainWindow());
+
+
 
         }
     }
