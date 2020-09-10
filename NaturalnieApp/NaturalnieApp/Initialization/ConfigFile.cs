@@ -3,27 +3,16 @@ using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows.Forms;
 using System.Xml;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Text;
+using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace NaturalnieApp.Initialization
 {
     class ConfigFile
     {
-
-    //==================================================================================
-    //Check if config file exist. If path not specify, use current path.
-    private bool CheckIfConfigFileExist(string fileName, string path = "")
-        {
-            //If path not specofied, used current diectory
-            if (path == "")
-            {
-                path = Directory.GetCurrentDirectory();
-            }
-
-            bool fExist = false;
-            string fullPath = path + "\\" + fileName;
-            fExist = File.Exists(fullPath);
-            return fExist;
-        }
 
         //==================================================================================
         //Check if config directory exist. If path not specify, use current path.
@@ -72,6 +61,12 @@ namespace NaturalnieApp.Initialization
             bool fExist = false;
             string fullPath;
 
+            //Verify if fileName contain proper .xml extension
+            Regex r = new Regex(@"^.*\.xml$");
+            if (!r.IsMatch(fileName))
+            {
+                throw new System.ArgumentException("Wrong name extension", "fileName");
+            }
             if (path == "")
             {
                 fullPath = Directory.GetCurrentDirectory() + "\\config\\"  + fileName;
@@ -81,15 +76,39 @@ namespace NaturalnieApp.Initialization
                 fullPath = path + "\\" + fileName;
             }
 
-            //Check if file exist
-            fExist = CheckIfConfigFileExist("config.txt");
 
+            //Check if xml file exist
+            fExist = File.Exists(fullPath);
+            
+            //If not exist, create new file and fill it with pattern
             if (!fExist)
             {
-               
-                FileStream fs = File.Create(fullPath);
-                fs.Close();
+                //Default path for ElzabCommandsPath
+
+                //Create xml file inf not exist
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.Indent = true;
+                settings.IndentChars = ("    ");
+                settings.CloseOutput = true;
+                settings.OmitXmlDeclaration = false;
+                using (XmlWriter writer = XmlWriter.Create(fullPath, settings))
+                {
+                    writer.WriteStartDocument();
+                    writer.WriteStartElement("Settings");
+                        writer.WriteStartElement("Paths");
+                            writer.WriteElementString("ElzabCommandPath", "Tes");
+                            writer.WriteElementString("OtherSettings", "TestSetting");
+                        writer.WriteEndElement();
+                        writer.WriteStartElement("Paths2");
+                            writer.WriteElementString("Elzab2", "Tes2");
+                            writer.WriteElementString("OtherSettings2", "TestSetting2");
+                        writer.WriteEndElement();
+                    writer.WriteEndElement();
+                    writer.WriteEndDocument();
+                    writer.Flush();
+                }
             }
+
         }
 
         public void InitializeConfigFile()
@@ -98,176 +117,84 @@ namespace NaturalnieApp.Initialization
             CreateDirectory("config");
 
             //Check if file exist, if not create one
-            CreateConfigFile("config.txt");
+            CreateConfigFile("config.xml");
 
         }
 
         //==================================================================================
-        string[] ReadFile(string path, string fileName)
+        public void ReadConfigFileElement(string path, string fileName, string elementNameTemp, string subFolder = "")
         {
-            //To Do!!!!!!!!!!!!!!!!!!!!!!!1
-            string[] returnVal = new string[] { "" } ;
-            return returnVal;
+
+            string fullPath = ConsolidatePathAndFile(path, fileName, "txt");
+            Regex rVariableName = new Regex(@"^.*#$");
+            Regex rPattern = new Regex(@"^.*=$");
+            string[] elements;
+
+            try
+            {
+                // Open the text file using a stream reader.
+                using (var file = new StreamReader(fullPath))
+                {
+                    string line;
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        if (rVariableName.IsMatch(line))
+                        {
+                            elements = rPattern.Split(line);
+                            foreach (string element in elements)
+                            {
+                                element.Trim();
+                            }
+                        }
+                        ;
+
+                    }
+                }
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine("The file could not be read:");
+                Console.WriteLine(e.Message);
+            }
+
+
         }
 
         //==================================================================================
-
-        //************************************************************************************
-        //
-        //  Associate the schema with XML. Then, load the XML and validate it against
-        //  the schema.
-        //
-        //************************************************************************************
-        public XmlDocument LoadDocumentWithSchemaValidation(bool generateXML, bool generateSchema)
+        string ConsolidatePathAndFile(string path, string fileName)
         {
-            XmlReader reader;
+                string fullPath;
 
-            XmlReaderSettings settings = new XmlReaderSettings();
 
-            // Helper method to retrieve schema.
-            XmlSchema schema = getSchema(generateSchema);
-
-            if (schema == null)
-            {
-                return null;
-            }
-
-            settings.Schemas.Add(schema);
-
-            settings.ValidationEventHandler += settings_ValidationEventHandler;
-            settings.ValidationFlags =
-                settings.ValidationFlags | XmlSchemaValidationFlags.ReportValidationWarnings;
-            settings.ValidationType = ValidationType.Schema;
-
-            try
-            {
-                reader = XmlReader.Create("booksData.xml", settings);
-            }
-            catch (System.IO.FileNotFoundException)
-            {
-                if (generateXML)
+                if (path == "")
                 {
-                    string xml = generateXMLString();
-                    byte[] byteArray = Encoding.UTF8.GetBytes(xml);
-                    MemoryStream stream = new MemoryStream(byteArray);
-                    reader = XmlReader.Create(stream, settings);
+                    fullPath = Directory.GetCurrentDirectory() + "\\" + fileName;
                 }
                 else
                 {
-                    return null;
+                    fullPath = path + "\\" + fileName;
                 }
-            }
 
-            XmlDocument doc = new XmlDocument();
-            doc.PreserveWhitespace = true;
-            doc.Load(reader);
-            reader.Close();
-
-            return doc;
+            return fullPath;
         }
-
-        //************************************************************************************
-        //
-        //  Helper method that generates an XML Schema.
-        //
-        //************************************************************************************
-        private string generateXMLSchema()
+        string ConsolidatePathAndFile(string path, string fileName, string fileExtension = "")
         {
-            string xmlSchema =
-                "<?xml version=\"1.0\" encoding=\"utf-8\"?> " +
-                "<xs:schema attributeFormDefault=\"unqualified\" " +
-                "elementFormDefault=\"qualified\" targetNamespace=\"http://www.contoso.com/books\" " +
-                "xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"> " +
-                "<xs:element name=\"books\"> " +
-                "<xs:complexType> " +
-                "<xs:sequence> " +
-                "<xs:element maxOccurs=\"unbounded\" name=\"book\"> " +
-                "<xs:complexType> " +
-                "<xs:sequence> " +
-                "<xs:element name=\"title\" type=\"xs:string\" /> " +
-                "<xs:element name=\"price\" type=\"xs:decimal\" /> " +
-                "</xs:sequence> " +
-                "<xs:attribute name=\"genre\" type=\"xs:string\" use=\"required\" /> " +
-                "<xs:attribute name=\"publicationdate\" type=\"xs:date\" use=\"required\" /> " +
-                "<xs:attribute name=\"ISBN\" type=\"xs:string\" use=\"required\" /> " +
-                "</xs:complexType> " +
-                "</xs:element> " +
-                "</xs:sequence> " +
-                "</xs:complexType> " +
-                "</xs:element> " +
-                "</xs:schema> ";
-            return xmlSchema;
-        }
+            string fullPath;
 
-        //************************************************************************************
-        //
-        //  Helper method that gets a schema
-        //
-        //************************************************************************************
-        private XmlSchema getSchema(bool generateSchema)
-        {
-            XmlSchemaSet xs = new XmlSchemaSet();
-            XmlSchema schema;
-            try
+            if (path == "")
             {
-                schema = xs.Add("http://www.contoso.com/books", "booksData.xsd");
+                fullPath = Directory.GetCurrentDirectory() + fileName + "." + fileExtension ;
             }
-            catch (System.IO.FileNotFoundException)
+            else
             {
-                if (generateSchema)
-                {
-                    string xmlSchemaString = generateXMLSchema();
-                    byte[] byteArray = Encoding.UTF8.GetBytes(xmlSchemaString);
-                    MemoryStream stream = new MemoryStream(byteArray);
-                    XmlReader reader = XmlReader.Create(stream);
-                    schema = xs.Add("http://www.contoso.com/books", reader);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            return schema;
-        }
-
-        //************************************************************************************
-        //
-        //  Helper method to validate the XML against the schema.
-        //
-        //************************************************************************************
-        private void validateXML(bool generateSchema, XmlDocument doc)
-        {
-            if (doc.Schemas.Count == 0)
-            {
-                // Helper method to retrieve schema.
-                XmlSchema schema = getSchema(generateSchema);
-                doc.Schemas.Add(schema);
+                fullPath = path + "\\" + fileName + "." + fileExtension;
             }
 
-            // Use an event handler to validate the XML node against the schema.
-            doc.Validate(settings_ValidationEventHandler);
+            return fullPath;
         }
 
-        //************************************************************************************
-        //
-        //  Event handler that is raised when XML doesn't validate against the schema.
-        //
-        //************************************************************************************
-        void settings_ValidationEventHandler(object sender,
-            System.Xml.Schema.ValidationEventArgs e)
-        {
-            if (e.Severity == XmlSeverityType.Warning)
-            {
-                System.Windows.Forms.MessageBox.Show
-                    ("The following validation warning occurred: " + e.Message);
-            }
-            else if (e.Severity == XmlSeverityType.Error)
-            {
-                System.Windows.Forms.MessageBox.Show
-                    ("The following critical validation errors occurred: " + e.Message);
-                Type objectType = sender.GetType();
-            }
-        }
+
+
 
     }
         

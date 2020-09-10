@@ -23,6 +23,8 @@ namespace NaturalnieApp
             ConfigFile ConfigFileInst = new ConfigFile();
             ConfigFileInst.InitializeConfigFile();
 
+            ConfigFileInst.ReadConfigFileElement("", "config", "", "config");
+
             ElzabFileOperation ElzabDriverInst = new ElzabFileOperation();
             currentDirectory = Directory.GetCurrentDirectory();
             ElzabDriverInst.CheckElzabFilesExist(currentDirectory, "");
