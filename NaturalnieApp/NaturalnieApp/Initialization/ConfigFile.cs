@@ -117,7 +117,7 @@ namespace NaturalnieApp.Initialization
             CreateDirectory("config");
 
             //Check if file exist, if not create one
-            CreateConfigFile("config.xml");
+           // CreateConfigFile("config.xml");
 
         }
 
@@ -125,11 +125,10 @@ namespace NaturalnieApp.Initialization
         public void ReadConfigFileElement(string path, string fileName, string elementNameTemp, string subFolder = "")
         {
 
-            string fullPath = ConsolidatePathAndFile(path, fileName, "txt");
-            Regex rVariableName = new Regex(@"^.*#$");
-            Regex rPattern = new Regex(@"^.*=$");
+            string fullPath = ConsolidatePathAndFile(path, fileName, "txt", subFolder);
+            Regex rVariableName = new Regex(@"^.*#.*$");
+            Regex rPattern = new Regex("=");
             string[] elements;
-
             try
             {
                 // Open the text file using a stream reader.
@@ -141,9 +140,11 @@ namespace NaturalnieApp.Initialization
                         if (rVariableName.IsMatch(line))
                         {
                             elements = rPattern.Split(line);
+                            int i=0;
                             foreach (string element in elements)
                             {
-                                element.Trim();
+                                elements[i] = element.Trim();
+                                i++;
                             }
                         }
                         ;
@@ -177,17 +178,32 @@ namespace NaturalnieApp.Initialization
 
             return fullPath;
         }
-        string ConsolidatePathAndFile(string path, string fileName, string fileExtension = "")
+        string ConsolidatePathAndFile(string path, string fileName, string fileExtension = "", string subFolder = "")
         {
             string fullPath;
 
             if (path == "")
             {
-                fullPath = Directory.GetCurrentDirectory() + fileName + "." + fileExtension ;
+                if (subFolder == "")
+                {
+                    @fullPath = @Directory.GetCurrentDirectory() + @"\" + fileName + "." + fileExtension;
+                }
+                else
+                {
+                    @fullPath = @Directory.GetCurrentDirectory() + @"\" + subFolder + @"\" + fileName + "." + fileExtension;
+                }
+                    
             }
             else
             {
-                fullPath = path + "\\" + fileName + "." + fileExtension;
+                if (subFolder == "")
+                {
+                    fullPath = path + "\\" + fileName + "." + fileExtension;
+                }
+                else
+                {
+                    fullPath = path + "\\" + subFolder + "\\" + fileName + "." + fileExtension;
+                }
             }
 
             return fullPath;
