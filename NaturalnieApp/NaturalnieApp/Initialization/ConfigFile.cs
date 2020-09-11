@@ -8,9 +8,33 @@ using System.Threading.Tasks;
 using System.Text;
 using System.ComponentModel;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace NaturalnieApp.Initialization
 {
+    //==================================================================================
+    //ConfigElement class used to properly parse single element from config file.
+    // Patter used to parse config element: Variable name starts from "#"; Variable value in same line with varibale Name and starts with "=";
+    public class ConfigElement
+    {
+        //Declare class elements
+        string ElementName;
+        string ElementValue;
+
+        //Class basic constructor
+        public ConfigElement(string Name, string Value)
+        {
+            this.ElementName = Name;
+            this.ElementValue = Value;
+        }
+
+        //Method used to clead a litle bit name and value 
+        public void ClearElementName()
+        {
+            ElementName = ElementName.Replace(@"#", @"").Trim();
+            ElementValue = ElementValue.Replace("\"", "").Trim();
+        }
+    }
     class ConfigFile
     {
 
@@ -122,13 +146,13 @@ namespace NaturalnieApp.Initialization
         }
 
         //==================================================================================
-        public void ReadConfigFileElement(string path, string fileName, string elementNameTemp, string subFolder = "")
+        public List<ConfigElement> ReadConfigFileElement(string path, string fileName, string elementNameTemp, string subFolder = "")
         {
 
             string fullPath = ConsolidatePathAndFile(path, fileName, "txt", subFolder);
             Regex rVariableName = new Regex(@"^.*#.*$");
             Regex rPattern = new Regex("=");
-            string[] elements;
+            List<ConfigElement> configElements = new List<ConfigElement>();
             try
             {
                 // Open the text file using a stream reader.
@@ -139,15 +163,10 @@ namespace NaturalnieApp.Initialization
                     {
                         if (rVariableName.IsMatch(line))
                         {
-                            elements = rPattern.Split(line);
-                            int i=0;
-                            foreach (string element in elements)
-                            {
-                                elements[i] = element.Trim();
-                                i++;
-                            }
+                            string[] element;
+                            element = rPattern.Split(line);
+                            configElements.Add(new ConfigElement(element[0], element[1]));
                         }
-                        ;
 
                     }
                 }
@@ -158,7 +177,12 @@ namespace NaturalnieApp.Initialization
                 Console.WriteLine(e.Message);
             }
 
+            for (int i = 0; i < configElements.Count; i++ )
+            {
+                configElements[i].ClearElementName();
+            }
 
+            return configElements;
         }
 
         //==================================================================================
