@@ -9,6 +9,7 @@ using System.Text;
 using System.ComponentModel;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace NaturalnieApp.Initialization
 {
@@ -18,22 +19,57 @@ namespace NaturalnieApp.Initialization
     public class ConfigElement
     {
         //Declare class elements
-        string ElementName;
-        string ElementValue;
+        public string ElementName { get; set; }
+        public string ElementValue { get; set; }
+        public string ElementComment { get; set; }
 
-        //Class basic constructor
-        public ConfigElement(string Name, string Value)
+        //Class constructor
+        public ConfigElement(string name, string value, string comment = @"\\Default comment")
         {
-            this.ElementName = Name;
-            this.ElementValue = Value;
+            this.ElementName = name;
+            this.ElementValue = value;
+            this.ElementComment = comment;
         }
 
-        //Method used to clead a litle bit name and value 
+        //Method used to clean a little bit name and value 
         public void ClearElementName()
         {
             ElementName = ElementName.Replace(@"#", @"").Trim();
-            ElementValue = ElementValue.Replace("\"", "").Trim();
         }
+
+        //Metod used to prepare element comment, to be written into text file
+        private string PrepareCommentToWrite()
+        {
+            //New string variable to be returned
+            string retVal = @"\\" + this.ElementComment;
+
+            //Return value
+            return retVal;
+        }
+
+        //Metod used to prepare element data, to be written into text file
+        private string PrepareDataToWrite()
+        {
+            //New string variable to be returned
+            string retVal = "#" + this.ElementName + " = " + this.ElementValue;
+
+            //Return value
+            return retVal;
+        }
+
+        //Metod used to prepare element full information, to be written into text file
+        public string[] DataToWrite()
+        {
+            //New string variable to be returned
+            string[] retVal = new string[2];
+
+            retVal[0] = PrepareCommentToWrite();
+            retVal[1] = PrepareDataToWrite();
+
+            //Return value
+            return retVal;
+        }
+
     }
     class ConfigFile
     {
@@ -69,7 +105,7 @@ namespace NaturalnieApp.Initialization
                 fullPath = path + "\\" + directoryName;
             }
 
-            //Check if direcotry exist
+            //Check if directory exist
             fExist = CheckIfConfigDirectoryExist("config");
 
             if (!fExist)
@@ -80,13 +116,39 @@ namespace NaturalnieApp.Initialization
         }
 
         //==================================================================================
+        //Check if config directory exist. If path not specify, use current path.
+        List<ConfigElement> TemplateConfigFile()
+        {
+            //Create new list with ConfigElement type
+            List<ConfigElement> retList = new List<ConfigElement>();
+
+            //Template of config file
+
+                //Get current path of applciation and add "config" to it
+                string fullPath = Directory.GetCurrentDirectory() + "\\config\\";
+                //Add first element to list
+                retList.Add(new ConfigElement("ElzabCommand", fullPath, "Elzab command path"));
+
+                //Add next element to list
+                retList.Add(new ConfigElement("DatabseName", "TestDatabaseName", "Test database name"));
+
+                //To Add next element to list, act as above
+                //Placeholder for next element
+
+            //Return value
+            return retList;
+
+        }
+
+        //==================================================================================
         void CreateConfigFile(string fileName, string path = "")
         {
             bool fExist = false;
             string fullPath;
 
-            //Verify if fileName contain proper .xml extension
-            Regex r = new Regex(@"^.*\.xml$");
+            //Verify if fileName contain proper .txt extension
+            Regex r = new Regex(@"^.*\.txt$");
+
             if (!r.IsMatch(fileName))
             {
                 throw new System.ArgumentException("Wrong name extension", "fileName");
@@ -101,36 +163,13 @@ namespace NaturalnieApp.Initialization
             }
 
 
-            //Check if xml file exist
+            //Check if txt file exist
             fExist = File.Exists(fullPath);
             
             //If not exist, create new file and fill it with pattern
             if (!fExist)
             {
-                //Default path for ElzabCommandsPath
-
-                //Create xml file inf not exist
-                XmlWriterSettings settings = new XmlWriterSettings();
-                settings.Indent = true;
-                settings.IndentChars = ("    ");
-                settings.CloseOutput = true;
-                settings.OmitXmlDeclaration = false;
-                using (XmlWriter writer = XmlWriter.Create(fullPath, settings))
-                {
-                    writer.WriteStartDocument();
-                    writer.WriteStartElement("Settings");
-                        writer.WriteStartElement("Paths");
-                            writer.WriteElementString("ElzabCommandPath", "Tes");
-                            writer.WriteElementString("OtherSettings", "TestSetting");
-                        writer.WriteEndElement();
-                        writer.WriteStartElement("Paths2");
-                            writer.WriteElementString("Elzab2", "Tes2");
-                            writer.WriteElementString("OtherSettings2", "TestSetting2");
-                        writer.WriteEndElement();
-                    writer.WriteEndElement();
-                    writer.WriteEndDocument();
-                    writer.Flush();
-                }
+            
             }
 
         }
@@ -141,7 +180,7 @@ namespace NaturalnieApp.Initialization
             CreateDirectory("config");
 
             //Check if file exist, if not create one
-           // CreateConfigFile("config.xml");
+            CreateConfigFile("config.txt");
 
         }
 
