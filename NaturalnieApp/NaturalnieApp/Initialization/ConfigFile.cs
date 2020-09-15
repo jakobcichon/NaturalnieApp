@@ -38,7 +38,7 @@ namespace NaturalnieApp.Initialization
         }
 
         //Metod used to prepare element comment, to be written into text file
-        private string PrepareCommentToWrite()
+        public string PrepareCommentToWrite()
         {
             //New string variable to be returned
             string retVal = @"\\" + this.ElementComment;
@@ -51,28 +51,11 @@ namespace NaturalnieApp.Initialization
         public string PrepareDataToWrite()
         {
             //New string variable to be returned
-            string retVal = "#" + this.ElementName + " = " + this.ElementValue;
+            string retVal = "\\\\" + this.ElementComment + "\\n" + "#" + this.ElementName + " = " + this.ElementValue;
 
             //Return value
             return retVal;
         }
-        /*
-        //Metod used to prepare element full information, to be written into text file
-        public string DataToWrite()
-        {
-            //New string variable to be returned
-            string[] preparedData = new string[2];
-            string retVal;
-
-            preparedData[0] = PrepareCommentToWrite();
-            preparedData[1] = PrepareDataToWrite();
-
-            retVal = preparedData[0] + preparedData[1];
-
-            //Return value
-            return retVal;
-        }
-        */
     }
     class ConfigFile
     {
@@ -111,7 +94,7 @@ namespace NaturalnieApp.Initialization
 
         //==================================================================================
         //Create directory under specify path.
-        void CreateDirectory(string directoryName, string path = "")
+        private void CreateDirectory(string directoryName, string path = "")
         {
             bool fExist = false;
             string fullPath;
@@ -162,8 +145,11 @@ namespace NaturalnieApp.Initialization
             {
                 try
                 {
-                    File.Create(fullPath);
-                    retVal = true;
+                    using(FileStream fs = File.Create(fullPath))
+                    {
+                        retVal = true;
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
@@ -217,7 +203,7 @@ namespace NaturalnieApp.Initialization
             }
             if (path == "")
             {
-                fullPath = Directory.GetCurrentDirectory() + "\\config\\"  + fileName;
+                fullPath = Directory.GetCurrentDirectory() + "\\" + fileName;
             }
             else
             {
@@ -241,23 +227,49 @@ namespace NaturalnieApp.Initialization
                         foreach (ConfigElement element in configDataToWrite)
                         {
                             file.WriteLine(element.PrepareDataToWrite());
-
+                            file.WriteLine("\\n");
                         }
 
                     }
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show(e.ToString());
                 }
 
             }
 
         }
 
-        public void InitializeConfigFile()
+        public void InitializeConfigFile(string fileName, string path = "", string subFolder = "")
         {
+            string fullPath = "";
+
+            
+            if (path != "")
+            {
+                if (subFolder != "")
+                {
+                    fullPath = path + "\\" + subFolder;
+                }
+                else
+                {
+                    fullPath = path;
+                }
+            }
+            else
+            {
+                if (subFolder != "")
+                {
+                    fullPath = "\\" + subFolder;
+                }
+            }
+
             // Check if directory exist, if not create one
-            CreateDirectory("config");
+            CreateDirectory(fullPath);
 
             //Check if file exist, if not create one
-            CreateConfigFile("config.txt");
+            CreateConfigFile(fileName, fullPath);
 
         }
 
@@ -305,8 +317,8 @@ namespace NaturalnieApp.Initialization
         //==================================================================================
         string ConsolidatePathAndFile(string path, string fileName)
         {
-                string fullPath;
-
+            string fullPath;
+            Regex r = new Regex(@"^\.*$");
 
                 if (path == "")
                 {
