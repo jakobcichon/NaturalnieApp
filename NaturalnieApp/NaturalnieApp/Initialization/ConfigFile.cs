@@ -48,7 +48,7 @@ namespace NaturalnieApp.Initialization
         }
 
         //Metod used to prepare element data, to be written into text file
-        private string PrepareDataToWrite()
+        public string PrepareDataToWrite()
         {
             //New string variable to be returned
             string retVal = "#" + this.ElementName + " = " + this.ElementValue;
@@ -56,20 +56,23 @@ namespace NaturalnieApp.Initialization
             //Return value
             return retVal;
         }
-
+        /*
         //Metod used to prepare element full information, to be written into text file
-        public string[] DataToWrite()
+        public string DataToWrite()
         {
             //New string variable to be returned
-            string[] retVal = new string[2];
+            string[] preparedData = new string[2];
+            string retVal;
 
-            retVal[0] = PrepareCommentToWrite();
-            retVal[1] = PrepareDataToWrite();
+            preparedData[0] = PrepareCommentToWrite();
+            preparedData[1] = PrepareDataToWrite();
+
+            retVal = preparedData[0] + preparedData[1];
 
             //Return value
             return retVal;
         }
-
+        */
     }
     class ConfigFile
     {
@@ -91,6 +94,23 @@ namespace NaturalnieApp.Initialization
         }
 
         //==================================================================================
+        //Check if config file exist. If path not specify, use current path.
+        private bool CheckIfConfigFileExist(string fileName, string path = "")
+        {
+            //If path not specofied, used current diectory
+            if (path == "")
+            {
+                path = Directory.GetCurrentDirectory();
+            }
+
+            bool dExist = false;
+            string fullPath = path + "\\" + fileName;
+            dExist = File.Exists(fullPath);
+            return dExist;
+        }
+
+        //==================================================================================
+        //Create directory under specify path.
         void CreateDirectory(string directoryName, string path = "")
         {
             bool fExist = false;
@@ -112,6 +132,47 @@ namespace NaturalnieApp.Initialization
             {
                 Directory.CreateDirectory(fullPath);
             }
+
+        }
+
+        //==================================================================================
+        //Create file under specify path. fileName must include file extension
+        //If file with given name does not exist under given path method will create a new file
+        // and return "True".
+        //Otherwise method return "False"
+        bool CreateFile(string fileName, string path = "")
+        {
+            bool fExist = false;
+            string fullPath;
+            bool retVal = false;
+
+            if (path == "")
+            {
+                fullPath = Directory.GetCurrentDirectory() + "\\" + fileName;
+            }
+            else
+            {
+                fullPath = path + "\\" + fileName;
+            }
+
+            //Check if directory exist
+            fExist = CheckIfConfigFileExist("config.txt");
+
+            if (!fExist)
+            {
+                try
+                {
+                    File.Create(fullPath);
+                    retVal = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+                
+            }
+
+            return retVal;
 
         }
 
@@ -143,9 +204,10 @@ namespace NaturalnieApp.Initialization
         //==================================================================================
         void CreateConfigFile(string fileName, string path = "")
         {
-            bool fExist = false;
+            bool fCreated = false;
             string fullPath;
-
+            List<ConfigElement> configDataToWrite = new List<ConfigElement>();
+                 
             //Verify if fileName contain proper .txt extension
             Regex r = new Regex(@"^.*\.txt$");
 
@@ -162,14 +224,29 @@ namespace NaturalnieApp.Initialization
                 fullPath = path + "\\" + fileName;
             }
 
+            //Call method to create new file
+            fCreated = CreateFile(fileName, path);
 
-            //Check if txt file exist
-            fExist = File.Exists(fullPath);
-            
-            //If not exist, create new file and fill it with pattern
-            if (!fExist)
+            //If file created successfully, fill it with template
+            if (fCreated)
             {
-            
+                configDataToWrite = TemplateConfigFile();
+
+                try
+                {
+                    // Open the text file using a stream reader.
+                    using (var file = new StreamWriter(fullPath))
+                    {
+
+                        foreach (ConfigElement element in configDataToWrite)
+                        {
+                            file.WriteLine(element.PrepareDataToWrite());
+
+                        }
+
+                    }
+                }
+
             }
 
         }
@@ -216,6 +293,7 @@ namespace NaturalnieApp.Initialization
                 Console.WriteLine(e.Message);
             }
 
+            //Clear config elements. By clear means remove variable marker "#" and value marker "="
             for (int i = 0; i < configElements.Count; i++ )
             {
                 configElements[i].ClearElementName();
