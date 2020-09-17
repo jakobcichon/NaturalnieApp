@@ -21,7 +21,7 @@ namespace NaturalnieApp
             string currentDirectory;
 
             ConfigFile ConfigFileInst = new ConfigFile();
-            ConfigFileInst.InitializeConfigFile("config.txt", "\\config");
+            ConfigFileInst.InitializeConfigFile("config.txt", "", "config");
 
             List<ConfigElement> ConfigFileElements = new List<ConfigElement>();
 
