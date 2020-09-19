@@ -1,15 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows.Forms;
-using System.Xml;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Text;
-using System.ComponentModel;
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace NaturalnieApp.Initialization
 {
@@ -35,6 +28,7 @@ namespace NaturalnieApp.Initialization
         public void ClearElementName()
         {
             ElementName = ElementName.Replace(@"#", @"").Trim();
+            ElementComment = ElementComment.Replace(@"\\", @"").Trim();
         }
 
         //Metod used to prepare element comment, to be written into text file
@@ -51,7 +45,7 @@ namespace NaturalnieApp.Initialization
         public string PrepareDataToWrite()
         {
             //New string variable to be returned
-            string retVal = "\\\\" + this.ElementComment + "\\n" + "#" + this.ElementName + " = " + this.ElementValue;
+            string retVal = @"\\" + this.ElementComment + "\n" + "#" + this.ElementName + " = " + this.ElementValue;
 
             //Return value
             return retVal;
@@ -59,21 +53,103 @@ namespace NaturalnieApp.Initialization
     }
     class ConfigFile
     {
+        //Declare class elements
+        public string FullPath { get; set; }
 
         //==================================================================================
-        //Check if config directory exist. If path not specify, use current path.
-        private bool CheckIfConfigDirectoryExist(string directoryName, string path = "")
+        //Metod use to create full config file information
+        public void InitializeConfigFile(string fileName, string path = "")
         {
-            //If path not specofied, used current diectory
-            if (path == "")
+
+            //Consolidate path
+            this.FullPath = ConsolidatePathAndFile(path, fileName);
+
+            // Check if directory exist, if not create one
+            //CreateDirectory(path, fileName);
+            VerifyAndCreateFullPath(this.FullPath);
+
+            //Check if file exist, if not create one
+            CreateConfigFile(this.FullPath);
+
+        }
+
+        //==================================================================================
+        //Method used to scan through config file and read all of its elements
+        public List<ConfigElement> ReadConfigFileElement(string path)
+        {
+
+            Regex rVariableName = new Regex(@"^.*#.*$");
+            Regex rPattern = new Regex("=");
+            List<ConfigElement> configElements = new List<ConfigElement>();
+            try
             {
-                path = Directory.GetCurrentDirectory();
+                // Open the text file using a stream reader.
+                using (var file = new StreamReader(path))
+                {
+                    string line;
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        if (rVariableName.IsMatch(line))
+                        {
+                            string[] element;
+                            element = rPattern.Split(line);
+                            configElements.Add(new ConfigElement(element[0], element[1]));
+                        }
+
+                    }
+                }
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine("The file could not be read:");
+                Console.WriteLine(e.Message);
             }
 
-            bool dExist = false;
-            string fullPath = path + "\\" + directoryName;
-            dExist = Directory.Exists(fullPath);
-            return dExist;
+            //Clear config elements. By clear means remove variable marker "#" and value marker "="
+            for (int i = 0; i < configElements.Count; i++)
+            {
+                configElements[i].ClearElementName();
+            }
+
+            return configElements;
+        }
+
+        //==================================================================================
+        //Method check if given path is valid. If not it create one.
+        private void VerifyAndCreateFullPath(string path)
+        {
+            //Local variables
+            Regex r = new Regex(@"\\");
+            string[] directoryList;
+            string pathToVerify = "";
+            bool bPathExist;
+
+            //Split given path into list
+            directoryList = r.Split(path);
+
+            //Verify full path. If any of directory does not exist, create one
+            for (int i=0; i<(directoryList.Length - 1); i++)
+            {
+                //Assigne first element without slash
+                pathToVerify += directoryList[i] + "\\"; 
+
+                //Verify path
+                bPathExist = Directory.Exists(pathToVerify);
+
+                //If given path does not exist, create directory
+                if (!bPathExist)
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(pathToVerify);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+                    
+                }
+            }
         }
 
         //==================================================================================
@@ -93,59 +169,25 @@ namespace NaturalnieApp.Initialization
         }
 
         //==================================================================================
-        //Create directory under specify path.
-        private void CreateDirectory(string directoryName, string path = "")
-        {
-            bool fExist = false;
-            string fullPath;
-
-            if (path == "")
-            {
-                fullPath = Directory.GetCurrentDirectory() + "\\" + directoryName;
-            }
-            else
-            {
-                fullPath = path + "\\" + directoryName;
-            }
-
-            //Check if directory exist
-            fExist = CheckIfConfigDirectoryExist("config");
-
-            if (!fExist)
-            {
-                Directory.CreateDirectory(fullPath);
-            }
-
-        }
-
-        //==================================================================================
         //Create file under specify path. fileName must include file extension
         //If file with given name does not exist under given path method will create a new file
         // and return "True".
         //Otherwise method return "False"
-        bool CreateFile(string fileName, string path = "")
+        bool CreateFile(string path)
         {
-            bool fExist = false;
-            string fullPath;
-            bool retVal = false;
-
-            if (path == "")
-            {
-                fullPath = Directory.GetCurrentDirectory() + "\\" + fileName;
-            }
-            else
-            {
-                fullPath = path + "\\" + fileName;
-            }
+            //Local variable
+            bool fExist, retVal = false;
 
             //Check if directory exist
-            fExist = CheckIfConfigFileExist("config.txt");
+            fExist = CheckIfConfigFileExist(path);
 
+            //Create file of not exist
             if (!fExist)
             {
                 try
                 {
-                    using(FileStream fs = File.Create(fullPath))
+                    //Use File stream to creale file
+                    using(FileStream fs = File.Create(path))
                     {
                         retVal = true;
                     }
@@ -153,11 +195,13 @@ namespace NaturalnieApp.Initialization
                 }
                 catch (Exception ex)
                 {
+                    //Message if exception
                     MessageBox.Show(ex.ToString());
                 }
                 
             }
 
+            //Return value
             return retVal;
 
         }
@@ -188,30 +232,16 @@ namespace NaturalnieApp.Initialization
         }
 
         //==================================================================================
-        void CreateConfigFile(string fileName, string path = "")
+        void CreateConfigFile(string path)
         {
-            bool fCreated = false;
-            string fullPath;
+            bool fCreated;
             List<ConfigElement> configDataToWrite = new List<ConfigElement>();
                  
             //Verify if fileName contain proper .txt extension
             Regex r = new Regex(@"^.*\.txt$");
 
-            if (!r.IsMatch(fileName))
-            {
-                throw new System.ArgumentException("Wrong name extension", "fileName");
-            }
-            if (path == "")
-            {
-                fullPath = Directory.GetCurrentDirectory() + "\\" + fileName;
-            }
-            else
-            {
-                fullPath = path + "\\" + fileName;
-            }
-
             //Call method to create new file
-            fCreated = CreateFile(fileName, path);
+            fCreated = CreateFile(path);
 
             //If file created successfully, fill it with template
             if (fCreated)
@@ -221,13 +251,13 @@ namespace NaturalnieApp.Initialization
                 try
                 {
                     // Open the text file using a stream reader.
-                    using (var file = new StreamWriter(fullPath))
+                    using (var file = new StreamWriter(path))
                     {
 
                         foreach (ConfigElement element in configDataToWrite)
                         {
                             file.WriteLine(element.PrepareDataToWrite());
-                            file.WriteLine("\\n");
+                            file.WriteLine("\n");
                         }
 
                     }
@@ -241,85 +271,29 @@ namespace NaturalnieApp.Initialization
 
         }
 
-        public void InitializeConfigFile(string fileName, string path = "", string subFolder = "")
+        //==================================================================================
+        string ConsolidatePathAndFile(string path, string fileName)
         {
+            //Local variable
             string fullPath = "";
+            Regex r = new Regex(@"^\\.*$");
 
-            
-            if (path != "")
+            //Verify if file name match pattern
+            if (r.IsMatch(fileName))
             {
-                if (subFolder != "")
+                //Check if path empty
+                if (path == "")
                 {
-                    fullPath = path + "\\" + subFolder;
+                    fullPath = Directory.GetCurrentDirectory() + fileName;
                 }
                 else
                 {
-                    fullPath = path;
+                    fullPath = path + fileName;
                 }
             }
             else
             {
-                if (subFolder != "")
-                {
-                    fullPath = "\\" + subFolder;
-                }
-            }
-
-            // Check if directory exist, if not create one
-            CreateDirectory(fullPath);
-
-            //Check if file exist, if not create one
-            CreateConfigFile(fileName, fullPath);
-
-        }
-
-        //==================================================================================
-        public List<ConfigElement> ReadConfigFileElement(string path, string fileName, string elementNameTemp, string subFolder = "")
-        {
-
-            string fullPath = ConsolidatePathAndFile(path, fileName, "txt", subFolder);
-            Regex rVariableName = new Regex(@"^.*#.*$");
-            Regex rPattern = new Regex("=");
-            List<ConfigElement> configElements = new List<ConfigElement>();
-            try
-            {
-                // Open the text file using a stream reader.
-                using (var file = new StreamReader(fullPath))
-                {
-                    string line;
-                    while ((line = file.ReadLine()) != null)
-                    {
-                        if (rVariableName.IsMatch(line))
-                        {
-                            string[] element;
-                            element = rPattern.Split(line);
-                            configElements.Add(new ConfigElement(element[0], element[1]));
-                        }
-
-                    }
-                }
-            }
-            catch (IOException e)
-            {
-                Console.WriteLine("The file could not be read:");
-                Console.WriteLine(e.Message);
-            }
-
-            //Clear config elements. By clear means remove variable marker "#" and value marker "="
-            for (int i = 0; i < configElements.Count; i++ )
-            {
-                configElements[i].ClearElementName();
-            }
-
-            return configElements;
-        }
-
-        //==================================================================================
-        string ConsolidatePathAndFile(string path, string fileName)
-        {
-            string fullPath;
-            Regex r = new Regex(@"^\.*$");
-
+                //Check if path empty
                 if (path == "")
                 {
                     fullPath = Directory.GetCurrentDirectory() + "\\" + fileName;
@@ -328,39 +302,12 @@ namespace NaturalnieApp.Initialization
                 {
                     fullPath = path + "\\" + fileName;
                 }
-
-            return fullPath;
-        }
-        string ConsolidatePathAndFile(string path, string fileName, string fileExtension = "", string subFolder = "")
-        {
-            string fullPath;
-
-            if (path == "")
-            {
-                if (subFolder == "")
-                {
-                    @fullPath = @Directory.GetCurrentDirectory() + @"\" + fileName + "." + fileExtension;
-                }
-                else
-                {
-                    @fullPath = @Directory.GetCurrentDirectory() + @"\" + subFolder + @"\" + fileName + "." + fileExtension;
-                }
-                    
-            }
-            else
-            {
-                if (subFolder == "")
-                {
-                    fullPath = path + "\\" + fileName + "." + fileExtension;
-                }
-                else
-                {
-                    fullPath = path + "\\" + subFolder + "\\" + fileName + "." + fileExtension;
-                }
             }
 
+            //Return variable
             return fullPath;
         }
+
 
 
 

@@ -3,8 +3,6 @@ using NaturalnieApp.Initialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace NaturalnieApp
@@ -21,9 +19,10 @@ namespace NaturalnieApp
             string currentDirectory;
 
             ConfigFile ConfigFileInst = new ConfigFile();
-            ConfigFileInst.InitializeConfigFile("config.txt", "", "config");
+            ConfigFileInst.InitializeConfigFile("\\config\\config.txt", "");
 
             List<ConfigElement> ConfigFileElements = new List<ConfigElement>();
+            ConfigFileElements = ConfigFileInst.ReadConfigFileElement(ConfigFileInst.FullPath);
 
             ElzabFileOperation ElzabDriverInst = new ElzabFileOperation();
             currentDirectory = Directory.GetCurrentDirectory();
