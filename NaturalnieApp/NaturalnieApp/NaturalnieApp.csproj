@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ElzabDriver\ElzabCommands.cs" />
     <Compile Include="ElzabDriver\ElzabDriver.cs" />
     <Compile Include="Initialization\ConfigFile.cs" />
     <Compile Include="MainWindow.cs">
