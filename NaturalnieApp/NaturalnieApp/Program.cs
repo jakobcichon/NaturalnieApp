@@ -24,12 +24,7 @@ namespace NaturalnieApp
             List<ConfigElement> ConfigFileElements = new List<ConfigElement>();
             ConfigFileElements = ConfigFileInst.ReadConfigFileElement(ConfigFileInst.FullPath);
 
-            ElzabFileOperation ElzabDriverInst = new ElzabFileOperation();
-            currentDirectory = Directory.GetCurrentDirectory();
-            ElzabDriverInst.CheckElzabFilesExist(currentDirectory, "");
-
-            ElzabDriverInst.ExecuteCommand("F:\\Projekty\\02. NaturalnieApp\\NaturalnieApp\\Elzab\\winexe\\winexe\\Test\\OTowar.exe");
-            ElzabDriverInst.GetFilesFromPath("F:\\Projekty\\02. NaturalnieApp\\NaturalnieApp\\Pliki Elzab\\Komendy");
+            ElzabCommand_OTOWAR Test1 = new ElzabCommand_OTOWAR();
 
             Application.EnableVisualStyles();
             Application.Run(new MainWindow());
