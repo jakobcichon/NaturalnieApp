@@ -42,26 +42,15 @@ namespace NaturalnieApp.ElzabDriver
 
             return fileToArray;
         } 
-        
-        public void ParseStringArrayToObject(string[] inputStringArray)
-        {
-            //Local variable
-            ElzabCommElementObject retVal;
-            StringArrayToAttributesValue(inputStringArray);
-            //
-        }
 
-        public List<ElzabCommElementObject> ParseListToObject(List<string> inputList)
-        {
-            //Local variables
-            List<ElzabCommElementObject> retVal = new List<ElzabCommElementObject>();
-
-            //Split attributs to string array
-            Regex regAttributsDivider = new Regex("\\t");
-            regAttributsDivider.Split(inputList[0]);
-
-            return retVal;
-
+        public void ParseListToObject(List<string> inputList)
+        { 
+            //Add attribute name to the element
+            foreach (string element in inputList)
+            {
+                AddAttributeName(element);
+            }
+ 
         }
 
     }
@@ -87,12 +76,21 @@ namespace NaturalnieApp.ElzabDriver
             this.ElementName = elementName;
         }
 
-        //Method used to add new attribute to the element
+        //Method used to add new attribute and its value to the element
         public void AddAttribute(string attributeName, string attributeValue)
         {
             this.AttributeName.Append(attributeName);
             this.AttributeValue.Append(attributeValue);
         }
+
+        //Method used to add new attribute to the element
+        public void AddAttributeName(string attributeName)
+        {
+            this.AttributeName.Add(attributeName);
+            //As attribute value, use empty string
+            this.AttributeValue.Add("");
+        }
+
 
         //Method used to find value of given element name. 
         //Only first occurence of element will be found.
@@ -185,8 +183,16 @@ namespace NaturalnieApp.ElzabDriver
         //Class constructor
         public ElzabCommand_OTOWAR()
         {
+            //Local variable
             List<string> attributesNames = new List<string>();
-            attributesNames = attributeNameFromDoc("< plu_no > < art_name > < tax_rate_no > < dept_no > < quantity_precision > < unit_no > < sale_bloc > < main_barcode > < price > < is_pack > < disc_sur_bloc > < free_price_allow > < on_handy_list > < scale_no > < last_sale_date_time >link_plu_no >");
+
+            ElzabCommElementObject ElzabOutputObject = new ElzabCommElementObject();
+
+            attributesNames = attributeNameFromDoc("< plu_no > < art_name > < tax_rate_no > " +
+                "< dept_no > < quantity_precision > < unit_no > < sale_bloc > < main_barcode > " +
+                "< price > < is_pack > < disc_sur_bloc > < free_price_allow > < on_handy_list > " +
+                "< scale_no > < last_sale_date_time >link_plu_no >");
+
             ;
         }
 
@@ -196,20 +202,24 @@ namespace NaturalnieApp.ElzabDriver
             List<string> retVal = new List<string>();
             string[] dividedNames;
 
-            attributesNames = attributesNames.Trim(' ');
+            //Clear input string
+            attributesNames = attributesNames.Replace("<", "");
 
-            //Define regular expression pattern
-            Regex regex = new Regex(@"<|>");
+            //Split input string into string array
+            dividedNames = attributesNames.Split('>');
 
-            //Split string names from Elzab documentation to string array
-            dividedNames = regex.Split(attributesNames);
-
-            //
+            //Trim array of strings
+            for (int i=0; i<dividedNames.Length; i++)
+            {
+                dividedNames[i] = dividedNames[i].Trim();
+            }
+            //Add attributs names to the list
             foreach (string element in dividedNames)
             {
-                retVal.Append(element);
+                retVal.Add(element);
             }
 
+            //Return v
             return retVal;
         }
         
