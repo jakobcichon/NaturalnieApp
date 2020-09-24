@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Runtime.CompilerServices;
 
 namespace NaturalnieApp.ElzabDriver
 {
-    public class ElzabCommandGeneral: ElzabCommElementObject
+    public abstract class ElzabCommandGeneral: ElzabCommElementObject
     {
         private string elementMark { get; set; }
         private string attributsDivider { get; set; }
@@ -53,6 +54,22 @@ namespace NaturalnieApp.ElzabDriver
  
         }
 
+        private void PrepareDataToWritetoFile(List<ElzabCommElementObject> objectsToWrite)
+        {
+            //Local variable
+            List<string> dataToWrite = new List<string>();
+
+            //Add header
+            dataToWrite
+            //Add data
+        }
+
+        //Method used to execute specified Elzab command
+        private void ExecuteCommand (string commandName)
+        {
+
+        }
+
     }
     #region Elzab command element class
     //Class used to define single element of Elzab command.
@@ -63,16 +80,18 @@ namespace NaturalnieApp.ElzabDriver
     public class ElzabCommElementObject
     {
         //Define class elements
-        public string ElementName { get; set; }
-        public List<string> AttributeName { get; set; }
-        public List<string> AttributeValue { get; set; }
+        private string ElementName { get; set; }
+        private List<string> AttributeName { get; set; }
+        private List<string> AttributeValue { get; set; }
 
-        public ElzabCommElementObject()
+        public ElzabCommElementObject(): this("")
         {
-            this.ElementName = "";
+            
         }
         public ElzabCommElementObject(string elementName)
         {
+            this.AttributeName = new List<string>();
+            this.AttributeValue = new List<string>();
             this.ElementName = elementName;
         }
 
@@ -180,33 +199,67 @@ namespace NaturalnieApp.ElzabDriver
 
     public class ElzabCommand_OTOWAR: ElzabCommandGeneral
     {
+        public ElzabCommElementObject DataToSend { get; set; }
+
+        public ElzabCommElementObject DataReceived { get; set; }
+
         //Class constructor
         public ElzabCommand_OTOWAR()
-        {
+        {               
             //Local variable
-            List<string> attributesNames = new List<string>();
+            List<string> attributesNamesInFile = new List<string>();
+            List<string> attributesNamesOutFile = new List<string>();
 
-            ElzabCommElementObject ElzabOutputObject = new ElzabCommElementObject();
+            //###############################################################################################
+            //Variable used to call comand. Class create output and in file with same name, adding *in/*out, to it.
+            string commandName = "OTOWAR";
 
-            attributesNames = attributeNameFromDoc("< plu_no > < art_name > < tax_rate_no > " +
+            //Define input file attributes
+            attributesNamesInFile = attributeNameFromDoc("$nr_unik");
+
+            //Define output file attributes
+            attributesNamesOutFile = attributeNameFromDoc("< plu_no > < art_name > < tax_rate_no > " +
                 "< dept_no > < quantity_precision > < unit_no > < sale_bloc > < main_barcode > " +
                 "< price > < is_pack > < disc_sur_bloc > < free_price_allow > < on_handy_list > " +
                 "< scale_no > < last_sale_date_time >link_plu_no >");
 
-            ;
+            //###############################################################################################
+
+            //Create input file instance
+            this.DataToSend = new ElzabCommElementObject();
+            foreach (string element in attributesNamesInFile)
+            {
+                this.DataToSend.AddAttributeName(element);
+            }
+
+            //Create input file instance
+            this.DataReceived = new ElzabCommElementObject();
+            foreach (string element in attributesNamesOutFile)
+            {
+                this.DataReceived.AddAttributeName(element);
+            }
+
         }
 
-        public List<string> attributeNameFromDoc(string attributesNames)
+        public void ExecuteCommand()
+            {
+                
+            }
+
+
+        //Method used to prepare raw data from Elzab documentation
+        private List<string> attributeNameFromDoc(string attributesNames)
         {
             //Local variable
+            Regex regx = new Regex(">|$");
             List<string> retVal = new List<string>();
             string[] dividedNames;
 
             //Clear input string
-            attributesNames = attributesNames.Replace("<", "");
+            attributesNames = attributesNames.Replace("<", "").Replace("$", "");
 
             //Split input string into string array
-            dividedNames = attributesNames.Split('>');
+            dividedNames = regx.Split(attributesNames);
 
             //Trim array of strings
             for (int i=0; i<dividedNames.Length; i++)
@@ -216,7 +269,11 @@ namespace NaturalnieApp.ElzabDriver
             //Add attributs names to the list
             foreach (string element in dividedNames)
             {
-                retVal.Add(element);
+                if (element != "")
+                {
+                    retVal.Add(element);
+                }
+                
             }
 
             //Return v
