@@ -15,6 +15,20 @@ namespace NaturalnieApp.ElzabDriver
     {
         private string elementMark { get; set; }
         private string attributsDivider { get; set; }
+        private string fileHeader { get; set; }
+        private string elzabFilePath { get; set; }
+        private string elzabCommandName { get; set; }
+
+        private enum FileType
+        {
+            Inputfile, OutputFile, ConfigFile, ReportFile
+        }
+
+        //Method used to add Elzab command name
+        protected void SetElzabCommandName(string elzabCommandName)
+        {
+            this.elzabCommandName = elzabCommandName;
+        }
 
         //Method used to open file from given path.
         //It return all lines of file as array of strings
@@ -54,13 +68,119 @@ namespace NaturalnieApp.ElzabDriver
  
         }
 
-        private void PrepareDataToWritetoFile(List<ElzabCommElementObject> objectsToWrite)
+        //Method adds path to the Elzab file
+        public void AddPathToElzabFiles(string path)
+        {
+            bool pathValidateResult;
+            bool fileValidateResult;
+            string fullPath = path + "\\" + this.elzabCommandName + ".exe";
+
+            //Validate path and file exist
+            pathValidateResult = Directory.Exists(path);
+            fileValidateResult=  File.Exists(fullPath);
+
+            //If path exist add it, 
+            if (pathValidateResult && fileValidateResult)
+            {
+                //Add full
+                this.elzabFilePath = fullPath;
+            }
+            else
+            {
+                //Show message box if path or file invalid
+                if (pathValidateResult && !fileValidateResult)
+                {
+                    MessageBox.Show("Wrong path to Elzab files");
+                }
+                else if (!pathValidateResult && fileValidateResult)
+                {
+                    MessageBox.Show("Missing Elzab command '" + this.elzabCommandName + "' under path: " + path);
+                }
+            }     
+        }
+
+        //Method use to check if input, output, config or report file exist
+        private bool CheckIfFileExist(string path, string commandName, FileType typeOfFile)
+        {
+            //Local variables
+            bool retVal = false;
+
+            string fullPath = path + "\\" + FileNameDependingOfType(commandName, typeOfFile);
+
+            //Chceck if input file exist
+            retVal = File.Exists(fullPath);
+
+            return retVal;
+        }
+
+        //Method use to create input or config file
+        private void CreateFile(string path, string commandName, FileType typeOfFile)
+        {
+            //Check if given file is the proper one
+            if (typeOfFile == FileType.Inputfile || typeOfFile == FileType.ConfigFile)
+            {
+
+                string fullPath = path + "\\" + FileNameDependingOfType(commandName, typeOfFile);
+
+                try
+                {
+                    
+                }
+            }
+
+
+
+        }
+
+        private string FileNameDependingOfType(string commandName, FileType typeOfFile)
+        {
+            //Local variables
+            string retVal;
+
+            //Check file type and return it name
+            switch (typeOfFile)
+            {
+                case FileType.Inputfile:
+                    retVal = commandName + "IN.txt";
+                    break;
+                case FileType.OutputFile:
+                    retVal = commandName + "OUT.txt";
+                    break;
+                case FileType.ConfigFile:
+                    retVal = "KONFIG.txt";
+                    break;
+                case FileType.ReportFile:
+                    retVal = "RAPORT.txt";
+                    break;
+                default:
+                    retVal = "";
+                    break;
+            }
+
+            return retVal;
+        }
+
+        //Method use to create input file
+        private bool CheckIfInputFileExist(string path, string commandName)
+        {
+            //Local variables
+            bool retVal = false;
+            string fullPath = path + "\\" + commandName + "IN.txt";
+
+            //Chceck if input file exist
+            retVal = File.Exists(fullPath);
+
+            return retVal;
+        }
+
+        private void PrepareDataToWritetoFile(List<ElzabCommElementObject> objectsToWrite, string header)
         {
             //Local variable
             List<string> dataToWrite = new List<string>();
 
             //Add header
-            dataToWrite
+            fileHeader = header;
+
             //Add data
         }
 
@@ -71,6 +191,8 @@ namespace NaturalnieApp.ElzabDriver
         }
 
     }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------
     #region Elzab command element class
     //Class used to define single element of Elzab command.
     //Below visual explanation of naming convesion.
@@ -197,15 +319,16 @@ namespace NaturalnieApp.ElzabDriver
     }
     #endregion
 
-    public class ElzabCommand_OTOWAR: ElzabCommandGeneral
+    //-----------------------------------------------------------------------------------------------------------------------------------------
+    public class ElzabCommand_OTOWAR : ElzabCommandGeneral
     {
         public ElzabCommElementObject DataToSend { get; set; }
 
         public ElzabCommElementObject DataReceived { get; set; }
 
         //Class constructor
-        public ElzabCommand_OTOWAR()
-        {               
+        public ElzabCommand_OTOWAR(string elzabCommandPath)
+        {
             //Local variable
             List<string> attributesNamesInFile = new List<string>();
             List<string> attributesNamesOutFile = new List<string>();
@@ -225,6 +348,10 @@ namespace NaturalnieApp.ElzabDriver
 
             //###############################################################################################
 
+            //Method used to send basic information to child class
+            SetElzabCommandName(commandName);
+            AddPathToElzabFiles(elzabCommandPath);
+
             //Create input file instance
             this.DataToSend = new ElzabCommElementObject();
             foreach (string element in attributesNamesInFile)
@@ -238,7 +365,6 @@ namespace NaturalnieApp.ElzabDriver
             {
                 this.DataReceived.AddAttributeName(element);
             }
-
         }
 
         public void ExecuteCommand()
