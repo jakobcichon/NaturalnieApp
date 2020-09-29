@@ -24,9 +24,11 @@ namespace NaturalnieApp
             List<ConfigElement> ConfigFileElements = new List<ConfigElement>();
             ConfigFileElements = ConfigFileInst.ReadConfigFileElement(ConfigFileInst.FullPath);
 
-            ElzabCommand_OTOWAR Test1 = new ElzabCommand_OTOWAR();
-            Test1.DataReceived.ChangeAttribute("unit_no", "2");
-            Test1.ExecuteCommand(ref Test1.DataToSend);
+            ElzabCommand_OTOWAR Test1 = new ElzabCommand_OTOWAR(@"F:\Projekty\02. NaturalnieApp\ElzabFilesTest");
+            Test1.ExecuteCommand();
+            Test TestClass = new Test();
+            TestClass.TestMt(1, 2, 3, 4);
+
 
             Application.EnableVisualStyles();
             Application.Run(new MainWindow());

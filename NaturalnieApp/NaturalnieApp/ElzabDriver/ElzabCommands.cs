@@ -8,18 +8,245 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.CompilerServices;
+using System.Reflection;
 
 namespace NaturalnieApp.ElzabDriver
 {
-    public abstract class ElzabCommandGeneral: ElzabCommElementObject
+
+    class ElzabFileStruct
     {
-        private string elementMark { get; set; }
-        private string attributsDivider { get; set; }
-        private string fileHeader { get; set; }
+        List<string> FileHeader;
+
+        List<ElzabCommElementObject> ListOfFileElements;
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------
+    public class ElzabCommand_OTOWAR : ElzabCommandGeneral
+    {
+        private string CommandName { get; }
+        private string Path { get; }
+
+        private string InputFile
+
+            FileType.
+
+        public List<ElzabCommElementObject> DataToSend { get; set; }
+        public List<ElzabCommElementObject> DataReceived { get; set; }
+
+        public ElzabCommand_OTOWAR(string elzabCommandPath)
+        {       
+            //Local variable
+            List<string> attributesNamesInFile = new List<string>();
+            List<string> attributesNamesOutFile = new List<string>();
+            List<ElzabCommElementObject> DataToSend = new List<ElzabCommElementObject>();
+            List<ElzabCommElementObject> DataReceived = new List<ElzabCommElementObject>();
+            this.Path = elzabCommandPath;
+
+            //###############################################################################################
+            //Variable used to call comand. Class create output and in file with same name, adding *in/*out, to it.
+            this.CommandName = "OTOWAR";
+
+            //Define input file attributes
+            attributesNamesInFile = attributeNameFromDoc("$nr_unik");
+
+            //Define output file attributes
+            attributesNamesOutFile = attributeNameFromDoc("< plu_no > < art_name > < tax_rate_no > " +
+                    "< dept_no > < quantity_precision > < unit_no > < sale_bloc > < main_barcode > " +
+                    "< price > < is_pack > < disc_sur_bloc > < free_price_allow > < on_handy_list > " +
+                    "< scale_no > < last_sale_date_time >link_plu_no >");
+
+            InitElzabData(attributesNamesInFile, attributesNamesOutFile, ref DataToSend, ref DataReceived);
+
+        }
+
+
+
+    }
+    //-----------------------------------------------------------------------------------------------------------------------------------------
+    /*public abstract class ElzabCommandGeneral : ElzabCommandFileHandling
+    {
+        private string CommandName{ get; }
+        private string Path { get; }
+
+        //Class constructor
+        public void InitElzabData(List<string> attributesNamesInFile, 
+            List<string> attributesNamesOutFile, 
+            ref List<ElzabCommElementObject> dataToSend, ref List<ElzabCommElementObject> dataReceived)
+        {
+            //Initialize atributes in input file of given command
+            foreach (string element in attributesNamesInFile)
+            {
+                dataToSend.AddAttributeName(element);
+            }
+
+            //Initialize atributes in out file of given command
+            foreach (string element in attributesNamesOutFile)
+            {
+                dataReceived.AddAttributeName(element);
+            }
+        }
+        public void ExecuteCommand()
+        {
+            ExecuteCommand(this.Path, this.CommandName);
+        }
+
+        public void AddHeaderToFile()
+        {
+
+        }
+
+        //Method used to prepare raw data from Elzab documentation
+        protected List<string> attributeNameFromDoc(string attributesNames)
+        {
+            //Local variable
+            Regex regx = new Regex(">|$");
+            List<string> retVal = new List<string>();
+            string[] dividedNames;
+
+            //Clear input string
+            attributesNames = attributesNames.Replace("<", "").Replace("$", "");
+
+            //Split input string into string array
+            dividedNames = regx.Split(attributesNames);
+
+            //Trim array of strings
+            for (int i = 0; i < dividedNames.Length; i++)
+            {
+                dividedNames[i] = dividedNames[i].Trim();
+            }
+            //Add attributs names to the list
+            foreach (string element in dividedNames)
+            {
+                if (element != "")
+                {
+                    retVal.Add(element);
+                }
+
+            }
+
+            //Return value
+            return retVal;
+        }
+
+
+    }
+    */
+    //-----------------------------------------------------------------------------------------------------------------------------------------
+    class ElzabFileObject : ElzabCommandFileHandling
+    {
+        private string AttributesSeparator { get; set; }
+        private string HeaderMark { get; set; }
+        private string HeaderSeparator { get; set; }
+        private string CommentMark { get; set; }
+        private string ElementMark { get; set; }
+        private string Path { get; }
+        private string CommandName { get; }
+        private FileType TypeOfFile { get; }
+        public ElzabFileHeaderStructure Header { get; set; }
+        public List<ElzabCommElementObject> ElementList { get; set; }
+        public List<string> RawData { get; set; }
+        private string HeaderPattern { get; set; }
+        private string ElementsPatter { get; set; }
+
+
+        public class ElzabFileHeaderStructure
+        {
+            ElzabCommElementObject Line1 { get; set; }
+            ElzabCommElementObject Line2 { get; set; }
+            ElzabCommElementObject Line3 { get; set; }
+        }
+
+        public void InitializePattern(string headerPattern, string elementPatter)
+        {
+
+        }
+
+        //Class constructor
+        public ElzabFileObject(string path, string commandName, FileType typeOfFile )
+        {
+            //Create instance of header object
+            this.Header = new ElzabFileHeaderStructure();
+
+            //Create instance of Raw data object
+            this.RawData = new List<string>();
+
+            //Initialize object variables
+            this.Path = path;
+            this.CommandName = commandName;
+            this.TypeOfFile = typeOfFile;
+
+        }
+
+
+
+        //Method used to set basic information about file
+        public void SetMarksAndSeparators(string attributeSeparator = " ", string headerMark = "#",
+                                        string headerSeparator = " ", string commentMark = ";",
+                                        string elementMark = "$")
+        {
+            //Set values to variables
+            this.AttributesSeparator = attributeSeparator;
+            this.HeaderMark = headerMark;
+            this.HeaderSeparator = headerSeparator;
+            this.CommentMark = commentMark;
+            this.ElementMark = elementMark;
+        }
+        public void GenerateObjectFromRawData()
+        {
+            //Read raw data from file
+            this.RawData = ReadDataFromFile(this.Path, this.CommandName, this.TypeOfFile);
+
+            //Parse data
+        }
+
+        public void GenerateRawDataFromObject()
+        {
+
+        }
+
+        //Method used to prepare raw data from Elzab documentation
+        private List<string> ParsePattern(string pattern)
+        {
+            //Local variable
+            Regex regx = new Regex(">|$");
+            List<string> retVal = new List<string>();
+            string[] dividedNames;
+
+            //Clear input string
+            pattern = pattern.Replace("<", "").Replace("$", "");
+
+            //Split input string into string array
+            dividedNames = regx.Split(pattern);
+
+            //Trim array of strings
+            for (int i = 0; i < dividedNames.Length; i++)
+            {
+                dividedNames[i] = dividedNames[i].Trim();
+            }
+            //Add attributs names to the list
+            foreach (string element in dividedNames)
+            {
+                if (element != "")
+                {
+                    retVal.Add(element);
+                }
+
+            }
+
+            //Return value
+            return retVal;
+        }
+
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------
+    public abstract class ElzabCommandFileHandling
+    {
         private string elzabFilePath { get; set; }
         private string elzabCommandName { get; set; }
 
-        private enum FileType
+        //Define file type as enum
+        public enum FileType
         {
             Inputfile, OutputFile, ConfigFile, ReportFile
         }
@@ -30,9 +257,9 @@ namespace NaturalnieApp.ElzabDriver
             this.elzabCommandName = elzabCommandName;
         }
 
-        //Method used to open file from given path.
+        //Method used to read file from given path.
         //It return all lines of file as array of strings
-        private List<string> OpenFiles(string path)
+        private List<string> ReadFile(string fullPath)
         {
             //Local variable
             List<string> fileToArray = new List<string>();
@@ -40,7 +267,7 @@ namespace NaturalnieApp.ElzabDriver
             //Open file and read all lines to string array
             try
             {
-                using (var file = new StreamReader(path))
+                using (var file = new StreamReader(fullPath))
                 {
                     string line;
                     while ((line = file.ReadLine()) != null)
@@ -57,16 +284,6 @@ namespace NaturalnieApp.ElzabDriver
 
             return fileToArray;
         } 
-
-        public void ParseListToObject(List<string> inputList)
-        { 
-            //Add attribute name to the element
-            foreach (string element in inputList)
-            {
-                AddAttributeName(element);
-            }
- 
-        }
 
         //Method adds path to the Elzab file
         public void AddPathToElzabFiles(string path)
@@ -100,12 +317,10 @@ namespace NaturalnieApp.ElzabDriver
         }
 
         //Method use to check if input, output, config or report file exist
-        private bool CheckIfFileExist(string path, string commandName, FileType typeOfFile)
+        private bool CheckIfFileExist(string fullPath)
         {
             //Local variables
             bool retVal = false;
-
-            string fullPath = path + "\\" + FileNameDependingOfType(commandName, typeOfFile);
 
             //Chceck if input file exist
             retVal = File.Exists(fullPath);
@@ -113,25 +328,62 @@ namespace NaturalnieApp.ElzabDriver
             return retVal;
         }
 
-        //Method use to create input or config file
-        private void CreateFile(string path, string commandName, FileType typeOfFile)
+        //Method used to save raw data to file
+        private void SaveDataToFile(string fullPath, List<string> data)
         {
-            //Check if given file is the proper one
-            if (typeOfFile == FileType.Inputfile || typeOfFile == FileType.ConfigFile)
+            try
             {
-
-                string fullPath = path + "\\" + FileNameDependingOfType(commandName, typeOfFile);
-
-                try
+                //Use File stream to write data to file
+                using (StreamWriter fs = File.CreateText(fullPath))
                 {
-                    
+                    foreach (string lineToWrite in data)
+                    {
+                        fs.WriteLine(lineToWrite);
+                    }
+
+                    //Close file
+                    fs.Close();
                 }
+
             }
+            catch (Exception ex)
+            {
+                //Message if exception
+                MessageBox.Show(ex.ToString());
+            }
+        }
 
+        //Method use to create input or config file
+        private void CreateFile(string fullPath)
+        {
+            try
+            {
+                //Use File stream to creale file
+                using (StreamWriter fs = File.CreateText(fullPath))
+                {
+                    //Close file
+                    fs.Close();
+                }
 
+            }
+            catch (Exception ex)
+            {
+                //Message if exception
+                MessageBox.Show(ex.ToString());
+            }
+            
+        }
+
+        //Method used to consolidate path, command name and file type
+        private string ConsolidatePath(string path, string commandName, FileType typeOfFile)
+        {
+            string fullPath = path + "\\" + FileNameDependingOfType(commandName, typeOfFile);
+
+            return fullPath;
 
         }
 
+        //Method use to create file name, depending of given file type
         private string FileNameDependingOfType(string commandName, FileType typeOfFile)
         {
             //Local variables
@@ -160,34 +412,56 @@ namespace NaturalnieApp.ElzabDriver
             return retVal;
         }
 
-        //Method use to create input file
-        private bool CheckIfInputFileExist(string path, string commandName)
+        //Method used to read data from specified file
+        public List<string> ReadDataFromFile(string path, string commandName, FileType typeOfFile)
         {
             //Local variables
-            bool retVal = false;
-            string fullPath = path + "\\" + commandName + "IN.txt";
+            List<string> readData = new List<string>();
+            string fullPath;
+            bool fileExist;
 
-            //Chceck if input file exist
-            retVal = File.Exists(fullPath);
+            //Generate full path to file
+            fullPath = ConsolidatePath(path, commandName, typeOfFile);
 
-            return retVal;
+            //Check if given file exist
+            fileExist = CheckIfFileExist(fullPath);
+            if (fileExist)
+            {
+                //Call method to read from file
+                readData = ReadFile(fullPath);
+            }
+            //If file/path not valid, show message box
+            else
+            {
+                MessageBox.Show("Specified file does not exist or cannot be opened. File: " + fullPath);
+            }
+
+            //Return variable
+            return readData;    
         }
 
-        private void PrepareDataToWritetoFile(List<ElzabCommElementObject> objectsToWrite, string header)
+        //Method used to write data to specified file
+        public void WriteDataToFile(string path, string commandName, FileType typeOfFile, List<string> dataToWrite)
         {
-            //Local variable
-            List<string> dataToWrite = new List<string>();
+            //Local variables
+            string fullPath;
+            bool fileExist;
 
-            //Add header
-            fileHeader = header;
+            //Generate full path to file
+            fullPath = ConsolidatePath(path, commandName, typeOfFile);
 
-            //Add data
-        }
-
-        //Method used to execute specified Elzab command
-        private void ExecuteCommand (string commandName)
-        {
-
+            //Check if given file exist
+            fileExist = CheckIfFileExist(fullPath);
+            if (fileExist)
+            {
+                //Call method to write data to file
+                SaveDataToFile(fullPath, dataToWrite);
+            }
+            //If file/path not valid, show message box
+            else
+            {
+                MessageBox.Show("Specified file does not exist or cannot be opened. File: " + fullPath);
+            }
         }
 
     }
@@ -202,19 +476,14 @@ namespace NaturalnieApp.ElzabDriver
     public class ElzabCommElementObject
     {
         //Define class elements
-        private string ElementName { get; set; }
+        private List<string> ElementName { get; set; }
         private List<string> AttributeName { get; set; }
         private List<string> AttributeValue { get; set; }
 
-        public ElzabCommElementObject(): this("")
-        {
-            
-        }
-        public ElzabCommElementObject(string elementName)
-        {
+        public ElzabCommElementObject()
+        { 
             this.AttributeName = new List<string>();
             this.AttributeValue = new List<string>();
-            this.ElementName = elementName;
         }
 
         //Method used to add new attribute and its value to the element
@@ -291,6 +560,21 @@ namespace NaturalnieApp.ElzabDriver
 
         }
 
+        //Method used to add element
+        public void AddElement(string elementName, params string[] attributNameAndValue )
+        {
+            //Local variabe
+            string[] splittedString;
+
+            foreach (string element in attributNameAndValue )
+            {
+                splittedString = element.Split('=');
+                ChangeAttribute(splittedString[0], splittedString[1]);
+            }
+
+
+        }
+
         //Method used to add series of string to object
         //If array lenght is bigger then number of attributes, it will change only existing attributes
         public void StringArrayToAttributesValue(string[] inputStringArray)
@@ -316,95 +600,15 @@ namespace NaturalnieApp.ElzabDriver
             }
         }
 
-    }
-    #endregion
-
-    //-----------------------------------------------------------------------------------------------------------------------------------------
-    public class ElzabCommand_OTOWAR : ElzabCommandGeneral
-    {
-        public ElzabCommElementObject DataToSend { get; set; }
-
-        public ElzabCommElementObject DataReceived { get; set; }
-
-        //Class constructor
-        public ElzabCommand_OTOWAR(string elzabCommandPath)
+        //Method used to add attributes from list
+        public void AddAttributesFromList(List<string> attributesNames)
         {
-            //Local variable
-            List<string> attributesNamesInFile = new List<string>();
-            List<string> attributesNamesOutFile = new List<string>();
-
-            //###############################################################################################
-            //Variable used to call comand. Class create output and in file with same name, adding *in/*out, to it.
-            string commandName = "OTOWAR";
-
-            //Define input file attributes
-            attributesNamesInFile = attributeNameFromDoc("$nr_unik");
-
-            //Define output file attributes
-            attributesNamesOutFile = attributeNameFromDoc("< plu_no > < art_name > < tax_rate_no > " +
-                "< dept_no > < quantity_precision > < unit_no > < sale_bloc > < main_barcode > " +
-                "< price > < is_pack > < disc_sur_bloc > < free_price_allow > < on_handy_list > " +
-                "< scale_no > < last_sale_date_time >link_plu_no >");
-
-            //###############################################################################################
-
-            //Method used to send basic information to child class
-            SetElzabCommandName(commandName);
-            AddPathToElzabFiles(elzabCommandPath);
-
-            //Create input file instance
-            this.DataToSend = new ElzabCommElementObject();
-            foreach (string element in attributesNamesInFile)
+            foreach (string element in attributesNames)
             {
-                this.DataToSend.AddAttributeName(element);
-            }
-
-            //Create input file instance
-            this.DataReceived = new ElzabCommElementObject();
-            foreach (string element in attributesNamesOutFile)
-            {
-                this.DataReceived.AddAttributeName(element);
+                AddAttribute(element, "");
             }
         }
 
-        public void ExecuteCommand()
-            {
-                
-            }
-
-
-        //Method used to prepare raw data from Elzab documentation
-        private List<string> attributeNameFromDoc(string attributesNames)
-        {
-            //Local variable
-            Regex regx = new Regex(">|$");
-            List<string> retVal = new List<string>();
-            string[] dividedNames;
-
-            //Clear input string
-            attributesNames = attributesNames.Replace("<", "").Replace("$", "");
-
-            //Split input string into string array
-            dividedNames = regx.Split(attributesNames);
-
-            //Trim array of strings
-            for (int i=0; i<dividedNames.Length; i++)
-            {
-                dividedNames[i] = dividedNames[i].Trim();
-            }
-            //Add attributs names to the list
-            foreach (string element in dividedNames)
-            {
-                if (element != "")
-                {
-                    retVal.Add(element);
-                }
-                
-            }
-
-            //Return v
-            return retVal;
-        }
-        
     }
+    #endregion    
 }
