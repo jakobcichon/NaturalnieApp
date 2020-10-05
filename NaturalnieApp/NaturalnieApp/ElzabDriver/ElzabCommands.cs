@@ -9,130 +9,65 @@ using System.Text.RegularExpressions;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.CompilerServices;
 using System.Reflection;
+using System.Security;
 
-namespace NaturalnieApp.ElzabDriver
+namespace ElzabDriver
 {
 
-    class ElzabFileStruct
-    {
-        List<string> FileHeader;
 
-        List<ElzabCommElementObject> ListOfFileElements;
-    }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
-    public class ElzabCommand_OTOWAR : ElzabCommandGeneral
+    public class ElzabCommand_OTOWAR: ElzabFileObject
     {
-        private string CommandName { get; }
-        private string Path { get; }
-
-        private string InputFile
-
-            FileType.
-
-        public List<ElzabCommElementObject> DataToSend { get; set; }
-        public List<ElzabCommElementObject> DataReceived { get; set; }
-
-        public ElzabCommand_OTOWAR(string elzabCommandPath)
-        {       
-            //Local variable
-            List<string> attributesNamesInFile = new List<string>();
-            List<string> attributesNamesOutFile = new List<string>();
-            List<ElzabCommElementObject> DataToSend = new List<ElzabCommElementObject>();
-            List<ElzabCommElementObject> DataReceived = new List<ElzabCommElementObject>();
-            this.Path = elzabCommandPath;
-
-            //###############################################################################################
-            //Variable used to call comand. Class create output and in file with same name, adding *in/*out, to it.
-            this.CommandName = "OTOWAR";
-
-            //Define input file attributes
-            attributesNamesInFile = attributeNameFromDoc("$nr_unik");
-
-            //Define output file attributes
-            attributesNamesOutFile = attributeNameFromDoc("< plu_no > < art_name > < tax_rate_no > " +
-                    "< dept_no > < quantity_precision > < unit_no > < sale_bloc > < main_barcode > " +
-                    "< price > < is_pack > < disc_sur_bloc > < free_price_allow > < on_handy_list > " +
-                    "< scale_no > < last_sale_date_time >link_plu_no >");
-
-            InitElzabData(attributesNamesInFile, attributesNamesOutFile, ref DataToSend, ref DataReceived);
-
-        }
-
-
-
-    }
-    //-----------------------------------------------------------------------------------------------------------------------------------------
-    /*public abstract class ElzabCommandGeneral : ElzabCommandFileHandling
-    {
-        private string CommandName{ get; }
-        private string Path { get; }
+        //Local variable
+        public ElzabFileObject DataFromElzab { get; set; }
+        public ElzabFileObject DataToElzab { get; set; }
+        private string CommandName = "OTOWAR";
 
         //Class constructor
-        public void InitElzabData(List<string> attributesNamesInFile, 
-            List<string> attributesNamesOutFile, 
-            ref List<ElzabCommElementObject> dataToSend, ref List<ElzabCommElementObject> dataReceived)
+        public ElzabCommand_OTOWAR(string path)
         {
-            //Initialize atributes in input file of given command
-            foreach (string element in attributesNamesInFile)
-            {
-                dataToSend.AddAttributeName(element);
-            }
+            //Initialize object containing information from ELZAB
+            this.DataFromElzab = new ElzabFileObject(path, CommandName, FileType.OutputFile,
+                elementAttributesPattern : "< plu_no > < art_name > < tax_rate_no > " +
+            "< dept_no > < quantity_precision > < unit_no > < sale_bloc > < main_barcode > " +
+            "< price > < is_pack > < disc_sur_bloc > < free_price_allow > < on_handy_list > " +
+            "< scale_no > < last_sale_date_time >link_plu_no >");
 
-            //Initialize atributes in out file of given command
-            foreach (string element in attributesNamesOutFile)
-            {
-                dataReceived.AddAttributeName(element);
-            }
+            //Initialize object containing information to ELZAB
+            this.DataToElzab = new ElzabFileObject(path, CommandName, FileType.Inputfile,
+                headerPatternLine1 : "< device_number >",
+                headerPatternLine2: "",
+                headerPatternLine3: "",
+                elementAttributesPattern: "< nr_tow > ");
         }
-        public void ExecuteCommand()
-        {
-            ExecuteCommand(this.Path, this.CommandName);
-        }
-
-        public void AddHeaderToFile()
-        {
-
-        }
-
-        //Method used to prepare raw data from Elzab documentation
-        protected List<string> attributeNameFromDoc(string attributesNames)
-        {
-            //Local variable
-            Regex regx = new Regex(">|$");
-            List<string> retVal = new List<string>();
-            string[] dividedNames;
-
-            //Clear input string
-            attributesNames = attributesNames.Replace("<", "").Replace("$", "");
-
-            //Split input string into string array
-            dividedNames = regx.Split(attributesNames);
-
-            //Trim array of strings
-            for (int i = 0; i < dividedNames.Length; i++)
-            {
-                dividedNames[i] = dividedNames[i].Trim();
-            }
-            //Add attributs names to the list
-            foreach (string element in dividedNames)
-            {
-                if (element != "")
-                {
-                    retVal.Add(element);
-                }
-
-            }
-
-            //Return value
-            return retVal;
-        }
-
 
     }
-    */
+
+    public class ElzabCommHeaderObject
+    {
+        public ElzabCommElementObject HeaderLine1 { get; set; }
+        public ElzabCommElementObject HeaderLine2 { get; set; }
+        public ElzabCommElementObject HeaderLine3 { get; set; }
+
+        public ElzabCommHeaderObject()
+        {
+            this.HeaderLine1 = new ElzabCommElementObject();
+            this.HeaderLine2 = new ElzabCommElementObject();
+            this.HeaderLine3 = new ElzabCommElementObject();
+        }
+
+    }
+
     //-----------------------------------------------------------------------------------------------------------------------------------------
-    class ElzabFileObject : ElzabCommandFileHandling
+    public enum FileType
+    {
+        Inputfile, OutputFile, ConfigFile, ReportFile
+    }
+
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------
+    public class ElzabFileObject : ElzabCommandFileHandling
     {
         private string AttributesSeparator { get; set; }
         private string HeaderMark { get; set; }
@@ -142,19 +77,10 @@ namespace NaturalnieApp.ElzabDriver
         private string Path { get; }
         private string CommandName { get; }
         private FileType TypeOfFile { get; }
-        public ElzabFileHeaderStructure Header { get; set; }
-        public List<ElzabCommElementObject> ElementList { get; set; }
+        public ElzabCommHeaderObject Header { get; set; }
+        public ElzabCommElementObject Element { get; set; }
         public List<string> RawData { get; set; }
-        private string HeaderPattern { get; set; }
         private string ElementsPatter { get; set; }
-
-
-        public class ElzabFileHeaderStructure
-        {
-            ElzabCommElementObject Line1 { get; set; }
-            ElzabCommElementObject Line2 { get; set; }
-            ElzabCommElementObject Line3 { get; set; }
-        }
 
         public void InitializePattern(string headerPattern, string elementPatter)
         {
@@ -162,27 +88,45 @@ namespace NaturalnieApp.ElzabDriver
         }
 
         //Class constructor
-        public ElzabFileObject(string path, string commandName, FileType typeOfFile )
+        public ElzabFileObject()
         {
-            //Create instance of header object
-            this.Header = new ElzabFileHeaderStructure();
 
-            //Create instance of Raw data object
-            this.RawData = new List<string>();
+        }
+
+        public ElzabFileObject(string path, string commandName, FileType typeOfFile, 
+            string headerPatternLine1 = "< cash_register_number > < cash_register_comm_data > < comm_timeout > <execution_date >" +
+            "< execution_time > < command_name > < version_number> < input_file_name > <output_file_name>", 
+            string headerPatternLine2 = " < error_number > < error_text > ", string headerPatternLine3 = " <cash_register_id > ",
+            string elementAttributesPattern = " < empty_element>")
+        {
 
             //Initialize object variables
             this.Path = path;
             this.CommandName = commandName;
             this.TypeOfFile = typeOfFile;
 
+            //Create instance of Raw data object
+            this.RawData = new List<string>();
+            
+            //Call method used to set marks and separators
+            SetMarksAndSeparators();
+
+            //Create instance of header object and initialize it
+            this.Header = new ElzabCommHeaderObject();
+            this.Header.HeaderLine1.AddAttributesFromList(ParsePattern(headerPatternLine1));
+            this.Header.HeaderLine2.AddAttributesFromList(ParsePattern(headerPatternLine2));
+            this.Header.HeaderLine3.AddAttributesFromList(ParsePattern(headerPatternLine3));
+
+            //Create instance of element object and initialize it
+            this.Element = new ElzabCommElementObject();
+            this.Element.AddAttributesFromList(ParsePattern(elementAttributesPattern));
+
         }
 
-
-
         //Method used to set basic information about file
-        public void SetMarksAndSeparators(string attributeSeparator = " ", string headerMark = "#",
-                                        string headerSeparator = " ", string commentMark = ";",
-                                        string elementMark = "$")
+        public void SetMarksAndSeparators(string attributeSeparator = "\\t", string headerMark = "#",
+                                        string headerSeparator = "\\t", string commentMark = ";",
+                                        string elementMark = "\\$")
         {
             //Set values to variables
             this.AttributesSeparator = attributeSeparator;
@@ -191,17 +135,131 @@ namespace NaturalnieApp.ElzabDriver
             this.CommentMark = commentMark;
             this.ElementMark = elementMark;
         }
+        /// <summary>
+        /// 
+        /// </summary>
         public void GenerateObjectFromRawData()
         {
+            //Define local variable
+            int i = 0;
+
             //Read raw data from file
             this.RawData = ReadDataFromFile(this.Path, this.CommandName, this.TypeOfFile);
 
             //Parse data
+            //Define header pattern
+            Regex regPatternHeader = new Regex(@"^" + this.HeaderMark + ".*$");
+
+            //Define elements pattern
+            Regex regPatternElements = new Regex(@"^" + this.ElementMark + ".*$");
+
+            foreach (string element in this.RawData)
+            {
+
+
+                //Parse header
+                //Check if current element match to the pattern
+                if (regPatternHeader.IsMatch(element))
+                {
+                    //Local variable
+                    string clearedElement;
+                    //Remove mark sign
+                    clearedElement = element.Replace(this.HeaderMark, "");
+
+                    //Switch to find proper header Line
+                    switch (i)
+                    {
+                        case 0:
+                            this.Header.HeaderLine1.AddElement();
+                            this.Header.HeaderLine1.StringListToAttributesValue(0, ParseStringToList(clearedElement, this.HeaderSeparator));
+                            break;
+                        case 1:
+                            this.Header.HeaderLine2.AddElement();
+                            this.Header.HeaderLine2.StringListToAttributesValue(0, ParseStringToList(clearedElement, this.HeaderSeparator));
+                            break;
+                        case 2:
+                            this.Header.HeaderLine3.AddElement();
+                            this.Header.HeaderLine3.StringListToAttributesValue(0, ParseStringToList(clearedElement, this.HeaderSeparator));
+                            break;
+
+                    }
+
+                    i++;
+                }
+
+                //Parse elements
+                if (regPatternElements.IsMatch(element))
+                {
+                    //Local variable
+                    string clearedElement;
+                    ElzabCommElementObject tempObject;
+
+                    //Remove mark sign
+                    clearedElement = element.Replace(this.ElementMark.Replace("\\",""), "");
+
+                    //Read every element and add it to an object
+                    this.Element.AddElement();
+                    this.Element.StringListToAttributesValue(this.Element.GetLastElementID(), ParseStringToList(clearedElement, this.AttributesSeparator));
+                    ;
+                }
+
+
+
+
+            }
         }
 
         public void GenerateRawDataFromObject()
         {
+            //Local variable
+            List<string> retValue = new List<string>();
 
+            //Convert header object to string list
+
+            retValue.Add(ConvertFromListToString(this.Header.HeaderLine1.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
+            ;
+        }
+
+        public string ConvertFromListToString(List<string> inputList, string lineMark, string separator)
+        {
+            //Local variable
+            string retValue = "";
+            int i=0;
+
+            //Conversion to string
+            foreach (string element in inputList)
+            {
+                //Add line mark before first element
+                if (i == 0) 
+                { 
+                    retValue = lineMark + element; 
+                }
+                else
+                {
+                    retValue += separator + lineMark;
+                }
+
+
+                i++;
+            }
+
+            return retValue;
+
+        }
+
+
+        //Method used to change value of given element ID
+        //Only first occurence of element will be changed.
+        public void ChangeAttributeValue(int elementID, string attributeName, string newValue)
+        {
+            this.Element.ChangeAttributeValue(elementID, attributeName, newValue);
+
+        }
+
+        //Method used to add element to the object
+        public void AddElement()
+        {
+            this.Element.AddElement();
         }
 
         //Method used to prepare raw data from Elzab documentation
@@ -237,6 +295,34 @@ namespace NaturalnieApp.ElzabDriver
             return retVal;
         }
 
+
+        //Method use to parse string to the element list. It using specified divider, to split input string.
+        List<string> ParseStringToList(string inputString, string divider)
+        {
+            //Local variable
+            List<string> retVal;
+            string[] elementArray;
+
+            //Define regular expression pattern
+            Regex regPattern = new Regex(divider);
+
+            //Divide string to list using given divider
+            elementArray = regPattern.Split(inputString);
+
+            //Clear list from empty marks
+            for (int i = 0; i < elementArray.Length; i++)
+            {
+                elementArray[i] = elementArray[i].Trim();
+            }
+
+            //Convert array to list
+            retVal = elementArray.ToList();
+
+            //Return value
+            return retVal;
+
+        }
+
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -246,10 +332,6 @@ namespace NaturalnieApp.ElzabDriver
         private string elzabCommandName { get; set; }
 
         //Define file type as enum
-        public enum FileType
-        {
-            Inputfile, OutputFile, ConfigFile, ReportFile
-        }
 
         //Method used to add Elzab command name
         protected void SetElzabCommandName(string elzabCommandName)
@@ -473,39 +555,68 @@ namespace NaturalnieApp.ElzabDriver
     //=====================================================
     //                   |  "AttributeName" = 1               |  "AttributeName" = 2            |
     //  "ElementName"    |  "AttributeValue" = TestValue1     |   "AttributeValue" = TestValue2 |
+
+    public class AttributeValueObject
+    {
+        public List<string> AttributeValue { get; set; }
+
+        public AttributeValueObject()
+        {
+            this.AttributeValue = new List<string>();
+        }
+
+    }
     public class ElzabCommElementObject
     {
+
         //Define class elements
-        private List<string> ElementName { get; set; }
         private List<string> AttributeName { get; set; }
-        private List<string> AttributeValue { get; set; }
+        private List<AttributeValueObject> ElementsList { get; set; }
 
         public ElzabCommElementObject()
         { 
             this.AttributeName = new List<string>();
-            this.AttributeValue = new List<string>();
+            this.ElementsList = new List<AttributeValueObject>();
+            ;
         }
 
         //Method used to add new attribute and its value to the element
-        public void AddAttribute(string attributeName, string attributeValue)
+        public void AddAttribute(int elementID, string attributeName, string attributeValue)
         {
             this.AttributeName.Append(attributeName);
-            this.AttributeValue.Append(attributeValue);
+            this.ElementsList[elementID].AttributeValue.Append(attributeValue);
         }
 
         //Method used to add new attribute to the element
         public void AddAttributeName(string attributeName)
         {
             this.AttributeName.Add(attributeName);
-            //As attribute value, use empty string
-            this.AttributeValue.Add("");
+            
         }
+
+        //Method used to add element to the object
+        public void AddElement()
+        {
+            this.ElementsList.Add(new AttributeValueObject());
+            foreach (var element in this.AttributeName)
+            {
+                this.ElementsList.Last().AttributeValue.Add("");
+            }
+        }
+
+        //Method used to get ID of last element of ElementList object
+        public int GetLastElementID()
+        {
+            //Return last element ID
+            return this.ElementsList.Count - 1;
+        }
+        
 
 
         //Method used to find value of given element name. 
         //Only first occurence of element will be found.
         //If nothing found, return empty string
-        public string FindAttribute(string attributeName)
+        public string GetAttributeValue(int elementID, string attributeName)
         {
             //Local variables
             int index = 0;
@@ -525,7 +636,7 @@ namespace NaturalnieApp.ElzabDriver
             //Check if any of element match, if not return empty string
             if (findingResult)
             {
-                return this.AttributeValue[index];
+                return this.ElementsList[elementID].AttributeValue[index];
             }
             else
             {
@@ -534,19 +645,57 @@ namespace NaturalnieApp.ElzabDriver
             
         }
 
-        //Method used to change value of given element name
+        //Method used to find all values of given element name. 
+        public List<string> GetAllAttributeValue(int elementID)
+        {
+            //Local variables
+            List<string> retVal = new List<string>();
+
+            //Collect all element values to the list
+            foreach (string element in this.ElementsList[elementID].AttributeValue)
+            {
+                retVal.Add(element);
+            }
+
+            return retVal;
+        }
+
+        //Method used to change value of given element ID
         //Only first occurence of element will be changed.
-        public void ChangeAttribute(string attributeName, string newValue)
+        public void ChangeAttributeValue(int elementID, string attributeName, string newValue)
         {
             //Loop through attribute name, to check if any of it element match given name
             for (int i = 0; i < this.AttributeName.Count; i++)
             {
                 //If attribueName match, save index and break;
-                if (attributeName == this.AttributeName[i])
+                if (attributeName == this.AttributeName.ElementAt(i))
                 {
                     //Override value
-                    this.AttributeValue[i] = newValue;
+                    this.ElementsList[elementID].AttributeValue[i] = newValue;
                 }
+            }
+
+        }
+
+        //Method used to change all value of given element name
+        //Only first occurence of element will be changed.
+        public void ChangeAllElementValues(int elementID, params string[] values)
+        {
+            //Check if number of given numbers, are not greater than number of element valuess
+            if (values.Length > this.ElementsList[elementID].AttributeValue.Count)
+            {
+                MessageBox.Show("Number of parameters to change are bigger than number of attribute values. " +
+                    "Debug: ElzabCommElementObject.ChangeAllElementValues");
+            }
+            else
+            {
+
+                //Change attribute value
+                for (int i = 0; i < values.Length; i++)
+                {
+                    this.ElementsList[elementID].AttributeValue[i] = values[i];
+                }
+
             }
 
         }
@@ -560,27 +709,12 @@ namespace NaturalnieApp.ElzabDriver
 
         }
 
-        //Method used to add element
-        public void AddElement(string elementName, params string[] attributNameAndValue )
-        {
-            //Local variabe
-            string[] splittedString;
-
-            foreach (string element in attributNameAndValue )
-            {
-                splittedString = element.Split('=');
-                ChangeAttribute(splittedString[0], splittedString[1]);
-            }
-
-
-        }
-
-        //Method used to add series of string to object
-        //If array lenght is bigger then number of attributes, it will change only existing attributes
-        public void StringArrayToAttributesValue(string[] inputStringArray)
+        //Method used to add list of string to an object
+        //If list lenght is greater then number of attributes, it will change only existing attributes
+        public void StringListToAttributesValue(int elementID, List<string> inputStringList)
         {
             //Check input string array lenght
-            int arrayLenght = inputStringArray.Length, i = 0;
+            int arrayLenght = inputStringList.Count, i = 0;
 
             //Check number of attributes
             int attributsNumber = this.AttributeName.Count;
@@ -588,10 +722,10 @@ namespace NaturalnieApp.ElzabDriver
             //Change attribute value by Name
             foreach (string attribute  in this.AttributeName)
             {
-                if (arrayLenght <= i)
+                if (i <= arrayLenght - 1)
                 {
-                    ChangeAttribute(attribute, inputStringArray[i]);
-                }
+                    ChangeAttributeValue(elementID, attribute, inputStringList.ElementAt(i));
+                }   
                 else
                 {
                     break;
@@ -605,7 +739,7 @@ namespace NaturalnieApp.ElzabDriver
         {
             foreach (string element in attributesNames)
             {
-                AddAttribute(element, "");
+                AddAttributeName(element);
             }
         }
 
