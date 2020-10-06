@@ -222,14 +222,32 @@ namespace ElzabDriver
         {
             //Local variable
             List<string> retValue = new List<string>();
+            int i = 0;
 
             //Convert header object to string list
 
             retValue.Add(ConvertFromListToString(this.Header.HeaderLine1.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
             retValue.Add(ConvertFromListToString(this.Header.HeaderLine2.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
             retValue.Add(ConvertFromListToString(this.Header.HeaderLine3.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
-            foreach (string element in this.Element.GetAllAttributeValue(0))
-            ;
+
+            //Convert element object to string list
+            foreach (ElzabCommElementObject obj in this.Element.Ele)
+            {
+                foreach (string element in this.Element.GetAllAttributeValue(0))
+                {
+                    if (i == 0)
+                    {
+                        retValue.Add(this.ElementMark + element + this.AttributesSeparator);
+                    }
+                    else
+                    {
+                        retValue.Add(element + this.AttributesSeparator);
+                    }
+
+                }
+            }
+
+            
         }
 
         public string ConvertFromListToString(List<string> inputList, string lineMark, string separator)
@@ -568,7 +586,7 @@ namespace ElzabDriver
     //                   |  "AttributeName" = 1               |  "AttributeName" = 2            |
     //  "ElementName"    |  "AttributeValue" = TestValue1     |   "AttributeValue" = TestValue2 |
 
-    public class AttributeValueObject
+    public class AttributeValueObject: IEnumerable
     {
         public List<string> AttributeValue { get; set; }
 
@@ -576,6 +594,12 @@ namespace ElzabDriver
         {
             this.AttributeValue = new List<string>();
         }
+
+        public IEnumerator GetEnumerator()
+        {
+            yield return AttributeValue;
+        }
+
 
     }
     public class ElzabCommElementObject
@@ -670,6 +694,21 @@ namespace ElzabDriver
             }
 
             return retVal;
+        }
+
+        //Method used to return all elements in given object
+        public List<AttributeValueObject> GetElementsList()
+        {
+            //Local variable
+            List<AttributeValueObject> retValue = new List<AttributeValueObject>();
+            List<AttributeValueObject> obj = new List<AttributeValueObject>();
+
+            foreach (List<AttributeValueObject> obj in this.ElementsList)
+            {
+
+            }
+
+            return retValue;
         }
 
         //Method used to change value of given element ID
