@@ -25,7 +25,7 @@ namespace ElzabDriver
         private string CommandName = "OTOWAR";
 
         //Class constructor
-        public ElzabCommand_OTOWAR(string path)
+        public ElzabCommand_OTOWAR(string path, int cashRegisterID)
         {
             //Initialize object containing information from ELZAB
             this.DataFromElzab = new ElzabFileObject(path, CommandName, FileType.OutputFile,
@@ -37,9 +37,18 @@ namespace ElzabDriver
             //Initialize object containing information to ELZAB
             this.DataToElzab = new ElzabFileObject(path, CommandName, FileType.Inputfile,
                 headerPatternLine1 : "< device_number >",
-                headerPatternLine2: "",
-                headerPatternLine3: "",
+                headerPatternLine2: "< dummy >",
+                headerPatternLine3: "< dummy >",
                 elementAttributesPattern: "< nr_tow > ");
+
+            //Initialize basic header information
+            this.DataToElzab.Header.HeaderLine1.AddElement();
+            this.DataToElzab.Header.HeaderLine1.ChangeAttributeValue(0, "device_number", cashRegisterID.ToString());
+            this.DataToElzab.Header.HeaderLine2.AddElement();
+            this.DataToElzab.Header.HeaderLine2.ChangeAttributeValue(0, "", "");
+            this.DataToElzab.Header.HeaderLine3.AddElement();
+            this.DataToElzab.Header.HeaderLine3.ChangeAttributeValue(0, "", "");
+
         }
 
     }
@@ -217,6 +226,9 @@ namespace ElzabDriver
             //Convert header object to string list
 
             retValue.Add(ConvertFromListToString(this.Header.HeaderLine1.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
+            retValue.Add(ConvertFromListToString(this.Header.HeaderLine2.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
+            retValue.Add(ConvertFromListToString(this.Header.HeaderLine3.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
+            foreach (string element in this.Element.GetAllAttributeValue(0))
             ;
         }
 

@@ -32,7 +32,7 @@ namespace NaturalnieApp
             TestClass.TestMt(1, 2, 3, 4);
             */
 
-            ElzabCommand_OTOWAR Test = new ElzabCommand_OTOWAR(@"F:\Projekty\02. NaturalnieApp\NaturalnieApp\Otowar test");
+            ElzabCommand_OTOWAR Test = new ElzabCommand_OTOWAR(@"F:\Projekty\02. NaturalnieApp\NaturalnieApp\Otowar test", 1);
             //Test.GenerateObjectFromRawData();
             Test.DataToElzab.AddElement();
             Test.DataToElzab.ChangeAttributeValue(0, "nr_tow", "44");
