@@ -35,7 +35,9 @@ namespace NaturalnieApp
             ElzabCommand_OTOWAR Test = new ElzabCommand_OTOWAR(@"F:\Projekty\02. NaturalnieApp\NaturalnieApp\Otowar test", 1);
             //Test.GenerateObjectFromRawData();
             Test.DataToElzab.AddElement();
-            Test.DataToElzab.ChangeAttributeValue(0, "nr_tow", "44");
+            Test.DataToElzab.AddElement();
+            Test.DataToElzab.ChangeAllElementValues(0, "22", "55");
+            Test.DataToElzab.ChangeAllElementValues(1, "1", "Test");
             Test.DataToElzab.GenerateRawDataFromObject();
             ;
 

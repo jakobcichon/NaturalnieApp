@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Collections.Generic;
+using System.Collections;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -39,7 +40,7 @@ namespace ElzabDriver
                 headerPatternLine1 : "< device_number >",
                 headerPatternLine2: "< dummy >",
                 headerPatternLine3: "< dummy >",
-                elementAttributesPattern: "< nr_tow > ");
+                elementAttributesPattern: "< nr_tow > <dummy_for_test> ");
 
             //Initialize basic header information
             this.DataToElzab.Header.HeaderLine1.AddElement();
@@ -231,20 +232,9 @@ namespace ElzabDriver
             retValue.Add(ConvertFromListToString(this.Header.HeaderLine3.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
 
             //Convert element object to string list
-            foreach (ElzabCommElementObject obj in this.Element.Ele)
+            foreach (AttributeValueObject obj in this.Element)
             {
-                foreach (string element in this.Element.GetAllAttributeValue(0))
-                {
-                    if (i == 0)
-                    {
-                        retValue.Add(this.ElementMark + element + this.AttributesSeparator);
-                    }
-                    else
-                    {
-                        retValue.Add(element + this.AttributesSeparator);
-                    }
-
-                }
+                ;
             }
 
             
@@ -283,6 +273,12 @@ namespace ElzabDriver
         public void ChangeAttributeValue(int elementID, string attributeName, string newValue)
         {
             this.Element.ChangeAttributeValue(elementID, attributeName, newValue);
+
+        }
+
+        public void ChangeAllElementValues(int elementID, params string[] values)
+        {
+            this.Element.ChangeAllElementValues(elementID, values);
 
         }
 
@@ -586,7 +582,7 @@ namespace ElzabDriver
     //                   |  "AttributeName" = 1               |  "AttributeName" = 2            |
     //  "ElementName"    |  "AttributeValue" = TestValue1     |   "AttributeValue" = TestValue2 |
 
-    public class AttributeValueObject: IEnumerable
+    public class AttributeValueObject
     {
         public List<string> AttributeValue { get; set; }
 
@@ -595,15 +591,23 @@ namespace ElzabDriver
             this.AttributeValue = new List<string>();
         }
 
-        public IEnumerator GetEnumerator()
-        {
-            yield return AttributeValue;
-        }
-
 
     }
-    public class ElzabCommElementObject
+    public class ElzabCommElementObject: IEnumerable<AttributeValueObject>
     {
+
+        public IEnumerator<AttributeValueObject> GetEnumerator()
+        {
+            foreach (AttributeValueObject val in this.ElementsList)
+            {
+                yield return val;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
         //Define class elements
         private List<string> AttributeName { get; set; }
@@ -696,35 +700,40 @@ namespace ElzabDriver
             return retVal;
         }
 
-        //Method used to return all elements in given object
-        public List<AttributeValueObject> GetElementsList()
-        {
-            //Local variable
-            List<AttributeValueObject> retValue = new List<AttributeValueObject>();
-            List<AttributeValueObject> obj = new List<AttributeValueObject>();
-
-            foreach (List<AttributeValueObject> obj in this.ElementsList)
-            {
-
-            }
-
-            return retValue;
-        }
 
         //Method used to change value of given element ID
         //Only first occurence of element will be changed.
+        //If method does not find element with given ID it will generate an error
         public void ChangeAttributeValue(int elementID, string attributeName, string newValue)
         {
-            //Loop through attribute name, to check if any of it element match given name
-            for (int i = 0; i < this.AttributeName.Count; i++)
+            try
             {
-                //If attribueName match, save index and break;
-                if (attributeName == this.AttributeName.ElementAt(i))
+                //Check if element with given ID exist
+                if (elementID > this.ElementsList.Count - 1)
                 {
-                    //Override value
-                    this.ElementsList[elementID].AttributeValue[i] = newValue;
+                    throw new System.ArgumentException($"Given element ID does not exist. Element ID: {elementID}. Attribute name: {attributeName}");
+                }
+                else
+                {
+                    //Loop through attribute name, to check if any of it element match given name
+                    for (int i = 0; i < this.AttributeName.Count; i++)
+                    {
+                        //If attribueName match, save index and break;
+                        if (attributeName == this.AttributeName.ElementAt(i))
+                        {
+                            //Override value
+                            this.ElementsList[elementID].AttributeValue[i] = newValue;
+                        }
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+
+
 
         }
 
