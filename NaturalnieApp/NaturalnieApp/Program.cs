@@ -32,13 +32,17 @@ namespace NaturalnieApp
             TestClass.TestMt(1, 2, 3, 4);
             */
 
-            ElzabCommand_OTOWAR Test = new ElzabCommand_OTOWAR(@"F:\Projekty\02. NaturalnieApp\NaturalnieApp\Otowar test", 1);
+            ElzabCommand_OTOWAR Test = new ElzabCommand_OTOWAR(@"F:\Projekty\02. NaturalnieApp\Test", 1);
             //Test.GenerateObjectFromRawData();
             Test.DataToElzab.AddElement();
             Test.DataToElzab.AddElement();
-            Test.DataToElzab.ChangeAllElementValues(0, "22", "55");
-            Test.DataToElzab.ChangeAllElementValues(1, "1", "Test");
+            Test.DataToElzab.AddElement();
+            Test.DataToElzab.ChangeAllElementValues(0, "1" );
+            Test.DataToElzab.ChangeAllElementValues(1, "2" );
+            Test.DataToElzab.ChangeAllElementValues(2, "3" );
             Test.DataToElzab.GenerateRawDataFromObject();
+            Test.WriteRawDataToFile(@"F:\Projekty\02. NaturalnieApp\Test", "OTOWAR", FileType.Inputfile, Test.DataToElzab.RawData);
+            Test.DataToElzab.RunCommand();
             ;
 
             Application.EnableVisualStyles();

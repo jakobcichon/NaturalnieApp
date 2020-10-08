@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Runtime.CompilerServices;
-using System.Reflection;
-using System.Security;
+using System.Diagnostics;
+
 
 namespace ElzabDriver
 {
@@ -40,7 +36,7 @@ namespace ElzabDriver
                 headerPatternLine1 : "< device_number >",
                 headerPatternLine2: "< dummy >",
                 headerPatternLine3: "< dummy >",
-                elementAttributesPattern: "< nr_tow > <dummy_for_test> ");
+                elementAttributesPattern: "< nr_tow > ");
 
             //Initialize basic header information
             this.DataToElzab.Header.HeaderLine1.AddElement();
@@ -49,6 +45,8 @@ namespace ElzabDriver
             this.DataToElzab.Header.HeaderLine2.ChangeAttributeValue(0, "", "");
             this.DataToElzab.Header.HeaderLine3.AddElement();
             this.DataToElzab.Header.HeaderLine3.ChangeAttributeValue(0, "", "");
+
+            
 
         }
 
@@ -90,12 +88,6 @@ namespace ElzabDriver
         public ElzabCommHeaderObject Header { get; set; }
         public ElzabCommElementObject Element { get; set; }
         public List<string> RawData { get; set; }
-        private string ElementsPatter { get; set; }
-
-        public void InitializePattern(string headerPattern, string elementPatter)
-        {
-
-        }
 
         //Class constructor
         public ElzabFileObject()
@@ -134,20 +126,18 @@ namespace ElzabDriver
         }
 
         //Method used to set basic information about file
-        public void SetMarksAndSeparators(string attributeSeparator = "\\t", string headerMark = "#",
-                                        string headerSeparator = "\\t", string commentMark = ";",
-                                        string elementMark = "\\$")
+        public void SetMarksAndSeparators(char attributeSeparator = '\t', char headerMark = '#',
+                                        char headerSeparator = '\t', char commentMark = ';',
+                                        char elementMark = '$')
         {
             //Set values to variables
-            this.AttributesSeparator = attributeSeparator;
-            this.HeaderMark = headerMark;
-            this.HeaderSeparator = headerSeparator;
-            this.CommentMark = commentMark;
-            this.ElementMark = elementMark;
+            this.AttributesSeparator = attributeSeparator.ToString();
+            this.HeaderMark = headerMark.ToString();
+            this.HeaderSeparator = headerSeparator.ToString();
+            this.CommentMark = commentMark.ToString();
+            this.ElementMark = elementMark.ToString();
         }
-        /// <summary>
-        /// 
-        /// </summary>
+
         public void GenerateObjectFromRawData()
         {
             //Define local variable
@@ -191,7 +181,6 @@ namespace ElzabDriver
                             this.Header.HeaderLine3.AddElement();
                             this.Header.HeaderLine3.StringListToAttributesValue(0, ParseStringToList(clearedElement, this.HeaderSeparator));
                             break;
-
                     }
 
                     i++;
@@ -210,23 +199,29 @@ namespace ElzabDriver
                     //Read every element and add it to an object
                     this.Element.AddElement();
                     this.Element.StringListToAttributesValue(this.Element.GetLastElementID(), ParseStringToList(clearedElement, this.AttributesSeparator));
-                    ;
                 }
-
-
-
-
             }
         }
 
-        public void GenerateRawDataFromObject()
+        public void RunCommand()
+        {
+            string command = this.CommandName + ".exe" + " " + this.FileNameDependingOfType(this.CommandName, FileType.Inputfile)
+                + " " + this.FileNameDependingOfType(this.CommandName, FileType.OutputFile);
+
+            var processStartInfo = new ProcessStartInfo();
+            processStartInfo.WorkingDirectory = this.Path;
+            processStartInfo.FileName = "cmd.exe";
+            processStartInfo.Arguments = "/C " + command;
+            Process proc = Process.Start(processStartInfo);
+            ;
+        }
+
+            public void GenerateRawDataFromObject()
         {
             //Local variable
             List<string> retValue = new List<string>();
-            int i = 0;
 
             //Convert header object to string list
-
             retValue.Add(ConvertFromListToString(this.Header.HeaderLine1.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
             retValue.Add(ConvertFromListToString(this.Header.HeaderLine2.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
             retValue.Add(ConvertFromListToString(this.Header.HeaderLine3.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
@@ -234,9 +229,17 @@ namespace ElzabDriver
             //Convert element object to string list
             foreach (AttributeValueObject obj in this.Element)
             {
-                ;
+                //Loop through all element attributes values. Add Element mark and attribute separator to it
+                string elementAllValues = this.ElementMark;
+                foreach (string attributeValue in obj)
+                {
+                    elementAllValues += attributeValue + this.AttributesSeparator;            
+                }
+                retValue.Add(elementAllValues);
             }
 
+            //Assing created string list to internal variable
+            this.RawData = retValue;
             
         }
 
@@ -286,6 +289,11 @@ namespace ElzabDriver
         public void AddElement()
         {
             this.Element.AddElement();
+        }
+
+        public void WriteRawDataToFile(string path, string commandName, FileType typeOfFile, List<string> dataToWrite)
+        {
+            this.WriteDataToFile(path, commandName, typeOfFile, dataToWrite);
         }
 
         //Method used to prepare raw data from Elzab documentation
@@ -492,7 +500,7 @@ namespace ElzabDriver
         }
 
         //Method use to create file name, depending of given file type
-        private string FileNameDependingOfType(string commandName, FileType typeOfFile)
+        protected string FileNameDependingOfType(string commandName, FileType typeOfFile)
         {
             //Local variables
             string retVal;
@@ -568,7 +576,11 @@ namespace ElzabDriver
             //If file/path not valid, show message box
             else
             {
-                MessageBox.Show("Specified file does not exist or cannot be opened. File: " + fullPath);
+                //If file does not exist, create one
+                CreateFile(fullPath);
+
+                //Call method to write data to file
+                SaveDataToFile(fullPath, dataToWrite);
             }
         }
 
@@ -582,8 +594,21 @@ namespace ElzabDriver
     //                   |  "AttributeName" = 1               |  "AttributeName" = 2            |
     //  "ElementName"    |  "AttributeValue" = TestValue1     |   "AttributeValue" = TestValue2 |
 
-    public class AttributeValueObject
+    public class AttributeValueObject: IEnumerable<string>
     {
+        public IEnumerator<string> GetEnumerator()
+        {
+            foreach (string val in this.AttributeValue)
+            {
+                yield return val;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         public List<string> AttributeValue { get; set; }
 
         public AttributeValueObject()
