@@ -31,17 +31,17 @@ namespace NaturalnieApp
             Test TestClass = new Test();
             TestClass.TestMt(1, 2, 3, 4);
             */
+            int cashRegisterID = 1;
 
-            ElzabCommand_OTOWAR Test = new ElzabCommand_OTOWAR(@"F:\Projekty\02. NaturalnieApp\Test", 1);
-            //Test.GenerateObjectFromRawData();
-            Test.DataToElzab.AddElement();
-            Test.DataToElzab.AddElement();
-            Test.DataToElzab.AddElement();
-            Test.DataToElzab.ChangeAllElementValues(0, "1" );
-            Test.DataToElzab.ChangeAllElementValues(1, "2" );
-            Test.DataToElzab.ChangeAllElementValues(2, "3" );
+            ElzabCommand_ZTOWAR Test = new ElzabCommand_ZTOWAR(@"F:\Projekty\02. NaturalnieApp\Test", cashRegisterID);
+            Test.DataToElzab.AddElement("nr_tow", 5);
+            Test.DataToElzab.AddElement("nr_tow", 7);
+            Test.DataToElzab.AddElement("nr_tow", 12);
+            Test.DataToElzab.ChangeAllElementValues("nr_tow", 5, "5", "7", "9");
+            Test.DataToElzab.ChangeAllElementValues("nr_tow", 7, "7", "ty", "tyiyti");
+            Test.DataToElzab.ChangeAllElementValues("nr_tow", 8, "5", "7", "9");
             Test.DataToElzab.GenerateRawDataFromObject();
-            Test.WriteRawDataToFile(@"F:\Projekty\02. NaturalnieApp\Test", "OTOWAR", FileType.Inputfile, Test.DataToElzab.RawData);
+            Test.WriteRawDataToFile(@"F:\Projekty\02. NaturalnieApp\Test", "ZTOWAR", FileType.Inputfile, Test.DataToElzab.RawData);
             Test.DataToElzab.RunCommand();
             ;
 

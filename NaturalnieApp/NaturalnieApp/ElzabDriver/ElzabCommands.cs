@@ -10,7 +10,34 @@ using System.Diagnostics;
 
 namespace ElzabDriver
 {
+    //-----------------------------------------------------------------------------------------------------------------------------------------
+    public class ElzabCommand_ZTOWAR : ElzabFileObject
+    {
+        //Local variable
+        public ElzabFileObject DataToElzab { get; set; }
+        private string CommandName { get { return "OTOWAR"; } }
 
+        //Class constructor
+        public ElzabCommand_ZTOWAR(string path, int cashRegisterID)
+        {
+            //Initialize object containing information to ELZAB
+            this.DataToElzab = new ElzabFileObject(path, CommandName, FileType.Inputfile,
+                headerPatternLine1: "< device_number >",
+                headerPatternLine2: "< dummy >",
+                headerPatternLine3: "< dummy >",
+                elementAttributesPattern: "nr_tow naz_tow ST GR MP JM BL bkod cena OP wyl_zrn wpr_ceny lista_podr nr_wag licz_starz ");
+
+            //Initialize basic header information
+            this.DataToElzab.Header.HeaderLine1.AddElement();
+            this.DataToElzab.Header.HeaderLine1.ChangeAttributeValue(0, "device_number", cashRegisterID.ToString());
+            this.DataToElzab.Header.HeaderLine2.AddElement();
+            this.DataToElzab.Header.HeaderLine2.ChangeAttributeValue(0, "", "");
+            this.DataToElzab.Header.HeaderLine3.AddElement();
+            this.DataToElzab.Header.HeaderLine3.ChangeAttributeValue(0, "", "");
+
+        }
+
+    }
 
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -19,7 +46,7 @@ namespace ElzabDriver
         //Local variable
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
-        private string CommandName = "OTOWAR";
+        private string CommandName { get { return "OTOWAR"; } }
 
         //Class constructor
         public ElzabCommand_OTOWAR(string path, int cashRegisterID)
@@ -33,7 +60,7 @@ namespace ElzabDriver
 
             //Initialize object containing information to ELZAB
             this.DataToElzab = new ElzabFileObject(path, CommandName, FileType.Inputfile,
-                headerPatternLine1 : "< device_number >",
+                headerPatternLine1: "< device_number >",
                 headerPatternLine2: "< dummy >",
                 headerPatternLine3: "< dummy >",
                 elementAttributesPattern: "< nr_tow > ");
@@ -44,9 +71,7 @@ namespace ElzabDriver
             this.DataToElzab.Header.HeaderLine2.AddElement();
             this.DataToElzab.Header.HeaderLine2.ChangeAttributeValue(0, "", "");
             this.DataToElzab.Header.HeaderLine3.AddElement();
-            this.DataToElzab.Header.HeaderLine3.ChangeAttributeValue(0, "", "");
-
-            
+            this.DataToElzab.Header.HeaderLine3.ChangeAttributeValue(0, "", ""); 
 
         }
 
@@ -191,7 +216,6 @@ namespace ElzabDriver
                 {
                     //Local variable
                     string clearedElement;
-                    ElzabCommElementObject tempObject;
 
                     //Remove mark sign
                     clearedElement = element.Replace(this.ElementMark.Replace("\\",""), "");
@@ -285,10 +309,22 @@ namespace ElzabDriver
 
         }
 
+        public void ChangeAllElementValues(string attributeName, int attributeID, params string[] values)
+        {
+            this.Element.ChangeAllElementValues(attributeName, attributeID, values);
+
+        }
+
         //Method used to add element to the object
         public void AddElement()
         {
             this.Element.AddElement();
+        }
+
+        //Method used to add element to the object
+        public void AddElement(string attributeName, int attributeID)
+        {
+            this.Element.AddElement(attributeName, attributeID);
         }
 
         public void WriteRawDataToFile(string path, string commandName, FileType typeOfFile, List<string> dataToWrite)
@@ -300,12 +336,12 @@ namespace ElzabDriver
         private List<string> ParsePattern(string pattern)
         {
             //Local variable
-            Regex regx = new Regex(">|$");
+            Regex regx = new Regex(" ");
             List<string> retVal = new List<string>();
             string[] dividedNames;
 
             //Clear input string
-            pattern = pattern.Replace("<", "").Replace("$", "");
+            pattern = pattern.Replace("<", "").Replace(">", "").Replace("$", "");
 
             //Split input string into string array
             dividedNames = regx.Split(pattern);
@@ -650,6 +686,7 @@ namespace ElzabDriver
         {
             this.AttributeName.Append(attributeName);
             this.ElementsList[elementID].AttributeValue.Append(attributeValue);
+            this.Name
         }
 
         //Method used to add new attribute to the element
@@ -667,6 +704,25 @@ namespace ElzabDriver
             {
                 this.ElementsList.Last().AttributeValue.Add("");
             }
+        }
+
+
+        //Method used to add element to the object
+        public void AddElement(string attributeName, int attributeID)
+        {
+            this.ElementsList.Add(new AttributeValueObject());
+            foreach (var element in this.AttributeName)
+            {
+                this.ElementsList.Last().AttributeValue.Add("");
+            }
+
+            //Convert attribute ID to string
+            string atID = attributeID.ToString();
+
+            //Find ID of given attribute name
+            int attributeIndex = this.AttributeName.IndexOf(attributeName);
+            this.ElementsList.Last().AttributeValue[attributeIndex] = atID;
+
         }
 
         //Method used to get ID of last element of ElementList object
@@ -781,6 +837,37 @@ namespace ElzabDriver
                     this.ElementsList[elementID].AttributeValue[i] = values[i];
                 }
 
+            }
+
+        }
+
+        //Method used to change all value of given element name
+        //Only first occurence of element will be changed.
+        //attributeID is used to determine with of attribute is used as ID value;
+        public void ChangeAllElementValues(string attributeName, int attributeID, params string[] values)
+        {
+            //Convert index value to string
+            string indexValue = attributeID.ToString();
+
+            //Find index of attribute with given name
+            int attributeIndex = this.AttributeName.IndexOf(attributeName);
+
+            //Find element index using given attribute index
+            for (int i=0; i<this.ElementsList.Count() - 1; i++)
+            {
+                if (this.ElementsList[i].AttributeValue[attributeIndex] == indexValue)
+                {
+                    //Change attribute value
+                    for (int j = 0; j < values.Length; j++)
+                    {
+                        this.ElementsList[i].AttributeValue[j] = values[j];
+                    }
+                    break;
+                }
+                else
+                {
+                    MessageBox.Show("Element with given ID was not found!");
+                }
             }
 
         }
