@@ -34,12 +34,8 @@ namespace NaturalnieApp
             int cashRegisterID = 1;
 
             ElzabCommand_ZTOWAR Test = new ElzabCommand_ZTOWAR(@"F:\Projekty\02. NaturalnieApp\Test", cashRegisterID);
-            Test.DataToElzab.AddElement("nr_tow", 5);
-            Test.DataToElzab.AddElement("nr_tow", 7);
-            Test.DataToElzab.AddElement("nr_tow", 12);
-            Test.DataToElzab.ChangeAllElementValues("nr_tow", 5, "5", "7", "9");
-            Test.DataToElzab.ChangeAllElementValues("nr_tow", 7, "7", "ty", "tyiyti");
-            Test.DataToElzab.ChangeAllElementValues("nr_tow", 8, "5", "7", "9");
+            Test.DataToElzab.AddElement("8");
+            Test.DataToElzab.ChangeAllElementValues("8", "", "CzyTOSieUda?", "1");
             Test.DataToElzab.GenerateRawDataFromObject();
             Test.WriteRawDataToFile(@"F:\Projekty\02. NaturalnieApp\Test", "ZTOWAR", FileType.Inputfile, Test.DataToElzab.RawData);
             Test.DataToElzab.RunCommand();
