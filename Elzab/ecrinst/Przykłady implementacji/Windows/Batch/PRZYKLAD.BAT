@@ -1,1 +1,0 @@
-TowarMax.exe TOWARMAX.IN TOWARMAX.OUT
