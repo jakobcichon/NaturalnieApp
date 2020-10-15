@@ -28,7 +28,7 @@ namespace ElzabDriver
     //-----------------------------------------------------------------------------------------------------------------------------------------
     public enum FileType
     {
-        Inputfile, OutputFile, ConfigFile, ReportFile
+        InputFile, OutputFile, ConfigFile, ReportFile
     }
 
 
@@ -44,8 +44,8 @@ namespace ElzabDriver
         private string CommandName { get; }
         private FileType TypeOfFile { get; }
         public ElzabCommHeaderObject Header { get; set; }
-        public ElzabCommElementObject Element { get; set; }
-        public List<string> RawData { get; set; }
+        private ElzabCommElementObject Element { get; set; }
+        private List<string> RawData { get; set; }
         private string AttributeNameAsID { get; set; }
         private int NrOfCharsInElementAttribute { get; set; }
 
@@ -55,7 +55,7 @@ namespace ElzabDriver
 
         }
 
-        public ElzabFileObject(string path, string commandName, FileType typeOfFile, 
+        public ElzabFileObject(string path, string commandName, FileType typeOfFile, int cashRegisterID,
             string headerPatternLine1 = "< cash_register_number > < cash_register_comm_data > < comm_timeout > <execution_date >" +
             "< execution_time > < command_name > < version_number> < input_file_name > <output_file_name>", 
             string headerPatternLine2 = " < error_number > < error_text > ", string headerPatternLine3 = " <cash_register_id > ",
@@ -78,6 +78,16 @@ namespace ElzabDriver
             this.Header.HeaderLine1.AddAttributesFromList(ParsePattern(headerPatternLine1));
             this.Header.HeaderLine2.AddAttributesFromList(ParsePattern(headerPatternLine2));
             this.Header.HeaderLine3.AddAttributesFromList(ParsePattern(headerPatternLine3));
+            if (typeOfFile == FileType.InputFile)
+            {
+                //Initialize basic header information
+                this.Header.HeaderLine1.AddElement();
+                this.Header.HeaderLine1.ChangeAttributeValue(0, "device_number", cashRegisterID.ToString());
+                this.Header.HeaderLine2.AddElement();
+                this.Header.HeaderLine2.ChangeAttributeValue(0, "", "");
+                this.Header.HeaderLine3.AddElement();
+                this.Header.HeaderLine3.ChangeAttributeValue(0, "", "");
+            }
 
             //Create instance of element object and initialize it
             this.Element = new ElzabCommElementObject();
@@ -185,7 +195,7 @@ namespace ElzabDriver
             this.GenerateRawDataFromObject();
 
             //Write raw data to the file
-            this.WriteRawDataToFile(this.Path, this.CommandName, FileType.Inputfile, this.RawData);
+            this.WriteRawDataToFile(this.Path, this.CommandName, FileType.InputFile, this.RawData);
 
             //Check if command file exist
             bool commandExist = File.Exists(this.Path + "\\" + this.CommandName + ".exe");
@@ -193,7 +203,7 @@ namespace ElzabDriver
             if (commandExist)
             {
                 //Generate command called in Windows command prompt
-                string command = this.CommandName + ".exe" + " " + this.FileNameDependingOfType(this.CommandName, FileType.Inputfile)
+                string command = this.CommandName + ".exe" + " " + this.FileNameDependingOfType(this.CommandName, FileType.InputFile)
                     + " " + this.FileNameDependingOfType(this.CommandName, FileType.OutputFile);
 
                 var processStartInfo = new ProcessStartInfo();
@@ -311,7 +321,7 @@ namespace ElzabDriver
             this.Element.AddElement(this.AttributeNameAsID, attributeID);
         }
 
-        public void WriteRawDataToFile(string path, string commandName, FileType typeOfFile, List<string> dataToWrite)
+        private void WriteRawDataToFile(string path, string commandName, FileType typeOfFile, List<string> dataToWrite)
         {
             this.WriteDataToFile(path, commandName, typeOfFile, dataToWrite);
         }
@@ -351,7 +361,7 @@ namespace ElzabDriver
 
 
         //Method use to parse string to the element list. It using specified divider, to split input string.
-        List<string> ParseStringToList(string inputString, string divider)
+        private List<string> ParseStringToList(string inputString, string divider)
         {
             //Local variable
             List<string> retVal;
@@ -528,7 +538,7 @@ namespace ElzabDriver
             //Check file type and return it name
             switch (typeOfFile)
             {
-                case FileType.Inputfile:
+                case FileType.InputFile:
                     retVal = commandName + "IN.txt";
                     break;
                 case FileType.OutputFile:
@@ -614,7 +624,7 @@ namespace ElzabDriver
     //                   |  "AttributeName" = 1               |  "AttributeName" = 2            |
     //  "ElementName"    |  "AttributeValue" = TestValue1     |   "AttributeValue" = TestValue2 |
 
-    public class AttributeValueObject: IEnumerable<string>
+    public class AttributeValueObject : IEnumerable<string>
     {
         public IEnumerator<string> GetEnumerator()
         {
