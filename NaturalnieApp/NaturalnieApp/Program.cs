@@ -1,5 +1,4 @@
-﻿using NaturalnieApp.ElzabDriver;
-using NaturalnieApp.Initialization;
+﻿using NaturalnieApp.Initialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
