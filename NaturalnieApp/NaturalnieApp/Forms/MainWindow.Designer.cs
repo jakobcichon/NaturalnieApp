@@ -1,16 +1,16 @@
-﻿namespace NaturalnieApp
+﻿namespace NaturalnieApp.Forms
 {
     partial class MainWindow
     {
         /// <summary>
-        /// Wymagana zmienna projektanta.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        /// Wyczyść wszystkie używane zasoby.
+        /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">prawda, jeżeli zarządzane zasoby powinny zostać zlikwidowane; Fałsz w przeciwnym wypadku.</param>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,88 +20,172 @@
             base.Dispose(disposing);
         }
 
-        #region Kod generowany przez Projektanta formularzy systemu Windows
+        #region Windows Form Designer generated code
 
         /// <summary>
-        /// Metoda wymagana do obsługi projektanta — nie należy modyfikować
-        /// jej zawartości w edytorze kodu.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.menuStrip2 = new System.Windows.Forms.MenuStrip();
-            this.plikToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ustawieniaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.scieżkiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip2.SuspendLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
+            this.pMenu = new System.Windows.Forms.Panel();
+            this.pCashRegisterSubMenu = new System.Windows.Forms.Panel();
+            this.bCashRegisterSettings = new System.Windows.Forms.Button();
+            this.bCashRegisterInfo = new System.Windows.Forms.Button();
+            this.bCashRegister = new System.Windows.Forms.Button();
+            this.bMainMenu = new System.Windows.Forms.Button();
+            this.pLogo = new System.Windows.Forms.Panel();
+            this.pControl = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.pMenu.SuspendLayout();
+            this.pCashRegisterSubMenu.SuspendLayout();
+            this.pControl.SuspendLayout();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // pMenu
             // 
-            this.menuStrip1.Location = new System.Drawing.Point(0, 24);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.pMenu.BackColor = System.Drawing.Color.White;
+            this.pMenu.Controls.Add(this.pCashRegisterSubMenu);
+            this.pMenu.Controls.Add(this.bCashRegister);
+            this.pMenu.Controls.Add(this.bMainMenu);
+            this.pMenu.Controls.Add(this.pLogo);
+            this.pMenu.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pMenu.Location = new System.Drawing.Point(0, 0);
+            this.pMenu.Name = "pMenu";
+            this.pMenu.Size = new System.Drawing.Size(200, 450);
+            this.pMenu.TabIndex = 0;
             // 
-            // menuStrip2
+            // pCashRegisterSubMenu
             // 
-            this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.plikToolStripMenuItem,
-            this.ustawieniaToolStripMenuItem});
-            this.menuStrip2.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(800, 24);
-            this.menuStrip2.TabIndex = 1;
-            this.menuStrip2.Text = "menuStrip2";
-            this.menuStrip2.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip2_ItemClicked);
+            this.pCashRegisterSubMenu.BackColor = System.Drawing.Color.DimGray;
+            this.pCashRegisterSubMenu.Controls.Add(this.bCashRegisterSettings);
+            this.pCashRegisterSubMenu.Controls.Add(this.bCashRegisterInfo);
+            this.pCashRegisterSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pCashRegisterSubMenu.Location = new System.Drawing.Point(0, 156);
+            this.pCashRegisterSubMenu.Name = "pCashRegisterSubMenu";
+            this.pCashRegisterSubMenu.Size = new System.Drawing.Size(200, 60);
+            this.pCashRegisterSubMenu.TabIndex = 3;
             // 
-            // plikToolStripMenuItem
+            // bCashRegisterSettings
             // 
-            this.plikToolStripMenuItem.Name = "plikToolStripMenuItem";
-            this.plikToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
-            this.plikToolStripMenuItem.Text = "Plik";
+            this.bCashRegisterSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bCashRegisterSettings.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bCashRegisterSettings.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bCashRegisterSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bCashRegisterSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bCashRegisterSettings.ForeColor = System.Drawing.Color.White;
+            this.bCashRegisterSettings.Location = new System.Drawing.Point(0, 30);
+            this.bCashRegisterSettings.Name = "bCashRegisterSettings";
+            this.bCashRegisterSettings.Size = new System.Drawing.Size(200, 30);
+            this.bCashRegisterSettings.TabIndex = 5;
+            this.bCashRegisterSettings.Text = "Ustawienia";
+            this.bCashRegisterSettings.UseVisualStyleBackColor = false;
             // 
-            // ustawieniaToolStripMenuItem
+            // bCashRegisterInfo
             // 
-            this.ustawieniaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.scieżkiToolStripMenuItem});
-            this.ustawieniaToolStripMenuItem.Name = "ustawieniaToolStripMenuItem";
-            this.ustawieniaToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
-            this.ustawieniaToolStripMenuItem.Text = "Ustawienia";
+            this.bCashRegisterInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bCashRegisterInfo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.bCashRegisterInfo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bCashRegisterInfo.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bCashRegisterInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bCashRegisterInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bCashRegisterInfo.ForeColor = System.Drawing.Color.White;
+            this.bCashRegisterInfo.Location = new System.Drawing.Point(0, 0);
+            this.bCashRegisterInfo.Name = "bCashRegisterInfo";
+            this.bCashRegisterInfo.Size = new System.Drawing.Size(200, 30);
+            this.bCashRegisterInfo.TabIndex = 4;
+            this.bCashRegisterInfo.Text = "Informacje";
+            this.bCashRegisterInfo.UseVisualStyleBackColor = false;
             // 
-            // scieżkiToolStripMenuItem
+            // bCashRegister
             // 
-            this.scieżkiToolStripMenuItem.Name = "scieżkiToolStripMenuItem";
-            this.scieżkiToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.scieżkiToolStripMenuItem.Text = "Scieżki";
-            this.scieżkiToolStripMenuItem.Click += new System.EventHandler(this.scieżkiToolStripMenuItem_Click);
+            this.bCashRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bCashRegister.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bCashRegister.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bCashRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bCashRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bCashRegister.ForeColor = System.Drawing.Color.White;
+            this.bCashRegister.Location = new System.Drawing.Point(0, 116);
+            this.bCashRegister.Name = "bCashRegister";
+            this.bCashRegister.Size = new System.Drawing.Size(200, 40);
+            this.bCashRegister.TabIndex = 2;
+            this.bCashRegister.Text = "Kasa fiskalna";
+            this.bCashRegister.UseVisualStyleBackColor = false;
+            this.bCashRegister.Click += new System.EventHandler(this.bCashRegister_Click);
             // 
-            // Form1
+            // bMainMenu
+            // 
+            this.bMainMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bMainMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bMainMenu.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bMainMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bMainMenu.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bMainMenu.ForeColor = System.Drawing.Color.White;
+            this.bMainMenu.Location = new System.Drawing.Point(0, 76);
+            this.bMainMenu.Name = "bMainMenu";
+            this.bMainMenu.Size = new System.Drawing.Size(200, 40);
+            this.bMainMenu.TabIndex = 1;
+            this.bMainMenu.Text = "Menu główne";
+            this.bMainMenu.UseVisualStyleBackColor = false;
+            // 
+            // pLogo
+            // 
+            this.pLogo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pLogo.BackgroundImage")));
+            this.pLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pLogo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pLogo.Location = new System.Drawing.Point(0, 0);
+            this.pLogo.Name = "pLogo";
+            this.pLogo.Size = new System.Drawing.Size(200, 76);
+            this.pLogo.TabIndex = 0;
+            // 
+            // pControl
+            // 
+            this.pControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.pControl.Controls.Add(this.flowLayoutPanel1);
+            this.pControl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pControl.Location = new System.Drawing.Point(200, 0);
+            this.pControl.Name = "pControl";
+            this.pControl.Size = new System.Drawing.Size(600, 450);
+            this.pControl.TabIndex = 1;
+            this.pControl.Paint += new System.Windows.Forms.PaintEventHandler(this.pControl_Paint);
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(600, 20);
+            this.flowLayoutPanel1.TabIndex = 0;
+            // 
+            // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.menuStrip2);
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.menuStrip2.ResumeLayout(false);
-            this.menuStrip2.PerformLayout();
+            this.Controls.Add(this.pControl);
+            this.Controls.Add(this.pMenu);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Name = "MainWindow";
+            this.Text = "ElzabCommands";
+            this.pMenu.ResumeLayout(false);
+            this.pCashRegisterSubMenu.ResumeLayout(false);
+            this.pControl.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.MenuStrip menuStrip2;
-        private System.Windows.Forms.ToolStripMenuItem plikToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ustawieniaToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem scieżkiToolStripMenuItem;
+        private System.Windows.Forms.Panel pMenu;
+        private System.Windows.Forms.Panel pLogo;
+        private System.Windows.Forms.Panel pControl;
+        private System.Windows.Forms.Button bMainMenu;
+        private System.Windows.Forms.Panel pCashRegisterSubMenu;
+        private System.Windows.Forms.Button bCashRegisterSettings;
+        private System.Windows.Forms.Button bCashRegisterInfo;
+        private System.Windows.Forms.Button bCashRegister;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
-

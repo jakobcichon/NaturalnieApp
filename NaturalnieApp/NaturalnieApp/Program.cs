@@ -1,4 +1,5 @@
 ﻿using NaturalnieApp.Initialization;
+using NaturalnieApp.Forms;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,13 +51,13 @@ namespace NaturalnieApp
             ElzabCommand_OPSPRZED OdczytSprzedazy = new ElzabCommand_OPSPRZED(path, cashRegisterID);
             
 
-            ;
+            
 
             Application.EnableVisualStyles();
             Application.Run(new MainWindow());
 
 
-
+            ;
         }
     }
 }
