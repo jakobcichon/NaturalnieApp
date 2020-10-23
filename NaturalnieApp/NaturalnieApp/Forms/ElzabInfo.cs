@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace NaturalnieApp.Forms
 {
-    public partial class Submenu_ElzabInfo : Form
+    public partial class ElzabInfo : Form
     {
-        public Submenu_ElzabInfo()
+        public ElzabInfo()
         {
             InitializeComponent();
         }

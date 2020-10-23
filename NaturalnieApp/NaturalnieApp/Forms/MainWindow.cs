@@ -67,9 +67,11 @@ namespace NaturalnieApp.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            //Application.Exit();
         }
 
+        
+        #region Movable window
         private void pHeader_MouseDown(object sender, MouseEventArgs e)
         {
             dragging = true;
@@ -90,6 +92,20 @@ namespace NaturalnieApp.Forms
                 this.Location = new Point(Cursor.Position.X - xOffset, Cursor.Position.Y - yOffset);
                 this.Update();
             }
+        }
+        #endregion
+
+
+        private void bCashRegisterInfo_Click(object sender, EventArgs e)
+        {
+            ElzabInfo frm = new ElzabInfo() { TopLevel = false, TopMost = true };
+            this.pContainer.Controls.Add(frm);
+            frm.Show();
+        }
+
+        private void bExit_MouseUp(object sender, MouseEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

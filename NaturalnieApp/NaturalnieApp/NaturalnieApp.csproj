@@ -59,11 +59,11 @@
     <Compile Include="Forms\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Submenu_ElzabInfo.cs">
+    <Compile Include="Forms\ElzabInfo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Submenu_ElzabInfo.Designer.cs">
-      <DependentUpon>Submenu_ElzabInfo.cs</DependentUpon>
+    <Compile Include="Forms\ElzabInfo.Designer.cs">
+      <DependentUpon>ElzabInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Initialization\ConfigFile.cs" />
     <Compile Include="Forms\PathsWindow.cs">
@@ -80,8 +80,8 @@
     <EmbeddedResource Include="Forms\PathsWindow.resx">
       <DependentUpon>PathsWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Submenu_ElzabInfo.resx">
-      <DependentUpon>Submenu_ElzabInfo.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ElzabInfo.resx">
+      <DependentUpon>ElzabInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
