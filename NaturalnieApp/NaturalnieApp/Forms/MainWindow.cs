@@ -12,6 +12,10 @@ namespace NaturalnieApp.Forms
 {
     public partial class MainWindow : Form
     {
+        bool dragging = false;
+        int xOffset = 0;
+        int yOffset = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -59,6 +63,33 @@ namespace NaturalnieApp.Forms
         private void bCashRegister_Click(object sender, EventArgs e)
         {
             toggleSubMenu(pCashRegisterSubMenu);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void pHeader_MouseDown(object sender, MouseEventArgs e)
+        {
+            dragging = true;
+
+            xOffset = Cursor.Position.X - this.Location.X;
+            yOffset = Cursor.Position.Y - this.Location.Y;
+        }
+
+        private void pHeader_MouseUp(object sender, MouseEventArgs e)
+        {
+            dragging = false;
+        }
+
+        private void pHeader_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (dragging)
+            {
+                this.Location = new Point(Cursor.Position.X - xOffset, Cursor.Position.Y - yOffset);
+                this.Update();
+            }
         }
     }
 }
