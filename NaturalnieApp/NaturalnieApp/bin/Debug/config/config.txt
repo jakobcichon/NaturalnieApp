@@ -1,5 +1,13 @@
 \\Elzab command path
-#ElzabCommand = D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\config\
+#ElzabCommandPath = F:\Projekty\02. NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\config\
+
+
+\\Elzab default COM port
+#ElzabCOMPort = COM3
+
+
+\\Elzab default baud rate
+#ElzabBaudRate = 115200
 
 
 \\Test database name

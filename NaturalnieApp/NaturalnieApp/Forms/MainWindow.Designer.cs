@@ -39,7 +39,6 @@
             this.pHeader = new System.Windows.Forms.Panel();
             this.bExit = new System.Windows.Forms.Button();
             this.pContainer = new System.Windows.Forms.Panel();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.pMenu.SuspendLayout();
             this.pCashRegisterSubMenu.SuspendLayout();
             this.pHeader.SuspendLayout();
@@ -55,13 +54,12 @@
             this.pMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.pMenu.Location = new System.Drawing.Point(0, 30);
             this.pMenu.Name = "pMenu";
-            this.pMenu.Size = new System.Drawing.Size(200, 420);
+            this.pMenu.Size = new System.Drawing.Size(200, 570);
             this.pMenu.TabIndex = 0;
             // 
             // pCashRegisterSubMenu
             // 
             this.pCashRegisterSubMenu.BackColor = System.Drawing.Color.DimGray;
-            this.pCashRegisterSubMenu.Controls.Add(this.checkedListBox1);
             this.pCashRegisterSubMenu.Controls.Add(this.bCashRegisterSettings);
             this.pCashRegisterSubMenu.Controls.Add(this.bCashRegisterInfo);
             this.pCashRegisterSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
@@ -84,6 +82,7 @@
             this.bCashRegisterSettings.TabIndex = 5;
             this.bCashRegisterSettings.Text = "Ustawienia";
             this.bCashRegisterSettings.UseVisualStyleBackColor = false;
+            this.bCashRegisterSettings.Click += new System.EventHandler(this.bCashRegisterSettings_Click);
             // 
             // bCashRegisterInfo
             // 
@@ -151,7 +150,7 @@
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
-            this.pHeader.Size = new System.Drawing.Size(800, 30);
+            this.pHeader.Size = new System.Drawing.Size(1200, 30);
             this.pHeader.TabIndex = 4;
             this.pHeader.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseDown);
             this.pHeader.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseMove);
@@ -164,7 +163,7 @@
             this.bExit.Dock = System.Windows.Forms.DockStyle.Right;
             this.bExit.FlatAppearance.BorderSize = 0;
             this.bExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bExit.Location = new System.Drawing.Point(770, 0);
+            this.bExit.Location = new System.Drawing.Point(1170, 0);
             this.bExit.Name = "bExit";
             this.bExit.Size = new System.Drawing.Size(30, 30);
             this.bExit.TabIndex = 0;
@@ -178,16 +177,8 @@
             this.pContainer.Dock = System.Windows.Forms.DockStyle.Right;
             this.pContainer.Location = new System.Drawing.Point(200, 30);
             this.pContainer.Name = "pContainer";
-            this.pContainer.Size = new System.Drawing.Size(600, 420);
+            this.pContainer.Size = new System.Drawing.Size(1000, 570);
             this.pContainer.TabIndex = 5;
-            // 
-            // checkedListBox1
-            // 
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(129, 18);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(8, 4);
-            this.checkedListBox1.TabIndex = 6;
             // 
             // MainWindow
             // 
@@ -195,7 +186,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1200, 600);
             this.Controls.Add(this.pMenu);
             this.Controls.Add(this.pContainer);
             this.Controls.Add(this.pHeader);
@@ -221,6 +212,5 @@
         private System.Windows.Forms.Panel pHeader;
         private System.Windows.Forms.Button bExit;
         private System.Windows.Forms.Panel pContainer;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
     }
 }

@@ -6,6 +6,80 @@ using System.Collections.Generic;
 
 namespace NaturalnieApp.Initialization
 {
+    public class ConfigFileObject
+    {
+        private ConfigFile ConfigFileInst { get; set; }
+        private List<ConfigElement> ConfigFileElements { get; set; }
+
+
+        public ConfigFileObject()
+        {
+            ConfigFileInst = new ConfigFile();
+            ConfigFileInst.InitializeConfigFile("\\config\\config.txt", "");
+
+            ConfigFileElements = new List<ConfigElement>();
+            ConfigFileElements = ConfigFileInst.ReadConfigFileElement(ConfigFileInst.FullPath);
+        }
+
+        //Method used to get variable value by variable name
+        public string GetValueByVariableName(string variableName)
+        {
+            //Return variable
+            string retVal = "";
+
+            //Scan throught Config Element list and return Variable value if name match
+            foreach (ConfigElement element in this.ConfigFileElements)
+            {
+                if (element.ElementName == variableName)
+                {
+                    retVal = element.ElementValue;
+                    break;
+                }
+            }
+
+            return retVal;
+        }
+
+        //Method used to change value of given variable
+        public void ChangeVariableValue(string variableName, string variableValue)
+        {
+            //Local variable
+            int indexOfElement = -1;
+
+            foreach (ConfigElement element in this.ConfigFileElements)
+            {
+                if (element.ElementName == variableName)
+                {
+                    indexOfElement = this.ConfigFileElements.IndexOf(element);
+                }
+            }
+
+            if (indexOfElement != -1)
+            {
+                this.ConfigFileElements[indexOfElement].ElementValue = variableValue;
+            }
+        }
+
+        //Method used to list all varriables in config file
+        public string[] ListAllVariables()
+        {
+            //Local variable
+            string[] retVal = new string[this.ConfigFileElements.Count];
+            int i = 0;
+
+            //Scan throught all variable names and return it
+            foreach (ConfigElement element in this.ConfigFileElements)
+            {
+                retVal[i] = element.ElementName;
+                i++;
+            }
+
+            this.ConfigFileElements.
+            return retVal;
+        }
+
+    }
+
     //==================================================================================
     //ConfigElement class used to properly parse single element from config file.
     // Patter used to parse config element: Variable name starts from "#"; Variable value in same line with varibale Name and starts with "=";
@@ -215,16 +289,22 @@ namespace NaturalnieApp.Initialization
 
             //Template of config file
 
-                //Get current path of applciation and add "config" to it
-                string fullPath = Directory.GetCurrentDirectory() + "\\config\\";
-                //Add first element to list
-                retList.Add(new ConfigElement("ElzabCommand", fullPath, "Elzab command path"));
+            //Get current path of applciation and add "config" to it
+            string fullPath = Directory.GetCurrentDirectory() + "\\config\\";
+            //Add first element to list
+            retList.Add(new ConfigElement("ElzabCommandPath", fullPath, "Elzab command path"));
 
-                //Add next element to list
-                retList.Add(new ConfigElement("DatabseName", "TestDatabaseName", "Test database name"));
+            //Add next element to list
+            retList.Add(new ConfigElement("ElzabCOMPort", "COM3", "Elzab default COM port"));
 
-                //To Add next element to list, act as above
-                //Placeholder for next element
+            //Add next element to list
+            retList.Add(new ConfigElement("ElzabBaudRate", "115200", "Elzab default baud rate"));
+
+            //Add next element to list
+            retList.Add(new ConfigElement("DatabseName", "TestDatabaseName", "Test database name"));
+
+            //To Add next element to list, act as above
+            //Placeholder for next element
 
             //Return value
             return retList;
@@ -267,6 +347,28 @@ namespace NaturalnieApp.Initialization
                     MessageBox.Show(e.ToString());
                 }
 
+            }
+            else
+            {
+
+                try
+                {
+                    // Open the text file using a stream reader.
+                    using (var file = new StreamWriter(path))
+                    {
+                        file.Write("");
+                        foreach (ConfigElement element in configDataToWrite)
+                        {
+                            file.WriteLine(element.PrepareDataToWrite());
+                            file.WriteLine("\n");
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.ToString());
+                }
             }
 
         }

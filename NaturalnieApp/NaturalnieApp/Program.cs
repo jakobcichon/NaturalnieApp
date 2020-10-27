@@ -16,32 +16,13 @@ namespace NaturalnieApp
         [STAThread]
         static void Main()
         {
+            //Read data from config file 
+            ConfigFileObject ConfigFileInst = new ConfigFileObject();
+            string test = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
 
-            string currentDirectory;
-
-            ConfigFile ConfigFileInst = new ConfigFile();
-            ConfigFileInst.InitializeConfigFile("\\config\\config.txt", "");
-
-            List<ConfigElement> ConfigFileElements = new List<ConfigElement>();
-            ConfigFileElements = ConfigFileInst.ReadConfigFileElement(ConfigFileInst.FullPath);
-
-            /*
-            ElzabCommand_OTOWAR Test1 = new ElzabCommand_OTOWAR(@"F:\Projekty\02. NaturalnieApp\ElzabFilesTest");
-            Test1.ExecuteCommand();
-            Test TestClass = new Test();
-            TestClass.TestMt(1, 2, 3, 4);
-            */
-
-
-            /*
-            ElzabCommand_ZTOWAR Test = new ElzabCommand_ZTOWAR(@"F:\Projekty\02. NaturalnieApp\Test", cashRegisterID);
-            Test.DataToElzab.AddElement("8");
-            Test.DataToElzab.ChangeAllElementValues("8", "", "CzyTOSieUda?", "1");
-            Test.DataToElzab.RunCommand();
-            */
 
             int cashRegisterID = 1;
-            string path = @"F:\Projekty\02. NaturalnieApp\Test";
+            string path = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
 
 
            // ElzabCommand_OBAJTY Test = new ElzabCommand_OBAJTY(path, cashRegisterID);

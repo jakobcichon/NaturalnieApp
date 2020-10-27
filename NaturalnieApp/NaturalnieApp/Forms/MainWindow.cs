@@ -98,14 +98,27 @@ namespace NaturalnieApp.Forms
 
         private void bCashRegisterInfo_Click(object sender, EventArgs e)
         {
+            this.pContainer.Controls.Clear();
             ElzabInfo frm = new ElzabInfo() { TopLevel = false, TopMost = true };
             this.pContainer.Controls.Add(frm);
             frm.Show();
+
+        }
+
+        private void bCashRegisterSettings_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            ElzabSettings frm = new ElzabSettings() { TopLevel = false, TopMost = true };
+            this.pContainer.Controls.Add(frm);
+            frm.Show();
+
+
         }
 
         private void bExit_MouseUp(object sender, MouseEventArgs e)
         {
             Application.Exit();
         }
+
     }
 }
