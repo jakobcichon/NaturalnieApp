@@ -9,7 +9,7 @@ namespace NaturalnieApp.Initialization
     public class ConfigFileObject
     {
         private ConfigFile ConfigFileInst { get; set; }
-        private List<ConfigElement> ConfigFileElements { get; set; }
+        public List<ConfigElement> ConfigFileElements { get; set; }
 
 
         public ConfigFileObject()
@@ -74,8 +74,13 @@ namespace NaturalnieApp.Initialization
                 i++;
             }
 
-            this.ConfigFileElements.
             return retVal;
+        }
+
+        //Method used to save current data from object fo text file
+        public void SaveData()
+        {
+            ;
         }
 
     }
@@ -124,6 +129,8 @@ namespace NaturalnieApp.Initialization
             //Return value
             return retVal;
         }
+
+
     }
     class ConfigFile
     {
@@ -167,7 +174,7 @@ namespace NaturalnieApp.Initialization
                         {
                             string[] element;
                             element = rPattern.Split(line);
-                            configElements.Add(new ConfigElement(element[0], element[1]));
+                            configElements.Add(new ConfigElement(element[0], element[1].Trim()));
                         }
 
                     }
@@ -312,10 +319,18 @@ namespace NaturalnieApp.Initialization
         }
 
         //==================================================================================
-        void CreateConfigFile(string path)
+        void CreateConfigFile(string path, List<ConfigElement> DataToWrite = null)
         {
             bool fCreated;
-            List<ConfigElement> configDataToWrite = new List<ConfigElement>();
+            List<ConfigElement> configDataToWrite;
+            if (DataToWrite == null)
+            {
+                configDataToWrite = new List<ConfigElement>();
+            }
+            else
+            {
+                configDataToWrite = DataToWrite;
+            }
                  
             //Verify if fileName contain proper .txt extension
             Regex r = new Regex(@"^.*\.txt$");

@@ -1,4 +1,6 @@
-﻿namespace NaturalnieApp.Forms
+﻿using NaturalnieApp.Initialization;
+
+namespace NaturalnieApp.Forms
 {
     partial class ElzabSettings
     {
@@ -20,6 +22,19 @@
             base.Dispose(disposing);
         }
 
+        //Method used to update config data from config file
+        public void UpdateConfigData(ConfigFileObject obj)
+        {
+            string[] elementsList = obj.ListAllVariables();
+            this.cCOMPorts.Items.Clear();
+
+            foreach (string element in elementsList)
+            {
+                this.cCOMPorts.Items.Add(element);
+            }
+
+        }
+
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -37,10 +52,10 @@
             this.bUpdate = new System.Windows.Forms.Button();
             this.cCOMPorts = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lCOMPortNr = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cBaudRate = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.cBaudRate = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lCOMPortNr = new System.Windows.Forms.Label();
             this.pSettingNr1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -74,9 +89,8 @@
             this.tbElzabPath.Dock = System.Windows.Forms.DockStyle.Left;
             this.tbElzabPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.tbElzabPath.Location = new System.Drawing.Point(300, 0);
-            this.tbElzabPath.Multiline = true;
             this.tbElzabPath.Name = "tbElzabPath";
-            this.tbElzabPath.Size = new System.Drawing.Size(660, 40);
+            this.tbElzabPath.Size = new System.Drawing.Size(660, 31);
             this.tbElzabPath.TabIndex = 1;
             this.tbElzabPath.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -128,12 +142,14 @@
             // 
             // cCOMPorts
             // 
+            this.cCOMPorts.DisplayMember = "Test";
             this.cCOMPorts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.cCOMPorts.FormattingEnabled = true;
             this.cCOMPorts.Location = new System.Drawing.Point(167, 52);
             this.cCOMPorts.Name = "cCOMPorts";
             this.cCOMPorts.Size = new System.Drawing.Size(132, 28);
             this.cCOMPorts.TabIndex = 6;
+            this.cCOMPorts.SelectedIndexChanged += new System.EventHandler(this.cCOMPorts_SelectedIndexChanged);
             // 
             // panel1
             // 
@@ -149,29 +165,18 @@
             this.panel1.Size = new System.Drawing.Size(333, 129);
             this.panel1.TabIndex = 7;
             // 
-            // lCOMPortNr
+            // label2
             // 
-            this.lCOMPortNr.BackColor = System.Drawing.Color.White;
-            this.lCOMPortNr.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lCOMPortNr.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lCOMPortNr.Location = new System.Drawing.Point(11, 51);
-            this.lCOMPortNr.Name = "lCOMPortNr";
-            this.lCOMPortNr.Size = new System.Drawing.Size(150, 28);
-            this.lCOMPortNr.TabIndex = 7;
-            this.lCOMPortNr.Text = "Numer Portu COM";
-            this.lCOMPortNr.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.White;
-            this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.Location = new System.Drawing.Point(11, 83);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(150, 28);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Prędkość transmisji";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label2.BackColor = System.Drawing.Color.White;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label2.Location = new System.Drawing.Point(0, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(331, 40);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Ustawienia połączenia";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // cBaudRate
             // 
@@ -186,18 +191,29 @@
             this.cBaudRate.Size = new System.Drawing.Size(132, 28);
             this.cBaudRate.TabIndex = 9;
             // 
-            // label2
+            // label1
             // 
-            this.label2.BackColor = System.Drawing.Color.White;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label2.Location = new System.Drawing.Point(0, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(331, 40);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Ustawienia połączenia";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.BackColor = System.Drawing.Color.White;
+            this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label1.Location = new System.Drawing.Point(11, 83);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(150, 28);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Prędkość transmisji";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lCOMPortNr
+            // 
+            this.lCOMPortNr.BackColor = System.Drawing.Color.White;
+            this.lCOMPortNr.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lCOMPortNr.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lCOMPortNr.Location = new System.Drawing.Point(11, 51);
+            this.lCOMPortNr.Name = "lCOMPortNr";
+            this.lCOMPortNr.Size = new System.Drawing.Size(150, 28);
+            this.lCOMPortNr.TabIndex = 7;
+            this.lCOMPortNr.Text = "Numer Portu COM";
+            this.lCOMPortNr.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ElzabSettings
             // 

@@ -23,6 +23,8 @@ namespace NaturalnieApp
 
             int cashRegisterID = 1;
             string path = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
+            string[] elementList = ConfigFileInst.ListAllVariables(); 
+
 
 
            // ElzabCommand_OBAJTY Test = new ElzabCommand_OBAJTY(path, cashRegisterID);
@@ -35,8 +37,8 @@ namespace NaturalnieApp
             
 
             Application.EnableVisualStyles();
-            Application.Run(new MainWindow());
-
+            Application.Run(new MainWindow(ConfigFileInst));
+            ;
 
             ;
         }

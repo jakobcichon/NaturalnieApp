@@ -7,17 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NaturalnieApp.Initialization;
+
 
 namespace NaturalnieApp.Forms
 {
+
     public partial class MainWindow : Form
     {
+        private ConfigFileObject ConfigFileOjbInst;
         bool dragging = false;
         int xOffset = 0;
         int yOffset = 0;
 
-        public MainWindow()
+        public MainWindow(ConfigFileObject conFileObj)
         {
+            this.ConfigFileOjbInst = conFileObj;
             InitializeComponent();
             customizeDesign();
         }
@@ -108,10 +113,9 @@ namespace NaturalnieApp.Forms
         private void bCashRegisterSettings_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
-            ElzabSettings frm = new ElzabSettings() { TopLevel = false, TopMost = true };
+            ElzabSettings frm = new ElzabSettings(ConfigFileOjbInst) { TopLevel = false, TopMost = true };
             this.pContainer.Controls.Add(frm);
             frm.Show();
-
 
         }
 
