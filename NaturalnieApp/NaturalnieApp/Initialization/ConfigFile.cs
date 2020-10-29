@@ -14,11 +14,9 @@ namespace NaturalnieApp.Initialization
 
         public ConfigFileObject()
         {
-            ConfigFileInst = new ConfigFile();
-            ConfigFileInst.InitializeConfigFile("\\config\\config.txt", "");
+            ConfigFileInst = new ConfigFile("\\config\\config.txt", "");
 
             ConfigFileElements = new List<ConfigElement>();
-            ConfigFileElements = ConfigFileInst.ReadConfigFileElement(ConfigFileInst.FullPath);
         }
 
         //Method used to get variable value by variable name
@@ -80,7 +78,7 @@ namespace NaturalnieApp.Initialization
         //Method used to save current data from object fo text file
         public void SaveData()
         {
-            ;
+            ConfigFileInst.CreateConfigFile();
         }
 
     }
@@ -132,31 +130,38 @@ namespace NaturalnieApp.Initialization
 
 
     }
-    class ConfigFile
+    public class ConfigFile
     {
         //Declare class elements
         public string FullPath { get; set; }
 
+        //Declare class constructor
+        public ConfigFile(string fileName, string filePath = "")
+        {
+            this.FullPath = ConsolidatePathAndFile(filePath, fileName);
+
+            this.InitializeConfigFile();
+        }
+
         //==================================================================================
         //Metod use to create full config file information
-        public void InitializeConfigFile(string fileName, string path = "")
+        public void InitializeConfigFile()
         {
-
-            //Consolidate path
-            this.FullPath = ConsolidatePathAndFile(path, fileName);
 
             // Check if directory exist, if not create one
             //CreateDirectory(path, fileName);
-            VerifyAndCreateFullPath(this.FullPath);
+            VerifyAndCreateFullPath();
 
             //Check if file exist, if not create one
-            CreateConfigFile(this.FullPath);
+            CreateConfigFile();
+
+            //Read data from file, and add it to and object
 
         }
 
         //==================================================================================
         //Method used to scan through config file and read all of its elements
-        public List<ConfigElement> ReadConfigFileElement(string path)
+        public List<ConfigElement> ReadConfigFileElement()
         {
 
             Regex rVariableName = new Regex(@"^.*#.*$");
@@ -165,7 +170,7 @@ namespace NaturalnieApp.Initialization
             try
             {
                 // Open the text file using a stream reader.
-                using (var file = new StreamReader(path))
+                using (var file = new StreamReader(this.FullPath))
                 {
                     string line;
                     while ((line = file.ReadLine()) != null)
@@ -197,7 +202,7 @@ namespace NaturalnieApp.Initialization
 
         //==================================================================================
         //Method check if given path is valid. If not it create one.
-        private void VerifyAndCreateFullPath(string path)
+        private void VerifyAndCreateFullPath()
         {
             //Local variables
             Regex r = new Regex(@"\\");
@@ -206,7 +211,7 @@ namespace NaturalnieApp.Initialization
             bool bPathExist;
 
             //Split given path into list
-            directoryList = r.Split(path);
+            directoryList = r.Split(this.FullPath);
 
             //Verify full path. If any of directory does not exist, create one
             for (int i=0; i<(directoryList.Length - 1); i++)
@@ -254,13 +259,13 @@ namespace NaturalnieApp.Initialization
         //If file with given name does not exist under given path method will create a new file
         // and return "True".
         //Otherwise method return "False"
-        bool CreateFile(string path)
+        bool CreateFile()
         {
             //Local variable
             bool fExist, retVal = false;
 
             //Check if directory exist
-            fExist = CheckIfConfigFileExist(path);
+            fExist = CheckIfConfigFileExist(this.FullPath);
 
             //Create file of not exist
             if (!fExist)
@@ -268,7 +273,7 @@ namespace NaturalnieApp.Initialization
                 try
                 {
                     //Use File stream to creale file
-                    using(FileStream fs = File.Create(path))
+                    using(FileStream fs = File.Create(this.FullPath))
                     {
                         retVal = true;
                     }
@@ -319,8 +324,9 @@ namespace NaturalnieApp.Initialization
         }
 
         //==================================================================================
-        void CreateConfigFile(string path, List<ConfigElement> DataToWrite = null)
+        public void CreateConfigFile(List<ConfigElement> DataToWrite = null)
         {
+
             bool fCreated;
             List<ConfigElement> configDataToWrite;
             if (DataToWrite == null)
@@ -336,7 +342,7 @@ namespace NaturalnieApp.Initialization
             Regex r = new Regex(@"^.*\.txt$");
 
             //Call method to create new file
-            fCreated = CreateFile(path);
+            fCreated = CreateFile();
 
             //If file created successfully, fill it with template
             if (fCreated)
@@ -346,7 +352,7 @@ namespace NaturalnieApp.Initialization
                 try
                 {
                     // Open the text file using a stream reader.
-                    using (var file = new StreamWriter(path))
+                    using (var file = new StreamWriter(this.FullPath))
                     {
 
                         foreach (ConfigElement element in configDataToWrite)
@@ -369,7 +375,7 @@ namespace NaturalnieApp.Initialization
                 try
                 {
                     // Open the text file using a stream reader.
-                    using (var file = new StreamWriter(path))
+                    using (var file = new StreamWriter(this.FullPath))
                     {
                         file.Write("");
                         foreach (ConfigElement element in configDataToWrite)

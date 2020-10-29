@@ -44,8 +44,8 @@ namespace NaturalnieApp.Forms
         private void InitializeComponent()
         {
             this.pSettingNr1 = new System.Windows.Forms.Panel();
+            this.tbElzabPath = new System.Windows.Forms.RichTextBox();
             this.bBrowsePath = new System.Windows.Forms.Button();
-            this.tbElzabPath = new System.Windows.Forms.TextBox();
             this.lElzabPath = new System.Windows.Forms.Label();
             this.pHeader = new System.Windows.Forms.Panel();
             this.bSave = new System.Windows.Forms.Button();
@@ -62,8 +62,8 @@ namespace NaturalnieApp.Forms
             // 
             // pSettingNr1
             // 
-            this.pSettingNr1.Controls.Add(this.bBrowsePath);
             this.pSettingNr1.Controls.Add(this.tbElzabPath);
+            this.pSettingNr1.Controls.Add(this.bBrowsePath);
             this.pSettingNr1.Controls.Add(this.lElzabPath);
             this.pSettingNr1.Dock = System.Windows.Forms.DockStyle.Top;
             this.pSettingNr1.Location = new System.Drawing.Point(0, 30);
@@ -71,10 +71,23 @@ namespace NaturalnieApp.Forms
             this.pSettingNr1.Size = new System.Drawing.Size(1000, 40);
             this.pSettingNr1.TabIndex = 0;
             // 
+            // tbElzabPath
+            // 
+            this.tbElzabPath.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tbElzabPath.Location = new System.Drawing.Point(300, 0);
+            this.tbElzabPath.Multiline = false;
+            this.tbElzabPath.Name = "tbElzabPath";
+            this.tbElzabPath.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.tbElzabPath.ShowSelectionMargin = true;
+            this.tbElzabPath.Size = new System.Drawing.Size(654, 40);
+            this.tbElzabPath.TabIndex = 8;
+            this.tbElzabPath.Text = "";
+            this.tbElzabPath.TextChanged += new System.EventHandler(this.tbElzabPath_TextChanged);
+            // 
             // bBrowsePath
             // 
             this.bBrowsePath.BackColor = System.Drawing.Color.White;
-            this.bBrowsePath.Dock = System.Windows.Forms.DockStyle.Left;
+            this.bBrowsePath.Dock = System.Windows.Forms.DockStyle.Right;
             this.bBrowsePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bBrowsePath.Location = new System.Drawing.Point(960, 0);
             this.bBrowsePath.Name = "bBrowsePath";
@@ -83,16 +96,6 @@ namespace NaturalnieApp.Forms
             this.bBrowsePath.Text = "...";
             this.bBrowsePath.UseVisualStyleBackColor = false;
             this.bBrowsePath.Click += new System.EventHandler(this.bBrowsePath_Click);
-            // 
-            // tbElzabPath
-            // 
-            this.tbElzabPath.Dock = System.Windows.Forms.DockStyle.Left;
-            this.tbElzabPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbElzabPath.Location = new System.Drawing.Point(300, 0);
-            this.tbElzabPath.Name = "tbElzabPath";
-            this.tbElzabPath.Size = new System.Drawing.Size(660, 31);
-            this.tbElzabPath.TabIndex = 1;
-            this.tbElzabPath.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // lElzabPath
             // 
@@ -126,6 +129,7 @@ namespace NaturalnieApp.Forms
             this.bSave.TabIndex = 2;
             this.bSave.Text = "Zapisz";
             this.bSave.UseVisualStyleBackColor = false;
+            this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
             // bUpdate
             // 
@@ -219,7 +223,6 @@ namespace NaturalnieApp.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
@@ -234,7 +237,6 @@ namespace NaturalnieApp.Forms
             this.Text = "Submenu_ElzabInfo";
             this.Load += new System.EventHandler(this.ElzabSettings_Load);
             this.pSettingNr1.ResumeLayout(false);
-            this.pSettingNr1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -243,7 +245,6 @@ namespace NaturalnieApp.Forms
         #endregion
 
         private System.Windows.Forms.Panel pSettingNr1;
-        private System.Windows.Forms.TextBox tbElzabPath;
         private System.Windows.Forms.Label lElzabPath;
         private System.Windows.Forms.Button bBrowsePath;
         private System.Windows.Forms.Panel pHeader;
@@ -255,5 +256,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.ComboBox cBaudRate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.RichTextBox tbElzabPath;
     }
 }
