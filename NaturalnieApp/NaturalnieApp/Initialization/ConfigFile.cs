@@ -14,9 +14,12 @@ namespace NaturalnieApp.Initialization
 
         public ConfigFileObject()
         {
-            ConfigFileInst = new ConfigFile("\\config\\config.txt", "");
 
-            ConfigFileElements = new List<ConfigElement>();
+
+            this.ConfigFileInst = new ConfigFile("\\config\\config.txt", "");
+
+            this.ConfigFileElements = this.ConfigFileInst.ReadConfigFileElement();
+
         }
 
         //Method used to get variable value by variable name
@@ -78,7 +81,7 @@ namespace NaturalnieApp.Initialization
         //Method used to save current data from object fo text file
         public void SaveData()
         {
-            ConfigFileInst.CreateConfigFile();
+            ConfigFileInst.UpdateConfigFile(this.ConfigFileElements);
         }
 
     }
@@ -127,26 +130,29 @@ namespace NaturalnieApp.Initialization
             //Return value
             return retVal;
         }
-
-
     }
+
     public class ConfigFile
     {
         //Declare class elements
         public string FullPath { get; set; }
 
         //Declare class constructor
-        public ConfigFile(string fileName, string filePath = "")
+        public ConfigFile( string fileName, string filePath = "")
         {
+            //Consolidate patch
             this.FullPath = ConsolidatePathAndFile(filePath, fileName);
 
-            this.InitializeConfigFile();
+            //Initialize config file
+            InitializeConfigFile();
         }
 
         //==================================================================================
         //Metod use to create full config file information
-        public void InitializeConfigFile()
+        public List<ConfigElement> InitializeConfigFile()
         {
+            //Local variables
+            List<ConfigElement> configFileElements;
 
             // Check if directory exist, if not create one
             //CreateDirectory(path, fileName);
@@ -156,6 +162,8 @@ namespace NaturalnieApp.Initialization
             CreateConfigFile();
 
             //Read data from file, and add it to and object
+            configFileElements = ReadConfigFileElement();
+            return configFileElements;
 
         }
 
@@ -165,7 +173,9 @@ namespace NaturalnieApp.Initialization
         {
 
             Regex rVariableName = new Regex(@"^.*#.*$");
+            Regex rComment = new Regex(@"^.*\\.*$");
             Regex rPattern = new Regex("=");
+            string lastComment = "";
             List<ConfigElement> configElements = new List<ConfigElement>();
             try
             {
@@ -179,7 +189,20 @@ namespace NaturalnieApp.Initialization
                         {
                             string[] element;
                             element = rPattern.Split(line);
-                            configElements.Add(new ConfigElement(element[0], element[1].Trim()));
+                            if (lastComment != "")
+                            {
+                                lastComment = lastComment.Replace(@"\\", "");
+                                configElements.Add(new ConfigElement(element[0], element[1].Trim(), lastComment));
+                            }
+                            else
+                            {
+                                configElements.Add(new ConfigElement(element[0], element[1].Trim()));
+                            }
+                            lastComment = "";
+                        }
+                        else if(rComment.IsMatch(line))
+                        {
+                            lastComment = line;
                         }
 
                     }
@@ -364,6 +387,67 @@ namespace NaturalnieApp.Initialization
                     }
                 }
                 catch(Exception e)
+                {
+                    MessageBox.Show(e.ToString());
+                }
+
+            }
+            else
+            {
+
+                try
+                {
+                    // Open the text file using a stream reader.
+                    using (var file = new StreamWriter(this.FullPath))
+                    {
+                        file.Write("");
+                        foreach (ConfigElement element in configDataToWrite)
+                        {
+                            file.WriteLine(element.PrepareDataToWrite());
+                            file.WriteLine("\n");
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.ToString());
+                }
+            }
+
+        }
+        //==================================================================================
+        public void UpdateConfigFile(List<ConfigElement> DataToWrite)
+        {
+
+            bool fCreated;
+            List<ConfigElement> configDataToWrite;
+            configDataToWrite = DataToWrite;
+
+            //Verify if fileName contain proper .txt extension
+            Regex r = new Regex(@"^.*\.txt$");
+
+            //Call method to create new file
+            fCreated = CreateFile();
+
+            //If file created successfully, fill it with template
+            if (fCreated)
+            {
+                try
+                {
+                    // Open the text file using a stream reader.
+                    using (var file = new StreamWriter(this.FullPath))
+                    {
+
+                        foreach (ConfigElement element in configDataToWrite)
+                        {
+                            file.WriteLine(element.PrepareDataToWrite());
+                            file.WriteLine("\n");
+                        }
+
+                    }
+                }
+                catch (Exception e)
                 {
                     MessageBox.Show(e.ToString());
                 }

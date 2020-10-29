@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.IO.Ports;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
@@ -8,11 +9,11 @@ namespace NaturalnieApp.Forms
 {
     public partial class ElzabSettings : Form
     {
-        private ConfigFileObject ConfigFileOjbInst;
+        private ConfigFileObject ConfigFileObjInst;
 
         public ElzabSettings(ConfigFileObject conFileObj)
         {
-            this.ConfigFileOjbInst = conFileObj;
+            this.ConfigFileObjInst = conFileObj;
             InitializeComponent();
             UpdateView(conFileObj);
         }
@@ -73,7 +74,7 @@ namespace NaturalnieApp.Forms
         private void bUpdate_Click(object sender, EventArgs e)
         {
             //Udpate view of all properties
-            UpdateView(ConfigFileOjbInst);
+            UpdateView(ConfigFileObjInst);
         }
 
         private void cCOMPorts_SelectedIndexChanged(object sender, EventArgs e)
@@ -90,7 +91,24 @@ namespace NaturalnieApp.Forms
 
         private void bSave_Click(object sender, EventArgs e)
         {
-            ConfigFileOjbInst.SaveData();
+            ConfigFileObjInst.SaveData();
+        }
+
+        private void cCOMPorts_ValueMemberChanged(object sender, EventArgs e)
+        {
+
+            //Parse sender to and proper type object
+            ComboBox obj = (ComboBox) sender;
+            ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", obj.SelectedItem.ToString());
+            ;
+        }
+
+        private void cBaudRate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Parse sender to and proper type object
+            ComboBox obj = (ComboBox)sender;
+            ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", obj.SelectedItem.ToString());
+            ;
         }
     }
 }

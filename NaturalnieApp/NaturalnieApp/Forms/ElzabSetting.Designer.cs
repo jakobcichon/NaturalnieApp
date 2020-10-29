@@ -154,6 +154,7 @@ namespace NaturalnieApp.Forms
             this.cCOMPorts.Size = new System.Drawing.Size(132, 28);
             this.cCOMPorts.TabIndex = 6;
             this.cCOMPorts.SelectedIndexChanged += new System.EventHandler(this.cCOMPorts_SelectedIndexChanged);
+            this.cCOMPorts.ValueMemberChanged += new System.EventHandler(this.cCOMPorts_ValueMemberChanged);
             // 
             // panel1
             // 
@@ -194,6 +195,7 @@ namespace NaturalnieApp.Forms
             this.cBaudRate.Name = "cBaudRate";
             this.cBaudRate.Size = new System.Drawing.Size(132, 28);
             this.cBaudRate.TabIndex = 9;
+            this.cBaudRate.SelectedIndexChanged += new System.EventHandler(this.cBaudRate_SelectedIndexChanged);
             // 
             // label1
             // 
