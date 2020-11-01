@@ -81,7 +81,21 @@ namespace NaturalnieApp.Initialization
         //Method used to save current data from object fo text file
         public void SaveData()
         {
-            ConfigFileInst.UpdateConfigFile(this.ConfigFileElements);
+            this.ConfigFileInst.UpdateConfigFile(this.ConfigFileElements);
+        }
+
+        //Method used to read data from config file
+        public void ReadData()
+        {
+            this.ConfigFileElements = this.ConfigFileInst.ReadConfigFileElement();
+        }
+
+        //Method used to restor config file to defaults values
+        public void ResetToDefault()
+        {
+            this.ConfigFileInst.RemoveFile();
+            this.ConfigFileInst.InitializeConfigFile();
+            this.ConfigFileElements = this.ConfigFileInst.ReadConfigFileElement();
         }
 
     }
@@ -262,22 +276,6 @@ namespace NaturalnieApp.Initialization
         }
 
         //==================================================================================
-        //Check if config file exist. If path not specify, use current path.
-        private bool CheckIfConfigFileExist(string fileName, string path = "")
-        {
-            //If path not specofied, used current diectory
-            if (path == "")
-            {
-                path = Directory.GetCurrentDirectory();
-            }
-
-            bool dExist = false;
-            string fullPath = path + "\\" + fileName;
-            dExist = File.Exists(fullPath);
-            return dExist;
-        }
-
-        //==================================================================================
         //Create file under specify path. fileName must include file extension
         //If file with given name does not exist under given path method will create a new file
         // and return "True".
@@ -288,7 +286,7 @@ namespace NaturalnieApp.Initialization
             bool fExist, retVal = false;
 
             //Check if directory exist
-            fExist = CheckIfConfigFileExist(this.FullPath);
+            fExist = File.Exists(this.FullPath);
 
             //Create file of not exist
             if (!fExist)
@@ -313,6 +311,13 @@ namespace NaturalnieApp.Initialization
             //Return value
             return retVal;
 
+        }
+
+        //==================================================================================
+        //Method used to remove file.
+        public void RemoveFile()
+        {
+            File.Delete(this.FullPath);
         }
 
         //==================================================================================
@@ -392,30 +397,7 @@ namespace NaturalnieApp.Initialization
                 }
 
             }
-            else
-            {
-
-                try
-                {
-                    // Open the text file using a stream reader.
-                    using (var file = new StreamWriter(this.FullPath))
-                    {
-                        file.Write("");
-                        foreach (ConfigElement element in configDataToWrite)
-                        {
-                            file.WriteLine(element.PrepareDataToWrite());
-                            file.WriteLine("\n");
-                        }
-
-                    }
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.ToString());
-                }
-            }
-
-        }
+         }
         //==================================================================================
         public void UpdateConfigFile(List<ConfigElement> DataToWrite)
         {

@@ -30,6 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.pMenu = new System.Windows.Forms.Panel();
+            this.pProductSubMenu = new System.Windows.Forms.Panel();
+            this.bFindProduct = new System.Windows.Forms.Button();
+            this.bNewProduct = new System.Windows.Forms.Button();
+            this.bProductMenu = new System.Windows.Forms.Button();
             this.pCashRegisterSubMenu = new System.Windows.Forms.Panel();
             this.bCashRegisterSettings = new System.Windows.Forms.Button();
             this.bCashRegisterInfo = new System.Windows.Forms.Button();
@@ -40,6 +44,7 @@
             this.bExit = new System.Windows.Forms.Button();
             this.pContainer = new System.Windows.Forms.Panel();
             this.pMenu.SuspendLayout();
+            this.pProductSubMenu.SuspendLayout();
             this.pCashRegisterSubMenu.SuspendLayout();
             this.pHeader.SuspendLayout();
             this.SuspendLayout();
@@ -47,6 +52,8 @@
             // pMenu
             // 
             this.pMenu.BackColor = System.Drawing.Color.White;
+            this.pMenu.Controls.Add(this.pProductSubMenu);
+            this.pMenu.Controls.Add(this.bProductMenu);
             this.pMenu.Controls.Add(this.pCashRegisterSubMenu);
             this.pMenu.Controls.Add(this.bCashRegister);
             this.pMenu.Controls.Add(this.bMainMenu);
@@ -56,6 +63,65 @@
             this.pMenu.Name = "pMenu";
             this.pMenu.Size = new System.Drawing.Size(200, 570);
             this.pMenu.TabIndex = 0;
+            // 
+            // pProductSubMenu
+            // 
+            this.pProductSubMenu.BackColor = System.Drawing.Color.DimGray;
+            this.pProductSubMenu.Controls.Add(this.bFindProduct);
+            this.pProductSubMenu.Controls.Add(this.bNewProduct);
+            this.pProductSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pProductSubMenu.Location = new System.Drawing.Point(0, 256);
+            this.pProductSubMenu.Name = "pProductSubMenu";
+            this.pProductSubMenu.Size = new System.Drawing.Size(200, 60);
+            this.pProductSubMenu.TabIndex = 5;
+            // 
+            // bFindProduct
+            // 
+            this.bFindProduct.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bFindProduct.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bFindProduct.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bFindProduct.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bFindProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bFindProduct.ForeColor = System.Drawing.Color.White;
+            this.bFindProduct.Location = new System.Drawing.Point(0, 30);
+            this.bFindProduct.Name = "bFindProduct";
+            this.bFindProduct.Size = new System.Drawing.Size(200, 30);
+            this.bFindProduct.TabIndex = 5;
+            this.bFindProduct.Text = "Znajdź produkt";
+            this.bFindProduct.UseVisualStyleBackColor = false;
+            // 
+            // bNewProduct
+            // 
+            this.bNewProduct.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bNewProduct.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.bNewProduct.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bNewProduct.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bNewProduct.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bNewProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bNewProduct.ForeColor = System.Drawing.Color.White;
+            this.bNewProduct.Location = new System.Drawing.Point(0, 0);
+            this.bNewProduct.Name = "bNewProduct";
+            this.bNewProduct.Size = new System.Drawing.Size(200, 30);
+            this.bNewProduct.TabIndex = 4;
+            this.bNewProduct.Text = "Dodaj nowy produkt";
+            this.bNewProduct.UseVisualStyleBackColor = false;
+            this.bNewProduct.Click += new System.EventHandler(this.bNewProduct_Click);
+            // 
+            // bProductMenu
+            // 
+            this.bProductMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bProductMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bProductMenu.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bProductMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bProductMenu.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bProductMenu.ForeColor = System.Drawing.Color.White;
+            this.bProductMenu.Location = new System.Drawing.Point(0, 216);
+            this.bProductMenu.Name = "bProductMenu";
+            this.bProductMenu.Size = new System.Drawing.Size(200, 40);
+            this.bProductMenu.TabIndex = 4;
+            this.bProductMenu.Text = "Menu produktu";
+            this.bProductMenu.UseVisualStyleBackColor = false;
+            this.bProductMenu.Click += new System.EventHandler(this.bProductMenu_Click);
             // 
             // pCashRegisterSubMenu
             // 
@@ -168,8 +234,7 @@
             this.bExit.Size = new System.Drawing.Size(30, 30);
             this.bExit.TabIndex = 0;
             this.bExit.UseVisualStyleBackColor = true;
-            this.bExit.Click += new System.EventHandler(this.button1_Click);
-            this.bExit.MouseUp += new System.Windows.Forms.MouseEventHandler(this.bExit_MouseUp);
+            this.bExit.Click += new System.EventHandler(this.bExit_Click);
             // 
             // pContainer
             // 
@@ -194,6 +259,7 @@
             this.Name = "MainWindow";
             this.Text = "ElzabCommands";
             this.pMenu.ResumeLayout(false);
+            this.pProductSubMenu.ResumeLayout(false);
             this.pCashRegisterSubMenu.ResumeLayout(false);
             this.pHeader.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -212,5 +278,9 @@
         private System.Windows.Forms.Panel pHeader;
         private System.Windows.Forms.Button bExit;
         private System.Windows.Forms.Panel pContainer;
+        private System.Windows.Forms.Panel pProductSubMenu;
+        private System.Windows.Forms.Button bFindProduct;
+        private System.Windows.Forms.Button bNewProduct;
+        private System.Windows.Forms.Button bProductMenu;
     }
 }

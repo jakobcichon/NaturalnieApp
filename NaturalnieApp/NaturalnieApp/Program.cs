@@ -18,14 +18,9 @@ namespace NaturalnieApp
         {
             //Read data from config file 
             ConfigFileObject ConfigFileInst = new ConfigFileObject();
-            string test = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
-
 
             int cashRegisterID = 1;
             string path = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
-            string[] elementList = ConfigFileInst.ListAllVariables(); 
-
-
 
            // ElzabCommand_OBAJTY Test = new ElzabCommand_OBAJTY(path, cashRegisterID);
             ElzabCommand_OGRUPA OdczytGrupy = new ElzabCommand_OGRUPA(path, cashRegisterID);

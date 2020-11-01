@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,55 +28,6 @@ namespace NaturalnieApp.Forms
             customizeDesign();
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void pControl_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void customizeDesign()
-        {
-            pCashRegisterSubMenu.Visible = false;
-        }
-
-        private void hideSubMenu(Panel panel)
-        {
-            if (panel.Visible == true)
-                panel.Visible = false;
-        }
-
-        private void toggleSubMenu(Panel panel)
-        {
-            if (panel.Visible == true)
-                panel.Visible = false;
-            else panel.Visible = true;
-        }
-
-        private void bCashRegister_Click(object sender, EventArgs e)
-        {
-            toggleSubMenu(pCashRegisterSubMenu);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //Application.Exit();
-        }
-
-        
         #region Movable window
         private void pHeader_MouseDown(object sender, MouseEventArgs e)
         {
@@ -100,6 +52,35 @@ namespace NaturalnieApp.Forms
         }
         #endregion
 
+        #region Main window general settings
+        //Method used to customize initialize menu
+        private void customizeDesign()
+        {
+            pCashRegisterSubMenu.Visible = false;
+            pProductSubMenu.Visible = false;
+        }
+        private void bExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+        #endregion
+
+        #region Method used to operate with submenu
+        private void hideSubMenu(Panel panel)
+        {
+            if (panel.Visible == true)
+                panel.Visible = false;
+        }
+
+        private void toggleSubMenu(Panel panel)
+        {
+            if (panel.Visible == true)
+                panel.Visible = false;
+            else panel.Visible = true;
+        }
+        #endregion 
+
+        #region Cash register submenu
 
         private void bCashRegisterInfo_Click(object sender, EventArgs e)
         {
@@ -118,11 +99,27 @@ namespace NaturalnieApp.Forms
             frm.Show();
 
         }
-
-        private void bExit_MouseUp(object sender, MouseEventArgs e)
+        private void bCashRegister_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            toggleSubMenu(pCashRegisterSubMenu);
         }
+
+        #endregion
+
+        #region Product submenu
+        private void bProductMenu_Click(object sender, EventArgs e)
+        {
+            toggleSubMenu(pProductSubMenu);
+        }
+        private void bNewProduct_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            AddNewProduct frm = new AddNewProduct() { TopLevel = false, TopMost = true };
+            this.pContainer.Controls.Add(frm);
+            frm.Show();
+        }
+        #endregion
+
 
     }
 }

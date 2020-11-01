@@ -56,6 +56,7 @@ namespace NaturalnieApp.Forms
             this.cBaudRate = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lCOMPortNr = new System.Windows.Forms.Label();
+            this.bDefaults = new System.Windows.Forms.Button();
             this.pSettingNr1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -154,7 +155,6 @@ namespace NaturalnieApp.Forms
             this.cCOMPorts.Size = new System.Drawing.Size(132, 28);
             this.cCOMPorts.TabIndex = 6;
             this.cCOMPorts.SelectedIndexChanged += new System.EventHandler(this.cCOMPorts_SelectedIndexChanged);
-            this.cCOMPorts.ValueMemberChanged += new System.EventHandler(this.cCOMPorts_ValueMemberChanged);
             // 
             // panel1
             // 
@@ -195,7 +195,6 @@ namespace NaturalnieApp.Forms
             this.cBaudRate.Name = "cBaudRate";
             this.cBaudRate.Size = new System.Drawing.Size(132, 28);
             this.cBaudRate.TabIndex = 9;
-            this.cBaudRate.SelectedIndexChanged += new System.EventHandler(this.cBaudRate_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -221,6 +220,19 @@ namespace NaturalnieApp.Forms
             this.lCOMPortNr.Text = "Numer Portu COM";
             this.lCOMPortNr.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // bDefaults
+            // 
+            this.bDefaults.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bDefaults.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bDefaults.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bDefaults.Location = new System.Drawing.Point(12, 508);
+            this.bDefaults.Name = "bDefaults";
+            this.bDefaults.Size = new System.Drawing.Size(100, 50);
+            this.bDefaults.TabIndex = 8;
+            this.bDefaults.Text = "Ustawienia domyślne";
+            this.bDefaults.UseVisualStyleBackColor = false;
+            this.bDefaults.Click += new System.EventHandler(this.bDefaults_Click);
+            // 
             // ElzabSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -228,6 +240,7 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
+            this.Controls.Add(this.bDefaults);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.bUpdate);
             this.Controls.Add(this.bSave);
@@ -259,5 +272,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RichTextBox tbElzabPath;
+        private System.Windows.Forms.Button bDefaults;
     }
 }

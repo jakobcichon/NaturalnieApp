@@ -20,6 +20,9 @@ namespace NaturalnieApp.Forms
 
         public void UpdateView(ConfigFileObject conFileObj)
         {
+            //Update object with information from file
+            conFileObj.ReadData();
+
             //Elzab Path - add text and format it
             this.tbElzabPath.Text = conFileObj.GetValueByVariableName("ElzabCommandPath");
             TextBoxFormat(this.tbElzabPath);
@@ -91,24 +94,37 @@ namespace NaturalnieApp.Forms
 
         private void bSave_Click(object sender, EventArgs e)
         {
+            //Update value of COM port
+            ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", cCOMPorts.SelectedItem.ToString());
+
+            //Update value of Baud rate
+            ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", cBaudRate.SelectedItem.ToString());
+
+            //Update value of path
+            ConfigFileObjInst.ChangeVariableValue("ElzabCommandPath", tbElzabPath.Text.ToString());
+
             ConfigFileObjInst.SaveData();
         }
 
-        private void cCOMPorts_ValueMemberChanged(object sender, EventArgs e)
+        private void bDefaults_Click(object sender, EventArgs e)
         {
+            //String to show
+            string textToShow = "Przywrócić ustawienia domyśle? Wszyskie aktualne dane zostaną utracone";
 
-            //Parse sender to and proper type object
-            ComboBox obj = (ComboBox) sender;
-            ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", obj.SelectedItem.ToString());
-            ;
-        }
+            //Confirm action of defaults set
+            DialogResult dialogResult = MessageBox.Show(textToShow, "Ustawienia domyśle", MessageBoxButtons.YesNo);
 
-        private void cBaudRate_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //Parse sender to and proper type object
-            ComboBox obj = (ComboBox)sender;
-            ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", obj.SelectedItem.ToString());
-            ;
+            if (dialogResult == DialogResult.Yes)
+            {
+                //Reset to defaults
+                ConfigFileObjInst.ResetToDefault();
+
+                //Udpate view of all properties
+                UpdateView(ConfigFileObjInst);
+
+                //Show message
+                MessageBox.Show("Akcja zakończona sukcesem!");
+            }
         }
     }
 }
