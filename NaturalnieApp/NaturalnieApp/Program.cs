@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using ElzabCommands;
+using NaturalnieApp.Database;
 
 namespace NaturalnieApp
 {
@@ -16,6 +17,15 @@ namespace NaturalnieApp
         [STAThread]
         static void Main()
         {
+
+            using(var context = new ShopContext())
+            {
+                var product = context.Product;
+                ;
+            }
+
+            //DatabaseMain testDB = new DatabaseMain();
+            //testDB.ReadAllFromTable("products");
             //Read data from config file 
             ConfigFileObject ConfigFileInst = new ConfigFileObject();
 
