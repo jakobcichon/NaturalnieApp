@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MySql.Data.Entity;
+using System.Data.Common;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using MySQL.Data.EntityFrameworkCore.Extensions;
-using System.Threading.Tasks;
 
 
 namespace NaturalnieApp.Database
 {
+    // Code-Based Configuration and Dependency resolution
+    [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class ShopContext : DbContext
     {
         public DbSet<ProductElement> Product { get; set; }
@@ -21,9 +19,17 @@ namespace NaturalnieApp.Database
 
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // Constructor to use on a DbConnection that is already opened
+        public ShopContext(DbConnection existingConnection, bool contextOwnsConnection)
+          : base(existingConnection, contextOwnsConnection)
         {
-            optionsBuilder.UseMySQL("server=localhost;database=library;user=user;password=password");
+
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ProductElement>().MapToStoredProcedures();
         }
 
     }

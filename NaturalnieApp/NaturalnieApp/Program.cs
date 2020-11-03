@@ -1,11 +1,12 @@
 ﻿using NaturalnieApp.Initialization;
 using NaturalnieApp.Forms;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using ElzabCommands;
 using NaturalnieApp.Database;
+using MySql.Data.MySqlClient;
+
 
 namespace NaturalnieApp
 {
@@ -18,16 +19,26 @@ namespace NaturalnieApp
         static void Main()
         {
 
-            using(var context = new ShopContext())
+            string connectionString = "server=127.0.0.1;port=3306;database=shop;uid=admin;password=admin";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                var product = context.Product;
-                ;
+                // Create database if not exists
+                using (ShopContext contextDB = new ShopContext(connection, false))
+                {
+                    contextDB.Database.CreateIfNotExists();
+                    contextDB.Product.
+                }
+
+                connection.Open();
+                MySqlTransaction transaction = connection.BeginTransaction();
+                connection.Close();
             }
 
-            //DatabaseMain testDB = new DatabaseMain();
-            //testDB.ReadAllFromTable("products");
-            //Read data from config file 
-            ConfigFileObject ConfigFileInst = new ConfigFileObject();
+                //DatabaseMain testDB = new DatabaseMain();
+                //testDB.ReadAllFromTable("products");
+                //Read data from config file 
+                ConfigFileObject ConfigFileInst = new ConfigFileObject();
 
             int cashRegisterID = 1;
             string path = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
