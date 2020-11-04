@@ -22,31 +22,21 @@ namespace NaturalnieApp
             DatabaseCommands databaseCommands = new DatabaseCommands();
             List<string> tmp = databaseCommands.GetProductsNameList();
             Product tmp2 = databaseCommands.GetProductEntityByProductName("Krem na noc");
-            ;
-            /*
-
-            string connectionString = "server=DESKTOP-L2L4V68;port=3306;database=shop;uid=admin;password=admin";
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            Product productTmp = new Product
             {
-                // Create database if not exists
-                using (ShopContext contextDB = new ShopContext(connection, false))
-                {
-                    foreach(var product in contextDB.Product)
-                    {
-                        ;
-                    }
-                }
+                ProductId = 3,
+                Manufacturer = "Producent Miodów2",
+                ProductName = "Miód wielokwiatowy2",
+                Quantity = 3,
+                PriceNet =  (float) 39.80,
+                Tax = 8,
+                Marigin = 4
 
-                connection.Open();
-                MySqlTransaction transaction = connection.BeginTransaction();
+            };
+            databaseCommands.AddNewProduct2(productTmp);
+            ;
 
-                connection.Close();
-            
-            */
 
-            //DatabaseMain testDB = new DatabaseMain();
-            //testDB.ReadAllFromTable("products");
             //Read data from config file 
             ConfigFileObject ConfigFileInst = new ConfigFileObject();
 

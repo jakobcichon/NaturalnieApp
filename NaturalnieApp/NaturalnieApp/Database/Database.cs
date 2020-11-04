@@ -14,8 +14,9 @@ namespace NaturalnieApp.Database
 
     public class Product
     {
-
+        [Key]
         public int ProductId { get; set; }
+
         public string Manufacturer { get; set; }
         public string ProductName { get; set; }
         public int Quantity { get; set; }
@@ -27,7 +28,7 @@ namespace NaturalnieApp.Database
 
     public class Suppliers
     {
-
+        [Key]
         public int Id { get; set; }
         public string ManufacturerName { get; set; }
         public string SupplierAddressLine1 { get; set; }
@@ -38,81 +39,4 @@ namespace NaturalnieApp.Database
         public string SupplierPhone { get; set; }
 
     }
-
-    /*
-    public class DatabaseMain
-    {
-        private const string SERVER = "127.0.0.1";
-        private const string DATABSE = "shop";
-        private const string UID = "root";
-        private const string PASSWORD = "admin";
-
-        // Class fields
-        MySqlConnection connection { get; set; }
-        string mySqlConnectionString { get; set; }
-
-        //Class constructor
-        public DatabaseMain()
-        {
-            //Prepare connection string
-            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
-            builder.Server = SERVER;
-            builder.Database = DATABSE;
-            builder.UserID = UID;
-            builder.Password = PASSWORD;
-            this.mySqlConnectionString = builder.ToString();
-            this.connection = new MySqlConnection();
-            this.connection.ConnectionString = this.mySqlConnectionString;
-            ProjectDBEni
-        }
-
-        //Method uesd to connect to database
-        public void ConnectToDb()
-        {
-            //Try to connect to Database
-            try
-            {
-                this.connection.Open();
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        //Method used to disconnect from database
-        public void DisconnectFromDb()
-        {
-            //Disconnect from DB
-            try
-            {
-                connection.Close();
-            }
-            catch (MySqlException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        //Method used to read all data from specific table
-        public void ReadAllFromTable(string tableName)
-        {
-            
-            string query = "SELECT * FROM " + tableName;
-            MySqlCommand command = new MySqlCommand(query, this.connection);
-            ConnectToDb();
-            MySqlDataReader dataReader;
-            dataReader = command.ExecuteReader();
-            while(dataReader.Read())
-            {
-                string tmp = dataReader[1].ToString();
-                ;
-            }
-            dataReader.Close();
-            DisconnectFromDb();
-        }
-
-
-    }
-    */
 }
