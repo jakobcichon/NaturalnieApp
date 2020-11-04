@@ -9,9 +9,9 @@ namespace NaturalnieApp.Database
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class ShopContext : DbContext
     {
-        public DbSet<ProductElement> Product { get; set; }
+        public DbSet<Product> Product { get; set; }
 
-        public DbSet<ProductSuppliers> ProductSuppliers { get; set; }
+        public DbSet<Suppliers> ProductSuppliers { get; set; }
 
         public ShopContext()
             : base("shop")
@@ -29,7 +29,7 @@ namespace NaturalnieApp.Database
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ProductElement>().MapToStoredProcedures();
+            modelBuilder.Entity<Product>().MapToStoredProcedures();
         }
 
     }

@@ -7,31 +7,35 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using System.Drawing;
+using System.ComponentModel.DataAnnotations;
 
 namespace NaturalnieApp.Database
 {
 
-    public class ProductElement
+    public class Product
     {
-        int ProductId { get; set; }
-        string Manufacturer { get; set; }
-        string ProductName { get; set; }
-        int Quantity { get; set; }
-        float PriceNet { get; set; }
-        int Tax { get; set; }
-        float Marigin { get; set; }
+
+        public int ProductId { get; set; }
+        public string Manufacturer { get; set; }
+        public string ProductName { get; set; }
+        public int Quantity { get; set; }
+        public float PriceNet { get; set; }
+        public int Tax { get; set; }
+        public float Marigin { get; set; }
     }
 
-    public class ProductSuppliers
+
+    public class Suppliers
     {
-        int Id { get; set; }
-        string ManufacturerName { get; set; }
-        string SupplierAddressLine1 { get; set; }
-        string SupplierAddressLine2 { get; set; }
-        string SupplierAddressLine3 { get; set; }
-        string SupplierEmail { get; set; }
-        string SupplierInfo{ get; set; }
-        string SupplierPhone { get; set; }
+
+        public int Id { get; set; }
+        public string ManufacturerName { get; set; }
+        public string SupplierAddressLine1 { get; set; }
+        public string SupplierAddressLine2 { get; set; }
+        public string SupplierAddressLine3 { get; set; }
+        public string SupplierEmail { get; set; }
+        public string SupplierInfo { get; set; }
+        public string SupplierPhone { get; set; }
 
     }
 

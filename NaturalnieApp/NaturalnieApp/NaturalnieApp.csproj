@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Database.cs" />
+    <Compile Include="Database\DatabaseCommands.cs" />
     <Compile Include="Database\ShopContext.cs" />
     <Compile Include="ElzabDriver\ElzabDriver.cs" />
     <Compile Include="ElzabDriver\ElzabCommands.cs" />
