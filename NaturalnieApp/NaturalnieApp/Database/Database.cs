@@ -8,35 +8,63 @@ using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using System.Drawing;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NaturalnieApp.Database
 {
-
+    [Table("product")]
     public class Product
     {
         [Key]
-        public int ProductId { get; set; }
-
+        public int Id { get; set; }
+        public int SupplierId { get; set; }
+        public int ElzabProductId { get; set; }
         public string Manufacturer { get; set; }
         public string ProductName { get; set; }
-        public int Quantity { get; set; }
         public float PriceNet { get; set; }
         public int Tax { get; set; }
         public float Marigin { get; set; }
+        public string BarCode { get; set; }
+        public string ProductInfo { get; set; }
+    }
+
+    [Table("stock")]
+    public class Stock
+    {
+        [Key]
+        public int Id { get; set; }
+        public int ProductId { get; set; }
+        public int ActualQuantity { get; set; }
+        public int MinQuantity { get; set; }
+        public int MaxQuantity { get; set; }
+        public bool QuantityWarning { get; set; }
+        public DateTime DateAdded { get; set; }
+        public DateTime ExpirationDate { get; set; }
     }
 
 
+    [Table("sales")]
+    public class Sales
+    {
+        [Key]
+        public int Id { get; set; }
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public DateTime SalesDate { get; set; }
+    }
+
+    [Table("suppliers")]
     public class Suppliers
     {
         [Key]
         public int Id { get; set; }
-        public string ManufacturerName { get; set; }
-        public string SupplierAddressLine1 { get; set; }
-        public string SupplierAddressLine2 { get; set; }
-        public string SupplierAddressLine3 { get; set; }
-        public string SupplierEmail { get; set; }
-        public string SupplierInfo { get; set; }
-        public string SupplierPhone { get; set; }
+        public string Name { get; set; }
+        public string Info { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public string AddressLine3 { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
 
     }
 }

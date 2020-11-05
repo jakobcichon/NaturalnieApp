@@ -21,19 +21,7 @@ namespace NaturalnieApp
         {
             DatabaseCommands databaseCommands = new DatabaseCommands();
             List<string> tmp = databaseCommands.GetProductsNameList();
-            Product tmp2 = databaseCommands.GetProductEntityByProductName("Krem na noc");
-            Product productTmp = new Product
-            {
-                ProductId = 3,
-                Manufacturer = "Producent Miodów2",
-                ProductName = "Miód wielokwiatowy2",
-                Quantity = 3,
-                PriceNet =  (float) 39.80,
-                Tax = 8,
-                Marigin = 4
-
-            };
-            databaseCommands.AddNewProduct2(productTmp);
+            List<string> tmp2 = databaseCommands.GetSuppliersNameList();
             ;
 
 

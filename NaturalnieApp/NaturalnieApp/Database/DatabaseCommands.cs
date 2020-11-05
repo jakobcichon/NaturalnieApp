@@ -6,91 +6,69 @@ namespace NaturalnieApp.Database
 {
     public class DatabaseCommands
     {
-        //string connectionString = "server=DESKTOP-L2L4V68;port=3306;database=shop;uid=admin;password=admin";
-        string connectionString = "server=DESKTOP-ACAAKBG;port=3306;database=shop;uid=admin;password=admin";
-        MySqlConnection mySqlConnection { get; set; }
-
-
-        public DatabaseCommands()
-        {
-            this.mySqlConnection = new MySqlConnection(this.connectionString);
-        }
-        
-
-        //Method used to retrieve from DB product name lsit
+        //====================================================================================================
+        //Method used to retrieve from DB product name list
+        //====================================================================================================
         public List<string> GetProductsNameList()
         {
-            List<string> productsList = new List<string>();
+            List<string> productList = new List<string>();
 
-            using (this.mySqlConnection)
+            using (ShopContext contextDB = new ShopContext())
             {
-                this.mySqlConnection.Open();
-                // Create database if not exists
-                using (ShopContext contextDB = new ShopContext(this.mySqlConnection, false))
+                foreach (var product in contextDB.Product)
                 {
-                    foreach (var product in contextDB.Product)
-                    {
-                        productsList.Add(product.ProductName);
-                    }
+                    productList.Add(product.ProductName);
                 }
             }
 
-            return productsList;
+            return productList;
+        }
+        public List<string> GetSuppliersNameList()
+        {
+            List<string> productList = new List<string>();
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                foreach (var supplier in contextDB.Suppliers)
+                {
+                    productList.Add(supplier.Name);
+                }
+            }
+
+            return productList;
         }
 
+        //====================================================================================================
         //Method used to retrieve from DB Product entity
+        //====================================================================================================
         public Product GetProductEntityByProductName(string productName)
         {
             Product localProduct = new Product();
 
-            using (this.mySqlConnection)
+            using (ShopContext contextDB = new ShopContext())
             {
-                this.mySqlConnection.Open();
-                // Create database if not exists
-                using (ShopContext contextDB = new ShopContext(this.mySqlConnection, false))
-                {
-                    var query = from p in contextDB.Product
-                                where p.ProductName == productName
-                                select p;
+                var query = from p in contextDB.Product
+                            where p.ProductName == productName
+                            select p;
 
-                    localProduct = query.SingleOrDefault();
-                    ;
-                }
+                localProduct = query.SingleOrDefault();
             }
 
             return localProduct;
         }
 
+        //====================================================================================================
         //Method used to add new product
+        //====================================================================================================
         public void AddNewProduct(Product product)
-        {
-            using (this.mySqlConnection)
+        { 
+            using (ShopContext contextDB = new ShopContext())
             {
-                this.mySqlConnection.Open();
-                // Create database if not exists
-                using (ShopContext contextDB = new ShopContext(this.mySqlConnection, false))
-                {
-
-                    contextDB.Product.Add(product);
-                    int test = contextDB.SaveChanges();
-                    ;
-                }
+                contextDB.Product.Add(product);
+                int test = contextDB.SaveChanges();
             }
         }
 
-        public void AddNewProduct2(Product product)
-        {
-                // Create database if not exists
-                using (ShopContext contextDB = new ShopContext())
-                {
-
-                    contextDB.Product.Add(product);
-                    
-                    int test = contextDB.SaveChanges();
-                    ;
-                }
-     
-        }
     }
 
 

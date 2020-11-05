@@ -10,8 +10,9 @@ namespace NaturalnieApp.Database
     public class ShopContext : DbContext
     {
         public DbSet<Product> Product { get; set; }
-
-        public DbSet<Suppliers> ProductSuppliers { get; set; }
+        public DbSet<Sales> Sales { get; set; }
+        public DbSet<Stock> Stock { get; set; }
+        public DbSet<Suppliers> Suppliers { get; set; }
 
         public ShopContext()
             : base("shop")
