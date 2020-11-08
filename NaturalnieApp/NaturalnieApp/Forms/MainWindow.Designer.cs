@@ -89,6 +89,7 @@
             this.bFindProduct.TabIndex = 5;
             this.bFindProduct.Text = "Znajdź produkt";
             this.bFindProduct.UseVisualStyleBackColor = false;
+            this.bFindProduct.Click += new System.EventHandler(this.bFindProduct_Click);
             // 
             // bNewProduct
             // 

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NaturalnieApp.Initialization;
+using NaturalnieApp.Database;
 
 
 namespace NaturalnieApp.Forms
@@ -118,8 +119,20 @@ namespace NaturalnieApp.Forms
             this.pContainer.Controls.Add(frm);
             frm.Show();
         }
+
         #endregion
 
+        #region Find product submenu
+        private void bFindProduct_Click(object sender, EventArgs e)
+        {
 
+
+            this.pContainer.Controls.Clear();
+            ShowProductInfo frm = new ShowProductInfo() { TopLevel = false, TopMost = true };
+            this.pContainer.Controls.Add(frm);
+            frm.Show();
+
+        }
+        #endregion
     }
 }

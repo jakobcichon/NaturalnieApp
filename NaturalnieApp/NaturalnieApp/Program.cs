@@ -22,6 +22,9 @@ namespace NaturalnieApp
             DatabaseCommands databaseCommands = new DatabaseCommands();
             List<string> tmp = databaseCommands.GetProductsNameList();
             List<string> tmp2 = databaseCommands.GetSuppliersNameList();
+            var supplier = new Supplier { Name = "Sylveco", 
+                Info = " Test info" };
+            //databaseCommands.AddSupplier(supplier)
             ;
 
 

@@ -15,7 +15,7 @@ namespace NaturalnieApp.Database
 
             using (ShopContext contextDB = new ShopContext())
             {
-                foreach (var product in contextDB.Product)
+                foreach (var product in contextDB.Products)
                 {
                     productList.Add(product.ProductName);
                 }
@@ -23,6 +23,10 @@ namespace NaturalnieApp.Database
 
             return productList;
         }
+
+        //====================================================================================================
+        //Method used to retrieve from DB supplier name list
+        //====================================================================================================
         public List<string> GetSuppliersNameList()
         {
             List<string> productList = new List<string>();
@@ -47,7 +51,7 @@ namespace NaturalnieApp.Database
 
             using (ShopContext contextDB = new ShopContext())
             {
-                var query = from p in contextDB.Product
+                var query = from p in contextDB.Products
                             where p.ProductName == productName
                             select p;
 
@@ -64,10 +68,23 @@ namespace NaturalnieApp.Database
         { 
             using (ShopContext contextDB = new ShopContext())
             {
-                contextDB.Product.Add(product);
+                contextDB.Products.Add(product);
                 int test = contextDB.SaveChanges();
             }
         }
+
+        //====================================================================================================
+        //Method used to add new supplier
+        //====================================================================================================
+        public void AddSupplier(Supplier supplier)
+        {
+            using (ShopContext contextDB = new ShopContext())
+            {
+                contextDB.Suppliers.Add(supplier);
+                int test = contextDB.SaveChanges();
+            }
+        }
+
 
     }
 

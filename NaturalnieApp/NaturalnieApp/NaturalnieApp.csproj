@@ -157,6 +157,12 @@
     <Compile Include="Forms\ElzabInfo.Designer.cs">
       <DependentUpon>ElzabInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ProductMenu\ShowProductInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProductMenu\ShowProductInfo.Designer.cs">
+      <DependentUpon>ShowProductInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ProductMenu\AddNewProduct.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,6 +190,9 @@
     <EmbeddedResource Include="Forms\ElzabInfo.resx">
       <DependentUpon>ElzabInfo.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProductMenu\ShowProductInfo.resx">
+      <DependentUpon>ShowProductInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProductMenu\AddNewProduct.resx">
       <DependentUpon>AddNewProduct.cs</DependentUpon>
     </EmbeddedResource>
@@ -196,6 +205,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

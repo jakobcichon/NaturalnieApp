@@ -9,10 +9,10 @@ namespace NaturalnieApp.Database
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class ShopContext : DbContext
     {
-        public DbSet<Product> Product { get; set; }
+        public DbSet<Product> Products { get; set; }
         public DbSet<Sales> Sales { get; set; }
         public DbSet<Stock> Stock { get; set; }
-        public DbSet<Suppliers> Suppliers { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
 
         public ShopContext()
             : base("shop")
