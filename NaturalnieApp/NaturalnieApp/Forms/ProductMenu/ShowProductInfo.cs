@@ -19,6 +19,20 @@ namespace NaturalnieApp.Forms
             this.databaseCommands = new DatabaseCommands();
         }
 
+        private void FillDataFromObject(Product obj)
+        {
+            //Supplier name
+            //need to  add
+
+            //Elzab product number
+            this.tbElzabProductNumber.Text = obj.ElzabProductId.ToString();
+            this.tbPrice.Text = obj.PriceNet.ToString();
+            this.cbTax.Text = obj.Tax.ToString();
+            this.tbMarigin.Text = obj.Marigin.ToString();
+            this.tbBarCode.Text = obj.BarCode.ToString();
+            this.rtbProductInfo.Text = obj.ProductInfo.ToString();
+        }
+
         private void bSave_Click(object sender, EventArgs e)
         {
 
@@ -26,20 +40,58 @@ namespace NaturalnieApp.Forms
 
         private void ShowProductInfo_Load(object sender, EventArgs e)
         {
-            
-            List<string> tmp = this.databaseCommands.GetProductsNameList();
-            List<string> tmp2 = this.databaseCommands.GetSuppliersNameList();
+            //Get product name list and product suppliers
+            List<string> productNameList = this.databaseCommands.GetProductsNameList();
+            List<string> productSuppliersList = this.databaseCommands.GetSuppliersNameList();
 
-            cbManufacturer.Items.AddRange(tmp2.ToArray());
-            cbProductList.Items.AddRange(tmp.ToArray());
-            ;
+            //Add fetched data to proper combo box
+            cbProductList.Items.AddRange(productNameList.ToArray());
+            cbManufacturer.Items.Clear();
+            cbManufacturer.Items.Add("Wszyscy");
+            cbManufacturer.Items.AddRange(productSuppliersList.ToArray());
+        }
+
+
+        private void cbManufacturer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.cbManufacturer.SelectedIndex != 0)
+            {
+                //Fetch filtered information from database
+                List<string> filteredProductNames = this.databaseCommands.GetProductsNameListByManufacturer(cbManufacturer.SelectedItem.ToString());
+                cbProductList.Items.Clear();
+                cbProductList.Items.AddRange(filteredProductNames.ToArray());
+
+            }
+            else
+            {
+                //Fetch filtered information from database
+                List<string> productNames = this.databaseCommands.GetProductsNameList();
+                cbProductList.Items.Clear();
+                cbProductList.Items.AddRange(productNames.ToArray());
+            }
 
         }
 
-        private void cbManufacturer_ValueMemberChanged(object sender, EventArgs e)
+        private void tbSuppierName_TextChanged(object sender, EventArgs e)
         {
-            List<string> tmp = this.databaseCommands.GetProductsNameListByManufacturer(cbManufacturer.SelectedItem.ToString());
-            ;
+            
+        }
+
+        private void tbSuppierName_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            int value;
+            bool success = int.TryParse(tbSuppierName.Text, out value);
+            if (!success)
+            {
+                errorProvider1.SetError(tbSuppierName, "Numer w kasie Elzab musi być wartością numeryczną");
+            }
+        }
+
+        private void cbProductList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Product entity = this.databaseCommands.GetProductEntityByProductName(this.cbProductList.SelectedItem.ToString());
+
+            this.FillDataFromObject(entity);
         }
     }
 }
