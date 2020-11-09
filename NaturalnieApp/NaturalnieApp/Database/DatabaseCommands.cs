@@ -25,6 +25,30 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB product name list, fitered by a specific manufacturer
+        //====================================================================================================
+        public List<string> GetProductsNameListByManufacturer(string manufacturerName)
+        {
+            List<string> productList = new List<string>();
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                //Create query to database
+                var query = from p in contextDB.Products
+                            where p.Manufacturer == manufacturerName
+                            select p;
+
+                //Add product names to the list
+                foreach (var products in query)
+                {
+                    productList.Add(products.ProductName);
+                }
+
+            }
+            return productList;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB supplier name list
         //====================================================================================================
         public List<string> GetSuppliersNameList()

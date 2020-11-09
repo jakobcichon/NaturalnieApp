@@ -35,5 +35,11 @@ namespace NaturalnieApp.Forms
             ;
 
         }
+
+        private void cbManufacturer_ValueMemberChanged(object sender, EventArgs e)
+        {
+            List<string> tmp = this.databaseCommands.GetProductsNameListByManufacturer(cbManufacturer.SelectedItem.ToString());
+            ;
+        }
     }
 }
