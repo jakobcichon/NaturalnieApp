@@ -1,4 +1,5 @@
-﻿namespace NaturalnieApp.Forms
+﻿using System.ComponentModel;
+namespace NaturalnieApp.Forms
 {
     partial class MainWindow
     {
@@ -28,6 +29,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.pMenu = new System.Windows.Forms.Panel();
             this.pProductSubMenu = new System.Windows.Forms.Panel();
@@ -43,6 +45,8 @@
             this.pHeader = new System.Windows.Forms.Panel();
             this.bExit = new System.Windows.Forms.Button();
             this.pContainer = new System.Windows.Forms.Panel();
+            this.lDatabaseConnState = new System.Windows.Forms.Label();
+            this.lDtabaseStatus = new System.Windows.Forms.Label();
             this.pMenu.SuspendLayout();
             this.pProductSubMenu.SuspendLayout();
             this.pCashRegisterSubMenu.SuspendLayout();
@@ -213,6 +217,8 @@
             // pHeader
             // 
             this.pHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.pHeader.Controls.Add(this.lDtabaseStatus);
+            this.pHeader.Controls.Add(this.lDatabaseConnState);
             this.pHeader.Controls.Add(this.bExit);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
@@ -246,6 +252,30 @@
             this.pContainer.Size = new System.Drawing.Size(1000, 570);
             this.pContainer.TabIndex = 5;
             // 
+            // lDatabaseConnState
+            // 
+            this.lDatabaseConnState.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lDatabaseConnState.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lDatabaseConnState.Location = new System.Drawing.Point(0, 0);
+            this.lDatabaseConnState.Margin = new System.Windows.Forms.Padding(5);
+            this.lDatabaseConnState.Name = "lDatabaseConnState";
+            this.lDatabaseConnState.Size = new System.Drawing.Size(271, 30);
+            this.lDatabaseConnState.TabIndex = 1;
+            this.lDatabaseConnState.Text = "Status połączenia do bazy danych:";
+            this.lDatabaseConnState.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lDtabaseStatus
+            // 
+            this.lDtabaseStatus.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lDtabaseStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lDtabaseStatus.Location = new System.Drawing.Point(271, 0);
+            this.lDtabaseStatus.Margin = new System.Windows.Forms.Padding(5);
+            this.lDtabaseStatus.Name = "lDtabaseStatus";
+            this.lDtabaseStatus.Size = new System.Drawing.Size(259, 30);
+            this.lDtabaseStatus.TabIndex = 2;
+            this.lDtabaseStatus.Text = "Brak informacji";
+            this.lDtabaseStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -264,7 +294,6 @@
             this.pCashRegisterSubMenu.ResumeLayout(false);
             this.pHeader.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion
@@ -283,5 +312,7 @@
         private System.Windows.Forms.Button bFindProduct;
         private System.Windows.Forms.Button bNewProduct;
         private System.Windows.Forms.Button bProductMenu;
+        private System.Windows.Forms.Label lDtabaseStatus;
+        private System.Windows.Forms.Label lDatabaseConnState;
     }
 }

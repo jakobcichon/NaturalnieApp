@@ -2,10 +2,27 @@
 using System.Security.Cryptography;
 using MySql.Data.MySqlClient;
 using System.Linq;
+using System;
+using System.Windows.Forms;
+
+
 namespace NaturalnieApp.Database
 {
     public class DatabaseCommands
     {
+        //====================================================================================================
+        //Class fields
+        //====================================================================================================
+        public bool ConnectionStatus { get; set; }
+
+        //====================================================================================================
+        //Class constructor
+        //====================================================================================================
+        public DatabaseCommands()
+        {
+            this.ConnectionStatus = false;
+        }
+
         //====================================================================================================
         //Method used to retrieve from DB product name list
         //====================================================================================================
@@ -20,7 +37,6 @@ namespace NaturalnieApp.Database
                     productList.Add(product.ProductName);
                 }
             }
-
             return productList;
         }
 
@@ -72,7 +88,6 @@ namespace NaturalnieApp.Database
         public Product GetProductEntityByProductName(string productName)
         {
             Product localProduct = new Product();
-
             using (ShopContext contextDB = new ShopContext())
             {
                 var query = from p in contextDB.Products
@@ -81,7 +96,6 @@ namespace NaturalnieApp.Database
 
                 localProduct = query.SingleOrDefault();
             }
-
             return localProduct;
         }
 
@@ -89,7 +103,7 @@ namespace NaturalnieApp.Database
         //Method used to add new product
         //====================================================================================================
         public void AddNewProduct(Product product)
-        { 
+        {
             using (ShopContext contextDB = new ShopContext())
             {
                 contextDB.Products.Add(product);
@@ -107,6 +121,31 @@ namespace NaturalnieApp.Database
                 contextDB.Suppliers.Add(supplier);
                 int test = contextDB.SaveChanges();
             }
+        }
+
+        //====================================================================================================
+        //Method used to check if database connnection exist.
+        //====================================================================================================
+        public void CheckConnection(bool showMessage)
+        {
+
+            bool state = false;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                try
+                {
+                    contextDB.Database.Connection.Open();
+                    contextDB.Database.Connection.Close();
+                    state = true;
+                }
+                catch (Exception ex)
+                {
+                    if (showMessage) MessageBox.Show(ex.ToString());
+                    state = false;
+                }
+            }
+            this.ConnectionStatus = state;
         }
 
 

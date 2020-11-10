@@ -6,6 +6,7 @@ using System.Windows.Forms.VisualStyles;
 using NaturalnieApp.Initialization;
 using NaturalnieApp.Database;
 using System.Collections.Generic;
+using System.Threading;
 
 
 namespace NaturalnieApp.Forms
@@ -41,14 +42,22 @@ namespace NaturalnieApp.Forms
         private void ShowProductInfo_Load(object sender, EventArgs e)
         {
             //Get product name list and product suppliers
-            List<string> productNameList = this.databaseCommands.GetProductsNameList();
-            List<string> productSuppliersList = this.databaseCommands.GetSuppliersNameList();
+            //check if Database reachable 
 
-            //Add fetched data to proper combo box
-            cbProductList.Items.AddRange(productNameList.ToArray());
-            cbManufacturer.Items.Clear();
-            cbManufacturer.Items.Add("Wszyscy");
-            cbManufacturer.Items.AddRange(productSuppliersList.ToArray());
+            this.databaseCommands.CheckConnection(false);
+            if (this.databaseCommands.ConnectionStatus)
+            {
+                List<string> productNameList = this.databaseCommands.GetProductsNameList();
+                List<string> productSuppliersList = this.databaseCommands.GetSuppliersNameList();
+
+                //Add fetched data to proper combo box
+                cbProductList.Items.AddRange(productNameList.ToArray());
+                cbManufacturer.Items.Clear();
+                cbManufacturer.Items.Add("Wszyscy");
+                cbManufacturer.Items.AddRange(productSuppliersList.ToArray());
+            }
+            
+            ;
         }
 
 
@@ -92,6 +101,16 @@ namespace NaturalnieApp.Forms
             Product entity = this.databaseCommands.GetProductEntityByProductName(this.cbProductList.SelectedItem.ToString());
 
             this.FillDataFromObject(entity);
+        }
+
+        private void gbProductInfo_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tpPrice_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using NaturalnieApp.Initialization;
 using NaturalnieApp.Database;
+using System.Threading;
 
 
 namespace NaturalnieApp.Forms
@@ -20,7 +21,7 @@ namespace NaturalnieApp.Forms
         private ConfigFileObject ConfigFileOjbInst;
         bool dragging = false;
         int xOffset = 0;
-        int yOffset = 0;
+        int yOffset = 0;        
 
         public MainWindow(ConfigFileObject conFileObj)
         {
