@@ -7,20 +7,112 @@ using NaturalnieApp.Initialization;
 using NaturalnieApp.Database;
 using System.Collections.Generic;
 using System.Threading;
+using System.ComponentModel;
 
 
 namespace NaturalnieApp.Forms
 {
+    public enum backgroundWorkerTasks {None, Init, Update}
+
     public partial class ShowProductInfo : Form
     {
         DatabaseCommands databaseCommands;
-        public ShowProductInfo()
+        BackgroundWorker backgroundWorker1;
+        backgroundWorkerTasks ActualTaskType;
+
+        public ShowProductInfo(ref DatabaseCommands commandsObj)
         {
             InitializeComponent();
+            InitializeBackgroundWorker();
             this.databaseCommands = new DatabaseCommands();
+            ActualTaskType = backgroundWorkerTasks.None;
         }
 
-        private void FillDataFromObject(Product obj)
+        //=============================================================================
+        //                              Background worker
+        //=============================================================================
+        // Set up the BackgroundWorker object by attaching event handlers. 
+        private void InitializeBackgroundWorker()
+        {
+            this.backgroundWorker1 = new BackgroundWorker();
+            // here you have also to implement the necessary events
+            // this event will define what the worker is actually supposed to do
+            this.backgroundWorker1.DoWork += backgroundWorker1_DoWork;
+            // this event will define what the worker will do when finished
+            this.backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+        }
+
+        // This event handler is where the actual, potentially time-consuming work is done.
+        void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            //Local vaiable
+            backgroundWorkerTasks taskType;
+            taskType = this.ActualTaskType;
+            List<List<string>> returnList = new List<List<string>>();
+
+            //check if Database reachable 
+            this.databaseCommands.CheckConnection(true);
+
+            //Do action depending of task type
+            switch (taskType)
+            {
+                case backgroundWorkerTasks.Init:
+                    if (this.databaseCommands.ConnectionStatus)
+                    {
+                        List<string> productNameList = this.databaseCommands.GetProductsNameList();
+                        List<string> productSuppliersList = this.databaseCommands.GetSuppliersNameList();
+                        returnList.Add(productNameList);
+                        returnList.Add(productSuppliersList);
+                        e.Result = returnList;
+                    }
+                    break;
+            }
+        }
+
+        // This event handler is where the actual, potentially time-consuming work is done.
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            //Local vaiable
+            backgroundWorkerTasks taskType;
+            taskType = this.ActualTaskType;
+
+            if (e.Error != null)
+            {
+                MessageBox.Show(e.Error.Message);
+            }
+            else
+            {
+                //Do action depending of task type
+                switch (taskType)
+                {
+                    case backgroundWorkerTasks.Init:
+                        if (this.databaseCommands.ConnectionStatus)
+                        {
+                            //Get product name list and product suppliers
+                            //check if Database reachable 
+                            List<List<string>> returnList = new List<List<string>>();
+                            returnList = (List<List<string>>)e.Result;
+                            FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1]);
+                        }
+                        break;
+                }
+
+                //Enable panel after work done
+                this.Enabled = true;
+
+            }
+        }
+        //=============================================================================
+        private void FillWithInitialDataFromObject(List<string> productList, List<string> supplierList)
+        {
+                //Add fetched data to proper combo box
+                cbProductList.Items.AddRange(productList.ToArray());
+                cbManufacturer.Items.Clear();
+                cbManufacturer.Items.Add("Wszyscy");
+                cbManufacturer.Items.AddRange(supplierList.ToArray());
+        }
+
+        private void FillWithDataFromObject(Product obj)
         {
             //Supplier name
             //need to  add
@@ -34,32 +126,16 @@ namespace NaturalnieApp.Forms
             this.rtbProductInfo.Text = obj.ProductInfo.ToString();
         }
 
-        private void bSave_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void ShowProductInfo_Load(object sender, EventArgs e)
         {
-            //Get product name list and product suppliers
-            //check if Database reachable 
+            //Disable panel and wait until data from db will be fetched
+            this.Enabled = false;
 
-            this.databaseCommands.CheckConnection(false);
-            if (this.databaseCommands.ConnectionStatus)
-            {
-                List<string> productNameList = this.databaseCommands.GetProductsNameList();
-                List<string> productSuppliersList = this.databaseCommands.GetSuppliersNameList();
-
-                //Add fetched data to proper combo box
-                cbProductList.Items.AddRange(productNameList.ToArray());
-                cbManufacturer.Items.Clear();
-                cbManufacturer.Items.Add("Wszyscy");
-                cbManufacturer.Items.AddRange(productSuppliersList.ToArray());
-            }
-            
+            //Call background worker
+            this.ActualTaskType = backgroundWorkerTasks.Init;
+            this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
             ;
         }
-
 
         private void cbManufacturer_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -81,11 +157,6 @@ namespace NaturalnieApp.Forms
 
         }
 
-        private void tbSuppierName_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
-
         private void tbSuppierName_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             int value;
@@ -100,17 +171,8 @@ namespace NaturalnieApp.Forms
         {
             Product entity = this.databaseCommands.GetProductEntityByProductName(this.cbProductList.SelectedItem.ToString());
 
-            this.FillDataFromObject(entity);
+            this.FillWithDataFromObject(entity);
         }
 
-        private void gbProductInfo_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tpPrice_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
 }

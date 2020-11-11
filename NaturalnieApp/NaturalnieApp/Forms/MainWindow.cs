@@ -21,13 +21,23 @@ namespace NaturalnieApp.Forms
         private ConfigFileObject ConfigFileOjbInst;
         bool dragging = false;
         int xOffset = 0;
-        int yOffset = 0;        
+        int yOffset = 0;
+
+        //Creat EF databse connection object
+        DatabaseCommands databaseCommands;
 
         public MainWindow(ConfigFileObject conFileObj)
         {
             this.ConfigFileOjbInst = conFileObj;
             InitializeComponent();
             customizeDesign();
+
+            //Initialize EF databse connection object
+            this.databaseCommands = new DatabaseCommands();
+            //check if Database reachable 
+            this.databaseCommands.CheckConnection(true);
+
+
         }
 
         #region Movable window
@@ -129,11 +139,16 @@ namespace NaturalnieApp.Forms
 
 
             this.pContainer.Controls.Clear();
-            ShowProductInfo frm = new ShowProductInfo() { TopLevel = false, TopMost = true };
+            ShowProductInfo frm = new ShowProductInfo(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.pContainer.Controls.Add(frm);
             frm.Show();
 
         }
         #endregion
+
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+            List<string> productNameList = this.databaseCommands.GetProductsNameList();
+        }
     }
 }
