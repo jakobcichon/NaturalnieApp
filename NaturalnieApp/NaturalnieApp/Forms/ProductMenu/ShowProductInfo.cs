@@ -14,11 +14,16 @@ namespace NaturalnieApp.Forms
 {
     public enum backgroundWorkerTasks {None, Init, Update}
 
+
+
     public partial class ShowProductInfo : Form
     {
         DatabaseCommands databaseCommands;
         BackgroundWorker backgroundWorker1;
         backgroundWorkerTasks ActualTaskType;
+
+        private Product ProductEntity { get; set; }
+        private Supplier SupplierEntity { get; set; }
 
         public ShowProductInfo(ref DatabaseCommands commandsObj)
         {
@@ -26,6 +31,8 @@ namespace NaturalnieApp.Forms
             InitializeBackgroundWorker();
             this.databaseCommands = new DatabaseCommands();
             ActualTaskType = backgroundWorkerTasks.None;
+            this.ProductEntity = new Product();
+            this.SupplierEntity = new Supplier();
         }
 
         //=============================================================================
@@ -98,7 +105,7 @@ namespace NaturalnieApp.Forms
                 }
 
                 //Enable panel after work done
-                this.Enabled = true;
+                if (this.databaseCommands.ConnectionStatus) this.Enabled = true;
 
             }
         }
@@ -112,22 +119,49 @@ namespace NaturalnieApp.Forms
                 cbManufacturer.Items.AddRange(supplierList.ToArray());
         }
 
-        private void FillWithDataFromObject(Product obj)
+        private void FillWithDataFromObject(Product p, Supplier s)
         {
             //Supplier name
-            //need to  add
+            this.tbSuppierName.Text = s.Name.ToString() ;
 
             //Elzab product number
-            this.tbElzabProductNumber.Text = obj.ElzabProductId.ToString();
-            this.tbPrice.Text = obj.PriceNet.ToString();
-            this.cbTax.Text = obj.Tax.ToString();
-            this.tbMarigin.Text = obj.Marigin.ToString();
-            this.tbBarCode.Text = obj.BarCode.ToString();
-            this.rtbProductInfo.Text = obj.ProductInfo.ToString();
+            this.tbElzabProductNumber.Text = p.ElzabProductId.ToString();
+            this.tbPrice.Text = p.PriceNet.ToString();
+            FindTextInComboBoxAndSelect(ref this.cbTax, p.Tax.ToString());
+            this.tbMarigin.Text = p.Marigin.ToString();
+            this.tbBarCode.Text = p.BarCode.ToString();
+            this.rtbProductInfo.Text = p.ProductInfo.ToString();
+        }
+
+        //Method used to clear all object (text box, combo box, etc.)  data
+        private void ClearAllObjectsData()
+        {
+            //Supplier name
+            this.tbSuppierName.Text = "";
+            this.cbManufacturer.SelectedIndex = 0;
+
+            //Elzab product number
+            this.cbProductList.Text = "";
+            this.tbElzabProductNumber.Text = "";
+            this.tbPrice.Text = "";
+            this.cbTax.Text = "";
+            this.tbMarigin.Text = "";
+            this.tbBarCode.Text = "";
+            this.rtbProductInfo.Text = "";
+        }
+
+        //Metchod use to find and select string in ComboBox
+        private void FindTextInComboBoxAndSelect(ref ComboBox obj, string textToFind)
+        {
+            //Find search tex index
+            int index = obj.FindString(textToFind);
+            obj.SelectedIndex = index;
+
         }
 
         private void ShowProductInfo_Load(object sender, EventArgs e)
         {
+
             //Disable panel and wait until data from db will be fetched
             this.Enabled = false;
 
@@ -163,16 +197,31 @@ namespace NaturalnieApp.Forms
             bool success = int.TryParse(tbSuppierName.Text, out value);
             if (!success)
             {
-                errorProvider1.SetError(tbSuppierName, "Numer w kasie Elzab musi być wartością numeryczną");
+                //errorProvider1.SetError(tbSuppierName, "Numer w kasie Elzab musi być wartością numeryczną");
             }
         }
 
         private void cbProductList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Product entity = this.databaseCommands.GetProductEntityByProductName(this.cbProductList.SelectedItem.ToString());
-
-            this.FillWithDataFromObject(entity);
+            (this.ProductEntity, this.SupplierEntity) = this.databaseCommands.GetProductAndSupplierEntityByProductName(this.cbProductList.SelectedItem.ToString());
+            this.FillWithDataFromObject(this.ProductEntity, this.SupplierEntity);
         }
 
+        private void bSave_Click(object sender, EventArgs e)
+        {
+            this.databaseCommands.EditProduct(this.ProductEntity);
+            ;
+        }
+
+        private void tbSuppierName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbTax_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.ProductEntity.Tax = int.Parse(this.cbTax.GetItemText(this.cbTax.SelectedItem).ToString().Replace("%", ""));
+            ;
+        }
     }
 }

@@ -1,0 +1,13 @@
+Priorytety:
+- Odczyt informacji z bazy i modifikacja obiektu
+- Dodanie do bazy nowego produktu
+- Synchronizacja bazy z danymi z Elzab i generowanie danych do Elzab
+- Drukowanie etykiet DYMO
+- Dodatkowy barcode ( code 128?) tak, aby uwzglednić datę ważności
+- Przechwytywanie do schowka barcode
+- Informacja o połączeniu do bazy danych
+
+
+Zadania dodatkowe:
+- okno ładowania aplikacji, podczas którego zostanie wywołany EF
+- 

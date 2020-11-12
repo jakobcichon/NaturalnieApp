@@ -4,7 +4,7 @@ using MySql.Data.MySqlClient;
 using System.Linq;
 using System;
 using System.Windows.Forms;
-
+using System.Data.Entity;
 
 namespace NaturalnieApp.Database
 {
@@ -100,6 +100,37 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB Product and supplier entity
+        //====================================================================================================
+        public (Product product, Supplier supplier) GetProductAndSupplierEntityByProductName(string productName)
+        {
+            Product localProduct = new Product();
+            Supplier localSupplier = new Supplier();
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = (from p in contextDB.Products
+                             join s in contextDB.Suppliers
+                             on p.SupplierId equals s.Id
+                             where p.ProductName == productName
+                             select new
+                             {
+                                 p,
+                                 s
+                             });
+
+                foreach (var element in query)
+                {
+                    localProduct  = element.p;
+                    localSupplier = element.s;
+                    ;
+                }
+                //localProduct = query.SingleOrDefault();
+            }
+            return (localProduct, localSupplier);
+        }
+
+        //====================================================================================================
         //Method used to add new product
         //====================================================================================================
         public void AddNewProduct(Product product)
@@ -107,6 +138,19 @@ namespace NaturalnieApp.Database
             using (ShopContext contextDB = new ShopContext())
             {
                 contextDB.Products.Add(product);
+                int test = contextDB.SaveChanges();
+            }
+        }
+
+        //====================================================================================================
+        //Method used to edit product
+        //====================================================================================================
+        public void EditProduct(Product product)
+        {
+            using (ShopContext contextDB = new ShopContext())
+            {
+                contextDB.Products.Add(product);
+                contextDB.Entry(product).State = EntityState.Modified;
                 int test = contextDB.SaveChanges();
             }
         }
