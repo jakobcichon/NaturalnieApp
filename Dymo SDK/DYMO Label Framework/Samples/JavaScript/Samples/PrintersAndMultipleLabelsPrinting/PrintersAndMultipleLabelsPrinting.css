@@ -1,0 +1,57 @@
+/*body
+{
+	background:green;
+}*/
+
+div.header,div.footer
+{
+padding:0.5em;
+color:white;
+background-color:gray;
+clear:left;
+}
+
+/*
+div.top
+{
+	background-color:Aqua;
+	position:fixed;
+	height:100%;
+	width:100%;
+}
+*/
+
+div.printControls
+{
+    margin-top:1em;
+}
+
+div.content
+{
+	padding:1em;
+}
+
+td
+{
+    padding:5px;
+    margin:0px;
+    border-width:1px;
+    border-color:black;
+    border-style:solid;
+}
+
+th
+{
+    padding:5px;
+    margin:0px;
+    border-width:1px;
+    border-color:black;
+    border-style:solid;
+    color:white;
+    background-color:black;
+}
+
+#updateTableButton
+{
+    margin-right:5em;
+}

@@ -16,6 +16,8 @@ namespace NaturalnieApp
         /// <summary>
         /// Główny punkt wejścia dla aplikacji.
         /// </summary>
+        /// 
+
         [STAThread]
         static void Main()
         {
@@ -36,6 +38,8 @@ namespace NaturalnieApp
 
             Application.EnableVisualStyles();
             Application.Run(new MainWindow(ConfigFileInst));
+
+
             ;
 
             ;

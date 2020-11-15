@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp Sample.vs2010.net4", "dotNET\C# Sample\CSharp Sample.vs2010.net4.csproj", "{09CB0E50-D173-489E-8A7F-4844174DAF1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrinterInfo.vs2010.net4", "dotNET\Printers\PrinterInfo.vs2010.net4.csproj", "{44C99B5B-4C84-412B-809C-55701BF2AF74}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VB Sample.vs2010.net4", "dotNET\VB Sample\VB Sample.vs2010.net4.vbproj", "{CBFC420E-4F52-4F6E-895F-338773105AD7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{09CB0E50-D173-489E-8A7F-4844174DAF1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09CB0E50-D173-489E-8A7F-4844174DAF1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09CB0E50-D173-489E-8A7F-4844174DAF1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09CB0E50-D173-489E-8A7F-4844174DAF1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44C99B5B-4C84-412B-809C-55701BF2AF74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44C99B5B-4C84-412B-809C-55701BF2AF74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44C99B5B-4C84-412B-809C-55701BF2AF74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44C99B5B-4C84-412B-809C-55701BF2AF74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBFC420E-4F52-4F6E-895F-338773105AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBFC420E-4F52-4F6E-895F-338773105AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBFC420E-4F52-4F6E-895F-338773105AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBFC420E-4F52-4F6E-895F-338773105AD7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

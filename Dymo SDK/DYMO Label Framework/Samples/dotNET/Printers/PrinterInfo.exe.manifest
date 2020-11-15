@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Use this manifest file if you want to install/use your application in "registry free" configuration
+    The manifest references two COM libraries used by DYMO.Label.Framework assembly.
+    You will have to put these COM-libraries in to the same folder as the application itself
+-->
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <assemblyIdentity name="PrinterInfo.exe" version="1.0.0.0" processorArchitecture="*" type="win32" />
+
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity name="DYMOBarcode" version="1.0.0.0" processorArchitecture="*" type="win32" />
+    </dependentAssembly>
+  </dependency>
+  
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity name="DYMOPrintingSupport" version="1.0.0.0" processorArchitecture="*" type="win32" />
+    </dependentAssembly>
+  </dependency>
+
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
+     <security>
+        <requestedPrivileges>
+           <requestedExecutionLevel
+              level="asInvoker"
+              uiAccess="False"/>
+        </requestedPrivileges>
+     </security>
+  </trustInfo>
+
+</assembly>

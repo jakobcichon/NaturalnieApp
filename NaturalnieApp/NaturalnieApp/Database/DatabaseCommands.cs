@@ -151,7 +151,7 @@ namespace NaturalnieApp.Database
             {
                 contextDB.Products.Add(product);
                 contextDB.Entry(product).State = EntityState.Modified;
-                int test = contextDB.SaveChanges();
+                int retVal = contextDB.SaveChanges();
             }
         }
 
@@ -163,10 +163,22 @@ namespace NaturalnieApp.Database
             using (ShopContext contextDB = new ShopContext())
             {
                 contextDB.Suppliers.Add(supplier);
-                int test = contextDB.SaveChanges();
+                int retVal = contextDB.SaveChanges();
             }
         }
 
+        //====================================================================================================
+        //Method used to edit product
+        //====================================================================================================
+        public void EditSupplier(Supplier supplier)
+        {
+            using (ShopContext contextDB = new ShopContext())
+            {
+                contextDB.Suppliers.Add(supplier);
+                contextDB.Entry(supplier).State = EntityState.Modified;
+                int retVal = contextDB.SaveChanges();
+            }
+        }
         //====================================================================================================
         //Method used to check if database connnection exist.
         //====================================================================================================

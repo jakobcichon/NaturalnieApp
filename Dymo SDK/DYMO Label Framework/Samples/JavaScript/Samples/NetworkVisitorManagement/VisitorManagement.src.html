@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>DYMO Label Framework JavaScript Library Samples: Visitor Management</title> 
+<link rel="stylesheet" type="text/css" href="VisitorManagement.css" />
+
+<!--<script>
+    window.jsxpath = 
+    { 
+        exportInstaller : true,
+        //useNative: typeof XPathResult != "undefined",
+        useNative: false,
+    };
+</script>
+
+<script src = "javascript-xpath-latest.js" type="text/javascript" charset="UTF-8"> </script>
+-->
+
+<script src = "../../../../../ext/closure/closure-library/closure/goog/base.js" type="text/javascript" charset="UTF-8"> </script>
+
+<script src = "../../DYMO.Label.Framework/xpath/xmltoken.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "../../DYMO.Label.Framework/xpath/dom.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "../../DYMO.Label.Framework/xpath/util.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "../../DYMO.Label.Framework/xpath/xpath.js" type="text/javascript" charset="UTF-8"> </script>
+
+<script src = "../../DYMO.Label.Framework/enums.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "../../DYMO.Label.Framework/uuid.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "../../DYMO.Label.Framework/XmlUtils.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "../../DYMO.Label.Framework/NetworkPrinter.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "../../DYMO.Label.Framework/FrameworkUtils.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "../../DYMO.Label.Framework/PrinterInfo.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "../../DYMO.Label.Framework/PrintJob.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "../../DYMO.Label.Framework/LabelSet.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "../../DYMO.Label.Framework/Label.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "../../DYMO.Label.Framework/Framework.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "jquery-1.4.3.min.js" type="text/javascript" charset="UTF-8"> </script>
+
+<!--<script src = "../../DYMO.Label.Framework.js" type="text/javascript" charset="UTF-8"> </script>-->
+<script src = "VisitorManagement.js" type="text/javascript" charset="UTF-8"> </script>
+</head>
+
+<body>
+<div id="body">
+<h1>DYMO Label Framework JavaScript Library Samples: Visitor Management</h1> 
+ 
+
+<div class="top">
+<div class="left">
+    <div id="photoSelection">
+        <button id="selectPhotoButton">Select photo</button>
+    </div>
+    
+    <div id="textDiv">
+        <label for="labelTextTextArea">Label text:</label><br/>
+        <textarea name="labelTextTextArea" id="labelTextTextArea"  rows='5' cols='40'>
+        </textarea>
+    </div>
+</div>
+
+<div class="content">
+    <div class="toolbar">
+        <a class="toolbar-button" id="changeLayoutButton" href="javascript:void(0)">Change Layout</a>
+    </div>
+    
+    <div id="labelImageDiv">
+        <img id="labelImage" src="" alt="label preview"/>
+    </div>
+
+    <div class="printControls">
+        <div id="printersDiv">
+            <label for="printersSelect">Printer:</label>
+            <select id="printersSelect"></select>
+        </div>
+
+        <div id="printDiv">
+            <button id="printButton">Print</button>
+<!--            <a id="printButton"><img src="" alt=""/>Print</a>-->
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="bottom">
+<span>Network Printer Uri</span>
+<input id="networkPrinterUriInput" size="80"></input>
+<button id="addNetworkPrinterButton">Add</button>
+</div>
+
+
+
+<div class="dialog-overlay" id="dialog-overlay" style="z-index:3007; display:none;"></div>
+
+<!--<div class="dialog-wrapper" id="dialog-wrapper" style="z-index:3008;display:none; position:absolute; width:50%; left:25%;top:25%; outline-color:initial;outline-style:initial;outline-width:initial;">-->
+<div class="dialog-wrapper" id="dialog-wrapper" style="z-index:3008;display:none; position:absolute; width:50%; left:25%;top:25%;">    
+    <div class="dialog">
+        <div class="dialog-body">
+            <div class="dialog-header" id="dialog-header"></div>
+            <div class="dialog-content" id="dialog-content"/>
+            <div class="dialog-footer"></div>
+        </div>    
+    </div>
+</div>
+<div>
+</body> 
+ 
+</html> 
+

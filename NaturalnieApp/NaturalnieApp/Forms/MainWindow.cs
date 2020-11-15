@@ -11,10 +11,12 @@ using System.Windows.Forms;
 using NaturalnieApp.Initialization;
 using NaturalnieApp.Database;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 
 namespace NaturalnieApp.Forms
 {
+
 
     public partial class MainWindow : Form
     {
@@ -22,6 +24,58 @@ namespace NaturalnieApp.Forms
         bool dragging = false;
         int xOffset = 0;
         int yOffset = 0;
+
+        #region Clipboard
+        [DllImport("User32.dll")]
+        protected static extern int SetClipboardViewer(int hWndNewViewer);
+
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        public static extern bool ChangeClipboardChain(IntPtr hWndRemove, IntPtr hWndNewNext);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern int SendMessage(IntPtr hwnd, int wMsg, IntPtr wParam, IntPtr lParam);
+
+        IntPtr nextClipboardViewer;
+
+        protected override void WndProc(ref Message m)
+        {
+            // defined in winuser.h
+            const int WM_DRAWCLIPBOARD = 0x308;
+            const int WM_CHANGECBCHAIN = 0x030D;
+
+            switch (m.Msg)
+            {
+                case WM_DRAWCLIPBOARD:
+                    DisplayClipboardData();
+                    SendMessage(nextClipboardViewer, m.Msg, m.WParam, m.LParam);
+                    break;
+
+                case WM_CHANGECBCHAIN:
+                    if (m.WParam == nextClipboardViewer)
+                        nextClipboardViewer = m.LParam;
+                    else
+                        SendMessage(nextClipboardViewer, m.Msg, m.WParam, m.LParam);
+                    break;
+
+                default:
+                    base.WndProc(ref m);
+                    break;
+            }
+        }
+
+        void DisplayClipboardData()
+        {
+            try
+            {
+                IDataObject iData = new DataObject();
+                iData = Clipboard.GetDataObject();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+            }
+        }
+        #endregion
 
         //Creat EF databse connection object
         DatabaseCommands databaseCommands;
@@ -37,8 +91,16 @@ namespace NaturalnieApp.Forms
             //check if Database reachable 
             this.databaseCommands.CheckConnection(true);
 
+            ;
 
         }
+
+        //====================================================================================================
+        //Clipboard events
+        #region Clipboard events
+
+ 
+        #endregion
 
         #region Movable window
         private void pHeader_MouseDown(object sender, MouseEventArgs e)

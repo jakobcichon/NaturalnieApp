@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>DYMO Label Framework JavaScript Library Samples: Printers and Multiple Labels Printing</title> 
+<link rel="stylesheet" type="text/css" href="PrintersAndMultipleLabelsPrinting.css" />
+<script src = "../../DYMO.Label.Framework.js" type="text/javascript" charset="UTF-8"> </script>
+<script src = "PrintersAndMultipleLabelsPrinting.js" type="text/javascript" charset="UTF-8"> </script>
+</head>
+
+<body>
+<h1>DYMO Label Framework JavaScript Library Samples: Printers and Multiple Labels Printing</h1> 
+ 
+<div class="header">
+    <div id="sampleDesctiption">
+        <p>
+            This sample shows how new DYMO Label Framework JavaScript Library can be used to enumerate all installed DYMO printers along with their characteristics
+            like online/offline status, printer type, connecting type, etc.
+        </p>
+        <p>
+            Try to connect/disconnect printers and click on 'Refresh' button to see the changes in the table. Notes:
+            <ul>
+                <li>connection state detection works only for local printers</li>
+                <li>isConnected property is not updated automatically. To get current connection state it is nessesary to call dymo.label.framework.getPrinters() again</li>
+            </ul>
+        </p>
+    </div>
+</div>
+
+<div class="content">
+    <div id="printersInfoContainer">
+    </div>
+
+    <div class="printControls">
+            <button id="updateTableButton">Refresh</button>
+            <button id="printButton">Print printers information on</button>
+            <select id="printersSelect"></select>
+
+    </div>
+</div>
+
+</body> 
+ 
+</html> 
+

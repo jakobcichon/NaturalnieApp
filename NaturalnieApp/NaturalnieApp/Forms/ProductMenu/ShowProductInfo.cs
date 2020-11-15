@@ -8,6 +8,8 @@ using NaturalnieApp.Database;
 using System.Collections.Generic;
 using System.Threading;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
+
 
 
 namespace NaturalnieApp.Forms
@@ -33,12 +35,15 @@ namespace NaturalnieApp.Forms
             ActualTaskType = backgroundWorkerTasks.None;
             this.ProductEntity = new Product();
             this.SupplierEntity = new Supplier();
+
+
         }
 
         //=============================================================================
         //                              Background worker
         //=============================================================================
         // Set up the BackgroundWorker object by attaching event handlers. 
+        #region Backgroundworker
         private void InitializeBackgroundWorker()
         {
             this.backgroundWorker1 = new BackgroundWorker();
@@ -110,6 +115,10 @@ namespace NaturalnieApp.Forms
             }
         }
         //=============================================================================
+        #endregion
+        //====================================================================================================
+        //General methods
+        #region General methods
         private void FillWithInitialDataFromObject(List<string> productList, List<string> supplierList)
         {
                 //Add fetched data to proper combo box
@@ -158,7 +167,22 @@ namespace NaturalnieApp.Forms
             obj.SelectedIndex = index;
 
         }
+        //Method used to validate input 
+        private bool ValidateInput(string textToValidate, string regExPatter)
+        {
+            //Local variables
+            bool ret;
+            Regex reg = new Regex(regExPatter);
 
+            //Check if text to validate match given pattern
+            ret = reg.IsMatch(textToValidate);
+
+            return ret;
+        }
+        #endregion
+        //====================================================================================================
+        //Show product info events
+        #region Show product info events
         private void ShowProductInfo_Load(object sender, EventArgs e)
         {
 
@@ -168,8 +192,11 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
-            ;
         }
+        #endregion
+        //====================================================================================================
+        //Manufacturer events
+        #region Manifacturer events
 
         private void cbManufacturer_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -190,38 +217,227 @@ namespace NaturalnieApp.Forms
             }
 
         }
-
-        private void tbSuppierName_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            int value;
-            bool success = int.TryParse(tbSuppierName.Text, out value);
-            if (!success)
-            {
-                //errorProvider1.SetError(tbSuppierName, "Numer w kasie Elzab musi być wartością numeryczną");
-            }
-        }
-
+        #endregion
+        //====================================================================================================
+        //Product list events
+        #region Product List
         private void cbProductList_SelectedIndexChanged(object sender, EventArgs e)
         {
             (this.ProductEntity, this.SupplierEntity) = this.databaseCommands.GetProductAndSupplierEntityByProductName(this.cbProductList.SelectedItem.ToString());
             this.FillWithDataFromObject(this.ProductEntity, this.SupplierEntity);
         }
-
+        #endregion
+        //====================================================================================================
+        //Buttons events
+        #region Buttons events
         private void bSave_Click(object sender, EventArgs e)
         {
+            //Save current object to database
             this.databaseCommands.EditProduct(this.ProductEntity);
-            ;
+            this.databaseCommands.EditSupplier(this.SupplierEntity);
         }
-
-        private void tbSuppierName_TextChanged(object sender, EventArgs e)
+        #endregion
+        //====================================================================================================
+        //Supplier Name events
+        #region Supplier Name events
+        private void tbSuppierName_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SelectNextControl((Control)sender, true, true, true, true);
+            }
+            
+        }
+        private void tbSuppierName_Validating(object sender, EventArgs e)
+        {
+            //Local variables
+            bool validatingResult;
+            string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery";
+
+            //Accept only letters an numbers with maximal length of 255 chars
+            string regPattern = @"^[a-zA-Z0-9]{0,255}$";
+
+            //Cast the sender for an object
+            TextBox localSender = (TextBox)sender;
+
+            //Check if input match to define pattern
+            validatingResult = ValidateInput(localSender.Text, regPattern);
+
+            //Validaion of input text
+            if (!validatingResult)
+            {
+                localSender.Focus();
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, text);
+
+            }
+            else
+            {
+                this.SupplierEntity.Name = localSender.Text;
+                errorProvider1.Clear();
+            }
+        }
+        #endregion
+        //====================================================================================================
+        //ElzabProductNumber events
+        #region ElzabProductNumber events
+        private void tbElzabProductNumber_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SelectNextControl((Control)sender, true, true, true, true);
+            }
 
         }
+        private void tbElzabProductNumber_Validating(object sender, EventArgs e)
+        {
+            //Local variables
+            bool validatingResult;
+            int value;
+            string text = "Numer produktu w kasie Elzab musi być liczbą całkowitą z przedziału 0-4096";
 
+            //Cast the sender for an object
+            TextBox localSender = (TextBox)sender;
+
+            //Check if input match to define pattern
+            validatingResult = int.TryParse(localSender.Text, out value);
+            if (value < 0 || value > 4096) validatingResult = false;
+
+            //Validaion of input text
+            if (!validatingResult)
+            {
+                localSender.Focus();
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, text);
+
+            }
+            else
+            {
+                this.ProductEntity.ElzabProductId = value;
+                errorProvider1.Clear();
+            }
+        }
+        #endregion        
+        //====================================================================================================
+        //Price events
+        #region Price events
+        private void tbPrice_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SelectNextControl((Control)sender, true, true, true, true);
+            }
+
+        }
+        private void tbPrice_Validating(object sender, EventArgs e)
+        {
+            //Local variables
+            bool validatingResult;
+            float value;
+            string stringValue;
+            string text = "Cena musi być liczbą rzeczywistą, w zakresie 0.0-2000.0";
+
+            //Cast the sender for an object
+            TextBox localSender = (TextBox)sender;
+
+            //Regex pattern
+            string regPattern = @"^.*,.*";
+            Regex reg = new Regex(regPattern);
+
+            //Check if input match to define pattern
+            validatingResult = Single.TryParse(localSender.Text.Replace(".",","), out value);
+            if (value < 0 || value > 2000.0) validatingResult = false;
+
+            //Validaion of input text
+            if (!validatingResult)
+            {
+                localSender.Focus();
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, text);
+
+            }
+            else
+            {
+                //Check if value consist comma
+                stringValue = value.ToString();
+                bool isReal = reg.IsMatch(stringValue);
+                if (! isReal )
+                {
+                    stringValue += ",00";
+                    localSender.Text = stringValue;
+                }
+                else localSender.Text = value.ToString();
+
+                this.ProductEntity.PriceNet = value;
+                errorProvider1.Clear();
+            }
+        }
+        #endregion
+        //====================================================================================================
+        //Marigin events
+        #region Marigin events
+        private void tbMarigin_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SelectNextControl((Control)sender, true, true, true, true);
+            }
+
+        }
+        private void tbMarigin_Validating(object sender, EventArgs e)
+        {
+            //Local variables
+            bool validatingResult;
+            float value;
+            string stringValue;
+            string text = "Marża musi być liczbą rzeczywistą, w zakresie 0.0-2000.0";
+
+            //Cast the sender for an object
+            TextBox localSender = (TextBox)sender;
+
+            //Regex pattern
+            string regPattern = @"^.*,.*";
+            Regex reg = new Regex(regPattern);
+
+            //Check if input match to define pattern
+            validatingResult = Single.TryParse(localSender.Text.Replace(".", ","), out value);
+            if (value < 0 || value > 2000.0) validatingResult = false;
+
+            //Validaion of input text
+            if (!validatingResult)
+            {
+                localSender.Focus();
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, text);
+
+            }
+            else
+            {
+                //Check if value consist comma
+                stringValue = value.ToString();
+                bool isReal = reg.IsMatch(stringValue);
+                if (!isReal)
+                {
+                    stringValue += ",00";
+                    localSender.Text = stringValue;
+                }
+                else localSender.Text = value.ToString();
+
+                this.ProductEntity.Marigin= value;
+                errorProvider1.Clear();
+            }
+        }
+        #endregion
+        //====================================================================================================
+        //Marigin events
+        #region Marigin events
         private void cbTax_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.ProductEntity.Tax = int.Parse(this.cbTax.GetItemText(this.cbTax.SelectedItem).ToString().Replace("%", ""));
-            ;
         }
+        #endregion
+        
+        
+        
     }
 }
