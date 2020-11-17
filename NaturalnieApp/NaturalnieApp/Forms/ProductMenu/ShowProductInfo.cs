@@ -27,6 +27,8 @@ namespace NaturalnieApp.Forms
         private Product ProductEntity { get; set; }
         private Supplier SupplierEntity { get; set; }
 
+        private string SelectedProductName { get; set; }
+
         public ShowProductInfo(ref DatabaseCommands commandsObj)
         {
             InitializeComponent();
@@ -35,7 +37,6 @@ namespace NaturalnieApp.Forms
             ActualTaskType = backgroundWorkerTasks.None;
             this.ProductEntity = new Product();
             this.SupplierEntity = new Supplier();
-
         }
 
         //=============================================================================
@@ -77,6 +78,16 @@ namespace NaturalnieApp.Forms
                         e.Result = returnList;
                     }
                     break;
+                case backgroundWorkerTasks.Update:
+                    if (this.databaseCommands.ConnectionStatus)
+                    {
+                        List<string> productNameList = this.databaseCommands.GetProductsNameList();
+                        List<string> productSuppliersList = this.databaseCommands.GetSuppliersNameList();
+                        returnList.Add(productNameList);
+                        returnList.Add(productSuppliersList);
+                        e.Result = returnList;
+                    }
+                    break;
             }
         }
 
@@ -106,6 +117,17 @@ namespace NaturalnieApp.Forms
                             FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1]);
                         }
                         break;
+                    case backgroundWorkerTasks.Update:
+                        if (this.databaseCommands.ConnectionStatus)
+                        {
+                            //Get product name list and product suppliers
+                            //check if Database reachable 
+                            List<List<string>> returnList = new List<List<string>>();
+                            returnList = (List<List<string>>)e.Result;
+                            FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1]);
+                            this.cbProductList.SelectedItem = this.SelectedProductName;
+                        }
+                        break;
                 }
 
                 //Enable panel after work done
@@ -120,15 +142,22 @@ namespace NaturalnieApp.Forms
         #region General methods
         private void FillWithInitialDataFromObject(List<string> productList, List<string> supplierList)
         {
-                //Add fetched data to proper combo box
-                cbProductList.Items.AddRange(productList.ToArray());
-                cbManufacturer.Items.Clear();
-                cbManufacturer.Items.Add("Wszyscy");
-                cbManufacturer.Items.AddRange(supplierList.ToArray());
+            //Add fetched data to proper combo box
+            cbProductList.Items.AddRange(productList.ToArray());
+            cbManufacturer.Items.Clear();
+            cbManufacturer.Items.Add("Wszyscy");
+            cbManufacturer.Items.AddRange(supplierList.ToArray());
+            cbTax.Items.Clear();
+            string[] taxList = { "0 %", "5 %", "8 %", "23 %" };
+            cbTax.Items.AddRange(taxList);
         }
 
         private void FillWithDataFromObject(Product p, Supplier s)
         {
+            //Initialize calass fields
+            this.ProductEntity = p;
+            this.SupplierEntity = s;
+
             //Supplier name
             this.tbSupplierName.Text = s.Name.ToString() ;
 
@@ -140,6 +169,11 @@ namespace NaturalnieApp.Forms
             this.tbBarCode.Text = p.BarCode.ToString();
             this.rtbProductInfo.Text = p.ProductInfo.ToString();
             this.cbManufacturer.SelectedIndex = this.cbManufacturer.Items.IndexOf(p.Manufacturer);
+        }
+
+        private void ValidateAllInputFields()
+        {
+            this.rtbProductInfo.Validating += rtbProductInfo_Validating;
         }
 
         //Method used to clear all object (text box, combo box, etc.)  data
@@ -181,8 +215,8 @@ namespace NaturalnieApp.Forms
         }
         #endregion
         //====================================================================================================
-        //Show product info events
-        #region Show product info events
+        //Current window events
+        #region Current window events
         private void ShowProductInfo_Load(object sender, EventArgs e)
         {
             //Disable panel and wait until data from db will be fetched
@@ -222,6 +256,9 @@ namespace NaturalnieApp.Forms
         {
             (this.ProductEntity, this.SupplierEntity) = this.databaseCommands.GetProductAndSupplierEntityByProductName(this.cbProductList.SelectedItem.ToString());
             this.FillWithDataFromObject(this.ProductEntity, this.SupplierEntity);
+
+            //Update calss field
+            this.SelectedProductName = this.cbProductList.SelectedItem.ToString();
         }
         #endregion
         //====================================================================================================
@@ -229,9 +266,31 @@ namespace NaturalnieApp.Forms
         #region Buttons events
         private void bSave_Click(object sender, EventArgs e)
         {
+            //Validate all input before saving
+            ValidateAllInputFields();
+
             //Save current object to database
             this.databaseCommands.EditProduct(this.ProductEntity);
             this.databaseCommands.EditSupplier(this.SupplierEntity);
+
+            //Call update event
+            this.bUpdate.Click += bUpdate_Click;
+        }
+        private void bUpdate_Click(object sender, EventArgs e)
+        {
+            //Get current product name
+            if (this.SelectedProductName.Length > 0) this.SelectedProductName = this.cbProductList.SelectedItem.ToString();
+
+            //Clear all data from current form
+            ClearAllObjectsData();
+
+            //Disable panel and wait until data from db will be fetched
+            this.Enabled = false;
+
+            //Call background worker
+            this.ActualTaskType = backgroundWorkerTasks.Update;
+            this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
+
         }
         #endregion
         //====================================================================================================
@@ -436,20 +495,43 @@ namespace NaturalnieApp.Forms
 
         #endregion
         //====================================================================================================
-        //Update button events
-        #region Update button events
-        private void bUpdate_Click(object sender, EventArgs e)
+        //ProductInfo events
+        #region ProductInfo events
+        private void rtbProductInfo_KeyDown(object sender, KeyEventArgs e)
         {
-            //Clear all data from current form
-            ClearAllObjectsData();
+            if (e.KeyCode == Keys.Enter)
+            {
+                SelectNextControl((Control)sender, true, true, true, true);
+            }
 
-            //Disable panel and wait until data from db will be fetched
-            this.Enabled = false;
+        }
+        private void rtbProductInfo_Validating(object sender, EventArgs e)
+        {
+            //Local variables
+            bool validatingResult = false;
+            string text = "Informacje o produkcie może zawierać maksymalnie 1024 znaki!";
 
-            //Call background worker
-            this.ActualTaskType = backgroundWorkerTasks.Init;
-            this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
+            //Cast the sender for an object
+            RichTextBox localSender = (RichTextBox)sender;
+
+            //Check if input match to define pattern
+            if (localSender.Text.Length > 0 && localSender.Text.Length <= 1024) validatingResult = true;
+
+            //Validaion of input text
+            if (!validatingResult)
+            {
+                localSender.Focus();
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, text);
+
+            }
+            else
+            {
+                this.ProductEntity.ProductInfo = localSender.Text;
+                errorProvider1.Clear();
+            }
         }
         #endregion
+
     }
 }
