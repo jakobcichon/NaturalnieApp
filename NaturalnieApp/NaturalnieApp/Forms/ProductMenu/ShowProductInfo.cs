@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 
 namespace NaturalnieApp.Forms
 {
-    public enum backgroundWorkerTasks {None, Init, Update}
+    public enum backgroundWorkerTasks {None, Init, Update};
 
 
 
@@ -35,7 +35,6 @@ namespace NaturalnieApp.Forms
             ActualTaskType = backgroundWorkerTasks.None;
             this.ProductEntity = new Product();
             this.SupplierEntity = new Supplier();
-
 
         }
 
@@ -131,7 +130,7 @@ namespace NaturalnieApp.Forms
         private void FillWithDataFromObject(Product p, Supplier s)
         {
             //Supplier name
-            this.tbSuppierName.Text = s.Name.ToString() ;
+            this.tbSupplierName.Text = s.Name.ToString() ;
 
             //Elzab product number
             this.tbElzabProductNumber.Text = p.ElzabProductId.ToString();
@@ -140,20 +139,21 @@ namespace NaturalnieApp.Forms
             this.tbMarigin.Text = p.Marigin.ToString();
             this.tbBarCode.Text = p.BarCode.ToString();
             this.rtbProductInfo.Text = p.ProductInfo.ToString();
+            this.cbManufacturer.SelectedIndex = this.cbManufacturer.Items.IndexOf(p.Manufacturer);
         }
 
         //Method used to clear all object (text box, combo box, etc.)  data
         private void ClearAllObjectsData()
         {
             //Supplier name
-            this.tbSuppierName.Text = "";
-            this.cbManufacturer.SelectedIndex = 0;
+            this.tbSupplierName.Text = "";
+            this.cbManufacturer.Items.Clear();
 
             //Elzab product number
-            this.cbProductList.Text = "";
+            this.cbProductList.Items.Clear();
             this.tbElzabProductNumber.Text = "";
             this.tbPrice.Text = "";
-            this.cbTax.Text = "";
+            this.cbTax.Items.Clear();
             this.tbMarigin.Text = "";
             this.tbBarCode.Text = "";
             this.rtbProductInfo.Text = "";
@@ -185,7 +185,6 @@ namespace NaturalnieApp.Forms
         #region Show product info events
         private void ShowProductInfo_Load(object sender, EventArgs e)
         {
-
             //Disable panel and wait until data from db will be fetched
             this.Enabled = false;
 
@@ -197,8 +196,7 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Manufacturer events
         #region Manifacturer events
-
-        private void cbManufacturer_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbManufacturer_SelectionChangedCommited(object sender, EventArgs e)
         {
             if (this.cbManufacturer.SelectedIndex != 0)
             {
@@ -215,13 +213,12 @@ namespace NaturalnieApp.Forms
                 cbProductList.Items.Clear();
                 cbProductList.Items.AddRange(productNames.ToArray());
             }
-
         }
         #endregion
         //====================================================================================================
         //Product list events
         #region Product List
-        private void cbProductList_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbProductList_SelectionChangedCommited(object sender, EventArgs e)
         {
             (this.ProductEntity, this.SupplierEntity) = this.databaseCommands.GetProductAndSupplierEntityByProductName(this.cbProductList.SelectedItem.ToString());
             this.FillWithDataFromObject(this.ProductEntity, this.SupplierEntity);
@@ -240,7 +237,7 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Supplier Name events
         #region Supplier Name events
-        private void tbSuppierName_KeyDown(object sender, KeyEventArgs e)
+        private void tbSupplierName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -248,7 +245,7 @@ namespace NaturalnieApp.Forms
             }
             
         }
-        private void tbSuppierName_Validating(object sender, EventArgs e)
+        private void tbSupplierName_Validating(object sender, EventArgs e)
         {
             //Local variables
             bool validatingResult;
@@ -430,14 +427,29 @@ namespace NaturalnieApp.Forms
         #endregion
         //====================================================================================================
         //Marigin events
-        #region Marigin events
-        private void cbTax_SelectedIndexChanged(object sender, EventArgs e)
+        #region Tax events
+        private void cbTax_SelectionChangeCommited(object sender, EventArgs e)
         {
             this.ProductEntity.Tax = int.Parse(this.cbTax.GetItemText(this.cbTax.SelectedItem).ToString().Replace("%", ""));
         }
+
+
         #endregion
-        
-        
-        
+        //====================================================================================================
+        //Update button events
+        #region Update button events
+        private void bUpdate_Click(object sender, EventArgs e)
+        {
+            //Clear all data from current form
+            ClearAllObjectsData();
+
+            //Disable panel and wait until data from db will be fetched
+            this.Enabled = false;
+
+            //Call background worker
+            this.ActualTaskType = backgroundWorkerTasks.Init;
+            this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
+        }
+        #endregion
     }
 }
