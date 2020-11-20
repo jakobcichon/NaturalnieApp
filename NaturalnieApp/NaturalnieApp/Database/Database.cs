@@ -19,10 +19,10 @@ namespace NaturalnieApp.Database
         public int Id { get; set; }
         public int SupplierId { get; set; }
         public int ElzabProductId { get; set; }
-        public string Manufacturer { get; set; }
+        public int ManufacturerId { get; set; }
         public string ProductName { get; set; }
         public float PriceNet { get; set; }
-        public int Tax { get; set; }
+        public int TaxId { get; set; }
         public float Marigin { get; set; }
         public string BarCode { get; set; }
         public string ProductInfo { get; set; }
@@ -61,6 +61,25 @@ namespace NaturalnieApp.Database
         public int Id { get; set; }
         public string Name { get; set; }
         public string Info { get; set; }
+
+    }
+
+    [Table("manufacturer")]
+    public class Manufacturer
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Info { get; set; }
+
+    }
+
+    [Table("tax")]
+    public class Tax
+    {
+        [Key]
+        public int Id { get; set; }
+        public int TaxValue { get; set; }
 
     }
 }

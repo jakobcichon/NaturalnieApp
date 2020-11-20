@@ -287,6 +287,7 @@ namespace NaturalnieApp.Forms
             this.Controls.Add(this.pContainer);
             this.Controls.Add(this.pHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
             this.Name = "MainWindow";
             this.Text = "ElzabCommands";
             this.Load += new System.EventHandler(this.MainWindow_Load);

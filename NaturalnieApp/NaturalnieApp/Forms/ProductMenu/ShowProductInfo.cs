@@ -17,18 +17,24 @@ namespace NaturalnieApp.Forms
     public enum backgroundWorkerTasks {None, Init, Update};
 
 
-
     public partial class ShowProductInfo : Form
     {
+        //====================================================================================================
+        //Class fields
+        #region Class fields
         DatabaseCommands databaseCommands;
         BackgroundWorker backgroundWorker1;
         backgroundWorkerTasks ActualTaskType;
-
         private Product ProductEntity { get; set; }
         private Supplier SupplierEntity { get; set; }
-
+        private Manufacturer ManufacturerEntity { get; set; }
+        private Tax TaxEntity { get; set; }
         private string SelectedProductName { get; set; }
+        #endregion
 
+        //====================================================================================================
+        //Class constructor
+        #region Class consturctor
         public ShowProductInfo(ref DatabaseCommands commandsObj)
         {
             InitializeComponent();
@@ -38,6 +44,27 @@ namespace NaturalnieApp.Forms
             this.ProductEntity = new Product();
             this.SupplierEntity = new Supplier();
         }
+        #endregion
+        //====================================================================================================
+        //User-defined exception
+        #region User-defined exception
+        public class ValidatingFailed : Exception
+        {
+            public ValidatingFailed()
+            {
+            }
+
+            public ValidatingFailed(string message)
+                : base(message)
+            {
+            }
+
+            public ValidatingFailed(string message, Exception inner)
+                : base(message, inner)
+            {
+            }
+        }
+        #endregion
 
         //=============================================================================
         //                              Background worker
@@ -72,9 +99,9 @@ namespace NaturalnieApp.Forms
                     if (this.databaseCommands.ConnectionStatus)
                     {
                         List<string> productNameList = this.databaseCommands.GetProductsNameList();
-                        List<string> productSuppliersList = this.databaseCommands.GetSuppliersNameList();
+                        List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
                         returnList.Add(productNameList);
-                        returnList.Add(productSuppliersList);
+                        returnList.Add(productManufacturerList);
                         e.Result = returnList;
                     }
                     break;
@@ -82,9 +109,9 @@ namespace NaturalnieApp.Forms
                     if (this.databaseCommands.ConnectionStatus)
                     {
                         List<string> productNameList = this.databaseCommands.GetProductsNameList();
-                        List<string> productSuppliersList = this.databaseCommands.GetSuppliersNameList();
+                        List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
                         returnList.Add(productNameList);
-                        returnList.Add(productSuppliersList);
+                        returnList.Add(productManufacturerList);
                         e.Result = returnList;
                     }
                     break;
@@ -125,7 +152,10 @@ namespace NaturalnieApp.Forms
                             List<List<string>> returnList = new List<List<string>>();
                             returnList = (List<List<string>>)e.Result;
                             FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1]);
-                            this.cbProductList.SelectedItem = this.SelectedProductName;
+                            if (this.SelectedProductName != null)
+                            {
+                                this.cbProductList.SelectedItem = this.SelectedProductName;
+                            }
                         }
                         break;
                 }
@@ -133,6 +163,9 @@ namespace NaturalnieApp.Forms
                 //Enable panel after work done
                 if (this.databaseCommands.ConnectionStatus) this.Enabled = true;
 
+
+                this.Focus();
+                this.Activate();
             }
         }
         //=============================================================================
@@ -140,19 +173,19 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //General methods
         #region General methods
-        private void FillWithInitialDataFromObject(List<string> productList, List<string> supplierList)
+        private void FillWithInitialDataFromObject(List<string> productList, List<string> manufacturerList)
         {
             //Add fetched data to proper combo box
             cbProductList.Items.AddRange(productList.ToArray());
             cbManufacturer.Items.Clear();
             cbManufacturer.Items.Add("Wszyscy");
-            cbManufacturer.Items.AddRange(supplierList.ToArray());
+            cbManufacturer.Items.AddRange(manufacturerList.ToArray());
             cbTax.Items.Clear();
             string[] taxList = { "0 %", "5 %", "8 %", "23 %" };
             cbTax.Items.AddRange(taxList);
         }
 
-        private void FillWithDataFromObject(Product p, Supplier s)
+        private void FillWithDataFromObject(Product p, Supplier s, Manufacturer m, Tax t)
         {
             //Initialize calass fields
             this.ProductEntity = p;
@@ -164,16 +197,42 @@ namespace NaturalnieApp.Forms
             //Elzab product number
             this.tbElzabProductNumber.Text = p.ElzabProductId.ToString();
             this.tbPrice.Text = p.PriceNet.ToString();
-            FindTextInComboBoxAndSelect(ref this.cbTax, p.Tax.ToString());
+            FindTextInComboBoxAndSelect(ref this.cbTax, t.TaxValue.ToString());
             this.tbMarigin.Text = p.Marigin.ToString();
             this.tbBarCode.Text = p.BarCode.ToString();
             this.rtbProductInfo.Text = p.ProductInfo.ToString();
-            this.cbManufacturer.SelectedIndex = this.cbManufacturer.Items.IndexOf(p.Manufacturer);
+            this.cbManufacturer.SelectedIndex = this.cbManufacturer.Items.IndexOf(m.Name);
         }
 
-        private void ValidateAllInputFields()
+        private bool ValidateAllInputFields()
         {
-            this.rtbProductInfo.Validating += rtbProductInfo_Validating;
+            //Local variable
+            bool validationSuccess = false;
+            try
+            {
+                //Set local variable to true
+                validationSuccess = true;
+
+                //Call eachh of validating method
+                tbSupplierName_Validating(this.tbSupplierName, EventArgs.Empty);
+                cbProductList_Validating(this.cbProductList, EventArgs.Empty);
+                tbBarCode_Validating(this.tbBarCode, EventArgs.Empty); ;
+                cbManufacturer_Validating(this.cbManufacturer, EventArgs.Empty);
+                tbElzabProductNumber_Validating(this.tbElzabProductNumber, EventArgs.Empty);
+                tbPrice_Validating(this.tbPrice, EventArgs.Empty);
+                cbTax_Validating(this.cbTax, EventArgs.Empty);
+                tbMarigin_Validating(this.tbMarigin, EventArgs.Empty);
+                rtbProductInfo_Validating(this.rtbProductInfo, EventArgs.Empty);
+            }
+            catch (ValidatingFailed)
+            {
+                //If any of exception, return validation failed
+                validationSuccess = false;
+                MessageBox.Show("Błąd podczas weryfikacji danych wejściowych!");
+            }
+
+            return validationSuccess;
+
         }
 
         //Method used to clear all object (text box, combo box, etc.)  data
@@ -226,6 +285,67 @@ namespace NaturalnieApp.Forms
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
         }
+        private void ShowProductInfo_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                errorProvider1.Clear();
+                Control localControl = (Control)sender;
+                localControl.Controls.Remove(this.ActiveControl);
+            }
+        }
+        //====================================================================================================
+        //Buttons events
+        #region Buttons events
+        private void bSave_Click(object sender, EventArgs e)
+        {
+
+            //Local variables
+            bool validatingSuccess;
+            //Validate all input before saving
+            validatingSuccess = ValidateAllInputFields();
+
+            if (validatingSuccess)
+            {
+                //Save current object to database
+                this.databaseCommands.EditProduct(this.ProductEntity);
+                //this.databaseCommands.EditSupplier(this.SupplierEntity);
+                //this.databaseCommands.EditManufacturer(this.ManufacturerEntity);
+                //this.databaseCommands.EditTax(this.TaxEntity);
+                ;
+            }
+
+            //Call update event
+            bUpdate_Click(sender, e);
+        }
+        private void bUpdate_Click(object sender, EventArgs e)
+        {
+            errorProvider1.Clear();
+
+            //Get current product name if was chosen
+            if (this.SelectedProductName != null)
+            {
+                if (this.cbProductList.SelectedItem != null)
+                {
+                    this.SelectedProductName = this.cbProductList.SelectedItem.ToString();
+                }
+                else
+                {
+                    this.SelectedProductName = null;
+                }
+            }
+
+            //Clear all data from current form
+            ClearAllObjectsData();
+
+            //Disable panel and wait until data from db will be fetched
+            this.Enabled = false;
+
+            //Call background worker
+            this.ActualTaskType = backgroundWorkerTasks.Update;
+            this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
+
+        }
         #endregion
         //====================================================================================================
         //Manufacturer events
@@ -248,50 +368,57 @@ namespace NaturalnieApp.Forms
                 cbProductList.Items.AddRange(productNames.ToArray());
             }
         }
+        private void cbManufacturer_Validating(object sender, EventArgs e)
+        {
+            //Local variables
+            bool validatingResult;
+            string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+";
+
+            //Accept only letters an numbers with maximal length of 255 chars
+            string regPattern = @"^[a-zA-Z0-9_]{1,255}$";
+
+            //Cast the sender for an object
+            ComboBox localSender = (ComboBox)sender;
+
+            //Check if input match to define pattern
+            validatingResult = ValidateInput(localSender.Text, regPattern);
+
+            //Validaion of input text
+            if (!validatingResult)
+            {
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, text);
+                if (e == EventArgs.Empty) throw new ValidatingFailed("Błąd podczas weryfikacji " + localSender.Name + "!");
+
+            }
+            else
+            {
+                this.ManufacturerEntity.Name = localSender.Text;
+                errorProvider1.Clear();
+            }
+        }
         #endregion
         //====================================================================================================
         //Product list events
         #region Product List
         private void cbProductList_SelectionChangedCommited(object sender, EventArgs e)
         {
-            (this.ProductEntity, this.SupplierEntity) = this.databaseCommands.GetProductAndSupplierEntityByProductName(this.cbProductList.SelectedItem.ToString());
-            this.FillWithDataFromObject(this.ProductEntity, this.SupplierEntity);
+            this.ProductEntity = this.databaseCommands.GetProductEntityByProductName(this.cbProductList.SelectedItem.ToString());
+            this.SupplierEntity = this.databaseCommands.GetSupplierByProductName(this.cbProductList.SelectedItem.ToString());
+            this.ManufacturerEntity = this.databaseCommands.GetManufacturerByProductName(this.cbProductList.SelectedItem.ToString());
+            this.TaxEntity = this.databaseCommands.GetTaxByProductName(this.cbProductList.SelectedItem.ToString());
+            this.FillWithDataFromObject(this.ProductEntity, this.SupplierEntity, this.ManufacturerEntity, this.TaxEntity);
 
             //Update calss field
             this.SelectedProductName = this.cbProductList.SelectedItem.ToString();
         }
+        private void cbProductList_Validating(object sender, EventArgs e)
+        {
+            //Cast the sender for an object
+            ComboBox localSender = (ComboBox)sender;
+            ;
+        }
         #endregion
-        //====================================================================================================
-        //Buttons events
-        #region Buttons events
-        private void bSave_Click(object sender, EventArgs e)
-        {
-            //Validate all input before saving
-            ValidateAllInputFields();
-
-            //Save current object to database
-            this.databaseCommands.EditProduct(this.ProductEntity);
-            this.databaseCommands.EditSupplier(this.SupplierEntity);
-
-            //Call update event
-            this.bUpdate.Click += bUpdate_Click;
-        }
-        private void bUpdate_Click(object sender, EventArgs e)
-        {
-            //Get current product name
-            if (this.SelectedProductName.Length > 0) this.SelectedProductName = this.cbProductList.SelectedItem.ToString();
-
-            //Clear all data from current form
-            ClearAllObjectsData();
-
-            //Disable panel and wait until data from db will be fetched
-            this.Enabled = false;
-
-            //Call background worker
-            this.ActualTaskType = backgroundWorkerTasks.Update;
-            this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
-
-        }
         #endregion
         //====================================================================================================
         //Supplier Name events
@@ -308,10 +435,10 @@ namespace NaturalnieApp.Forms
         {
             //Local variables
             bool validatingResult;
-            string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery";
+            string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^[a-zA-Z0-9]{0,255}$";
+            string regPattern = @"^[a-zA-Z0-9_]{1,255}$";
 
             //Cast the sender for an object
             TextBox localSender = (TextBox)sender;
@@ -322,9 +449,9 @@ namespace NaturalnieApp.Forms
             //Validaion of input text
             if (!validatingResult)
             {
-                localSender.Focus();
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, text);
+                if (e == EventArgs.Empty) throw new ValidatingFailed("Błąd podczas weryfikacji " + localSender.Name + "!");
 
             }
             else
@@ -362,10 +489,9 @@ namespace NaturalnieApp.Forms
             //Validaion of input text
             if (!validatingResult)
             {
-                localSender.Focus();
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, text);
-
+                if (e == EventArgs.Empty) throw new ValidatingFailed("Błąd podczas weryfikacji " + localSender.Name + "!");
             }
             else
             {
@@ -407,10 +533,9 @@ namespace NaturalnieApp.Forms
             //Validaion of input text
             if (!validatingResult)
             {
-                localSender.Focus();
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, text);
-
+                if (e == EventArgs.Empty) throw new ValidatingFailed("Błąd podczas weryfikacji " + localSender.Name + "!");
             }
             else
             {
@@ -462,10 +587,9 @@ namespace NaturalnieApp.Forms
             //Validaion of input text
             if (!validatingResult)
             {
-                localSender.Focus();
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, text);
-
+                if (e == EventArgs.Empty) throw new ValidatingFailed("Błąd podczas weryfikacji " + localSender.Name + "!");
             }
             else
             {
@@ -479,7 +603,7 @@ namespace NaturalnieApp.Forms
                 }
                 else localSender.Text = value.ToString();
 
-                this.ProductEntity.Marigin= value;
+                this.ProductEntity.Marigin = value;
                 errorProvider1.Clear();
             }
         }
@@ -489,10 +613,12 @@ namespace NaturalnieApp.Forms
         #region Tax events
         private void cbTax_SelectionChangeCommited(object sender, EventArgs e)
         {
-            this.ProductEntity.Tax = int.Parse(this.cbTax.GetItemText(this.cbTax.SelectedItem).ToString().Replace("%", ""));
+            this.TaxEntity.TaxValue = int.Parse(this.cbTax.GetItemText(this.cbTax.SelectedItem).ToString().Replace("%", ""));
         }
-
-
+        private void cbTax_Validating(object sender, EventArgs e)
+        {
+            ;
+        }
         #endregion
         //====================================================================================================
         //ProductInfo events
@@ -520,10 +646,9 @@ namespace NaturalnieApp.Forms
             //Validaion of input text
             if (!validatingResult)
             {
-                localSender.Focus();
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, text);
-
+                if (e == EventArgs.Empty) throw new ValidatingFailed("Błąd podczas weryfikacji " + localSender.Name + "!");
             }
             else
             {
@@ -532,6 +657,48 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
+        //====================================================================================================
+        //Barcode events
+        #region Barcode events
+        private void tbBarCode_KeyDown(object sender, KeyEventArgs e)
+        {
+            
+            if (e.KeyCode == Keys.Enter)
+            {
+                SelectNextControl((Control)sender, true, true, true, true);
+               
+            }
 
+        }
+        private void tbBarCode_Validating(object sender, EventArgs e)
+        {
+            //Local variables
+            bool validatingResult;
+            string text = "Kod kreskowy musi składać się tylko z cyfr a jego długość musi wynosić 8-13 znaków";
+
+            //Accept only letters an numbers with maximal length of 255 chars
+            string regPattern = @"^\d{8,13}$";
+
+            //Cast the sender for an object
+            TextBox localSender = (TextBox)sender;
+
+            //Check if input match to define pattern
+            validatingResult = ValidateInput(localSender.Text, regPattern);
+
+            //Validaion of input text
+            if (!validatingResult)
+            {
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, text);
+                if (e == EventArgs.Empty) throw new ValidatingFailed("Błąd podczas weryfikacji " + localSender.Name + "!");
+
+            }
+            else
+            {
+                this.ProductEntity.BarCode = localSender.Text;
+                errorProvider1.Clear();
+            }
+        }
+        #endregion
     }
 }

@@ -158,15 +158,14 @@ namespace NaturalnieApp.Forms
             // 
             // lManufacturer
             // 
-            this.lManufacturer.AutoSize = true;
             this.lManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.lManufacturer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lManufacturer.Dock = System.Windows.Forms.DockStyle.Left;
             this.lManufacturer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.lManufacturer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lManufacturer.Location = new System.Drawing.Point(6, 6);
             this.lManufacturer.Margin = new System.Windows.Forms.Padding(5);
             this.lManufacturer.Name = "lManufacturer";
-            this.lManufacturer.Size = new System.Drawing.Size(261, 20);
+            this.lManufacturer.Size = new System.Drawing.Size(240, 20);
             this.lManufacturer.TabIndex = 0;
             this.lManufacturer.Text = "Producent";
             this.lManufacturer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -211,13 +210,14 @@ namespace NaturalnieApp.Forms
             this.cbTax.Size = new System.Drawing.Size(214, 28);
             this.cbTax.TabIndex = 11;
             this.cbTax.SelectionChangeCommitted += new System.EventHandler(this.cbTax_SelectionChangeCommited);
+            this.cbTax.Validating += new System.ComponentModel.CancelEventHandler(this.cbTax_Validating);
             // 
             // pManufacturer
             // 
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 271F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 299F));
             this.pManufacturer.Controls.Add(this.cbManufacturer, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -242,9 +242,10 @@ namespace NaturalnieApp.Forms
             this.cbManufacturer.Location = new System.Drawing.Point(6, 37);
             this.cbManufacturer.Margin = new System.Windows.Forms.Padding(5);
             this.cbManufacturer.Name = "cbManufacturer";
-            this.cbManufacturer.Size = new System.Drawing.Size(242, 28);
+            this.cbManufacturer.Size = new System.Drawing.Size(240, 28);
             this.cbManufacturer.TabIndex = 1;
             this.cbManufacturer.SelectionChangeCommitted += new System.EventHandler(this.cbManufacturer_SelectionChangedCommited);
+            this.cbManufacturer.Validating += new System.ComponentModel.CancelEventHandler(this.cbManufacturer_Validating);
             // 
             // gbProductSelection
             // 
@@ -265,7 +266,7 @@ namespace NaturalnieApp.Forms
             this.pBarCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pBarCode.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pBarCode.ColumnCount = 1;
-            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 294F));
+            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 322F));
             this.pBarCode.Controls.Add(this.tbBarCode, 0, 1);
             this.pBarCode.Controls.Add(this.label1, 0, 0);
             this.pBarCode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -285,8 +286,10 @@ namespace NaturalnieApp.Forms
             this.tbBarCode.Location = new System.Drawing.Point(6, 37);
             this.tbBarCode.Margin = new System.Windows.Forms.Padding(5);
             this.tbBarCode.Name = "tbBarCode";
-            this.tbBarCode.Size = new System.Drawing.Size(240, 26);
+            this.tbBarCode.Size = new System.Drawing.Size(230, 26);
             this.tbBarCode.TabIndex = 3;
+            this.tbBarCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbBarCode_KeyDown);
+            this.tbBarCode.Validating += new System.ComponentModel.CancelEventHandler(this.tbBarCode_Validating);
             // 
             // label1
             // 
@@ -307,7 +310,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 481F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 509F));
             this.pProductName.Controls.Add(this.cbProductList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -334,6 +337,7 @@ namespace NaturalnieApp.Forms
             this.cbProductList.Size = new System.Drawing.Size(450, 28);
             this.cbProductList.TabIndex = 2;
             this.cbProductList.SelectedIndexChanged += new System.EventHandler(this.cbProductList_SelectionChangedCommited);
+            this.cbProductList.Validating += new System.ComponentModel.CancelEventHandler(this.cbProductList_Validating);
             // 
             // lProductName
             // 
@@ -372,7 +376,7 @@ namespace NaturalnieApp.Forms
             this.pProductInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
             this.pProductInfo.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductInfo.ColumnCount = 1;
-            this.pProductInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 563F));
+            this.pProductInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 591F));
             this.pProductInfo.Controls.Add(this.lProductInfo, 0, 0);
             this.pProductInfo.Controls.Add(this.rtbProductInfo, 0, 1);
             this.pProductInfo.Location = new System.Drawing.Point(470, 30);
@@ -402,7 +406,7 @@ namespace NaturalnieApp.Forms
             this.rtbProductInfo.Margin = new System.Windows.Forms.Padding(5);
             this.rtbProductInfo.MaxLength = 1024;
             this.rtbProductInfo.Name = "rtbProductInfo";
-            this.rtbProductInfo.Size = new System.Drawing.Size(510, 128);
+            this.rtbProductInfo.Size = new System.Drawing.Size(500, 128);
             this.rtbProductInfo.TabIndex = 4;
             this.rtbProductInfo.Text = "";
             this.rtbProductInfo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtbProductInfo_KeyDown);
@@ -568,12 +572,13 @@ namespace NaturalnieApp.Forms
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Enabled = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
             this.Name = "ShowProductInfo";
             this.Text = "Submenu_ElzabInfo";
             this.Load += new System.EventHandler(this.ShowProductInfo_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ShowProductInfo_KeyDown);
             this.pHeader.ResumeLayout(false);
             this.pManufacturer.ResumeLayout(false);
-            this.pManufacturer.PerformLayout();
             this.gbProductSelection.ResumeLayout(false);
             this.pBarCode.ResumeLayout(false);
             this.pBarCode.PerformLayout();
