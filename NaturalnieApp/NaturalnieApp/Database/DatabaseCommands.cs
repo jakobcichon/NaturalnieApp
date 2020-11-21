@@ -103,6 +103,116 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB tax list
+        //====================================================================================================
+        public List<int> GetTaxList()
+        {
+            List<int> taxList = new List<int>();
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                foreach (var tax in contextDB.Tax)
+                {
+                    taxList.Add(tax.TaxValue);
+                }
+            }
+            return taxList;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB tax list
+        //====================================================================================================
+        public List<string> GetTaxListRetString()
+        {
+            List<string> taxList = new List<string>();
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                foreach (var tax in contextDB.Tax)
+                {
+                    taxList.Add(tax.TaxValue.ToString());
+                }
+            }
+            return taxList;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Product value using Product name
+        //====================================================================================================
+        public int GetProductIdByName(string productName)
+        {
+            int productId = -1;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from p in contextDB.Products
+                            where p.ProductName == productName
+                            select p.Id;
+
+                productId = query.SingleOrDefault();
+            }
+
+            return productId;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Supplier value using Supplier name
+        //====================================================================================================
+        public int GetSupplierIdByName(string supplierName)
+        {
+            int supplierId = -1;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from s in contextDB.Suppliers
+                            where s.Name == supplierName
+                            select s.Id;
+
+                supplierId = query.SingleOrDefault();
+            }
+
+            return supplierId;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Manufacturer value using Manufacturer name
+        //====================================================================================================
+        public int GetManufacturerIdByName(string manufacturerName)
+        {
+            int manufacturerId = -1;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from m in contextDB.Manufacturers
+                            where m.Name == manufacturerName
+                            select m.Id;
+
+                manufacturerId = query.SingleOrDefault();
+            }
+
+            return manufacturerId;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB tax value using tax name
+        //====================================================================================================
+        public int GetTaxIdByValue(int taxValue)
+        {
+            int taxId = -1;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from t in contextDB.Tax
+                           where t.TaxValue == taxValue
+                           select t.Id;
+
+                taxId = query.SingleOrDefault();
+            }
+
+            return taxId;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB Product entity
         //====================================================================================================
         public Product GetProductEntityByProductName(string productName)
@@ -121,6 +231,7 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         //Method used to retrieve from DB Product entity
         //====================================================================================================
+
         public Manufacturer GetManufacturerByProductName(string productName)
         {
             Manufacturer localManufacturer = new Manufacturer();
@@ -227,29 +338,9 @@ namespace NaturalnieApp.Database
         {
             using (ShopContext contextDB = new ShopContext())
             {
-                /*                contextDB.Products.Add(product);
+                contextDB.Products.Add(product);
                 contextDB.Entry(product).State = EntityState.Modified;
                 int retVal = contextDB.SaveChanges();
-                */
-                Product localProduct = new Product();
-                var entityPoint = from p in contextDB.Products
-                            join s in contextDB.Suppliers on p.SupplierId equals s.Id
-                            join m in contextDB.Manufacturers on p.ManufacturerId equals m.Id
-                            join t in contextDB.Tax on p.TaxId equals t.Id
-                            where p.ProductName == product.ProductName
-                            where t.TaxValue == 5
-                            select new
-                            {
-                                p
-                            };
-                foreach (var element in entityPoint)
-                {
-                    localProduct = element.p;
-                }
-                contextDB.Products.Add(localProduct);
-                contextDB.Entry(product).State = EntityState.Modified;
-                int retVal = contextDB.SaveChanges();
-
             }
         }
 

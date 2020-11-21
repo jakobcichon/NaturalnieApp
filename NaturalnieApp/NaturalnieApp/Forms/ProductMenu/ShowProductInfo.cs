@@ -41,8 +41,8 @@ namespace NaturalnieApp.Forms
             InitializeBackgroundWorker();
             this.databaseCommands = new DatabaseCommands();
             ActualTaskType = backgroundWorkerTasks.None;
-            this.ProductEntity = new Product();
-            this.SupplierEntity = new Supplier();
+            //this.ProductEntity = new Product();
+            //this.SupplierEntity = new Supplier();
         }
         #endregion
         //====================================================================================================
@@ -100,8 +100,10 @@ namespace NaturalnieApp.Forms
                     {
                         List<string> productNameList = this.databaseCommands.GetProductsNameList();
                         List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
+                        List<string> productSupplierList = this.databaseCommands.GetSuppliersNameList();
                         returnList.Add(productNameList);
                         returnList.Add(productManufacturerList);
+                        returnList.Add(productSupplierList);
                         e.Result = returnList;
                     }
                     break;
@@ -110,8 +112,10 @@ namespace NaturalnieApp.Forms
                     {
                         List<string> productNameList = this.databaseCommands.GetProductsNameList();
                         List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
+                        List<string> productSupplierList = this.databaseCommands.GetSuppliersNameList();
                         returnList.Add(productNameList);
                         returnList.Add(productManufacturerList);
+                        returnList.Add(productSupplierList);
                         e.Result = returnList;
                     }
                     break;
@@ -141,7 +145,7 @@ namespace NaturalnieApp.Forms
                             //check if Database reachable 
                             List<List<string>> returnList = new List<List<string>>();
                             returnList = (List<List<string>>)e.Result;
-                            FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1]);
+                            FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1], returnList[2]);
                         }
                         break;
                     case backgroundWorkerTasks.Update:
@@ -151,7 +155,7 @@ namespace NaturalnieApp.Forms
                             //check if Database reachable 
                             List<List<string>> returnList = new List<List<string>>();
                             returnList = (List<List<string>>)e.Result;
-                            FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1]);
+                            FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1], returnList[2]);
                             if (this.SelectedProductName != null)
                             {
                                 this.cbProductList.SelectedItem = this.SelectedProductName;
@@ -173,16 +177,17 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //General methods
         #region General methods
-        private void FillWithInitialDataFromObject(List<string> productList, List<string> manufacturerList)
+        private void FillWithInitialDataFromObject(List<string> productList, List<string> manufacturerList, List<string> supplierList)
         {
             //Add fetched data to proper combo box
             cbProductList.Items.AddRange(productList.ToArray());
             cbManufacturer.Items.Clear();
             cbManufacturer.Items.Add("Wszyscy");
             cbManufacturer.Items.AddRange(manufacturerList.ToArray());
+            cbSupplierName.Items.Clear();
+            cbSupplierName.Items.AddRange(supplierList.ToArray());
             cbTax.Items.Clear();
-            string[] taxList = { "0 %", "5 %", "8 %", "23 %" };
-            cbTax.Items.AddRange(taxList);
+            cbTax.Items.AddRange(this.databaseCommands.GetTaxListRetString().ToArray());
         }
 
         private void FillWithDataFromObject(Product p, Supplier s, Manufacturer m, Tax t)
@@ -192,12 +197,13 @@ namespace NaturalnieApp.Forms
             this.SupplierEntity = s;
 
             //Supplier name
-            this.tbSupplierName.Text = s.Name.ToString() ;
+            this.cbSupplierName.Text = s.Name.ToString();
 
             //Elzab product number
             this.tbElzabProductNumber.Text = p.ElzabProductId.ToString();
             this.tbPrice.Text = p.PriceNet.ToString();
             FindTextInComboBoxAndSelect(ref this.cbTax, t.TaxValue.ToString());
+            FindTextInComboBoxAndSelect(ref this.cbSupplierName, s.Name.ToString());
             this.tbMarigin.Text = p.Marigin.ToString();
             this.tbBarCode.Text = p.BarCode.ToString();
             this.rtbProductInfo.Text = p.ProductInfo.ToString();
@@ -214,7 +220,7 @@ namespace NaturalnieApp.Forms
                 validationSuccess = true;
 
                 //Call eachh of validating method
-                tbSupplierName_Validating(this.tbSupplierName, EventArgs.Empty);
+                cbSupplierName_Validating(this.cbSupplierName, EventArgs.Empty);
                 cbProductList_Validating(this.cbProductList, EventArgs.Empty);
                 tbBarCode_Validating(this.tbBarCode, EventArgs.Empty); ;
                 cbManufacturer_Validating(this.cbManufacturer, EventArgs.Empty);
@@ -239,7 +245,7 @@ namespace NaturalnieApp.Forms
         private void ClearAllObjectsData()
         {
             //Supplier name
-            this.tbSupplierName.Text = "";
+            this.cbSupplierName.Text = "";
             this.cbManufacturer.Items.Clear();
 
             //Elzab product number
@@ -299,20 +305,27 @@ namespace NaturalnieApp.Forms
         #region Buttons events
         private void bSave_Click(object sender, EventArgs e)
         {
-
             //Local variables
             bool validatingSuccess;
+            int id = -1;
+
             //Validate all input before saving
             validatingSuccess = ValidateAllInputFields();
 
             if (validatingSuccess)
             {
+                //Get Id of given Tax and add it to product
+                id = this.databaseCommands.GetTaxIdByValue(int.Parse(this.cbTax.Text.ToString()));
+                if (id > 0) this.ProductEntity.TaxId = id;
+                else MessageBox.Show(String.Format("Podana wartość podatku ({0}) nie istnieje w bazie danych!", this.cbTax.SelectedValue.ToString()));
+
+                //Get Id of given Supplier and add it to product
+                id = this.databaseCommands.GetSupplierIdByName(this.cbSupplierName.Text.ToString());
+                if (id > 0) this.ProductEntity.SupplierId = id;
+                else MessageBox.Show(String.Format("Podana nazwa dostawcy ({0}) nie istnieje w bazie danych!", this.cbSupplierName.Text.ToString().ToString()));
+
                 //Save current object to database
                 this.databaseCommands.EditProduct(this.ProductEntity);
-                //this.databaseCommands.EditSupplier(this.SupplierEntity);
-                //this.databaseCommands.EditManufacturer(this.ManufacturerEntity);
-                //this.databaseCommands.EditTax(this.TaxEntity);
-                ;
             }
 
             //Call update event
@@ -414,16 +427,13 @@ namespace NaturalnieApp.Forms
         }
         private void cbProductList_Validating(object sender, EventArgs e)
         {
-            //Cast the sender for an object
-            ComboBox localSender = (ComboBox)sender;
-            ;
         }
         #endregion
         #endregion
         //====================================================================================================
         //Supplier Name events
         #region Supplier Name events
-        private void tbSupplierName_KeyDown(object sender, KeyEventArgs e)
+        private void cbSupplierName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -431,7 +441,7 @@ namespace NaturalnieApp.Forms
             }
             
         }
-        private void tbSupplierName_Validating(object sender, EventArgs e)
+        private void cbSupplierName_Validating(object sender, EventArgs e)
         {
             //Local variables
             bool validatingResult;
@@ -441,7 +451,7 @@ namespace NaturalnieApp.Forms
             string regPattern = @"^[a-zA-Z0-9_]{1,255}$";
 
             //Cast the sender for an object
-            TextBox localSender = (TextBox)sender;
+            ComboBox localSender = (ComboBox)sender;
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(localSender.Text, regPattern);
@@ -700,5 +710,10 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
+
+        private void cbTax_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
     }
 }
