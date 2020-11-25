@@ -141,25 +141,22 @@ namespace NaturalnieApp.Forms
             this.pContainer.Controls.Add(frm);
             frm.Show();
         }
-
-        #endregion
-
-        #region Find product submenu
-        private void bFindProduct_Click(object sender, EventArgs e)
+        private void AddProductFromPdf_Click(object sender, EventArgs e)
         {
-
-
+            this.pContainer.Controls.Clear();
+            AddNewProductFromPDF frm = new AddNewProductFromPDF() { TopLevel = false, TopMost = true };
+            this.pContainer.Controls.Add(frm);
+            frm.Show();
+        }
+        private void bShowProductInfo_Click(object sender, EventArgs e)
+        {
             this.pContainer.Controls.Clear();
             ShowProductInfo frm = new ShowProductInfo(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.pContainer.Controls.Add(frm);
             frm.Show();
-
         }
         #endregion
 
-        private void MainWindow_Load(object sender, EventArgs e)
-        {
-            List<string> productNameList = this.databaseCommands.GetProductsNameList();
-        }
+
     }
 }

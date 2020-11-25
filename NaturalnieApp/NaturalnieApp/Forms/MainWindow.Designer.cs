@@ -32,7 +32,8 @@ namespace NaturalnieApp.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.pMenu = new System.Windows.Forms.Panel();
             this.pProductSubMenu = new System.Windows.Forms.Panel();
-            this.bFindProduct = new System.Windows.Forms.Button();
+            this.bShowProductInfo = new System.Windows.Forms.Button();
+            this.AddProductFromPdf = new System.Windows.Forms.Button();
             this.bNewProduct = new System.Windows.Forms.Button();
             this.bProductMenu = new System.Windows.Forms.Button();
             this.pCashRegisterSubMenu = new System.Windows.Forms.Panel();
@@ -70,30 +71,47 @@ namespace NaturalnieApp.Forms
             // 
             // pProductSubMenu
             // 
+            this.pProductSubMenu.AutoSize = true;
             this.pProductSubMenu.BackColor = System.Drawing.Color.DimGray;
-            this.pProductSubMenu.Controls.Add(this.bFindProduct);
+            this.pProductSubMenu.Controls.Add(this.bShowProductInfo);
+            this.pProductSubMenu.Controls.Add(this.AddProductFromPdf);
             this.pProductSubMenu.Controls.Add(this.bNewProduct);
             this.pProductSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pProductSubMenu.Location = new System.Drawing.Point(0, 256);
             this.pProductSubMenu.Name = "pProductSubMenu";
-            this.pProductSubMenu.Size = new System.Drawing.Size(200, 60);
+            this.pProductSubMenu.Size = new System.Drawing.Size(200, 90);
             this.pProductSubMenu.TabIndex = 5;
             // 
-            // bFindProduct
+            // bShowProductInfo
             // 
-            this.bFindProduct.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bFindProduct.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bFindProduct.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.bFindProduct.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bFindProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bFindProduct.ForeColor = System.Drawing.Color.White;
-            this.bFindProduct.Location = new System.Drawing.Point(0, 30);
-            this.bFindProduct.Name = "bFindProduct";
-            this.bFindProduct.Size = new System.Drawing.Size(200, 30);
-            this.bFindProduct.TabIndex = 5;
-            this.bFindProduct.Text = "Znajdź produkt";
-            this.bFindProduct.UseVisualStyleBackColor = false;
-            this.bFindProduct.Click += new System.EventHandler(this.bFindProduct_Click);
+            this.bShowProductInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bShowProductInfo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bShowProductInfo.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bShowProductInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bShowProductInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bShowProductInfo.ForeColor = System.Drawing.Color.White;
+            this.bShowProductInfo.Location = new System.Drawing.Point(0, 60);
+            this.bShowProductInfo.Name = "bShowProductInfo";
+            this.bShowProductInfo.Size = new System.Drawing.Size(200, 30);
+            this.bShowProductInfo.TabIndex = 7;
+            this.bShowProductInfo.Text = "Znajdź produkt";
+            this.bShowProductInfo.UseVisualStyleBackColor = false;
+            // 
+            // AddProductFromPdf
+            // 
+            this.AddProductFromPdf.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.AddProductFromPdf.Dock = System.Windows.Forms.DockStyle.Top;
+            this.AddProductFromPdf.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.AddProductFromPdf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddProductFromPdf.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddProductFromPdf.ForeColor = System.Drawing.Color.White;
+            this.AddProductFromPdf.Location = new System.Drawing.Point(0, 30);
+            this.AddProductFromPdf.Name = "AddProductFromPdf";
+            this.AddProductFromPdf.Size = new System.Drawing.Size(200, 30);
+            this.AddProductFromPdf.TabIndex = 6;
+            this.AddProductFromPdf.Text = "Dodaj produkty z pdf";
+            this.AddProductFromPdf.UseVisualStyleBackColor = false;
+            this.AddProductFromPdf.Click += new System.EventHandler(this.AddProductFromPdf_Click);
             // 
             // bNewProduct
             // 
@@ -290,8 +308,8 @@ namespace NaturalnieApp.Forms
             this.KeyPreview = true;
             this.Name = "MainWindow";
             this.Text = "ElzabCommands";
-            this.Load += new System.EventHandler(this.MainWindow_Load);
             this.pMenu.ResumeLayout(false);
+            this.pMenu.PerformLayout();
             this.pProductSubMenu.ResumeLayout(false);
             this.pCashRegisterSubMenu.ResumeLayout(false);
             this.pHeader.ResumeLayout(false);
@@ -312,11 +330,12 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bExit;
         private System.Windows.Forms.Panel pContainer;
         private System.Windows.Forms.Panel pProductSubMenu;
-        private System.Windows.Forms.Button bFindProduct;
         private System.Windows.Forms.Button bNewProduct;
         private System.Windows.Forms.Button bProductMenu;
         private System.Windows.Forms.Label lDtabaseStatus;
         private System.Windows.Forms.Label lDatabaseConnState;
         private MySql.Data.MySqlClient.CustomInstaller customInstaller1;
+        private System.Windows.Forms.Button bShowProductInfo;
+        private System.Windows.Forms.Button AddProductFromPdf;
     }
 }
