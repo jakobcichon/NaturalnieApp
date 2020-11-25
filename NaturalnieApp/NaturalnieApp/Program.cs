@@ -8,6 +8,8 @@ using NaturalnieApp.Database;
 using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Collections.Generic;
+using NaturalnieApp.PdfToExcel;
+using System.Data;
 
 namespace NaturalnieApp
 {
@@ -21,6 +23,11 @@ namespace NaturalnieApp
         [STAThread]
         static void Main()
         {
+            //Test purpose
+            List<DataTable> dataTest = ExcelBase.GetAllDataFromExcel(@"C:\Users\JCichon\Desktop\herbata faktura 482.xlsx");
+            EWAX_Supplier test = new EWAX_Supplier();
+            ExcelBase.ExtractEntities(test, dataTest);
+
             //Read data from config file 
             ConfigFileObject ConfigFileInst = new ConfigFileObject();
 
