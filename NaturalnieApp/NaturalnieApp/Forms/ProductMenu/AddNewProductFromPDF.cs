@@ -10,6 +10,7 @@ using System.Data.OleDb;
 using System.Data;
 using System.Linq;
 using System.Collections.Generic;
+using NaturalnieApp.PdfToExcel;
 
 namespace NaturalnieApp.Forms
 {
@@ -28,155 +29,58 @@ namespace NaturalnieApp.Forms
 
         void SaveToPDF(string pdfPath, string outPath)
         {
+            //Get file name
+            string fileName = Path.GetFileNameWithoutExtension(pdfPath);
             // Load PDF document
             Document pdfDocument = new Document(pdfPath);
             // Initialize ExcelSaveOptions
             ExcelSaveOptions options = new ExcelSaveOptions();
             // Set output format
-            options.Format = ExcelSaveOptions.ExcelFormat.XLSX;
+            //options.Format = ExcelSaveOptions.ExcelFormat.XLS;
             // Save output file
-            pdfDocument.Save(outPath, options);
+            pdfDocument.Save(Path.Combine(outPath, fileName + ".xls"), options);
             ;
         }
 
 
         private void bBrowsePath_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() == DialogResult.OK)
+            OpenFileDialog inputFileDialog = new OpenFileDialog();
+            if (inputFileDialog.ShowDialog() == DialogResult.OK)
             {
-                this.tbPdfPath.Text = ofd.FileName;
-                //SaveToPDF(this.tbPdfPath.Text,"F:\\Projekty\\02. NaturalnieApp\\NaturalnieApp\\TempFolder\\test.xlsx");
-                List<DataTable> excelData = ReadExcel(@"F:\Projekty\02. NaturalnieApp\NaturalnieApp\TempFolder\test.xlsx");
-                RemoveRowsUntilString(excelData[0], "Lp");
-            }
-
-        }
-
-        //Method used to remove rows until find specified string
-        bool RemoveRowsUntilString(DataTable data, string wantedString)
-        {
-            List<string> itemArray = new List<string>() ;
-            foreach (DataRow row in data.Rows)
-            {
-                int index = -2;
-                itemArray = row.ItemArray.Select(s => s.ToString()).ToList();
-                index = itemArray.FindIndex(e => e.Contains( wantedString));
-                if ( index != -1)
+                FolderBrowserDialog outputFilePathDialog = new FolderBrowserDialog();
+                if (outputFilePathDialog.ShowDialog() == DialogResult.OK)
                 {
                     
+                    
+                    this.tbPdfPath.Text = inputFileDialog.FileName;
+                    SaveToPDF(this.tbPdfPath.Text, outputFilePathDialog.SelectedPath);
+
+                    //Combine path for excel file name
+                    string fileName = Path.GetFileNameWithoutExtension(inputFileDialog.FileName);
+                    ReadExcel(Path.Combine(outputFilePathDialog.SelectedPath, fileName + ".xls"));
+                    ;
                 }
-               
+
+
             }
 
-            ;
-
-            return false;
         }
 
-        //Method used to read data from excel from the specified path
+            //Method used to read data from excel from the specified path
         //Method return List of data table, where one list element contains one sheet data from excel file
-        private List<DataTable> ReadExcel(string filePath)
+        private void ReadExcel(string filePath)
         {
-            //Local variables
-            string fileExtension;
-            string connectionString = "";
-            bool extensionValidatedSuccessfully = false;
+            //Get excel data
+            List<DataTable> excelData = ExcelBase.GetAllDataFromExcel(filePath);
 
-            List<DataTable> excelData = new List<DataTable>();
-
-            //Check file extension
-            fileExtension = Path.GetExtension(filePath);
-
-            //Create connection string
-            // if the File extension is .XLS using below connection string
-            if (fileExtension == ".xls")
-            {
-                connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0; Data Source = '" + filePath + "';Extended Properties=\"Excel 8.0;HDR=YES;\"";
-                extensionValidatedSuccessfully = true;
-            }
-            // if the File extension is .XLSX using below connection string
-            else if(fileExtension == ".xlsx")
-            {
-                connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + filePath + ";Extended Properties=Excel 12.0;";
-                extensionValidatedSuccessfully = true;
-            }
-            else
-            {
-                MessageBox.Show("Błędne rozszerzenie pliku! Oczekiwane : '.xls' lub '.xlsx'. Aktualne : '" + fileExtension +"'.");
-            }
-            
-            //Check if extension has proper format
-            if (extensionValidatedSuccessfully)
-            {
-                // Connect EXCEL sheet with OLEDB using connection string
-                using (OleDbConnection conn = new OleDbConnection(connectionString))
-                {
-                    try
-                    {
-                        //Open connection
-                        conn.Open();
-
-                        //Get list of sheet names
-                        List<string> sheetNames = GetListOfSheetNames(conn);
-
-                        //Get data from all excel sheets
-                        excelData = GetExcelSheetData(conn, sheetNames);
-
-                    }
-                    catch (Exception ex)
-                    {
-                        //exception here
-                        MessageBox.Show(ex.ToString());
-                    }
-                    finally
-                    {
-                        conn.Close();
-                        conn.Dispose();
-                    }
-
-                }
-
-            }
-
-            return excelData;
-
+            //Get proper template and get ents
+            EWAX_Supplier supplierInvoice = new EWAX_Supplier();
+            ExcelBase.ExtractEntities(supplierInvoice, excelData);
+            ;
         }
 
-        //Method used to get the list of sheet names from specified excel file
-        List<string> GetListOfSheetNames(OleDbConnection connection)
-        {
-            //Get number of sheet in excel file
-            DataTable schemaTable = connection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-            List<string> listOfSheetNames = new List<string>();
-
-            foreach (DataRow element in schemaTable.Rows)
-            {
-                listOfSheetNames.Add(element["TABLE_NAME"].ToString());
-            }
-
-            return listOfSheetNames;
-        }
-
-        //Method used to get the data from the specified excel sheet
-        List<DataTable> GetExcelSheetData(OleDbConnection connection, List<string> sheetNames)
-        {
-            //Local variables
-            List<DataTable> retValue = new List<DataTable>();
-
-            foreach (string element in sheetNames)
-            {
-                OleDbDataAdapter dataAdapter = new OleDbDataAdapter(string.Format("select * from [{0}]", element), connection);
-                DataSet excelDataSet = new DataSet();
-                dataAdapter.Fill(excelDataSet);
-                DataTable excelDataTable = new DataTable(element);
-                excelDataTable = excelDataSet.Tables[0];
-                retValue.Add(excelDataTable);
-
-            }
-
-            return retValue;
-        }
-
+        
+     
     }
 }

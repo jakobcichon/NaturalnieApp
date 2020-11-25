@@ -24,9 +24,6 @@ namespace NaturalnieApp
         static void Main()
         {
             //Test purpose
-            List<DataTable> dataTest = ExcelBase.GetAllDataFromExcel(@"C:\Users\JCichon\Desktop\herbata faktura 482.xlsx");
-            EWAX_Supplier test = new EWAX_Supplier();
-            ExcelBase.ExtractEntities(test, dataTest);
 
             //Read data from config file 
             ConfigFileObject ConfigFileInst = new ConfigFileObject();

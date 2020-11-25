@@ -143,31 +143,45 @@
     <Compile Include="Database\ShopContext.cs" />
     <Compile Include="ElzabDriver\ElzabDriver.cs" />
     <Compile Include="ElzabDriver\ElzabCommands.cs" />
-    <Compile Include="Forms\ElzabInfo.cs" />
+    <Compile Include="Forms\ElzabInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\ElzabInfo.Designer.cs">
       <DependentUpon>ElzabInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ElzabSetting.cs" />
+    <Compile Include="Forms\ElzabSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\ElzabSetting.Designer.cs">
       <DependentUpon>ElzabSetting.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\MainWindow.cs" />
+    <Compile Include="Forms\MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PathsWindow.cs" />
+    <Compile Include="Forms\PathsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\PathsWindow.Designer.cs">
       <DependentUpon>PathsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ProductMenu\AddNewProduct.cs" />
+    <Compile Include="Forms\ProductMenu\AddNewProduct.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\ProductMenu\AddNewProduct.Designer.cs">
       <DependentUpon>AddNewProduct.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ProductMenu\AddNewProductFromPDF.cs" />
+    <Compile Include="Forms\ProductMenu\AddNewProductFromPDF.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\ProductMenu\AddNewProductFromPDF.Designer.cs">
       <DependentUpon>AddNewProductFromPDF.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ProductMenu\ShowProductInfo.cs" />
+    <Compile Include="Forms\ProductMenu\ShowProductInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\ProductMenu\ShowProductInfo.Designer.cs">
       <DependentUpon>ShowProductInfo.cs</DependentUpon>
     </Compile>
@@ -201,7 +215,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
+      <SubType>Form</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

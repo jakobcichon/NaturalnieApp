@@ -138,7 +138,7 @@ namespace NaturalnieApp.PdfToExcel
                 }
                 catch (Exception ex)
                 {
-                    //exception here
+                    MessageBox.Show(ex.ToString());
                 }
                 finally
                 {
@@ -164,12 +164,12 @@ namespace NaturalnieApp.PdfToExcel
             if (fileExtension == ".xls")
             {
                 //Set connection string for .xls files
-                connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0; Data Source = '" + filePath + "';Extended Properties=\"Excel 8.0;HDR=NO;\"";
+                connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0; Data Source = '" + filePath + "';Extended Properties=\"Excel 8.0;HDR=NO; IMEX=1\"";
             }
             else if (fileExtension == ".xlsx")
             {
                 //Set connection string for .xls files
-                connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0;HDR=NO;\"";
+                connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0;HDR=NO; IMEX=1\"";
             }
             else
             {
