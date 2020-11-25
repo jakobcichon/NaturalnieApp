@@ -177,6 +177,9 @@
     <Compile Include="Forms\PathsWindow.Designer.cs">
       <DependentUpon>PathsWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="PdfToExcel\ExcelBase.cs" />
+    <Compile Include="PdfToExcel\ExcelTemplates.cs" />
+    <Compile Include="PdfToExcel\IExcel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\ElzabSetting.resx">
