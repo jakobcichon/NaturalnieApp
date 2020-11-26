@@ -11,6 +11,7 @@ using System.Data;
 using System.Linq;
 using System.Collections.Generic;
 using NaturalnieApp.PdfToExcel;
+using SautinSoft;
 
 namespace NaturalnieApp.Forms
 {
@@ -29,6 +30,17 @@ namespace NaturalnieApp.Forms
 
         void SaveToPDF(string pdfPath, string outPath)
         {
+            /*
+            //Get file name
+            string fileName = Path.GetFileNameWithoutExtension(pdfPath);
+
+            PdfFocus pdfConverter = new PdfFocus();
+            pdfConverter.OpenPdf(pdfPath);
+            pdfConverter.ToExcel(Path.Combine(outPath, fileName + ".xls"));
+            ;
+            */
+
+
             //Get file name
             string fileName = Path.GetFileNameWithoutExtension(pdfPath);
             // Load PDF document
@@ -36,9 +48,9 @@ namespace NaturalnieApp.Forms
             // Initialize ExcelSaveOptions
             ExcelSaveOptions options = new ExcelSaveOptions();
             // Set output format
-            //options.Format = ExcelSaveOptions.ExcelFormat.XLS;
+            options.Format = ExcelSaveOptions.ExcelFormat.XLSX;
             // Save output file
-            pdfDocument.Save(Path.Combine(outPath, fileName + ".xls"), options);
+            pdfDocument.Save(Path.Combine(outPath, fileName + ".xlsx"), options);
             ;
         }
 
@@ -54,11 +66,11 @@ namespace NaturalnieApp.Forms
                     
                     
                     this.tbPdfPath.Text = inputFileDialog.FileName;
-                    SaveToPDF(this.tbPdfPath.Text, outputFilePathDialog.SelectedPath);
+                    //SaveToPDF(this.tbPdfPath.Text, outputFilePathDialog.SelectedPath);
 
                     //Combine path for excel file name
                     string fileName = Path.GetFileNameWithoutExtension(inputFileDialog.FileName);
-                    ReadExcel(Path.Combine(outputFilePathDialog.SelectedPath, fileName + ".xls"));
+                    ReadExcel(Path.Combine(outputFilePathDialog.SelectedPath, fileName + ".xlsx"));
                     ;
                 }
 

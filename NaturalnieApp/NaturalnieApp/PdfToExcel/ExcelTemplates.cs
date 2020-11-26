@@ -10,15 +10,15 @@ namespace NaturalnieApp.PdfToExcel
     {
         //Properties for reading from excel
         public Properties _Properties { get; set; }
-
         public string StartString { get; }
-
         public string EndString { get;  }
+        public int NumberOfColumns { get; }
 
         public EWAX_Supplier()
         {
             this.StartString = "Lp";
             this.EndString = "Forma płatności";
+            this.NumberOfColumns = 9;
         }
     }
 }

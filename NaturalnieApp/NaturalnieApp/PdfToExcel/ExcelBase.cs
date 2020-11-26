@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.OleDb;
 using System.IO;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace NaturalnieApp.PdfToExcel
 {
@@ -47,20 +48,94 @@ namespace NaturalnieApp.PdfToExcel
         public static void ExtractEntities(IExcel template, List<DataTable> data)
         {
             //LocalVariables
-            DataRow dataRow;
+            DataTable dataTable = new DataTable();
+            int i = -1;
+            bool dataStarted = false;
+            List<string> tempData;
+            List<string> returnData = new List<string>();
 
             //Get data from excel
-            foreach (DataTable dataTable in data)
+            foreach (DataTable table in data)
             {
-                foreach (DataRow row in dataTable.Rows)
+                foreach (DataRow row in table.Rows)
                 {
-                    string[] test = row.ItemArray.Select(i => i.ToString()).ToArray();
-                    bool test2 = test.Any(x => x.Contains(template.StartString));
-                    if (row.ItemArray.Select(i => i.ToString()).Any(x => x.Contains(template.StartString)))
+                    if (row.ItemArray.Select(e => e.ToString()).Any(x => x.Contains(template.StartString)) && i == -1)
                     {
+                        dataStarted = true;
+                        i = 0;
+                    }
+
+                    if (row.ItemArray.Select(e => e.ToString()).Any(x => x.Contains(template.EndString)))
+                    {
+                        dataStarted = false;
+                    }
+
+                    if (dataStarted)
+                    {
+                        //Get data to the local variable                        
+                        tempData = row.ItemArray.Select(e => e.ToString()).ToList();
+                        //Get rid of empty fields
+                        tempData = tempData.Select(e => e.Trim()).ToList();
+                        tempData = tempData.Select(e => e.Replace("\n", " ")).ToList();
+
+                        //Check if first field contains any of data. If no add data to the previous row
+                        if (tempData[0] == "")
+                        {
+                            if (dataTable.Rows.Count > 0 )
+                            {
+                                //Get last row from already added data rows, and convert it to list
+                                DataRow lastDataRow = dataTable.Rows[dataTable.Rows.Count - 1];
+                                List<string> lastDataRowAsList = lastDataRow.ItemArray.Select(e => e.ToString()).ToList();
+
+                                //Loop through all elements in data row and contact both strings
+                                for (int z=1; z<tempData.Count; z++)
+                                {
+                                    if (tempData[z] != "")
+                                    {
+                                        lastDataRowAsList[z] = lastDataRowAsList[z] + " " + tempData[z];
+                                    }
+                                    
+                                }
+                                dataTable.Rows[dataTable.Rows.Count - 1].ItemArray = lastDataRowAsList.ToArray();
+                            }
+                        }
+                        else
+                        {
+                            //Assume first data are columns names
+                            if (i == 0)
+                            {
+
+                                foreach (string element in tempData)
+                                {
+                                    DataColumn tempDataColumn = new DataColumn();
+                                    tempDataColumn.DataType = Type.GetType("System.String");
+                                    tempDataColumn.ColumnName = element;
+                                    dataTable.Columns.Add(tempDataColumn);
+                                    tempDataColumn.Dispose();
+                                }
+
+                                i++;
+                            }
+                            else
+                            {
+                                DataRow tempDataRow = dataTable.NewRow();
+                                tempDataRow.ItemArray = tempData.ToArray();
+                                dataTable.Rows.Add(tempDataRow);
+                                i++;
+                            }
+                        }
+
                         ;
                     }
                 }
+
+                dataStarted = false;
+            }
+            ;
+            foreach (DataRow row in dataTable.Rows)
+            {
+                tempData = row.ItemArray.Select(e => e.ToString()).ToList(); 
+                ;
             }
 
         }
