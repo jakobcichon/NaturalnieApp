@@ -83,12 +83,21 @@ namespace NaturalnieApp.Forms
         //Method return List of data table, where one list element contains one sheet data from excel file
         private void ReadExcel(string filePath)
         {
-            //Get excel data
-            List<DataTable> excelData = ExcelBase.GetAllDataFromExcel(filePath);
+            try
+            {
+                //Get excel data
+                List<DataTable> excelData = ExcelBase.GetAllDataFromExcel(filePath);
 
-            //Get proper template and get ents
-            EWAX_Supplier supplierInvoice = new EWAX_Supplier();
-            ExcelBase.ExtractEntities(supplierInvoice, excelData);
+                //Get proper template and get ents
+                EWAX_Supplier supplierInvoice = new EWAX_Supplier();
+                supplierInvoice.ExtractEntities(supplierInvoice, excelData);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+
             ;
         }
 

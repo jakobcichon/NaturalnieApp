@@ -23,122 +23,92 @@ namespace NaturalnieApp.PdfToExcel
 
     public class Properties
     {
-        //If set to true, row which contain StartString will be taken as the one containing column names.
-        //If set to false it will start from next one row
-        private bool startStringDefineColumnNames;
-        public bool StartStringDefineColumnNames
+        public enum LastEntityMark
         {
-            get { return true; }
-            set { startStringDefineColumnNames = value; }
+            RowWithLastNumericValueInFirstColumn,
+            ContainEndString,
+            OneBeforeEndMark,
         }
 
-        //If set to true, row which contain EndString will be taken as the las entity.
-        //If set to false it will take previous row as last entity
-        private bool endStringDefineLastEntity;
-        public bool EndStringDefineLastEntity
-        {
-            get { return true; }
-            set { endStringDefineLastEntity = value; }
-        }
+
+        //If set to true, row which contain StartString will be taken as the one containing column names.
+        //If set to false it will start from next one row
+        public bool StartStringDefineColumnNames { get; set; }
+        
+        //Property used to define how to recognize last data as entity
+        public LastEntityMark LastEntity { get; set; }
 
     }
 
     public class ExcelBase
     {
-        public static void ExtractEntities(IExcel template, List<DataTable> data)
+        public void ExtractEntities(IExcel template, List<DataTable> data)
         {
             //LocalVariables
             DataTable dataTable = new DataTable();
-            int i = -1;
+            int i = 0;
             bool dataStarted = false;
+            bool headerRead = false;
             List<string> tempData;
             List<string> returnData = new List<string>();
+            List<DataRow> dataRowsFromFile;
 
             //Get data from excel
             foreach (DataTable table in data)
             {
-                foreach (DataRow row in table.Rows)
+                dataRowsFromFile = ExtractDataFromStartToEndString(template, table);
+                foreach (DataRow row in dataRowsFromFile)
                 {
-                    if (row.ItemArray.Select(e => e.ToString()).Any(x => x.Contains(template.StartString)) && i == -1)
-                    {
-                        dataStarted = true;
-                        i = 0;
-                    }
-
-                    if (row.ItemArray.Select(e => e.ToString()).Any(x => x.Contains(template.EndString)))
-                    {
-                        dataStarted = false;
-                    }
-
-                    if (dataStarted)
-                    {
-                        //Get data to the local variable                        
-                        tempData = row.ItemArray.Select(e => e.ToString()).ToList();
-                        //Get rid of empty fields
-                        tempData = tempData.Select(e => e.Trim()).ToList();
-                        tempData = tempData.Select(e => e.Replace("\n", " ")).ToList();
-
-                        //Check if first field contains any of data. If no add data to the previous row
-                        if (tempData[0] == "")
-                        {
-                            if (dataTable.Rows.Count > 0 )
-                            {
-                                //Get last row from already added data rows, and convert it to list
-                                DataRow lastDataRow = dataTable.Rows[dataTable.Rows.Count - 1];
-                                List<string> lastDataRowAsList = lastDataRow.ItemArray.Select(e => e.ToString()).ToList();
-
-                                //Loop through all elements in data row and contact both strings
-                                for (int z=1; z<tempData.Count; z++)
-                                {
-                                    if (tempData[z] != "")
-                                    {
-                                        lastDataRowAsList[z] = lastDataRowAsList[z] + " " + tempData[z];
-                                    }
-                                    
-                                }
-                                dataTable.Rows[dataTable.Rows.Count - 1].ItemArray = lastDataRowAsList.ToArray();
-                            }
-                        }
-                        else
-                        {
-                            //Assume first data are columns names
-                            if (i == 0)
-                            {
-
-                                foreach (string element in tempData)
-                                {
-                                    DataColumn tempDataColumn = new DataColumn();
-                                    tempDataColumn.DataType = Type.GetType("System.String");
-                                    tempDataColumn.ColumnName = element;
-                                    dataTable.Columns.Add(tempDataColumn);
-                                    tempDataColumn.Dispose();
-                                }
-
-                                i++;
-                            }
-                            else
-                            {
-                                DataRow tempDataRow = dataTable.NewRow();
-                                tempDataRow.ItemArray = tempData.ToArray();
-                                dataTable.Rows.Add(tempDataRow);
-                                i++;
-                            }
-                        }
-
-                        ;
-                    }
+                    tempData = row.ItemArray.Select(e => e.ToString()).ToList();
+                    ;
                 }
-
-                dataStarted = false;
             }
             ;
-            foreach (DataRow row in dataTable.Rows)
-            {
-                tempData = row.ItemArray.Select(e => e.ToString()).ToList(); 
-                ;
-            }
+
 
         }
+
+        private List<DataRow> ExtractDataFromStartToEndString(IExcel template, DataTable table)
+        {
+            //Local variables
+            bool dataStarted = false;
+            List<DataRow> returnRowList = new List<DataRow>();
+            Properties.LastEntityMark lastEntityAction = template._Properties.LastEntity;
+
+            //Get last entity action
+            switch (lastEntityAction)
+            {
+                case Properties.LastEntityMark.RowWithLastNumericValueInFirstColumn:
+                    
+                    break;
+            }
+
+            //Get all rows starting from StartString till end string
+            foreach (DataRow row in table.Rows)
+            {
+                //Check if in current row any string match to the StartString
+                if (row.ItemArray.Select(e => e.ToString()).Any(x => x.Contains(template.StartString)))
+                {
+                    dataStarted = true;
+                }
+                string test = row.ItemArray.First().ToString();
+                //Check if in current row any string match to the EndString
+                if (!row.ItemArray.First().ToString().Any(char.IsDigit))
+                {
+                    string test2 = row.ItemArray.First().ToString();
+                    dataStarted = false;
+                }
+
+                if (dataStarted)
+                {
+                    returnRowList.Add(row);
+                }
+
+            }
+            return returnRowList;
+        }
+
+
 
         //Get all data from excel sheet. Each excel sheet would be separated list element
         public static List<DataTable> GetAllDataFromExcel(string excelPath)
@@ -161,7 +131,7 @@ namespace NaturalnieApp.PdfToExcel
 
                     foreach (string element in sheetNames)
                     {
-                       
+
                         string sQuery = "Select * From [" + element + "]";
                         OleDbCommand dbCmd = new OleDbCommand(sQuery, objConnection);
                         OleDbDataAdapter dbDataAdapter = new OleDbDataAdapter(dbCmd);
