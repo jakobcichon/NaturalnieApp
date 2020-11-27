@@ -23,6 +23,7 @@ namespace NaturalnieApp.PdfToExcel
 
     public class Properties
     {
+        //Method used to recognize of last entity entry
         public enum LastEntityMark
         {
             RowWithLastNumericValueInFirstColumn,
@@ -30,6 +31,9 @@ namespace NaturalnieApp.PdfToExcel
             OneBeforeEndMark,
         }
 
+        //Property used to determine if entity in exclel file can consist of a few rows
+        //It is used in cooperation with LastEntityMark enum
+        public int NumberOfRowByEntity { get; set; }
 
         //If set to true, row which contain StartString will be taken as the one containing column names.
         //If set to false it will start from next one row
@@ -72,8 +76,13 @@ namespace NaturalnieApp.PdfToExcel
         {
             //Local variables
             bool dataStarted = false;
+            bool moreThanOneRowByEntity = false ;
             List<DataRow> returnRowList = new List<DataRow>();
             Properties.LastEntityMark lastEntityAction = template._Properties.LastEntity;
+            List<DataRow> rowsBySingleEntity = new List<DataRow>();
+
+            //Determine if there is more that one row per Entity
+            if (template._Properties.NumberOfRowByEntity > 1) moreThanOneRowByEntity = true;
 
             //Get last entity action
             switch (lastEntityAction)
@@ -83,26 +92,38 @@ namespace NaturalnieApp.PdfToExcel
                     break;
             }
 
-            //Get all rows starting from StartString till end string
+            //Get all rows starting from StartString till end option
             foreach (DataRow row in table.Rows)
             {
+                //Numer of the first column empty in the row
+                int numbersOfEmptyFirstColumm = 0;
+
                 //Check if in current row any string match to the StartString
-                if (row.ItemArray.Select(e => e.ToString()).Any(x => x.Contains(template.StartString)))
+                if (row.ItemArray.Select(e => e.ToString()).Any(x => x.Contains(template.StartString))) dataStarted = true; 
+
+                //Check if option with more than one row by entity supported here
+                if (moreThanOneRowByEntity)
                 {
-                    dataStarted = true;
-                }
-                string test = row.ItemArray.First().ToString();
-                //Check if in current row any string match to the EndString
-                if (!row.ItemArray.First().ToString().Any(char.IsDigit))
-                {
-                    string test2 = row.ItemArray.First().ToString();
-                    dataStarted = false;
+                    //Check if in current row any string match to the EndString
+                    if (row.ItemArray.First().ToString().Any(char.IsDigit)) numbersOfEmptyFirstColumm = 0;
+                    else if (!row.ItemArray.First().ToString().Any(char.IsDigit)) numbersOfEmptyFirstColumm++;
                 }
 
-                if (dataStarted)
+                //Check if maximal number of empty fors column in the row was achieved
+                if (numbersOfEmptyFirstColumm > template._Properties.NumberOfRowByEntity)
                 {
-                    returnRowList.Add(row);
+                    dataStarted = false; 
+                    break;
                 }
+                else if (row.ItemArray.Select(e => e.ToString()).Any(x => x.Contains(template.EndString)))
+                {
+                    dataStarted = false;
+                    break;
+                }
+
+
+                //Add row to the return list
+                if (dataStarted) returnRowList.Add(row);
 
             }
             return returnRowList;

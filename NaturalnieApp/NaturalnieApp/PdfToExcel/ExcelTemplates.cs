@@ -22,6 +22,7 @@ namespace NaturalnieApp.PdfToExcel
             this._Properties = new Properties();
             this._Properties.StartStringDefineColumnNames = true;
             this._Properties.LastEntity = Properties.LastEntityMark.RowWithLastNumericValueInFirstColumn;
+            this._Properties.NumberOfRowByEntity = 2;
             this.StartString = "Lp";
             this.EndString = "Forma płatności";
             this.NumberOfColumns = 9;
