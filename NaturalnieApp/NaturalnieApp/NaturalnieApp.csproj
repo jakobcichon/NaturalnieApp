@@ -176,11 +176,11 @@
     <Compile Include="Forms\ProductMenu\AddNewProduct.Designer.cs">
       <DependentUpon>AddNewProduct.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ProductMenu\AddNewProductFromPDF.cs">
+    <Compile Include="Forms\ProductMenu\AddNewProductFromExcel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ProductMenu\AddNewProductFromPDF.Designer.cs">
-      <DependentUpon>AddNewProductFromPDF.cs</DependentUpon>
+    <Compile Include="Forms\ProductMenu\AddNewProductFromExcel.Designer.cs">
+      <DependentUpon>AddNewProductFromExcel.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ProductMenu\ShowProductInfo.cs">
       <SubType>Form</SubType>
@@ -209,8 +209,8 @@
     <EmbeddedResource Include="Forms\ProductMenu\AddNewProduct.resx">
       <DependentUpon>AddNewProduct.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ProductMenu\AddNewProductFromPDF.resx">
-      <DependentUpon>AddNewProductFromPDF.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ProductMenu\AddNewProductFromExcel.resx">
+      <DependentUpon>AddNewProductFromExcel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProductMenu\ShowProductInfo.resx">
       <DependentUpon>ShowProductInfo.cs</DependentUpon>

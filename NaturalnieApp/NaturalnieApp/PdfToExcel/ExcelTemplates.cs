@@ -28,7 +28,8 @@ namespace NaturalnieApp.PdfToExcel
             this.NumberOfColumns = 9;
             this.DataTableSchema = new List<string>
             {
-                "Lp", "Nazwa towaru/usługi", "Kod EAN", "Rabat", "Ilość", "J.m.", "VAT", "Cena netto", "Wartość netto"
+                "Lp.", "Kod", "Nazwa towaru", "Ilość", "Cena netto",   "VAT"
+
             };
 
         }

@@ -15,5 +15,7 @@ namespace NaturalnieApp.PdfToExcel
         string EndString { get; }
         //Properties
         Properties _Properties { get; set; }
+
+        List<string> DataTableSchema { get; }
     }
 }

@@ -9,6 +9,10 @@ using System.IO;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
+
+
+//This is first version of this library. In this stage it support only loading products from excel with certain structure.
+//Next release will support adding product directly from pdf
 namespace NaturalnieApp.PdfToExcel
 {
     [Serializable()]
@@ -51,8 +55,6 @@ namespace NaturalnieApp.PdfToExcel
             //LocalVariables
             DataTable dataTable = new DataTable();
             int i = 0;
-            bool dataStarted = false;
-            bool headerRead = false;
             List<string> tempData;
             List<string> returnData = new List<string>();
             List<DataRow> dataRowsFromFile;
@@ -60,7 +62,7 @@ namespace NaturalnieApp.PdfToExcel
             //Get data from excel
             foreach (DataTable table in data)
             {
-                dataRowsFromFile = ExtractDataFromStartToEndString(template, table);
+                dataRowsFromFile = ExtractDataFromExcel(template, table);
                 foreach (DataRow row in dataRowsFromFile)
                 {
                     tempData = row.ItemArray.Select(e => e.ToString()).ToList();
@@ -72,61 +74,33 @@ namespace NaturalnieApp.PdfToExcel
 
         }
 
-        private List<DataRow> ExtractDataFromStartToEndString(IExcel template, DataTable table)
+        private List<DataRow> ExtractDataFromExcel(IExcel template, DataTable table)
         {
             //Local variables
-            bool dataStarted = false;
-            bool moreThanOneRowByEntity = false ;
-            List<DataRow> returnRowList = new List<DataRow>();
-            Properties.LastEntityMark lastEntityAction = template._Properties.LastEntity;
-            List<DataRow> rowsBySingleEntity = new List<DataRow>();
-
-            //Determine if there is more that one row per Entity
-            if (template._Properties.NumberOfRowByEntity > 1) moreThanOneRowByEntity = true;
-
-            //Get last entity action
-            switch (lastEntityAction)
+            List<DataRow> returnList = new List<DataRow>();
+             
+            //Check if number of columns from excel match schema
+            if (template.DataTableSchema.Count == table.Columns.Count)
             {
-                case Properties.LastEntityMark.RowWithLastNumericValueInFirstColumn:
-                    
-                    break;
+                //Check if data in first column exist. If yes add it to list
+                foreach (DataRow row in table.Rows)
+                {
+                    if((row[0].ToString() !=  "") && (row[0].ToString().Any(char.IsDigit)))
+                    {
+                        returnList.Add(row);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show(string.Format("Błąd! Niezgodna liczba kolumn! Oczekiwane: {0}, Aktualne:{1}", 
+                    template.DataTableSchema.Count, 
+                    table.Columns.Count));
             }
 
-            //Get all rows starting from StartString till end option
-            foreach (DataRow row in table.Rows)
-            {
-                //Numer of the first column empty in the row
-                int numbersOfEmptyFirstColumm = 0;
+            //Return
+            return returnList;
 
-                //Check if in current row any string match to the StartString
-                if (row.ItemArray.Select(e => e.ToString()).Any(x => x.Contains(template.StartString))) dataStarted = true; 
-
-                //Check if option with more than one row by entity supported here
-                if (moreThanOneRowByEntity)
-                {
-                    //Check if in current row any string match to the EndString
-                    if (row.ItemArray.First().ToString().Any(char.IsDigit)) numbersOfEmptyFirstColumm = 0;
-                    else if (!row.ItemArray.First().ToString().Any(char.IsDigit)) numbersOfEmptyFirstColumm++;
-                }
-
-                //Check if maximal number of empty fors column in the row was achieved
-                if (numbersOfEmptyFirstColumm > template._Properties.NumberOfRowByEntity)
-                {
-                    dataStarted = false; 
-                    break;
-                }
-                else if (row.ItemArray.Select(e => e.ToString()).Any(x => x.Contains(template.EndString)))
-                {
-                    dataStarted = false;
-                    break;
-                }
-
-
-                //Add row to the return list
-                if (dataStarted) returnRowList.Add(row);
-
-            }
-            return returnRowList;
         }
 
 
