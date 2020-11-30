@@ -13,11 +13,11 @@ using SautinSoft;
 
 namespace NaturalnieApp.Forms
 {
-    public partial class AddNewProductFromPDF : Form
+    public partial class AddNewProductFromExcel : Form
     {
         // Required for AnyCPU implementation.
 
-        public AddNewProductFromPDF()
+        public AddNewProductFromExcel()
         {
             InitializeComponent();
 
@@ -26,10 +26,7 @@ namespace NaturalnieApp.Forms
 
         }
 
-        private void CreateExcelTemplateFile(IExcel template, string connection)
-        {
 
-        }
 
         private void bBrowsePath_Click(object sender, EventArgs e)
         {
@@ -44,7 +41,7 @@ namespace NaturalnieApp.Forms
 
         }
 
-            //Method used to read data from excel from the specified path
+        //Method used to read data from excel from the specified path
         //Method return List of data table, where one list element contains one sheet data from excel file
         private void ReadExcel(string filePath)
         {
@@ -68,6 +65,13 @@ namespace NaturalnieApp.Forms
 
         private void bGenerateTemplate_Click(object sender, EventArgs e)
         {
+            //Open folder dialog browser
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                //Get proper template
+                EWAX_Supplier supplierInvoice = new EWAX_Supplier();
+                ExcelBase.CreateExcelFile(supplierInvoice, folderBrowserDialog1.SelectedPath, "template");
+            }
 
         }
     }

@@ -26,9 +26,10 @@ namespace NaturalnieApp.PdfToExcel
             this.StartString = "Lp";
             this.EndString = "Forma płatności";
             this.NumberOfColumns = 9;
+
             this.DataTableSchema = new List<string>
             {
-                "Lp.", "Kod", "Nazwa towaru", "Ilość", "Cena netto",   "VAT"
+                "Lp.", "Dostawca", "Producent", "Kod kreskowy", "Nazwa towaru", "Ilość", "Cena netto",   "VAT"
 
             };
 

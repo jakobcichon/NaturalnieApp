@@ -2,7 +2,7 @@
 
 namespace NaturalnieApp.Forms
 {
-    partial class AddNewProductFromPDF
+    partial class AddNewProductFromExcel
     {
         /// <summary>
         /// Required designer variable.
@@ -34,13 +34,13 @@ namespace NaturalnieApp.Forms
             this.bSave = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
             this.pSettingNr1 = new System.Windows.Forms.Panel();
-            this.tbPdfPath = new System.Windows.Forms.RichTextBox();
+            this.bBrowsePath = new System.Windows.Forms.Button();
             this.lExcelPath = new System.Windows.Forms.Label();
+            this.tbPdfPath = new System.Windows.Forms.RichTextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.bBrowsePath = new System.Windows.Forms.Button();
             this.bGenerateTemplate = new System.Windows.Forms.Button();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.pHeader.SuspendLayout();
             this.pSettingNr1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -97,18 +97,16 @@ namespace NaturalnieApp.Forms
             this.pSettingNr1.Size = new System.Drawing.Size(1000, 45);
             this.pSettingNr1.TabIndex = 4;
             // 
-            // tbPdfPath
+            // bBrowsePath
             // 
-            this.tbPdfPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbPdfPath.Location = new System.Drawing.Point(302, 1);
-            this.tbPdfPath.Margin = new System.Windows.Forms.Padding(0);
-            this.tbPdfPath.Multiline = false;
-            this.tbPdfPath.Name = "tbPdfPath";
-            this.tbPdfPath.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.tbPdfPath.ShowSelectionMargin = true;
-            this.tbPdfPath.Size = new System.Drawing.Size(660, 40);
-            this.tbPdfPath.TabIndex = 8;
-            this.tbPdfPath.Text = "";
+            this.bBrowsePath.BackColor = System.Drawing.Color.White;
+            this.bBrowsePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bBrowsePath.Location = new System.Drawing.Point(960, 1);
+            this.bBrowsePath.Name = "bBrowsePath";
+            this.bBrowsePath.Size = new System.Drawing.Size(35, 40);
+            this.bBrowsePath.TabIndex = 9;
+            this.bBrowsePath.Text = "...";
+            this.bBrowsePath.UseVisualStyleBackColor = false;
             // 
             // lExcelPath
             // 
@@ -123,6 +121,19 @@ namespace NaturalnieApp.Forms
             this.lExcelPath.Text = "Ścieżka do pliku exlec z produktami";
             this.lExcelPath.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // tbPdfPath
+            // 
+            this.tbPdfPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbPdfPath.Location = new System.Drawing.Point(302, 1);
+            this.tbPdfPath.Margin = new System.Windows.Forms.Padding(0);
+            this.tbPdfPath.Multiline = false;
+            this.tbPdfPath.Name = "tbPdfPath";
+            this.tbPdfPath.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.tbPdfPath.ShowSelectionMargin = true;
+            this.tbPdfPath.Size = new System.Drawing.Size(660, 40);
+            this.tbPdfPath.TabIndex = 8;
+            this.tbPdfPath.Text = "";
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -135,17 +146,6 @@ namespace NaturalnieApp.Forms
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1000, 427);
             this.dataGridView1.TabIndex = 5;
-            // 
-            // bBrowsePath
-            // 
-            this.bBrowsePath.BackColor = System.Drawing.Color.White;
-            this.bBrowsePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bBrowsePath.Location = new System.Drawing.Point(960, 1);
-            this.bBrowsePath.Name = "bBrowsePath";
-            this.bBrowsePath.Size = new System.Drawing.Size(35, 40);
-            this.bBrowsePath.TabIndex = 9;
-            this.bBrowsePath.Text = "...";
-            this.bBrowsePath.UseVisualStyleBackColor = false;
             // 
             // bGenerateTemplate
             // 
@@ -161,7 +161,7 @@ namespace NaturalnieApp.Forms
             this.bGenerateTemplate.UseVisualStyleBackColor = false;
             this.bGenerateTemplate.Click += new System.EventHandler(this.bGenerateTemplate_Click);
             // 
-            // AddNewProductFromPDF
+            // AddNewProductFromExcel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -176,7 +176,7 @@ namespace NaturalnieApp.Forms
             this.Controls.Add(this.pHeader);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "AddNewProductFromPDF";
+            this.Name = "AddNewProductFromExcel";
             this.Text = "Submenu_ElzabInfo";
             this.pHeader.ResumeLayout(false);
             this.pSettingNr1.ResumeLayout(false);
@@ -195,8 +195,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lExcelPath;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Button bBrowsePath;
         private System.Windows.Forms.Button bGenerateTemplate;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     }
 }

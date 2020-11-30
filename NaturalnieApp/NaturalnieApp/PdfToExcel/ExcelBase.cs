@@ -50,6 +50,28 @@ namespace NaturalnieApp.PdfToExcel
 
     public class ExcelBase
     {
+
+        //Create excel file from template
+        static public void CreateExcelFile(IExcel template, string filePath, string outFileName)
+        {
+            //Local variable
+            string fullPath;
+
+            //Combine path and file name
+            fullPath = Path.Combine(filePath, outFileName + ".xlsb");
+
+            //Connection string
+            string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + fullPath + "';Extended Properties=\"Excel 12.0;HDR=YES\"";
+
+            //Create file 
+            //File.Create(fullPath);
+
+            //Create file
+            CreateExcelFileFromTemplate(template, connectionString);
+
+
+        }
+
         public void ExtractEntities(IExcel template, List<DataTable> data)
         {
             //LocalVariables
@@ -66,12 +88,8 @@ namespace NaturalnieApp.PdfToExcel
                 foreach (DataRow row in dataRowsFromFile)
                 {
                     tempData = row.ItemArray.Select(e => e.ToString()).ToList();
-                    ;
                 }
             }
-            ;
-
-
         }
 
         private List<DataRow> ExtractDataFromExcel(IExcel template, DataTable table)
@@ -103,6 +121,45 @@ namespace NaturalnieApp.PdfToExcel
 
         }
 
+        //Method used to create excel file from template
+        static private void CreateExcelFileFromTemplate(IExcel template, string connectionString)
+        {
+            
+            OleDbConnection connection = new OleDbConnection();
+            
+            try
+            {
+                //Connection string
+                connection.ConnectionString = connectionString;
+                connection.Open();
+                var cmd = connection.CreateCommand();
+
+                //Create command for create columns
+                string columnNames = "";
+                foreach (string element in template.DataTableSchema)
+                {
+                    columnNames += "[" + element + "]" + " string, ";
+                }
+
+                //Remove last space and coma from command
+                columnNames = columnNames.Remove(columnNames.Length - 2, 2);
+
+                //Create command string
+                cmd.CommandText = string.Format("CREATE TABLE [Sheet1] ({0})", columnNames); 
+
+                //Execute query
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                    connection.Close();
+            }
+        }
 
 
         //Get all data from excel sheet. Each excel sheet would be separated list element
@@ -208,7 +265,7 @@ namespace NaturalnieApp.PdfToExcel
             }
             else if (fileExtension == ".xlsx")
             {
-                //Set connection string for .xls files
+                //Set connection string for .xlsx files
                 connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0;HDR=NO; IMEX=1\"";
             }
             else
