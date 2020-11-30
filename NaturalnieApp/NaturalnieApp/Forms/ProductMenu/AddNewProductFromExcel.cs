@@ -28,14 +28,21 @@ namespace NaturalnieApp.Forms
 
 
 
-        private void bBrowsePath_Click(object sender, EventArgs e)
+        private void bAddFromFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog inputFileDialog = new OpenFileDialog();
             if (inputFileDialog.ShowDialog() == DialogResult.OK)
             {
-                //Combine path for excel file name
-                string fileName = Path.GetFileNameWithoutExtension(inputFileDialog.FileName);
-                ReadExcel(inputFileDialog.FileName);
+                //Check if selected file is an excel file
+                string fileExtension = Path.GetExtension(inputFileDialog.FileName);
+                if ((fileExtension == ".xls") || (fileExtension == ".xlsx") || (fileExtension == ".xlsb"))
+                {
+                    ReadExcel(inputFileDialog.FileName);
+                }
+                else
+                {
+                    MessageBox.Show("Wybrano plik o błędnym rozszerzeniu. Dostepne rozszerzenia to : '.xls', 'xlsx', 'xlsb'");
+                }
                 ;
             }
 
@@ -52,15 +59,21 @@ namespace NaturalnieApp.Forms
 
                 //Get proper template and get ents
                 EWAX_Supplier supplierInvoice = new EWAX_Supplier();
-                supplierInvoice.ExtractEntities(supplierInvoice, excelData);
+                dgvExcelData.DataSource = supplierInvoice.ExtractEntities(supplierInvoice, excelData);
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
 
+            //Add checkbox to data grid
+            DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
+            dgvExcelData.Columns.Insert(0, chk);
+            chk.HeaderText = "Zaznacz";
+            chk.Name = "chk";
+            bDeselectAll.Visible = true;
+            bSelectAll.Visible = true;
 
-            ;
         }
 
         private void bGenerateTemplate_Click(object sender, EventArgs e)
@@ -72,6 +85,27 @@ namespace NaturalnieApp.Forms
                 EWAX_Supplier supplierInvoice = new EWAX_Supplier();
                 ExcelBase.CreateExcelFile(supplierInvoice, folderBrowserDialog1.SelectedPath, "template");
             }
+
+        }
+
+        private void bSelectAll_Click(object sender, EventArgs e)
+        {
+            ; 
+            
+            foreach (DataGridViewRow roow in dgvExcelData.Rows)
+            {
+                DataGridViewCheckBoxCell chkchecking = roow.Cells[0] as DataGridViewCheckBoxCell;
+                chkchecking.Value = true;
+
+                if (Convert.ToBoolean(chkchecking.Value) == true)
+                {
+                    ;
+                }
+            }
+        }
+
+        private void bDeselectAll_Click(object sender, EventArgs e)
+        {
 
         }
     }

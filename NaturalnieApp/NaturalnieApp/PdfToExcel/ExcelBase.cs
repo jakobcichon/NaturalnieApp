@@ -66,30 +66,69 @@ namespace NaturalnieApp.PdfToExcel
             //Create file 
             //File.Create(fullPath);
 
-            //Create file
-            CreateExcelFileFromTemplate(template, connectionString);
+            //Create message box and show message box
+            if (CreateExcelFileFromTemplate(template, connectionString))
+            {
+                MessageBox.Show(string.Format("Plik {0} został utworzony!", fullPath));
+            }
+
 
 
         }
 
-        public void ExtractEntities(IExcel template, List<DataTable> data)
+        public DataTable ExtractEntities(IExcel template, List<DataTable> data)
         {
             //LocalVariables
             DataTable dataTable = new DataTable();
-            int i = 0;
-            List<string> tempData;
-            List<string> returnData = new List<string>();
-            List<DataRow> dataRowsFromFile;
+            List<string> tempData = new List<string>();
+            DataTable returnData = new DataTable();
+            List<DataRow> dataRowsFromFile = new List<DataRow>();
+
+
+            //Initialize data table from template
+            DataColumn dataColumn = new DataColumn();
+            foreach ( string columnName in template.DataTableSchema)
+            {
+                //dataColumn.ColumnName = columnName;
+                //dataColumn.DataType = Type.GetType("System.String");
+                returnData.Columns.Add(columnName, typeof(String));
+            }
+
 
             //Get data from excel
             foreach (DataTable table in data)
             {
-                dataRowsFromFile = ExtractDataFromExcel(template, table);
-                foreach (DataRow row in dataRowsFromFile)
+                dataRowsFromFile.AddRange(ExtractDataFromExcel(template, table));
+            }
+
+            //Check if row contains empty filelds. 
+            //If only product name is empty, contact it with previous row
+            foreach (DataRow row in dataRowsFromFile)
+            {
+                //Get product with the product name. This is done in case if name of product 
+                // will take two rows in excel sheet
+                if(row.ItemArray[0].ToString() == "")
                 {
-                    tempData = row.ItemArray.Select(e => e.ToString()).ToList();
+                    int indexOfLastRow = returnData.Rows.Count - 1;
+                    int indexOfDesireColumn = returnData.Columns.IndexOf("Nazwa towaru");
+                    string valueToSet = returnData.Rows[indexOfLastRow][indexOfDesireColumn] + " " + row.ItemArray[indexOfDesireColumn].ToString();
+                    returnData.Rows[indexOfLastRow].SetField(indexOfDesireColumn, valueToSet);
+                    ;
+                }
+                else
+                {
+                    DataRow dataRow = returnData.NewRow();
+                    for (int i=0;  i < dataRow.Table.Columns.Count; i++)
+                    {
+                        dataRow.SetField(i, row.ItemArray[i].ToString());
+                    }
+                   
+                    returnData.Rows.Add(dataRow);
                 }
             }
+
+            return returnData;
+
         }
 
         private List<DataRow> ExtractDataFromExcel(IExcel template, DataTable table)
@@ -103,10 +142,12 @@ namespace NaturalnieApp.PdfToExcel
                 //Check if data in first column exist. If yes add it to list
                 foreach (DataRow row in table.Rows)
                 {
-                    if((row[0].ToString() !=  "") && (row[0].ToString().Any(char.IsDigit)))
+                    //First row is an header. Skip it
+                    if (table.Rows.IndexOf(row) != 0)
                     {
                         returnList.Add(row);
                     }
+
                 }
             }
             else
@@ -122,9 +163,13 @@ namespace NaturalnieApp.PdfToExcel
         }
 
         //Method used to create excel file from template
-        static private void CreateExcelFileFromTemplate(IExcel template, string connectionString)
+        static private bool CreateExcelFileFromTemplate(IExcel template, string connectionString)
         {
+
+            //Local variable
+            bool retValue = false;
             
+            //Create connection
             OleDbConnection connection = new OleDbConnection();
             
             try
@@ -132,7 +177,7 @@ namespace NaturalnieApp.PdfToExcel
                 //Connection string
                 connection.ConnectionString = connectionString;
                 connection.Open();
-                var cmd = connection.CreateCommand();
+                OleDbCommand cmd = connection.CreateCommand();
 
                 //Create command for create columns
                 string columnNames = "";
@@ -149,8 +194,19 @@ namespace NaturalnieApp.PdfToExcel
 
                 //Execute query
                 cmd.ExecuteNonQuery();
+
+                //Set return value
+                retValue = true;
+                
             }
-            catch(Exception ex)
+            catch (OleDbException oleDbEx)
+            {
+                if (oleDbEx.ErrorCode == -2147217900)
+                {
+                    MessageBox.Show("Plik o podanej nazwie już istnieje");
+                }
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
@@ -159,6 +215,8 @@ namespace NaturalnieApp.PdfToExcel
                 if (connection.State == ConnectionState.Open)
                     connection.Close();
             }
+
+            return retValue;
         }
 
 
@@ -263,7 +321,7 @@ namespace NaturalnieApp.PdfToExcel
                 //Set connection string for .xls files
                 connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0; Data Source = '" + filePath + "';Extended Properties=\"Excel 8.0;HDR=NO; IMEX=1\"";
             }
-            else if (fileExtension == ".xlsx")
+            else if ((fileExtension == ".xlsx") || (fileExtension == ".xlsb"))
             {
                 //Set connection string for .xlsx files
                 connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0;HDR=NO; IMEX=1\"";
@@ -271,7 +329,7 @@ namespace NaturalnieApp.PdfToExcel
             else
             {
                 //Throw an exception
-                throw new InvalidFileExtensionException("Wrong file extension. Possible file extension are: '.xls' or '.xlsx'.");
+                throw new InvalidFileExtensionException("Wrong file extension. Possible file extension are: '.xls', '.xlsx' or '.xlsx'.");
             }
 
             return connectionString;

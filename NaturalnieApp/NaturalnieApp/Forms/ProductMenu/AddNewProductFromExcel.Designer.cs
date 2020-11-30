@@ -33,17 +33,14 @@ namespace NaturalnieApp.Forms
             this.panel1 = new System.Windows.Forms.Panel();
             this.bSave = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
-            this.pSettingNr1 = new System.Windows.Forms.Panel();
-            this.bBrowsePath = new System.Windows.Forms.Button();
-            this.lExcelPath = new System.Windows.Forms.Label();
-            this.tbPdfPath = new System.Windows.Forms.RichTextBox();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dgvExcelData = new System.Windows.Forms.DataGridView();
             this.bGenerateTemplate = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.bAddFromFile = new System.Windows.Forms.Button();
+            this.bDeselectAll = new System.Windows.Forms.Button();
+            this.bSelectAll = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
-            this.pSettingNr1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvExcelData)).BeginInit();
             this.SuspendLayout();
             // 
             // pHeader
@@ -86,66 +83,16 @@ namespace NaturalnieApp.Forms
             this.bUpdate.Text = "Odśwież";
             this.bUpdate.UseVisualStyleBackColor = false;
             // 
-            // pSettingNr1
+            // dgvExcelData
             // 
-            this.pSettingNr1.Controls.Add(this.bBrowsePath);
-            this.pSettingNr1.Controls.Add(this.lExcelPath);
-            this.pSettingNr1.Controls.Add(this.tbPdfPath);
-            this.pSettingNr1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pSettingNr1.Location = new System.Drawing.Point(0, 30);
-            this.pSettingNr1.Name = "pSettingNr1";
-            this.pSettingNr1.Size = new System.Drawing.Size(1000, 45);
-            this.pSettingNr1.TabIndex = 4;
-            // 
-            // bBrowsePath
-            // 
-            this.bBrowsePath.BackColor = System.Drawing.Color.White;
-            this.bBrowsePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bBrowsePath.Location = new System.Drawing.Point(960, 1);
-            this.bBrowsePath.Name = "bBrowsePath";
-            this.bBrowsePath.Size = new System.Drawing.Size(35, 40);
-            this.bBrowsePath.TabIndex = 9;
-            this.bBrowsePath.Text = "...";
-            this.bBrowsePath.UseVisualStyleBackColor = false;
-            // 
-            // lExcelPath
-            // 
-            this.lExcelPath.BackColor = System.Drawing.Color.White;
-            this.lExcelPath.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lExcelPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lExcelPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lExcelPath.Location = new System.Drawing.Point(0, 0);
-            this.lExcelPath.Name = "lExcelPath";
-            this.lExcelPath.Size = new System.Drawing.Size(300, 45);
-            this.lExcelPath.TabIndex = 0;
-            this.lExcelPath.Text = "Ścieżka do pliku exlec z produktami";
-            this.lExcelPath.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tbPdfPath
-            // 
-            this.tbPdfPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbPdfPath.Location = new System.Drawing.Point(302, 1);
-            this.tbPdfPath.Margin = new System.Windows.Forms.Padding(0);
-            this.tbPdfPath.Multiline = false;
-            this.tbPdfPath.Name = "tbPdfPath";
-            this.tbPdfPath.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.tbPdfPath.ShowSelectionMargin = true;
-            this.tbPdfPath.Size = new System.Drawing.Size(660, 40);
-            this.tbPdfPath.TabIndex = 8;
-            this.tbPdfPath.Text = "";
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 75);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1000, 427);
-            this.dataGridView1.TabIndex = 5;
+            this.dgvExcelData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvExcelData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dgvExcelData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvExcelData.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dgvExcelData.Location = new System.Drawing.Point(0, 30);
+            this.dgvExcelData.Name = "dgvExcelData";
+            this.dgvExcelData.Size = new System.Drawing.Size(1000, 472);
+            this.dgvExcelData.TabIndex = 5;
             // 
             // bGenerateTemplate
             // 
@@ -161,6 +108,50 @@ namespace NaturalnieApp.Forms
             this.bGenerateTemplate.UseVisualStyleBackColor = false;
             this.bGenerateTemplate.Click += new System.EventHandler(this.bGenerateTemplate_Click);
             // 
+            // bAddFromFile
+            // 
+            this.bAddFromFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bAddFromFile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bAddFromFile.Cursor = System.Windows.Forms.Cursors.SizeAll;
+            this.bAddFromFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bAddFromFile.Location = new System.Drawing.Point(110, 508);
+            this.bAddFromFile.Name = "bAddFromFile";
+            this.bAddFromFile.Size = new System.Drawing.Size(100, 50);
+            this.bAddFromFile.TabIndex = 7;
+            this.bAddFromFile.Text = "Dodaj plik";
+            this.bAddFromFile.UseVisualStyleBackColor = false;
+            this.bAddFromFile.Click += new System.EventHandler(this.bAddFromFile_Click);
+            // 
+            // bDeselectAll
+            // 
+            this.bDeselectAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bDeselectAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bDeselectAll.Cursor = System.Windows.Forms.Cursors.SizeAll;
+            this.bDeselectAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bDeselectAll.Location = new System.Drawing.Point(322, 508);
+            this.bDeselectAll.Name = "bDeselectAll";
+            this.bDeselectAll.Size = new System.Drawing.Size(100, 50);
+            this.bDeselectAll.TabIndex = 8;
+            this.bDeselectAll.Text = "Odznacz wszystko";
+            this.bDeselectAll.UseVisualStyleBackColor = false;
+            this.bDeselectAll.Visible = false;
+            this.bDeselectAll.Click += new System.EventHandler(this.bDeselectAll_Click);
+            // 
+            // bSelectAll
+            // 
+            this.bSelectAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bSelectAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bSelectAll.Cursor = System.Windows.Forms.Cursors.SizeAll;
+            this.bSelectAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bSelectAll.Location = new System.Drawing.Point(216, 508);
+            this.bSelectAll.Name = "bSelectAll";
+            this.bSelectAll.Size = new System.Drawing.Size(100, 50);
+            this.bSelectAll.TabIndex = 9;
+            this.bSelectAll.Text = "Zaznacz wszytsko";
+            this.bSelectAll.UseVisualStyleBackColor = false;
+            this.bSelectAll.Visible = false;
+            this.bSelectAll.Click += new System.EventHandler(this.bSelectAll_Click);
+            // 
             // AddNewProductFromExcel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -168,9 +159,11 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
+            this.Controls.Add(this.bSelectAll);
+            this.Controls.Add(this.bDeselectAll);
+            this.Controls.Add(this.bAddFromFile);
             this.Controls.Add(this.bGenerateTemplate);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.pSettingNr1);
+            this.Controls.Add(this.dgvExcelData);
             this.Controls.Add(this.bUpdate);
             this.Controls.Add(this.bSave);
             this.Controls.Add(this.pHeader);
@@ -179,8 +172,7 @@ namespace NaturalnieApp.Forms
             this.Name = "AddNewProductFromExcel";
             this.Text = "Submenu_ElzabInfo";
             this.pHeader.ResumeLayout(false);
-            this.pSettingNr1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvExcelData)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -190,13 +182,11 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bSave;
         private System.Windows.Forms.Button bUpdate;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel pSettingNr1;
-        private System.Windows.Forms.RichTextBox tbPdfPath;
-        private System.Windows.Forms.Label lExcelPath;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button bBrowsePath;
+        private System.Windows.Forms.DataGridView dgvExcelData;
         private System.Windows.Forms.Button bGenerateTemplate;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.Button bAddFromFile;
+        private System.Windows.Forms.Button bDeselectAll;
+        private System.Windows.Forms.Button bSelectAll;
     }
 }
