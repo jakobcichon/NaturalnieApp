@@ -33,14 +33,14 @@ namespace NaturalnieApp.Forms
             this.panel1 = new System.Windows.Forms.Panel();
             this.bSave = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
-            this.dgvExcelData = new System.Windows.Forms.DataGridView();
             this.bGenerateTemplate = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.bAddFromFile = new System.Windows.Forms.Button();
             this.bDeselectAll = new System.Windows.Forms.Button();
             this.bSelectAll = new System.Windows.Forms.Button();
+            this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.pHeader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvExcelData)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // pHeader
@@ -82,17 +82,7 @@ namespace NaturalnieApp.Forms
             this.bUpdate.TabIndex = 3;
             this.bUpdate.Text = "Odśwież";
             this.bUpdate.UseVisualStyleBackColor = false;
-            // 
-            // dgvExcelData
-            // 
-            this.dgvExcelData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvExcelData.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dgvExcelData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvExcelData.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dgvExcelData.Location = new System.Drawing.Point(0, 30);
-            this.dgvExcelData.Name = "dgvExcelData";
-            this.dgvExcelData.Size = new System.Drawing.Size(1000, 472);
-            this.dgvExcelData.TabIndex = 5;
+            this.bUpdate.Click += new System.EventHandler(this.bUpdate_Click);
             // 
             // bGenerateTemplate
             // 
@@ -152,6 +142,17 @@ namespace NaturalnieApp.Forms
             this.bSelectAll.Visible = false;
             this.bSelectAll.Click += new System.EventHandler(this.bSelectAll_Click);
             // 
+            // advancedDataGridView1
+            // 
+            this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.advancedDataGridView1.FilterAndSortEnabled = true;
+            this.advancedDataGridView1.Location = new System.Drawing.Point(0, 27);
+            this.advancedDataGridView1.Name = "advancedDataGridView1";
+            this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.advancedDataGridView1.Size = new System.Drawing.Size(1000, 475);
+            this.advancedDataGridView1.TabIndex = 10;
+            this.advancedDataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValueChanged);
+            // 
             // AddNewProductFromExcel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -159,11 +160,11 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
+            this.Controls.Add(this.advancedDataGridView1);
             this.Controls.Add(this.bSelectAll);
             this.Controls.Add(this.bDeselectAll);
             this.Controls.Add(this.bAddFromFile);
             this.Controls.Add(this.bGenerateTemplate);
-            this.Controls.Add(this.dgvExcelData);
             this.Controls.Add(this.bUpdate);
             this.Controls.Add(this.bSave);
             this.Controls.Add(this.pHeader);
@@ -172,7 +173,7 @@ namespace NaturalnieApp.Forms
             this.Name = "AddNewProductFromExcel";
             this.Text = "Submenu_ElzabInfo";
             this.pHeader.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvExcelData)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -182,11 +183,11 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bSave;
         private System.Windows.Forms.Button bUpdate;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.DataGridView dgvExcelData;
         private System.Windows.Forms.Button bGenerateTemplate;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button bAddFromFile;
         private System.Windows.Forms.Button bDeselectAll;
         private System.Windows.Forms.Button bSelectAll;
+        private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
     }
 }

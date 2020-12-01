@@ -7,7 +7,7 @@ using System.Data;
 
 namespace NaturalnieApp.PdfToExcel
 {
-    public class EWAX_Supplier: ExcelBase, IExcel
+    public class AddProduct_General: ExcelBase, IExcel
     {
         //Properties for reading from excel
         public Properties _Properties { get; set; }
@@ -17,7 +17,7 @@ namespace NaturalnieApp.PdfToExcel
 
         public List<string> DataTableSchema { get; }
 
-        public EWAX_Supplier()
+        public AddProduct_General()
         {
             this._Properties = new Properties();
             this._Properties.StartStringDefineColumnNames = true;
@@ -29,7 +29,7 @@ namespace NaturalnieApp.PdfToExcel
 
             this.DataTableSchema = new List<string>
             {
-                "Lp.", "Dostawca", "Producent", "Kod kreskowy", "Nazwa towaru", "Ilość", "Cena netto",   "VAT"
+                "Lp.", "Dostawca", "Producent", "Nazwa towaru", "Kod kreskowy",  "Cena netto", "VAT"
 
             };
 
