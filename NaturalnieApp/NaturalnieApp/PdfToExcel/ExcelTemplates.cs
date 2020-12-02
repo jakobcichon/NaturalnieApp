@@ -14,6 +14,7 @@ namespace NaturalnieApp.PdfToExcel
         public string StartString { get; }
         public string EndString { get;  }
         public int NumberOfColumns { get; }
+        public string[] PrimaryKeys { get; }
 
         public List<string> DataTableSchema { get; }
 
@@ -26,10 +27,13 @@ namespace NaturalnieApp.PdfToExcel
             this.StartString = "Lp";
             this.EndString = "Forma płatności";
             this.NumberOfColumns = 9;
+            this.PrimaryKeys = new string[2] { "Kod kreskowy", "Kod dostawcy" };
 
+
+            //Barcode and supplier code can be used alternately, but use one of it is mandatory
             this.DataTableSchema = new List<string>
             {
-                "Lp.", "Dostawca", "Producent", "Nazwa towaru", "Kod kreskowy",  "Cena netto", "VAT"
+                "Lp.", "Dostawca", "Producent", "Nazwa towaru", "Kod kreskowy", "Kod dostawcy",  "Cena netto", "VAT"
 
             };
 

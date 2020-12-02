@@ -144,7 +144,7 @@ namespace NaturalnieApp.Forms
         private void AddProductFromPdf_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
-            AddNewProductFromExcel frm = new AddNewProductFromExcel() { TopLevel = false, TopMost = true };
+            AddNewProductFromExcel frm = new AddNewProductFromExcel(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.pContainer.Controls.Add(frm);
             frm.Show();
         }

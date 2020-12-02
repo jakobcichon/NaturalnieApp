@@ -10,23 +10,27 @@ using System.Linq;
 using System.Collections.Generic;
 using NaturalnieApp.PdfToExcel;
 using SautinSoft;
+using System.Text.RegularExpressions;
+using NaturalnieApp.Database;
 
 namespace NaturalnieApp.Forms
 {
     public partial class AddNewProductFromExcel : Form
     {
         //Set the instance fields
+        DatabaseCommands databaseCommands;
         string ProductColumnName { get; set; }
         string ElzabProductColumnName { get; set; }
-
         string LastExcelFilePath { get; set; }
+        
 
-        public AddNewProductFromExcel()
+        public AddNewProductFromExcel(ref DatabaseCommands commandsObj)
         {
             InitializeComponent();
             this.ProductColumnName = "Nazwa towaru";
             this.ElzabProductColumnName = "Nazwa towaru w Elzab";
             this.LastExcelFilePath = "";
+            this.databaseCommands = new DatabaseCommands();
         }
 
 
@@ -79,7 +83,13 @@ namespace NaturalnieApp.Forms
                     int indexOfDesireRow = dataFromExcel.Rows.IndexOf(row);
                     string rowValue = row.Field<string>(this.ProductColumnName).Substring(0,34);
                     dataFromExcel.Rows[indexOfDesireRow].SetField(this.ElzabProductColumnName, rowValue);
+
+                    //Convert percentage value if necessary
+                    double value = Try dataFromExcel.Rows[indexOfDesireRow].Field<string>("Cena netto");
+                    dataFromExcel.Rows[indexOfDesireRow].SetField("Cena netto", Calculations.PercentageConversion())
                 }
+
+                ClearString(dataFromExcel);
 
                 //Set data source on grid view
                 advancedDataGridView1.DataSource = dataFromExcel;
@@ -89,6 +99,32 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show(ex.ToString());
             }
 
+            //Add mrigin and final price column to the grid
+            string HeaderText = "Marża";
+            string Name = "marigin";
+            advancedDataGridView1.Columns.Add(Name, HeaderText);
+            HeaderText = "Cena klienta";
+            Name = "finalPrice";
+            advancedDataGridView1.Columns.Add(Name, HeaderText);
+
+            //Add default marigin value and calculate  final price
+            foreach (DataGridViewRow row in advancedDataGridView1.Rows)
+            {
+                //Get all necessary indexes
+                int indexOfCurrentRow = advancedDataGridView1.Rows.IndexOf(row);
+                int indexOfMariginColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells["marigin"].ColumnIndex;
+                int indexOfFinalPriceColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells["finalPrice"].ColumnIndex;
+
+                //Set amrigin to the default value
+                advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = "10";
+
+                //Calculate final price
+                double netPrice = Convert.ToDouble( advancedDataGridView1.Rows[indexOfCurrentRow].Cells["Cena netto"].Value);
+                double localFinalPrice = Calculations.RoundPrice(netPrice * 1.1);
+                advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfFinalPriceColumn].Value = localFinalPrice.ToString();
+                ;
+
+            }
 
             //Add checkbox to data grid
             DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
@@ -159,10 +195,71 @@ namespace NaturalnieApp.Forms
             }
         }
 
+        //Method used to clear string from all escape characters, white spaces etc.
+        private DataTable ClearString(DataTable inputData)
+        {
+            //Local variable
+            DataTable localDataTable = inputData;
+            string singleElement = "";
+            int rowIndex;
+            int fieldIndex;
+            
+            foreach (DataRow row in localDataTable.Rows)
+            {
+                foreach (string element in row.ItemArray)
+                {
+                    //Some operation on string, to clear it
+                    singleElement = element.Trim();
+                    singleElement = Regex.Unescape(singleElement);
+                    singleElement = singleElement.Replace("\n", "");
+                    singleElement = singleElement.Replace("\t", "");
+                    singleElement = singleElement.Replace("*", "");
+
+                    //Get row and field indexes
+                    rowIndex = localDataTable.Rows.IndexOf(row);
+                    fieldIndex = localDataTable.Rows[rowIndex].ItemArray.ToList().IndexOf(element);
+
+                    //Repleace with cleared value
+                    localDataTable.Rows[rowIndex].SetField(fieldIndex, singleElement);
+                }
+            }
+
+            return localDataTable;
+
+        }
+
         private void bUpdate_Click(object sender, EventArgs e)
         {
             if (this.LastExcelFilePath.Length > 0) ReadExcel(this.LastExcelFilePath);
             else MessageBox.Show("Nie wybrano pliku wejściowego!");
+        }
+
+        private void bSave_Click(object sender, EventArgs e)
+        {
+
+            Product test = this.databaseCommands.CheckIfProductExist("22", "", "1");
+            ;
+
+            foreach (DataGridViewRow row in advancedDataGridView1.Rows)
+            {
+                if (!row.IsNewRow)
+                {
+                    try
+                    {
+                        Validation.ElzabProductNameValidation(row.Cells["Nazwa towaru w Elzab"].Value.ToString());
+                    }
+                    catch (Validation.ValidatingFailed ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+
+            }
+            
         }
     }
 }

@@ -144,6 +144,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Calculations.cs" />
     <Compile Include="Database\Database.cs" />
     <Compile Include="Database\DatabaseCommands.cs" />
     <Compile Include="Database\ShopContext.cs" />

@@ -290,6 +290,11 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
+            Product test;
+            test = this.databaseCommands.GetProductEntityByProductName("ujędrniajacy krem róża z jagodą  60 ml");
+            ;
+
+
         }
         private void ShowProductInfo_KeyDown(object sender, KeyEventArgs e)
         {

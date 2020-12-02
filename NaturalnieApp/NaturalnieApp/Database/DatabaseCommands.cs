@@ -24,6 +24,57 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to check if given element exist in database
+        //Product name and barcode or supplier code are obligatory
+        //Method will return existing entity. If nothing from perspectiv of given keys exist in DB, it will return null.
+        //====================================================================================================
+        public Product CheckIfProductExist(string productName, string barCode = "", string supplierCode = "")
+        {
+            Product entity = new Product();
+            int step = 0;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                //Check if product name already exist. If not, continue checking
+                if (productName != "")
+                {
+                    //Create query to database
+                    var queryProductName = from p in contextDB.Products
+                                           where p.ProductName == productName
+                                           select p;
+
+                    entity = queryProductName.FirstOrDefault();
+                    if ((entity == null) && (barCode != "")) step = 1;
+                    else if ((entity == null) && (supplierCode != "")) step = 2;
+                }
+                //Next check bar code
+                if (barCode != "" && step == 1)
+                {
+                    //Create query to database
+                    var queryBarCode = from p in contextDB.Products
+                                       where p.BarCode == barCode
+                                       select p;
+
+                    entity = queryBarCode.FirstOrDefault();
+                    if ((entity == null) && (barCode != "")) step = 2;
+
+                }
+                //Next check supplier code
+                if (supplierCode != "" && step == 2)
+                {
+                    //Create query to database
+                    var querySupplierCode = from p in contextDB.Products
+                                       where p.SupplierCode == supplierCode
+                                       select p;
+
+                    entity = querySupplierCode.FirstOrDefault();
+                }
+            }
+            
+            return entity;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB product name list
         //====================================================================================================
         public List<string> GetProductsNameList()

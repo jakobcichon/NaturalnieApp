@@ -70,6 +70,7 @@ namespace NaturalnieApp.Forms
             this.bSave.TabIndex = 2;
             this.bSave.Text = "Zapisz";
             this.bSave.UseVisualStyleBackColor = false;
+            this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
             // bUpdate
             // 

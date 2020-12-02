@@ -96,6 +96,7 @@ namespace NaturalnieApp.Forms
             this.bShowProductInfo.TabIndex = 7;
             this.bShowProductInfo.Text = "Znajdź produkt";
             this.bShowProductInfo.UseVisualStyleBackColor = false;
+            this.bShowProductInfo.Click += new System.EventHandler(this.bShowProductInfo_Click);
             // 
             // AddProductFromPdf
             // 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp.Forms
 {
-    class Validation
+    static class Validation
     {
 
         //====================================================================================================
@@ -32,7 +32,7 @@ namespace NaturalnieApp.Forms
         #endregion
 
         //Method used to validate of product name
-        public bool ProductNameValidation(string input)
+        static public bool ProductNameValidation(string input)
         {
             //Local variables
             bool validatingResult;
@@ -50,7 +50,7 @@ namespace NaturalnieApp.Forms
         }
 
         //Method used to validate of supplier name
-        public bool SupplierNameValidation(string input)
+        static public bool SupplierNameValidation(string input)
         {
             //Local variables
             bool validatingResult;
@@ -68,7 +68,7 @@ namespace NaturalnieApp.Forms
         }
 
         //Method used to validate of manufacturer name
-        public bool ManufacturerNameValidation(string input)
+        static public bool ManufacturerNameValidation(string input)
         {
             //Local variables
             bool validatingResult;
@@ -86,14 +86,14 @@ namespace NaturalnieApp.Forms
         }
 
         //Method used to validate of product name in elzab
-        public bool ElzabProductNameValidation(string input)
+        static public bool ElzabProductNameValidation(string input)
         {
             //Local variables
             bool validatingResult;
             string text = "Nazwa dostawcy dla kasy Elzab musi mieć maksymalnie 34 znaki oraz może zawierać jedynie cyfry, litery i nastepujące znaki specjalne: _-+";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^[a-zA-Z0-9_]{1,34}$";
+            string regPattern = @"^[a-zA-Z0-9_' ]{1,34}$";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
@@ -105,7 +105,7 @@ namespace NaturalnieApp.Forms
 
 
         //Method used to validate input 
-        private bool ValidateInput(string textToValidate, string regExPatter)
+        static private bool ValidateInput(string textToValidate, string regExPatter)
         {
             //Local variables
             bool ret;

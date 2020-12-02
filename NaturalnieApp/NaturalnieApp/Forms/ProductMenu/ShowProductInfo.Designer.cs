@@ -217,7 +217,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 308F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 312F));
             this.pManufacturer.Controls.Add(this.cbManufacturer, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -266,7 +266,7 @@ namespace NaturalnieApp.Forms
             this.pBarCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pBarCode.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pBarCode.ColumnCount = 1;
-            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 331F));
+            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 335F));
             this.pBarCode.Controls.Add(this.tbBarCode, 0, 1);
             this.pBarCode.Controls.Add(this.label1, 0, 0);
             this.pBarCode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -310,7 +310,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 518F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 522F));
             this.pProductName.Controls.Add(this.cbProductList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -376,7 +376,7 @@ namespace NaturalnieApp.Forms
             this.pProductInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
             this.pProductInfo.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductInfo.ColumnCount = 1;
-            this.pProductInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 600F));
+            this.pProductInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 604F));
             this.pProductInfo.Controls.Add(this.lProductInfo, 0, 0);
             this.pProductInfo.Controls.Add(this.rtbProductInfo, 0, 1);
             this.pProductInfo.Location = new System.Drawing.Point(470, 30);

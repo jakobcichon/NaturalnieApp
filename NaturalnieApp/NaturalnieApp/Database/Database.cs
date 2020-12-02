@@ -25,6 +25,7 @@ namespace NaturalnieApp.Database
         public int TaxId { get; set; }
         public float Marigin { get; set; }
         public string BarCode { get; set; }
+        public string SupplierCode { get; set; }
         public string ProductInfo { get; set; }
     }
 
