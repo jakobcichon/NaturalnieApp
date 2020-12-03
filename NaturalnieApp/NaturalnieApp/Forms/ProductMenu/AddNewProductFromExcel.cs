@@ -72,6 +72,8 @@ namespace NaturalnieApp.Forms
                 AddProduct_General supplierInvoice = new AddProduct_General();
                 dataFromExcel = supplierInvoice.ExtractEntities(supplierInvoice, excelData);
 
+                //Add additional columns
+
                 //Insert column with Elzab name (max 34 signs)
                 DataColumn column = new DataColumn(this.ElzabProductColumnName, typeof(String));
                 dataFromExcel.Columns.Add(column);
@@ -85,7 +87,7 @@ namespace NaturalnieApp.Forms
                     dataFromExcel.Rows[indexOfDesireRow].SetField(this.ElzabProductColumnName, rowValue);
 
                     //Convert percentage value if necessary
-                    double value = Try dataFromExcel.Rows[indexOfDesireRow].Field<string>("Cena netto");
+                    double value = dataFromExcel.Rows[indexOfDesireRow].Field<string>("Cena netto");
                     dataFromExcel.Rows[indexOfDesireRow].SetField("Cena netto", Calculations.PercentageConversion())
                 }
 

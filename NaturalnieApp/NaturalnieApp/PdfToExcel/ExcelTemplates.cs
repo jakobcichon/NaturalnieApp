@@ -16,7 +16,7 @@ namespace NaturalnieApp.PdfToExcel
         public int NumberOfColumns { get; }
         public string[] PrimaryKeys { get; }
 
-        public List<string> DataTableSchema { get; }
+        public Dictionary<ColumnsAttributes, string> DataTableSchema { get; }
 
         public AddProduct_General()
         {
@@ -31,9 +31,16 @@ namespace NaturalnieApp.PdfToExcel
 
 
             //Barcode and supplier code can be used alternately, but use one of it is mandatory
-            this.DataTableSchema = new List<string>
+            this.DataTableSchema = new Dictionary<ColumnsAttributes, string>
             {
-                "Lp.", "Dostawca", "Producent", "Nazwa towaru", "Kod kreskowy", "Kod dostawcy",  "Cena netto", "VAT"
+                {ColumnsAttributes.GeneralNumber,  "Lp."},
+                {ColumnsAttributes.GeneralText, "Dostawca" },
+                {ColumnsAttributes.GeneralText, "Producent" },
+                {ColumnsAttributes.GeneralText, "Nazwa towaru"},
+                {ColumnsAttributes.GeneralNumber, "Kod kreskowy" },
+                {ColumnsAttributes.GeneralNumber, "Kod dostawcy" },
+                {ColumnsAttributes.GeneralNumber,"Cena netto" },
+                {ColumnsAttributes.Percentage, "VAT" }
 
             };
 

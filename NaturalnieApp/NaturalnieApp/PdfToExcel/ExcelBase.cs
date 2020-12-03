@@ -25,6 +25,14 @@ namespace NaturalnieApp.PdfToExcel
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 
+    public enum ColumnsAttributes
+    {
+        Percentage,
+        Price,
+        GeneralText,
+        GeneralNumber
+    }
+
     public class Properties
     {
         //Method used to recognize of last entity entry
@@ -63,40 +71,29 @@ namespace NaturalnieApp.PdfToExcel
             //Connection string
             string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + fullPath + "';Extended Properties=\"Excel 12.0;HDR=YES\"";
 
-            //Create file 
-            //File.Create(fullPath);
-
             //Create message box and show message box
             if (CreateExcelFileFromTemplate(template, connectionString))
             {
                 MessageBox.Show(string.Format("Plik {0} został utworzony!", fullPath));
             }
 
-
-
-
         }
 
         public DataTable ExtractEntities(IExcel template, List<DataTable> data)
         {
             //LocalVariables
-            DataTable dataTable = new DataTable();
-            List<string> tempData = new List<string>();
             DataTable returnData = new DataTable();
             List<DataRow> dataRowsFromFile = new List<DataRow>();
 
-
             //Initialize data table from template
-            DataColumn dataColumn = new DataColumn();
-            foreach ( string columnName in template.DataTableSchema)
+            foreach ( string columnName in template.DataTableSchema.Values)
             {
                 //dataColumn.ColumnName = columnName;
                 //dataColumn.DataType = Type.GetType("System.String");
                 returnData.Columns.Add(columnName, typeof(String));
             }
 
-
-            //Get data from excel
+            //Get data from excel for every sheet
             foreach (DataTable table in data)
             {
                 dataRowsFromFile.AddRange(ExtractDataFromExcel(template, table));
@@ -114,7 +111,6 @@ namespace NaturalnieApp.PdfToExcel
                     int indexOfDesireColumn = returnData.Columns.IndexOf("Nazwa towaru");
                     string valueToSet = returnData.Rows[indexOfLastRow][indexOfDesireColumn] + " " + row.ItemArray[indexOfDesireColumn].ToString();
                     returnData.Rows[indexOfLastRow].SetField(indexOfDesireColumn, valueToSet);
-                    ;
                 }
                 else
                 {
@@ -132,13 +128,68 @@ namespace NaturalnieApp.PdfToExcel
 
         }
 
+        //Method used to clean data from excel
+        private DataTable CleanDataFromExcel(List<DataRow> rows)
+        {
+            //LocalVariables
+            DataTable returnData = new DataTable();
+
+            //Check if row contains empty filelds. 
+            //If only product name is empty, contact it with previous row
+            foreach (DataRow row in rows)
+            {
+                //Get product with the product name. This is done in case if name of product 
+                //will take two rows in excel sheet
+                if (row.ItemArray[0].ToString() == "")
+                {
+                    //Necessary indexes
+                    int indexOfLastRow = returnData.Rows.Count - 1;
+                    int indexOfDesireColumn = returnData.Columns.IndexOf("Nazwa towaru");
+
+                    //Get value to set
+                    string valueToSet = returnData.Rows[indexOfLastRow][indexOfDesireColumn] + " " + row.ItemArray[indexOfDesireColumn].ToString();
+                    returnData.Rows[indexOfLastRow].SetField(indexOfDesireColumn, valueToSet);
+                }
+                else
+                {
+                    DataRow dataRow = returnData.NewRow();
+                    for (int i = 0; i < dataRow.Table.Columns.Count; i++)
+                    {
+                        dataRow.SetField(i, row.ItemArray[i].ToString());
+                    }
+
+                    returnData.Rows.Add(dataRow);
+                }
+            }
+
+            //Loop through rows and clean it (change comma to point mark, double form of percentage to decimal one, etc..)
+            foreach (DataRow row in returnData.Rows)
+            {
+                //Change comma to point for every row element
+                int indexOfCurrentRow = returnData.Rows.IndexOf(row);
+                returnData.Rows[indexOfCurrentRow].ItemArray = row.ItemArray.Select(e => e.ToString().Replace(",", ".")).ToArray();
+
+                //Change float percentage representation for decimal one
+
+            }
+
+            return returnData;
+        }
+
+        //Method used to add some additional columns to data table. 
+        //These columns are used to put calculated data 
+        private DataTable AddAdditionalColumns(DataTable data)
+        {
+
+        }
+
         private List<DataRow> ExtractDataFromExcel(IExcel template, DataTable table)
         {
             //Local variables
             List<DataRow> returnList = new List<DataRow>();
              
             //Check if number of columns from excel match schema
-            if (template.DataTableSchema.Count == table.Columns.Count)
+            if (template.DataTableSchema.Values.Count == table.Columns.Count)
             {
                 //Check if data in first column exist. If yes add it to list
                 foreach (DataRow row in table.Rows)
@@ -154,7 +205,7 @@ namespace NaturalnieApp.PdfToExcel
             else
             {
                 MessageBox.Show(string.Format("Błąd! Niezgodna liczba kolumn! Oczekiwane: {0}, Aktualne:{1}", 
-                    template.DataTableSchema.Count, 
+                    template.DataTableSchema.Values.Count, 
                     table.Columns.Count));
             }
 
@@ -182,7 +233,7 @@ namespace NaturalnieApp.PdfToExcel
 
                 //Create command for create columns
                 string columnNames = "";
-                foreach (string element in template.DataTableSchema)
+                foreach (string element in template.DataTableSchema.Values)
                 {
                     columnNames += "[" + element + "]" + " string, ";
                 }

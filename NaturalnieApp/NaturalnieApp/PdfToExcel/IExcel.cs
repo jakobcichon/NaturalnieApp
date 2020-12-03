@@ -16,6 +16,8 @@ namespace NaturalnieApp.PdfToExcel
         //Properties
         Properties _Properties { get; set; }
 
-        List<string> DataTableSchema { get; }
+        //List<string> DataTableSchema { get; }
+
+        Dictionary<ColumnsAttributes, string> DataTableSchema { get; }
     }
 }
