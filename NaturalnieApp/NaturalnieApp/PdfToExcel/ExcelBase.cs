@@ -27,10 +27,15 @@ namespace NaturalnieApp.PdfToExcel
 
     public enum ColumnsAttributes
     {
+        Default,
         Percentage,
         Price,
         GeneralText,
-        GeneralNumber
+        GeneralNumber,
+        PrimaryName,
+        Barcode_EAN13,
+        Barcode_EAN8,
+
     }
 
     public class Properties
@@ -86,7 +91,7 @@ namespace NaturalnieApp.PdfToExcel
             List<DataRow> dataRowsFromFile = new List<DataRow>();
 
             //Initialize data table from template
-            foreach ( string columnName in template.DataTableSchema.Values)
+            foreach ( string columnName in template.DataTableSchema.Keys)
             {
                 //dataColumn.ColumnName = columnName;
                 //dataColumn.DataType = Type.GetType("System.String");
@@ -178,7 +183,7 @@ namespace NaturalnieApp.PdfToExcel
 
         //Method used to add some additional columns to data table. 
         //These columns are used to put calculated data 
-        private DataTable AddAdditionalColumns(DataTable data)
+        private void AddAdditionalColumns(DataTable data)
         {
 
         }
@@ -233,7 +238,7 @@ namespace NaturalnieApp.PdfToExcel
 
                 //Create command for create columns
                 string columnNames = "";
-                foreach (string element in template.DataTableSchema.Values)
+                foreach (string element in template.DataTableSchema.Keys)
                 {
                     columnNames += "[" + element + "]" + " string, ";
                 }

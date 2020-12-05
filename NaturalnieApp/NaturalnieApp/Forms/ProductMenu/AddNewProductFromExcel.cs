@@ -21,6 +21,10 @@ namespace NaturalnieApp.Forms
         DatabaseCommands databaseCommands;
         string ProductColumnName { get; set; }
         string ElzabProductColumnName { get; set; }
+        string FinalPriceColumnName { get; set; }
+        string MariginColumnName { get; set; }
+        string TaxColumnName { get; set; }
+        string PriceNetColumnName { get; set; }
         string LastExcelFilePath { get; set; }
         
 
@@ -29,6 +33,10 @@ namespace NaturalnieApp.Forms
             InitializeComponent();
             this.ProductColumnName = "Nazwa towaru";
             this.ElzabProductColumnName = "Nazwa towaru w Elzab";
+            this.FinalPriceColumnName = "Cena klienta";
+            this.MariginColumnName = "Marża";
+            this.TaxColumnName = "VAT";
+            this.PriceNetColumnName = "Cena netto";
             this.LastExcelFilePath = "";
             this.databaseCommands = new DatabaseCommands();
         }
@@ -61,7 +69,7 @@ namespace NaturalnieApp.Forms
         private void ReadExcel(string filePath)
         {
             //Local variables
-            DataTable dataFromExcel;
+            DataTable dataFromExcel = new DataTable();
 
             try
             {
@@ -86,12 +94,9 @@ namespace NaturalnieApp.Forms
                     string rowValue = row.Field<string>(this.ProductColumnName).Substring(0,34);
                     dataFromExcel.Rows[indexOfDesireRow].SetField(this.ElzabProductColumnName, rowValue);
 
-                    //Convert percentage value if necessary
-                    double value = dataFromExcel.Rows[indexOfDesireRow].Field<string>("Cena netto");
-                    dataFromExcel.Rows[indexOfDesireRow].SetField("Cena netto", Calculations.PercentageConversion())
                 }
 
-                ClearString(dataFromExcel);
+                dataFromExcel = ClearString(dataFromExcel, supplierInvoice);
 
                 //Set data source on grid view
                 advancedDataGridView1.DataSource = dataFromExcel;
@@ -102,11 +107,11 @@ namespace NaturalnieApp.Forms
             }
 
             //Add mrigin and final price column to the grid
-            string HeaderText = "Marża";
-            string Name = "marigin";
+            string HeaderText = this.MariginColumnName;
+            string Name = this.MariginColumnName;
             advancedDataGridView1.Columns.Add(Name, HeaderText);
-            HeaderText = "Cena klienta";
-            Name = "finalPrice";
+            HeaderText = this.FinalPriceColumnName;
+            Name = this.FinalPriceColumnName;
             advancedDataGridView1.Columns.Add(Name, HeaderText);
 
             //Add default marigin value and calculate  final price
@@ -114,17 +119,21 @@ namespace NaturalnieApp.Forms
             {
                 //Get all necessary indexes
                 int indexOfCurrentRow = advancedDataGridView1.Rows.IndexOf(row);
-                int indexOfMariginColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells["marigin"].ColumnIndex;
-                int indexOfFinalPriceColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells["finalPrice"].ColumnIndex;
+                int indexOfMariginColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.MariginColumnName].ColumnIndex;
+                int indexOfFinalPriceColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.FinalPriceColumnName].ColumnIndex;
+                int indexOfTaxColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.TaxColumnName].ColumnIndex;
+                int indexOfPriceNetColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.PriceNetColumnName].ColumnIndex;
 
                 //Set amrigin to the default value
-                advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = "10";
+                advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = "20";
 
                 //Calculate final price
-                double netPrice = Convert.ToDouble( advancedDataGridView1.Rows[indexOfCurrentRow].Cells["Cena netto"].Value);
-                double localFinalPrice = Calculations.RoundPrice(netPrice * 1.1);
-                advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfFinalPriceColumn].Value = localFinalPrice.ToString();
-                ;
+                double price = Convert.ToDouble(advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetColumn].Value);
+                int tax = Convert.ToInt32(advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfTaxColumn].Value);
+                int marigin = Convert.ToInt32(advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value);
+                double finalPrice = Calculations.FinalPrice(price, tax, marigin);
+
+                advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfFinalPriceColumn].Value = finalPrice.ToString();
 
             }
 
@@ -132,12 +141,77 @@ namespace NaturalnieApp.Forms
             DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
             advancedDataGridView1.Columns.Insert(0, chk);
             chk.HeaderText = "Zaznacz";
-            chk.Name = "chk";
+            chk.Name = "Zaznacz";
             bDeselectAll.Visible = true;
             bSelectAll.Visible = true;
 
             //Autosize columns
             advancedDataGridView1.AutoResizeColumns();
+
+            dataFromExcel.Dispose();
+        }
+
+        //Method used to clear string from all escape characters, white spaces etc.
+        private DataTable ClearString(DataTable inputData, IExcel template)
+        {
+            //Local variable
+            DataTable localDataTable = inputData;
+            string singleElement = "";
+            int rowIndex;
+            int fieldIndex;
+
+            foreach (DataRow row in localDataTable.Rows)
+            {
+                foreach (string element in row.ItemArray)
+                {
+                    //Get row and field indexes
+                    rowIndex = localDataTable.Rows.IndexOf(row);
+                    fieldIndex = localDataTable.Rows[rowIndex].ItemArray.ToList().IndexOf(element);
+
+                    //Get column name
+                    string columnName = localDataTable.Columns[fieldIndex].ColumnName;
+
+                    //Get column attribute
+                    ColumnsAttributes columnAttribute;
+                    template.DataTableSchema.TryGetValue(columnName, out columnAttribute);
+
+                    //Some general operation on string, to clear it
+                    singleElement = element.Trim();
+                    singleElement = Regex.Unescape(singleElement);
+                    singleElement = singleElement.Replace("\n", "");
+                    singleElement = singleElement.Replace("\t", "");
+                    singleElement = singleElement.Replace("*", "");
+
+                    //Sepcific string action depending on column attribute
+                    //Percentage
+                    if (columnAttribute == ColumnsAttributes.Percentage)
+                    {
+                        //If percentage sing exist, remove it
+                        singleElement = singleElement.Replace("%", "");
+
+                        //Try parse to real value, and convert for decimal value
+                        double temp = Convert.ToDouble(singleElement);
+                        if ( temp < 1.0)
+                        {
+                            temp *= 100;
+                        }
+
+                        //Convert value back
+                        singleElement = Convert.ToInt32(temp).ToString();
+                    }
+                    //Price
+                    if (columnAttribute == ColumnsAttributes.Price)
+                    {
+                        //If percentage sing exist, remove it
+                        singleElement = singleElement.Replace(",", ".");
+                    }
+
+                    //Repleace with cleared value
+                    localDataTable.Rows[rowIndex].SetField(fieldIndex, singleElement);
+                }
+            }
+
+            return localDataTable;
 
         }
 
@@ -169,12 +243,17 @@ namespace NaturalnieApp.Forms
             {
                 DataGridViewCheckBoxCell chkchecking = row.Cells[0] as DataGridViewCheckBoxCell;
                 chkchecking.Value = false;
-
             }
+        }
+
+        private void advancedDataGridView1_Click(object sender, DataGridViewCellEventArgs e)
+        {
+            ;
         }
 
         private void advancedDataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            //Cast to known object type
             Zuby.ADGV.AdvancedDataGridView localSender = (Zuby.ADGV.AdvancedDataGridView)sender;
             DataGridViewSelectedCellCollection cells = localSender.SelectedCells;
 
@@ -183,6 +262,12 @@ namespace NaturalnieApp.Forms
                 //Get index of desire column
                 int indexPrimaryColumn = localSender.Columns[this.ProductColumnName].Index;
                 int indexSecondaryColumn = localSender.Columns[this.ElzabProductColumnName].Index;
+                int indexOfMarigin = localSender.Columns[this.MariginColumnName].Index;
+                int indexOfFinalPrice = localSender.Columns[this.FinalPriceColumnName].Index;
+                int indexOfTax = localSender.Columns[this.TaxColumnName].Index;
+                int indexOfPriceNet = localSender.Columns[this.PriceNetColumnName].Index;
+
+                //If product name has changed, change also Elzab product name
                 if (cell.ColumnIndex == indexPrimaryColumn)
                 {
                     if (cell.Value.ToString().Length > 34)
@@ -194,40 +279,16 @@ namespace NaturalnieApp.Forms
                         localSender.Rows[cell.RowIndex].Cells[indexSecondaryColumn].Value = cell.Value.ToString();
                     }
                 }
-            }
-        }
 
-        //Method used to clear string from all escape characters, white spaces etc.
-        private DataTable ClearString(DataTable inputData)
-        {
-            //Local variable
-            DataTable localDataTable = inputData;
-            string singleElement = "";
-            int rowIndex;
-            int fieldIndex;
-            
-            foreach (DataRow row in localDataTable.Rows)
-            {
-                foreach (string element in row.ItemArray)
+                //If marigin has changed, recalculate final price
+                if (cell.ColumnIndex == indexOfMarigin)
                 {
-                    //Some operation on string, to clear it
-                    singleElement = element.Trim();
-                    singleElement = Regex.Unescape(singleElement);
-                    singleElement = singleElement.Replace("\n", "");
-                    singleElement = singleElement.Replace("\t", "");
-                    singleElement = singleElement.Replace("*", "");
-
-                    //Get row and field indexes
-                    rowIndex = localDataTable.Rows.IndexOf(row);
-                    fieldIndex = localDataTable.Rows[rowIndex].ItemArray.ToList().IndexOf(element);
-
-                    //Repleace with cleared value
-                    localDataTable.Rows[rowIndex].SetField(fieldIndex, singleElement);
+                    double price = Convert.ToDouble(localSender.Rows[cell.RowIndex].Cells[indexOfPriceNet].Value);
+                    int tax = Convert.ToInt32(localSender.Rows[cell.RowIndex].Cells[indexOfTax].Value);
+                    int marigin = Convert.ToInt32(localSender.Rows[cell.RowIndex].Cells[indexOfMarigin].Value);
+                    localSender.Rows[cell.RowIndex].Cells[indexOfFinalPrice].Value = Calculations.FinalPrice(price, tax, marigin).ToString();
                 }
             }
-
-            return localDataTable;
-
         }
 
         private void bUpdate_Click(object sender, EventArgs e)
@@ -248,7 +309,7 @@ namespace NaturalnieApp.Forms
                 {
                     try
                     {
-                        Validation.ElzabProductNameValidation(row.Cells["Nazwa towaru w Elzab"].Value.ToString());
+                        Validation.ElzabProductNameValidation(row.Cells[this.ElzabProductColumnName].Value.ToString());
                     }
                     catch (Validation.ValidatingFailed ex)
                     {

@@ -18,6 +18,6 @@ namespace NaturalnieApp.PdfToExcel
 
         //List<string> DataTableSchema { get; }
 
-        Dictionary<ColumnsAttributes, string> DataTableSchema { get; }
+        Dictionary<string, ColumnsAttributes> DataTableSchema { get; }
     }
 }

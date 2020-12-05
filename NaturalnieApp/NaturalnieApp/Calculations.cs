@@ -16,7 +16,54 @@ namespace NaturalnieApp
             //Local variables
             double finalPrice;
 
+            //Round price to 1 digit place
             finalPrice = Math.Round(price, 1);
+
+            //Extract only integer part
+            int integerPart = Convert.ToInt32(Math.Floor(finalPrice));
+
+            //Extract decimal places to integer value
+            int decimalToInteger = Convert.ToInt32((finalPrice - Convert.ToDouble(integerPart)) * 10);
+
+            //Set decimal part for hardcoded values
+            if (decimalToInteger > 0 && decimalToInteger <= 5) decimalToInteger = 5;
+            else if (decimalToInteger > 5 && decimalToInteger <= 9) decimalToInteger = 9;
+            else if (decimalToInteger > 9 && decimalToInteger <= 10) decimalToInteger = 10;
+
+            //Set final price
+            double ItegerToDecimal = Convert.ToDouble(decimalToInteger) / 10;
+            finalPrice = Convert.ToDouble(integerPart) + ItegerToDecimal;
+            ;
+
+            return finalPrice;
+        }
+
+        //Calculate final price from price net, tax and marigin
+        static public double FinalPrice(double priceNet, int tax, int marigin)
+        {
+            //Local variable
+            double finalPrice;
+
+            //Calculate final price
+            finalPrice = priceNet * ((tax / 100.0) + 1.0) * ((marigin / 100.0) + 1.0);
+
+            //Round final price
+            finalPrice = RoundPrice(finalPrice);
+
+            return finalPrice;
+        }
+
+        //Calculate final price from price and marigin
+        static public double FinalPrice(double price, int marigin)
+        {
+            //Local variable
+            double finalPrice;
+
+            //Calculate final price
+            finalPrice = price  * marigin / 100;
+
+            //Round final price
+            finalPrice = RoundPrice(finalPrice);
 
             return finalPrice;
         }

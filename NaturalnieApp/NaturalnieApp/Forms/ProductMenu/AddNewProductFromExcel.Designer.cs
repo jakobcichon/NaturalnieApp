@@ -39,6 +39,7 @@ namespace NaturalnieApp.Forms
             this.bDeselectAll = new System.Windows.Forms.Button();
             this.bSelectAll = new System.Windows.Forms.Button();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
+            //this.advancedDataGridView1.Click += new Zuby.ADGV.(this.advancedDataGridView1_Click());
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.SuspendLayout();
