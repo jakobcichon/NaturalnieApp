@@ -17,6 +17,8 @@ namespace NaturalnieApp.Forms
 {
     public partial class AddNewProductFromExcel : Form
     {
+
+        #region Object fields
         //Set the instance fields
         DatabaseCommands databaseCommands;
         string ProductColumnName { get; set; }
@@ -25,9 +27,18 @@ namespace NaturalnieApp.Forms
         string MariginColumnName { get; set; }
         string TaxColumnName { get; set; }
         string PriceNetColumnName { get; set; }
+        string CheckBoxColumnName { get; set; }
+        string SupplierColumnName { get; set; }
+        string ManufacturerColumnName { get; set; }
         string LastExcelFilePath { get; set; }
-        
 
+
+        //Variable used to identify last cell clicked on advanced data grid view
+        //This is used to start cell modification with singe clik
+        private int[] LastCellCliked { get; set;}
+        #endregion
+
+        #region Class constructor
         public AddNewProductFromExcel(ref DatabaseCommands commandsObj)
         {
             InitializeComponent();
@@ -37,33 +48,18 @@ namespace NaturalnieApp.Forms
             this.MariginColumnName = "Marża";
             this.TaxColumnName = "VAT";
             this.PriceNetColumnName = "Cena netto";
+            this.CheckBoxColumnName = "Zaznacz";
+            this.SupplierColumnName = "Dostawca";
+            this.ManufacturerColumnName = "Producent";
             this.LastExcelFilePath = "";
             this.databaseCommands = new DatabaseCommands();
+
+            //Initialization of last cell clicked variable
+            this.LastCellCliked = new[] { 0 , 0 };
         }
+        #endregion
 
-
-
-        private void bAddFromFile_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog inputFileDialog = new OpenFileDialog();
-            if (inputFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                //Check if selected file is an excel file
-                string fileExtension = Path.GetExtension(inputFileDialog.FileName);
-                if ((fileExtension == ".xls") || (fileExtension == ".xlsx") || (fileExtension == ".xlsb"))
-                {
-                    this.LastExcelFilePath = inputFileDialog.FileName;
-                    ReadExcel(inputFileDialog.FileName);
-                }
-                else
-                {
-                    MessageBox.Show("Wybrano plik o błędnym rozszerzeniu. Dostepne rozszerzenia to : '.xls', 'xlsx', 'xlsb'");
-                }
-                ;
-            }
-
-        }
-
+        #region General methods
         //Method used to read data from excel from the specified path
         //Method return List of data table, where one list element contains one sheet data from excel file
         private void ReadExcel(string filePath)
@@ -114,7 +110,7 @@ namespace NaturalnieApp.Forms
             Name = this.FinalPriceColumnName;
             advancedDataGridView1.Columns.Add(Name, HeaderText);
 
-            //Add default marigin value and calculate  final price
+            //Add default marigin value and calculate final price
             foreach (DataGridViewRow row in advancedDataGridView1.Rows)
             {
                 //Get all necessary indexes
@@ -140,8 +136,8 @@ namespace NaturalnieApp.Forms
             //Add checkbox to data grid
             DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
             advancedDataGridView1.Columns.Insert(0, chk);
-            chk.HeaderText = "Zaznacz";
-            chk.Name = "Zaznacz";
+            chk.HeaderText = this.CheckBoxColumnName;
+            chk.Name = this.CheckBoxColumnName;
             bDeselectAll.Visible = true;
             bSelectAll.Visible = true;
 
@@ -214,7 +210,10 @@ namespace NaturalnieApp.Forms
             return localDataTable;
 
         }
+        #endregion
 
+        #region Buttons events
+        //Event for generate template button
         private void bGenerateTemplate_Click(object sender, EventArgs e)
         {
             //Open folder dialog browser
@@ -227,6 +226,7 @@ namespace NaturalnieApp.Forms
 
         }
 
+        //Event for "selected all" button for advanced data frid view
         private void bSelectAll_Click(object sender, EventArgs e)
         {
             foreach (DataGridViewRow row in advancedDataGridView1.Rows)
@@ -237,6 +237,7 @@ namespace NaturalnieApp.Forms
             }
         }
 
+        //Event for "deselect all" button for advanced data frid view
         private void bDeselectAll_Click(object sender, EventArgs e)
         {
             foreach (DataGridViewRow row in advancedDataGridView1.Rows)
@@ -246,11 +247,108 @@ namespace NaturalnieApp.Forms
             }
         }
 
-        private void advancedDataGridView1_Click(object sender, DataGridViewCellEventArgs e)
+        //Event for "add from file" button
+        private void bAddFromFile_Click(object sender, EventArgs e)
         {
-            ;
+            OpenFileDialog inputFileDialog = new OpenFileDialog();
+            if (inputFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                //Check if selected file is an excel file
+                string fileExtension = Path.GetExtension(inputFileDialog.FileName);
+                if ((fileExtension == ".xls") || (fileExtension == ".xlsx") || (fileExtension == ".xlsb"))
+                {
+                    this.LastExcelFilePath = inputFileDialog.FileName;
+                    ReadExcel(inputFileDialog.FileName);
+                }
+                else
+                {
+                    MessageBox.Show("Wybrano plik o błędnym rozszerzeniu. Dostepne rozszerzenia to : '.xls', 'xlsx', 'xlsb'");
+                }
+                ;
+            }
+
         }
 
+        //Event for "update" button
+        private void bUpdate_Click(object sender, EventArgs e)
+        {
+            if (this.LastExcelFilePath.Length > 0) ReadExcel(this.LastExcelFilePath);
+            else MessageBox.Show("Nie wybrano pliku wejściowego!");
+        }
+
+        //Event for "save" button
+        private void bSave_Click(object sender, EventArgs e)
+        {
+
+            //1. Validate all input and add it to the database
+
+            foreach (DataGridViewRow row in advancedDataGridView1.Rows)
+            {
+                //Get only checked rows
+                DataGridViewCheckBoxCell chkChecking = row.Cells[this.CheckBoxColumnName] as DataGridViewCheckBoxCell;
+                bool chck =  Convert.ToBoolean(chkChecking.Value);
+
+                //If row chcecked and not new row
+                if ((!row.IsNewRow) && (chck == true))
+                {
+                    //Try to validate all fields
+                    try
+                    {
+                        Validation.SupplierNameValidation(row.Cells[this.SupplierColumnName].Value.ToString());
+                        Validation.ManufacturerNameValidation(row.Cells[this.ManufacturerColumnName].Value.ToString());
+                        Validation.ProductNameValidation(row.Cells[this.ProductColumnName].Value.ToString());
+                        Validation.ElzabProductNameValidation(row.Cells[this.ElzabProductColumnName].Value.ToString());
+                        Validation.MariginValueValidation(row.Cells[this.MariginColumnName].Value.ToString());
+                        Validation.PriceNetValueValidation(row.Cells[this.PriceNetColumnName].Value.ToString());
+                        Validation.TaxValueValidation(row.Cells[this.TaxColumnName].Value.ToString());
+                    }
+                    catch (Validation.ValidatingFailed ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+
+            }
+
+        }
+        #endregion
+
+        #region Advanced Data Grid View Events
+
+        //Event for advanced data grid view click
+        private void advancedDataGridView1_Click(object sender, EventArgs e)
+        {
+            //Cast an object to a know type
+            Zuby.ADGV.AdvancedDataGridView localSender = (Zuby.ADGV.AdvancedDataGridView)sender;
+            DataGridViewSelectedCellCollection cells = localSender.SelectedCells;
+            DataGridViewCell cell = cells[0];
+            int[] currenCellClik = new[] { cell.RowIndex, cell.ColumnIndex };
+
+            //Check if last clicked cell is the same as previous one
+            //If yest, start cell editing
+            if (currenCellClik[0] == this.LastCellCliked[0] && currenCellClik[1] == this.LastCellCliked[1])
+            {
+                localSender.BeginEdit(true);
+            }
+
+            //Save current cell selected, as last one
+            this.LastCellCliked = currenCellClik;
+        }
+
+        //Event for advanced data grid view double click
+        private void advancedDataGridView1_DoubleClick(object sender, EventArgs e)
+        {
+            //Cast an object to a know type
+            Zuby.ADGV.AdvancedDataGridView localSender = (Zuby.ADGV.AdvancedDataGridView)sender;
+
+            localSender.BeginEdit(true);
+        }
+
+        //Event for advanced data grid view cell value changed
         private void advancedDataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             //Cast to known object type
@@ -290,39 +388,6 @@ namespace NaturalnieApp.Forms
                 }
             }
         }
-
-        private void bUpdate_Click(object sender, EventArgs e)
-        {
-            if (this.LastExcelFilePath.Length > 0) ReadExcel(this.LastExcelFilePath);
-            else MessageBox.Show("Nie wybrano pliku wejściowego!");
-        }
-
-        private void bSave_Click(object sender, EventArgs e)
-        {
-
-            Product test = this.databaseCommands.CheckIfProductExist("22", "", "1");
-            ;
-
-            foreach (DataGridViewRow row in advancedDataGridView1.Rows)
-            {
-                if (!row.IsNewRow)
-                {
-                    try
-                    {
-                        Validation.ElzabProductNameValidation(row.Cells[this.ElzabProductColumnName].Value.ToString());
-                    }
-                    catch (Validation.ValidatingFailed ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
-
-            }
-            
-        }
+        #endregion
     }
 }

@@ -39,7 +39,6 @@ namespace NaturalnieApp.Forms
             this.bDeselectAll = new System.Windows.Forms.Button();
             this.bSelectAll = new System.Windows.Forms.Button();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
-            //this.advancedDataGridView1.Click += new Zuby.ADGV.(this.advancedDataGridView1_Click());
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -69,7 +68,7 @@ namespace NaturalnieApp.Forms
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(100, 50);
             this.bSave.TabIndex = 2;
-            this.bSave.Text = "Zapisz";
+            this.bSave.Text = "Zapisz do bazy danych";
             this.bSave.UseVisualStyleBackColor = false;
             this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
@@ -154,6 +153,8 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.Size = new System.Drawing.Size(1000, 475);
             this.advancedDataGridView1.TabIndex = 10;
             this.advancedDataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValueChanged);
+            this.advancedDataGridView1.Click += new System.EventHandler(this.advancedDataGridView1_Click);
+            this.advancedDataGridView1.DoubleClick += new System.EventHandler(this.advancedDataGridView1_DoubleClick);
             // 
             // AddNewProductFromExcel
             // 
