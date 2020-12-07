@@ -42,6 +42,7 @@ namespace NaturalnieApp.Forms
         public AddNewProductFromExcel(ref DatabaseCommands commandsObj)
         {
             InitializeComponent();
+
             this.ProductColumnName = "Nazwa towaru";
             this.ElzabProductColumnName = "Nazwa towaru w Elzab";
             this.FinalPriceColumnName = "Cena klienta";
@@ -51,6 +52,7 @@ namespace NaturalnieApp.Forms
             this.CheckBoxColumnName = "Zaznacz";
             this.SupplierColumnName = "Dostawca";
             this.ManufacturerColumnName = "Producent";
+
             this.LastExcelFilePath = "";
             this.databaseCommands = new DatabaseCommands();
 
@@ -141,6 +143,8 @@ namespace NaturalnieApp.Forms
             bDeselectAll.Visible = true;
             bSelectAll.Visible = true;
 
+            advancedDataGridView1.Columns[1].CellTemplate.ValueType = Type.GetType("Int");
+            ;
             //Autosize columns
             advancedDataGridView1.AutoResizeColumns();
 
@@ -264,7 +268,7 @@ namespace NaturalnieApp.Forms
                 {
                     MessageBox.Show("Wybrano plik o błędnym rozszerzeniu. Dostepne rozszerzenia to : '.xls', 'xlsx', 'xlsb'");
                 }
-                ;
+
             }
 
         }
@@ -387,6 +391,60 @@ namespace NaturalnieApp.Forms
                     localSender.Rows[cell.RowIndex].Cells[indexOfFinalPrice].Value = Calculations.FinalPrice(price, tax, marigin).ToString();
                 }
             }
+        }
+
+        //Event for parsing data
+        private void advancedDataGridView1_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
+        {
+            //Cast to known object type
+            Zuby.ADGV.AdvancedDataGridView localSender = (Zuby.ADGV.AdvancedDataGridView) sender;
+            DataGridViewSelectedCellCollection cells = localSender.SelectedCells;
+            if (cells.Count > 0)
+            {
+                foreach (DataGridViewCell cell in cells)
+                {
+                    int tempValue;
+                    bool parseResult;
+                    parseResult = int.TryParse(cell.Value.ToString(), out tempValue);
+
+
+                    if (!parseResult)
+                    {
+                        e.ParsingApplied = false;
+                        localSender.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value = 0;
+                        localSender.Rows[cell.RowIndex].Cells[cell.ColumnIndex]. = 0;
+                        ;
+                    }
+                }
+            }
+            ;
+
+        }
+
+        //Event for advanced data grid view double click
+        private void advancedDataGridView1_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //Cast to known object type
+            Zuby.ADGV.AdvancedDataGridView localSender = sender as Zuby.ADGV.AdvancedDataGridView;
+            DataGridViewSelectedCellCollection cells = localSender.SelectedCells;
+            if (cells.Count > 0)
+            {
+                foreach (DataGridViewCell cell in cells)
+                {
+                    int tempValue;
+                    bool parseResult;
+                    parseResult = int.TryParse(cell.Value.ToString(), out tempValue);
+
+
+                    if (!parseResult)
+                    {
+                        e.Cancel = true;
+                        ;
+                    }
+                }
+            }
+            ;
+
         }
         #endregion
     }

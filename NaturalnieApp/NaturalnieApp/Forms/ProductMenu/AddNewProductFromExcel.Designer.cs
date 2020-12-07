@@ -155,6 +155,7 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValueChanged);
             this.advancedDataGridView1.Click += new System.EventHandler(this.advancedDataGridView1_Click);
             this.advancedDataGridView1.DoubleClick += new System.EventHandler(this.advancedDataGridView1_DoubleClick);
+            this.advancedDataGridView1.CellParsing += new System.Windows.Forms.DataGridViewCellParsingEventHandler(this.advancedDataGridView1_CellParsing);
             // 
             // AddNewProductFromExcel
             // 
