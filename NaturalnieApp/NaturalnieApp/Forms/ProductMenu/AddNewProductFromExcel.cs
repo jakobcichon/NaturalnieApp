@@ -12,6 +12,7 @@ using NaturalnieApp.PdfToExcel;
 using SautinSoft;
 using System.Text.RegularExpressions;
 using NaturalnieApp.Database;
+using NaturalnieApp.Forms;
 
 namespace NaturalnieApp.Forms
 {
@@ -201,7 +202,7 @@ namespace NaturalnieApp.Forms
                     if (columnAttribute == ColumnsAttributes.Tax)
                     {
                         //If percentage sing exist, remove it
-                        singleElement = singleElement.Replace("%", "");
+                        singleElement = singleElement.Replace(" % ", "");
 
                         //Try parse to real value, and convert for decimal value
                         double temp = Convert.ToDouble(singleElement);
@@ -298,7 +299,33 @@ namespace NaturalnieApp.Forms
         private void bSave_Click(object sender, EventArgs e)
         {
 
-            //1. Validate all input and add it to the database
+            //1. Get list of all selected cells
+            //Get check box column name
+            string chckColumnName;
+            this.SupplierInvoice.DataTableSchema_WinForm.TryGetValue(ColumnsAttributes.CheckBox, out chckColumnName);
+
+            //Row collection
+            List<DataGridViewRow> rowCollectionToAdd = new List<DataGridViewRow>();
+
+            //Loop through all rows and add to the list only rows with check box set to true
+            foreach (DataGridViewRow row in advancedDataGridView1.Rows)
+            {
+                if (row.Cells[chckColumnName].Value != null)
+                {
+                    if ((bool)row.Cells[chckColumnName].Value == true)
+                    {
+                        rowCollectionToAdd.Add(row);
+                    }
+                }
+
+            }
+
+            //2.Get list of manufacturer, supplier and product name from db
+            List<string> manufaturerNameList = this.databaseCommands.GetManufacturersNameList();
+            List<string> supplierNameList = this.databaseCommands.GetSuppliersNameList();
+            List<string> productNameList = this.databaseCommands.GetProductsNameList();
+
+            ;
 
             foreach (DataGridViewRow row in advancedDataGridView1.Rows)
             {
@@ -407,63 +434,40 @@ namespace NaturalnieApp.Forms
             }
         }
 
-        //Event for parsing data
-        private void advancedDataGridView1_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
+        //Event for advanced data grid view double click
+        private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
+
             //Cast to known object type
-            Zuby.ADGV.AdvancedDataGridView localSender = (Zuby.ADGV.AdvancedDataGridView) sender;
+            Zuby.ADGV.AdvancedDataGridView localSender = (Zuby.ADGV.AdvancedDataGridView)sender;
             DataGridViewSelectedCellCollection cells = localSender.SelectedCells;
             if (cells.Count > 0)
             {
                 foreach (DataGridViewCell cell in cells)
                 {
-                    int tempValue;
-                    bool parseResult;
-                    parseResult = int.TryParse(cell.Value.ToString(), out tempValue);
-
-
-                    if (!parseResult)
+                    if (cell.IsInEditMode)
                     {
-                        e.ParsingApplied = false;
-                        localSender.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value = 0;
-                        ;
+                        try
+                        {
+                            //Get name of present cell column
+                            string nameOfPresentColumn = localSender.Columns[cell.ColumnIndex].Name;
+
+                            //Try to parse depending of column name
+                            Validation.GetValidationMethod(nameOfPresentColumn, e.FormattedValue.ToString(), this.SupplierInvoice);
+                        }
+                        catch (Validation.ValidatingFailed ex)
+                        {
+                            //Make an exception for empty cell value. It will be dobule checked before saving to database
+                            if (e.FormattedValue.ToString() != "")
+                            {
+                                e.Cancel = true;
+                                localSender.Rows[e.RowIndex].ErrorText = ex.Message;
+                            }
+                        }
                     }
                 }
+               
             }
-            ;
-
-        }
-
-        //Event for advanced data grid view double click
-        private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
-        {
-            //Cast to known object type
-            Zuby.ADGV.AdvancedDataGridView localSender = sender as Zuby.ADGV.AdvancedDataGridView;
-            DataGridViewSelectedCellCollection cells = localSender.SelectedCells;
-
-            //Try parse data
-            try
-            {
-                Regex reg = new Regex("^[0-9]*$");
-                bool test = reg.IsMatch(e.FormattedValue.ToString());
-                if ((e.ColumnIndex == 1) && !test)
-                {
-                    e.Cancel = true;
-                    localSender.Rows[e.RowIndex].ErrorText = "Zła wartość";
-
-                }
-                else
-                {
-
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-
-
 
         }
         //Event for advanced data grid view double click

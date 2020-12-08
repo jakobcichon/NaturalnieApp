@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using NaturalnieApp.PdfToExcel;
 
 namespace NaturalnieApp.Forms
 {
-    static class Validation
+    static public class Validation
     {
 
         //====================================================================================================
@@ -31,16 +32,58 @@ namespace NaturalnieApp.Forms
         }
         #endregion
 
+        //Method used to choose validation event depending on data column name
+        static public void GetValidationMethod(string columnName, string value, IExcel template)
+        {
+            //Local variables
+            bool retValue;
+
+            //Try to match colum name with dictionary
+            ColumnsAttributes attribute = template.DataTableSchema_WinForm.FirstOrDefault(e => e.Value == columnName).Key;
+            
+            switch (attribute)
+            {
+                case ColumnsAttributes.GeneralNumber:
+                    GeneralNumberValidation(value);
+                    break;
+                case ColumnsAttributes.SupplierName:
+                    SupplierNameValidation(value);
+                    break;
+                case ColumnsAttributes.ManufacturerName:
+                    ManufacturerNameValidation(value);
+                    break;
+                case ColumnsAttributes.ProductName:
+                    ProductNameValidation(value);
+                    break;
+                case ColumnsAttributes.ElzabProductName:
+                    ElzabProductNameValidation(value);
+                    break;
+                case ColumnsAttributes.PriceNet:
+                    PriceNetValueValidation(value);
+                    break;
+                case ColumnsAttributes.Marigin:
+                    MariginValueValidation(value);
+                    break;
+                case ColumnsAttributes.Tax:
+                    TaxValueValidation(value);
+                    break;
+                case ColumnsAttributes.FinalPrice:
+                    FinalPriceValueValidation(value);
+                    break;
+            }
+
+        }
+
         //Method used to validate of product name
         static public bool ProductNameValidation(string input)
         {
             //Local variables
             bool validatingResult;
-            string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+";
+            string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+'&";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^([a-zA-Z0-9]+\s)*[a-zA-Z0-9]+${1,255}";
-
+            string regPattern = @"^([a-zA-Z0-9'_+-]+\s)*[a-zA-Z0-9'_+-]+${1,255}";
+            
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
 
@@ -54,10 +97,10 @@ namespace NaturalnieApp.Forms
         {
             //Local variables
             bool validatingResult;
-            string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+";
+            string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+'&";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^([a-zA-Z0-9]+\s)*[a-zA-Z0-9]+${1,255}";
+            string regPattern = @"^([a-zA-Z0-9'_+-]+\s)*[a-zA-Z0-9'_+-]+${1,255}";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
@@ -75,7 +118,7 @@ namespace NaturalnieApp.Forms
             string text = "Nazwa producenta musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^([a-zA-Z0-9]+\s)*[a-zA-Z0-9]+${1,255}";
+            string regPattern = @"^([a-zA-Z0-9'_+-]+\s)*[a-zA-Z0-9'_+-]+${1,255}";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
@@ -93,7 +136,7 @@ namespace NaturalnieApp.Forms
             string text = "Nazwa dostawcy dla kasy Elzab musi mieć maksymalnie 34 znaki oraz może zawierać jedynie cyfry, litery i nastepujące znaki specjalne: _-+";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^([a-zA-Z0-9]+\s)*[a-zA-Z0-9]+${1,34}";
+            string regPattern = @"^([a-zA-Z0-9'_+-]+\s)*[a-zA-Z0-9'_+-]+${1,34}";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
@@ -157,6 +200,43 @@ namespace NaturalnieApp.Forms
 
             return validatingResult;
         }
+
+        //Method used to validate general number
+        static public bool GeneralNumberValidation(string input)
+        {
+            //Local variables
+            bool validatingResult;
+            string text = "Podana warość musi być liczbą całkowitą!";
+
+            //Accept only letters an numbers with maximal length of 255 chars
+            string regPattern = @"^[0-9]*$";
+
+            //Check if input match to define pattern
+            validatingResult = ValidateInput(input, regPattern);
+
+            if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
+
+            return validatingResult;
+        }
+
+        //Method used to validate final price
+        static public bool FinalPriceValueValidation(string input)
+        {
+            //Local variables
+            bool validatingResult;
+            string text = "Podana warość musi być liczbą rzeczywistą!";
+
+            //Accept only letters an numbers with maximal length of 255 chars
+            string regPattern = @"^[0-9]+(\.[0-9]+)?$";
+
+            //Check if input match to define pattern
+            validatingResult = ValidateInput(input, regPattern);
+
+            if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
+
+            return validatingResult;
+        }
+
         //Method used to validate input 
         static private bool ValidateInput(string textToValidate, string regExPatter)
         {
