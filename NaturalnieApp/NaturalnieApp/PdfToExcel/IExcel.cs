@@ -13,11 +13,13 @@ namespace NaturalnieApp.PdfToExcel
         string StartString { get; }
         //Until this string, data will be considered as the product entity data
         string EndString { get; }
+        //Number of expected columns in excel
+        int NumberOfColumns { get; }
+
         //Properties
         Properties _Properties { get; set; }
 
-        //List<string> DataTableSchema { get; }
-
-        Dictionary<string, ColumnsAttributes> DataTableSchema { get; }
+        Dictionary<ColumnsAttributes, string> DataTableSchema_Excel { get; }
+        Dictionary<ColumnsAttributes, string> DataTableSchema_WinForm { get; }
     }
 }

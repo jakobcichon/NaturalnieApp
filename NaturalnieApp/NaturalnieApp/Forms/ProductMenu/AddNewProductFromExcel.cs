@@ -31,6 +31,7 @@ namespace NaturalnieApp.Forms
         string SupplierColumnName { get; set; }
         string ManufacturerColumnName { get; set; }
         string LastExcelFilePath { get; set; }
+        AddProduct_General SupplierInvoice { get; set; }
 
 
         //Variable used to identify last cell clicked on advanced data grid view
@@ -43,15 +44,29 @@ namespace NaturalnieApp.Forms
         {
             InitializeComponent();
 
-            this.ProductColumnName = "Nazwa towaru";
-            this.ElzabProductColumnName = "Nazwa towaru w Elzab";
-            this.FinalPriceColumnName = "Cena klienta";
-            this.MariginColumnName = "Marża";
-            this.TaxColumnName = "VAT";
-            this.PriceNetColumnName = "Cena netto";
-            this.CheckBoxColumnName = "Zaznacz";
-            this.SupplierColumnName = "Dostawca";
-            this.ManufacturerColumnName = "Producent";
+            this.SupplierInvoice = new AddProduct_General();
+            
+            //Get data from excel schema
+            this.ProductColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.ProductName).Value;
+            this.TaxColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.Tax).Value;
+            this.PriceNetColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.PriceNet).Value;
+            this.SupplierColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.SupplierName).Value;
+            this.ManufacturerColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.ManufacturerName).Value;
+
+            //Get additiona data from Wiun Form schema
+            this.FinalPriceColumnName = this.SupplierInvoice.DataTableSchema_WinForm.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.FinalPrice).Value;
+            this.MariginColumnName = this.SupplierInvoice.DataTableSchema_WinForm.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.Marigin).Value;
+            this.CheckBoxColumnName = this.SupplierInvoice.DataTableSchema_WinForm.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.CheckBox).Value;
+            this.ElzabProductColumnName = this.SupplierInvoice.DataTableSchema_WinForm.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.ElzabProductName).Value;
 
             this.LastExcelFilePath = "";
             this.databaseCommands = new DatabaseCommands();
@@ -74,9 +89,8 @@ namespace NaturalnieApp.Forms
                 //Get excel data
                 List<DataTable> excelData = ExcelBase.GetAllDataFromExcel(filePath);
 
-                //Get proper template and get ents
-                AddProduct_General supplierInvoice = new AddProduct_General();
-                dataFromExcel = supplierInvoice.ExtractEntities(supplierInvoice, excelData);
+                //Get proper template and get ents                
+                dataFromExcel = this.SupplierInvoice.ExtractEntities(this.SupplierInvoice, excelData);
 
                 //Add additional columns
 
@@ -94,7 +108,7 @@ namespace NaturalnieApp.Forms
 
                 }
 
-                dataFromExcel = ClearString(dataFromExcel, supplierInvoice);
+                dataFromExcel = ClearString(dataFromExcel, this.SupplierInvoice);
 
                 //Set data source on grid view
                 advancedDataGridView1.DataSource = dataFromExcel;
@@ -173,7 +187,7 @@ namespace NaturalnieApp.Forms
 
                     //Get column attribute
                     ColumnsAttributes columnAttribute;
-                    template.DataTableSchema.TryGetValue(columnName, out columnAttribute);
+                    columnAttribute = template.DataTableSchema_Excel.FirstOrDefault(e => e.Value == columnName).Key;
 
                     //Some general operation on string, to clear it
                     singleElement = element.Trim();
@@ -184,7 +198,7 @@ namespace NaturalnieApp.Forms
 
                     //Sepcific string action depending on column attribute
                     //Percentage
-                    if (columnAttribute == ColumnsAttributes.Percentage)
+                    if (columnAttribute == ColumnsAttributes.Tax)
                     {
                         //If percentage sing exist, remove it
                         singleElement = singleElement.Replace("%", "");
@@ -200,7 +214,7 @@ namespace NaturalnieApp.Forms
                         singleElement = Convert.ToInt32(temp).ToString();
                     }
                     //Price
-                    if (columnAttribute == ColumnsAttributes.Price)
+                    if (columnAttribute == ColumnsAttributes.PriceNet)
                     {
                         //If percentage sing exist, remove it
                         singleElement = singleElement.Replace(",", ".");
@@ -412,7 +426,6 @@ namespace NaturalnieApp.Forms
                     {
                         e.ParsingApplied = false;
                         localSender.Rows[cell.RowIndex].Cells[cell.ColumnIndex].Value = 0;
-                        localSender.Rows[cell.RowIndex].Cells[cell.ColumnIndex]. = 0;
                         ;
                     }
                 }
@@ -422,30 +435,54 @@ namespace NaturalnieApp.Forms
         }
 
         //Event for advanced data grid view double click
-        private void advancedDataGridView1_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             //Cast to known object type
             Zuby.ADGV.AdvancedDataGridView localSender = sender as Zuby.ADGV.AdvancedDataGridView;
             DataGridViewSelectedCellCollection cells = localSender.SelectedCells;
-            if (cells.Count > 0)
+
+            //Try parse data
+            try
             {
-                foreach (DataGridViewCell cell in cells)
+                Regex reg = new Regex("^[0-9]*$");
+                bool test = reg.IsMatch(e.FormattedValue.ToString());
+                if ((e.ColumnIndex == 1) && !test)
                 {
-                    int tempValue;
-                    bool parseResult;
-                    parseResult = int.TryParse(cell.Value.ToString(), out tempValue);
+                    e.Cancel = true;
+                    localSender.Rows[e.RowIndex].ErrorText = "Zła wartość";
 
+                }
+                else
+                {
 
-                    if (!parseResult)
-                    {
-                        e.Cancel = true;
-                        ;
-                    }
                 }
             }
-            ;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+
+
+
+        }
+        //Event for advanced data grid view double click
+        private void advancedDataGridView1_CellValidated(object sender, DataGridViewCellEventArgs e)
+        {
+            //Cast to known object type
+            Zuby.ADGV.AdvancedDataGridView localSender = sender as Zuby.ADGV.AdvancedDataGridView;
+            DataGridViewSelectedCellCollection cells = localSender.SelectedCells;
+
+            //Clear error text after value validated properly
+            if (localSender.Rows[e.RowIndex].ErrorText != null) localSender.Rows[e.RowIndex].ErrorText = null;
+
+        }
+
+        private void advancedDataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
 
         }
         #endregion
+
     }
 }

@@ -28,14 +28,20 @@ namespace NaturalnieApp.PdfToExcel
     public enum ColumnsAttributes
     {
         Default,
-        Percentage,
-        Price,
-        GeneralText,
         GeneralNumber,
-        PrimaryName,
+        GeneralText,
+        GeneralPrice,
+        ProductName,
+        ElzabProductName,
+        SupplierName,
+        ManufacturerName,
+        PriceNet,
+        FinalPrice,
+        Tax,
+        Marigin,
         Barcode_EAN13,
-        Barcode_EAN8,
-
+        SupplierCode,
+        CheckBox
     }
 
     public class Properties
@@ -91,7 +97,7 @@ namespace NaturalnieApp.PdfToExcel
             List<DataRow> dataRowsFromFile = new List<DataRow>();
 
             //Initialize data table from template
-            foreach ( string columnName in template.DataTableSchema.Keys)
+            foreach ( string columnName in template.DataTableSchema_Excel.Values)
             {
                 //dataColumn.ColumnName = columnName;
                 //dataColumn.DataType = Type.GetType("System.String");
@@ -194,7 +200,7 @@ namespace NaturalnieApp.PdfToExcel
             List<DataRow> returnList = new List<DataRow>();
              
             //Check if number of columns from excel match schema
-            if (template.DataTableSchema.Values.Count == table.Columns.Count)
+            if (template.NumberOfColumns == table.Columns.Count)
             {
                 //Check if data in first column exist. If yes add it to list
                 foreach (DataRow row in table.Rows)
@@ -210,7 +216,7 @@ namespace NaturalnieApp.PdfToExcel
             else
             {
                 MessageBox.Show(string.Format("Błąd! Niezgodna liczba kolumn! Oczekiwane: {0}, Aktualne:{1}", 
-                    template.DataTableSchema.Values.Count, 
+                    template.DataTableSchema_Excel.Values.Count, 
                     table.Columns.Count));
             }
 
@@ -238,7 +244,7 @@ namespace NaturalnieApp.PdfToExcel
 
                 //Create command for create columns
                 string columnNames = "";
-                foreach (string element in template.DataTableSchema.Keys)
+                foreach (string element in template.DataTableSchema_Excel.Values)
                 {
                     columnNames += "[" + element + "]" + " string, ";
                 }

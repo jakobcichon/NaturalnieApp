@@ -16,7 +16,8 @@ namespace NaturalnieApp.PdfToExcel
         public int NumberOfColumns { get; }
         public string[] PrimaryKeys { get; }
 
-        public Dictionary<string, ColumnsAttributes> DataTableSchema { get; }
+        public Dictionary<ColumnsAttributes, string> DataTableSchema_Excel { get; }
+        public Dictionary<ColumnsAttributes, string> DataTableSchema_WinForm { get; }
 
         public AddProduct_General()
         {
@@ -24,24 +25,35 @@ namespace NaturalnieApp.PdfToExcel
             this._Properties.StartStringDefineColumnNames = true;
             this._Properties.LastEntity = Properties.LastEntityMark.RowWithLastNumericValueInFirstColumn;
             this._Properties.NumberOfRowByEntity = 2;
-            this.StartString = "Lp";
-            this.EndString = "Forma płatności";
-            this.NumberOfColumns = 9;
-            this.PrimaryKeys = new string[2] { "Kod kreskowy", "Kod dostawcy" };
+            this.NumberOfColumns = 8;
 
 
             //Barcode and supplier code can be used alternately, but use one of it is mandatory
-            this.DataTableSchema = new Dictionary<string, ColumnsAttributes>
+            this.DataTableSchema_Excel = new Dictionary<ColumnsAttributes, string>
             {
-                {"Lp.", ColumnsAttributes.GeneralNumber},
-                {"Dostawca", ColumnsAttributes.GeneralText},
-                {"Producent", ColumnsAttributes.GeneralText},
-                {"Nazwa towaru", ColumnsAttributes.PrimaryName},
-                {"Kod kreskowy", ColumnsAttributes.Barcode_EAN13},
-                {"Kod dostawcy", ColumnsAttributes.GeneralNumber},
-                {"Cena netto", ColumnsAttributes.Price},
-                {"VAT", ColumnsAttributes.Percentage}
-
+                {ColumnsAttributes.GeneralNumber, "Lp."},
+                {ColumnsAttributes.SupplierName, "Dostawca"},
+                {ColumnsAttributes.ManufacturerName, "Producent"},
+                {ColumnsAttributes.ProductName, "Nazwa towaru"},
+                {ColumnsAttributes.Barcode_EAN13, "Kod kreskowy"},
+                {ColumnsAttributes.SupplierCode, "Kod dostawcy"},
+                {ColumnsAttributes.PriceNet, "Cena netto"},
+                {ColumnsAttributes.Tax, "VAT"},
+            };
+            this.DataTableSchema_WinForm = new Dictionary<ColumnsAttributes, string>
+            {
+                {ColumnsAttributes.GeneralNumber, "Lp."},
+                {ColumnsAttributes.SupplierName, "Dostawca"},
+                {ColumnsAttributes.ManufacturerName, "Producent"},
+                {ColumnsAttributes.ProductName, "Nazwa towaru"},
+                {ColumnsAttributes.ElzabProductName, "Nazwa towaru Elzab"},
+                {ColumnsAttributes.Barcode_EAN13, "Kod kreskowy"},
+                {ColumnsAttributes.SupplierCode, "Kod dostawcy"},
+                {ColumnsAttributes.PriceNet, "Cena netto"},
+                {ColumnsAttributes.FinalPrice, "Cena klienta" },
+                {ColumnsAttributes.Tax, "VAT"},
+                {ColumnsAttributes.Marigin, "Marża"},
+                {ColumnsAttributes.CheckBox, "Zaznacz"}
             };
 
         }
