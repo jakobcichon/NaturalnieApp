@@ -171,6 +171,40 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB barcode list
+        //====================================================================================================
+        public List<string> GetBarcodeList()
+        {
+            List<string> barcodeList = new List<string>();
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                foreach (var product in contextDB.Products)
+                {
+                    barcodeList.Add(product.BarCode);
+                }
+            }
+            return barcodeList;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB supplier code list
+        //====================================================================================================
+        public List<string> GetSupplierCodeList()
+        {
+            List<string> supplierCodeList = new List<string>();
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                foreach (var product in contextDB.Products)
+                {
+                    supplierCodeList.Add(product.SupplierCode);
+                }
+            }
+            return supplierCodeList;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB tax list
         //====================================================================================================
         public List<string> GetTaxListRetString()

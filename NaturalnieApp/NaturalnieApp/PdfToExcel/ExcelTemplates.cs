@@ -31,7 +31,7 @@ namespace NaturalnieApp.PdfToExcel
             //Barcode and supplier code can be used alternately, but use one of it is mandatory
             this.DataTableSchema_Excel = new Dictionary<ColumnsAttributes, string>
             {
-                {ColumnsAttributes.GeneralNumber, "Lp."},
+                {ColumnsAttributes.IndexColumnName, "Lp."},
                 {ColumnsAttributes.SupplierName, "Dostawca"},
                 {ColumnsAttributes.ManufacturerName, "Producent"},
                 {ColumnsAttributes.ProductName, "Nazwa towaru"},
@@ -42,7 +42,7 @@ namespace NaturalnieApp.PdfToExcel
             };
             this.DataTableSchema_WinForm = new Dictionary<ColumnsAttributes, string>
             {
-                {ColumnsAttributes.GeneralNumber, "Lp."},
+                {ColumnsAttributes.IndexColumnName, "Lp."},
                 {ColumnsAttributes.SupplierName, "Dostawca"},
                 {ColumnsAttributes.ManufacturerName, "Producent"},
                 {ColumnsAttributes.ProductName, "Nazwa towaru"},

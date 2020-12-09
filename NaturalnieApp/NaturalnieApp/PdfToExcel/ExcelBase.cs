@@ -41,7 +41,8 @@ namespace NaturalnieApp.PdfToExcel
         Marigin,
         Barcode_EAN13,
         SupplierCode,
-        CheckBox
+        CheckBox,
+        IndexColumnName,
     }
 
     public class Properties
@@ -97,7 +98,7 @@ namespace NaturalnieApp.PdfToExcel
             List<DataRow> dataRowsFromFile = new List<DataRow>();
 
             //Initialize data table from template
-            foreach ( string columnName in template.DataTableSchema_Excel.Values)
+            foreach (string columnName in template.DataTableSchema_Excel.Values)
             {
                 //dataColumn.ColumnName = columnName;
                 //dataColumn.DataType = Type.GetType("System.String");

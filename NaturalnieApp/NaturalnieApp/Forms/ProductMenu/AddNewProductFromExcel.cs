@@ -22,6 +22,7 @@ namespace NaturalnieApp.Forms
         #region Object fields
         //Set the instance fields
         DatabaseCommands databaseCommands;
+
         string ProductColumnName { get; set; }
         string ElzabProductColumnName { get; set; }
         string FinalPriceColumnName { get; set; }
@@ -31,6 +32,8 @@ namespace NaturalnieApp.Forms
         string CheckBoxColumnName { get; set; }
         string SupplierColumnName { get; set; }
         string ManufacturerColumnName { get; set; }
+        string IndexColumnName { get; set; }
+
         string LastExcelFilePath { get; set; }
         AddProduct_General SupplierInvoice { get; set; }
 
@@ -68,6 +71,8 @@ namespace NaturalnieApp.Forms
                 e => e.Key == ColumnsAttributes.CheckBox).Value;
             this.ElzabProductColumnName = this.SupplierInvoice.DataTableSchema_WinForm.FirstOrDefault(
                 e => e.Key == ColumnsAttributes.ElzabProductName).Value;
+            this.IndexColumnName = this.SupplierInvoice.DataTableSchema_WinForm.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.IndexColumnName).Value;
 
             this.LastExcelFilePath = "";
             this.databaseCommands = new DatabaseCommands();
@@ -299,10 +304,14 @@ namespace NaturalnieApp.Forms
         private void bSave_Click(object sender, EventArgs e)
         {
 
+            //Local variables
+            bool validated = false;
+
             //1. Get list of all selected cells
             //Get check box column name
             string chckColumnName;
             this.SupplierInvoice.DataTableSchema_WinForm.TryGetValue(ColumnsAttributes.CheckBox, out chckColumnName);
+
 
             //Row collection
             List<DataGridViewRow> rowCollectionToAdd = new List<DataGridViewRow>();
@@ -320,14 +329,8 @@ namespace NaturalnieApp.Forms
 
             }
 
-            //2.Get list of manufacturer, supplier and product name from db
-            List<string> manufaturerNameList = this.databaseCommands.GetManufacturersNameList();
-            List<string> supplierNameList = this.databaseCommands.GetSuppliersNameList();
-            List<string> productNameList = this.databaseCommands.GetProductsNameList();
-
-            ;
-
-            foreach (DataGridViewRow row in advancedDataGridView1.Rows)
+            //2. Validate all selected rows
+            foreach (DataGridViewRow row in rowCollectionToAdd)
             {
                 //Get only checked rows
                 DataGridViewCheckBoxCell chkChecking = row.Cells[this.CheckBoxColumnName] as DataGridViewCheckBoxCell;
@@ -339,6 +342,7 @@ namespace NaturalnieApp.Forms
                     //Try to validate all fields
                     try
                     {
+                        //Validate every entry 
                         Validation.SupplierNameValidation(row.Cells[this.SupplierColumnName].Value.ToString());
                         Validation.ManufacturerNameValidation(row.Cells[this.ManufacturerColumnName].Value.ToString());
                         Validation.ProductNameValidation(row.Cells[this.ProductColumnName].Value.ToString());
@@ -346,20 +350,116 @@ namespace NaturalnieApp.Forms
                         Validation.MariginValueValidation(row.Cells[this.MariginColumnName].Value.ToString());
                         Validation.PriceNetValueValidation(row.Cells[this.PriceNetColumnName].Value.ToString());
                         Validation.TaxValueValidation(row.Cells[this.TaxColumnName].Value.ToString());
+
+                        //Set validated bit
+                        validated = true;
                     }
                     catch (Validation.ValidatingFailed ex)
                     {
-                        MessageBox.Show(ex.Message);
+                        //Show message and exit
+                        MessageBox.Show(ex.Message + " Numer Lp: " + row.Cells[this.IndexColumnName].Value.ToString()) ;
+                        validated = false;
+                        break;
                     }
                     catch (Exception ex)
                     {
+                        //Show message and exit
                         MessageBox.Show(ex.Message);
+                        validated = false;
+                        break;
                     }
+
                 }
 
             }
 
+            //If validated property, go to the next steps
+            if (validated)
+            {
+                //3. Get list of manufacturer, supplier and product name from db
+                List<string> manufaturerNameList = this.databaseCommands.GetManufacturersNameList();
+                List<string> supplierNameList = this.databaseCommands.GetSuppliersNameList();
+                List<string> productNameList = this.databaseCommands.GetProductsNameList();
+                List<string> supplierCodeList = this.databaseCommands.GetSupplierCodeList();
+                List<string> barcodeList = this.databaseCommands.GetBarcodeList();
+
+                //4. Check if supplier and manufaturer already exist in database
+                foreach (DataGridViewRow row in rowCollectionToAdd)
+                {
+                    //Set local variable
+                    string rowSupplierValue = row.Cells[this.SupplierColumnName].Value.ToString();
+
+                    //Check if supplier exist in database
+                    Regex regEx = new Regex(rowSupplierValue, RegexOptions.IgnoreCase);
+                    foreach (string element in supplierNameList)
+                    {
+                        bool match = regEx.IsMatch(element);
+                        if (!match)
+                        {
+                            DialogResult dialogResult = MessageBox.Show("Dostawca o nazwie '" + rowSupplierValue +
+                                "' nie istnieje w bazie danych. Czy chesz dodać?", "Brak pozycji w bazie" 
+                                ,MessageBoxButtons.YesNo);
+                            if (dialogResult == DialogResult.Yes)
+                            {
+                                ;
+                            }
+                            else if (dialogResult == DialogResult.No)
+                            {
+                                MessageBox.Show("Anulowano zapis do bazy danych!");
+                                break;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Bład! Anulowano zapis do bazy danych!");
+                                break;
+                            }
+
+                            break;
+                        }
+                            ;
+                    }
+                    ;
+                }
+            }
+
         }
+
+        public bool VerifyIfStringExistInList(string valueToBeVerified, List<string> verificationList)
+        {
+            //Set local variable
+            string rowSupplierValue = row.Cells[this.SupplierColumnName].Value.ToString();
+
+            //Check if supplier exist in database
+            Regex regEx = new Regex(rowSupplierValue, RegexOptions.IgnoreCase);
+            foreach (string element in supplierNameList)
+            {
+                bool match = regEx.IsMatch(element);
+                if (!match)
+                {
+                    DialogResult dialogResult = MessageBox.Show("Dostawca o nazwie '" + rowSupplierValue +
+                        "' nie istnieje w bazie danych. Czy chesz dodać?", "Brak pozycji w bazie"
+                        , MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        ;
+                    }
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        MessageBox.Show("Anulowano zapis do bazy danych!");
+                        break;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Bład! Anulowano zapis do bazy danych!");
+                        break;
+                    }
+
+                    break;
+                }
+                    
+            }
+        }
+    }
         #endregion
 
         #region Advanced Data Grid View Events
