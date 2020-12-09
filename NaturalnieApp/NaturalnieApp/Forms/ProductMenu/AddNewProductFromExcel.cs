@@ -32,6 +32,8 @@ namespace NaturalnieApp.Forms
         string CheckBoxColumnName { get; set; }
         string SupplierColumnName { get; set; }
         string ManufacturerColumnName { get; set; }
+        string BarcodeColumnName { get; set; }
+        string SupplierCodeColumnName { get; set; }
         string IndexColumnName { get; set; }
 
         string LastExcelFilePath { get; set; }
@@ -61,6 +63,10 @@ namespace NaturalnieApp.Forms
                 e => e.Key == ColumnsAttributes.SupplierName).Value;
             this.ManufacturerColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
                 e => e.Key == ColumnsAttributes.ManufacturerName).Value;
+            this.BarcodeColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.Barcode_EAN13).Value;
+            this.SupplierCodeColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.SupplierCode).Value;
 
             //Get additiona data from Wiun Form schema
             this.FinalPriceColumnName = this.SupplierInvoice.DataTableSchema_WinForm.FirstOrDefault(
@@ -376,90 +382,115 @@ namespace NaturalnieApp.Forms
             //If validated property, go to the next steps
             if (validated)
             {
-                //3. Get list of manufacturer, supplier and product name from db
-                List<string> manufaturerNameList = this.databaseCommands.GetManufacturersNameList();
-                List<string> supplierNameList = this.databaseCommands.GetSuppliersNameList();
-                List<string> productNameList = this.databaseCommands.GetProductsNameList();
-                List<string> supplierCodeList = this.databaseCommands.GetSupplierCodeList();
-                List<string> barcodeList = this.databaseCommands.GetBarcodeList();
-
-                //4. Check if supplier and manufaturer already exist in database
+                
                 foreach (DataGridViewRow row in rowCollectionToAdd)
                 {
+
+                    //***********************************************************************************************************
+                    #region 4. Check if supplier and manufaturer already exist in database
+                    //Variables used to  pass if manufacturer and supplier exist
+                    bool supplierExist = false;
+                    bool manufacturerExist = false;
+
                     //Set local variable
-                    string rowSupplierValue = row.Cells[this.SupplierColumnName].Value.ToString();
+                    string rowSupplierNameValue = row.Cells[this.SupplierColumnName].Value.ToString();
+                    string rowManufacturerNameValue = row.Cells[this.ManufacturerColumnName].Value.ToString();
 
-                    //Check if supplier exist in database
-                    Regex regEx = new Regex(rowSupplierValue, RegexOptions.IgnoreCase);
-                    foreach (string element in supplierNameList)
+                    //Get from database if already exist
+                    bool supplierNameExist = this.databaseCommands.CheckIfSupplierNameExist(rowSupplierNameValue);
+                    bool manufaturerNameExist = this.databaseCommands.CheckIfManufacturerNameExist(rowManufacturerNameValue);
+
+                    if (!supplierNameExist)
                     {
-                        bool match = regEx.IsMatch(element);
-                        if (!match)
+                        DialogResult dialogResult = MessageBox.Show("Dostawca o nazwie '" + rowSupplierNameValue +
+                            "' nie istnieje w bazie danych. Czy chesz dodać?", "Brak pozycji w bazie"
+                            , MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.Yes)
                         {
-                            DialogResult dialogResult = MessageBox.Show("Dostawca o nazwie '" + rowSupplierValue +
-                                "' nie istnieje w bazie danych. Czy chesz dodać?", "Brak pozycji w bazie" 
-                                ,MessageBoxButtons.YesNo);
-                            if (dialogResult == DialogResult.Yes)
+                            try
                             {
-                                ;
+                                Supplier supplier = new Supplier();
+                                Validation.SupplierNameValidation(rowSupplierNameValue);
+                                supplier.Name = rowSupplierNameValue;
+                                this.databaseCommands.AddSupplier(supplier);
+                                supplierExist = true;
+                                MessageBox.Show("Dostawca '" + rowSupplierNameValue +"' został dodany do bazy danych!");
                             }
-                            else if (dialogResult == DialogResult.No)
+                            catch (Exception ex)
                             {
-                                MessageBox.Show("Anulowano zapis do bazy danych!");
-                                break;
+                                MessageBox.Show(ex.Message);
                             }
-                            else
-                            {
-                                MessageBox.Show("Bład! Anulowano zapis do bazy danych!");
-                                break;
-                            }
-
-                            break;
                         }
-                            ;
+                        else if (dialogResult == DialogResult.No) MessageBox.Show("Anulowano zapis do bazy danych!");
+                        else MessageBox.Show("Bład! Anulowano zapis do bazy danych!");
                     }
-                    ;
+                    //Check if amnufacterer exist in DB
+                    if (!manufaturerNameExist)
+                    {
+                        DialogResult dialogResult = MessageBox.Show("Producent o nazwie '" + rowManufacturerNameValue +
+                            "' nie istnieje w bazie danych. Czy chesz dodać?", "Brak pozycji w bazie"
+                            , MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            try
+                            {
+                                Manufacturer manufacturer = new Manufacturer();
+                                Validation.ManufacturerNameValidation(rowManufacturerNameValue);
+                                manufacturer.Name = rowManufacturerNameValue;
+                                this.databaseCommands.AddManufacturer(manufacturer);
+                                manufacturerExist = true;
+                                MessageBox.Show("Producent '" + rowManufacturerNameValue + "' został dodany do bazy danych!");
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
+                        }
+                        else if (dialogResult == DialogResult.No) MessageBox.Show("Anulowano zapis do bazy danych!");
+                        else MessageBox.Show("Bład! Anulowano zapis do bazy danych!");
+                    }
+                    #endregion
+
+                    //***********************************************************************************************************
+                    #region 5. Check if product name, barcode and supplier code does not exist in DB
+                    if (supplierExist && manufacturerExist)
+                    {
+                        //Set local variable
+                        string rowProductNameValue = row.Cells[this.ProductColumnName].Value.ToString();
+                        string rowBarcodeValue = row.Cells[this.BarcodeColumnName].Value.ToString();
+                        string rowSupplierCodeValue = row.Cells[this.SupplierCodeColumnName].Value.ToString();
+
+
+                        //If product name, barcode and supplier are unique, add it to DB
+                        
+                        try
+                        {
+                            //Get from database if already exist
+                            bool productNameExist = this.databaseCommands.CheckIfProductNameExist(rowProductNameValue);
+                            bool barcodeExist = this.databaseCommands.CheckIfBarcodeExist(rowBarcodeValue);
+                            bool supplierCodeExist = this.databaseCommands.CheckIfSupplierNameExist(rowSupplierCodeValue);
+
+                            if (!productNameExist && !barcodeExist && !supplierCodeExist)
+                            {
+                                Product product = new Product();
+                                product.SupplierId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
+                                product.ElzabProductId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                    }
+                    #endregion
+
                 }
+
             }
 
         }
-
-        public bool VerifyIfStringExistInList(string valueToBeVerified, List<string> verificationList)
-        {
-            //Set local variable
-            string rowSupplierValue = row.Cells[this.SupplierColumnName].Value.ToString();
-
-            //Check if supplier exist in database
-            Regex regEx = new Regex(rowSupplierValue, RegexOptions.IgnoreCase);
-            foreach (string element in supplierNameList)
-            {
-                bool match = regEx.IsMatch(element);
-                if (!match)
-                {
-                    DialogResult dialogResult = MessageBox.Show("Dostawca o nazwie '" + rowSupplierValue +
-                        "' nie istnieje w bazie danych. Czy chesz dodać?", "Brak pozycji w bazie"
-                        , MessageBoxButtons.YesNo);
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        ;
-                    }
-                    else if (dialogResult == DialogResult.No)
-                    {
-                        MessageBox.Show("Anulowano zapis do bazy danych!");
-                        break;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Bład! Anulowano zapis do bazy danych!");
-                        break;
-                    }
-
-                    break;
-                }
-                    
-            }
-        }
-    }
+    
         #endregion
 
         #region Advanced Data Grid View Events

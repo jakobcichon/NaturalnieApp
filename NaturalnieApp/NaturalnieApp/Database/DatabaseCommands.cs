@@ -92,6 +92,27 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to check if in DB specified Product name exist
+        //====================================================================================================
+        public bool CheckIfProductNameExist(string productName)
+        {
+            bool result = false;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from p in contextDB.Products
+                            where p.ProductName == productName
+                            select p;
+
+                if (query.FirstOrDefault() != null) result = true;
+                else result = false;
+
+            }
+
+            return result;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB product name list, fitered by a specific manufacturer
         //====================================================================================================
         public List<string> GetProductsNameListByManufacturer(string manufacturerName)
@@ -140,17 +161,38 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         public List<string> GetManufacturersNameList()
         {
-            List<string> productList = new List<string>();
+            List<string> manufacturersList = new List<string>();
 
             using (ShopContext contextDB = new ShopContext())
             {
                 foreach (var Manufacturer in contextDB.Manufacturers)
                 {
-                    productList.Add(Manufacturer.Name);
+                    manufacturersList.Add(Manufacturer.Name);
                 }
             }
 
-            return productList;
+            return manufacturersList;
+        }
+
+        //====================================================================================================
+        //Method used to check  if in DB specified Manufacturer Name exist
+        //====================================================================================================
+        public bool CheckIfManufacturerNameExist(string manufacturerName)
+        {
+            bool result = false;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from m in contextDB.Manufacturers
+                            where m.Name == manufacturerName
+                            select m;
+
+                if (query.FirstOrDefault() != null) result = true;
+                else result = false;
+
+            }
+
+            return result;
         }
 
         //====================================================================================================
@@ -188,6 +230,27 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to check if in DB specified Barcode exist
+        //====================================================================================================
+        public bool CheckIfBarcodeExist(string barcode)
+        {
+            bool result = false;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from p in contextDB.Products
+                            where p.BarCode == barcode
+                            select p;
+
+                if (query.FirstOrDefault() != null) result = true;
+                else result = false;
+
+            }
+
+            return result;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB supplier code list
         //====================================================================================================
         public List<string> GetSupplierCodeList()
@@ -202,6 +265,48 @@ namespace NaturalnieApp.Database
                 }
             }
             return supplierCodeList;
+        }
+
+        //====================================================================================================
+        //Method used to check if in DB specified supplier Code exist
+        //====================================================================================================
+        public bool CheckIfSupplierCodeExist(string supplierCode)
+        {
+            bool result = false;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from p in contextDB.Products
+                            where p.SupplierCode == supplierCode
+                            select p;
+
+                if (query.FirstOrDefault() != null) result = true;
+                else result = false;
+
+            }
+
+            return result;
+        }
+
+        //====================================================================================================
+        //Method used to check if in DB specified Supplier name exist
+        //====================================================================================================
+        public bool CheckIfSupplierNameExist(string supplierName)
+        {
+            bool result = false;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from s in contextDB.Suppliers
+                            where s.Name == supplierName
+                            select s;
+
+                if (query.FirstOrDefault() != null) result = true;
+                else result = false;
+
+            }
+
+            return result;
         }
 
         //====================================================================================================
@@ -413,6 +518,20 @@ namespace NaturalnieApp.Database
             {
                 contextDB.Suppliers.Add(supplier);
                 int retVal = contextDB.SaveChanges();
+
+            }
+        }
+
+        //====================================================================================================
+        //Method used to add new manufacturer
+        //====================================================================================================
+        public void AddManufacturer(Manufacturer manufacturer)
+        {
+            using (ShopContext contextDB = new ShopContext())
+            {
+                contextDB.Manufacturers.Add(manufacturer);
+                int retVal = contextDB.SaveChanges();
+
             }
         }
 

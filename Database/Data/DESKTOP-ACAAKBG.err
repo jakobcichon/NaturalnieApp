@@ -165,3 +165,17 @@
 2020-12-08T22:05:43.765195Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
 2020-12-08T22:05:43.766259Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
 2020-12-08T22:05:43.829475Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2020-12-09T20:05:36.306260Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2020-12-09T20:05:36.307826Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 3600
+2020-12-09T20:05:36.341097Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2020-12-09T20:05:37.837415Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2020-12-09T20:05:38.053531Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2020-12-09T20:05:38.121087Z 0 [System] [MY-010229] [Server] Starting XA crash recovery...
+2020-12-09T20:05:38.134614Z 0 [System] [MY-010232] [Server] XA crash recovery finished.
+2020-12-09T20:05:38.281356Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2020-12-09T20:05:38.283157Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2020-12-09T20:05:38.406328Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2020-12-09T21:34:35.986778Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2020-12-09T21:34:38.002272Z 0 [Warning] [MY-010909] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Forcing close of thread 18  user: 'root'.
+2020-12-09T21:34:38.005547Z 0 [Warning] [MY-010909] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Forcing close of thread 19  user: 'root'.
+2020-12-09T21:34:38.914324Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
