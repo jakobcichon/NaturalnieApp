@@ -70,6 +70,9 @@ namespace NaturalnieApp.Forms
                 case ColumnsAttributes.FinalPrice:
                     FinalPriceValueValidation(value);
                     break;
+                case ColumnsAttributes.Barcode_EAN13:
+                    BarcodeEan13Validation(value);
+                    break;
             }
 
         }
@@ -210,6 +213,24 @@ namespace NaturalnieApp.Forms
 
             //Accept only letters an numbers with maximal length of 255 chars
             string regPattern = @"^[0-9]*$";
+
+            //Check if input match to define pattern
+            validatingResult = ValidateInput(input, regPattern);
+
+            if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
+
+            return validatingResult;
+        }
+
+        //Method used to validate barcode EAN13
+        static public bool BarcodeEan13Validation(string input)
+        {
+            //Local variables
+            bool validatingResult;
+            string text = "Kod kreskowy musi składać się wyłacznie z 13 liczb!";
+
+            //Accept only letters an numbers with maximal length of 255 chars
+            string regPattern = @"^[0-9]{13}$";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);

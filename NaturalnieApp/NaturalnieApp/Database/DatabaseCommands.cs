@@ -75,6 +75,33 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used calculate Product number in Elzab
+        //Formula was specified as ManufacturerId * 100 (taken first empty value)
+        //That means, DB can consist maximum 100 product of one manufaturer
+        //====================================================================================================
+        public List<string> CalculateFreeElzabIdForGivenManufacturer(string manufacturerName)
+        {
+            Manufacturer manufaturer;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from m in contextDB.Manufacturers
+                            where m.Name == manufacturerName
+                            select m;
+
+                //Get manufaturer ID
+                manufaturer = query.FirstOrDefault();
+
+                //Calculate firs Id for given manufacturer area
+                int calculation = manufaturer.Id * 100;
+
+                //Calculate first free ElzabID for this manufaturer area
+            }
+            return productList;
+        }
+
+
+        //====================================================================================================
         //Method used to retrieve from DB product name list
         //====================================================================================================
         public List<string> GetProductsNameList()

@@ -356,6 +356,7 @@ namespace NaturalnieApp.Forms
                         Validation.MariginValueValidation(row.Cells[this.MariginColumnName].Value.ToString());
                         Validation.PriceNetValueValidation(row.Cells[this.PriceNetColumnName].Value.ToString());
                         Validation.TaxValueValidation(row.Cells[this.TaxColumnName].Value.ToString());
+                        Validation.BarcodeEan13Validation(row.Cells[this.BarcodeColumnName].Value.ToString());
 
                         //Set validated bit
                         validated = true;
@@ -382,15 +383,16 @@ namespace NaturalnieApp.Forms
             //If validated property, go to the next steps
             if (validated)
             {
-                
+                //Local variable used to show if all data was saved successfully
+                int savedSuccessfully = -1;
+
+                //Loop through all rows and add it to DB if possible
                 foreach (DataGridViewRow row in rowCollectionToAdd)
                 {
 
                     //***********************************************************************************************************
                     #region 4. Check if supplier and manufaturer already exist in database
                     //Variables used to  pass if manufacturer and supplier exist
-                    bool supplierExist = false;
-                    bool manufacturerExist = false;
 
                     //Set local variable
                     string rowSupplierNameValue = row.Cells[this.SupplierColumnName].Value.ToString();
@@ -398,7 +400,7 @@ namespace NaturalnieApp.Forms
 
                     //Get from database if already exist
                     bool supplierNameExist = this.databaseCommands.CheckIfSupplierNameExist(rowSupplierNameValue);
-                    bool manufaturerNameExist = this.databaseCommands.CheckIfManufacturerNameExist(rowManufacturerNameValue);
+                    bool manufacturerNameExist = this.databaseCommands.CheckIfManufacturerNameExist(rowManufacturerNameValue);
 
                     if (!supplierNameExist)
                     {
@@ -413,7 +415,7 @@ namespace NaturalnieApp.Forms
                                 Validation.SupplierNameValidation(rowSupplierNameValue);
                                 supplier.Name = rowSupplierNameValue;
                                 this.databaseCommands.AddSupplier(supplier);
-                                supplierExist = true;
+                                supplierNameExist = this.databaseCommands.CheckIfSupplierNameExist(rowSupplierNameValue);
                                 MessageBox.Show("Dostawca '" + rowSupplierNameValue +"' został dodany do bazy danych!");
                             }
                             catch (Exception ex)
@@ -425,7 +427,7 @@ namespace NaturalnieApp.Forms
                         else MessageBox.Show("Bład! Anulowano zapis do bazy danych!");
                     }
                     //Check if amnufacterer exist in DB
-                    if (!manufaturerNameExist)
+                    if (!manufacturerNameExist)
                     {
                         DialogResult dialogResult = MessageBox.Show("Producent o nazwie '" + rowManufacturerNameValue +
                             "' nie istnieje w bazie danych. Czy chesz dodać?", "Brak pozycji w bazie"
@@ -438,7 +440,7 @@ namespace NaturalnieApp.Forms
                                 Validation.ManufacturerNameValidation(rowManufacturerNameValue);
                                 manufacturer.Name = rowManufacturerNameValue;
                                 this.databaseCommands.AddManufacturer(manufacturer);
-                                manufacturerExist = true;
+                                manufacturerNameExist = this.databaseCommands.CheckIfManufacturerNameExist(rowManufacturerNameValue);
                                 MessageBox.Show("Producent '" + rowManufacturerNameValue + "' został dodany do bazy danych!");
                             }
                             catch (Exception ex)
@@ -453,16 +455,19 @@ namespace NaturalnieApp.Forms
 
                     //***********************************************************************************************************
                     #region 5. Check if product name, barcode and supplier code does not exist in DB
-                    if (supplierExist && manufacturerExist)
+
+                    if (supplierNameExist && manufacturerNameExist)
                     {
                         //Set local variable
                         string rowProductNameValue = row.Cells[this.ProductColumnName].Value.ToString();
+                        float rowPriceNetValue = float.Parse(row.Cells[this.PriceNetColumnName].Value.ToString());
+                        int rowTaxValue = Convert.ToInt32(row.Cells[this.TaxColumnName].Value.ToString());
+                        float rowMariginValue = float.Parse(row.Cells[this.MariginColumnName].Value.ToString());
                         string rowBarcodeValue = row.Cells[this.BarcodeColumnName].Value.ToString();
                         string rowSupplierCodeValue = row.Cells[this.SupplierCodeColumnName].Value.ToString();
 
 
                         //If product name, barcode and supplier are unique, add it to DB
-                        
                         try
                         {
                             //Get from database if already exist
@@ -472,20 +477,81 @@ namespace NaturalnieApp.Forms
 
                             if (!productNameExist && !barcodeExist && !supplierCodeExist)
                             {
+                                //Write all data to the Product object
                                 Product product = new Product();
                                 product.SupplierId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
-                                product.ElzabProductId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
+                                product.ElzabProductId = 111;
+                                product.ManufacturerId = this.databaseCommands.GetManufacturerIdByName(rowManufacturerNameValue);
+                                product.ProductName = rowProductNameValue;
+                                product.PriceNet = rowPriceNetValue;
+                                product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
+                                product.Marigin = rowMariginValue;
+                                product.BarCode = rowBarcodeValue;
+                                if (rowSupplierCodeValue == "") product.SupplierCode = product.BarCode;
+                                else product.SupplierCode = rowSupplierCodeValue;
+
+                                //Add new object to the DB
+                                this.databaseCommands.AddNewProduct(product);
+
+                                //Set auxiliary bit
+                                if (savedSuccessfully == -1) savedSuccessfully = 1;
+
+                            }
+                            else if (productNameExist)
+                            {
+                                if (rowCollectionToAdd.Count > 1)
+                                {
+                                    DialogResult dialogResult = MessageBox.Show("Produkt o nazwie '" + rowProductNameValue +
+                                        "' już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
+                                        , "Pozycja istnieje w bazie danych!"
+                                        , MessageBoxButtons.YesNo);
+                                    if (dialogResult == DialogResult.Yes) break;
+                                }
+                                else MessageBox.Show("Produkt o nazwie '" + rowProductNameValue + "' już istnieje w bazie danych!");
+                            }
+                            else if (barcodeExist)
+                            {
+                                if (rowCollectionToAdd.Count > 1)
+                                {
+                                    DialogResult dialogResult = MessageBox.Show("Kod kreskowy : '" + rowBarcodeValue +
+                                        "' już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
+                                        , "Pozycja istnieje w bazie danych!"
+                                        , MessageBoxButtons.YesNo);
+                                    if (dialogResult == DialogResult.Yes) break;
+                                }
+                                else MessageBox.Show("Kod kreskowy : '" + rowBarcodeValue + "' już istnieje w bazie danych!");
+                            }
+                            else if (supplierCodeExist)
+                            {
+                                if (rowCollectionToAdd.Count > 1)
+                                {
+                                    DialogResult dialogResult = MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue +
+                                        "' już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
+                                        , "Pozycja istnieje w bazie danych!"
+                                        , MessageBoxButtons.YesNo);
+                                    if (dialogResult == DialogResult.Yes) break;
+                                }
+                                else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
                             }
 
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show(ex.Message);
+                            //Set auxiliary bit
+                            savedSuccessfully = 0;
                         }
                     }
                     #endregion
-
                 }
+
+                //Show result message box
+                if (savedSuccessfully == -1) MessageBox.Show("Produkt/produkty NIE zostały dodane do bazy danych!");
+                else if (savedSuccessfully == 0 && rowCollectionToAdd.Count == 1) MessageBox.Show("Produkt NIE zostały dodane do bazy danych!");
+                else if (savedSuccessfully == 0 && rowCollectionToAdd.Count > 1) MessageBox.Show("Przynajmniej jeden produkt NIE został dodane do bazy danych!");
+                else if (savedSuccessfully == 1 && rowCollectionToAdd.Count == 1) MessageBox.Show("Produkt został pomyślnie dodane do bazy danych!");
+                else if (savedSuccessfully == 1 && rowCollectionToAdd.Count > 1) MessageBox.Show("Wszystkie produkt został pomyślnie dodane do bazy danych!");
+                else MessageBox.Show("Nieznany stan dodawania produktu do bazy danych!!");
 
             }
 
