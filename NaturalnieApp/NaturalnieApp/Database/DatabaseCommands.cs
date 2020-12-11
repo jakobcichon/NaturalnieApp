@@ -78,10 +78,13 @@ namespace NaturalnieApp.Database
         //Method used calculate Product number in Elzab
         //Formula was specified as ManufacturerId * 100 (taken first empty value)
         //That means, DB can consist maximum 100 product of one manufaturer
+        //Method will return first empty number from calculaten area
         //====================================================================================================
-        public List<string> CalculateFreeElzabIdForGivenManufacturer(string manufacturerName)
+        public int CalculateFreeElzabIdForGivenManufacturer(string manufacturerName)
         {
             Manufacturer manufaturer;
+            List<int> elzabProductIdList;
+            int retVal = -1;
 
             using (ShopContext contextDB = new ShopContext())
             {
@@ -92,12 +95,45 @@ namespace NaturalnieApp.Database
                 //Get manufaturer ID
                 manufaturer = query.FirstOrDefault();
 
-                //Calculate firs Id for given manufacturer area
-                int calculation = manufaturer.Id * 100;
+                if (manufaturer != null)
+                {
+                    var query2 = from p in contextDB.Products
+                                 where p.ElzabProductId >= 1 && p.ElzabProductId < 99
+                                 select p.ElzabProductId;
 
-                //Calculate first free ElzabID for this manufaturer area
+                    elzabProductIdList = query2.ToList();
+
+                    //Calculate first Id for given manufacturer area
+                    int firstElementId = manufaturer.Id * 100;
+                    int lastPossibleId = firstElementId + 99;
+
+                    //Sort the list
+                    elzabProductIdList.Sort();
+
+                    //Check if there are no gaps in received list and write available Id or return -1
+                    if ((elzabProductIdList.Count == elzabProductIdList.Last()))
+                    {
+                        retVal = elzabProductIdList.Last() + 1;
+                        if (retVal > lastPossibleId) retVal = -1;
+                    }
+                    else
+                    {
+                        //Calculate first free ElzabID for this manufaturer area
+                        for (int i = 1; i <= 99; i++)
+                        {
+                            if (elzabProductIdList[i - 1] != i)
+                            {
+                                retVal = i;
+                                break;
+                            }
+                        }
+
+                    }
+
+                }
+
             }
-            return productList;
+            return retVal;
         }
 
 
@@ -337,6 +373,27 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to check if in DB specified Elzab product ID already exist
+        //====================================================================================================
+        public bool CheckIfElzabProductIdExist(int elzabProductId)
+        {
+            bool result = false;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from p in contextDB.Products
+                            where p.ElzabProductId == elzabProductId
+                            select p;
+
+                if (query.FirstOrDefault() != null) result = true;
+                else result = false;
+
+            }
+
+            return result;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB tax list
         //====================================================================================================
         public List<string> GetTaxListRetString()
@@ -408,6 +465,24 @@ namespace NaturalnieApp.Database
             }
 
             return manufacturerId;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB manufacturer EAN barcode prefix, if exist
+        //====================================================================================================
+        public string GetManufacturerEanPrefixByName(string manufacturerName)
+        {
+            string eanPrefix = "";
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from m in contextDB.Manufacturers
+                            where m.Name == manufacturerName
+                            select m.BarcodeEanPrefix;
+
+                eanPrefix = query.SingleOrDefault();
+            }
+            return eanPrefix;
         }
 
         //====================================================================================================

@@ -309,15 +309,14 @@ namespace NaturalnieApp.Forms
         //Event for "save" button
         private void bSave_Click(object sender, EventArgs e)
         {
-
             //Local variables
             bool validated = false;
+            string barcodeCheckedVal = "";
 
             //1. Get list of all selected cells
             //Get check box column name
             string chckColumnName;
             this.SupplierInvoice.DataTableSchema_WinForm.TryGetValue(ColumnsAttributes.CheckBox, out chckColumnName);
-
 
             //Row collection
             List<DataGridViewRow> rowCollectionToAdd = new List<DataGridViewRow>();
@@ -351,12 +350,40 @@ namespace NaturalnieApp.Forms
                         //Validate every entry 
                         Validation.SupplierNameValidation(row.Cells[this.SupplierColumnName].Value.ToString());
                         Validation.ManufacturerNameValidation(row.Cells[this.ManufacturerColumnName].Value.ToString());
+
+                        //If Barcode EAN13 has less than 13 chars, but not empty, check if can contact with manufacturer EAN prefix
+                        string barcode = row.Cells[this.BarcodeColumnName].Value.ToString();
+                        if (barcode.Count() > 0 && barcode.Count() < 13)
+                        {
+                            //Get EAN prefix from DB
+                            string rowManufacturerNameValue = row.Cells[this.ManufacturerColumnName].Value.ToString();
+                            bool manufacturerNameExist = this.databaseCommands.CheckIfManufacturerNameExist(rowManufacturerNameValue);
+                            if (manufacturerNameExist)
+                            {
+                                //Get prefix value
+                                string prefix = this.databaseCommands.GetManufacturerEanPrefixByName(rowManufacturerNameValue);
+
+                                if (prefix != null)
+                                {
+                                    //Try to add manufacturer EAN prefix to the given barcode and check if it has 13 chars
+                                    string tempBarcode = prefix + barcode;
+                                    if (tempBarcode.Count() == 13) barcodeCheckedVal = tempBarcode;
+                                }
+                                else barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
+                            }
+                            else barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
+                        }
+                        else barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
+
+                        //Validate every entry 
+                        Validation.SupplierNameValidation(row.Cells[this.SupplierColumnName].Value.ToString());
+                        Validation.ManufacturerNameValidation(row.Cells[this.ManufacturerColumnName].Value.ToString());
                         Validation.ProductNameValidation(row.Cells[this.ProductColumnName].Value.ToString());
                         Validation.ElzabProductNameValidation(row.Cells[this.ElzabProductColumnName].Value.ToString());
                         Validation.MariginValueValidation(row.Cells[this.MariginColumnName].Value.ToString());
                         Validation.PriceNetValueValidation(row.Cells[this.PriceNetColumnName].Value.ToString());
                         Validation.TaxValueValidation(row.Cells[this.TaxColumnName].Value.ToString());
-                        Validation.BarcodeEan13Validation(row.Cells[this.BarcodeColumnName].Value.ToString());
+                        Validation.BarcodeEan13Validation(barcodeCheckedVal);
 
                         //Set validated bit
                         validated = true;
@@ -463,7 +490,7 @@ namespace NaturalnieApp.Forms
                         float rowPriceNetValue = float.Parse(row.Cells[this.PriceNetColumnName].Value.ToString());
                         int rowTaxValue = Convert.ToInt32(row.Cells[this.TaxColumnName].Value.ToString());
                         float rowMariginValue = float.Parse(row.Cells[this.MariginColumnName].Value.ToString());
-                        string rowBarcodeValue = row.Cells[this.BarcodeColumnName].Value.ToString();
+                        string rowBarcodeValue = barcodeCheckedVal;
                         string rowSupplierCodeValue = row.Cells[this.SupplierCodeColumnName].Value.ToString();
 
 
@@ -474,13 +501,14 @@ namespace NaturalnieApp.Forms
                             bool productNameExist = this.databaseCommands.CheckIfProductNameExist(rowProductNameValue);
                             bool barcodeExist = this.databaseCommands.CheckIfBarcodeExist(rowBarcodeValue);
                             bool supplierCodeExist = this.databaseCommands.CheckIfSupplierNameExist(rowSupplierCodeValue);
+                            int elzabProductFirstFreeId = this.databaseCommands.CalculateFreeElzabIdForGivenManufacturer(rowManufacturerNameValue);
 
-                            if (!productNameExist && !barcodeExist && !supplierCodeExist)
+                            if (!productNameExist && !barcodeExist && !supplierCodeExist && elzabProductFirstFreeId > 0)
                             {
                                 //Write all data to the Product object
                                 Product product = new Product();
                                 product.SupplierId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
-                                product.ElzabProductId = 111;
+                                product.ElzabProductId = elzabProductFirstFreeId;
                                 product.ManufacturerId = this.databaseCommands.GetManufacturerIdByName(rowManufacturerNameValue);
                                 product.ProductName = rowProductNameValue;
                                 product.PriceNet = rowPriceNetValue;
@@ -533,7 +561,19 @@ namespace NaturalnieApp.Forms
                                 }
                                 else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
                             }
-
+                            else if (elzabProductFirstFreeId <= 0)
+                            {
+                                if (rowCollectionToAdd.Count > 1)
+                                {
+                                    DialogResult dialogResult = MessageBox.Show("Nie można określić numery produktu dla kasy Elzab! Dla producenta '" 
+                                        + rowManufacturerNameValue
+                                        + "' zdefiniowano już 99 produktów!"
+                                        , "Liczba dostępnych numerów produtków Elzab została osiągnięta!"
+                                        , MessageBoxButtons.YesNo);
+                                    if (dialogResult == DialogResult.Yes) break;
+                                }
+                                else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
+                            }
                         }
                         catch (Exception ex)
                         {
