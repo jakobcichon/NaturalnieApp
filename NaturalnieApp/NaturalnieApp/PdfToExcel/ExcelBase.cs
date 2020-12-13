@@ -209,7 +209,25 @@ namespace NaturalnieApp.PdfToExcel
                     //First row is an header. Skip it
                     if (table.Rows.IndexOf(row) != 0)
                     {
-                        returnList.Add(row);
+                        DataRow locatDataRow = table.NewRow();
+                        List<string> itemArray = new List<string>();
+                        //Clear each row from escape chars
+
+                        List<string> tempList = new List<string>();
+                        tempList = row.ItemArray.Select(e => e.ToString()).ToList();
+                        foreach (string cell in tempList)
+                        {
+                            // Some general operation on string, to clear it
+                            string singleElement = cell.Trim();
+                            singleElement = Regex.Unescape(singleElement);
+                            singleElement = singleElement.Replace("\n", "");
+                            singleElement = singleElement.Replace("\t", "");
+                            singleElement = singleElement.Replace("*", "");
+                            itemArray.Add(singleElement);
+                        }
+                        locatDataRow.ItemArray = itemArray.ToArray();
+                        returnList.Add(locatDataRow);
+
                     }
 
                 }

@@ -13,6 +13,7 @@ using SautinSoft;
 using System.Text.RegularExpressions;
 using NaturalnieApp.Database;
 using NaturalnieApp.Forms;
+using System.Diagnostics;
 
 namespace NaturalnieApp.Forms
 {
@@ -112,10 +113,12 @@ namespace NaturalnieApp.Forms
                 dataFromExcel.Columns[this.ElzabProductColumnName].SetOrdinal(dataFromExcel.Columns[this.ProductColumnName].Ordinal + 1);
 
                 //Copy product name to the column with name of product in Elzab
-                foreach(DataRow row in dataFromExcel.Rows)
+                foreach (DataRow row in dataFromExcel.Rows)
                 {
                     int indexOfDesireRow = dataFromExcel.Rows.IndexOf(row);
-                    string rowValue = row.Field<string>(this.ProductColumnName).Substring(0,34);
+                    string rowValue;
+                    if (row.Field<string>(this.ProductColumnName).Count() <= 34) rowValue = row.Field<string>(this.ProductColumnName);
+                    else rowValue = row.Field<string>(this.ProductColumnName).Substring(0,34);
                     dataFromExcel.Rows[indexOfDesireRow].SetField(this.ElzabProductColumnName, rowValue);
 
                 }
@@ -261,9 +264,11 @@ namespace NaturalnieApp.Forms
         {
             foreach (DataGridViewRow row in advancedDataGridView1.Rows)
             {
-                DataGridViewCheckBoxCell chkchecking = row.Cells[0] as DataGridViewCheckBoxCell;
-                chkchecking.Value = true;
-
+                if (!row.IsNewRow)
+                {
+                    DataGridViewCheckBoxCell chkchecking = row.Cells[0] as DataGridViewCheckBoxCell;
+                    chkchecking.Value = true;
+                }
             }
         }
 
@@ -384,6 +389,7 @@ namespace NaturalnieApp.Forms
                         Validation.PriceNetValueValidation(row.Cells[this.PriceNetColumnName].Value.ToString());
                         Validation.TaxValueValidation(row.Cells[this.TaxColumnName].Value.ToString());
                         Validation.BarcodeEan13Validation(barcodeCheckedVal);
+                        row.Cells[this.BarcodeColumnName].Value = barcodeCheckedVal;
 
                         //Set validated bit
                         validated = true;
@@ -487,10 +493,11 @@ namespace NaturalnieApp.Forms
                     {
                         //Set local variable
                         string rowProductNameValue = row.Cells[this.ProductColumnName].Value.ToString();
+                        string rowElzabProductNameValue = row.Cells[this.ElzabProductColumnName].Value.ToString();
                         float rowPriceNetValue = float.Parse(row.Cells[this.PriceNetColumnName].Value.ToString());
                         int rowTaxValue = Convert.ToInt32(row.Cells[this.TaxColumnName].Value.ToString());
                         float rowMariginValue = float.Parse(row.Cells[this.MariginColumnName].Value.ToString());
-                        string rowBarcodeValue = barcodeCheckedVal;
+                        string rowBarcodeValue = row.Cells[this.BarcodeColumnName].Value.ToString();
                         string rowSupplierCodeValue = row.Cells[this.SupplierCodeColumnName].Value.ToString();
 
 
@@ -499,11 +506,12 @@ namespace NaturalnieApp.Forms
                         {
                             //Get from database if already exist
                             bool productNameExist = this.databaseCommands.CheckIfProductNameExist(rowProductNameValue);
+                            bool elzabProductNameExist = this.databaseCommands.CheckIfElzabProductNameExist(rowElzabProductNameValue);
                             bool barcodeExist = this.databaseCommands.CheckIfBarcodeExist(rowBarcodeValue);
                             bool supplierCodeExist = this.databaseCommands.CheckIfSupplierNameExist(rowSupplierCodeValue);
                             int elzabProductFirstFreeId = this.databaseCommands.CalculateFreeElzabIdForGivenManufacturer(rowManufacturerNameValue);
 
-                            if (!productNameExist && !barcodeExist && !supplierCodeExist && elzabProductFirstFreeId > 0)
+                            if (!productNameExist && !barcodeExist && !supplierCodeExist && !elzabProductNameExist && elzabProductFirstFreeId > 0)
                             {
                                 //Write all data to the Product object
                                 Product product = new Product();
@@ -511,10 +519,12 @@ namespace NaturalnieApp.Forms
                                 product.ElzabProductId = elzabProductFirstFreeId;
                                 product.ManufacturerId = this.databaseCommands.GetManufacturerIdByName(rowManufacturerNameValue);
                                 product.ProductName = rowProductNameValue;
+                                product.ElzabProductName = rowElzabProductNameValue;
                                 product.PriceNet = rowPriceNetValue;
                                 product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
                                 product.Marigin = rowMariginValue;
                                 product.BarCode = rowBarcodeValue;
+                                product.ProductInfo = "Brak";
                                 if (rowSupplierCodeValue == "") product.SupplierCode = product.BarCode;
                                 else product.SupplierCode = rowSupplierCodeValue;
 
@@ -561,16 +571,26 @@ namespace NaturalnieApp.Forms
                                 }
                                 else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
                             }
+                            else if (elzabProductNameExist)
+                            {
+                                if (rowCollectionToAdd.Count > 1)
+                                {
+                                    DialogResult dialogResult = MessageBox.Show("Nazwa produktu '" + rowProductNameValue +
+                                        "'dla kasy Elzab już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
+                                        , "Pozycja istnieje w bazie danych!"
+                                        , MessageBoxButtons.YesNo);
+                                    if (dialogResult == DialogResult.Yes) break;
+                                }
+                                else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
+                            }
                             else if (elzabProductFirstFreeId <= 0)
                             {
                                 if (rowCollectionToAdd.Count > 1)
                                 {
-                                    DialogResult dialogResult = MessageBox.Show("Nie można określić numery produktu dla kasy Elzab! Dla producenta '" 
+                                    DialogResult dialogResult = MessageBox.Show("Nie można określić numery produktu dla kasy Elzab! Dla producenta '"
                                         + rowManufacturerNameValue
                                         + "' zdefiniowano już 99 produktów!"
-                                        , "Liczba dostępnych numerów produtków Elzab została osiągnięta!"
-                                        , MessageBoxButtons.YesNo);
-                                    if (dialogResult == DialogResult.Yes) break;
+                                        , "Liczba dostępnych numerów produtków Elzab została osiągnięta!");
                                 }
                                 else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
                             }
@@ -578,6 +598,7 @@ namespace NaturalnieApp.Forms
                         catch (Exception ex)
                         {
                             MessageBox.Show(ex.Message);
+                            Debug.Fail(ex.ToString());
                             //Set auxiliary bit
                             savedSuccessfully = 0;
                         }
@@ -587,7 +608,7 @@ namespace NaturalnieApp.Forms
 
                 //Show result message box
                 if (savedSuccessfully == -1) MessageBox.Show("Produkt/produkty NIE zostały dodane do bazy danych!");
-                else if (savedSuccessfully == 0 && rowCollectionToAdd.Count == 1) MessageBox.Show("Produkt NIE zostały dodane do bazy danych!");
+                else if (savedSuccessfully == 0 && rowCollectionToAdd.Count == 1) MessageBox.Show("Produkty NIE zostały dodane do bazy danych!");
                 else if (savedSuccessfully == 0 && rowCollectionToAdd.Count > 1) MessageBox.Show("Przynajmniej jeden produkt NIE został dodane do bazy danych!");
                 else if (savedSuccessfully == 1 && rowCollectionToAdd.Count == 1) MessageBox.Show("Produkt został pomyślnie dodane do bazy danych!");
                 else if (savedSuccessfully == 1 && rowCollectionToAdd.Count > 1) MessageBox.Show("Wszystkie produkt został pomyślnie dodane do bazy danych!");
@@ -606,19 +627,31 @@ namespace NaturalnieApp.Forms
         {
             //Cast an object to a know type
             Zuby.ADGV.AdvancedDataGridView localSender = (Zuby.ADGV.AdvancedDataGridView)sender;
-            DataGridViewSelectedCellCollection cells = localSender.SelectedCells;
-            DataGridViewCell cell = cells[0];
-            int[] currenCellClik = new[] { cell.RowIndex, cell.ColumnIndex };
-
-            //Check if last clicked cell is the same as previous one
-            //If yest, start cell editing
-            if (currenCellClik[0] == this.LastCellCliked[0] && currenCellClik[1] == this.LastCellCliked[1])
+            if (localSender.DataSource != null)
             {
-                localSender.BeginEdit(true);
+                try
+                {
+                    DataGridViewSelectedCellCollection cells = localSender.SelectedCells;
+                    DataGridViewCell cell = cells[0];
+                    int[] currenCellClik = new[] { cell.RowIndex, cell.ColumnIndex };
+
+                    //Check if last clicked cell is the same as previous one
+                    //If yest, start cell editing
+                    if (currenCellClik[0] == this.LastCellCliked[0] && currenCellClik[1] == this.LastCellCliked[1])
+                    {
+                        localSender.BeginEdit(true);
+                    }
+
+                    //Save current cell selected, as last one
+                    this.LastCellCliked = currenCellClik;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
             }
 
-            //Save current cell selected, as last one
-            this.LastCellCliked = currenCellClik;
         }
 
         //Event for advanced data grid view double click

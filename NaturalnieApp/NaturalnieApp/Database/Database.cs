@@ -21,6 +21,7 @@ namespace NaturalnieApp.Database
         public int ElzabProductId { get; set; }
         public int ManufacturerId { get; set; }
         public string ProductName { get; set; }
+        public string ElzabProductName { get; set; }
         public float PriceNet { get; set; }
         public int TaxId { get; set; }
         public float Marigin { get; set; }

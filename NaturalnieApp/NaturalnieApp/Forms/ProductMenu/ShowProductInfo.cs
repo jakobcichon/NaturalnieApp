@@ -230,11 +230,11 @@ namespace NaturalnieApp.Forms
                 tbMarigin_Validating(this.tbMarigin, EventArgs.Empty);
                 rtbProductInfo_Validating(this.rtbProductInfo, EventArgs.Empty);
             }
-            catch (ValidatingFailed)
+            catch (ValidatingFailed ex)
             {
                 //If any of exception, return validation failed
                 validationSuccess = false;
-                MessageBox.Show("Błąd podczas weryfikacji danych wejściowych!");
+                MessageBox.Show(ex.Message);
             }
 
             return validationSuccess;

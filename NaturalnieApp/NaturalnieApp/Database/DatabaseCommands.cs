@@ -83,7 +83,12 @@ namespace NaturalnieApp.Database
         public int CalculateFreeElzabIdForGivenManufacturer(string manufacturerName)
         {
             Manufacturer manufaturer;
-            List<int> elzabProductIdList;
+            List<int> elzabProductIdList = new List<int>();
+
+            //Local settings
+            int numberOfProductPerManufacturer = 50;
+
+            //Return value
             int retVal = -1;
 
             using (ShopContext contextDB = new ShopContext())
@@ -97,45 +102,61 @@ namespace NaturalnieApp.Database
 
                 if (manufaturer != null)
                 {
+
+                    //Calculate first Id for given manufacturer area
+                    int firstElementId = manufaturer.Id * numberOfProductPerManufacturer;
+                    int lastPossibleId = firstElementId + numberOfProductPerManufacturer - 1;
+
                     var query2 = from p in contextDB.Products
-                                 where p.ElzabProductId >= 1 && p.ElzabProductId < 99
+                                 where p.ElzabProductId >= firstElementId && p.ElzabProductId < lastPossibleId
                                  select p.ElzabProductId;
 
                     elzabProductIdList = query2.ToList();
 
-                    //Calculate first Id for given manufacturer area
-                    int firstElementId = manufaturer.Id * 100;
-                    int lastPossibleId = firstElementId + 99;
 
                     //Sort the list
                     elzabProductIdList.Sort();
 
-                    //Check if there are no gaps in received list and write available Id or return -1
-                    if ((elzabProductIdList.Count == elzabProductIdList.Last()))
+                    if (elzabProductIdList.Count() > 0)
                     {
-                        retVal = elzabProductIdList.Last() + 1;
-                        if (retVal > lastPossibleId) retVal = -1;
-                    }
-                    else
-                    {
-                        //Calculate first free ElzabID for this manufaturer area
-                        for (int i = 1; i <= 99; i++)
+                        //Check if there are no gaps in received list and write available Id or return -1
+                        if (elzabProductIdList.Count() == 1)
                         {
-                            if (elzabProductIdList[i - 1] != i)
+                            retVal = elzabProductIdList.Last() + 1;
+                            if (retVal > lastPossibleId) retVal = -1;
+                        }
+                        else
+                        {
+                            //Check if any gap in actual sequence of IDs
+                            for (int i = 0; i < elzabProductIdList.Count(); i++)
                             {
-                                retVal = i;
-                                break;
+                                //Recalculate theoretical value of product at given index. If not match use it
+                                int theoVal = (manufaturer.Id * numberOfProductPerManufacturer) + i;
+
+                                //Check value and if not match, assign theoretical one
+                                if (elzabProductIdList[i] != theoVal)
+                                {
+                                    retVal = theoVal;
+                                    break;
+                                }
+                            }
+
+                            //If no gap, assign first free value
+                            if((retVal == -1) && (elzabProductIdList.Count() < numberOfProductPerManufacturer))
+                            {
+                                retVal = elzabProductIdList.Last() + 1;
                             }
                         }
-
                     }
-
+                    else if (elzabProductIdList.Count() == 0)
+                    {
+                        retVal = firstElementId;
+                    }
                 }
 
             }
             return retVal;
         }
-
 
         //====================================================================================================
         //Method used to retrieve from DB product name list
@@ -383,6 +404,27 @@ namespace NaturalnieApp.Database
             {
                 var query = from p in contextDB.Products
                             where p.ElzabProductId == elzabProductId
+                            select p;
+
+                if (query.FirstOrDefault() != null) result = true;
+                else result = false;
+
+            }
+
+            return result;
+        }
+
+        //====================================================================================================
+        //Method used to check if in DB specified Elzab product ID already exist
+        //====================================================================================================
+        public bool CheckIfElzabProductNameExist(string elzabProductName)
+        {
+            bool result = false;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from p in contextDB.Products
+                            where p.ElzabProductName == elzabProductName
                             select p;
 
                 if (query.FirstOrDefault() != null) result = true;

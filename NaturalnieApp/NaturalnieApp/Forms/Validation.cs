@@ -85,10 +85,11 @@ namespace NaturalnieApp.Forms
             string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+'&";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^([a-zA-Z0-9'_+-]+\s)*[a-zA-Z0-9'_+-]+${1,255}";
+            string regPattern = @"^([a-zA-Z0-9'_+-.&]+\s)*[a-zA-Z0-9'_+-.&]+$";
             
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
+            if (input.Length > 255) validatingResult = false;
 
             if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
 
@@ -103,10 +104,11 @@ namespace NaturalnieApp.Forms
             string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+'&";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^([a-zA-Z0-9'_+-]+\s)*[a-zA-Z0-9'_+-]+${1,255}";
+            string regPattern = @"^([a-zA-Z0-9'_+-]+\s)*[a-zA-Z0-9'_+-]+$";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
+            if (input.Length > 255) validatingResult = false;
 
             if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
 
@@ -121,10 +123,11 @@ namespace NaturalnieApp.Forms
             string text = "Nazwa producenta musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^([a-zA-Z0-9'_+-]+\s)*[a-zA-Z0-9'_+-]+${1,255}";
+            string regPattern = @"^([a-zA-Z0-9'_+-]+\s)*[a-zA-Z0-9'_+-]+$";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
+            if (input.Length > 255) validatingResult = false;
 
             if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
 
@@ -139,10 +142,11 @@ namespace NaturalnieApp.Forms
             string text = "Nazwa dostawcy dla kasy Elzab musi mieć maksymalnie 34 znaki oraz może zawierać jedynie cyfry, litery i nastepujące znaki specjalne: _-+";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^([a-zA-Z0-9'_+-]+\s)*[a-zA-Z0-9'_+-]+${1,34}";
+            string regPattern = @"^([a-zA-Z0-9'_+-.&]+\s)*[a-zA-Z0-9'_+-.&]+$";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
+            if (input.Length > 34) validatingResult = false;
 
             if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
 
