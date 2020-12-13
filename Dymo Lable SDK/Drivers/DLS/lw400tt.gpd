@@ -1,0 +1,21 @@
+*% 8.5.0.1733
+
+*ModelName: "DYMO LabelWriter Twin Turbo"
+*GPDFileName: "lw400tt.gpd"
+
+*Include: "lw400c.gpd"
+
+*Feature: InputBin
+{
+    *rcNameID: =PAPER_SOURCE_DISPLAY
+    *Option: OptionLeft
+    {
+        *rcNameID: 320
+        *Cmd: "<1B>q1"
+    }
+    *Option: OptionRight
+    {
+        *rcNameID: 321
+        *Cmd: "<1B>q2"
+    }
+}

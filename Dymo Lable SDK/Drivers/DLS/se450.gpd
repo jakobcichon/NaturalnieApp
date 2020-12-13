@@ -1,0 +1,1157 @@
+*GPDSpecVersion: "1.0"
+*Include: "StdNames.gpd"
+*GPDFileVersion: "8.5.0.1733"
+*MasterUnits: PAIR(408, 408)
+*ResourceDLL: "LW400.DLL"
+*PrinterType: SERIAL
+*ModelName: "DYMO LabelWriter SE450"
+*GPDFileName: "se450.gpd"
+*Feature: Orientation
+{
+    *rcNameID: =ORIENTATION_DISPLAY
+    *DefaultOption: PORTRAIT
+    *Option: PORTRAIT
+    {
+        *rcNameID: =PORTRAIT_DISPLAY
+    }
+    *Option: LANDSCAPE_CC270
+    {
+        *rcNameID: =LANDSCAPE_DISPLAY
+    }
+}
+*Feature: InputBin
+{
+    *rcNameID: =PAPER_SOURCE_DISPLAY
+}
+*Feature: Resolution
+{
+    *rcNameID: =RESOLUTION_DISPLAY
+    *DefaultOption: Option1
+    *ConflictPriority: 3
+    *Option: Option1
+    {
+        *Name: "204 x 204 " =DOTS_PER_INCH
+        *DPI: PAIR(204, 204)
+        *TextDPI: PAIR(204, 204)
+        EXTERN_GLOBAL: *StripBlanks: LIST(TRAILING)
+        *SpotDiameter: 120
+        *Command: CmdSendBlockData { *Cmd : "" }
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.10
+            *Cmd: "<1B>y"
+        }
+    }
+    *Option: Option2
+
+    {
+        *Name: "204 x 136 " =DOTS_PER_INCH
+        *DPI: PAIR(204, 136)
+        *TextDPI: PAIR(204, 136)
+        EXTERN_GLOBAL: *StripBlanks: LIST(TRAILING)
+        *SpotDiameter: 120
+        *Command: CmdSendBlockData { *Cmd : "" }
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.10
+            *Cmd: "<1B>z"
+        }
+    }
+}
+*Feature: PaperSize
+{
+    *rcNameID: =PAPER_SIZE_DISPLAY
+    *DefaultOption: Option56
+    *ConflictPriority: 1
+    *Option: Option1
+    {
+        *rcNameID: 261
+        *OptionID: 261
+        *PageDimensions: PAIR(449, 816)
+        *PrintableArea: PAIR(384, 664)
+        *PrintableOrigin: PAIR(49, 128)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0264>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option2
+    {
+        *rcNameID: 262
+        *OptionID: 262
+        *PageDimensions: PAIR(447, 1428)
+        *PrintableArea: PAIR(407, 1310)
+        *PrintableOrigin: PAIR(24, 94)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0396>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option3
+    {
+        *rcNameID: 263
+        *OptionID: 263
+        *PageDimensions: PAIR(944, 1632)
+        *PrintableArea: PAIR(896, 1512)
+        *PrintableOrigin: PAIR(23, 95)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<03FC>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option4
+    {
+        *rcNameID: 264
+        *OptionID: 264
+        *PageDimensions: PAIR(868, 1620)
+        *PrintableArea: PAIR(827, 1508)
+        *PrintableOrigin: PAIR(24, 87)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<03F6>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option5
+    {
+        *rcNameID: 265
+        *OptionID: 265
+        *PageDimensions: PAIR(868, 1620)
+        *PrintableArea: PAIR(827, 1508)
+        *PrintableOrigin: PAIR(24, 87)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<03F6>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option6
+    {
+        *rcNameID: 266
+        *OptionID: 266
+        *PageDimensions: PAIR(868, 1620)
+        *PrintableArea: PAIR(827, 1508)
+        *PrintableOrigin: PAIR(24, 87)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<03F6>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option7
+    {
+        *rcNameID: 267
+        *OptionID: 267
+        *PageDimensions: PAIR(918, 2856)
+        *PrintableArea: PAIR(879, 2742)
+        *PrintableOrigin: PAIR(23, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0660>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option8
+    {
+        *rcNameID: 268
+        *OptionID: 268
+        *PageDimensions: PAIR(944, 3060)
+        *PrintableArea: PAIR(896, 2946)
+        *PrintableOrigin: PAIR(23, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<06C6>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option9
+    {
+        *rcNameID: 270
+        *OptionID: 270
+        *PageDimensions: PAIR(868, 1122)
+        *PrintableArea: PAIR(828, 1008)
+        *PrintableOrigin: PAIR(23, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<02FD>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option10
+    {
+        *rcNameID: 271
+        *OptionID: 271
+        *PageDimensions: PAIR(868, 1122)
+        *PrintableArea: PAIR(835, 1008)
+        *PrintableOrigin: PAIR(16, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<02FD>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option11
+    {
+        *rcNameID: 272
+        *OptionID: 272
+        *PageDimensions: PAIR(868, 1122)
+        *PrintableArea: PAIR(835, 1008)
+        *PrintableOrigin: PAIR(16, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<02FD>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option12
+    {
+        *rcNameID: 273
+        *OptionID: 273
+        *PageDimensions: PAIR(306, 816)
+        *PrintableArea: PAIR(267, 699)
+        *PrintableOrigin: PAIR(23, 92)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0264>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option13
+    {
+        *rcNameID: 274
+        *OptionID: 274
+        *PageDimensions: PAIR(942, 1428)
+        *PrintableArea: PAIR(896, 1311)
+        *PrintableOrigin: PAIR(23, 92)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0396>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option14
+    {
+        *rcNameID: 275
+        *OptionID: 275
+        *PageDimensions: PAIR(460, 1402)
+        *PrintableArea: PAIR(419, 1296)
+        *PrintableOrigin: PAIR(24, 82)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0389>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option15
+    {
+        *rcNameID: 276
+        *OptionID: 276
+        *PageDimensions: PAIR(320, 1402)
+        *PrintableArea: PAIR(303, 1288)
+        *PrintableOrigin: PAIR(0, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0389>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option16
+    {
+        *rcNameID: 277
+        *OptionID: 277
+        *PageDimensions: PAIR(816, 956)
+        *PrintableArea: PAIR(775, 842)
+        *PrintableOrigin: PAIR(24, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<02AA>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option17
+    {
+        *rcNameID: 278
+        *OptionID: 278
+        *PageDimensions: PAIR(574, 1423)
+        *PrintableArea: PAIR(533, 1307)
+        *PrintableOrigin: PAIR(24, 91)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0393>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option18
+    {
+        *rcNameID: 279
+        *OptionID: 279
+        *PageDimensions: PAIR(574, 1423)
+        *PrintableArea: PAIR(533, 1307)
+        *PrintableOrigin: PAIR(24, 91)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0393>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option19
+    {
+        *rcNameID: 280
+        *OptionID: 280
+        *PageDimensions: PAIR(944, 1632)
+        *PrintableArea: PAIR(896, 1512)
+        *PrintableOrigin: PAIR(23, 95)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<03FC>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option20
+    {
+        *rcNameID: 281
+        *OptionID: 281
+        *PageDimensions: PAIR(947, 1428)
+        *PrintableArea: PAIR(896, 1251)
+        *PrintableOrigin: PAIR(0, 152)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0396>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option21
+    {
+        *rcNameID: 282
+        *OptionID: 282
+        *PageDimensions: PAIR(816, 1428)
+        *PrintableArea: PAIR(751, 1251)
+        *PrintableOrigin: PAIR(49, 152)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0396>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option22
+    {
+        *rcNameID: 283
+        *OptionID: 283
+        *PageDimensions: PAIR(306, 2398)
+        *PrintableArea: PAIR(273, 2283)
+        *PrintableOrigin: PAIR(16, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<057B>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option23
+    {
+        *rcNameID: 284
+        *OptionID: 284
+        *PageDimensions: PAIR(354, 2372)
+        *PrintableArea: PAIR(337, 2255)
+        *PrintableOrigin: PAIR(0, 92)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<056E>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option24
+    {
+        *rcNameID: 285
+        *OptionID: 285
+        *PageDimensions: PAIR(740, 1250)
+        *PrintableArea: PAIR(700, 1136)
+        *PrintableOrigin: PAIR(23, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<033D>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option25
+    {
+        *rcNameID: 286
+        *OptionID: 286
+        *PageDimensions: PAIR(787, 1250)
+        *PrintableArea: PAIR(771, 1134)
+        *PrintableOrigin: PAIR(0, 91)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<033D>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option26
+    {
+        *rcNameID: 287
+        *OptionID: 287
+        *PageDimensions: PAIR(204, 816)
+        *PrintableArea: PAIR(171, 700)
+        *PrintableOrigin: PAIR(16, 91)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0264>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option27
+    {
+        *rcNameID: 288
+        *OptionID: 288
+        *PageDimensions: PAIR(611, 3052)
+        *PrintableArea: PAIR(571, 2938)
+        *PrintableOrigin: PAIR(23, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<06C2>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option28
+    {
+        *rcNameID: 289
+        *OptionID: 289
+        *PageDimensions: PAIR(944, 3052)
+        *PrintableArea: PAIR(896, 2938)
+        *PrintableOrigin: PAIR(23, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<06C2>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option29
+    {
+        *rcNameID: 290
+        *OptionID: 290
+        *PageDimensions: PAIR(664, 1428)
+        *PrintableArea: PAIR(624, 1310)
+        *PrintableOrigin: PAIR(23, 94)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0396>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option30
+    {
+        *rcNameID: 291
+        *OptionID: 291
+        *PageDimensions: PAIR(306, 1148)
+        *PrintableArea: PAIR(267, 1034)
+        *PrintableOrigin: PAIR(23, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<030A>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option31
+    {
+        *rcNameID: 292
+        *OptionID: 292
+        *PageDimensions: PAIR(408, 408)
+        *PrintableArea: PAIR(369, 345)
+        *PrintableOrigin: PAIR(23, 38)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0198>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option32
+    {
+        *rcNameID: 293
+        *OptionID: 293
+        *PageDimensions: PAIR(408, 408)
+        *PrintableArea: PAIR(369, 343)
+        *PrintableOrigin: PAIR(23, 41)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0198>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: N30334
+    {
+        *rcNameID: 294
+        *OptionID: 294
+        *PageDimensions: PAIR(918, 510)
+        *PrintableArea: PAIR(885, 461)
+        *PrintableOrigin: PAIR(16, 24)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<01CB>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option34
+    {
+        *rcNameID: 295
+        *OptionID: 295
+        *PageDimensions: PAIR(408, 868)
+        *PrintableArea: PAIR(369, 806)
+        *PrintableOrigin: PAIR(23, 37)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<027E>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option35
+    {
+        *rcNameID: 296
+        *OptionID: 296
+        *PageDimensions: PAIR(870, 358)
+        *PrintableArea: PAIR(854, 309)
+        *PrintableOrigin: PAIR(0, 24)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<017F>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option36
+    {
+        *rcNameID: 297
+        *OptionID: 297
+        *PageDimensions: PAIR(398, 816)
+        *PrintableArea: PAIR(382, 307)
+        *PrintableOrigin: PAIR(0, 24)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0264>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option37
+    {
+        *rcNameID: 298
+        *OptionID: 298
+        *PageDimensions: PAIR(413, 484)
+        *PrintableArea: PAIR(397, 435)
+        *PrintableOrigin: PAIR(0, 24)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<01BE>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option38
+    {
+        *rcNameID: 299
+        *OptionID: 299
+        *PageDimensions: PAIR(306, 1020)
+        *PrintableArea: PAIR(267, 903)
+        *PrintableOrigin: PAIR(23, 92)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<02CA>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option39
+    {
+        *rcNameID: 300
+        *OptionID: 300
+        *PageDimensions: PAIR(204, 766)
+        *PrintableArea: PAIR(165, 649)
+        *PrintableOrigin: PAIR(23, 92)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<024B>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option40
+    {
+        *rcNameID: 301
+        *OptionID: 301
+        *PageDimensions: PAIR(408, 612)
+        *PrintableArea: PAIR(369, 495)
+        *PrintableOrigin: PAIR(23, 92)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<01FE>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option41
+    {
+        *rcNameID: 302
+        *OptionID: 302
+        *PageDimensions: PAIR(367, 510)
+        *PrintableArea: PAIR(322, 393)
+        *PrintableOrigin: PAIR(29, 92)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<01CB>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option42
+    {
+        *rcNameID: 310
+        *OptionID: 310
+        *PageDimensions: PAIR(870, 358)
+        *PrintableArea: PAIR(854, 309)
+        *PrintableOrigin: PAIR(0, 24)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<017F>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option43
+    {
+        *rcNameID: 311
+        *OptionID: 311
+        *PageDimensions: PAIR(408, 868)
+        *PrintableArea: PAIR(369, 806)
+        *PrintableOrigin: PAIR(23, 37)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<027E>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option44
+    {
+        *rcNameID: 312
+        *OptionID: 312
+        *PageDimensions: PAIR(408, 408)
+        *PrintableArea: PAIR(369, 345)
+        *PrintableOrigin: PAIR(23, 38)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0198>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option45
+    {
+        *rcNameID: 313
+        *OptionID: 313
+        *PageDimensions: PAIR(918, 510)
+        *PrintableArea: PAIR(885, 461)
+        *PrintableOrigin: PAIR(16, 24)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<01CB>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option46
+    {
+        *rcNameID: 314
+        *OptionID: 314
+        *PageDimensions: PAIR(306, 816)
+        *PrintableArea: PAIR(267, 699)
+        *PrintableOrigin: PAIR(23, 92)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0264>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option47
+    {
+        *rcNameID: 315
+        *OptionID: 315
+        *PageDimensions: PAIR(664, 1428)
+        *PrintableArea: PAIR(624, 1310)
+        *PrintableOrigin: PAIR(23, 94)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0396>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option48
+    {
+        *rcNameID: 316
+        *OptionID: 316
+        *PageDimensions: PAIR(944, 4284)
+        *PrintableArea: PAIR(896, 4170)
+        *PrintableOrigin: PAIR(23, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<092A>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: ContinuousWide
+    {
+        *rcNameID: 318
+        *OptionID: 318
+        *PageDimensions: PAIR(868, 4488)
+        *PrintableArea: PAIR(827, 4371)
+        *PrintableOrigin: PAIR(24, 92)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<FFFF>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Banner
+    {
+        *rcNameID: 402
+        *OptionID: 402
+        *PageDimensions: PAIR(868, 43520)
+        *PrintableArea: PAIR(816, 43332)
+        *PrintableOrigin: PAIR(23, 91)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<FFFF>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option51
+    {
+        *rcNameID: 319
+        *OptionID: 319
+        *PageDimensions: PAIR(942, 1061)
+        *PrintableArea: PAIR(891, 869)
+        *PrintableOrigin: PAIR(23, 95)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<02DE>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option52
+    {
+        *rcNameID: 400
+        *OptionID: 400
+        *PageDimensions: PAIR(994, 1652)
+        *PrintableArea: PAIR(896, 1476)
+        *PrintableOrigin: PAIR(0, 152)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0406>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option53
+    {
+        *rcNameID: 401
+        *OptionID: 401
+        *PageDimensions: PAIR(944, 1632)
+        *PrintableArea: PAIR(896, 1512)
+        *PrintableOrigin: PAIR(23, 95)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<03FC>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option54
+    {
+        *rcNameID: 403
+        *OptionID: 403
+        *PageDimensions: PAIR(942, 1061)
+        *PrintableArea: PAIR(891, 869)
+        *PrintableOrigin: PAIR(23, 95)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<02DE>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option55
+    {
+        *rcNameID: 404
+        *OptionID: 404
+        *PageDimensions: PAIR(631, 714)
+        *PrintableArea: PAIR(555, 522)
+        *PrintableOrigin: PAIR(24, 90)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0231>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option56
+    {
+        *rcNameID: 259
+        *OptionID: 259
+        *PageDimensions: PAIR(447, 1428)
+        *PrintableArea: PAIR(407, 1310)
+        *PrintableOrigin: PAIR(24, 94)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0396>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: Option57
+    {
+        *rcNameID: 260
+        *OptionID: 260
+        *PageDimensions: PAIR(447, 1428)
+        *PrintableArea: PAIR(407, 1310)
+        *PrintableOrigin: PAIR(24, 94)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<0396>"
+        }
+        *Constraints: LIST(ContinuousMode.OptionON)
+    }
+    *Option: CUSTOMSIZE
+    {
+        *rcNameID: =USER_DEFINED_SIZE_DISPLAY
+        *MinSize: PAIR(272, 408)
+        *MaxSize: PAIR(1020, 64000)
+        *MaxPrintableWidth: 896
+        *MinLeftMargin: 0
+        *CenterPrintable?: FALSE
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.7
+            *Cmd: "<1B>L<7F00>"
+        }
+    }
+}
+*Feature: MediaType
+{
+    *rcNameID: =MEDIA_TYPE_DISPLAY
+    *DefaultOption: Option1
+    *Option: Option1
+    {
+      *rcNameID: 303
+    }
+}
+*Feature: PrintQuality
+{
+    *rcNameID: =TEXT_QUALITY_DISPLAY
+    *DefaultOption: Option1
+    *ConflictPriority: 2
+    *Option: Option1
+    {
+        *rcNameID: 304
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.16
+            *Cmd: "<1B>h"
+        }
+    }
+    *Option: Option2
+    {
+        *rcNameID: 305
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.16
+            *Cmd: "<1B>i"
+        }
+    }
+}
+*Feature: OutputBin
+{
+    *rcNameID: =OUTPUTBIN_DISPLAY
+    *DefaultOption: Option1
+    *Option: Option1
+    {
+        *rcNameID: 303
+    }
+}
+*Feature: PrintDensity
+{
+    *rcNameID: =PRINTDENSITY_DISPLAY
+    *DefaultOption: Option3
+    *Option: Option1
+    {
+        *rcNameID: 306
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.5
+            *Cmd: "<1B>c"
+        }
+    }
+    *Option: Option2
+    {
+        *rcNameID: 307
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.5
+            *Cmd: "<1B>d"
+        }
+    }
+    *Option: Option3
+    {
+        *rcNameID: 308
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.5
+            *Cmd: "<1B>e"
+        }
+    }
+    *Option: Option4
+    {
+        *rcNameID: 309
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.5
+            *Cmd: "<1B>g"
+        }
+    }
+}
+
+*Feature: ColorMode
+{
+    *rcNameID: =COLOR_PRINTING_MODE_DISPLAY
+    *DefaultOption: ColorFormat2
+    *Option: ColorFormat1
+    {
+        *Name: "Default"
+        *DevBPP: 1
+        *DevNumOfPlanes: 1
+        *DrvBPP: 1
+        *Constraints: LIST (Halftone.ErrorDiffusion)
+    }
+    *Option: ColorFormat2
+    {
+        *Name: "Enhanced"
+        *DevBPP: 1
+        *DevNumOfPlanes: 1
+        *DrvBPP: 24
+        *Color?: FALSE
+        *IPCallbackID: 100
+        *Constraints: LIST (Halftone.HT_PATSIZE_AUTO, Halftone.HT_PATSIZE_SUPERCELL_M, Halftone.HT_PATSIZE_6x6_M, Halftone.HT_PATSIZE_8x8_M)
+    }
+}
+
+*DraftQualitySettings:  LIST(Resolution.Option2, PrintQuality.Option1)
+*BetterQualitySettings: LIST(Resolution.Option1, PrintQuality.Option1)
+*BestQualitySettings:   LIST(Resolution.Option1, PrintQuality.Option2)
+*DefaultQuality: BETTERQUALITY
+
+*Feature: Halftone
+{
+    *rcNameID: =HALFTONING_DISPLAY
+    *DefaultOption: ErrorDiffusion
+    *Option: HT_PATSIZE_AUTO
+    {
+        *rcNameID: =HT_AUTO_SELECT_DISPLAY
+    }
+    *Option: HT_PATSIZE_SUPERCELL_M
+    {
+        *rcNameID: =HT_SUPERCELL_DISPLAY
+    }
+    *Option: HT_PATSIZE_6x6_M
+    {
+        *rcNameID: =HT_DITHER6X6_DISPLAY
+    }
+    *Option: HT_PATSIZE_8x8_M
+    {
+        *rcNameID: =HT_DITHER8X8_DISPLAY
+    }
+    *Option: ErrorDiffusion
+    {
+        *rcNameID: 330
+    }
+}
+
+*Feature: ContinuousMode
+{
+    *rcNameID: 430
+    *DefaultOption: OptionOFF
+    *Option: OptionON  *% Enabled
+    {
+        *rcNameID: 431
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.8
+            *Cmd: "<1B>L<FFFF>"
+        }
+    }
+    *Option: OptionOFF  *% Disabled
+    {
+        *rcNameID: 432
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.8
+            *Cmd: ""
+        }
+    }
+}
+
+
+*Command: CmdStartDoc
+{
+    *Order: DOC_SETUP.1
+    *Cmd: "<1B>Q<00001B>B<00>"
+}
+
+*switch: PaperSize
+{
+  *case: N30334
+  {
+    *Command: CmdStartPage
+    {
+      *Order: PAGE_SETUP.1
+      *Cmd: "<1B>B<01><1B>B<00><1B>B<00>"
+    }
+  }
+  *default
+  {
+    *Command: CmdStartPage
+    {
+      *Order: PAGE_SETUP.1
+      *Cmd: "<1B>B<00><1B>B<00><1B>B<00>"
+    }
+  }
+}
+
+*Command: CmdEndPage
+{
+    *Order: PAGE_FINISH.1
+    *Cmd: "<1B>E"
+}
+
+*switch: PaperSize
+{
+  *case: N30334
+  {
+    *Command: CmdEndJob
+    {
+        *Order: JOB_FINISH.1
+        *Cmd: "<1B>L<0800><1B>B<00>"
+    }
+  }
+  *case: ContinuousWide
+  {
+    *Command: CmdEndJob
+    {
+        *Order: JOB_FINISH.1
+        *Cmd: "<1B>B<00><1B>B<00><1B>B<00><1B>E"
+    }
+  }
+  *case: Banner
+  {
+    *Command: CmdEndJob
+    {
+        *Order: JOB_FINISH.1
+        *Cmd: "<1B>B<00><1B>B<00><1B>B<00><1B>E"
+    }
+  }
+  *default
+  {
+    *Command: CmdEndJob
+    {
+        *Order: JOB_FINISH.1
+        *Cmd: "<1B>B<00><1B>B<00><1B>B<00>"
+    }
+  }
+}
+
+*RotateCoordinate?: FALSE
+*RotateRaster?: FALSE
+*RotateFont?: FALSE
+*switch: Orientation
+{
+    *case: PORTRAIT
+    {
+        *TextCaps: LIST(TC_EA_DOUBLE,TC_IA_ABLE,TC_RA_ABLE)
+    }
+    *case: LANDSCAPE_CC270
+    {
+        *TextCaps: LIST(TC_RA_ABLE)
+    }
+}
+*CursorXAfterCR: AT_CURSOR_X_ORIGIN
+*%YMoveAttributes: LIST(SEND_CR_FIRST)
+*XMoveThreshold: 0
+*%YMoveThreshold: *
+*XMoveUnit: 408
+*Command: CmdXMoveAbsolute { *Cmd : "" }
+
+
+*% *switch: Resolution
+*%{
+*%    *case: Option1
+*%    {
+*%        *YMoveUnit: 300
+*%        *Command: CmdYMoveRelDown { *Cmd : "<1B>f<01>" %c[0,255]{max_repeat((DestYRel/2))} }
+*%    }
+
+*%    *case: Option2
+*%    {
+*%        *YMoveUnit: 600
+*%        *Command: CmdYMoveRelDown { *Cmd : "<1B>f<01>" %c[0,255]{max_repeat(DestYRel)} }
+*%    }
+*%}
+
+
+
+*Command: CmdCR { *Cmd : "" }
+*Command: CmdLF { *Cmd : "" }
+*Command: CmdFF { *Cmd : "" }
+*EjectPageWithFF?: TRUE
+*OutputDataFormat: H_BYTE
+*OptimizeLeftBound?: FALSE
+*CursorXAfterSendBlockData: AT_CURSOR_X_ORIGIN
+*CursorYAfterSendBlockData: AUTO_INCREMENT

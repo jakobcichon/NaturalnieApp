@@ -1,0 +1,898 @@
+; DYMO LabelWriter Installation File
+; Copyright (c) 2002,2010 Sanford, L.P.
+
+[Version]
+Signature="$Windows NT$"
+Provider=DYMO
+ClassGUID={4D36E979-E325-11CE-BFC1-08002BE10318}
+Class=Printer
+DriverPackageType=PlugAndPlay
+DriverPackageDisplayName="DYMO Label Printer Drivers"
+CatalogFile.NT=DYMO.CAT
+DriverVer=02/25/2013,8.5.0.542
+
+;
+; Manufacturer section.
+;
+; This section lists all of the manufacturers 
+; that we will display in the Dialog box
+;
+[Manufacturer]
+"DYMO" = DYMO, NTx86, NTamd64, NTx86.6.0, NTamd64.6.0
+
+;
+; Model sections. 
+; 
+; Each section here corresponds with an entry listed in the
+; [Manufacturer] section, above. The models will be displayed in the order
+; that they appear in the INF file.
+;
+[DYMO.NTx86]
+"DYMO LabelWriter 450"                  = LW_450,               USBPRINT\DYMOLabelWriter_450085C
+"DYMO LabelWriter 450 Turbo"            = LW_450_TURBO,         USBPRINT\DYMOLabelWriter_450_AA08
+"DYMO LabelWriter 450 Twin Turbo"       = LW_450_TWIN_TURBO,    USBPRINT\DYMOLabelWriter_450_6EB9
+"DYMO LabelWriter 450 DUO Label"        = DUO_LW_450,           USBPRINT\DYMOLabelWriter_450_E15E
+"DYMO LabelWriter 450 DUO Tape"         = DUO_D1_450,           USBPRINT\DYMOLabelWriter_450_5F1A    
+"DYMO LabelWriter 4XL"                  = LW_4XL,               USBPRINT\DYMOLabelWriter_4XL7971               
+"DYMO LabelWriter 400"                  = LW_400,               USBPRINT\DYMOLabelWriter_400585F
+"DYMO LabelWriter 400 Turbo"            = LW_400_TURBO,         USBPRINT\DYMOLabelWriter_400_95C8
+"DYMO LabelWriter Twin Turbo"           = LW_TWIN_TURBO,        USBPRINT\DYMOLabelWriter_TwinEE98
+"DYMO LabelWriter DUO Label"            = DUO_LW,               USBPRINT\DYMOLabelWriter_DUO_8381
+"DYMO LabelWriter DUO Tape"             = DUO_D1,               USBPRINT\DYMOLabelWriter_DUO_409B
+"DYMO LabelWriter DUO Tape 128"         = DUO_D1_128,           USBPRINT\DYMOLabelWriter_DUO_4D60    
+
+"DYMO LabelWriter 310"                  = LW_310,               USBPRINT\DYMOLabelWriter_31009EF
+"DYMO LabelWriter 310"                  = LW_310,               USBPRINT\DYMODYM000983B8
+"DYMO LabelWriter 315"                  = LW_315,               USBPRINT\DYMOLabelWriter_3150A2F
+"DYMO LabelWriter 315"                  = LW_315,               USBPRINT\DYMODYM0012D6F8
+"DYMO LabelWriter 320"                  = LW_320,               USBPRINT\DYMOLabelWriter_320F9EF
+"DYMO LabelWriter 320"                  = LW_320,               USBPRINT\DYMODYM00101779
+"DYMO LabelWriter 330-USB"              = LW_330,               USBPRINT\DYMOLabelWriter_33069EE
+"DYMO LabelWriter 330-USB"              = LW_330,               USBPRINT\DYMODYM00074739
+"DYMO LabelWriter 330 Turbo-USB"        = LW_330_Turbo,         USBPRINT\DYMOLabelWriter_330_B0AE
+"DYMO LabelWriter 330 Turbo-USB"        = LW_330_Turbo,         USBPRINT\DYMODYM00084379
+
+"DYMO LabelPOINT 350"                   = LP350,                USBPRINT\DYMOLabelPOINT_3501312
+"DYMO LabelMANAGER 450"                 = LM450,                USBPRINT\DYMOLabelMANAGER_4503198
+"DYMO LabelMANAGER PC II"               = LMPC2,                USBPRINT\DYMOLabelMANAGER_PC_F6B7
+
+"DYMO LabelWriter SE450"                = SE450,                USBPRINT\DYMOLabelWriter_SE458BE0
+
+"DYMO LabelManager PnP"                 = LMPNP,                USBPRINT\DYMOLabelManager_PnPE0A6
+"DYMO LabelManager Wireless PnP"        = LMPNPW,               USBPRINT\DYMOLabelManager_Wir9DBD
+"DYMO LabelManager 420P"                = LM420P,               USBPRINT\DYMOLabelManager_4206497               
+"DYMO LabelManager 280"                 = LM280,                USBPRINT\DYMOLabelManager_280B638               
+
+"DYMO LabelManager 500TS"               = LM500TS,              USBPRINT\DYMOLabelManager_5002B5B
+                                       
+[DYMO.NTamd64]
+"DYMO LabelWriter 450"                  = LW_450,               USBPRINT\DYMOLabelWriter_450085C
+"DYMO LabelWriter 450 Turbo"            = LW_450_TURBO,         USBPRINT\DYMOLabelWriter_450_AA08
+"DYMO LabelWriter 450 Twin Turbo"       = LW_450_TWIN_TURBO,    USBPRINT\DYMOLabelWriter_450_6EB9
+"DYMO LabelWriter 450 DUO Label"        = DUO_LW_450,           USBPRINT\DYMOLabelWriter_450_E15E
+"DYMO LabelWriter 450 DUO Tape"         = DUO_D1_450,           USBPRINT\DYMOLabelWriter_450_5F1A    
+"DYMO LabelWriter 4XL"                  = LW_4XL,               USBPRINT\DYMOLabelWriter_4XL7971               
+"DYMO LabelWriter 400"                  = LW_400,               USBPRINT\DYMOLabelWriter_400585F
+"DYMO LabelWriter 400 Turbo"            = LW_400_TURBO,         USBPRINT\DYMOLabelWriter_400_95C8
+"DYMO LabelWriter Twin Turbo"           = LW_TWIN_TURBO,        USBPRINT\DYMOLabelWriter_TwinEE98
+"DYMO LabelWriter DUO Label"            = DUO_LW,               USBPRINT\DYMOLabelWriter_DUO_8381
+"DYMO LabelWriter DUO Tape"             = DUO_D1,               USBPRINT\DYMOLabelWriter_DUO_409B
+"DYMO LabelWriter DUO Tape 128"         = DUO_D1_128,           USBPRINT\DYMOLabelWriter_DUO_4D60    
+"DYMO LabelMANAGER PC II"               = LMPC2,                USBPRINT\DYMOLabelMANAGER_PC_F6B7
+"DYMO LabelPOINT 350"                   = LP350,                USBPRINT\DYMOLabelPOINT_3501312
+"DYMO LabelMANAGER 450"                 = LM450,                USBPRINT\DYMOLabelMANAGER_4503198
+
+"DYMO LabelWriter 310"                  = LW_310,               USBPRINT\DYMOLabelWriter_31009EF
+"DYMO LabelWriter 310"                  = LW_310,               USBPRINT\DYMODYM000983B8
+"DYMO LabelWriter 315"                  = LW_315,               USBPRINT\DYMOLabelWriter_3150A2F
+"DYMO LabelWriter 315"                  = LW_315,               USBPRINT\DYMODYM0012D6F8
+"DYMO LabelWriter 320"                  = LW_320,               USBPRINT\DYMOLabelWriter_320F9EF
+"DYMO LabelWriter 320"                  = LW_320,               USBPRINT\DYMODYM00101779
+"DYMO LabelWriter 330-USB"              = LW_330,               USBPRINT\DYMOLabelWriter_33069EE
+"DYMO LabelWriter 330-USB"              = LW_330,               USBPRINT\DYMODYM00074739
+"DYMO LabelWriter 330 Turbo-USB"        = LW_330_Turbo,         USBPRINT\DYMOLabelWriter_330_B0AE
+"DYMO LabelWriter 330 Turbo-USB"        = LW_330_Turbo,         USBPRINT\DYMODYM00084379
+
+"DYMO LabelWriter SE450"                = SE450,                USBPRINT\DYMOLabelWriter_SE458BE0
+
+"DYMO LabelManager PnP"                 = LMPNP,                USBPRINT\DYMOLabelManager_PnPE0A6
+"DYMO LabelManager Wireless PnP"        = LMPNPW,               USBPRINT\DYMOLabelManager_Wir9DBD
+"DYMO LabelManager 420P"                = LM420P,               USBPRINT\DYMOLabelManager_4206497
+"DYMO LabelManager 280"                 = LM280,                USBPRINT\DYMOLabelManager_280B638               
+
+"DYMO LabelManager 500TS"               = LM500TS,              USBPRINT\DYMOLabelManager_5002B5B
+
+[DYMO.NTx86.6.0]
+"DYMO LabelWriter 450"                  = LW_450_VISTA,         USBPRINT\DYMOLabelWriter_450085C
+"DYMO LabelWriter 450 Turbo"            = LW_450_TURBO_VISTA,   USBPRINT\DYMOLabelWriter_450_AA08
+"DYMO LabelWriter 450 Twin Turbo"       = LW_450_TWIN_TURBO_VISTA,    USBPRINT\DYMOLabelWriter_450_6EB9
+"DYMO LabelWriter 450 DUO Label"        = DUO_LW_450_VISTA,           USBPRINT\DYMOLabelWriter_450_E15E
+"DYMO LabelWriter 450 DUO Tape"         = DUO_D1_450_VISTA,           USBPRINT\DYMOLabelWriter_450_5F1A    
+"DYMO LabelWriter 4XL"                  = LW_4XL_VISTA,         USBPRINT\DYMOLabelWriter_4XL7971               
+"DYMO LabelWriter 400"                  = LW_400_VISTA,         USBPRINT\DYMOLabelWriter_400585F
+"DYMO LabelWriter 400 Turbo"            = LW_400_TURBO_VISTA,   USBPRINT\DYMOLabelWriter_400_95C8
+"DYMO LabelWriter Twin Turbo"           = LW_TWIN_TURBO_VISTA,  USBPRINT\DYMOLabelWriter_TwinEE98
+"DYMO LabelWriter DUO Label"            = DUO_LW_VISTA,         USBPRINT\DYMOLabelWriter_DUO_8381
+"DYMO LabelWriter DUO Tape"             = DUO_D1_VISTA,         USBPRINT\DYMOLabelWriter_DUO_409B
+"DYMO LabelWriter DUO Tape 128"         = DUO_D1_128_VISTA,     USBPRINT\DYMOLabelWriter_DUO_4D60    
+
+"DYMO LabelWriter 310"                  = LW_310_VISTA,         USBPRINT\DYMOLabelWriter_31009EF
+"DYMO LabelWriter 310"                  = LW_310_VISTA,         USBPRINT\DYMODYM000983B8
+"DYMO LabelWriter 315"                  = LW_315_VISTA,         USBPRINT\DYMOLabelWriter_3150A2F
+"DYMO LabelWriter 315"                  = LW_315_VISTA,         USBPRINT\DYMODYM0012D6F8
+"DYMO LabelWriter 320"                  = LW_320_VISTA,         USBPRINT\DYMOLabelWriter_320F9EF
+"DYMO LabelWriter 320"                  = LW_320_VISTA,         USBPRINT\DYMODYM00101779
+"DYMO LabelWriter 330-USB"              = LW_330_VISTA,         USBPRINT\DYMOLabelWriter_33069EE
+"DYMO LabelWriter 330-USB"              = LW_330_VISTA,         USBPRINT\DYMODYM00074739
+"DYMO LabelWriter 330 Turbo-USB"        = LW_330_Turbo_VISTA,   USBPRINT\DYMOLabelWriter_330_B0AE
+"DYMO LabelWriter 330 Turbo-USB"        = LW_330_Turbo_VISTA,   USBPRINT\DYMODYM00084379
+
+"DYMO LabelPOINT 350"                   = LP350_VISTA,          USBPRINT\DYMOLabelPOINT_3501312
+"DYMO LabelMANAGER 450"                 = LM450_VISTA,          USBPRINT\DYMOLabelMANAGER_4503198
+"DYMO LabelMANAGER PC II"               = LMPC2_VISTA,          USBPRINT\DYMOLabelMANAGER_PC_F6B7
+
+"DYMO LabelWriter SE450"                = SE450_VISTA,          USBPRINT\DYMOLabelWriter_SE458BE0
+
+"DYMO LabelManager PnP"                 = LMPNP_VISTA,          USBPRINT\DYMOLabelManager_PnPE0A6
+"DYMO LabelManager Wireless PnP"        = LMPNPW_VISTA,         USBPRINT\DYMOLabelManager_Wir9DBD
+"DYMO LabelManager 420P"                = LM420P_VISTA,         USBPRINT\DYMOLabelManager_4206497
+"DYMO LabelManager 280"                 = LM280_VISTA,          USBPRINT\DYMOLabelManager_280B638               
+
+"DYMO LabelManager 500TS"               = LM500TS_VISTA,        USBPRINT\DYMOLabelManager_5002B5B
+                                       
+[DYMO.NTamd64.6.0]
+"DYMO LabelWriter 450"                  = LW_450_VISTA,         USBPRINT\DYMOLabelWriter_450085C
+"DYMO LabelWriter 450 Turbo"            = LW_450_TURBO_VISTA,   USBPRINT\DYMOLabelWriter_450_AA08
+"DYMO LabelWriter 450 Twin Turbo"       = LW_450_TWIN_TURBO_VISTA,    USBPRINT\DYMOLabelWriter_450_6EB9
+"DYMO LabelWriter 450 DUO Label"        = DUO_LW_450_VISTA,           USBPRINT\DYMOLabelWriter_450_E15E
+"DYMO LabelWriter 450 DUO Tape"         = DUO_D1_450_VISTA,           USBPRINT\DYMOLabelWriter_450_5F1A    
+"DYMO LabelWriter 4XL"                  = LW_4XL_VISTA,         USBPRINT\DYMOLabelWriter_4XL7971
+"DYMO LabelWriter 400"                  = LW_400_VISTA,         USBPRINT\DYMOLabelWriter_400585F
+"DYMO LabelWriter 400 Turbo"            = LW_400_TURBO_VISTA,   USBPRINT\DYMOLabelWriter_400_95C8
+"DYMO LabelWriter Twin Turbo"           = LW_TWIN_TURBO_VISTA,  USBPRINT\DYMOLabelWriter_TwinEE98
+"DYMO LabelWriter DUO Label"            = DUO_LW_VISTA,         USBPRINT\DYMOLabelWriter_DUO_8381
+"DYMO LabelWriter DUO Tape"             = DUO_D1_VISTA,         USBPRINT\DYMOLabelWriter_DUO_409B
+"DYMO LabelWriter DUO Tape 128"         = DUO_D1_128_VISTA,     USBPRINT\DYMOLabelWriter_DUO_4D60    
+"DYMO LabelMANAGER PC II"               = LMPC2_VISTA,          USBPRINT\DYMOLabelMANAGER_PC_F6B7
+"DYMO LabelPOINT 350"                   = LP350_VISTA,          USBPRINT\DYMOLabelPOINT_3501312
+"DYMO LabelMANAGER 450"                 = LM450_VISTA,          USBPRINT\DYMOLabelMANAGER_4503198
+
+"DYMO LabelWriter 310"                  = LW_310_VISTA,         USBPRINT\DYMOLabelWriter_31009EF
+"DYMO LabelWriter 310"                  = LW_310_VISTA,         USBPRINT\DYMODYM000983B8
+"DYMO LabelWriter 315"                  = LW_315_VISTA,         USBPRINT\DYMOLabelWriter_3150A2F
+"DYMO LabelWriter 315"                  = LW_315_VISTA,         USBPRINT\DYMODYM0012D6F8
+"DYMO LabelWriter 320"                  = LW_320_VISTA,         USBPRINT\DYMOLabelWriter_320F9EF
+"DYMO LabelWriter 320"                  = LW_320_VISTA,         USBPRINT\DYMODYM00101779
+"DYMO LabelWriter 330-USB"              = LW_330_VISTA,         USBPRINT\DYMOLabelWriter_33069EE
+"DYMO LabelWriter 330-USB"              = LW_330_VISTA,         USBPRINT\DYMODYM00074739
+"DYMO LabelWriter 330 Turbo-USB"        = LW_330_Turbo_VISTA,   USBPRINT\DYMOLabelWriter_330_B0AE
+"DYMO LabelWriter 330 Turbo-USB"        = LW_330_Turbo_VISTA,   USBPRINT\DYMODYM00084379
+
+"DYMO LabelWriter SE450"                = SE450_VISTA,          USBPRINT\DYMOLabelWriter_SE458BE0
+
+"DYMO LabelManager PnP"                 = LMPNP_VISTA,          USBPRINT\DYMOLabelManager_PnPE0A6
+"DYMO LabelManager Wireless PnP"        = LMPNPW_VISTA,         USBPRINT\DYMOLabelManager_Wir9DBD
+"DYMO LabelManager 420P"                = LM420P_VISTA,         USBPRINT\DYMOLabelManager_4206497     
+"DYMO LabelManager 280"                 = LM280_VISTA,          USBPRINT\DYMOLabelManager_280B638               
+
+"DYMO LabelManager 500TS"               = LM500TS_VISTA,        USBPRINT\DYMOLabelManager_5002B5B
+
+[DYMO]
+"DYMO LabelWriter 450"                  = LW_450,               USBPRINT\DYMOLabelWriter_450085C
+"DYMO LabelWriter 450 Turbo"            = LW_450_TURBO,         USBPRINT\DYMOLabelWriter_450_AA08
+"DYMO LabelWriter 450 Twin Turbo"       = LW_450_TWIN_TURBO,    USBPRINT\DYMOLabelWriter_450_6EB9
+"DYMO LabelWriter 450 DUO Label"        = DUO_LW_450,           USBPRINT\DYMOLabelWriter_450_E15E
+"DYMO LabelWriter 450 DUO Tape"         = DUO_D1_450,           USBPRINT\DYMOLabelWriter_450_5F1A    
+"DYMO LabelWriter 4XL"                  = LW_4XL,               USBPRINT\DYMOLabelWriter_4XL7971
+"DYMO LabelWriter 400"                  = LW_400,               USBPRINT\DYMOLabelWriter_400585F
+"DYMO LabelWriter 400 Turbo"            = LW_400_TURBO,         USBPRINT\DYMOLabelWriter_400_95C8
+"DYMO LabelWriter Twin Turbo"           = LW_TWIN_TURBO,        USBPRINT\DYMOLabelWriter_TwinEE98
+"DYMO LabelWriter DUO Label"            = DUO_LW,               USBPRINT\DYMOLabelWriter_DUO_8381
+"DYMO LabelWriter DUO Tape"             = DUO_D1,               USBPRINT\DYMOLabelWriter_DUO_409B
+"DYMO LabelWriter DUO Tape 128"         = DUO_D1_128,           USBPRINT\DYMOLabelWriter_DUO_4D60    
+
+"DYMO LabelWriter 310"                  = LW_310,               USBPRINT\DYMOLabelWriter_31009EF
+"DYMO LabelWriter 310"                  = LW_310,               USBPRINT\DYMODYM000983B8
+"DYMO LabelWriter 315"                  = LW_315,               USBPRINT\DYMOLabelWriter_3150A2F
+"DYMO LabelWriter 315"                  = LW_315,               USBPRINT\DYMODYM0012D6F8
+"DYMO LabelWriter 320"                  = LW_320,               USBPRINT\DYMOLabelWriter_320F9EF
+"DYMO LabelWriter 320"                  = LW_320,               USBPRINT\DYMODYM00101779
+"DYMO LabelWriter 330-USB"              = LW_330,               USBPRINT\DYMOLabelWriter_33069EE
+"DYMO LabelWriter 330-USB"              = LW_330,               USBPRINT\DYMODYM00074739
+"DYMO LabelWriter 330 Turbo-USB"        = LW_330_Turbo,         USBPRINT\DYMOLabelWriter_330_B0AE
+"DYMO LabelWriter 330 Turbo-USB"        = LW_330_Turbo,         USBPRINT\DYMODYM00084379
+
+"DYMO LabelPOINT 350"                   = LP350,                USBPRINT\DYMOLabelPOINT_3501312
+"DYMO LabelMANAGER 450"                 = LM450,                USBPRINT\DYMOLabelMANAGER_4503198
+"DYMO LabelMANAGER PC II"               = LMPC2,                USBPRINT\DYMOLabelMANAGER_PC_F6B7
+
+"DYMO LabelWriter SE450"                = SE450,                USBPRINT\DYMOLabelWriter_SE458BE0
+
+"DYMO LabelManager PnP"                 = LMPNP,                USBPRINT\DYMOLabelManager_PnPE0A6
+"DYMO LabelManager Wireless PnP"        = LMPNPW,               USBPRINT\DYMOLabelManager_Wir9DBD
+"DYMO LabelManager 420P"                = LM420P,               USBPRINT\DYMOLabelManager_4206497
+"DYMO LabelManager 280"                 = LM280,                USBPRINT\DYMOLabelManager_280B638               
+
+"DYMO LabelManager 500TS"               = LM500TS,              USBPRINT\DYMOLabelManager_5002B5B
+
+;
+; Installer Sections
+;
+; These sections control file installation, and reference all files that
+; need to be copied. The section name will be assumed to be the driver
+; file, unless there is an explicit DriverFile section listed.
+;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LW 310
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LW_310]
+CopyFiles=@lw310.GPD,@LW.INI,OEMUNI
+DataSection=UNIDRV_DATA
+DataFile=lw310.GPD
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LW_310_VISTA]
+CopyFiles=@lw310.GPD,@LW.INI,OEMUNI
+DataFile=lw310.GPD
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LW 315
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LW_315]
+CopyFiles=@lw315.GPD,@LW.INI,OEMUNI
+DataSection=UNIDRV_DATA
+DataFile=lw315.GPD
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LW_315_VISTA]
+CopyFiles=@lw315.GPD,@LW.INI,OEMUNI
+DataFile=lw315.GPD
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LW 320
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LW_320]
+CopyFiles=@lw320.GPD,@LW.INI,OEMUNI
+DataSection=UNIDRV_DATA
+DataFile=lw320.GPD
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LW_320_VISTA]
+CopyFiles=@lw320.GPD,@LW.INI,OEMUNI
+DataFile=lw320.GPD
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LW 330
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LW_330]
+CopyFiles=@lw330.GPD,@LW.INI,OEMUNI
+DataSection=UNIDRV_DATA
+DataFile=lw330.GPD
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LW_330_VISTA]
+CopyFiles=@lw330.GPD,@LW.INI,OEMUNI
+DataFile=lw330.GPD
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LW 330 Turbo
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LW_330_Turbo]
+CopyFiles=@lw330t.GPD,@LW.INI,OEMUNI
+DataSection=UNIDRV_DATA
+DataFile=lw330t.GPD
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LW_330_Turbo_VISTA]
+CopyFiles=@lw330t.GPD,@LW.INI,OEMUNI
+DataFile=lw330t.GPD
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LW 450
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LW_450]
+CopyFiles=@lw450.GPD, LW450_OEMUNI, LW400MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=lw450.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LW_450_VISTA]
+CopyFiles=@lw450.GPD, LW450_OEMUNI, LW400MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=lw450.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LW 450 Turbo
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LW_450_TURBO]
+CopyFiles=@lw450t.GPD, LW450_OEMUNI, LW400MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=lw450t.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LW_450_TURBO_VISTA]
+CopyFiles=@lw450t.GPD, LW450_OEMUNI, LW400MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=lw450t.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LW 450 Twin Turbo
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LW_450_TWIN_TURBO]
+CopyFiles=@lw450tt.GPD, LW450_OEMUNI, LW400MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=lw450tt.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LW_450_TWIN_TURBO_VISTA]
+CopyFiles=@lw450tt.GPD, LW450_OEMUNI, LW400MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=lw450tt.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LW 4XL
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LW_4XL]
+CopyFiles=@lw4XL.GPD, LW400_OEMUNI, LW400MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=lw4XL.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LW_4XL_VISTA]
+CopyFiles=@lw4XL.GPD, LW400_OEMUNI, LW400MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=lw4XL.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LW 400
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LW_400]
+CopyFiles=@lw400.GPD, LW400_OEMUNI, LW400MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=lw400.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LW_400_VISTA]
+CopyFiles=@lw400.GPD, LW400_OEMUNI, LW400MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=lw400.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LW 400 Turbo
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LW_400_TURBO]
+CopyFiles=@lw400t.GPD, LW400_OEMUNI, LW400MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=lw400t.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LW_400_TURBO_VISTA]
+CopyFiles=@lw400t.GPD, LW400_OEMUNI, LW400MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=lw400t.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LW TWIN TURBO
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LW_TWIN_TURBO]
+CopyFiles=@lw400tt.GPD, LW400_OEMUNI, LW400MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=lw400tt.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LW_TWIN_TURBO_VISTA]
+CopyFiles=@lw400tt.GPD, LW400_OEMUNI, LW400MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=lw400tt.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; DUO LW
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[DUO_LW]
+CopyFiles=@duolw.GPD, LW400_OEMUNI, LW400MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=duolw.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[DUO_LW_VISTA]
+CopyFiles=@duolw.GPD, LW400_OEMUNI, LW400MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=duolw.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; DUO LW 450
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[DUO_LW_450]
+CopyFiles=@duolw450.GPD, LW450_OEMUNI, LW400MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=duolw450.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[DUO_LW_450_VISTA]
+CopyFiles=@duolw450.GPD, LW450_OEMUNI, LW400MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=duolw450.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; DUO D1
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[DUO_D1]
+CopyFiles=@DUO_D1.DLL, @LMUI.DLL, @DUO_D1.GPD, @DUO_D1.INI, DUO_D1MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=DUO_D1.GPD
+LanguageMonitor="DYMO DUO D1 Monitor,DUO_D1MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[DUO_D1_VISTA]
+CopyFiles=@DUO_D1.DLL, @LMUI.DLL, @DUO_D1.GPD, @DUO_D1.INI, DUO_D1MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=DUO_D1.GPD
+LanguageMonitor="DYMO DUO D1 Monitor,DUO_D1MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+[DUO_D1_128]
+CopyFiles=@DUO_D1_128.DLL, @LMUI.DLL, @DUO_D1_128.GPD, @DUO_D1_128.INI, DUO_128MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=DUO_D1_128.GPD
+LanguageMonitor="DYMO DUO D1 128 Monitor,DUO_128MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[DUO_D1_128_VISTA]
+CopyFiles=@DUO_D1_128.DLL, @LMUI.DLL, @DUO_D1_128.GPD, @DUO_D1_128.INI, DUO_128MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=DUO_D1_128.GPD
+LanguageMonitor="DYMO DUO D1 128 Monitor,DUO_128MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+[DUO_D1_450]
+CopyFiles=@DUO_D1_450.DLL, @LMUI.DLL, @DUO_D1_450.GPD, @DUO_D1_450.INI, DUO_450MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=DUO_D1_450.GPD
+LanguageMonitor="DYMO DUO D1 450 Monitor,DUO_450MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[DUO_D1_450_VISTA]
+CopyFiles=@DUO_D1_450.DLL, @LMUI.DLL, @DUO_D1_450.GPD, @DUO_D1_450.INI, DUO_450MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=DUO_D1_450.GPD
+LanguageMonitor="DYMO DUO D1 450 Monitor,DUO_450MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LP350
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LP350]
+CopyFiles=@LP350.GPD,@LP350.INI,OEMUNI_LP350, LP350MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=LP350.GPD
+LanguageMonitor="DYMO LP350 Monitor,LP350MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LP350_VISTA]
+CopyFiles=@LP350.GPD,@LP350.INI,OEMUNI_LP350, LP350MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=LP350.GPD
+LanguageMonitor="DYMO LP350 Monitor,LP350MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LM450
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LM450]
+CopyFiles=@LM450.GPD,@LM450.INI,OEMUNI450, LM450MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=LM450.GPD
+LanguageMonitor="DYMO LM450 Monitor,LM450MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LM450_VISTA]
+CopyFiles=@LM450.GPD,@LM450.INI,OEMUNI450, LM450MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=LM450.GPD
+LanguageMonitor="DYMO LM450 Monitor,LM450MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LMPC2
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LMPC2]
+CopyFiles=@LMPC2.GPD,@LMPC2.INI,OEMUNI_LMPC2, LMPC2_MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=LMPC2.GPD
+LanguageMonitor="DYMO LabelMANAGER PC II Monitor,LMPC2_MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LMPC2_VISTA]
+CopyFiles=@LMPC2.GPD,@LMPC2.INI,OEMUNI_LMPC2, LMPC2_MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=LMPC2.GPD
+LanguageMonitor="DYMO LabelMANAGER PC II Monitor,LMPC2_MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LM500TS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LM500TS]
+CopyFiles=@LM500TS.GPD,@LM500TS.INI,OEMUNI_LM500TS, LM500TS_MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=LM500TS.GPD
+LanguageMonitor="DYMO LabelManager 500TS Monitor,LM500TS_MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LM500TS_VISTA]
+CopyFiles=@LM500TS.GPD,@LM500TS.INI,OEMUNI_LM500TS, LM500TS_MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=LM500TS.GPD
+LanguageMonitor="DYMO LabelManager 500TS Monitor,LM500TS_MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LabelWriter SE450
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[SE450]
+CopyFiles=@se450.GPD, SE450_OEMUNI, LW400MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=se450.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[SE450_VISTA]
+CopyFiles=@se450.GPD, SE450_OEMUNI, LW400MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=se450.GPD
+LanguageMonitor="DYMO LabelWriter Monitor,LW400MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LMPNP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LMPNP]
+CopyFiles=@LMPNP.GPD,@LMPNP.INI,OEMUNI_LMPNP, LMPNP_MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=LMPNP.GPD
+LanguageMonitor="DYMO LabelManager PnP Monitor,LMPNP_MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LMPNP_VISTA]
+CopyFiles=@LMPNP.GPD,@LMPNP.INI,OEMUNI_LMPNP, LMPNP_MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=LMPNP.GPD
+LanguageMonitor="DYMO LabelManager PnP Monitor,LMPNP_MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LMPNPW
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LMPNPW]
+CopyFiles=@LMPNPW.GPD,@LMPNPW.INI,OEMUNI_LMPNPW, LMPNPW_MON.DLL, DYMO_SNMP, @DYMOSnmp.dll
+DataSection=UNIDRV_DATA
+DataFile=LMPNPW.GPD
+LanguageMonitor="DYMO LabelManager Wireless PnP Monitor,LMPNPW_MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LMPNPW_VISTA]
+CopyFiles=@LMPNPW.GPD,@LMPNPW.INI,OEMUNI_LMPNPW, LMPNPW_MON.DLL, DYMO_SNMP, @DYMOSnmp.dll, AsyncUI, @DYMOAsyncUI.dll
+DataFile=LMPNPW.GPD
+LanguageMonitor="DYMO LabelManager Wireless PnP Monitor,LMPNPW_MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LM420P
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LM420P]
+CopyFiles=@LM420P.GPD,@LM420P.INI,OEMUNI_LM420P, LM420P_MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=LM420P.GPD
+LanguageMonitor="DYMO LabelManager 420P Monitor,LM420P_MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LM420P_VISTA]
+CopyFiles=@LM420P.GPD,@LM420P.INI,OEMUNI_LM420P, LM420P_MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=LM420P.GPD
+LanguageMonitor="DYMO LabelManager 420P Monitor,LM420P_MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; LM280
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LM280]
+CopyFiles=@LM280.GPD,@LM280.INI,OEMUNI_LM280, LM280_MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=LM280.GPD
+LanguageMonitor="DYMO LabelManager 280 Monitor,LM280_MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LM280_VISTA]
+CopyFiles=@LM280.GPD,@LM280.INI,OEMUNI_LM280, LM280_MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=LM280.GPD
+LanguageMonitor="DYMO LabelManager 280 Monitor,LM280_MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;These sections are to identify the Vista drivers as "Package Aware" to allow them to
+;take advantage of features such as "Package Point-and-Print" in Vista and above
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[PrinterPackageInstallation.x86]
+PackageAware=TRUE
+CoreDriverDependencies={D20EA372-DD35-4950-9ED8-A6335AFE79F0}
+
+[PrinterPackageInstallation.amd64]
+PackageAware=TRUE
+CoreDriverDependencies={D20EA372-DD35-4950-9ED8-A6335AFE79F0}
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  INF GENERAL SECTIONs
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LW400MON.DLL]
+LW400MON.DLL,,,0x00000020
+
+[DUO_D1MON.DLL]
+DUO_D1MON.DLL,,,0x00000020
+
+[DUO_128MON.DLL]
+DUO_128MON.DLL,,,0x00000020
+
+[DUO_450MON.DLL]
+DUO_450MON.DLL,,,0x00000020
+
+[LMPC2_MON.DLL]
+LMPC2_MON.DLL,,,0x00000020
+
+[LMPNP_MON.DLL]
+LMPNP_MON.DLL,,,0x00000020
+
+[LMPNPW_MON.DLL]
+LMPNPW_MON.DLL,,,0x00000020
+
+[LM420P_MON.DLL]
+LM420P_MON.DLL,,,0x00000020
+
+[LM280_MON.DLL]
+LM280_MON.DLL,,,0x00000020
+
+[LM500TS_MON.DLL]
+LM500TS_MON.DLL,,,0x00000020
+
+[OEMUNI]
+LW.DLL
+
+[LW450_OEMUNI]
+LW400.DLL
+LW400_UI.DLL
+LW450C.GPD
+LW400.INI
+
+[LW400_OEMUNI]
+LW400.DLL
+LW400_UI.DLL
+LW400C.GPD
+LW400.INI
+
+[SE450_OEMUNI]
+LW400.DLL
+LW400_UI.DLL
+LW400.INI
+
+[OEMUNI_LP350]
+LP350.DLL
+LMUI.DLL
+
+[OEMUNI450]
+LM450.DLL
+LMUI.DLL
+
+[OEMUNI_LMPC2]
+LMPC2.DLL
+LMUI.DLL
+
+[OEMUNI_LM500TS]
+LM500TS.DLL
+LMUI.DLL
+
+[OEMUNI_LMPNP]
+LMPNP.DLL
+LMUI.DLL
+
+[OEMUNI_LMPNPW]
+LMPNPW.DLL
+LMUI.DLL
+
+[OEMUNI_LM420P]
+LM420P.DLL
+LMUI.DLL
+
+[OEMUNI_LM280]
+LM280.DLL
+LMUI.DLL
+
+[LP350MON.DLL]
+LP350MON.DLL,,,0x00000020
+
+[LM450MON.DLL]
+LM450MON.DLL,,,0x00000020
+
+[AsyncUI]
+DYMOAsyncUI.dll,,,0x00000020
+
+[DYMO_SNMP]
+DYMOSnmp.dll,,,0x00000020
+
+
+;
+;  Location of source files not in Layout.inf.
+;
+
+[DestinationDirs]
+DefaultDestDir=66000
+AsyncUI=66002
+DYMO_SNMP=66002
+
+[SourceDisksNames.x86]
+1 = %DiskName%,,,"i386"
+2 = %DiskName%,,,
+
+[SourceDisksNames.amd64]
+1 = %DiskName%,,,"amd64"
+2 = %DiskName%,,,
+
+[SourceDisksFiles]
+DYMOAsyncUI.dll = 1
+DYMOSnmp.dll    = 1
+LW.DLL          = 1
+LW.INI          = 2
+LW310.GPD       = 2
+LW315.GPD       = 2
+LW320.GPD       = 2
+LW330.GPD       = 2
+LW330T.GPD      = 2
+
+LW400MON.DLL    = 1
+LW400.DLL       = 1
+LW400_UI.DLL    = 1
+LW400.INI       = 2
+LW450.GPD       = 2
+LW450C.GPD      = 2
+LW450T.GPD      = 2
+LW450TT.GPD     = 2
+LW4XL.GPD       = 2
+LW400.GPD       = 2
+LW400C.GPD      = 2
+LW400T.GPD      = 2
+LW400TT.GPD     = 2
+DUOLW.GPD       = 2
+DUOLW450.GPD    = 2
+DUO_D1.GPD      = 2
+DUO_D1.DLL      = 1
+DUO_D1_128.DLL  = 1
+DUO_D1_128.GPD  = 2
+DUO_D1_450.DLL  = 1
+DUO_D1_450.GPD  = 2
+;DUO_D1UI.DLL    = 1
+DUO_D1.INI      = 2
+DUO_D1_128.INI  = 2
+DUO_D1_450.INI  = 2
+DUO_D1MON.DLL   = 1
+DUO_128MON.DLL  = 1
+DUO_450MON.DLL  = 1
+
+LP350.DLL      = 1
+;LP350UI.DLL    = 1
+LP350MON.DLL   = 1
+LP350.GPD      = 2
+LP350.INI      = 2
+
+LM450.DLL      = 1
+;LM450UI.DLL    = 1
+LM450MON.DLL   = 1
+LM450.GPD      = 2
+LM450.INI      = 2
+
+LMPC2.DLL      = 1
+;LMPC2UI.DLL    = 1
+LMPC2.GPD      = 2
+LMPC2.INI      = 2
+LMPC2_MON.DLL  = 1
+
+LM500TS.DLL      = 1
+LM500TS.GPD      = 2
+LM500TS.INI      = 2
+LM500TS_MON.DLL  = 1
+
+LMUI.DLL       = 1
+
+SE450.GPD      = 2
+
+LMPNP.DLL      = 1
+LMPNP.GPD      = 2
+LMPNP.INI      = 2
+LMPNP_MON.DLL  = 1
+
+LMPNPW.DLL     = 1
+LMPNPW.GPD     = 2
+LMPNPW.INI     = 2
+LMPNPW_MON.DLL = 1
+
+LM420P.DLL      = 1
+LM420P.GPD      = 2
+LM420P.INI      = 2
+LM420P_MON.DLL  = 1
+
+LM280.DLL      = 1
+LM280.GPD      = 2
+LM280.INI      = 2
+LM280_MON.DLL  = 1
+
+;
+; Localizable Strings
+;
+[Strings]
+DYMO                    = "DYMO"
+DiskName                = "DYMO LabelWriter CD-ROM"

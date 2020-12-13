@@ -60,6 +60,13 @@
     <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\packages\BouncyCastle.1.8.6.1\lib\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
+    <Reference Include="DYMO.Common, Version=8.6.1.42858, Culture=neutral, PublicKeyToken=5426002a38745af9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dymo Printer\DYMO.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="DYMO.Label.Framework">
+      <HintPath>Dymo Printer\DYMO.Label.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -89,6 +96,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PrintingSupportLibrary">
+      <HintPath>Dymo Printer\PrintingSupportLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
@@ -148,6 +158,7 @@
     <Compile Include="Database\Database.cs" />
     <Compile Include="Database\DatabaseCommands.cs" />
     <Compile Include="Database\ShopContext.cs" />
+    <Compile Include="Dymo Printer\General.cs" />
     <Compile Include="ElzabDriver\ElzabDriver.cs" />
     <Compile Include="ElzabDriver\ElzabCommands.cs" />
     <Compile Include="Forms\ElzabInfo.cs">
@@ -261,6 +272,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

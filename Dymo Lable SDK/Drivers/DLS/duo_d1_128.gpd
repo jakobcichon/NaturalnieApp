@@ -1,0 +1,598 @@
+*GPDSpecVersion: "1.0"
+*Include: "StdNames.gpd"
+*GPDFileVersion: "8.5.0.1733"
+*GPDFileName: "duo_d1_128.GPD"
+*ModelName: "DYMO LabelWriter DUO Tape 128"
+*MasterUnits: PAIR(180, 180)
+*ResourceDLL: "duo_d1_128.dll"
+*PrinterType: SERIAL
+
+*%////////////////////////////////////////////////////////////
+*% Standard features
+*%////////////////////////////////////////////////////////////
+
+*Feature: Orientation
+{
+    *rcNameID: =ORIENTATION_DISPLAY
+    *DefaultOption: LANDSCAPE_CC270
+    *Option: PORTRAIT
+    {
+        *rcNameID: =PORTRAIT_DISPLAY
+    }
+    *Option: LANDSCAPE_CC270
+    {
+        *rcNameID: =LANDSCAPE_DISPLAY
+    }
+}
+
+*Feature: InputBin
+{
+    *rcNameID: =PAPER_SOURCE_DISPLAY
+    *DefaultOption: Option1
+    *Option: Option1
+    {
+        *rcNameID: 3
+    }
+}
+
+*Feature: Resolution
+{
+    *rcNameID: =RESOLUTION_DISPLAY
+    *DefaultOption: Option1
+    *Option: Option1
+    {
+        *Name: "180 x 180 " =DOTS_PER_INCH
+        *DPI: PAIR(180, 180)
+        *TextDPI: PAIR(180, 180)
+        *SpotDiameter: 120
+        *Command: CmdSendBlockData { *Cmd : "" }
+    }
+}
+
+*Feature: PaperSize
+{
+    *rcNameID: =PAPER_SIZE_DISPLAY
+    *DefaultOption: AddressLabel
+    *Option: AddressLabel
+    {
+        *rcNameID: 101 *% Address Label
+        *PageDimensions: PAIR(170, 630)
+        *PrintableArea: PAIR(128, 480)
+        *PrintableOrigin: PAIR(21, 75)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.8
+            *Cmd: ""
+        }
+        *Constraints: LIST(LabelWidth.Option6mm, LabelWidth.Option9mm, LabelWidth.Option12mm, LabelWidth.Option18mm)
+    }
+    *Option: LargePendaplex
+    {
+        *rcNameID: 102 *% Large Pendaplex
+        *PageDimensions: PAIR(86, 630)
+        *PrintableArea: PAIR(64, 480)
+        *PrintableOrigin: PAIR(11, 75)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.8
+            *Cmd: ""
+        }
+       *Constraints: LIST(LabelWidth.Option6mm, LabelWidth.Option9mm, LabelWidth.Option18mm, LabelWidth.Option24mm)
+    }
+    *Option: SmallPendaflex
+    {
+        *rcNameID: 103 *% Small Pendaflex
+        *PageDimensions: PAIR(86, 360)
+        *PrintableArea: PAIR(64, 210)
+        *PrintableOrigin: PAIR(11, 75)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.8
+            *Cmd: ""
+        }
+        *Constraints: LIST(LabelWidth.Option6mm, LabelWidth.Option9mm, LabelWidth.Option18mm, LabelWidth.Option24mm)
+    }
+    *Option: 1_3FileFolder
+    {
+        *rcNameID: 104 *% 1/3 FileFolder
+        *PageDimensions: PAIR(86, 630)
+        *PrintableArea: PAIR(64, 480)
+        *PrintableOrigin: PAIR(11, 75)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.8
+            *Cmd: ""
+        }
+        *Constraints: LIST(LabelWidth.Option6mm, LabelWidth.Option9mm, LabelWidth.Option18mm, LabelWidth.Option24mm)
+    }
+    *Option: 1_5FileFolder
+    {
+        *rcNameID: 105 *% 1/5 FileFolder
+        *PageDimensions: PAIR(86, 360)
+        *PrintableArea: PAIR(64, 210)
+        *PrintableOrigin: PAIR(11, 75)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.8
+            *Cmd: ""
+        }
+        *Constraints: LIST(LabelWidth.Option6mm, LabelWidth.Option9mm, LabelWidth.Option18mm, LabelWidth.Option24mm)
+    }
+    *Option: 6mmLabel
+    {
+        *rcNameID: 106 *% 6mm Label
+        *PageDimensions: PAIR(44, 630)
+        *PrintableArea: PAIR(36, 480)
+        *PrintableOrigin: PAIR(4, 75)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.8
+            *Cmd: ""
+        }
+        *Constraints: LIST(LabelWidth.Option24mm, LabelWidth.Option9mm, LabelWidth.Option12mm, LabelWidth.Option18mm)
+    }
+    *Option: 9mmLabel
+    {
+        *rcNameID: 107 *% 9mm Label
+        *PageDimensions: PAIR(64, 630)
+        *PrintableArea: PAIR(50, 480)
+        *PrintableOrigin: PAIR(7, 75)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.8
+            *Cmd: ""
+        }
+        *Constraints: LIST(LabelWidth.Option6mm, LabelWidth.Option24mm, LabelWidth.Option12mm, LabelWidth.Option18mm)
+    }
+    *Option: 12mmLabel
+    {
+        *rcNameID: 108 *% 12mm Label
+        *PageDimensions: PAIR(86, 630)
+        *PrintableArea: PAIR(64, 480)
+        *PrintableOrigin: PAIR(11, 75)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.8
+            *Cmd: ""
+        }
+        *Constraints: LIST(LabelWidth.Option6mm, LabelWidth.Option9mm, LabelWidth.Option24mm, LabelWidth.Option18mm)
+    }
+    *Option: 18mmLabel
+    {
+        *rcNameID: 109 *% 18mm Label
+        *PageDimensions: PAIR(136, 630)
+        *PrintableArea: PAIR(100, 480)
+        *PrintableOrigin: PAIR(18, 75)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.8
+            *Cmd: ""
+        }
+        *Constraints: LIST(LabelWidth.Option6mm, LabelWidth.Option9mm, LabelWidth.Option12mm, LabelWidth.Option24mm)
+    }
+    *Option: 24mmLabel
+    {
+        *rcNameID: 110 *% 24mm Label
+        *PageDimensions: PAIR(170, 630)
+        *PrintableArea: PAIR(128, 480)
+        *PrintableOrigin: PAIR(21, 75)
+        *Command: CmdSelect
+        {
+            *Order: DOC_SETUP.8
+            *Cmd: ""
+        }
+        *Constraints: LIST(LabelWidth.Option6mm, LabelWidth.Option9mm, LabelWidth.Option12mm, LabelWidth.Option18mm)
+    }
+    *Option: CUSTOMSIZE
+    {
+        *rcNameID: =USER_DEFINED_SIZE_DISPLAY
+        *MinSize: PAIR(31, 152)
+        *MaxSize: PAIR(170, 32000)
+        *CursorOrigin: PAIR(0, 0)
+        *MaxPrintableWidth: 128
+        *MinLeftMargin: 0
+        *TopMargin: 75
+        *BottomMargin: 75
+        *CenterPrintable?: TRUE
+    }
+}
+
+*Feature: Halftone
+{
+    *rcNameID: =HALFTONING_DISPLAY
+    *DefaultOption: HT_PATSIZE_SUPERCELL_M
+    *Option: HT_PATSIZE_2x2
+    {
+        *Name: "2x2"
+    }
+    *Option: HT_PATSIZE_2x2_M
+    {
+        *Name: "2x2 M"
+    }
+    *Option: HT_PATSIZE_4x4
+    {
+        *Name: "4x4"
+    }
+    *Option: HT_PATSIZE_4x4_M
+    {
+        *Name: "4x4 M"
+    }
+    *Option: HT_PATSIZE_6x6
+    {
+        *Name: "6x6"
+    }
+    *Option: HT_PATSIZE_6x6_M
+    {
+        *Name: "6x6 M"
+    }
+    *Option: HT_PATSIZE_8x8
+    {
+        *Name: "8x8"
+    }
+    *Option: HT_PATSIZE_8x8_M
+    {
+        *Name: "8x8 M"
+    }
+    *Option: HT_PATSIZE_10x10
+    {
+        *Name: "10x10"
+    }
+    *Option: HT_PATSIZE_10x10_M
+    {
+        *Name: "10x10 M"
+    }
+
+    *Option: HT_PATSIZE_12x12
+    {
+        *Name: "12x12"
+    }
+    *Option: HT_PATSIZE_12x12_M
+    {
+        *Name: "12x12 M"
+    }
+    *Option: HT_PATSIZE_14x14
+    {
+        *Name: "14x14"
+    }
+    *Option: HT_PATSIZE_14x14_M
+    {
+        *Name: "14x14 M"
+    }
+    *Option: HT_PATSIZE_16x16
+    {
+        *Name: "16x16"
+    }
+    *Option: HT_PATSIZE_16x16_M
+    {
+        *Name: "16x16 M"
+    }
+
+    *Option: HT_PATSIZE_AUTO
+    {
+        *rcNameID: =HT_AUTO_SELECT_DISPLAY
+    }
+    *Option: HT_PATSIZE_SUPERCELL
+    {
+        *rcNameID: =HT_SUPERCELL_DISPLAY
+    }
+    *Option: HT_PATSIZE_SUPERCELL_M
+    {
+        *Name: "Super Cell M"
+    }
+
+
+*%    *Option: HT_PATSIZE_6x6_M
+*%    {
+*%        *rcNameID: =HT_DITHER6X6_DISPLAY
+*%    }
+*%    *Option: HT_PATSIZE_8x8_M
+*%    {
+*%        *rcNameID: =HT_DITHER8X8_DISPLAY
+*%    }
+}
+
+
+*%////////////////////////////////////////////////////////////
+*% PC300 Custom Features
+*%////////////////////////////////////////////////////////////
+
+*Feature: LabelWidth
+{
+        *rcNameID: 310
+        *DefaultOption: Option24mm
+        *Option: Option6mm  *% 6 mm
+        {
+           *rcNameID: 311
+           *Command: CmdSelect
+           {
+               *Order: DOC_SETUP.7
+               *% The first byte is JobHeader.LabelWidth for LanguageMonitor
+               *Cmd: ""
+           }
+        }
+        *Option: Option9mm  *% 9 mm
+        {
+           *rcNameID: 312
+           *Command: CmdSelect
+           {
+               *Order: DOC_SETUP.7
+               *Cmd: ""
+           }
+        }
+        *Option: Option12mm  *% 12 mm
+        {
+           *rcNameID: 313
+           *Command: CmdSelect
+           {
+               *Order: DOC_SETUP.7
+               *Cmd: ""
+           }
+        }
+        *Option: Option18mm  *% 18 mm
+        {
+           *rcNameID: 314
+           *Command: CmdSelect
+           {
+               *Order: DOC_SETUP.7
+               *Cmd: ""
+           }
+        }
+        *Option: Option24mm  *% 24 mm
+        {
+           *rcNameID: 315
+           *Command: CmdSelect
+           {
+               *Order: DOC_SETUP.7
+               *Cmd: ""
+           }
+        }
+}
+
+*Feature: ContinuousPaper
+{
+        *rcNameID: 320
+        *DefaultOption: OptionOFF
+        *Option: OptionON  *% Enabled
+        {
+           *rcNameID: 4
+        }
+        *Option: OptionOFF  *% Disabled
+        {
+           *rcNameID: 5
+        }
+}
+
+
+*Feature: TapeCassetteColor
+{
+         *rcNameID: 350
+         *DefaultOption: BlackOnWhite
+
+         *Option: BlackOnWhite
+         {
+            *rcNameID: 351
+            *Command: CmdSelect
+            {
+               *Order: DOC_SETUP.9
+               *Cmd: "<1B>C<00>"
+            }
+         }
+
+         *Option: BlackOnBlue
+         {
+            *rcNameID: 352
+            *Command: CmdSelect
+            {
+               *Order: DOC_SETUP.9
+               *Cmd: "<1B>C<01>"
+            }
+         }
+
+         *Option: BlackOnRed
+         {
+            *rcNameID: 353
+            *Command: CmdSelect
+            {
+               *Order: DOC_SETUP.9
+               *Cmd: "<1B>C<02>"
+            }
+         }
+
+         *Option: BlackOnSilver
+         {
+            *rcNameID: 354
+            *Command: CmdSelect
+            {
+               *Order: DOC_SETUP.9
+               *Cmd: "<1B>C<03>"
+            }
+         }
+
+         *Option: BlackOnYellow
+         {
+            *rcNameID: 355
+            *Command: CmdSelect
+            {
+               *Order: DOC_SETUP.9
+               *Cmd: "<1B>C<04>"
+            }
+         }
+
+         *Option: BlackOnGold
+         {
+            *rcNameID: 356
+            *Command: CmdSelect
+            {
+               *Order: DOC_SETUP.9
+               *Cmd: "<1B>C<05>"
+            }
+         }
+
+         *Option: BlackOnGreen
+         {
+            *rcNameID: 357
+            *Command: CmdSelect
+            {
+               *Order: DOC_SETUP.9
+               *Cmd: "<1B>C<06>"
+            }
+         }
+
+         *Option: BlackOnFluorescentGreen
+         {
+            *rcNameID: 358
+            *Command: CmdSelect
+            {
+               *Order: DOC_SETUP.9
+               *Cmd: "<1B>C<07>"
+            }
+         }
+
+         *Option: BlackOnFluorescentRed
+         {
+            *rcNameID: 359
+            *Command: CmdSelect
+            {
+               *Order: DOC_SETUP.9
+               *Cmd: "<1B>C<08>"
+            }
+         }
+
+         *Option: WhiteOnClear
+         {
+            *rcNameID: 360
+            *Command: CmdSelect
+            {
+               *Order: DOC_SETUP.9
+               *Cmd: "<1B>C<09>"
+            }
+         }
+
+         *Option: WhiteOnBlack
+         {
+            *rcNameID: 361
+            *Command: CmdSelect
+            {
+               *Order: DOC_SETUP.9
+               *Cmd: "<1B>C<0A>"
+            }
+         }
+
+         *Option: BlueOnWhite
+         {
+            *rcNameID: 362
+            *Command: CmdSelect
+            {
+               *Order: DOC_SETUP.9
+               *Cmd: "<1B>C<0B>"
+            }
+         }
+
+         *Option: RedOnWhite
+         {
+            *rcNameID: 363
+            *Command: CmdSelect
+            {
+               *Order: DOC_SETUP.9
+               *Cmd: "<1B>C<0C>"
+            }
+         }
+
+}
+
+*Feature: CutOptions
+{
+        *rcNameID: 370
+        *DefaultOption: CutAtPageEnd
+        *Option: CutAtPageEnd
+        {
+           *rcNameID: 371
+        }
+        *Option: ChainMarksAtPageEnd
+        {
+           *rcNameID: 372
+        }
+}
+
+*Feature: LabelAlignment
+{
+        *rcNameID: 380
+        *DefaultOption: Centered
+        *Option: Centered
+        {
+          *rcNameID: 381
+        }
+        *Option: LeftAligned
+        {
+          *rcNameID: 382
+        }
+        *Option: RightAligned
+        {
+          *rcNameID: 383
+        }
+}
+
+*Command: CmdStartDoc
+{
+    *Order: DOC_SETUP.1
+    *Cmd: ""
+}
+
+
+*Command: CmdEndPage
+{
+    *Order: PAGE_FINISH.9
+    *Cmd: ""
+}
+
+*Command: CmdEndDoc
+{
+    *Order: DOC_FINISH.9
+    *Cmd: ""
+}
+
+
+*Command: CmdEndJob
+{
+    *Order: JOB_FINISH.1
+    *Cmd: ""
+}
+
+*RotateCoordinate?: FALSE
+*RotateRaster?: FALSE
+*RotateFont?: FALSE
+
+*CursorXAfterCR: AT_CURSOR_X_ORIGIN
+*% *YMoveAttributes: LIST(SEND_CR_FIRST)
+*XMoveThreshold: 0
+*% *YMoveThreshold: *
+*XMoveUnit: 180
+*% *YMoveUnit: 180
+
+*BadCursorMoveInGrxMode: LIST(X_PORTRAIT, X_LANDSCAPE, Y_PORTRAIT, Y_LANDSCAPE)
+
+*Command: CmdCR { *Cmd : "" }
+*Command: CmdLF { *Cmd : "" }
+*Command: CmdFF { *Cmd : "" }
+
+*% *EjectPageWithFF?: FALSE
+*switch: ContinuousPaper
+{
+    *case: OptionON
+    {
+        *EjectPageWithFF?: TRUE
+    }
+
+    *case: OptionOFF
+    {
+        *EjectPageWithFF?: FALSE
+    }
+}
+
+
+*OutputDataFormat: H_BYTE
+*OptimizeLeftBound?: FALSE
+*CursorXAfterSendBlockData: AT_GRXDATA_ORIGIN
+*CursorYAfterSendBlockData: AUTO_INCREMENT
+
+

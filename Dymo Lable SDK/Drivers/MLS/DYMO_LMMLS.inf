@@ -1,0 +1,133 @@
+; DYMO MobileLabeler Installation File
+; Copyright (c) 2015 Sanford, L.P.
+
+[Version]
+Signature="$Windows NT$"
+Provider=DYMO
+ClassGUID={4D36E979-E325-11CE-BFC1-08002BE10318}
+Class=Printer
+DriverPackageType=PlugAndPlay
+DriverPackageDisplayName="DYMO Mobile Labeler"
+CatalogFile.NT=DYMO.CAT
+DriverVer=01/29/2016,1.0.0.121
+
+;
+; Manufacturer section.
+;
+; This section lists all of the manufacturers 
+; that we will display in the Dialog box
+;
+[Manufacturer]
+"DYMO" = DYMO, NTx86, NTamd64, NTx86.6.0, NTamd64.6.0
+
+;
+; Model sections. 
+; 
+; Each section here corresponds with an entry listed in the
+; [Manufacturer] section, above. The models will be displayed in the order
+; that they appear in the INF file.
+;
+[DYMO.NTx86]
+"DYMO MobileLabeler"     = LMMLS,               USBPRINT\DYMOMobileLabeler45D5
+"DYMO MobileLabeler"     = LMMLS,               BTHPRINT\DYMOMobileLabeler45D5
+                                       
+[DYMO.NTamd64]
+"DYMO MobileLabeler"     = LMMLS,               USBPRINT\DYMOMobileLabeler45D5
+"DYMO MobileLabeler"     = LMMLS,               BTHPRINT\DYMOMobileLabeler45D5
+
+[DYMO.NTx86.6.0]
+"DYMO MobileLabeler"     = LMMLS_VISTA,         USBPRINT\DYMOMobileLabeler45D5
+"DYMO MobileLabeler"     = LMMLS_VISTA,         BTHPRINT\DYMOMobileLabeler45D5
+                                       
+[DYMO.NTamd64.6.0]
+"DYMO MobileLabeler"     = LMMLS_VISTA,         USBPRINT\DYMOMobileLabeler45D5
+"DYMO MobileLabeler"     = LMMLS_VISTA,         BTHPRINT\DYMOMobileLabeler45D5
+
+[DYMO]
+"DYMO MobileLabeler"     = LMMLS,               USBPRINT\DYMOMobileLabeler45D5
+"DYMO MobileLabeler"     = LMMLS,               BTHPRINT\DYMOMobileLabeler45D5
+
+;
+; Installer Sections
+;
+; These sections control file installation, and reference all files that
+; need to be copied. The section name will be assumed to be the driver
+; file, unless there is an explicit DriverFile section listed.
+;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Mobile Labeler (MLS)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LMMLS]
+CopyFiles=@LMMLS.GPD,@LMMLS.INI,OEMUNI_LMMLS, LMMLS_MON.DLL
+DataSection=UNIDRV_DATA
+DataFile=LMMLS.GPD
+LanguageMonitor="DYMO MobileLabeler Monitor,LMMLS_MON.DLL"
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+[LMMLS_VISTA]
+CopyFiles=@LMMLS.GPD,@LMMLS.INI,OEMUNI_LMMLS, LMMLS_MON.DLL, AsyncUI, @DYMOAsyncUI.dll
+DataFile=LMMLS.GPD
+LanguageMonitor="DYMO MobileLabeler Monitor,LMMLS_MON.DLL"
+CoreDriverSections="{D20EA372-DD35-4950-9ED8-A6335AFE79F0},UNIDRV.OEM,UNIDRV_DATA"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;These sections are to identify the Vista drivers as "Package Aware" to allow them to
+;take advantage of features such as "Package Point-and-Print" in Vista and above
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[PrinterPackageInstallation.x86]
+PackageAware=TRUE
+CoreDriverDependencies={D20EA372-DD35-4950-9ED8-A6335AFE79F0}
+
+[PrinterPackageInstallation.amd64]
+PackageAware=TRUE
+CoreDriverDependencies={D20EA372-DD35-4950-9ED8-A6335AFE79F0}
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  INF GENERAL SECTIONs
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[LMMLS_MON.DLL]
+LMMLS_MON.DLL,,,0x00000020
+
+[OEMUNI_LMMLS]
+LMMLS.DLL
+LMUI.DLL
+
+[AsyncUI]
+DYMOAsyncUI.dll,,,0x00000020
+
+
+;
+;  Location of source files not in Layout.inf.
+;
+
+[DestinationDirs]
+DefaultDestDir=66000
+AsyncUI=66002
+
+[SourceDisksNames.x86]
+1 = %DiskName%,,,"i386"
+2 = %DiskName%,,,
+
+[SourceDisksNames.amd64]
+1 = %DiskName%,,,"amd64"
+2 = %DiskName%,,,
+
+[SourceDisksFiles]
+DYMOAsyncUI.dll = 1
+LMUI.DLL        = 1
+LMMLS.DLL       = 1
+LMMLS.GPD       = 2
+LMMLS.INI       = 2
+LMMLS_MON.DLL   = 1
+
+;
+; Localizable Strings
+;
+[Strings]
+DYMO                    = "DYMO"
+DiskName                = "DYMO LabelWriter CD-ROM"

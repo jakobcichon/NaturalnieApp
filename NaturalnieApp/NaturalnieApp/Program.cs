@@ -10,6 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using NaturalnieApp.PdfToExcel;
 using System.Data;
+using NaturalnieApp.Dymo_Printer;
 
 namespace NaturalnieApp
 {
@@ -24,6 +25,7 @@ namespace NaturalnieApp
         static void Main()
         {
             //Test purpose
+            General.Test();
 
             //Read data from config file 
             ConfigFileObject ConfigFileInst = new ConfigFileObject();
