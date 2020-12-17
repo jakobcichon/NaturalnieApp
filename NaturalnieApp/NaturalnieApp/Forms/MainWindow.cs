@@ -155,6 +155,16 @@ namespace NaturalnieApp.Forms
             this.pContainer.Controls.Add(frm);
             frm.Show();
         }
+
+        private void bPrintBarcode_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            PrintBarcode frm = new PrintBarcode(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+            this.pContainer.Controls.Add(frm);
+            frm.Show();
+
+        }
+
         #endregion
 
 

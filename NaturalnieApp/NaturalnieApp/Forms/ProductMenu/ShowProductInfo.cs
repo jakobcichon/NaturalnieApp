@@ -41,8 +41,6 @@ namespace NaturalnieApp.Forms
             InitializeBackgroundWorker();
             this.databaseCommands = new DatabaseCommands();
             ActualTaskType = backgroundWorkerTasks.None;
-            //this.ProductEntity = new Product();
-            //this.SupplierEntity = new Supplier();
         }
         #endregion
         //====================================================================================================
@@ -290,11 +288,6 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
-            Product test;
-            test = this.databaseCommands.GetProductEntityByProductName("ujędrniajacy krem róża z jagodą  60 ml");
-            ;
-
-
         }
         private void ShowProductInfo_KeyDown(object sender, KeyEventArgs e)
         {
@@ -305,6 +298,7 @@ namespace NaturalnieApp.Forms
                 localControl.Controls.Remove(this.ActiveControl);
             }
         }
+        #endregion
         //====================================================================================================
         //Buttons events
         #region Buttons events
@@ -433,7 +427,6 @@ namespace NaturalnieApp.Forms
         private void cbProductList_Validating(object sender, EventArgs e)
         {
         }
-        #endregion
         #endregion
         //====================================================================================================
         //Supplier Name events

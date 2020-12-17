@@ -67,6 +67,9 @@
     <Reference Include="DYMO.Label.Framework">
       <HintPath>Dymo Printer\DYMO.Label.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="DymoAddinUI">
+      <HintPath>Dymo printer\DymoAddinUI.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -197,6 +200,12 @@
     <Compile Include="Forms\ProductMenu\AddNewProductFromExcel.Designer.cs">
       <DependentUpon>AddNewProductFromExcel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ProductMenu\PrintBarcode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProductMenu\PrintBarcode.Designer.cs">
+      <DependentUpon>PrintBarcode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ProductMenu\ShowProductInfo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -227,6 +236,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProductMenu\AddNewProductFromExcel.resx">
       <DependentUpon>AddNewProductFromExcel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProductMenu\PrintBarcode.resx">
+      <DependentUpon>PrintBarcode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProductMenu\ShowProductInfo.resx">
       <DependentUpon>ShowProductInfo.cs</DependentUpon>

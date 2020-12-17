@@ -48,6 +48,7 @@ namespace NaturalnieApp.Forms
             this.bExit = new System.Windows.Forms.Button();
             this.pContainer = new System.Windows.Forms.Panel();
             this.customInstaller1 = new MySql.Data.MySqlClient.CustomInstaller();
+            this.bPrintBarcode = new System.Windows.Forms.Button();
             this.pMenu.SuspendLayout();
             this.pProductSubMenu.SuspendLayout();
             this.pCashRegisterSubMenu.SuspendLayout();
@@ -73,13 +74,14 @@ namespace NaturalnieApp.Forms
             // 
             this.pProductSubMenu.AutoSize = true;
             this.pProductSubMenu.BackColor = System.Drawing.Color.DimGray;
+            this.pProductSubMenu.Controls.Add(this.bPrintBarcode);
             this.pProductSubMenu.Controls.Add(this.bShowProductInfo);
             this.pProductSubMenu.Controls.Add(this.AddProductFromPdf);
             this.pProductSubMenu.Controls.Add(this.bNewProduct);
             this.pProductSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pProductSubMenu.Location = new System.Drawing.Point(0, 256);
             this.pProductSubMenu.Name = "pProductSubMenu";
-            this.pProductSubMenu.Size = new System.Drawing.Size(200, 90);
+            this.pProductSubMenu.Size = new System.Drawing.Size(200, 120);
             this.pProductSubMenu.TabIndex = 5;
             // 
             // bShowProductInfo
@@ -295,6 +297,22 @@ namespace NaturalnieApp.Forms
             this.pContainer.Size = new System.Drawing.Size(1000, 570);
             this.pContainer.TabIndex = 5;
             // 
+            // bPrintBarcode
+            // 
+            this.bPrintBarcode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bPrintBarcode.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bPrintBarcode.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bPrintBarcode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bPrintBarcode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bPrintBarcode.ForeColor = System.Drawing.Color.White;
+            this.bPrintBarcode.Location = new System.Drawing.Point(0, 90);
+            this.bPrintBarcode.Name = "bPrintBarcode";
+            this.bPrintBarcode.Size = new System.Drawing.Size(200, 30);
+            this.bPrintBarcode.TabIndex = 8;
+            this.bPrintBarcode.Text = "Drukuj kod kreskowy";
+            this.bPrintBarcode.UseVisualStyleBackColor = false;
+            this.bPrintBarcode.Click += new System.EventHandler(this.bPrintBarcode_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -338,5 +356,6 @@ namespace NaturalnieApp.Forms
         private MySql.Data.MySqlClient.CustomInstaller customInstaller1;
         private System.Windows.Forms.Button bShowProductInfo;
         private System.Windows.Forms.Button AddProductFromPdf;
+        private System.Windows.Forms.Button bPrintBarcode;
     }
 }

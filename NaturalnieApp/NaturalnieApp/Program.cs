@@ -25,7 +25,7 @@ namespace NaturalnieApp
         static void Main()
         {
             //Test purpose
-            General.Test();
+         //   General.Test();
 
             //Read data from config file 
             ConfigFileObject ConfigFileInst = new ConfigFileObject();

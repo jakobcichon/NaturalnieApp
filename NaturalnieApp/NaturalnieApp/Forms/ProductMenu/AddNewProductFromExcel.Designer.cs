@@ -64,7 +64,7 @@ namespace NaturalnieApp.Forms
             this.bSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSave.Location = new System.Drawing.Point(888, 508);
+            this.bSave.Location = new System.Drawing.Point(888, 510);
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(100, 50);
             this.bSave.TabIndex = 2;
@@ -77,7 +77,7 @@ namespace NaturalnieApp.Forms
             this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bUpdate.Location = new System.Drawing.Point(782, 508);
+            this.bUpdate.Location = new System.Drawing.Point(782, 510);
             this.bUpdate.Name = "bUpdate";
             this.bUpdate.Size = new System.Drawing.Size(100, 50);
             this.bUpdate.TabIndex = 3;
@@ -91,7 +91,7 @@ namespace NaturalnieApp.Forms
             this.bGenerateTemplate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bGenerateTemplate.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.bGenerateTemplate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bGenerateTemplate.Location = new System.Drawing.Point(4, 508);
+            this.bGenerateTemplate.Location = new System.Drawing.Point(4, 510);
             this.bGenerateTemplate.Name = "bGenerateTemplate";
             this.bGenerateTemplate.Size = new System.Drawing.Size(100, 50);
             this.bGenerateTemplate.TabIndex = 6;
@@ -105,7 +105,7 @@ namespace NaturalnieApp.Forms
             this.bAddFromFile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bAddFromFile.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.bAddFromFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bAddFromFile.Location = new System.Drawing.Point(110, 508);
+            this.bAddFromFile.Location = new System.Drawing.Point(110, 510);
             this.bAddFromFile.Name = "bAddFromFile";
             this.bAddFromFile.Size = new System.Drawing.Size(100, 50);
             this.bAddFromFile.TabIndex = 7;
@@ -119,7 +119,7 @@ namespace NaturalnieApp.Forms
             this.bDeselectAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bDeselectAll.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.bDeselectAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bDeselectAll.Location = new System.Drawing.Point(322, 508);
+            this.bDeselectAll.Location = new System.Drawing.Point(322, 510);
             this.bDeselectAll.Name = "bDeselectAll";
             this.bDeselectAll.Size = new System.Drawing.Size(100, 50);
             this.bDeselectAll.TabIndex = 8;
@@ -134,7 +134,7 @@ namespace NaturalnieApp.Forms
             this.bSelectAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bSelectAll.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.bSelectAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSelectAll.Location = new System.Drawing.Point(216, 508);
+            this.bSelectAll.Location = new System.Drawing.Point(216, 510);
             this.bSelectAll.Name = "bSelectAll";
             this.bSelectAll.Size = new System.Drawing.Size(100, 50);
             this.bSelectAll.TabIndex = 9;

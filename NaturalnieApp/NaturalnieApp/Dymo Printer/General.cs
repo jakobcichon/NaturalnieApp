@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DYMO.Label.Framework;
+using DymoAddinUI;
 using DYMO.Common;
 using System.IO;
 
@@ -14,8 +15,11 @@ namespace NaturalnieApp.Dymo_Printer
         static public void Test()
         {
             string pathToFile = @"F:\Projekty\02. NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Dymo Printer\barcode.label";
+            var test = Framework.GetPrinters();
+            
             var label = Label.Open(pathToFile);
             ;
+            
             
             label.Print("DYMO LabelWriter 450");
             ;
