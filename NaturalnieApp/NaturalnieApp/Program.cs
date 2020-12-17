@@ -24,8 +24,8 @@ namespace NaturalnieApp
         [STAThread]
         static void Main()
         {
-            //Test purpose
-         //   General.Test();
+            //Dymo printer
+            Printer PrinterInstance = new Printer(@"F:\Projekty\02. NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Dymo Printer\barcode.label");
 
             //Read data from config file 
             ConfigFileObject ConfigFileInst = new ConfigFileObject();

@@ -3,26 +3,50 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DYMO.Label.Framework;
-using DymoAddinUI;
-using DYMO.Common;
-using System.IO;
+using DYMO.DLS.SDK.DLS7SDK;
 
 namespace NaturalnieApp.Dymo_Printer
 {
-    static public class General
+    public class Printer
     {
+        #region Object fields
+        //Instance fields
+        string LabelPath { get; set; }
+
+        //Dymo SDK
+        DymoHighLevelSDK DymoSDK;
+
+        #endregion
+
+        #region Class constructor
+        public Printer(string labelPath)
+        {
+            //Assign label path
+            this.LabelPath = labelPath;
+
+            //Initialize DymoSDK
+            this.DymoSDK = new DymoHighLevelSDK();
+        }
+        #endregion
+
         static public void Test()
         {
-            string pathToFile = @"F:\Projekty\02. NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Dymo Printer\barcode.label";
-            var test = Framework.GetPrinters();
-            
-            var label = Label.Open(pathToFile);
-            ;
-            
-            
-            label.Print("DYMO LabelWriter 450");
+
+            DymoHighLevelSDK test = new DymoHighLevelSDK();
+            test.DymoAddin.Open(pathToFile);
+            test.DymoAddin.GetDymoPrinters();
+
+            test.DymoAddin.Print(2,false);
             ;
         }
+
+        static public void ChangeLabelFilePath(string label)
+        {
+            File
+        }
+
+
+        ///Method used to check if Dymo pronter connected
+
     }
 }
