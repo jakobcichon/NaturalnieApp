@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using NaturalnieApp.PdfToExcel;
 using System.Data;
 using NaturalnieApp.Dymo_Printer;
+using NaturalnieApp.Database;
 
 namespace NaturalnieApp
 {
@@ -24,8 +25,13 @@ namespace NaturalnieApp
         [STAThread]
         static void Main()
         {
+            //Create instance to DB
+            DatabaseCommands tempDB = new DatabaseCommands();
+            Product tempProduct = tempDB.GetProductEntityByProductName(tempDB.GetProductsNameList()[0]);
+
             //Dymo printer
-            Printer PrinterInstance = new Printer(@"F:\Projekty\02. NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Dymo Printer\barcode.label");
+            Printer PrinterInstance = new Printer(@"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Dymo printer\barcode.label");
+            PrinterInstance.PrintPriceCardFromProduct(tempProduct);
 
             //Read data from config file 
             ConfigFileObject ConfigFileInst = new ConfigFileObject();

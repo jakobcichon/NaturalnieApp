@@ -20,7 +20,9 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         public DatabaseCommands()
         {
-            this.ConnectionStatus = false;
+            this.CheckConnection(false);
+            //this.ConnectionStatus = false;
+
         }
 
         //====================================================================================================
@@ -74,12 +76,12 @@ namespace NaturalnieApp.Database
             return entity;
         }
 
-        //====================================================================================================
-        //Method used calculate Product number in Elzab
-        //Formula was specified as ManufacturerId * 100 (taken first empty value)
-        //That means, DB can consist maximum 100 product of one manufaturer
-        //Method will return first empty number from calculaten area
-        //====================================================================================================
+        ///====================================================================================================
+        ///<summary> Method used calculate Product number in Elzab
+        ///Formula was specified as ManufacturerId * 100 (taken first empty value)
+        ///That means, DB can consist maximum 100 product of one manufaturer
+        ///Method will return first empty number from calculaten area
+        ///</summary>
         public int CalculateFreeElzabIdForGivenManufacturer(string manufacturerName)
         {
             Manufacturer manufaturer;
