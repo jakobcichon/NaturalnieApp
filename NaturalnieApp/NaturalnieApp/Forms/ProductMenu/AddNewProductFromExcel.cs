@@ -525,6 +525,7 @@ namespace NaturalnieApp.Forms
                                 product.Marigin = rowMariginValue;
                                 product.BarCode = rowBarcodeValue;
                                 product.ProductInfo = "Brak";
+                                product.FinalPrice = (float) Calculations.FinalPrice(Convert.ToDouble(rowPriceNetValue), rowTaxValue, Convert.ToDouble(rowMariginValue));
                                 if (rowSupplierCodeValue == "") product.SupplierCode = product.BarCode;
                                 else product.SupplierCode = rowSupplierCodeValue;
 

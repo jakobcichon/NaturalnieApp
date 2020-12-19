@@ -39,7 +39,7 @@ namespace NaturalnieApp
         }
 
         //Calculate final price from price net, tax and marigin
-        static public double FinalPrice(double priceNet, int tax, int marigin)
+        static public double FinalPrice(double priceNet, int tax, double marigin)
         {
             //Local variable
             double finalPrice;
