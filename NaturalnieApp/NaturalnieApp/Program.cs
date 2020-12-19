@@ -30,8 +30,8 @@ namespace NaturalnieApp
             Product tempProduct = tempDB.GetProductEntityByProductName(tempDB.GetProductsNameList()[0]);
 
             //Dymo printer
-            Printer PrinterInstance = new Printer(@"F:\Projekty\02. NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Dymo Printer\barcode.label");
-            //Printer PrinterInstance = new Printer(@"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Dymo printer\barcode.label");
+            //Printer PrinterInstance = new Printer(@"F:\Projekty\02. NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Dymo Printer\barcode.label");
+            Printer PrinterInstance = new Printer(@"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Dymo printer\barcode.label");
             PrinterInstance.PrintPriceCardFromProduct(tempProduct);
 
             //Read data from config file 

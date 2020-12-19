@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using NaturalnieApp.Database;
-//using DYMO.DLS.SDK.DLS7SDK;
-using DYMO.Label.Framework;
+using DymoSDK.Implementations;
+using DymoSDK.Interfaces;
 
 namespace NaturalnieApp.Dymo_Printer
 {
+    
     #region Class specific exception
     [Serializable()]
     public class InvalidPath : Exception
@@ -37,19 +38,23 @@ namespace NaturalnieApp.Dymo_Printer
         string LabelPath { get; set; }
 
         //Label to print
-        ILabel LabelToPrint { get; set; }
-
+        DymoLabel LabelToPrint { get; set; }
+        List<IPrinter> PrinterDevices { get; set; }
+        IPrinter SelectedPrinter { get; set; }
         #endregion
 
         #region Class constructor
         public Printer(string labelPath)
         {
-
             //Assign label path
             ChangeLabelFilePath(labelPath);
 
             //Get label to print
-            this.LabelToPrint = Framework.Open(this.LabelPath);
+            this.LabelToPrint = new DymoLabel();
+            this.LabelToPrint.LoadLabelFromFilePath(labelPath);
+            
+            //Get printer list
+            this.PrinterDevices = DymoPrinter.Instance.GetPrinters().ToList();
         }
         #endregion
 
@@ -59,17 +64,34 @@ namespace NaturalnieApp.Dymo_Printer
         /// <param name="listOfProductToPrint"></param>
         public void PrintPriceCardFromProduct(Product productToPrint)
         {
-            //Change product name on label
-            AddressObject productName = (AddressObject) this.LabelToPrint.GetObjectByName("description_up");
-            productName.Text = productToPrint.ElzabProductName;
+            //Check type of label paper
 
-            //Change barcode value
-            BarcodeObject bacode = (BarcodeObject)this.LabelToPrint.GetObjectByName("barcode_up");
-            bacode.BarcodeText = productToPrint.BarCode;
 
-            //Change price
+            //Get label object
+            List<ILabelObject> labelObjects = this.LabelToPrint.GetLabelObjects().ToList();
 
-            ;
+            foreach (ILabelObject element in labelObjects)
+            {
+                //Change product name on label
+                if (element.Name == "description_up" || element.Name == "description_down")
+                {
+                    this.LabelToPrint.UpdateLabelObject(element, productToPrint.ElzabProductName);
+                }
+                //Change barcode value
+                else if (element.Name == "barcode_up" || element.Name == "barcode_down")
+                {
+                    this.LabelToPrint.UpdateLabelObject(element, productToPrint.BarCode);
+                }
+                //Change price
+                else if (element.Name == "barcode_up" || element.Name == "barcode_down")
+                {
+                    this.LabelToPrint.UpdateLabelObject(element, productToPrint.BarCode);
+                }
+
+            }
+
+            //Print label
+            DymoPrinter.Instance.PrintLabel(this.LabelToPrint, this.SelectedPrinter.Name);
         }
 
         /// <summary>
@@ -102,7 +124,7 @@ namespace NaturalnieApp.Dymo_Printer
             this.LabelPath = label;
 
             //Get label to print
-            this.LabelToPrint = Framework.Open(this.LabelPath);
+            //this.LabelToPrint = Framework.Open(this.LabelPath);
         }
     }
 }
