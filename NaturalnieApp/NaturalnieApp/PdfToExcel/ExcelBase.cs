@@ -40,6 +40,7 @@ namespace NaturalnieApp.PdfToExcel
         Tax,
         Marigin,
         Barcode_EAN13,
+        Barcode_EAN8,
         SupplierCode,
         CheckBox,
         IndexColumnName,

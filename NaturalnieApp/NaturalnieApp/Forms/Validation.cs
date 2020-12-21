@@ -73,6 +73,9 @@ namespace NaturalnieApp.Forms
                 case ColumnsAttributes.Barcode_EAN13:
                     BarcodeEan13Validation(value);
                     break;
+                case ColumnsAttributes.Barcode_EAN8:
+                    BarcodeEan8Validation(value);
+                    break;
             }
 
         }
@@ -235,6 +238,24 @@ namespace NaturalnieApp.Forms
 
             //Accept only letters an numbers with maximal length of 255 chars
             string regPattern = @"^[0-9]{13}$";
+
+            //Check if input match to define pattern
+            validatingResult = ValidateInput(input, regPattern);
+
+            if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
+
+            return validatingResult;
+        }
+
+        //Method used to validate barcode EAN8
+        static public bool BarcodeEan8Validation(string input)
+        {
+            //Local variables
+            bool validatingResult;
+            string text = "Kod kreskowy musi składać się wyłacznie z 8 liczb!";
+
+            //Accept only letters an numbers with maximal length of 255 chars
+            string regPattern = @"^[0-9]{8}$";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);

@@ -235,6 +235,7 @@
       <DependentUpon>ShowProductInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Validation.cs" />
+    <Compile Include="GeneralPurposeMethods.cs" />
     <Compile Include="Initialization\ConfigFile.cs" />
     <Compile Include="PdfToExcel\ExcelBase.cs" />
     <Compile Include="PdfToExcel\ExcelTemplates.cs" />

@@ -27,6 +27,7 @@ namespace NaturalnieApp.Database
         public float Marigin { get; set; }
         public float FinalPrice { get; set; }
         public string BarCode { get; set; }
+        public string BarCodeShort { get; set; }
         public string SupplierCode { get; set; }
         public string ProductInfo { get; set; }
     }

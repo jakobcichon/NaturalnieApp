@@ -55,6 +55,8 @@ namespace NaturalnieApp.Dymo_Printer
             
             //Get printer list
             this.PrinterDevices = DymoPrinter.Instance.GetPrinters().ToList();
+            if (this.PrinterDevices.Count > 0) this.SelectedPrinter = this.PrinterDevices[0];
+
         }
         #endregion
 
@@ -73,25 +75,40 @@ namespace NaturalnieApp.Dymo_Printer
             foreach (ILabelObject element in labelObjects)
             {
                 //Change product name on label
-                if (element.Name == "description_up" || element.Name == "description_down")
+                if (element.Name == "textLine1_up" || element.Name == "textLine1_down")
                 {
-                    this.LabelToPrint.UpdateLabelObject(element, productToPrint.ElzabProductName);
+                    if (productToPrint.ElzabProductName.Count() > 17)
+                    {
+                        this.LabelToPrint.UpdateLabelObject(element, productToPrint.ElzabProductName.Substring(0,17).ToUpper() + "-");
+                    }
+                    
+                }
+                //Change product name on label
+                if (element.Name == "textLine2_up" || element.Name == "textLine2_down")
+                {
+                    if (productToPrint.ElzabProductName.Count() > 17)
+                    {
+                        this.LabelToPrint.UpdateLabelObject(element, productToPrint.ElzabProductName.Substring(17, (productToPrint.ElzabProductName.Count()-18)).ToUpper());
+                    }
+
                 }
                 //Change barcode value
                 else if (element.Name == "barcode_up" || element.Name == "barcode_down")
                 {
-                    this.LabelToPrint.UpdateLabelObject(element, productToPrint.BarCode);
+                    this.LabelToPrint.UpdateLabelObject(element, productToPrint.BarCodeShort.Substring(0,7));
+                    ;
                 }
                 //Change price
-                else if (element.Name == "barcode_up" || element.Name == "barcode_down")
+                else if (element.Name == "price_up" || element.Name == "price_down")
                 {
-                    this.LabelToPrint.UpdateLabelObject(element, productToPrint.BarCode);
+                    this.LabelToPrint.UpdateLabelObject(element, (productToPrint.FinalPrice.ToString() + " pln").ToUpper());
                 }
 
             }
 
             //Print label
-            DymoPrinter.Instance.PrintLabel(this.LabelToPrint, this.SelectedPrinter.Name);
+            DymoPrinter.Instance.PrintLabel(this.LabelToPrint, this.SelectedPrinter.Name, barcodeGraphsQuality: true) ;
+            ;
         }
 
         /// <summary>

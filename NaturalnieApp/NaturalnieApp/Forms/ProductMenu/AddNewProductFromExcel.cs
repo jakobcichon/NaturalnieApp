@@ -180,6 +180,44 @@ namespace NaturalnieApp.Forms
             dataFromExcel.Dispose();
         }
 
+        /// <summary>
+        /// Mathod used for short Barcodes, without manufacturer prefix.
+        /// </summary>
+        /// <param name="manufacturerName"></param>
+        /// <param name="shortBarcode"></param>
+        /// <returns></returns>
+        private string GetBarcodePrefixAndCreateFullBarcode(string manufacturerName, string shortBarcode)
+        {
+            //LocalVaribales
+            string barcodeCheckedVal = "";
+
+            //If Barcode EAN13 has less than 13 chars, but not empty, check if can contact with manufacturer EAN prefix
+            string barcode = shortBarcode;
+            if (barcode.Count() > 0 && barcode.Count() < 13)
+            {
+                //Get EAN prefix from DB
+                string rowManufacturerNameValue = manufacturerName;
+                bool manufacturerNameExist = this.databaseCommands.CheckIfManufacturerNameExist(rowManufacturerNameValue);
+                if (manufacturerNameExist)
+                {
+                    //Get prefix value
+                    string prefix = this.databaseCommands.GetManufacturerEanPrefixByName(rowManufacturerNameValue);
+
+                    if (prefix != null)
+                    {
+                        //Try to add manufacturer EAN prefix to the given barcode and check if it has 13 chars
+                        string tempBarcode = prefix + barcode;
+                        if (tempBarcode.Count() == 13) barcodeCheckedVal = tempBarcode;
+                    }
+                    else barcodeCheckedVal = shortBarcode;
+                }
+                else barcodeCheckedVal = shortBarcode;
+            }
+            else barcodeCheckedVal = shortBarcode;
+
+            return barcodeCheckedVal;
+        }
+
         //Method used to clear string from all escape characters, white spaces etc.
         private DataTable ClearString(DataTable inputData, IExcel template)
         {
@@ -356,29 +394,9 @@ namespace NaturalnieApp.Forms
                         Validation.SupplierNameValidation(row.Cells[this.SupplierColumnName].Value.ToString());
                         Validation.ManufacturerNameValidation(row.Cells[this.ManufacturerColumnName].Value.ToString());
 
-                        //If Barcode EAN13 has less than 13 chars, but not empty, check if can contact with manufacturer EAN prefix
-                        string barcode = row.Cells[this.BarcodeColumnName].Value.ToString();
-                        if (barcode.Count() > 0 && barcode.Count() < 13)
-                        {
-                            //Get EAN prefix from DB
-                            string rowManufacturerNameValue = row.Cells[this.ManufacturerColumnName].Value.ToString();
-                            bool manufacturerNameExist = this.databaseCommands.CheckIfManufacturerNameExist(rowManufacturerNameValue);
-                            if (manufacturerNameExist)
-                            {
-                                //Get prefix value
-                                string prefix = this.databaseCommands.GetManufacturerEanPrefixByName(rowManufacturerNameValue);
-
-                                if (prefix != null)
-                                {
-                                    //Try to add manufacturer EAN prefix to the given barcode and check if it has 13 chars
-                                    string tempBarcode = prefix + barcode;
-                                    if (tempBarcode.Count() == 13) barcodeCheckedVal = tempBarcode;
-                                }
-                                else barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
-                            }
-                            else barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
-                        }
-                        else barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
+                        //Check if given code is full barcode or oly product code without manufacturer prefix
+                        barcodeCheckedVal = GetBarcodePrefixAndCreateFullBarcode(row.Cells[this.ManufacturerColumnName].Value.ToString(),
+                            row.Cells[this.BarcodeColumnName].Value.ToString());
 
                         //Validate every entry 
                         Validation.SupplierNameValidation(row.Cells[this.SupplierColumnName].Value.ToString());
@@ -524,6 +542,7 @@ namespace NaturalnieApp.Forms
                                 product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
                                 product.Marigin = rowMariginValue;
                                 product.BarCode = rowBarcodeValue;
+                                product.BarCodeShort = BarcodeRelated.GenerateEan8FromEan13(rowBarcodeValue);
                                 product.ProductInfo = "Brak";
                                 product.FinalPrice = (float) Calculations.FinalPrice(Convert.ToDouble(rowPriceNetValue), rowTaxValue, Convert.ToDouble(rowMariginValue));
                                 if (rowSupplierCodeValue == "") product.SupplierCode = product.BarCode;
