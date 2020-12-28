@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using NaturalnieApp.Database;
 using System;
+using System.Data;
 
 namespace NaturalnieApp.Forms
 {
@@ -20,9 +21,11 @@ namespace NaturalnieApp.Forms
         //Global variables
         List<string> ProductsList;
         List<string> ManufacturersList;
-        List<string> BarcodeList;
+        List<string> BarcodesList;
 
         AutoCompleteStringCollection ProductListCollection;
+        AutoCompleteStringCollection ManufacturerListCollection;
+        AutoCompleteStringCollection BarcodeListCollection;
         #endregion
 
         #region Class constructor
@@ -42,7 +45,10 @@ namespace NaturalnieApp.Forms
             //Initialize globar variables
             this.ProductsList = new List<string>();
             this.ManufacturersList = new List<string>();
-            this.BarcodeList = new List<string>();
+            this.BarcodesList = new List<string>();
+
+            //Initialize daa grid view
+            InitializeAdvancedDataGridView();
         }
         #endregion
 
@@ -153,24 +159,82 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //General methods
         #region General methods
+
+        //Metchod use to find and select string in ComboBox
+        private void FindTextInComboBoxAndSelect(ref ComboBox obj, string textToFind)
+        {
+            //Find search tex index
+            int index = obj.FindString(textToFind);
+            obj.SelectedIndex = index;
+
+        }
+
         private void FillWithInitialDataFromObject(List<string> productList, List<string> manufacturerList, List<string> barcodeList)
         {
             //Add fetched data to proper combo box
             this.ProductListCollection = new AutoCompleteStringCollection();
             this.ProductsList = this.databaseCommands.GetProductsNameList();
             this.ProductListCollection.AddRange(this.ProductsList.ToArray());
-            this.tbProducts.AutoCompleteCustomSource = this.ProductListCollection;
-            ;
-            /*
-            cbProductList.Items.AddRange(productList.ToArray());
-            cbManufacturer.Items.Clear();
-            cbManufacturer.Items.Add("Wszyscy");
-            cbManufacturer.Items.AddRange(manufacturerList.ToArray());
-            cbSupplierName.Items.Clear();
-            cbSupplierName.Items.AddRange(supplierList.ToArray());
-            cbTax.Items.Clear();
-            cbTax.Items.AddRange(this.databaseCommands.GetTaxListRetString().ToArray());
-            */
+            this.cbProductsList.AutoCompleteCustomSource = this.ProductListCollection;
+            this.cbProductsList.Items.AddRange(this.ProductsList.ToArray());
+
+            //Add fetched data to proper combo box
+            this.ManufacturerListCollection = new AutoCompleteStringCollection();
+            this.ManufacturersList = this.databaseCommands.GetManufacturersNameList();
+            this.ManufacturerListCollection.AddRange(this.ManufacturersList.ToArray());
+            this.cbManufacturers.AutoCompleteCustomSource = this.ManufacturerListCollection;
+            this.cbManufacturers.Items.AddRange(this.ManufacturersList.ToArray());
+
+            //Add fetched data to proper combo box
+            this.BarcodeListCollection = new AutoCompleteStringCollection();
+            this.BarcodesList = this.databaseCommands.GetBarcodeList();
+            this.BarcodeListCollection.AddRange(this.BarcodesList.ToArray());
+            this.cbBarcodes.AutoCompleteCustomSource = this.BarcodeListCollection;
+            this.cbBarcodes.Items.AddRange(this.BarcodesList.ToArray());
+
+        }
+        #endregion
+        //====================================================================================================
+        //Advanced data gid view
+        #region Advanced data gid view
+
+        /// <summary>
+        /// Method used to initialize advanced data grid view
+        /// </summary>
+        private void InitializeAdvancedDataGridView()
+        {
+            //Add checkbox to data grid
+            DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
+            advancedDataGridView1.Columns.Insert(0, chk);
+            chk.HeaderText = "Zaznacz";
+            chk.Name = "CheckBox";
+
+            //Add numering column to the data grid
+            string HeaderText = "Lp.";
+            string Name = "NumeringColumn";
+            advancedDataGridView1.Columns.Add(Name, HeaderText);
+
+            //Add barcode column to the data grid
+            HeaderText = "Kod kreskowy";
+            Name = "Barcode";
+            advancedDataGridView1.Columns.Add(Name, HeaderText);
+
+            //Add label text to the data grid
+            HeaderText = "Tekst etykiety";
+            Name = "LabelText";
+            advancedDataGridView1.Columns.Add(Name, HeaderText);
+
+            //Add final price to the data grid
+            HeaderText = "Cena klienta";
+            Name = "FinalPrice";
+            advancedDataGridView1.Columns.Add(Name, HeaderText);
+
+            //Add number of copies to the data grid
+            HeaderText = "Liczba kopii";
+            Name = "NumberOfCopies";
+            advancedDataGridView1.Columns.Add(Name, HeaderText);
+
+            advancedDataGridView1.AutoResizeColumns();
         }
         #endregion
         //====================================================================================================
@@ -194,5 +258,138 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
+
+        //====================================================================================================
+        //Manufacturer  events
+        #region Manufacturer  events
+        private void cbManufacturers_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.cbManufacturers.SelectedIndex != 0)
+                {
+
+                    cbProductsList.SelectedItem = null;
+                    cbProductsList.Text = null;
+                    cbBarcodes.SelectedItem = null;
+                    cbBarcodes.Text = null;
+
+                    //Fetch filtered information from database
+                    List<string> filteredProductNames = this.databaseCommands.GetProductsNameListByManufacturer(cbManufacturers.SelectedItem.ToString());
+                    cbProductsList.Items.Clear();
+                    cbProductsList.Items.AddRange(filteredProductNames.ToArray());
+
+                }
+                else
+                {
+                    //Fetch filtered information from database
+                    List<string> productNames = this.databaseCommands.GetProductsNameList();
+                    cbProductsList.Items.Clear();
+                    cbProductsList.Items.AddRange(productNames.ToArray());
+
+                    cbProductsList.SelectedItem = null;
+                    cbProductsList.Text = null;
+                    cbBarcodes.SelectedItem = null;
+                    cbBarcodes.Text = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        #endregion
+
+        //====================================================================================================
+        //Product List events
+        #region Product List events
+        private void cbProductsList_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            //Cast an object
+            ComboBox localSender = (ComboBox)sender;
+
+            //Local variables
+            string manufacturerName = "";
+            string barcode = "";
+
+            //Get selected entity
+            try
+            {
+                manufacturerName = this.databaseCommands.GetManufacturerByProductName(localSender.SelectedItem.ToString()).Name;
+                barcode = this.databaseCommands.GetProductEntityByProductName(localSender.SelectedItem.ToString()).BarCode;
+                FindTextInComboBoxAndSelect(ref cbManufacturers, manufacturerName);
+                FindTextInComboBoxAndSelect(ref cbBarcodes, barcode);
+
+                this.ActiveControl = this.bAdd;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        #endregion
+
+        //====================================================================================================
+        //Product List events
+        #region Barcode events
+        private void cbBarcodes_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            //Cast an object
+            ComboBox localSender = (ComboBox)sender;
+
+            //Local variables
+            string manufacturerName = "";
+            string productName = "";
+
+            //Get selected entity
+            try
+            {
+                productName = this.databaseCommands.GetProductEntityByBarcode(localSender.SelectedItem.ToString()).ProductName;
+                manufacturerName = this.databaseCommands.GetManufacturerByProductName(productName).Name;
+                FindTextInComboBoxAndSelect(ref cbManufacturers, manufacturerName);
+                FindTextInComboBoxAndSelect(ref cbProductsList, productName);
+
+                this.ActiveControl = this.bAdd;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        #endregion
+
+        private void bAdd_Click(object sender, EventArgs e)
+        {
+            //Local variables
+            Product entity;
+            DataTable data = new DataTable();
+            DataGridViewRow row = new DataGridViewRow();
+            
+
+            if (cbBarcodes.SelectedItem != null && cbProductsList.SelectedItem != null)
+            {
+                try
+                {
+                    //Get product entity from DB
+                    entity = this.databaseCommands.GetProductEntityByProductName(cbProductsList.SelectedItem.ToString());
+
+                    //Assign values to the proper rows
+                    advancedDataGridView1.Rows.Insert()
+                    advancedDataGridView1.Rows[advancedDataGridView1.Rows.Count - 1].Cells[1].Value = advancedDataGridView1.Rows.Count;
+                    advancedDataGridView1.Update();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
+            }
+        }
     }
 }

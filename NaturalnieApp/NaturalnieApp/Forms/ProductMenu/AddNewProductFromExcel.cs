@@ -173,7 +173,6 @@ namespace NaturalnieApp.Forms
             bSelectAll.Visible = true;
 
             advancedDataGridView1.Columns[1].CellTemplate.ValueType = Type.GetType("Int");
-            ;
             //Autosize columns
             advancedDataGridView1.AutoResizeColumns();
 

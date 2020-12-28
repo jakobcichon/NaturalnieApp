@@ -133,55 +133,6 @@ namespace NaturalnieApp.Forms
             this.tbPrice.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPrice_KeyDown);
             this.tbPrice.Validating += new System.ComponentModel.CancelEventHandler(this.tbPrice_Validating);
             // 
-            // lPrice
-            // 
-            this.lPrice.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lPrice.Location = new System.Drawing.Point(6, 6);
-            this.lPrice.Margin = new System.Windows.Forms.Padding(5);
-            this.lPrice.Name = "lPrice";
-            this.lPrice.Size = new System.Drawing.Size(200, 30);
-            this.lPrice.TabIndex = 1;
-            this.lPrice.Text = "Cena netto";
-            this.lPrice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lQuantity
-            // 
-            this.lQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lQuantity.Location = new System.Drawing.Point(354, -27);
-            this.lQuantity.Margin = new System.Windows.Forms.Padding(3);
-            this.lQuantity.Name = "lQuantity";
-            this.lQuantity.Size = new System.Drawing.Size(244, 24);
-            this.lQuantity.TabIndex = 2;
-            this.lQuantity.Text = "Ilość";
-            this.lQuantity.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lManufacturer
-            // 
-            this.lManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.lManufacturer.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lManufacturer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lManufacturer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lManufacturer.Location = new System.Drawing.Point(6, 6);
-            this.lManufacturer.Margin = new System.Windows.Forms.Padding(5);
-            this.lManufacturer.Name = "lManufacturer";
-            this.lManufacturer.Size = new System.Drawing.Size(240, 20);
-            this.lManufacturer.TabIndex = 0;
-            this.lManufacturer.Text = "Producent";
-            this.lManufacturer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lTax
-            // 
-            this.lTax.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lTax.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lTax.Location = new System.Drawing.Point(6, 6);
-            this.lTax.Margin = new System.Windows.Forms.Padding(5);
-            this.lTax.Name = "lTax";
-            this.lTax.Size = new System.Drawing.Size(200, 30);
-            this.lTax.TabIndex = 1;
-            this.lTax.Text = "Stawka VAT";
-            this.lTax.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // tbMarigin
             // 
             this.tbMarigin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));

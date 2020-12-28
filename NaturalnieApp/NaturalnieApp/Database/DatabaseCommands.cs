@@ -564,6 +564,23 @@ namespace NaturalnieApp.Database
             }
             return localProduct;
         }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Product entity by Barcode value
+        //====================================================================================================
+        public Product GetProductEntityByBarcode(string barcode)
+        {
+            Product localProduct = new Product();
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from p in contextDB.Products
+                            where p.BarCode == barcode
+                            select p;
+
+                localProduct = query.SingleOrDefault();
+            }
+            return localProduct;
+        }
         //====================================================================================================
         //Method used to retrieve from DB Product entity
         //====================================================================================================

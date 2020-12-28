@@ -89,7 +89,7 @@ namespace NaturalnieApp.Dymo_Printer
         }
 
         /// <summary>
-        /// Method used to print price card (product name, barcode and final price) from Product list
+        /// Method used to print price card (product name, barcode and final price) from Product list.
         /// </summary>
         /// <param name="listOfProductToPrint"></param>
         public void PrintPriceCardsFromProductList(List<Product> listOfProductToPrint)
@@ -101,6 +101,8 @@ namespace NaturalnieApp.Dymo_Printer
 
             if (numberOfElements > 0)
             {
+
+                //Loop through all lable objects
                 for (int i=0; i<=numberOfElements-1; i += 2)
                 {
                     int j = i + 1;
@@ -137,7 +139,6 @@ namespace NaturalnieApp.Dymo_Printer
 
             //Print label
             DymoPrinter.Instance.PrintLabel(listOfTheLabelToPrint, this.SelectedPrinter.Name, barcodeGraphsQuality: true);
-            ;
         }
 
         /// <summary>
