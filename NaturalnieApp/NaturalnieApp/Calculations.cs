@@ -33,7 +33,6 @@ namespace NaturalnieApp
             //Set final price
             double ItegerToDecimal = Convert.ToDouble(decimalToInteger) / 10;
             finalPrice = Convert.ToDouble(integerPart) + ItegerToDecimal;
-            ;
 
             return finalPrice;
         }

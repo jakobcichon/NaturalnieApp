@@ -27,12 +27,19 @@ namespace NaturalnieApp
             
             //Create instance to DB
             DatabaseCommands tempDB = new DatabaseCommands();
-            Product tempProduct = tempDB.GetProductEntityByProductName(tempDB.GetProductsNameList()[2]);
+            //Product tempProduct = tempDB.GetProductEntityByProductName(tempDB.GetProductsNameList()[2]);
+            List<string> productNameList = tempDB.GetProductsNameList();
+            List<Product> tempProduct = new List<Product>();
+            foreach (string element in productNameList)
+            {
+                tempProduct.Add(tempDB.GetProductEntityByProductName(element));
+            }
 
             //Dymo printer
             Printer PrinterInstance = new Printer(@"F:\Projekty\02. NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Dymo Printer\BarcodeFinal.label");
             //Printer PrinterInstance = new Printer(@"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Dymo printer\barcode.label");
-            PrinterInstance.PrintPriceCardFromProduct(tempProduct);
+            //PrinterInstance.PrintPriceCardFromProduct(tempProduct);
+            PrinterInstance.PrintPriceCardsFromProductList(tempProduct);
             
             //Read data from config file 
             ConfigFileObject ConfigFileInst = new ConfigFileObject();
