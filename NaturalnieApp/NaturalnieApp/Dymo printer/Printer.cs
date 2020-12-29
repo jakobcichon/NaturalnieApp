@@ -38,6 +38,14 @@ namespace NaturalnieApp.Dymo_Printer
         protected InvalidNumberOfElements(System.Runtime.Serialization.SerializationInfo info,
             System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
+    public class NoPrinterToSelect : Exception
+    {
+        public NoPrinterToSelect() : base() { }
+        public NoPrinterToSelect(string message) : base(message) { }
+        public NoPrinterToSelect(string message, System.Exception inner) : base(message, inner) { }
+        protected NoPrinterToSelect(System.Runtime.Serialization.SerializationInfo info,
+            System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
     #endregion
 
     public class Printer
@@ -64,11 +72,6 @@ namespace NaturalnieApp.Dymo_Printer
             //Get label to print
             this.LabelToPrint = new DymoLabel();
             this.LabelToPrint.LoadLabelFromFilePath(labelPath);
-            
-            //Get printer list
-            this.PrinterDevices = DymoPrinter.Instance.GetPrinters().ToList();
-            if (this.PrinterDevices.Count > 0) this.SelectedPrinter = this.PrinterDevices[0];
-
         }
         #endregion
 
@@ -85,7 +88,7 @@ namespace NaturalnieApp.Dymo_Printer
             this.LabelToPrint = ChangeLabelObjectsValues(this.LabelToPrint, productToPrint, false);
 
             //Print label
-            DymoPrinter.Instance.PrintLabel(this.LabelToPrint, this.SelectedPrinter.Name, barcodeGraphsQuality: true) ;
+            DymoPrinter.Instance.PrintLabel(this.LabelToPrint, this.SelectedPrinter.Name, barcodeGraphsQuality: true);
         }
 
         /// <summary>
@@ -226,9 +229,14 @@ namespace NaturalnieApp.Dymo_Printer
 
             //Write verified path to the object
             this.LabelPath = label;
+        }
 
-            //Get label to print
-            //this.LabelToPrint = Framework.Open(this.LabelPath);
+        public void GetPrinters()
+        {
+            //Get printer list
+            this.PrinterDevices = DymoPrinter.Instance.GetPrinters().ToList();
+            if (this.PrinterDevices.Count > 0) this.SelectedPrinter = this.PrinterDevices[0];
+            else throw new NoPrinterToSelect("No available Dymo printer to select! Connect printer and try again!");
         }
     }
 }

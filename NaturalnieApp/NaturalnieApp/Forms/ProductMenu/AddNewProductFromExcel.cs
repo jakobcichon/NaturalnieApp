@@ -253,7 +253,7 @@ namespace NaturalnieApp.Forms
                     if (columnAttribute == ColumnsAttributes.Tax)
                     {
                         //If percentage sing exist, remove it
-                        singleElement = singleElement.Replace(" % ", "");
+                        singleElement = singleElement.Replace("%", "");
 
                         //Try parse to real value, and convert for decimal value
                         double temp = Convert.ToDouble(singleElement);
@@ -362,6 +362,7 @@ namespace NaturalnieApp.Forms
 
             //Row collection
             List<DataGridViewRow> rowCollectionToAdd = new List<DataGridViewRow>();
+            List<DataGridViewRow> rowCollectionToRemoveFromList = new List<DataGridViewRow>();
 
             //Loop through all rows and add to the list only rows with check box set to true
             foreach (DataGridViewRow row in advancedDataGridView1.Rows)
@@ -550,6 +551,9 @@ namespace NaturalnieApp.Forms
                                 //Add new object to the DB
                                 this.databaseCommands.AddNewProduct(product);
 
+                                //Add row to the collection of added rows, to remo it later
+                                rowCollectionToRemoveFromList.Add(row);
+
                                 //Set auxiliary bit
                                 if (savedSuccessfully == -1) savedSuccessfully = 1;
 
@@ -633,6 +637,15 @@ namespace NaturalnieApp.Forms
                 else if (savedSuccessfully == 1 && rowCollectionToAdd.Count > 1) MessageBox.Show("Wszystkie produkt został pomyślnie dodane do bazy danych!");
                 else MessageBox.Show("Nieznany stan dodawania produktu do bazy danych!!");
 
+            }
+
+            if (rowCollectionToRemoveFromList.Count > 0)
+            {
+                foreach (DataGridViewRow row in rowCollectionToRemoveFromList)
+                {
+                    advancedDataGridView1.Rows.Remove(row);
+                }
+                advancedDataGridView1.Update();
             }
 
         }

@@ -15,11 +15,9 @@ namespace NaturalnieApp.Initialization
         public ConfigFileObject()
         {
 
-
             this.ConfigFileInst = new ConfigFile("\\config\\config.txt", "");
 
             this.ConfigFileElements = this.ConfigFileInst.ReadConfigFileElement();
-
         }
 
         //Method used to get variable value by variable name
@@ -342,6 +340,9 @@ namespace NaturalnieApp.Initialization
 
             //Add next element to list
             retList.Add(new ConfigElement("DatabseName", "TestDatabaseName", "Test database name"));
+            
+            //Add next element to list
+            retList.Add(new ConfigElement("LabelPath", Directory.GetCurrentDirectory() + "\\label\\BarcodeFinal.label", "Path to the label file"));
 
             //To Add next element to list, act as above
             //Placeholder for next element

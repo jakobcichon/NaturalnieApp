@@ -26,7 +26,13 @@ namespace NaturalnieApp.Forms
         int xOffset = 0;
         int yOffset = 0;
 
-      
+        //Forms instances
+        AddNewProductFromExcel addNewProductFromExcel { get; set; }
+        PrintBarcode printBarcode { get; set; }
+        ShowProductInfo showProductInfo { get; set; }
+        AddNewProduct addNewProduct { get; set; }
+
+
         //Creat EF databse connection object
         DatabaseCommands databaseCommands;
 
@@ -41,6 +47,11 @@ namespace NaturalnieApp.Forms
             //check if Database reachable 
             this.databaseCommands.CheckConnection(true);
             ;
+
+            this.addNewProductFromExcel = new AddNewProductFromExcel(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+            this.printBarcode = new PrintBarcode(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+            this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+            this.addNewProduct = new AddNewProduct() { TopLevel = false, TopMost = true };
 
         }
 
@@ -137,33 +148,76 @@ namespace NaturalnieApp.Forms
         private void bNewProduct_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
-            AddNewProduct frm = new AddNewProduct() { TopLevel = false, TopMost = true };
-            this.pContainer.Controls.Add(frm);
-            frm.Show();
+            try
+            {
+                this.pContainer.Controls.Add(this.addNewProduct);
+                this.addNewProduct.Show();
+                this.addNewProduct.BringToFront();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.addNewProduct = new AddNewProduct() { TopLevel = false, TopMost = true };
+                this.pContainer.Controls.Add(this.addNewProduct);
+                this.addNewProduct.Show();
+                this.addNewProduct.BringToFront();
+            }
         }
         private void AddProductFromPdf_Click(object sender, EventArgs e)
         {
-            this.pContainer.Controls.Clear();
-            AddNewProductFromExcel frm = new AddNewProductFromExcel(ref this.databaseCommands) { TopLevel = false, TopMost = true };
-            this.pContainer.Controls.Add(frm);
-            frm.Show();
+            try
+            {
+                this.pContainer.Controls.Add(this.addNewProductFromExcel);
+                this.addNewProductFromExcel.Show();
+                this.addNewProductFromExcel.BringToFront();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.addNewProductFromExcel = new AddNewProductFromExcel(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+                this.pContainer.Controls.Add(this.addNewProductFromExcel);
+                this.addNewProductFromExcel.Show();
+                this.addNewProductFromExcel.BringToFront();
+            }
+
         }
+    
         private void bShowProductInfo_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
-            ShowProductInfo frm = new ShowProductInfo(ref this.databaseCommands) { TopLevel = false, TopMost = true };
-            this.pContainer.Controls.Add(frm);
-            frm.Show();
+            try
+            {
+                this.pContainer.Controls.Add(this.showProductInfo);
+                this.showProductInfo.Show();
+                this.showProductInfo.BringToFront();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+                this.pContainer.Controls.Add(this.showProductInfo);
+                this.showProductInfo.Show();
+                this.showProductInfo.BringToFront();
+            }
         }
 
         private void bPrintBarcode_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
-            PrintBarcode frm = new PrintBarcode(ref this.databaseCommands) { TopLevel = false, TopMost = true };
-            this.pContainer.Controls.Add(frm);
-            frm.Show();
+            try
+            {
+                this.pContainer.Controls.Add(this.printBarcode);
+                this.printBarcode.Show();
+                this.printBarcode.BringToFront();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.printBarcode = new PrintBarcode(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+                this.pContainer.Controls.Add(this.printBarcode);
+                this.printBarcode.Show();
+                this.printBarcode.BringToFront();
+            }
 
         }
+
+    
 
         #endregion
 

@@ -45,6 +45,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer = new System.Windows.Forms.TableLayoutPanel();
             this.cbManufacturers = new System.Windows.Forms.ComboBox();
             this.lManufacturer = new System.Windows.Forms.Label();
+            this.bClose = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -73,12 +74,12 @@ namespace NaturalnieApp.Forms
             // advancedDataGridView1
             // 
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.advancedDataGridView1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.advancedDataGridView1.Dock = System.Windows.Forms.DockStyle.Left;
             this.advancedDataGridView1.FilterAndSortEnabled = true;
-            this.advancedDataGridView1.Location = new System.Drawing.Point(0, 156);
+            this.advancedDataGridView1.Location = new System.Drawing.Point(0, 150);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(1000, 344);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(732, 350);
             this.advancedDataGridView1.TabIndex = 2;
             // 
             // bPrint
@@ -86,15 +87,17 @@ namespace NaturalnieApp.Forms
             this.bPrint.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bPrint.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bPrint.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bPrint.Location = new System.Drawing.Point(888, 10);
+            this.bPrint.Location = new System.Drawing.Point(782, 10);
             this.bPrint.Name = "bPrint";
             this.bPrint.Size = new System.Drawing.Size(100, 50);
             this.bPrint.TabIndex = 5;
             this.bPrint.Text = "Drukuj";
             this.bPrint.UseVisualStyleBackColor = false;
+            this.bPrint.Click += new System.EventHandler(this.bPrint_Click);
             // 
             // pButtonsPanel
             // 
+            this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Controls.Add(this.bPrint);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pButtonsPanel.Location = new System.Drawing.Point(0, 500);
@@ -135,7 +138,7 @@ namespace NaturalnieApp.Forms
             this.pBarCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pBarCode.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pBarCode.ColumnCount = 1;
-            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 342F));
+            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 344F));
             this.pBarCode.Controls.Add(this.cbBarcodes, 0, 1);
             this.pBarCode.Controls.Add(this.lBarcode, 0, 0);
             this.pBarCode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -183,7 +186,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 529F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 531F));
             this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -231,7 +234,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 319F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 321F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -276,6 +279,20 @@ namespace NaturalnieApp.Forms
             this.lManufacturer.Text = "Producent";
             this.lManufacturer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // bClose
+            // 
+            this.bClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bClose.Location = new System.Drawing.Point(888, 10);
+            this.bClose.Name = "bClose";
+            this.bClose.Size = new System.Drawing.Size(100, 50);
+            this.bClose.TabIndex = 6;
+            this.bClose.Text = "Zamknij";
+            this.bClose.UseMnemonic = false;
+            this.bClose.UseVisualStyleBackColor = false;
+            this.bClose.Click += new System.EventHandler(this.bClose_Click);
+            // 
             // PrintBarcode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,8 +300,8 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
-            this.Controls.Add(this.gbProductSelection);
             this.Controls.Add(this.advancedDataGridView1);
+            this.Controls.Add(this.gbProductSelection);
             this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
@@ -322,5 +339,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.ComboBox cbManufacturers;
         private System.Windows.Forms.ComboBox cbBarcodes;
         private System.Windows.Forms.ComboBox cbProductsList;
+        private System.Windows.Forms.Button bClose;
     }
 }

@@ -16,11 +16,14 @@ namespace NaturalnieApp
 {
     static class Program
     {
+        public static class GlobalVariables
+        {
+            static public string LabelPath { get; set; }
+        }
         /// <summary>
         /// Główny punkt wejścia dla aplikacji.
         /// </summary>
         /// 
-
         [STAThread]
         static void Main()
         {
@@ -30,6 +33,7 @@ namespace NaturalnieApp
 
             int cashRegisterID = 1;
             string path = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
+            GlobalVariables.LabelPath = ConfigFileInst.GetValueByVariableName("LabelPath");
 
            // ElzabCommand_OBAJTY Test = new ElzabCommand_OBAJTY(path, cashRegisterID);
             ElzabCommand_OGRUPA OdczytGrupy = new ElzabCommand_OGRUPA(path, cashRegisterID);

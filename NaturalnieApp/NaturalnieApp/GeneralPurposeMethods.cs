@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace NaturalnieApp
 {
@@ -131,5 +132,24 @@ namespace NaturalnieApp
             return retVal;
         }
         #endregion
+    }
+    /// <summary>
+    /// Static class consist Data source related objects
+    /// </summary>
+    public static class DataSourceRelated
+    {
+        /// <summary>
+        /// Structure used to describe column names for label data source
+        /// </summary>
+        public struct LabelDataSourceColumnNames
+        {
+            public string No { get; set; }
+            public string LabelText { get; set; }
+            public string LabelBarcode { get; set; }
+            public string LabelFinalPrice { get; set; }
+            public string NumberOfCopies { get; set; }
+
+        }
+
     }
 }

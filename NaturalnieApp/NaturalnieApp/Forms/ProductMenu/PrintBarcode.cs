@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using NaturalnieApp.Database;
 using System;
 using System.Data;
+using NaturalnieApp.Dymo_Printer;
+
 
 namespace NaturalnieApp.Forms
 {
@@ -23,9 +25,21 @@ namespace NaturalnieApp.Forms
         List<string> ManufacturersList;
         List<string> BarcodesList;
 
+        //Auto complete string collections
         AutoCompleteStringCollection ProductListCollection;
         AutoCompleteStringCollection ManufacturerListCollection;
         AutoCompleteStringCollection BarcodeListCollection;
+
+        //Data source for advanced data grid view
+        DataTable DataSoruce;
+        DataSourceRelated.LabelDataSourceColumnNames ColumnNames;
+
+        //List of the product to print
+        List<Product> ListOfTheProductToPrint;
+
+        //Printer instance
+        Printer DymoPrinter;
+
         #endregion
 
         #region Class constructor
@@ -48,7 +62,16 @@ namespace NaturalnieApp.Forms
             this.BarcodesList = new List<string>();
 
             //Initialize daa grid view
+            this.ColumnNames.No = "Lp.";
+            this.ColumnNames.LabelBarcode = "Kod kreskowy";
+            this.ColumnNames.LabelFinalPrice = "Cena klienta";
+            this.ColumnNames.LabelText = "Tekst etykiety";
+            this.ColumnNames.NumberOfCopies = "Liczba kopii";
+            this.DataSoruce = new DataTable();
             InitializeAdvancedDataGridView();
+
+            //List of the product to print
+            ListOfTheProductToPrint = new List<Product>();
         }
         #endregion
 
@@ -203,36 +226,49 @@ namespace NaturalnieApp.Forms
         /// </summary>
         private void InitializeAdvancedDataGridView()
         {
-            //Add checkbox to data grid
-            DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
-            advancedDataGridView1.Columns.Insert(0, chk);
-            chk.HeaderText = "Zaznacz";
-            chk.Name = "CheckBox";
+            //Create data source columns
+            DataColumn column = new DataColumn();
 
-            //Add numering column to the data grid
-            string HeaderText = "Lp.";
-            string Name = "NumeringColumn";
-            advancedDataGridView1.Columns.Add(Name, HeaderText);
+            column.ColumnName = this.ColumnNames.No;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            column.AutoIncrement = true;
+            column.AutoIncrementSeed = 1;
+            column.Unique = true;
+            this.DataSoruce.Columns.Add(column);
+            column.Dispose();
 
-            //Add barcode column to the data grid
-            HeaderText = "Kod kreskowy";
-            Name = "Barcode";
-            advancedDataGridView1.Columns.Add(Name, HeaderText);
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.LabelBarcode;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            column.Unique = true;
+            this.DataSoruce.Columns.Add(column);
+            column.Dispose();
 
-            //Add label text to the data grid
-            HeaderText = "Tekst etykiety";
-            Name = "LabelText";
-            advancedDataGridView1.Columns.Add(Name, HeaderText);
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.LabelText;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            column.Unique = true;
+            this.DataSoruce.Columns.Add(column);
+            column.Dispose();
 
-            //Add final price to the data grid
-            HeaderText = "Cena klienta";
-            Name = "FinalPrice";
-            advancedDataGridView1.Columns.Add(Name, HeaderText);
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.LabelFinalPrice;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            this.DataSoruce.Columns.Add(column);
+            column.Dispose();
 
-            //Add number of copies to the data grid
-            HeaderText = "Liczba kopii";
-            Name = "NumberOfCopies";
-            advancedDataGridView1.Columns.Add(Name, HeaderText);
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.NumberOfCopies;
+            column.DataType = Type.GetType("System.Int32");
+            column.ReadOnly = false;
+            this.DataSoruce.Columns.Add(column);
+            column.Dispose();
+
+            advancedDataGridView1.DataSource = this.DataSoruce;
 
             advancedDataGridView1.AutoResizeColumns();
         }
@@ -360,13 +396,13 @@ namespace NaturalnieApp.Forms
         }
         #endregion
 
+        //====================================================================================================
+        //Buttons events
+        #region Buttons events
         private void bAdd_Click(object sender, EventArgs e)
         {
             //Local variables
             Product entity;
-            DataTable data = new DataTable();
-            DataGridViewRow row = new DataGridViewRow();
-            
 
             if (cbBarcodes.SelectedItem != null && cbProductsList.SelectedItem != null)
             {
@@ -375,11 +411,48 @@ namespace NaturalnieApp.Forms
                     //Get product entity from DB
                     entity = this.databaseCommands.GetProductEntityByProductName(cbProductsList.SelectedItem.ToString());
 
-                    //Assign values to the proper rows
-                    advancedDataGridView1.Rows.Insert()
-                    advancedDataGridView1.Rows[advancedDataGridView1.Rows.Count - 1].Cells[1].Value = advancedDataGridView1.Rows.Count;
-                    advancedDataGridView1.Update();
+                    //Index of existing row
+                    int indexOfExistingRow = -1;
+                    bool productAlreadyOnTheList = false;
 
+                    //Check if product already exist on list
+                    foreach (DataRow rowElement in this.DataSoruce.Rows)
+                    {
+                        if (rowElement.Field<string>(this.ColumnNames.LabelText).Contains(entity.ElzabProductName))
+                        {
+                            indexOfExistingRow = this.DataSoruce.Rows.IndexOf(rowElement);
+                            productAlreadyOnTheList = true;
+                            break;
+                        }
+                    }
+
+                    //Increment number of copies if product already exist on the list
+                    if(productAlreadyOnTheList)
+                    {
+                        this.DataSoruce.Rows[indexOfExistingRow].SetField(this.ColumnNames.NumberOfCopies,
+                            this.DataSoruce.Rows[indexOfExistingRow].Field<Int32>(this.ColumnNames.NumberOfCopies) + 1);
+                    }
+                    else
+                    {
+                        //New data row type
+                        DataRow row;
+                        row = this.DataSoruce.NewRow();
+
+                        //Set requred fields
+                        row.SetField(this.ColumnNames.LabelBarcode, entity.BarCodeShort);
+                        row.SetField(this.ColumnNames.LabelText, entity.ElzabProductName);
+                        row.SetField(this.ColumnNames.LabelFinalPrice, string.Format("{0:0.00}", entity.FinalPrice));
+                        row.SetField(this.ColumnNames.NumberOfCopies, 1.ToString());
+
+                        //Assign values to the proper rows
+                        this.DataSoruce.Rows.Add(row);
+
+                        //Add entity to the list
+                        this.ListOfTheProductToPrint.Add(entity);
+                    }
+
+                    //AutoResize Columns
+                    advancedDataGridView1.AutoResizeColumns();
                 }
                 catch (Exception ex)
                 {
@@ -391,5 +464,69 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
             }
         }
+        private void bPrint_Click(object sender, EventArgs e)
+        {
+            if (this.DataSoruce.Rows.Count == 0)
+            {
+                MessageBox.Show("Brak wybranch elementów do druku!");
+            }
+            else
+            {
+                //Get printer device
+                try
+                {
+                    //Check if Dymo printer instance already created
+                    if (this.DymoPrinter == null)
+                    {
+                        //Printer instance
+                        this.DymoPrinter = new Printer(Program.GlobalVariables.LabelPath);
+                    }
+
+                    //Check if printer connected
+                    this.DymoPrinter.GetPrinters();
+
+                    //Local variables
+                    List<Product> localList = new List<Product>();
+
+                    //Loop through the list of the product to print and create temporary list contains elements multiple by number of copies
+                    foreach (Product element in this.ListOfTheProductToPrint)
+                    {
+                        //Get number of copies from data grid view
+                        int index = this.ListOfTheProductToPrint.IndexOf(element);
+                        int numberOfCopies = this.DataSoruce.Rows[index].Field<Int32>(this.ColumnNames.NumberOfCopies);
+
+                        for (int i = 1; i <= numberOfCopies; i++)
+                        {
+                            localList.Add(element);
+                        }
+                    }
+
+                    //Print lables
+                    this.DymoPrinter.PrintPriceCardsFromProductList(localList);
+
+                }
+                catch (NoPrinterToSelect)
+                {
+                    MessageBox.Show("Nie można odnaleźć drukarki firmy Dymo. Podłącz drukarkę i spróbuj ponownie!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+        }
+
+        private void bClose_Click(object sender, EventArgs e)
+        {
+
+            this.Parent.Show();
+            this.Dispose();
+            ;
+        }
+
+        #endregion
+
+
     }
 }
