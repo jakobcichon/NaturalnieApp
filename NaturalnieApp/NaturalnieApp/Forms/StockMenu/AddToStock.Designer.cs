@@ -2,7 +2,7 @@
 
 namespace NaturalnieApp.Forms
 {
-    partial class PrintBarcode
+    partial class AddToStock
     {
         /// <summary>
         /// Required designer variable.
@@ -46,6 +46,10 @@ namespace NaturalnieApp.Forms
             this.pManufacturer = new System.Windows.Forms.TableLayoutPanel();
             this.cbManufacturers = new System.Windows.Forms.ComboBox();
             this.lManufacturer = new System.Windows.Forms.Label();
+            this.pQuantity = new System.Windows.Forms.Panel();
+            this.mtbQuantity = new System.Windows.Forms.MaskedTextBox();
+            this.lQuantity = new System.Windows.Forms.Label();
+            this.pSpare1 = new System.Windows.Forms.Panel();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -53,6 +57,7 @@ namespace NaturalnieApp.Forms
             this.pBarCode.SuspendLayout();
             this.pProductName.SuspendLayout();
             this.pManufacturer.SuspendLayout();
+            this.pQuantity.SuspendLayout();
             this.SuspendLayout();
             // 
             // pHeader
@@ -79,21 +84,15 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 150);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(732, 350);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(700, 350);
             this.advancedDataGridView1.TabIndex = 2;
             // 
             // bPrint
             // 
-            this.bPrint.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bPrint.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bPrint.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bPrint.Location = new System.Drawing.Point(782, 10);
+            this.bPrint.Location = new System.Drawing.Point(0, 0);
             this.bPrint.Name = "bPrint";
-            this.bPrint.Size = new System.Drawing.Size(100, 50);
-            this.bPrint.TabIndex = 5;
-            this.bPrint.Text = "Drukuj";
-            this.bPrint.UseVisualStyleBackColor = false;
-            this.bPrint.Click += new System.EventHandler(this.bPrint_Click);
+            this.bPrint.Size = new System.Drawing.Size(75, 23);
+            this.bPrint.TabIndex = 7;
             // 
             // pButtonsPanel
             // 
@@ -152,7 +151,7 @@ namespace NaturalnieApp.Forms
             this.pBarCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pBarCode.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pBarCode.ColumnCount = 1;
-            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 345F));
+            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 347F));
             this.pBarCode.Controls.Add(this.cbBarcodes, 0, 1);
             this.pBarCode.Controls.Add(this.lBarcode, 0, 0);
             this.pBarCode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -200,7 +199,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 532F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 534F));
             this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -248,7 +247,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 322F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 324F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -293,13 +292,60 @@ namespace NaturalnieApp.Forms
             this.lManufacturer.Text = "Producent";
             this.lManufacturer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // PrintBarcode
+            // pQuantity
+            // 
+            this.pQuantity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pQuantity.Controls.Add(this.mtbQuantity);
+            this.pQuantity.Controls.Add(this.lQuantity);
+            this.pQuantity.Controls.Add(this.pSpare1);
+            this.pQuantity.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pQuantity.Location = new System.Drawing.Point(700, 150);
+            this.pQuantity.Name = "pQuantity";
+            this.pQuantity.Size = new System.Drawing.Size(300, 38);
+            this.pQuantity.TabIndex = 18;
+            // 
+            // mtbQuantity
+            // 
+            this.mtbQuantity.Dock = System.Windows.Forms.DockStyle.Left;
+            this.mtbQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mtbQuantity.Location = new System.Drawing.Point(150, 10);
+            this.mtbQuantity.Mask = "\\d{2}/\\d{2}/\\d{4}";
+            this.mtbQuantity.Name = "mtbQuantity";
+            this.mtbQuantity.PromptChar = ' ';
+            this.mtbQuantity.Size = new System.Drawing.Size(149, 26);
+            this.mtbQuantity.TabIndex = 3;
+            this.mtbQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // lQuantity
+            // 
+            this.lQuantity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.lQuantity.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lQuantity.Location = new System.Drawing.Point(0, 10);
+            this.lQuantity.Name = "lQuantity";
+            this.lQuantity.Size = new System.Drawing.Size(150, 26);
+            this.lQuantity.TabIndex = 1;
+            this.lQuantity.Text = "Ilość";
+            this.lQuantity.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pSpare1
+            // 
+            this.pSpare1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.pSpare1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pSpare1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pSpare1.Location = new System.Drawing.Point(0, 0);
+            this.pSpare1.Name = "pSpare1";
+            this.pSpare1.Size = new System.Drawing.Size(298, 10);
+            this.pSpare1.TabIndex = 0;
+            // 
+            // AddToStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
+            this.Controls.Add(this.pQuantity);
             this.Controls.Add(this.advancedDataGridView1);
             this.Controls.Add(this.gbProductSelection);
             this.Controls.Add(this.pHeader);
@@ -308,7 +354,7 @@ namespace NaturalnieApp.Forms
             this.Enabled = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
-            this.Name = "PrintBarcode";
+            this.Name = "AddToStock";
             this.Text = "PrintBarcode";
             this.Load += new System.EventHandler(this.PrintBarcode_Load);
             this.pHeader.ResumeLayout(false);
@@ -318,6 +364,8 @@ namespace NaturalnieApp.Forms
             this.pBarCode.ResumeLayout(false);
             this.pProductName.ResumeLayout(false);
             this.pManufacturer.ResumeLayout(false);
+            this.pQuantity.ResumeLayout(false);
+            this.pQuantity.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -340,5 +388,9 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.ComboBox cbBarcodes;
         private System.Windows.Forms.ComboBox cbProductsList;
         private System.Windows.Forms.Button bClose;
+        private System.Windows.Forms.Panel pQuantity;
+        private System.Windows.Forms.MaskedTextBox mtbQuantity;
+        private System.Windows.Forms.Label lQuantity;
+        private System.Windows.Forms.Panel pSpare1;
     }
 }

@@ -234,6 +234,12 @@
     <Compile Include="Forms\ProductMenu\ShowProductInfo.Designer.cs">
       <DependentUpon>ShowProductInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\StockMenu\AddToStock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\StockMenu\AddToStock.Designer.cs">
+      <DependentUpon>AddToStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Validation.cs" />
     <Compile Include="GeneralPurposeMethods.cs" />
     <Compile Include="Initialization\ConfigFile.cs" />
@@ -265,6 +271,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProductMenu\ShowProductInfo.resx">
       <DependentUpon>ShowProductInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\StockMenu\AddToStock.resx">
+      <DependentUpon>AddToStock.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

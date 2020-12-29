@@ -31,6 +31,7 @@ namespace NaturalnieApp.Forms
         PrintBarcode printBarcode { get; set; }
         ShowProductInfo showProductInfo { get; set; }
         AddNewProduct addNewProduct { get; set; }
+        AddToStock addToStock { get; set; }
 
 
         //Creat EF databse connection object
@@ -52,6 +53,7 @@ namespace NaturalnieApp.Forms
             this.printBarcode = new PrintBarcode(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.addNewProduct = new AddNewProduct() { TopLevel = false, TopMost = true };
+            this.addToStock = new AddToStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
 
         }
 
@@ -92,6 +94,7 @@ namespace NaturalnieApp.Forms
         {
             pCashRegisterSubMenu.Visible = false;
             pProductSubMenu.Visible = false;
+            pStockSubMenu.Visible = false;
         }
         private void bExit_Click(object sender, EventArgs e)
         {
@@ -217,10 +220,34 @@ namespace NaturalnieApp.Forms
 
         }
 
-    
-
         #endregion
 
+        #region Stock submenu
+        private void bStock_Click(object sender, EventArgs e)
+        {
+            toggleSubMenu(pStockSubMenu);
+        }
 
+
+        private void bAddToStock_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            try
+            {
+                this.pContainer.Controls.Add(this.addToStock);
+                this.addToStock.Show();
+                this.addToStock.BringToFront();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.addToStock = new AddToStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+                this.pContainer.Controls.Add(this.addToStock);
+                this.addToStock.Show();
+                this.addToStock.BringToFront();
+            }
+
+        }
+
+        #endregion
     }
 }
