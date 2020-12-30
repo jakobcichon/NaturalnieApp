@@ -39,9 +39,6 @@ namespace NaturalnieApp.Database
         public int Id { get; set; }
         public int ProductId { get; set; }
         public int ActualQuantity { get; set; }
-        public int MinQuantity { get; set; }
-        public int MaxQuantity { get; set; }
-        public bool QuantityWarning { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime ExpirationDate { get; set; }
     }

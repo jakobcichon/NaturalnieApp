@@ -14,25 +14,28 @@ namespace NaturalnieApp.Forms
     {
         #region Object fields
         //Set the instance fields
-        DatabaseCommands databaseCommands;
+        DatabaseCommands databaseCommands{ get; set; }
 
         //Backgroundworker
-        BackgroundWorker backgroundWorker1;
-        backgroundWorkerTasks ActualTaskType;
+        BackgroundWorker backgroundWorker1 { get; set; }
+        backgroundWorkerTasks ActualTaskType { get; set; }
 
         //Global variables
-        List<string> ProductsList;
-        List<string> ManufacturersList;
-        List<string> BarcodesList;
+        List<string> ProductsList { get; set; }
+        List<string> ManufacturersList { get; set; }
+        List<string> BarcodesList { get; set; }
 
         //Auto complete string collections
-        AutoCompleteStringCollection ProductListCollection;
-        AutoCompleteStringCollection ManufacturerListCollection;
-        AutoCompleteStringCollection BarcodeListCollection;
+        AutoCompleteStringCollection ProductListCollection { get; set; }
+        AutoCompleteStringCollection ManufacturerListCollection { get; set; }
+        AutoCompleteStringCollection BarcodeListCollection { get; set; }
 
         //Data source for advanced data grid view
-        DataTable DataSoruce;
-        DataSourceRelated.LabelDataSourceColumnNames ColumnNames;
+        DataTable DataSoruce { get; set; }
+        DataSourceRelated.AddToStockDataSourceColumnNames ColumnNames;
+
+        //Barcode reader
+        BarcodeRelated.BarcodeReader BarcodeReader { get; set; }
 
         #endregion
 
@@ -55,14 +58,28 @@ namespace NaturalnieApp.Forms
             this.ManufacturersList = new List<string>();
             this.BarcodesList = new List<string>();
 
+            //Check current date
+            this.dtpDateOfAccept.Value = DateTime.Now;
+            this.dtpExpirationDate.Value = DateTime.Now.AddMonths(3);
+            this.pExpirationDate.Hide();
+
+            //Number of products
+            this.mtbQuantity.Text = "1";
+
             //Initialize daa grid view
             this.ColumnNames.No = "Lp.";
-            this.ColumnNames.LabelBarcode = "Kod kreskowy";
-            this.ColumnNames.LabelFinalPrice = "Cena klienta";
-            this.ColumnNames.LabelText = "Tekst etykiety";
-            this.ColumnNames.NumberOfCopies = "Liczba kopii";
+            this.ColumnNames.ProductName = "Nazwa produktu";
+            this.ColumnNames.AddDate = "Data dodania";
+            this.ColumnNames.NumberOfPieces = "Liczba produktów";
+            this.ColumnNames.ExpirenceDate = "Data ważności";
             this.DataSoruce = new DataTable();
+
             InitializeAdvancedDataGridView();
+
+            //Barcode reader class
+            this.BarcodeReader = new BarcodeRelated.BarcodeReader(100);
+            this.BarcodeReader.BarcodeValid += BarcodeValidAction;
+
         }
         #endregion
 
@@ -230,7 +247,7 @@ namespace NaturalnieApp.Forms
             column.Dispose();
 
             column = new DataColumn();
-            column.ColumnName = this.ColumnNames.LabelBarcode;
+            column.ColumnName = this.ColumnNames.ProductName;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
             column.Unique = true;
@@ -238,24 +255,21 @@ namespace NaturalnieApp.Forms
             column.Dispose();
 
             column = new DataColumn();
-            column.ColumnName = this.ColumnNames.LabelText;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
-            column.Unique = true;
+            column.ColumnName = this.ColumnNames.AddDate;
+            column.DataType = Type.GetType("System.DateTime");
             this.DataSoruce.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
-            column.ColumnName = this.ColumnNames.LabelFinalPrice;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
-            column.Dispose();
-
-            column = new DataColumn();
-            column.ColumnName = this.ColumnNames.NumberOfCopies;
+            column.ColumnName = this.ColumnNames.NumberOfPieces;
             column.DataType = Type.GetType("System.Int32");
             column.ReadOnly = false;
+            this.DataSoruce.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.ExpirenceDate;
+            column.DataType = Type.GetType("System.DateTime");
             this.DataSoruce.Columns.Add(column);
             column.Dispose();
 
@@ -267,7 +281,7 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Current window events
         #region Current window events
-        private void PrintBarcode_Load(object sender, EventArgs e)
+        private void AddToStock_Load(object sender, EventArgs e)
         {
             //Disable panel and wait until data from db will be fetched
             this.Enabled = false;
@@ -275,14 +289,40 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
+
+            this.dtpDateOfAccept.Value = DateTime.Now;
+            this.dtpExpirationDate.Value = DateTime.Now.AddMonths(3);
+
         }
-        private void PrintBarcode_KeyDown(object sender, KeyEventArgs e)
+        private void AddToStock_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape)
+            Control localControl = (Control)sender;
+
+            bool eventHandled = this.BarcodeReader.CheckIfBarcodeFromReader(e.KeyCode);
+
+            if (e.KeyCode == Keys.Enter && !eventHandled)
             {
-                Control localControl = (Control)sender;
-                localControl.Controls.Remove(this.ActiveControl);
+               localControl.SelectNextControl(ActiveControl, true, true, true, true);
             }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                localControl.SelectNextControl(this, true, true, true, true);
+            }
+          
+        }
+
+        private bool BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
+        {
+
+            if (this.BarcodeReader.Ready && this.BarcodeReader.Valid)
+            {
+                this.cbBarcodes.SelectedText = "";
+                this.cbBarcodes.SelectedText = this.BarcodeReader.BarcodeToReturn;
+
+                e.OutEventHandled = true;
+            }
+
+            return e.OutEventHandled;
         }
         #endregion
 
@@ -392,7 +432,66 @@ namespace NaturalnieApp.Forms
         #region Buttons events
         private void bAdd_Click(object sender, EventArgs e)
         {
-            
+            //Local variables
+            Product entity;
+            string test = this.BarcodeReader.BarcodeToReturn;
+            if (cbBarcodes.SelectedItem != null && cbProductsList.SelectedItem != null)
+            {
+                try
+                {
+                    //Get product entity from DB
+                    entity = this.databaseCommands.GetProductEntityByProductName(cbProductsList.SelectedItem.ToString());
+
+                    //Index of existing row
+                    int indexOfExistingRow = -1;
+                    bool productAlreadyOnTheList = false;
+
+                    //Check if product already exist on list
+                    foreach (DataRow rowElement in this.DataSoruce.Rows)
+                    {
+                        if (rowElement.Field<string>(this.ColumnNames.ProductName).Contains(entity.ElzabProductName))
+                        {
+                            indexOfExistingRow = this.DataSoruce.Rows.IndexOf(rowElement);
+                            productAlreadyOnTheList = true;
+                            break;
+                        }
+                    }
+
+                    //Increment number of copies if product already exist on the list
+                    if (productAlreadyOnTheList)
+                    {
+                        this.DataSoruce.Rows[indexOfExistingRow].SetField(this.ColumnNames.NumberOfPieces,
+                            this.DataSoruce.Rows[indexOfExistingRow].Field<Int32>(this.ColumnNames.NumberOfPieces) + 1);
+                    }
+                    else
+                    {
+                        //New data row type
+                        DataRow row;
+                        row = this.DataSoruce.NewRow();
+
+                        //Set requred fields
+                        row.SetField(this.ColumnNames.ProductName, entity.ProductName);
+                        row.SetField(this.ColumnNames.AddDate,  this.dtpDateOfAccept.Value.Date);
+                        row.SetField(this.ColumnNames.NumberOfPieces, Convert.ToInt32(this.mtbQuantity.Text.Trim().Replace(" ", "")));
+                        if (this.chbExpDateReq.Checked) row.SetField(this.ColumnNames.ExpirenceDate, this.dtpExpirationDate.Value.Date);
+                        else row.SetField(this.ColumnNames.ExpirenceDate, DateTime.MinValue);
+
+                        //Assign values to the proper rows
+                        this.DataSoruce.Rows.Add(row);
+                    }
+
+                    //AutoResize Columns
+                    advancedDataGridView1.AutoResizeColumns();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
+            }
         }
 
         private void bClose_Click(object sender, EventArgs e)
@@ -400,11 +499,85 @@ namespace NaturalnieApp.Forms
 
             this.Parent.Show();
             this.Dispose();
-            ;
+        }
+
+        private void bSave_Click(object sender, EventArgs e)
+        {
+            //Local variables
+            Stock stockPiece = new Stock();
+
+            if (this.DataSoruce.Rows.Count == 0)
+            {
+                MessageBox.Show("Brak wybranch elementów do druku!");
+            }
+            else
+            {
+
+                //Local list of the element to remove from data grid view
+                List<DataRow> rowsToRemove = new List<DataRow>();
+
+                //Loop throught all elements and add it to DB
+                foreach (DataRow element in this.DataSoruce.Rows)
+                {
+                    try
+                    {
+                        //Add product to local stock variable
+                        stockPiece.ProductId = this.databaseCommands.GetProductIdByName(element.Field<string>(this.ColumnNames.ProductName));
+                        stockPiece.ActualQuantity = element.Field<int>(this.ColumnNames.NumberOfPieces);
+                        stockPiece.DateAdded = element.Field<DateTime>(this.ColumnNames.AddDate).Date;
+                        DateTime expirenceDate = element.Field<DateTime>(this.ColumnNames.ExpirenceDate);
+
+                        if (element.Field<DateTime>(this.ColumnNames.ExpirenceDate) != DateTime.MinValue)
+                        {
+                            stockPiece.ExpirationDate = element.Field<DateTime>(this.ColumnNames.ExpirenceDate).Date;
+                        }
+
+                        //Try to add to stock table
+                        this.databaseCommands.AddToStock(stockPiece);
+
+                        //Add row to the remove list
+                        rowsToRemove.Add(element);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                                    
+                }
+
+                //Show message
+                if (rowsToRemove.Count == this.DataSoruce.Rows.Count) MessageBox.Show("Wszystkie produkty zostały dodane do bazy danych!");
+                else if (rowsToRemove.Count > 0) MessageBox.Show("Nie wszystkie produkty zostały dodane do bazy danych");
+
+                //Remove added rows from data source
+                foreach (DataRow element in rowsToRemove)
+                {
+                    this.DataSoruce.Rows.Remove(element);
+                }
+                
+            }
+
+        }
+
+        private void chbExpDateReq_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox localSender = (CheckBox)sender;
+            if (localSender.Checked) this.pExpirationDate.Show();
+            else this.pExpirationDate.Hide();
         }
 
         #endregion
 
+        private void cbBarcodes_TextUpdate(object sender, EventArgs e)
+        {
 
+            //Check if tex already on the list
+            if (cbBarcodes.Items.Contains(cbBarcodes.SelectedText))
+            {
+                cbBarcodes_SelectionChangeCommitted(cbBarcodes, e);
+            }
+            else cbBarcodes.ResetText();
+
+        }
     }
 }

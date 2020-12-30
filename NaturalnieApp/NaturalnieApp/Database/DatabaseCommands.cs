@@ -699,6 +699,19 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to add to stock
+        //====================================================================================================
+        public void AddToStock(Stock stockPiece)
+        {
+            using (ShopContext contextDB = new ShopContext())
+            {
+                contextDB.Stock.Add(stockPiece);
+                int retVal = contextDB.SaveChanges();
+
+            }
+        }
+
+        //====================================================================================================
         //Method used to edit product
         //====================================================================================================
         public void EditProduct(Product product)

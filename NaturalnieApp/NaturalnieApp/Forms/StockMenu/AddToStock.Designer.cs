@@ -32,8 +32,8 @@ namespace NaturalnieApp.Forms
             this.pHeader = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
-            this.bPrint = new System.Windows.Forms.Button();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
+            this.bPrint = new System.Windows.Forms.Button();
             this.bClose = new System.Windows.Forms.Button();
             this.gbProductSelection = new System.Windows.Forms.GroupBox();
             this.bAdd = new System.Windows.Forms.Button();
@@ -50,6 +50,22 @@ namespace NaturalnieApp.Forms
             this.mtbQuantity = new System.Windows.Forms.MaskedTextBox();
             this.lQuantity = new System.Windows.Forms.Label();
             this.pSpare1 = new System.Windows.Forms.Panel();
+            this.pGap1 = new System.Windows.Forms.Panel();
+            this.pDataOfAccept = new System.Windows.Forms.Panel();
+            this.dtpDateOfAccept = new System.Windows.Forms.DateTimePicker();
+            this.lDateOfAccept = new System.Windows.Forms.Label();
+            this.pSpare2 = new System.Windows.Forms.Panel();
+            this.pGap2 = new System.Windows.Forms.Panel();
+            this.pExpDateReq = new System.Windows.Forms.Panel();
+            this.chbExpDateReq = new System.Windows.Forms.CheckBox();
+            this.lExpDateReq = new System.Windows.Forms.Label();
+            this.pSpare3 = new System.Windows.Forms.Panel();
+            this.pGap3 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.pExpirationDate = new System.Windows.Forms.Panel();
+            this.dtpExpirationDate = new System.Windows.Forms.DateTimePicker();
+            this.lExpirationDate = new System.Windows.Forms.Label();
+            this.pSpare4 = new System.Windows.Forms.Panel();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -58,6 +74,9 @@ namespace NaturalnieApp.Forms
             this.pProductName.SuspendLayout();
             this.pManufacturer.SuspendLayout();
             this.pQuantity.SuspendLayout();
+            this.pDataOfAccept.SuspendLayout();
+            this.pExpDateReq.SuspendLayout();
+            this.pExpirationDate.SuspendLayout();
             this.SuspendLayout();
             // 
             // pHeader
@@ -78,6 +97,7 @@ namespace NaturalnieApp.Forms
             // 
             // advancedDataGridView1
             // 
+            this.advancedDataGridView1.AllowUserToAddRows = false;
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.advancedDataGridView1.Dock = System.Windows.Forms.DockStyle.Left;
             this.advancedDataGridView1.FilterAndSortEnabled = true;
@@ -87,22 +107,28 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.Size = new System.Drawing.Size(700, 350);
             this.advancedDataGridView1.TabIndex = 2;
             // 
-            // bPrint
-            // 
-            this.bPrint.Location = new System.Drawing.Point(0, 0);
-            this.bPrint.Name = "bPrint";
-            this.bPrint.Size = new System.Drawing.Size(75, 23);
-            this.bPrint.TabIndex = 7;
-            // 
             // pButtonsPanel
             // 
-            this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Controls.Add(this.bPrint);
+            this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pButtonsPanel.Location = new System.Drawing.Point(0, 500);
             this.pButtonsPanel.Name = "pButtonsPanel";
             this.pButtonsPanel.Size = new System.Drawing.Size(1000, 70);
             this.pButtonsPanel.TabIndex = 4;
+            // 
+            // bPrint
+            // 
+            this.bPrint.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bPrint.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bPrint.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bPrint.Location = new System.Drawing.Point(782, 10);
+            this.bPrint.Name = "bPrint";
+            this.bPrint.Size = new System.Drawing.Size(100, 50);
+            this.bPrint.TabIndex = 26;
+            this.bPrint.Text = "Zapisz";
+            this.bPrint.UseVisualStyleBackColor = false;
+            this.bPrint.Click += new System.EventHandler(this.bSave_Click);
             // 
             // bClose
             // 
@@ -141,7 +167,7 @@ namespace NaturalnieApp.Forms
             this.bAdd.Location = new System.Drawing.Point(922, 30);
             this.bAdd.Name = "bAdd";
             this.bAdd.Size = new System.Drawing.Size(70, 70);
-            this.bAdd.TabIndex = 4;
+            this.bAdd.TabIndex = 5;
             this.bAdd.Text = "Dodaj";
             this.bAdd.UseVisualStyleBackColor = false;
             this.bAdd.Click += new System.EventHandler(this.bAdd_Click);
@@ -151,7 +177,7 @@ namespace NaturalnieApp.Forms
             this.pBarCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pBarCode.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pBarCode.ColumnCount = 1;
-            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 347F));
+            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 362F));
             this.pBarCode.Controls.Add(this.cbBarcodes, 0, 1);
             this.pBarCode.Controls.Add(this.lBarcode, 0, 0);
             this.pBarCode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -178,7 +204,9 @@ namespace NaturalnieApp.Forms
             this.cbBarcodes.Name = "cbBarcodes";
             this.cbBarcodes.Size = new System.Drawing.Size(160, 28);
             this.cbBarcodes.TabIndex = 3;
+            this.cbBarcodes.Text = "112";
             this.cbBarcodes.SelectionChangeCommitted += new System.EventHandler(this.cbBarcodes_SelectionChangeCommitted);
+            this.cbBarcodes.TextUpdate += new System.EventHandler(this.cbBarcodes_TextUpdate);
             // 
             // lBarcode
             // 
@@ -199,7 +227,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 534F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 549F));
             this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -247,7 +275,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 324F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 339F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -309,7 +337,7 @@ namespace NaturalnieApp.Forms
             this.mtbQuantity.Dock = System.Windows.Forms.DockStyle.Left;
             this.mtbQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mtbQuantity.Location = new System.Drawing.Point(150, 10);
-            this.mtbQuantity.Mask = "\\d{2}/\\d{2}/\\d{4}";
+            this.mtbQuantity.Mask = "999";
             this.mtbQuantity.Name = "mtbQuantity";
             this.mtbQuantity.PromptChar = ' ';
             this.mtbQuantity.Size = new System.Drawing.Size(149, 26);
@@ -338,6 +366,182 @@ namespace NaturalnieApp.Forms
             this.pSpare1.Size = new System.Drawing.Size(298, 10);
             this.pSpare1.TabIndex = 0;
             // 
+            // pGap1
+            // 
+            this.pGap1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pGap1.Location = new System.Drawing.Point(700, 188);
+            this.pGap1.Name = "pGap1";
+            this.pGap1.Size = new System.Drawing.Size(300, 20);
+            this.pGap1.TabIndex = 20;
+            // 
+            // pDataOfAccept
+            // 
+            this.pDataOfAccept.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pDataOfAccept.Controls.Add(this.dtpDateOfAccept);
+            this.pDataOfAccept.Controls.Add(this.lDateOfAccept);
+            this.pDataOfAccept.Controls.Add(this.pSpare2);
+            this.pDataOfAccept.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pDataOfAccept.Location = new System.Drawing.Point(700, 208);
+            this.pDataOfAccept.Name = "pDataOfAccept";
+            this.pDataOfAccept.Size = new System.Drawing.Size(300, 38);
+            this.pDataOfAccept.TabIndex = 21;
+            // 
+            // dtpDateOfAccept
+            // 
+            this.dtpDateOfAccept.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpDateOfAccept.CustomFormat = "dd/MM/yyyy";
+            this.dtpDateOfAccept.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpDateOfAccept.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpDateOfAccept.Location = new System.Drawing.Point(176, 10);
+            this.dtpDateOfAccept.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
+            this.dtpDateOfAccept.MinDate = new System.DateTime(2020, 1, 1, 0, 0, 0, 0);
+            this.dtpDateOfAccept.Name = "dtpDateOfAccept";
+            this.dtpDateOfAccept.Size = new System.Drawing.Size(122, 26);
+            this.dtpDateOfAccept.TabIndex = 4;
+            this.dtpDateOfAccept.Value = new System.DateTime(2020, 12, 10, 0, 0, 0, 0);
+            // 
+            // lDateOfAccept
+            // 
+            this.lDateOfAccept.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.lDateOfAccept.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lDateOfAccept.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lDateOfAccept.Location = new System.Drawing.Point(0, 10);
+            this.lDateOfAccept.Name = "lDateOfAccept";
+            this.lDateOfAccept.Size = new System.Drawing.Size(174, 26);
+            this.lDateOfAccept.TabIndex = 1;
+            this.lDateOfAccept.Text = "Data przyjęcia towaru";
+            this.lDateOfAccept.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pSpare2
+            // 
+            this.pSpare2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.pSpare2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pSpare2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pSpare2.Location = new System.Drawing.Point(0, 0);
+            this.pSpare2.Name = "pSpare2";
+            this.pSpare2.Size = new System.Drawing.Size(298, 10);
+            this.pSpare2.TabIndex = 0;
+            // 
+            // pGap2
+            // 
+            this.pGap2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pGap2.Location = new System.Drawing.Point(700, 246);
+            this.pGap2.Name = "pGap2";
+            this.pGap2.Size = new System.Drawing.Size(300, 20);
+            this.pGap2.TabIndex = 22;
+            // 
+            // pExpDateReq
+            // 
+            this.pExpDateReq.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pExpDateReq.Controls.Add(this.chbExpDateReq);
+            this.pExpDateReq.Controls.Add(this.lExpDateReq);
+            this.pExpDateReq.Controls.Add(this.pSpare3);
+            this.pExpDateReq.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pExpDateReq.Location = new System.Drawing.Point(700, 266);
+            this.pExpDateReq.Name = "pExpDateReq";
+            this.pExpDateReq.Size = new System.Drawing.Size(300, 38);
+            this.pExpDateReq.TabIndex = 23;
+            // 
+            // chbExpDateReq
+            // 
+            this.chbExpDateReq.BackColor = System.Drawing.Color.White;
+            this.chbExpDateReq.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chbExpDateReq.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chbExpDateReq.Location = new System.Drawing.Point(247, 11);
+            this.chbExpDateReq.Name = "chbExpDateReq";
+            this.chbExpDateReq.Size = new System.Drawing.Size(50, 25);
+            this.chbExpDateReq.TabIndex = 2;
+            this.chbExpDateReq.UseVisualStyleBackColor = false;
+            this.chbExpDateReq.CheckedChanged += new System.EventHandler(this.chbExpDateReq_CheckedChanged);
+            // 
+            // lExpDateReq
+            // 
+            this.lExpDateReq.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.lExpDateReq.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lExpDateReq.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lExpDateReq.Location = new System.Drawing.Point(0, 10);
+            this.lExpDateReq.Name = "lExpDateReq";
+            this.lExpDateReq.Size = new System.Drawing.Size(257, 26);
+            this.lExpDateReq.TabIndex = 1;
+            this.lExpDateReq.Text = "Data ważności wymagana ?";
+            this.lExpDateReq.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pSpare3
+            // 
+            this.pSpare3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.pSpare3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pSpare3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pSpare3.Location = new System.Drawing.Point(0, 0);
+            this.pSpare3.Name = "pSpare3";
+            this.pSpare3.Size = new System.Drawing.Size(298, 10);
+            this.pSpare3.TabIndex = 0;
+            // 
+            // pGap3
+            // 
+            this.pGap3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pGap3.Location = new System.Drawing.Point(700, 304);
+            this.pGap3.Name = "pGap3";
+            this.pGap3.Size = new System.Drawing.Size(300, 20);
+            this.pGap3.TabIndex = 24;
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel5.Location = new System.Drawing.Point(0, 0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(298, 10);
+            this.panel5.TabIndex = 0;
+            // 
+            // pExpirationDate
+            // 
+            this.pExpirationDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pExpirationDate.Controls.Add(this.dtpExpirationDate);
+            this.pExpirationDate.Controls.Add(this.lExpirationDate);
+            this.pExpirationDate.Controls.Add(this.pSpare4);
+            this.pExpirationDate.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pExpirationDate.Location = new System.Drawing.Point(700, 324);
+            this.pExpirationDate.Name = "pExpirationDate";
+            this.pExpirationDate.Size = new System.Drawing.Size(300, 38);
+            this.pExpirationDate.TabIndex = 25;
+            // 
+            // dtpExpirationDate
+            // 
+            this.dtpExpirationDate.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpExpirationDate.CustomFormat = "dd/MM/yyyy";
+            this.dtpExpirationDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpExpirationDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpExpirationDate.Location = new System.Drawing.Point(176, 10);
+            this.dtpExpirationDate.MaxDate = new System.DateTime(2100, 12, 31, 0, 0, 0, 0);
+            this.dtpExpirationDate.MinDate = new System.DateTime(2020, 1, 1, 0, 0, 0, 0);
+            this.dtpExpirationDate.Name = "dtpExpirationDate";
+            this.dtpExpirationDate.Size = new System.Drawing.Size(122, 26);
+            this.dtpExpirationDate.TabIndex = 4;
+            this.dtpExpirationDate.Value = new System.DateTime(2020, 12, 10, 0, 0, 0, 0);
+            // 
+            // lExpirationDate
+            // 
+            this.lExpirationDate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.lExpirationDate.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lExpirationDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lExpirationDate.Location = new System.Drawing.Point(0, 10);
+            this.lExpirationDate.Name = "lExpirationDate";
+            this.lExpirationDate.Size = new System.Drawing.Size(174, 26);
+            this.lExpirationDate.TabIndex = 1;
+            this.lExpirationDate.Text = "Data przyjęcia towaru";
+            this.lExpirationDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pSpare4
+            // 
+            this.pSpare4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.pSpare4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pSpare4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pSpare4.Location = new System.Drawing.Point(0, 0);
+            this.pSpare4.Name = "pSpare4";
+            this.pSpare4.Size = new System.Drawing.Size(298, 10);
+            this.pSpare4.TabIndex = 0;
+            // 
             // AddToStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -345,6 +549,12 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
+            this.Controls.Add(this.pExpirationDate);
+            this.Controls.Add(this.pGap3);
+            this.Controls.Add(this.pExpDateReq);
+            this.Controls.Add(this.pGap2);
+            this.Controls.Add(this.pDataOfAccept);
+            this.Controls.Add(this.pGap1);
             this.Controls.Add(this.pQuantity);
             this.Controls.Add(this.advancedDataGridView1);
             this.Controls.Add(this.gbProductSelection);
@@ -356,7 +566,8 @@ namespace NaturalnieApp.Forms
             this.KeyPreview = true;
             this.Name = "AddToStock";
             this.Text = "PrintBarcode";
-            this.Load += new System.EventHandler(this.PrintBarcode_Load);
+            this.Load += new System.EventHandler(this.AddToStock_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddToStock_KeyDown);
             this.pHeader.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.pButtonsPanel.ResumeLayout(false);
@@ -366,6 +577,9 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.ResumeLayout(false);
             this.pQuantity.ResumeLayout(false);
             this.pQuantity.PerformLayout();
+            this.pDataOfAccept.ResumeLayout(false);
+            this.pExpDateReq.ResumeLayout(false);
+            this.pExpirationDate.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -374,7 +588,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Panel pHeader;
         private System.Windows.Forms.Panel panel1;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
-        private System.Windows.Forms.Button bPrint;
         private System.Windows.Forms.Panel pButtonsPanel;
         private System.Windows.Forms.GroupBox gbProductSelection;
         private System.Windows.Forms.TableLayoutPanel pBarCode;
@@ -392,5 +605,22 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.MaskedTextBox mtbQuantity;
         private System.Windows.Forms.Label lQuantity;
         private System.Windows.Forms.Panel pSpare1;
+        private System.Windows.Forms.Panel pGap1;
+        private System.Windows.Forms.Panel pDataOfAccept;
+        private System.Windows.Forms.DateTimePicker dtpDateOfAccept;
+        private System.Windows.Forms.Label lDateOfAccept;
+        private System.Windows.Forms.Panel pSpare2;
+        private System.Windows.Forms.Panel pGap2;
+        private System.Windows.Forms.Panel pExpDateReq;
+        private System.Windows.Forms.CheckBox chbExpDateReq;
+        private System.Windows.Forms.Label lExpDateReq;
+        private System.Windows.Forms.Panel pSpare3;
+        private System.Windows.Forms.Panel pGap3;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Panel pExpirationDate;
+        private System.Windows.Forms.DateTimePicker dtpExpirationDate;
+        private System.Windows.Forms.Label lExpirationDate;
+        private System.Windows.Forms.Panel pSpare4;
+        private System.Windows.Forms.Button bPrint;
     }
 }

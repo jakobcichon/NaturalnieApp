@@ -5,13 +5,15 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Data;
+using System.Timers;
+using System.Windows.Forms;
 
 namespace NaturalnieApp
 {
     /// <summary>
     /// Static class consist Barcode-related methods
     /// </summary>
-    public static class BarcodeRelated
+    public class BarcodeRelated
     {
         //====================================================================================================
         //User-defined exception
@@ -131,6 +133,138 @@ namespace NaturalnieApp
 
             return retVal;
         }
+
+        public class BarcodeReader
+        {
+            //Object fields
+            System.Timers.Timer timer { get; set; }
+            public string BarcodeToReturn { get; set; }
+            string TemporaryBarcodeValue { get; set; }
+            public bool Ready { get; set; }
+            public bool Valid { get; set; }
+
+
+            //Register an event
+            public event BarcodeValidEventHandler BarcodeValid;
+
+            public class BarcodeValidEventArgs : EventArgs
+            {
+                public bool Ready { get; set; }
+                public bool Valid{ get; set; }
+                public string RecognizedBarcodeValue { get; set; }
+                public bool OutEventHandled { get; set; }
+            }
+
+            public delegate bool BarcodeValidEventHandler(object sender, BarcodeValidEventArgs e);
+
+            //Declaration of event handler
+            protected virtual bool OnBarcodeValid(BarcodeValidEventArgs e)
+            {
+                BarcodeValidEventHandler handler = BarcodeValid;
+                handler?.Invoke(this, e);
+                return e.OutEventHandled = false;
+            }
+
+
+            public BarcodeReader(double barcodeReaderCharInterval)
+            {
+                //Initialize timer
+                this.timer = new System.Timers.Timer(barcodeReaderCharInterval);
+                this.timer.Elapsed += OnTimedEvent;
+                this.timer.Enabled = true;
+
+                this.TemporaryBarcodeValue = "";
+                this.Ready = true;
+            }
+                   
+            public bool CheckIfBarcodeFromReader(Keys key)
+            {
+                //Local variables
+                bool retVal = false;
+
+                //Make initialization after first call
+                if (this.Ready == true)
+                {
+                    this.timer.Start();
+                    this.Ready = false;
+                    this.BarcodeToReturn = "";
+                    this.Valid = false;
+                }
+
+                //Recognize only digits
+                if (key == Keys.D0 || key == Keys.D1 || key == Keys.D2 || key == Keys.D3 || key == Keys.D4 ||
+                    key == Keys.D5 || key == Keys.D6 || key == Keys.D7 || key == Keys.D8 || key == Keys.D9)
+                {
+                    //Reset timer
+                    this.timer.Stop();
+                    this.timer.Start();
+
+                    switch (key)
+                    {
+                        case Keys.D0:
+                            this.TemporaryBarcodeValue += "0";
+                            break;
+                        case Keys.D1:
+                            this.TemporaryBarcodeValue += "1";
+                            break;
+                        case Keys.D2:
+                            this.TemporaryBarcodeValue += "2";
+                            break;
+                        case Keys.D3:
+                            this.TemporaryBarcodeValue += "3";
+                            break;
+                        case Keys.D4:
+                            this.TemporaryBarcodeValue += "4";
+                            break;
+                        case Keys.D5:
+                            this.TemporaryBarcodeValue += "5";
+                            break;
+                        case Keys.D6:
+                            this.TemporaryBarcodeValue += "6";
+                            break;
+                        case Keys.D7:
+                            this.TemporaryBarcodeValue += "7";
+                            break;
+                        case Keys.D8:
+                            this.TemporaryBarcodeValue += "8";
+                            break;
+                        case Keys.D9:
+                            this.TemporaryBarcodeValue += "9";
+                            break;
+                    }
+                }
+                else if (key == Keys.Enter)
+                {
+                    this.timer.Stop();
+                    this.Ready = true;
+                    this.BarcodeToReturn = this.TemporaryBarcodeValue;
+                    this.TemporaryBarcodeValue = "";
+                    if (this.BarcodeToReturn.Length == 8 || this.BarcodeToReturn.Length == 13) this.Valid = true;
+                    else this.Valid = false;
+                    retVal = CallBarcodeValidEvent(this.Ready, this.Valid, this.BarcodeToReturn);
+                }
+
+                return retVal;
+            }
+
+            private void OnTimedEvent(Object source, ElapsedEventArgs e)
+            {
+                this.timer.Stop();
+                this.Ready = true;
+                this.Valid = false;
+            }
+
+            private bool CallBarcodeValidEvent(bool ready, bool valid, string barcode)
+            {
+                BarcodeValidEventArgs e = new BarcodeValidEventArgs
+                {
+                    Ready = ready,
+                    Valid = valid,
+                    RecognizedBarcodeValue = barcode
+                };
+                return OnBarcodeValid(e);
+            }
+        }
         #endregion
     }
     /// <summary>
@@ -148,6 +282,19 @@ namespace NaturalnieApp
             public string LabelBarcode { get; set; }
             public string LabelFinalPrice { get; set; }
             public string NumberOfCopies { get; set; }
+
+        }
+
+        /// <summary>
+        /// Structure used to describe column names for adding to stock data source
+        /// </summary>
+        public struct AddToStockDataSourceColumnNames
+        {
+            public string No { get; set; }
+            public string ProductName { get; set; }
+            public string AddDate { get; set; }
+            public string ExpirenceDate { get; set; }
+            public string NumberOfPieces { get; set; }
 
         }
 
