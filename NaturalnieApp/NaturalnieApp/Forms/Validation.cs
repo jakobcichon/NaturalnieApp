@@ -85,7 +85,7 @@ namespace NaturalnieApp.Forms
         {
             //Local variables
             bool validatingResult;
-            string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+'&";
+            string text = "Nazwa produktu musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+'&";
 
             //Accept only letters an numbers with maximal length of 255 chars
             string regPattern = @"^([a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9'_+-.&]+\s)*[a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9'_+-.&]+$";
@@ -162,7 +162,6 @@ namespace NaturalnieApp.Forms
             //Local variables
             bool validatingResult;
             string text = "Marża jest wartością rzeczywistą, w której miejsce dziesiętne oddzielone jest znakiem '.' (kropka).";
-
 
             //Accept only letters an numbers with maximal length of 255 chars
             string regPattern = @"^[0-9]+$";

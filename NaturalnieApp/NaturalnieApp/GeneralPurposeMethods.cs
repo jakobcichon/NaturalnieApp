@@ -134,6 +134,11 @@ namespace NaturalnieApp
             return retVal;
         }
 
+        #endregion
+        /// <summary>
+        /// Class used to handle information received from Bar code reader
+        /// </summary>
+        #region Barcode reader
         public class BarcodeReader
         {
             //Object fields
@@ -143,7 +148,6 @@ namespace NaturalnieApp
             public bool Ready { get; set; }
             public bool Valid { get; set; }
 
-
             //Register an event
             public event BarcodeValidEventHandler BarcodeValid;
 
@@ -152,20 +156,22 @@ namespace NaturalnieApp
                 public bool Ready { get; set; }
                 public bool Valid{ get; set; }
                 public string RecognizedBarcodeValue { get; set; }
-                public bool OutEventHandled { get; set; }
             }
 
-            public delegate bool BarcodeValidEventHandler(object sender, BarcodeValidEventArgs e);
+            //Declare new event handler
+            public delegate void BarcodeValidEventHandler(object sender, BarcodeValidEventArgs e);
 
             //Declaration of event handler
-            protected virtual bool OnBarcodeValid(BarcodeValidEventArgs e)
+            protected virtual void OnBarcodeValid(BarcodeValidEventArgs e)
             {
                 BarcodeValidEventHandler handler = BarcodeValid;
                 handler?.Invoke(this, e);
-                return e.OutEventHandled = false;
             }
 
-
+            /// <summary>
+            /// CLass constructor
+            /// </summary>
+            /// <param name="barcodeReaderCharInterval"></param>
             public BarcodeReader(double barcodeReaderCharInterval)
             {
                 //Initialize timer
@@ -176,11 +182,14 @@ namespace NaturalnieApp
                 this.TemporaryBarcodeValue = "";
                 this.Ready = true;
             }
-                   
-            public bool CheckIfBarcodeFromReader(Keys key)
+            
+            /// <summary>
+            /// Method used to recognize if valid Barcode value.
+            /// It should be placed in object KEyDown event.
+            /// </summary>
+            /// <param name="key"></param>
+            public void CheckIfBarcodeFromReader(Keys key)
             {
-                //Local variables
-                bool retVal = false;
 
                 //Make initialization after first call
                 if (this.Ready == true)
@@ -239,12 +248,13 @@ namespace NaturalnieApp
                     this.Ready = true;
                     this.BarcodeToReturn = this.TemporaryBarcodeValue;
                     this.TemporaryBarcodeValue = "";
-                    if (this.BarcodeToReturn.Length == 8 || this.BarcodeToReturn.Length == 13) this.Valid = true;
+                    if (this.BarcodeToReturn.Length == 8 || this.BarcodeToReturn.Length == 13)
+                    {
+                        this.Valid = true;
+                        CallBarcodeValidEvent(this.Ready, this.Valid, this.BarcodeToReturn);
+                    }
                     else this.Valid = false;
-                    retVal = CallBarcodeValidEvent(this.Ready, this.Valid, this.BarcodeToReturn);
                 }
-
-                return retVal;
             }
 
             private void OnTimedEvent(Object source, ElapsedEventArgs e)
@@ -254,7 +264,7 @@ namespace NaturalnieApp
                 this.Valid = false;
             }
 
-            private bool CallBarcodeValidEvent(bool ready, bool valid, string barcode)
+            private void CallBarcodeValidEvent(bool ready, bool valid, string barcode)
             {
                 BarcodeValidEventArgs e = new BarcodeValidEventArgs
                 {
@@ -262,7 +272,7 @@ namespace NaturalnieApp
                     Valid = valid,
                     RecognizedBarcodeValue = barcode
                 };
-                return OnBarcodeValid(e);
+                OnBarcodeValid(e);
             }
         }
         #endregion

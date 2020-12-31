@@ -14,29 +14,31 @@ namespace NaturalnieApp.Forms
     {
         #region Object fields
         //Set the instance fields
-        DatabaseCommands databaseCommands{ get; set; }
+        private DatabaseCommands databaseCommands { get; set; }
 
         //Backgroundworker
-        BackgroundWorker backgroundWorker1 { get; set; }
-        backgroundWorkerTasks ActualTaskType { get; set; }
+        private BackgroundWorker backgroundWorker1 { get; set; }
+        private backgroundWorkerTasks ActualTaskType { get; set; }
 
         //Global variables
-        List<string> ProductsList { get; set; }
-        List<string> ManufacturersList { get; set; }
-        List<string> BarcodesList { get; set; }
+        private List<string> ProductsList { get; set; }
+        private List<string> ManufacturersList { get; set; }
+        private List<string> BarcodesList { get; set; }
 
         //Auto complete string collections
-        AutoCompleteStringCollection ProductListCollection { get; set; }
-        AutoCompleteStringCollection ManufacturerListCollection { get; set; }
-        AutoCompleteStringCollection BarcodeListCollection { get; set; }
+        private AutoCompleteStringCollection ProductListCollection { get; set; }
+        private AutoCompleteStringCollection ManufacturerListCollection { get; set; }
+        private AutoCompleteStringCollection BarcodeListCollection { get; set; }
 
         //Data source for advanced data grid view
-        DataTable DataSoruce { get; set; }
-        DataSourceRelated.AddToStockDataSourceColumnNames ColumnNames;
+        private DataTable DataSoruce { get; set; }
+        private DataSourceRelated.AddToStockDataSourceColumnNames ColumnNames;
 
         //Barcode reader
-        BarcodeRelated.BarcodeReader BarcodeReader { get; set; }
+        private BarcodeRelated.BarcodeReader BarcodeReader { get; set; }
+        private bool BarcodeValidEventGenerated { get; set; }
 
+        List<string> keyTest;
         #endregion
 
         #region Class constructor
@@ -79,6 +81,9 @@ namespace NaturalnieApp.Forms
             //Barcode reader class
             this.BarcodeReader = new BarcodeRelated.BarcodeReader(100);
             this.BarcodeReader.BarcodeValid += BarcodeValidAction;
+            this.BarcodeValidEventGenerated = false;
+
+            this.keyTest = new List<string>();
 
         }
         #endregion
@@ -298,11 +303,12 @@ namespace NaturalnieApp.Forms
         {
             Control localControl = (Control)sender;
 
-            bool eventHandled = this.BarcodeReader.CheckIfBarcodeFromReader(e.KeyCode);
+            this.BarcodeValidEventGenerated = false;
+            this.BarcodeReader.CheckIfBarcodeFromReader(e.KeyCode);
 
-            if (e.KeyCode == Keys.Enter && !eventHandled)
+            if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
             {
-               localControl.SelectNextControl(ActiveControl, true, true, true, true);
+                localControl.SelectNextControl(ActiveControl, true, true, true, true);
             }
             else if (e.KeyCode == Keys.Escape)
             {
@@ -311,18 +317,19 @@ namespace NaturalnieApp.Forms
           
         }
 
-        private bool BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
+        private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
         {
 
-            if (this.BarcodeReader.Ready && this.BarcodeReader.Valid)
+            if (e.Ready && e.Valid)
             {
-                this.cbBarcodes.SelectedText = "";
-                this.cbBarcodes.SelectedText = this.BarcodeReader.BarcodeToReturn;
-
-                e.OutEventHandled = true;
+                //Get index
+                int index = this.cbBarcodes.Items.IndexOf(e.RecognizedBarcodeValue);
+                if (index >= 0) this.cbBarcodes.SelectedIndex = index;
+                else MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych");
             }
 
-            return e.OutEventHandled;
+            //Set variable informing Bar code read corrected
+            this.BarcodeValidEventGenerated = true;
         }
         #endregion
 
@@ -386,9 +393,6 @@ namespace NaturalnieApp.Forms
                 barcode = this.databaseCommands.GetProductEntityByProductName(localSender.SelectedItem.ToString()).BarCode;
                 FindTextInComboBoxAndSelect(ref cbManufacturers, manufacturerName);
                 FindTextInComboBoxAndSelect(ref cbBarcodes, barcode);
-
-                this.ActiveControl = this.bAdd;
-
             }
             catch (Exception ex)
             {
@@ -406,8 +410,8 @@ namespace NaturalnieApp.Forms
             ComboBox localSender = (ComboBox)sender;
 
             //Local variables
-            string manufacturerName = "";
-            string productName = "";
+            string manufacturerName;
+            string productName;
 
             //Get selected entity
             try
@@ -416,14 +420,12 @@ namespace NaturalnieApp.Forms
                 manufacturerName = this.databaseCommands.GetManufacturerByProductName(productName).Name;
                 FindTextInComboBoxAndSelect(ref cbManufacturers, manufacturerName);
                 FindTextInComboBoxAndSelect(ref cbProductsList, productName);
-
-                this.ActiveControl = this.bAdd;
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+
         }
         #endregion
 
@@ -434,64 +436,69 @@ namespace NaturalnieApp.Forms
         {
             //Local variables
             Product entity;
-            string test = this.BarcodeReader.BarcodeToReturn;
-            if (cbBarcodes.SelectedItem != null && cbProductsList.SelectedItem != null)
+
+            if(!this.BarcodeValidEventGenerated)
             {
-                try
+                if (cbBarcodes.SelectedItem != null && cbProductsList.SelectedItem != null)
                 {
-                    //Get product entity from DB
-                    entity = this.databaseCommands.GetProductEntityByProductName(cbProductsList.SelectedItem.ToString());
-
-                    //Index of existing row
-                    int indexOfExistingRow = -1;
-                    bool productAlreadyOnTheList = false;
-
-                    //Check if product already exist on list
-                    foreach (DataRow rowElement in this.DataSoruce.Rows)
+                    try
                     {
-                        if (rowElement.Field<string>(this.ColumnNames.ProductName).Contains(entity.ElzabProductName))
+                        //Get product entity from DB
+                        entity = this.databaseCommands.GetProductEntityByProductName(cbProductsList.SelectedItem.ToString());
+
+                        //Index of existing row
+                        int indexOfExistingRow = -1;
+                        bool productAlreadyOnTheList = false;
+
+                        //Check if product already exist on list
+                        foreach (DataRow rowElement in this.DataSoruce.Rows)
                         {
-                            indexOfExistingRow = this.DataSoruce.Rows.IndexOf(rowElement);
-                            productAlreadyOnTheList = true;
-                            break;
+                            if (rowElement.Field<string>(this.ColumnNames.ProductName).Contains(entity.ElzabProductName))
+                            {
+                                indexOfExistingRow = this.DataSoruce.Rows.IndexOf(rowElement);
+                                productAlreadyOnTheList = true;
+                                break;
+                            }
                         }
-                    }
 
-                    //Increment number of copies if product already exist on the list
-                    if (productAlreadyOnTheList)
+                        //Increment number of copies if product already exist on the list
+                        if (productAlreadyOnTheList)
+                        {
+                            this.DataSoruce.Rows[indexOfExistingRow].SetField(this.ColumnNames.NumberOfPieces,
+                                this.DataSoruce.Rows[indexOfExistingRow].Field<Int32>(this.ColumnNames.NumberOfPieces) + 1);
+                        }
+                        else
+                        {
+                            //New data row type
+                            DataRow row;
+                            row = this.DataSoruce.NewRow();
+
+                            //Set requred fields
+                            row.SetField(this.ColumnNames.ProductName, entity.ProductName);
+                            row.SetField(this.ColumnNames.AddDate, this.dtpDateOfAccept.Value.Date);
+                            row.SetField(this.ColumnNames.NumberOfPieces, Convert.ToInt32(this.mtbQuantity.Text.Trim().Replace(" ", "")));
+                            if (this.chbExpDateReq.Checked) row.SetField(this.ColumnNames.ExpirenceDate, this.dtpExpirationDate.Value.Date);
+                            else row.SetField(this.ColumnNames.ExpirenceDate, DateTime.MinValue);
+
+                            //Assign values to the proper rows
+                            this.DataSoruce.Rows.Add(row);
+                        }
+
+                        //AutoResize Columns
+                        advancedDataGridView1.AutoResizeColumns();
+                    }
+                    catch (Exception ex)
                     {
-                        this.DataSoruce.Rows[indexOfExistingRow].SetField(this.ColumnNames.NumberOfPieces,
-                            this.DataSoruce.Rows[indexOfExistingRow].Field<Int32>(this.ColumnNames.NumberOfPieces) + 1);
+                        MessageBox.Show(ex.Message);
                     }
-                    else
-                    {
-                        //New data row type
-                        DataRow row;
-                        row = this.DataSoruce.NewRow();
-
-                        //Set requred fields
-                        row.SetField(this.ColumnNames.ProductName, entity.ProductName);
-                        row.SetField(this.ColumnNames.AddDate,  this.dtpDateOfAccept.Value.Date);
-                        row.SetField(this.ColumnNames.NumberOfPieces, Convert.ToInt32(this.mtbQuantity.Text.Trim().Replace(" ", "")));
-                        if (this.chbExpDateReq.Checked) row.SetField(this.ColumnNames.ExpirenceDate, this.dtpExpirationDate.Value.Date);
-                        else row.SetField(this.ColumnNames.ExpirenceDate, DateTime.MinValue);
-
-                        //Assign values to the proper rows
-                        this.DataSoruce.Rows.Add(row);
-                    }
-
-                    //AutoResize Columns
-                    advancedDataGridView1.AutoResizeColumns();
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
                 }
             }
-            else
-            {
-                MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
-            }
+
+           
         }
 
         private void bClose_Click(object sender, EventArgs e)
@@ -565,19 +572,7 @@ namespace NaturalnieApp.Forms
             if (localSender.Checked) this.pExpirationDate.Show();
             else this.pExpirationDate.Hide();
         }
-
         #endregion
 
-        private void cbBarcodes_TextUpdate(object sender, EventArgs e)
-        {
-
-            //Check if tex already on the list
-            if (cbBarcodes.Items.Contains(cbBarcodes.SelectedText))
-            {
-                cbBarcodes_SelectionChangeCommitted(cbBarcodes, e);
-            }
-            else cbBarcodes.ResetText();
-
-        }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using NaturalnieApp.Database;
 
 namespace NaturalnieApp
 {
@@ -35,6 +36,16 @@ namespace NaturalnieApp
             finalPrice = Convert.ToDouble(integerPart) + ItegerToDecimal;
 
             return finalPrice;
+        }
+
+        static public float CalculateFinalPriceFromProduct(Product product, int tax)
+        {
+            //Local variable
+            double finalPrice;
+
+            finalPrice = FinalPrice(product.PriceNet, tax, product.Marigin);
+
+            return float.Parse(finalPrice.ToString());
         }
 
         //Calculate final price from price net, tax and marigin

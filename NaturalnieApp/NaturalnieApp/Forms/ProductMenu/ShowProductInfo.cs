@@ -206,6 +206,8 @@ namespace NaturalnieApp.Forms
             this.tbBarCode.Text = p.BarCode.ToString();
             this.rtbProductInfo.Text = p.ProductInfo.ToString();
             this.cbManufacturer.SelectedIndex = this.cbManufacturer.Items.IndexOf(m.Name);
+            this.tbElzabProductName.Text = p.ElzabProductName;
+            this.tbFinalPrice.Text = string.Format( "{0:0.00}",p.FinalPrice.ToString());
         }
 
         private bool ValidateAllInputFields()
@@ -276,6 +278,18 @@ namespace NaturalnieApp.Forms
 
             return ret;
         }
+
+        //Method used to update final price value
+        private void UpdateFinalPrice()
+        {
+            //Update Final price
+            this.ProductEntity.FinalPrice = Calculations.CalculateFinalPriceFromProduct(this.ProductEntity,
+                Convert.ToInt32(this.cbTax.SelectedItem));
+
+            //Show updated value
+            this.tbFinalPrice.Text = string.Format("{0:0.00}",this.ProductEntity.FinalPrice.ToString());
+            ;
+        }
         #endregion
         //====================================================================================================
         //Current window events
@@ -313,18 +327,32 @@ namespace NaturalnieApp.Forms
 
             if (validatingSuccess)
             {
-                //Get Id of given Tax and add it to product
-                id = this.databaseCommands.GetTaxIdByValue(int.Parse(this.cbTax.Text.ToString()));
-                if (id > 0) this.ProductEntity.TaxId = id;
-                else MessageBox.Show(String.Format("Podana wartość podatku ({0}) nie istnieje w bazie danych!", this.cbTax.SelectedValue.ToString()));
+                try
+                {
+                    //Get Id of given Tax and add it to product
+                    id = this.databaseCommands.GetTaxIdByValue(int.Parse(this.cbTax.Text.ToString()));
+                    if (id > 0) this.ProductEntity.TaxId = id;
+                    else MessageBox.Show(String.Format("Podana wartość podatku ({0}) nie istnieje w bazie danych!", this.cbTax.SelectedValue.ToString()));
 
-                //Get Id of given Supplier and add it to product
-                id = this.databaseCommands.GetSupplierIdByName(this.cbSupplierName.Text.ToString());
-                if (id > 0) this.ProductEntity.SupplierId = id;
-                else MessageBox.Show(String.Format("Podana nazwa dostawcy ({0}) nie istnieje w bazie danych!", this.cbSupplierName.Text.ToString().ToString()));
+                    //Get Id of given Supplier and add it to product
+                    id = this.databaseCommands.GetSupplierIdByName(this.cbSupplierName.Text.ToString());
+                    if (id > 0) this.ProductEntity.SupplierId = id;
+                    else MessageBox.Show(String.Format("Podana nazwa dostawcy ({0}) nie istnieje w bazie danych!", this.cbSupplierName.Text.ToString().ToString()));
 
-                //Save current object to database
-                this.databaseCommands.EditProduct(this.ProductEntity);
+                    //Update Final price
+                    this.ProductEntity.FinalPrice = Calculations.CalculateFinalPriceFromProduct(this.ProductEntity,
+                        this.databaseCommands.GetTaxByProductName(this.ProductEntity.ProductName).TaxValue);
+
+                    //Save current object to database
+                    this.databaseCommands.EditProduct(this.ProductEntity);
+
+                    //Show message box
+                    MessageBox.Show("Produkt '" + this.ProductEntity.ProductName + "' został zapisany!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
 
             //Call update event
@@ -382,22 +410,30 @@ namespace NaturalnieApp.Forms
         }
         private void cbManufacturer_Validating(object sender, EventArgs e)
         {
-            //Local variables
-            bool validatingResult;
-            string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+";
-
-            //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^[a-zA-Z0-9_]{1,255}$";
-
             //Cast the sender for an object
             ComboBox localSender = (ComboBox)sender;
 
+            bool validatingResult = false;
+
             //Check if input match to define pattern
-            validatingResult = ValidateInput(localSender.Text, regPattern);
+            try
+            {
+                Validation.ManufacturerNameValidation(localSender.Text);
+                validatingResult = true;
+            }
+            catch (ValidatingFailed ex)
+            {
+                validatingResult = false;
+                MessageBox.Show(ex.Message);
+            }
+
+            //Error text
+            string text = "Nazwa producenta musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+";
 
             //Validaion of input text
             if (!validatingResult)
             {
+                
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, text);
                 if (e == EventArgs.Empty) throw new ValidatingFailed("Błąd podczas weryfikacji " + localSender.Name + "!");
@@ -408,6 +444,12 @@ namespace NaturalnieApp.Forms
                 this.ManufacturerEntity.Name = localSender.Text;
                 errorProvider1.Clear();
             }
+        }
+        private void cbManufacturer_MouseHover(object sender, EventArgs e)
+        {
+            ComboBox localSender = (ComboBox)sender;
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(localSender, localSender.Text);
         }
         #endregion
         //====================================================================================================
@@ -426,6 +468,13 @@ namespace NaturalnieApp.Forms
         }
         private void cbProductList_Validating(object sender, EventArgs e)
         {
+           
+        }
+        private void cbProductList_MouseHover(object sender, EventArgs e)
+        {
+            ComboBox localSender = (ComboBox)sender;
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(localSender, localSender.Text);
         }
         #endregion
         //====================================================================================================
@@ -441,18 +490,25 @@ namespace NaturalnieApp.Forms
         }
         private void cbSupplierName_Validating(object sender, EventArgs e)
         {
-            //Local variables
-            bool validatingResult;
-            string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+";
-
-            //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^[a-zA-Z0-9_]{1,255}$";
-
             //Cast the sender for an object
             ComboBox localSender = (ComboBox)sender;
 
+            bool validatingResult = false;
+
             //Check if input match to define pattern
-            validatingResult = ValidateInput(localSender.Text, regPattern);
+            try
+            {
+                Validation.SupplierNameValidation(localSender.Text);
+                validatingResult = true;
+            }
+            catch (ValidatingFailed ex)
+            {
+                validatingResult = false;
+                MessageBox.Show(ex.Message);
+            }
+
+            //Error text
+            string text = "Nazwa dostawcy musi mieć maksymalnie 255 znaków oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+'&";
 
             //Validaion of input text
             if (!validatingResult)
@@ -468,6 +524,12 @@ namespace NaturalnieApp.Forms
                 errorProvider1.Clear();
             }
         }
+        private void cbSupplierName_MouseHover(object sender, EventArgs e)
+        {
+            ComboBox localSender = (ComboBox)sender;
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(localSender, localSender.Text);
+        }
         #endregion
         //====================================================================================================
         //ElzabProductNumber events
@@ -482,17 +544,25 @@ namespace NaturalnieApp.Forms
         }
         private void tbElzabProductNumber_Validating(object sender, EventArgs e)
         {
-            //Local variables
-            bool validatingResult;
-            int value;
-            string text = "Numer produktu w kasie Elzab musi być liczbą całkowitą z przedziału 0-4096";
-
             //Cast the sender for an object
             TextBox localSender = (TextBox)sender;
 
+            bool validatingResult = false;
+
             //Check if input match to define pattern
-            validatingResult = int.TryParse(localSender.Text, out value);
-            if (value < 0 || value > 4096) validatingResult = false;
+            try
+            {
+                Validation.GeneralNumberValidation(localSender.Text);
+                validatingResult = true;
+            }
+            catch (ValidatingFailed ex)
+            {
+                validatingResult = false;
+                MessageBox.Show(ex.Message);
+            }
+
+            //Error text
+            string text = "Podana warość musi być liczbą całkowitą!";
 
             //Validaion of input text
             if (!validatingResult)
@@ -503,9 +573,63 @@ namespace NaturalnieApp.Forms
             }
             else
             {
-                this.ProductEntity.ElzabProductId = value;
+                this.ProductEntity.ElzabProductId = Convert.ToInt32(localSender.Text);
                 errorProvider1.Clear();
             }
+        }
+        #endregion
+
+        //====================================================================================================
+        //ElzabProductName events
+        #region ElzabProductName events
+        private void tbElzabProductName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SelectNextControl((Control)sender, true, true, true, true);
+            }
+
+        }
+        private void tbElzabProductName_Validating(object sender, EventArgs e)
+        {
+            //Cast the sender for an object
+            TextBox localSender = (TextBox)sender;
+
+            bool validatingResult = false;
+
+            //Check if input match to define pattern
+            try
+            {
+                Validation.ElzabProductNameValidation(localSender.Text);
+                validatingResult = true;
+            }
+            catch (ValidatingFailed ex)
+            {
+                validatingResult = false;
+                MessageBox.Show(ex.Message);
+            }
+
+            //Error text
+            string text = "Nazwa dostawcy dla kasy Elzab musi mieć maksymalnie 34 znaki oraz może zawierać jedynie cyfry, litery i nastepujące znaki specjalne: _-+";
+
+            //Validaion of input text
+            if (!validatingResult)
+            {
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, text);
+                if (e == EventArgs.Empty) throw new ValidatingFailed("Błąd podczas weryfikacji " + localSender.Name + "!");
+            }
+            else
+            {
+                this.ProductEntity.ElzabProductId = Convert.ToInt32(localSender.Text);
+                errorProvider1.Clear();
+            }
+        }
+        private void tbElzabProductName_MouseHover(object sender, EventArgs e)
+        {
+            TextBox localSender = (TextBox)sender;
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(localSender, localSender.Text);
         }
         #endregion        
         //====================================================================================================
@@ -521,22 +645,27 @@ namespace NaturalnieApp.Forms
         }
         private void tbPrice_Validating(object sender, EventArgs e)
         {
-            //Local variables
-            bool validatingResult;
-            float value;
-            string stringValue;
-            string text = "Cena musi być liczbą rzeczywistą, w zakresie 0.0-2000.0";
-
             //Cast the sender for an object
             TextBox localSender = (TextBox)sender;
 
-            //Regex pattern
-            string regPattern = @"^.*,.*";
-            Regex reg = new Regex(regPattern);
+            bool validatingResult = false;
 
             //Check if input match to define pattern
-            validatingResult = Single.TryParse(localSender.Text.Replace(".",","), out value);
-            if (value < 0 || value > 2000.0) validatingResult = false;
+            try
+            {
+                Validation.PriceNetValueValidation(localSender.Text);
+                validatingResult = true;
+                localSender.Text = string.Format("{0:00}", localSender.Text);
+            }
+            catch (ValidatingFailed ex)
+            {
+                validatingResult = false;
+                MessageBox.Show(ex.Message);
+            }
+
+
+            //Error text
+            string text = "Cena netto może zawierać jedynie cyfry. Miejsce dziesiętne odzielone jest znakiem '.' (kropka).";
 
             //Validaion of input text
             if (!validatingResult)
@@ -547,17 +676,11 @@ namespace NaturalnieApp.Forms
             }
             else
             {
-                //Check if value consist comma
-                stringValue = value.ToString();
-                bool isReal = reg.IsMatch(stringValue);
-                if (! isReal )
-                {
-                    stringValue += ",00";
-                    localSender.Text = stringValue;
-                }
-                else localSender.Text = value.ToString();
+                this.ProductEntity.PriceNet = float.Parse(localSender.Text);
 
-                this.ProductEntity.PriceNet = value;
+                //Update Final price
+                UpdateFinalPrice();
+
                 errorProvider1.Clear();
             }
         }
@@ -575,22 +698,25 @@ namespace NaturalnieApp.Forms
         }
         private void tbMarigin_Validating(object sender, EventArgs e)
         {
-            //Local variables
-            bool validatingResult;
-            float value;
-            string stringValue;
-            string text = "Marża musi być liczbą rzeczywistą, w zakresie 0.0-2000.0";
-
             //Cast the sender for an object
             TextBox localSender = (TextBox)sender;
-
-            //Regex pattern
-            string regPattern = @"^.*,.*";
-            Regex reg = new Regex(regPattern);
+            bool validatingResult = false;
 
             //Check if input match to define pattern
-            validatingResult = Single.TryParse(localSender.Text.Replace(".", ","), out value);
-            if (value < 0 || value > 2000.0) validatingResult = false;
+            try
+            {
+                Validation.MariginValueValidation(localSender.Text);
+                validatingResult = true;
+                localSender.Text = string.Format("{0:00}", localSender.Text);
+            }
+            catch (ValidatingFailed ex)
+            {
+                validatingResult = false;
+                MessageBox.Show(ex.Message);
+            }
+
+            //Error text
+            string text = "Marża jest wartością rzeczywistą, w której miejsce dziesiętne oddzielone jest znakiem '.' (kropka).";
 
             //Validaion of input text
             if (!validatingResult)
@@ -601,17 +727,11 @@ namespace NaturalnieApp.Forms
             }
             else
             {
-                //Check if value consist comma
-                stringValue = value.ToString();
-                bool isReal = reg.IsMatch(stringValue);
-                if (!isReal)
-                {
-                    stringValue += ",00";
-                    localSender.Text = stringValue;
-                }
-                else localSender.Text = value.ToString();
+                this.ProductEntity.Marigin = float.Parse(localSender.Text);
 
-                this.ProductEntity.Marigin = value;
+                //Update final price
+                UpdateFinalPrice();
+
                 errorProvider1.Clear();
             }
         }
@@ -622,10 +742,12 @@ namespace NaturalnieApp.Forms
         private void cbTax_SelectionChangeCommited(object sender, EventArgs e)
         {
             this.TaxEntity.TaxValue = int.Parse(this.cbTax.GetItemText(this.cbTax.SelectedItem).ToString().Replace("%", ""));
+            //Update final price
+            UpdateFinalPrice();
         }
         private void cbTax_Validating(object sender, EventArgs e)
         {
-            ;
+            
         }
         #endregion
         //====================================================================================================
@@ -708,10 +830,5 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
-
-        private void cbTax_Validating(object sender, CancelEventArgs e)
-        {
-
-        }
     }
 }

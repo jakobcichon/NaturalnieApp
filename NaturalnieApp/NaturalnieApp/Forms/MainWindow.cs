@@ -156,6 +156,7 @@ namespace NaturalnieApp.Forms
                 this.pContainer.Controls.Add(this.addNewProduct);
                 this.addNewProduct.Show();
                 this.addNewProduct.BringToFront();
+                this.addNewProduct.Activate();
             }
             catch (ObjectDisposedException)
             {
@@ -163,6 +164,7 @@ namespace NaturalnieApp.Forms
                 this.pContainer.Controls.Add(this.addNewProduct);
                 this.addNewProduct.Show();
                 this.addNewProduct.BringToFront();
+                this.addNewProduct.Activate();
             }
         }
         private void AddProductFromPdf_Click(object sender, EventArgs e)
@@ -172,6 +174,7 @@ namespace NaturalnieApp.Forms
                 this.pContainer.Controls.Add(this.addNewProductFromExcel);
                 this.addNewProductFromExcel.Show();
                 this.addNewProductFromExcel.BringToFront();
+                this.addNewProductFromExcel.Activate();
             }
             catch (ObjectDisposedException)
             {
@@ -179,6 +182,7 @@ namespace NaturalnieApp.Forms
                 this.pContainer.Controls.Add(this.addNewProductFromExcel);
                 this.addNewProductFromExcel.Show();
                 this.addNewProductFromExcel.BringToFront();
+                this.addNewProductFromExcel.Activate();
             }
 
         }
@@ -191,6 +195,7 @@ namespace NaturalnieApp.Forms
                 this.pContainer.Controls.Add(this.showProductInfo);
                 this.showProductInfo.Show();
                 this.showProductInfo.BringToFront();
+                this.showProductInfo.Activate();
             }
             catch (ObjectDisposedException)
             {
@@ -198,6 +203,7 @@ namespace NaturalnieApp.Forms
                 this.pContainer.Controls.Add(this.showProductInfo);
                 this.showProductInfo.Show();
                 this.showProductInfo.BringToFront();
+                this.showProductInfo.Activate();
             }
         }
 
@@ -209,6 +215,7 @@ namespace NaturalnieApp.Forms
                 this.pContainer.Controls.Add(this.printBarcode);
                 this.printBarcode.Show();
                 this.printBarcode.BringToFront();
+                this.printBarcode.Activate();
             }
             catch (ObjectDisposedException)
             {
@@ -216,6 +223,7 @@ namespace NaturalnieApp.Forms
                 this.pContainer.Controls.Add(this.printBarcode);
                 this.printBarcode.Show();
                 this.printBarcode.BringToFront();
+                this.printBarcode.Activate();
             }
 
         }
@@ -237,6 +245,8 @@ namespace NaturalnieApp.Forms
                 this.pContainer.Controls.Add(this.addToStock);
                 this.addToStock.Show();
                 this.addToStock.BringToFront();
+                this.addToStock.Activate();
+                this.addToStock.Focus();
             }
             catch (ObjectDisposedException)
             {
@@ -244,6 +254,8 @@ namespace NaturalnieApp.Forms
                 this.pContainer.Controls.Add(this.addToStock);
                 this.addToStock.Show();
                 this.addToStock.BringToFront();
+                this.addToStock.Activate();
+                this.addToStock.Focus();
             }
 
         }

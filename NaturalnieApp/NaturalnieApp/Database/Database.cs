@@ -41,6 +41,7 @@ namespace NaturalnieApp.Database
         public int ActualQuantity { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime ExpirationDate { get; set; }
+        public string BarcodeWithDate { get; set; }
     }
 
 
