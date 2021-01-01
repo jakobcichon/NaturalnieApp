@@ -806,7 +806,7 @@ namespace NaturalnieApp.Database
                 }
                 catch (Exception ex)
                 {
-                    if (showMessage) MessageBox.Show(ex.ToString());
+                    if (showMessage) MessageBox.Show(ex.Message);
                     state = false;
                 }
             }

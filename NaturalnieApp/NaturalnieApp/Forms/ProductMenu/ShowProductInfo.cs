@@ -35,7 +35,6 @@ namespace NaturalnieApp.Forms
         private BarcodeRelated.BarcodeReader BarcodeReader { get; set; }
         private bool BarcodeValidEventGenerated { get; set; }
         #endregion
-
         //====================================================================================================
         //Class constructor
         #region Class consturctor
@@ -43,7 +42,7 @@ namespace NaturalnieApp.Forms
         {
             InitializeComponent();
             InitializeBackgroundWorker();
-            this.databaseCommands = new DatabaseCommands();
+            this.databaseCommands = commandsObj;
             ActualTaskType = backgroundWorkerTasks.None;
 
             //Barcode reader class
@@ -51,7 +50,11 @@ namespace NaturalnieApp.Forms
             this.BarcodeReader.BarcodeValid += BarcodeValidAction;
             this.BarcodeValidEventGenerated = false;
 
-            this.SelectNextControl(this.tbElzabProductName, true, true, true, true);
+            //Initialize object fields
+            this.ProductEntity = new Product();
+            this.SupplierEntity = new Supplier();
+            this.ManufacturerEntity = new Manufacturer();
+
         }
         #endregion
         //====================================================================================================
@@ -74,7 +77,6 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
-
         //=============================================================================
         //                              Background worker
         //=============================================================================
@@ -181,6 +183,8 @@ namespace NaturalnieApp.Forms
                             {
                                 this.cbProductList.SelectedItem = this.SelectedProductName;
                             }
+                            //Call event
+                            cbProductList_SelectionChangedCommited(this.cbProductList, EventArgs.Empty);
                         }
                         break;
                 }
@@ -207,7 +211,7 @@ namespace NaturalnieApp.Forms
             cbManufacturer.Items.AddRange(manufacturerList.ToArray());
             cbSupplierName.Items.Clear();
             cbSupplierName.Items.AddRange(supplierList.ToArray());
-            cbSupplierName.Items.Clear();
+            cbBarcodes.Items.Clear();
             cbBarcodes.Items.AddRange(barcodeList.ToArray());
             cbTax.Items.Clear();
             cbTax.Items.AddRange(this.databaseCommands.GetTaxListRetString().ToArray());
@@ -240,7 +244,7 @@ namespace NaturalnieApp.Forms
         private bool ValidateAllInputFields()
         {
             //Local variable
-            bool validationSuccess = false;
+            bool validationSuccess;
             try
             {
                 //Set local variable to true
@@ -263,6 +267,10 @@ namespace NaturalnieApp.Forms
             catch (ValidatingFailed ex)
             {
                 //If any of exception, return validation failed
+                validationSuccess = false;
+            }
+            catch (Exception ex)
+            {
                 validationSuccess = false;
                 MessageBox.Show(ex.Message);
             }
@@ -359,14 +367,8 @@ namespace NaturalnieApp.Forms
 
             if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
             {
-                try
-                {
-                    localControl.SelectNextControl(this, true, true, true, true);
-                }
-                catch
-                {
+                localControl.SelectNextControl(this, true, true, true, true);
 
-                }
             }
             else if (e.KeyCode == Keys.Escape)
             {
@@ -445,7 +447,11 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Update;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
-
+        }
+        private void bClose_Click(object sender, EventArgs e)
+        {
+            this.Parent.Show();
+            this.Dispose();
         }
         #endregion
         //====================================================================================================
@@ -453,12 +459,15 @@ namespace NaturalnieApp.Forms
         #region Manifacturer events
         private void cbManufacturer_SelectionChangedCommited(object sender, EventArgs e)
         {
+            //Cast the sender for an object
+            ComboBox localSender = (ComboBox)sender;
             if (this.cbManufacturer.SelectedIndex != 0)
             {
                 //Fetch filtered information from database
                 List<string> filteredProductNames = this.databaseCommands.GetProductsNameListByManufacturer(cbManufacturer.SelectedItem.ToString());
                 cbProductList.Items.Clear();
                 cbProductList.Items.AddRange(filteredProductNames.ToArray());
+                this.ManufacturerEntity.Name = localSender.SelectedItem.ToString(); ;
             }
             else
             {
@@ -484,6 +493,10 @@ namespace NaturalnieApp.Forms
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
                 MessageBox.Show(ex.Message);
             }
         }
@@ -548,6 +561,10 @@ namespace NaturalnieApp.Forms
                 errorProvider1.SetError(localSender, ex.Message);
                 MessageBox.Show(ex.Message);
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
         }
         private void cbSupplierName_MouseHover(object sender, EventArgs e)
@@ -586,9 +603,12 @@ namespace NaturalnieApp.Forms
                 errorProvider1.SetError(localSender, ex.Message);
                 MessageBox.Show(ex.Message);
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         #endregion
-
         //====================================================================================================
         //ElzabProductName events
         #region ElzabProductName events
@@ -616,6 +636,10 @@ namespace NaturalnieApp.Forms
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
                 MessageBox.Show(ex.Message);
             }
         }
@@ -658,6 +682,10 @@ namespace NaturalnieApp.Forms
                 errorProvider1.SetError(localSender, ex.Message);
                 MessageBox.Show(ex.Message);
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
         }
         #endregion
@@ -691,6 +719,10 @@ namespace NaturalnieApp.Forms
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
                 MessageBox.Show(ex.Message);
             }
         }
@@ -738,6 +770,10 @@ namespace NaturalnieApp.Forms
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
                 MessageBox.Show(ex.Message);
             }
         }
@@ -801,7 +837,7 @@ namespace NaturalnieApp.Forms
             RichTextBox localSender = (RichTextBox)sender;
 
             //Check if input match to define pattern
-            if (localSender.Text.Length > 0 && localSender.Text.Length <= 1024) validatingResult = true;
+            if (localSender.Text.Length >= 0 && localSender.Text.Length <= 1024) validatingResult = true;
 
             //Validaion of input text
             if (!validatingResult)
@@ -846,7 +882,7 @@ namespace NaturalnieApp.Forms
         private void cbBarcodes_Validating(object sender, EventArgs e)
         {
             //Cast the sender for an object
-            TextBox localSender = (TextBox)sender;
+            ComboBox localSender = (ComboBox)sender;
 
             //Check if input match to define pattern
             try
@@ -859,6 +895,10 @@ namespace NaturalnieApp.Forms
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
                 MessageBox.Show(ex.Message);
             }
         }

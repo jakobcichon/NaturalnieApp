@@ -328,7 +328,6 @@ namespace NaturalnieApp.Forms
             this.BarcodeValidEventGenerated = true;
         }
         #endregion
-
         //====================================================================================================
         //Manufacturer  events
         #region Manufacturer  events
@@ -369,7 +368,6 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
-
         //====================================================================================================
         //Product List events
         #region Product List events
@@ -396,7 +394,6 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
-
         //====================================================================================================
         //Product List events
         #region Barcode events
@@ -424,7 +421,6 @@ namespace NaturalnieApp.Forms
 
         }
         #endregion
-
         //====================================================================================================
         //Buttons events
         #region Buttons events
