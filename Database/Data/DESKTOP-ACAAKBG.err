@@ -197,3 +197,23 @@
 2020-12-23T08:05:05.395618Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
 2020-12-23T08:05:05.396627Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
 2020-12-23T08:05:05.485992Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2021-01-01T13:47:57.951491Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2021-01-01T13:47:57.952634Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 13872
+2021-01-01T13:47:57.995934Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2021-01-01T13:47:59.458545Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2021-01-01T13:47:59.720185Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2021-01-01T13:47:59.772861Z 0 [System] [MY-010229] [Server] Starting XA crash recovery...
+2021-01-01T13:47:59.787099Z 0 [System] [MY-010232] [Server] XA crash recovery finished.
+2021-01-01T13:48:00.029519Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2021-01-01T13:48:00.031258Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2021-01-01T13:48:00.162855Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2021-01-01T18:36:35.558328Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2021-01-01T18:36:35.561468Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4728
+2021-01-01T18:36:35.659446Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2021-01-01T18:36:36.460498Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2021-01-01T18:36:36.726819Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2021-01-01T18:36:36.762222Z 0 [System] [MY-010229] [Server] Starting XA crash recovery...
+2021-01-01T18:36:36.769682Z 0 [System] [MY-010232] [Server] XA crash recovery finished.
+2021-01-01T18:36:36.818077Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2021-01-01T18:36:36.818827Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2021-01-01T18:36:36.864658Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.

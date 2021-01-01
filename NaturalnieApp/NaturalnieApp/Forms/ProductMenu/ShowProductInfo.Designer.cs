@@ -42,7 +42,7 @@ namespace NaturalnieApp.Forms
             this.cbManufacturer = new System.Windows.Forms.ComboBox();
             this.gbProductSelection = new System.Windows.Forms.GroupBox();
             this.pBarCode = new System.Windows.Forms.TableLayoutPanel();
-            this.tbBarCode = new System.Windows.Forms.TextBox();
+            this.cbBarcodes = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.pProductName = new System.Windows.Forms.TableLayoutPanel();
             this.cbProductList = new System.Windows.Forms.ComboBox();
@@ -183,7 +183,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 351F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 361F));
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.Controls.Add(this.cbManufacturer, 0, 1);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -248,8 +248,8 @@ namespace NaturalnieApp.Forms
             this.pBarCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pBarCode.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pBarCode.ColumnCount = 1;
-            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 374F));
-            this.pBarCode.Controls.Add(this.tbBarCode, 0, 1);
+            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.pBarCode.Controls.Add(this.cbBarcodes, 0, 1);
             this.pBarCode.Controls.Add(this.label1, 0, 0);
             this.pBarCode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.pBarCode.Location = new System.Drawing.Point(740, 30);
@@ -258,31 +258,38 @@ namespace NaturalnieApp.Forms
             this.pBarCode.RowCount = 2;
             this.pBarCode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.pBarCode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.pBarCode.Size = new System.Drawing.Size(252, 70);
+            this.pBarCode.Size = new System.Drawing.Size(175, 70);
             this.pBarCode.TabIndex = 18;
             // 
-            // tbBarCode
+            // cbBarcodes
             // 
-            this.tbBarCode.Dock = System.Windows.Forms.DockStyle.Left;
-            this.tbBarCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbBarCode.Location = new System.Drawing.Point(6, 37);
-            this.tbBarCode.Margin = new System.Windows.Forms.Padding(5);
-            this.tbBarCode.Name = "tbBarCode";
-            this.tbBarCode.Size = new System.Drawing.Size(230, 26);
-            this.tbBarCode.TabIndex = 3;
-            this.tbBarCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbBarCode_KeyDown);
-            this.tbBarCode.Validating += new System.ComponentModel.CancelEventHandler(this.tbBarCode_Validating);
+            this.cbBarcodes.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.cbBarcodes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cbBarcodes.DropDownHeight = 200;
+            this.cbBarcodes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbBarcodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.cbBarcodes.FormattingEnabled = true;
+            this.cbBarcodes.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.cbBarcodes.IntegralHeight = false;
+            this.cbBarcodes.ItemHeight = 20;
+            this.cbBarcodes.Location = new System.Drawing.Point(4, 35);
+            this.cbBarcodes.Name = "cbBarcodes";
+            this.cbBarcodes.Size = new System.Drawing.Size(167, 28);
+            this.cbBarcodes.TabIndex = 4;
+            this.cbBarcodes.SelectionChangeCommitted += new System.EventHandler(this.cbBarcodes_SelectionChangedCommited);
+            this.cbBarcodes.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbBarcodes_KeyDown);
+            this.cbBarcodes.Validating += new System.ComponentModel.CancelEventHandler(this.cbBarcodes_Validating);
             // 
             // label1
             // 
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.label1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
             this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label1.Location = new System.Drawing.Point(6, 6);
             this.label1.Margin = new System.Windows.Forms.Padding(5);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(240, 20);
+            this.label1.Size = new System.Drawing.Size(163, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "Kod kreskowy";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -292,7 +299,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 561F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 571F));
             this.pProductName.Controls.Add(this.cbProductList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -318,7 +325,7 @@ namespace NaturalnieApp.Forms
             this.cbProductList.Name = "cbProductList";
             this.cbProductList.Size = new System.Drawing.Size(450, 28);
             this.cbProductList.TabIndex = 2;
-            this.cbProductList.SelectedIndexChanged += new System.EventHandler(this.cbProductList_SelectionChangedCommited);
+            this.cbProductList.SelectionChangeCommitted += new System.EventHandler(this.cbProductList_SelectionChangedCommited);
             this.cbProductList.MouseHover += new System.EventHandler(this.cbProductList_MouseHover);
             this.cbProductList.Validating += new System.ComponentModel.CancelEventHandler(this.cbProductList_Validating);
             // 
@@ -752,7 +759,6 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.ResumeLayout(false);
             this.gbProductSelection.ResumeLayout(false);
             this.pBarCode.ResumeLayout(false);
-            this.pBarCode.PerformLayout();
             this.pProductName.ResumeLayout(false);
             this.gbProductInfo.ResumeLayout(false);
             this.tpSupplierCode.ResumeLayout(false);
@@ -800,7 +806,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TableLayoutPanel pProductInfo;
         private System.Windows.Forms.Label lProductInfo;
         private System.Windows.Forms.RichTextBox rtbProductInfo;
-        private System.Windows.Forms.TextBox tbBarCode;
         private System.Windows.Forms.TableLayoutPanel pBarCode;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lMarigin;
@@ -824,5 +829,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TableLayoutPanel tpShortBarcode;
         private System.Windows.Forms.TextBox tbShortBarcode;
         private System.Windows.Forms.Label lShortBarcode;
+        private System.Windows.Forms.ComboBox cbBarcodes;
     }
 }

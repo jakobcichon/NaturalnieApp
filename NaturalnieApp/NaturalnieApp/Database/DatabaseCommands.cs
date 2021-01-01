@@ -608,6 +608,32 @@ namespace NaturalnieApp.Database
             return localManufacturer;
         }
         //====================================================================================================
+        //Method used to retrieve from DB Manufacturer entity
+        //====================================================================================================
+
+        public Manufacturer GetManufacturerByBarcode(string barcode)
+        {
+            Manufacturer localManufacturer = new Manufacturer();
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from p in contextDB.Products
+                            join m in contextDB.Manufacturers
+                            on p.ManufacturerId equals m.Id
+                            where p.BarCode == barcode
+                            select new
+                            {
+                                m
+                            };
+
+                foreach (var element in query)
+                {
+                    localManufacturer = element.m;
+                }
+
+            }
+            return localManufacturer;
+        }
+        //====================================================================================================
         //Method used to retrieve from DB Product entity
         //====================================================================================================
         public Tax GetTaxByProductName(string productName)

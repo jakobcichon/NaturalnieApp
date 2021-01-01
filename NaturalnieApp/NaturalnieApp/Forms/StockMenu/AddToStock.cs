@@ -37,8 +37,6 @@ namespace NaturalnieApp.Forms
         //Barcode reader
         private BarcodeRelated.BarcodeReader BarcodeReader { get; set; }
         private bool BarcodeValidEventGenerated { get; set; }
-
-        List<string> keyTest;
         #endregion
 
         #region Class constructor
@@ -82,8 +80,6 @@ namespace NaturalnieApp.Forms
             this.BarcodeReader = new BarcodeRelated.BarcodeReader(100);
             this.BarcodeReader.BarcodeValid += BarcodeValidAction;
             this.BarcodeValidEventGenerated = false;
-
-            this.keyTest = new List<string>();
 
         }
         #endregion
