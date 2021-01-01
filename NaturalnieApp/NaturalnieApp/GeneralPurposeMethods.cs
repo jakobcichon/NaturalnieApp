@@ -10,6 +10,8 @@ using System.Windows.Forms;
 
 namespace NaturalnieApp
 {
+    public enum backgroundWorkerTasks { None, Init, Update, CheckIfExist };
+
     /// <summary>
     /// Static class consist Barcode-related methods
     /// </summary>

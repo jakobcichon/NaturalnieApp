@@ -82,7 +82,7 @@ namespace NaturalnieApp.Forms
                 e => e.Key == ColumnsAttributes.IndexColumnName).Value;
 
             this.LastExcelFilePath = "";
-            this.databaseCommands = new DatabaseCommands();
+            this.databaseCommands = commandsObj;
 
             //Initialization of last cell clicked variable
             this.LastCellCliked = new[] { 0 , 0 };

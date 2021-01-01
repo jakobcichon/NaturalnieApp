@@ -14,9 +14,6 @@ using System.Text.RegularExpressions;
 
 namespace NaturalnieApp.Forms
 {
-    public enum backgroundWorkerTasks {None, Init, Update};
-
-
     public partial class ShowProductInfo : Form
     {
         //====================================================================================================
@@ -55,26 +52,6 @@ namespace NaturalnieApp.Forms
             this.SupplierEntity = new Supplier();
             this.ManufacturerEntity = new Manufacturer();
 
-        }
-        #endregion
-        //====================================================================================================
-        //User-defined exception
-        #region User-defined exception
-        public class ValidatingFailed : Exception
-        {
-            public ValidatingFailed()
-            {
-            }
-
-            public ValidatingFailed(string message)
-                : base(message)
-            {
-            }
-
-            public ValidatingFailed(string message, Exception inner)
-                : base(message, inner)
-            {
-            }
         }
         #endregion
         //=============================================================================
@@ -264,7 +241,7 @@ namespace NaturalnieApp.Forms
                 tbSupplierCode_Validating(this.tbSupplierCode, EventArgs.Empty);
                 rtbProductInfo_Validating(this.rtbProductInfo, EventArgs.Empty);
             }
-            catch (ValidatingFailed ex)
+            catch (Validation.ValidatingFailed)
             {
                 //If any of exception, return validation failed
                 validationSuccess = false;
@@ -489,7 +466,7 @@ namespace NaturalnieApp.Forms
                 this.ManufacturerEntity.Name = localSender.Text;
                 errorProvider1.Clear();
             }
-            catch (ValidatingFailed ex)
+            catch (Validation.ValidatingFailed ex)
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
@@ -555,7 +532,7 @@ namespace NaturalnieApp.Forms
                 this.SupplierEntity.Name = localSender.Text;
                 errorProvider1.Clear();
             }
-            catch (ValidatingFailed ex)
+            catch (Validation.ValidatingFailed ex)
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
@@ -597,7 +574,7 @@ namespace NaturalnieApp.Forms
                 this.ProductEntity.ElzabProductId = Convert.ToInt32(localSender.Text);
                 errorProvider1.Clear();
             }
-            catch (ValidatingFailed ex)
+            catch (Validation.ValidatingFailed ex)
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
@@ -632,7 +609,7 @@ namespace NaturalnieApp.Forms
                 this.ProductEntity.ElzabProductName = localSender.Text;
                 errorProvider1.Clear();
             }
-            catch (ValidatingFailed ex)
+            catch (Validation.ValidatingFailed ex)
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
@@ -676,7 +653,7 @@ namespace NaturalnieApp.Forms
                 errorProvider1.Clear();
                 localSender.Text = string.Format("{0:00}", localSender.Text);
             }
-            catch (ValidatingFailed ex)
+            catch (Validation.ValidatingFailed ex)
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
@@ -715,7 +692,7 @@ namespace NaturalnieApp.Forms
                 errorProvider1.Clear();
                 localSender.Text = string.Format("{0:00}", localSender.Text);
             }
-            catch (ValidatingFailed ex)
+            catch (Validation.ValidatingFailed ex)
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
@@ -766,7 +743,7 @@ namespace NaturalnieApp.Forms
                 this.ProductEntity.BarCodeShort = localSender.Text;
                 errorProvider1.Clear();
             }
-            catch (ValidatingFailed ex)
+            catch (Validation.ValidatingFailed ex)
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
@@ -803,7 +780,7 @@ namespace NaturalnieApp.Forms
                 this.ProductEntity.SupplierCode = localSender.Text;
                 errorProvider1.Clear();
             }
-            catch (ValidatingFailed ex)
+            catch (Validation.ValidatingFailed ex)
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
@@ -844,7 +821,7 @@ namespace NaturalnieApp.Forms
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, text);
-                if (e == EventArgs.Empty) throw new ValidatingFailed("Błąd podczas weryfikacji " + localSender.Name + "!");
+                if (e == EventArgs.Empty) throw new Validation.ValidatingFailed("Błąd podczas weryfikacji " + localSender.Name + "!");
             }
             else
             {
@@ -891,7 +868,7 @@ namespace NaturalnieApp.Forms
                 this.ProductEntity.BarCode = localSender.Text;
                 errorProvider1.Clear();
             }
-            catch (ValidatingFailed ex)
+            catch (Validation.ValidatingFailed ex)
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);

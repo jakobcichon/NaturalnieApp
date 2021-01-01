@@ -210,12 +210,6 @@
     <Compile Include="Forms\PathsWindow.Designer.cs">
       <DependentUpon>PathsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ProductMenu\AddNewProduct.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ProductMenu\AddNewProduct.Designer.cs">
-      <DependentUpon>AddNewProduct.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\ProductMenu\AddNewProductFromExcel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -227,6 +221,12 @@
     </Compile>
     <Compile Include="Forms\ProductMenu\PrintBarcode.Designer.cs">
       <DependentUpon>PrintBarcode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ProductMenu\AddNewProduct.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProductMenu\AddNewProduct.Designer.cs">
+      <DependentUpon>AddNewProduct.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ProductMenu\ShowProductInfo.cs">
       <SubType>Form</SubType>
@@ -260,14 +260,14 @@
     <EmbeddedResource Include="Forms\PathsWindow.resx">
       <DependentUpon>PathsWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ProductMenu\AddNewProduct.resx">
-      <DependentUpon>AddNewProduct.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProductMenu\AddNewProductFromExcel.resx">
       <DependentUpon>AddNewProductFromExcel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProductMenu\PrintBarcode.resx">
       <DependentUpon>PrintBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProductMenu\AddNewProduct.resx">
+      <DependentUpon>AddNewProduct.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProductMenu\ShowProductInfo.resx">
       <DependentUpon>ShowProductInfo.cs</DependentUpon>

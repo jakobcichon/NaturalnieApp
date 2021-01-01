@@ -46,11 +46,10 @@ namespace NaturalnieApp.Forms
             InitializeComponent();
 
             //Initialize database comands
-            this.databaseCommands = new DatabaseCommands();
+            this.databaseCommands = commandsObj;
 
             //Background worker
             InitializeBackgroundWorker();
-            this.databaseCommands = new DatabaseCommands();
             ActualTaskType = backgroundWorkerTasks.None;
 
             //Initialize globar variables

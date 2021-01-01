@@ -35,9 +35,6 @@ namespace NaturalnieApp.Forms
         //Method used to choose validation event depending on data column name
         static public void GetValidationMethod(string columnName, string value, IExcel template)
         {
-            //Local variables
-            bool retValue;
-
             //Try to match colum name with dictionary
             ColumnsAttributes attribute = template.DataTableSchema_WinForm.FirstOrDefault(e => e.Value == columnName).Key;
             
@@ -78,6 +75,25 @@ namespace NaturalnieApp.Forms
                     break;
             }
 
+        }
+
+        //Method used to validate of the general description
+        static public bool GeneralDescriptionValidation(string input)
+        {
+            //Local variables
+            bool validatingResult;
+            string text = "Opis może mieć maksymalnie 1024 znaki oraz może zawierać jedynie cyfry i litery i nastepujące znaki specjalne: _-+'&";
+
+            //Accept only letters an numbers with maximal length of 255 chars
+            string regPattern = @"^([a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9'_+-.&]+\s)*[a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9'_+-.&]+$";
+
+            //Check if input match to define pattern
+            validatingResult = ValidateInput(input, regPattern);
+            if (input.Length > 1024) validatingResult = false;
+
+            if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
+
+            return validatingResult;
         }
 
         //Method used to validate of product name
