@@ -264,6 +264,24 @@ namespace NaturalnieApp.Forms
             return validatingResult;
         }
 
+        //Method used to validate supplier code
+        static public bool SupplierCodeValidation(string input)
+        {
+            //Local variables
+            bool validatingResult;
+            string text = "Kod dostawcy musi składać się wyłacznie z 13 liczb!";
+
+            //Accept only letters an numbers with maximal length of 255 chars
+            string regPattern = @"^[0-9]${0,13}";
+
+            //Check if input match to define pattern
+            validatingResult = ValidateInput(input, regPattern);
+
+            if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
+
+            return validatingResult;
+        }
+
         //Method used to validate final price
         static public bool FinalPriceValueValidation(string input)
         {
