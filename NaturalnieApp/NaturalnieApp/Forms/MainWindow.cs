@@ -47,7 +47,6 @@ namespace NaturalnieApp.Forms
             this.databaseCommands = new DatabaseCommands();
             //check if Database reachable 
             this.databaseCommands.CheckConnection(true);
-            ;
 
             this.addNewProductFromExcel = new AddNewProductFromExcel(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.printBarcode = new PrintBarcode(ref this.databaseCommands) { TopLevel = false, TopMost = true };

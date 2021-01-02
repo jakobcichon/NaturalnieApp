@@ -18,7 +18,7 @@ namespace NaturalnieApp
             double finalPrice;
 
             //Round price to 1 digit place
-            finalPrice = Math.Round(price, 1);
+            finalPrice = Math.Round(price, 2);
 
             //Extract only integer part
             int integerPart = Convert.ToInt32(Math.Floor(finalPrice));

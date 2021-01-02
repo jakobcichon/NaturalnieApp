@@ -39,7 +39,7 @@ namespace NaturalnieApp.Database
         public int Id { get; set; }
         public int ProductId { get; set; }
         public int ActualQuantity { get; set; }
-        public DateTime DateAdded { get; set; }
+        public DateTime ModificationDate { get; set; }
         public DateTime ExpirationDate { get; set; }
         public string BarcodeWithDate { get; set; }
     }

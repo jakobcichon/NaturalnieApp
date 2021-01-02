@@ -92,11 +92,38 @@ namespace NaturalnieApp.Database
                                     select p;
                         Product product = query.FirstOrDefault();
                         Tax tax = GetTaxByProductName(product.ProductName);
-                        product.FinalPrice = Convert.ToSingle(Calculations.FinalPrice(
-                            Convert.ToDouble(product.PriceNet), tax.TaxValue, Convert.ToDouble(product.Marigin)));
+                        product.FinalPrice = Calculations.CalculateFinalPriceFromProduct(product, tax.TaxValue);
 
                         EditProduct(product);
 
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
+        //====================================================================================================
+        // Method used to update all product marigins values
+        //====================================================================================================
+        public void UpdateAllMariginValues(List<string> productNames, int newMarigin)
+        {
+            try
+            {
+                foreach (string element in productNames)
+                {
+                    using (ShopContext contextDB = new ShopContext())
+                    {
+                        var query = from p in contextDB.Products
+                                    where p.ProductName == element
+                                    select p;
+                        Product product = query.FirstOrDefault();
+                        product.Marigin = newMarigin;
+                        EditProduct(product);
                     }
                 }
 
@@ -754,6 +781,31 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB quantity of given product in stock
+        //====================================================================================================
+        public int GetProductQuantityInStock(string productName)
+        {
+            int localQuantity = 0;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from s in contextDB.Stock
+                            join p in contextDB.Products
+                            on s.ProductId equals p.Id
+                            where p.ProductName == productName
+                            select new
+                            {
+                                s
+                            };
+                foreach (var element in query)
+                {
+                    localQuantity += element.s.ActualQuantity;
+                }
+            }
+            return localQuantity;
+        }
+
+        //====================================================================================================
         //Method used to add new product
         //====================================================================================================
         public void AddNewProduct(Product product)
@@ -792,6 +844,46 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to get stock entity from user prepared stock entity
+        //====================================================================================================
+        public Stock GetStockEntityByUserStock(Stock stockProduct)
+        {
+            Stock localStock = new Stock();
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from s in contextDB.Stock
+                            where s.ExpirationDate == stockProduct.ExpirationDate &&
+                            s.BarcodeWithDate == stockProduct.BarcodeWithDate
+                            select s;
+
+                localStock = query.FirstOrDefault();
+            }
+            return localStock;
+        }
+
+        //====================================================================================================
+        //Method used to check if specified product already exist in stock
+        //====================================================================================================
+        public bool CheckIfProductExistInStock(Stock stockProduct)
+        {
+            bool result = false;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from s in contextDB.Stock
+                            where s.ExpirationDate == stockProduct.ExpirationDate &&
+                            s.BarcodeWithDate == stockProduct.BarcodeWithDate
+                            select s;
+
+                if (query.FirstOrDefault() != null) result = true;
+                else result = false;
+
+            }
+            return result;
+        }
+
+        //====================================================================================================
         //Method used to add to stock
         //====================================================================================================
         public void AddToStock(Stock stockPiece)
@@ -800,7 +892,19 @@ namespace NaturalnieApp.Database
             {
                 contextDB.Stock.Add(stockPiece);
                 int retVal = contextDB.SaveChanges();
+            }
+        }
 
+        //====================================================================================================
+        //Method used to edit product product in stock
+        //====================================================================================================
+        public void EditInStock(Stock stockProduct)
+        {
+            using (ShopContext contextDB = new ShopContext())
+            {
+                contextDB.Stock.Add(stockProduct);
+                contextDB.Entry(stockProduct).State = EntityState.Modified;
+                int retVal = contextDB.SaveChanges();
             }
         }
 

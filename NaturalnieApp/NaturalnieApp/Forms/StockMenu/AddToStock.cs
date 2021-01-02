@@ -303,7 +303,7 @@ namespace NaturalnieApp.Forms
 
             if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
             {
-                localControl.SelectNextControl(ActiveControl, true, true, true, true);
+                localControl.SelectNextControl(this, true, true, true, true);
             }
             else if (e.KeyCode == Keys.Escape)
             {
@@ -326,6 +326,7 @@ namespace NaturalnieApp.Forms
                 if (index >= 0)
                 {
                     this.cbBarcodes.SelectedIndex = index;
+                    cbBarcodes.SelectNextControl(this, true, true, true, true);
                     this.cbBarcodes_SelectionChangeCommitted(this.cbBarcodes, EventArgs.Empty);
                 }
                 else MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych");
@@ -498,7 +499,7 @@ namespace NaturalnieApp.Forms
                 }
             }
 
-           
+            this.SelectNextControl(this, true, true, true, true);
         }
 
         private void bClose_Click(object sender, EventArgs e)
@@ -531,16 +532,30 @@ namespace NaturalnieApp.Forms
                         //Add product to local stock variable
                         stockPiece.ProductId = this.databaseCommands.GetProductIdByName(element.Field<string>(this.ColumnNames.ProductName));
                         stockPiece.ActualQuantity = element.Field<int>(this.ColumnNames.NumberOfPieces);
-                        stockPiece.DateAdded = element.Field<DateTime>(this.ColumnNames.AddDate).Date;
+                        stockPiece.ModificationDate = element.Field<DateTime>(this.ColumnNames.AddDate).Date;
                         DateTime expirenceDate = element.Field<DateTime>(this.ColumnNames.ExpirenceDate);
+
+                        //Need to implement for product with date
+                        stockPiece.BarcodeWithDate = null;
 
                         if (element.Field<DateTime>(this.ColumnNames.ExpirenceDate) != DateTime.MinValue)
                         {
                             stockPiece.ExpirationDate = element.Field<DateTime>(this.ColumnNames.ExpirenceDate).Date;
                         }
 
-                        //Try to add to stock table
-                        this.databaseCommands.AddToStock(stockPiece);
+                        //Check if product already exist in stock. If no add it. If yes, increment quantity
+                        bool checkResult = this.databaseCommands.CheckIfProductExistInStock(stockPiece);
+                        if (checkResult)
+                        {
+                            Stock localStock = this.databaseCommands.GetStockEntityByUserStock(stockPiece);
+                            int localQuantity = stockPiece.ActualQuantity;
+                            localStock.ActualQuantity += localQuantity;
+                            this.databaseCommands.EditInStock(localStock);
+                        }
+                        else
+                        {
+                            this.databaseCommands.AddToStock(stockPiece);
+                        }
 
                         //Add row to the remove list
                         rowsToRemove.Add(element);
@@ -561,6 +576,7 @@ namespace NaturalnieApp.Forms
                 {
                     this.DataSoruce.Rows.Remove(element);
                 }
+                    
                 
             }
 
