@@ -32,6 +32,7 @@ namespace NaturalnieApp.Forms
         ShowProductInfo showProductInfo { get; set; }
         AddNewProduct addNewProduct { get; set; }
         AddToStock addToStock { get; set; }
+        AddManufacturer addManufacturer { get; set; }
 
 
         //Creat EF databse connection object
@@ -53,6 +54,7 @@ namespace NaturalnieApp.Forms
             this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.addNewProduct = new AddNewProduct(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.addToStock = new AddToStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+            this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
 
         }
 
@@ -227,6 +229,26 @@ namespace NaturalnieApp.Forms
 
         }
 
+        private void bAddManufacturer_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            try
+            {
+                this.pContainer.Controls.Add(this.addManufacturer);
+                this.addManufacturer.Show();
+                this.addManufacturer.BringToFront();
+                this.addManufacturer.Activate();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+                this.pContainer.Controls.Add(this.addManufacturer);
+                this.addManufacturer.Show();
+                this.addManufacturer.BringToFront();
+                this.addManufacturer.Activate();
+            }
+        }
+
         #endregion
 
         #region Stock submenu
@@ -260,5 +282,7 @@ namespace NaturalnieApp.Forms
         }
 
         #endregion
+
+
     }
 }

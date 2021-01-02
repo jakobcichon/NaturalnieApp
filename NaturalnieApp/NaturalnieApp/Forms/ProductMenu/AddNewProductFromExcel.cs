@@ -248,6 +248,7 @@ namespace NaturalnieApp.Forms
                     singleElement = Regex.Unescape(singleElement);
                     singleElement = singleElement.Replace("\n", "");
                     singleElement = singleElement.Replace("\t", "");
+                    singleElement = singleElement.Replace("  ", " ");
                     singleElement = singleElement.Replace("*", "");
 
                     //Sepcific string action depending on column attribute

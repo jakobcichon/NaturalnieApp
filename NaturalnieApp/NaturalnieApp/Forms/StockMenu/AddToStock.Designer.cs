@@ -566,7 +566,6 @@ namespace NaturalnieApp.Forms
             this.Text = "PrintBarcode";
             this.Load += new System.EventHandler(this.AddToStock_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddToStock_KeyDown);
-            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AddToStock_MouseClick);
             this.pHeader.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.pButtonsPanel.ResumeLayout(false);

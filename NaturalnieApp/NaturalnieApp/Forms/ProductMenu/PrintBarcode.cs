@@ -40,6 +40,10 @@ namespace NaturalnieApp.Forms
         //Printer instance
         Printer DymoPrinter;
 
+        //Barcode reader
+        private BarcodeRelated.BarcodeReader BarcodeReader { get; set; }
+        private bool BarcodeValidEventGenerated { get; set; }
+
         #endregion
 
         #region Class constructor
@@ -72,6 +76,11 @@ namespace NaturalnieApp.Forms
 
             //List of the product to print
             ListOfTheProductToPrint = new List<Product>();
+
+            //Barcode reader class
+            this.BarcodeReader = new BarcodeRelated.BarcodeReader(100);
+            this.BarcodeReader.BarcodeValid += BarcodeValidAction;
+            this.BarcodeValidEventGenerated = false;
         }
         #endregion
 
@@ -287,11 +296,38 @@ namespace NaturalnieApp.Forms
         }
         private void PrintBarcode_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape)
+            Control localControl = (Control)sender;
+
+            this.BarcodeValidEventGenerated = false;
+            this.BarcodeReader.CheckIfBarcodeFromReader(e.KeyCode);
+
+            if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
             {
-                Control localControl = (Control)sender;
-                localControl.Controls.Remove(this.ActiveControl);
+                localControl.SelectNextControl(this, true, true, true, true);
             }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                localControl.SelectNextControl(this, true, true, true, true);
+            }
+        }
+        private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
+        {
+
+            if (e.Ready && e.Valid)
+            {
+                //Get index
+                int index = this.cbBarcodes.Items.IndexOf(e.RecognizedBarcodeValue);
+                if (index >= 0)
+                {
+                    this.cbBarcodes.SelectedIndex = index;
+                    cbBarcodes.SelectNextControl(this, true, true, true, true);
+                    this.cbBarcodes_SelectionChangeCommitted(this.cbBarcodes, EventArgs.Empty);
+                }
+                else MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych");
+            }
+
+            //Set variable informing Bar code read corrected
+            this.BarcodeValidEventGenerated = true;
         }
         #endregion
 

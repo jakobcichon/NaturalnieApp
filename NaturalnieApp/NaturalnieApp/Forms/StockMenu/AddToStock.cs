@@ -311,10 +311,6 @@ namespace NaturalnieApp.Forms
             }
           
         }
-        private void AddToStock_MouseClick(object sender, MouseEventArgs e)
-        {
-            this.BarcodeValidEventGenerated = false;
-        }
 
         private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
         {
@@ -454,7 +450,7 @@ namespace NaturalnieApp.Forms
                         foreach (DataRow rowElement in this.DataSoruce.Rows)
                         {
                             string productName = rowElement.Field<string>(this.ColumnNames.ProductName);
-                            if (productName.Contains(entity.ElzabProductName))
+                            if (productName.Contains(entity.ProductName))
                             {
                                 indexOfExistingRow = this.DataSoruce.Rows.IndexOf(rowElement);
                                 productAlreadyOnTheList = true;
@@ -475,7 +471,7 @@ namespace NaturalnieApp.Forms
                             row = this.DataSoruce.NewRow();
 
                             //Set requred fields
-                            row.SetField(this.ColumnNames.ProductName, entity.ElzabProductName);
+                            row.SetField(this.ColumnNames.ProductName, entity.ProductName);
                             row.SetField(this.ColumnNames.AddDate, this.dtpDateOfAccept.Value.Date);
                             row.SetField(this.ColumnNames.NumberOfPieces, Convert.ToInt32(this.mtbQuantity.Text.Trim().Replace(" ", "")));
                             if (this.chbExpDateReq.Checked) row.SetField(this.ColumnNames.ExpirenceDate, this.dtpExpirationDate.Value.Date);
@@ -483,6 +479,7 @@ namespace NaturalnieApp.Forms
 
                             //Assign values to the proper rows
                             this.DataSoruce.Rows.Add(row);
+
                         }
 
                         //AutoResize Columns
@@ -576,10 +573,7 @@ namespace NaturalnieApp.Forms
                 {
                     this.DataSoruce.Rows.Remove(element);
                 }
-                    
-                
             }
-
         }
 
         private void chbExpDateReq_CheckedChanged(object sender, EventArgs e)
