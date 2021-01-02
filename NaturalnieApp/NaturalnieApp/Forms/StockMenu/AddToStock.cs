@@ -311,6 +311,10 @@ namespace NaturalnieApp.Forms
             }
           
         }
+        private void AddToStock_MouseClick(object sender, MouseEventArgs e)
+        {
+            this.BarcodeValidEventGenerated = false;
+        }
 
         private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
         {
@@ -319,7 +323,11 @@ namespace NaturalnieApp.Forms
             {
                 //Get index
                 int index = this.cbBarcodes.Items.IndexOf(e.RecognizedBarcodeValue);
-                if (index >= 0) this.cbBarcodes.SelectedIndex = index;
+                if (index >= 0)
+                {
+                    this.cbBarcodes.SelectedIndex = index;
+                    this.cbBarcodes_SelectionChangeCommitted(this.cbBarcodes, EventArgs.Empty);
+                }
                 else MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych");
             }
 
@@ -428,7 +436,7 @@ namespace NaturalnieApp.Forms
             //Local variables
             Product entity;
 
-            if(!this.BarcodeValidEventGenerated)
+            if(true)
             {
                 if (cbBarcodes.SelectedItem != null && cbProductsList.SelectedItem != null)
                 {
@@ -444,7 +452,8 @@ namespace NaturalnieApp.Forms
                         //Check if product already exist on list
                         foreach (DataRow rowElement in this.DataSoruce.Rows)
                         {
-                            if (rowElement.Field<string>(this.ColumnNames.ProductName).Contains(entity.ElzabProductName))
+                            string productName = rowElement.Field<string>(this.ColumnNames.ProductName);
+                            if (productName.Contains(entity.ElzabProductName))
                             {
                                 indexOfExistingRow = this.DataSoruce.Rows.IndexOf(rowElement);
                                 productAlreadyOnTheList = true;
@@ -465,7 +474,7 @@ namespace NaturalnieApp.Forms
                             row = this.DataSoruce.NewRow();
 
                             //Set requred fields
-                            row.SetField(this.ColumnNames.ProductName, entity.ProductName);
+                            row.SetField(this.ColumnNames.ProductName, entity.ElzabProductName);
                             row.SetField(this.ColumnNames.AddDate, this.dtpDateOfAccept.Value.Date);
                             row.SetField(this.ColumnNames.NumberOfPieces, Convert.ToInt32(this.mtbQuantity.Text.Trim().Replace(" ", "")));
                             if (this.chbExpDateReq.Checked) row.SetField(this.ColumnNames.ExpirenceDate, this.dtpExpirationDate.Value.Date);
@@ -564,6 +573,7 @@ namespace NaturalnieApp.Forms
             else this.pExpirationDate.Hide();
         }
         #endregion
+
 
     }
 }

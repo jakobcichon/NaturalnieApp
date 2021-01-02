@@ -76,6 +76,38 @@ namespace NaturalnieApp.Database
             return entity;
         }
 
+        //====================================================================================================
+        // Method used to update all product final prices
+        //====================================================================================================
+        public void UpdateAllFinalPrices(List<string> productNames)
+        {
+            try
+            {
+                foreach (string element in productNames)
+                {
+                    using (ShopContext contextDB = new ShopContext())
+                    {
+                        var query = from p in contextDB.Products
+                                    where p.ProductName == element
+                                    select p;
+                        Product product = query.FirstOrDefault();
+                        Tax tax = GetTaxByProductName(product.ProductName);
+                        product.FinalPrice = Convert.ToSingle(Calculations.FinalPrice(
+                            Convert.ToDouble(product.PriceNet), tax.TaxValue, Convert.ToDouble(product.Marigin)));
+
+                        EditProduct(product);
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
         ///====================================================================================================
         ///<summary> Method used calculate Product number in Elzab
         ///Formula was specified as ManufacturerId * 100 (taken first empty value)

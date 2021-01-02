@@ -126,36 +126,36 @@ namespace NaturalnieApp.Forms
                 dataFromExcel = ClearString(dataFromExcel, this.SupplierInvoice);
 
                 //Set data source on grid view
-                advancedDataGridView1.DataSource = dataFromExcel;
+                this.advancedDataGridView1.DataSource = dataFromExcel;
 
                 //Add mrigin and final price column to the grid
                 string HeaderText = this.MariginColumnName;
                 string Name = this.MariginColumnName;
-                advancedDataGridView1.Columns.Add(Name, HeaderText);
+                this.advancedDataGridView1.Columns.Add(Name, HeaderText);
                 HeaderText = this.FinalPriceColumnName;
                 Name = this.FinalPriceColumnName;
-                advancedDataGridView1.Columns.Add(Name, HeaderText);
+                this.advancedDataGridView1.Columns.Add(Name, HeaderText);
 
                 //Add default marigin value and calculate final price
-                foreach (DataGridViewRow row in advancedDataGridView1.Rows)
+                foreach (DataGridViewRow row in this.advancedDataGridView1.Rows)
                 {
                     //Get all necessary indexes
-                    int indexOfCurrentRow = advancedDataGridView1.Rows.IndexOf(row);
-                    int indexOfMariginColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.MariginColumnName].ColumnIndex;
-                    int indexOfFinalPriceColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.FinalPriceColumnName].ColumnIndex;
-                    int indexOfTaxColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.TaxColumnName].ColumnIndex;
-                    int indexOfPriceNetColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.PriceNetColumnName].ColumnIndex;
+                    int indexOfCurrentRow = this.advancedDataGridView1.Rows.IndexOf(row);
+                    int indexOfMariginColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.MariginColumnName].ColumnIndex;
+                    int indexOfFinalPriceColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.FinalPriceColumnName].ColumnIndex;
+                    int indexOfTaxColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.TaxColumnName].ColumnIndex;
+                    int indexOfPriceNetColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.PriceNetColumnName].ColumnIndex;
 
                     //Set amrigin to the default value
-                    advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = "30";
+                    this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = "30";
 
                     //Calculate final price
-                    double price = Convert.ToDouble(advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetColumn].Value);
-                    int tax = Convert.ToInt32(advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfTaxColumn].Value);
-                    int marigin = Convert.ToInt32(advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value);
+                    double price = Convert.ToDouble(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetColumn].Value);
+                    int tax = Convert.ToInt32(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfTaxColumn].Value);
+                    int marigin = Convert.ToInt32(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value);
                     double finalPrice = Calculations.FinalPrice(price, tax, marigin);
 
-                    advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfFinalPriceColumn].Value = finalPrice.ToString();
+                    this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfFinalPriceColumn].Value = finalPrice.ToString();
 
                 }
 
@@ -367,7 +367,7 @@ namespace NaturalnieApp.Forms
             List<DataGridViewRow> rowCollectionToRemoveFromList = new List<DataGridViewRow>();
 
             //Loop through all rows and add to the list only rows with check box set to true
-            foreach (DataGridViewRow row in advancedDataGridView1.Rows)
+            foreach (DataGridViewRow row in this.advancedDataGridView1.Rows)
             {
                 if (row.Cells[chckColumnName].Value != null)
                 {

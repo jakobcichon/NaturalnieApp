@@ -53,9 +53,12 @@ namespace NaturalnieApp
         {
             //Local variable
             double finalPrice;
+            double markup;
+
+            markup = 1 / (100 - marigin) * 100;
 
             //Calculate final price
-            finalPrice = priceNet * ((tax / 100.0) + 1.0) * ((marigin / 100.0) + 1.0);
+            finalPrice = priceNet * ((tax / 100.0) + 1.0) * (markup);
 
             //Round final price
             finalPrice = RoundPrice(finalPrice);
