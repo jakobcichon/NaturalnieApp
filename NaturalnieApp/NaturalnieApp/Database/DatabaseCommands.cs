@@ -134,7 +134,7 @@ namespace NaturalnieApp.Database
                             for (int i = 0; i < elzabProductIdList.Count(); i++)
                             {
                                 //Recalculate theoretical value of product at given index. If not match use it
-                                int theoVal = (manufaturer.Id * numberOfProductPerManufacturer) + i;
+                                int theoVal = firstElementId + elzabProductIdList.Count();
 
                                 //Check value and if not match, assign theoretical one
                                 if (elzabProductIdList[i] != theoVal)

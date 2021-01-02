@@ -127,52 +127,54 @@ namespace NaturalnieApp.Forms
 
                 //Set data source on grid view
                 advancedDataGridView1.DataSource = dataFromExcel;
+
+                //Add mrigin and final price column to the grid
+                string HeaderText = this.MariginColumnName;
+                string Name = this.MariginColumnName;
+                advancedDataGridView1.Columns.Add(Name, HeaderText);
+                HeaderText = this.FinalPriceColumnName;
+                Name = this.FinalPriceColumnName;
+                advancedDataGridView1.Columns.Add(Name, HeaderText);
+
+                //Add default marigin value and calculate final price
+                foreach (DataGridViewRow row in advancedDataGridView1.Rows)
+                {
+                    //Get all necessary indexes
+                    int indexOfCurrentRow = advancedDataGridView1.Rows.IndexOf(row);
+                    int indexOfMariginColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.MariginColumnName].ColumnIndex;
+                    int indexOfFinalPriceColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.FinalPriceColumnName].ColumnIndex;
+                    int indexOfTaxColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.TaxColumnName].ColumnIndex;
+                    int indexOfPriceNetColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.PriceNetColumnName].ColumnIndex;
+
+                    //Set amrigin to the default value
+                    advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = "30";
+
+                    //Calculate final price
+                    double price = Convert.ToDouble(advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetColumn].Value);
+                    int tax = Convert.ToInt32(advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfTaxColumn].Value);
+                    int marigin = Convert.ToInt32(advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value);
+                    double finalPrice = Calculations.FinalPrice(price, tax, marigin);
+
+                    advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfFinalPriceColumn].Value = finalPrice.ToString();
+
+                }
+
+                //Add checkbox to data grid
+                DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
+                advancedDataGridView1.Columns.Insert(0, chk);
+                chk.HeaderText = this.CheckBoxColumnName;
+                chk.Name = this.CheckBoxColumnName;
+                bDeselectAll.Visible = true;
+                bSelectAll.Visible = true;
+
+                advancedDataGridView1.Columns[1].CellTemplate.ValueType = Type.GetType("Int");
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
 
-            //Add mrigin and final price column to the grid
-            string HeaderText = this.MariginColumnName;
-            string Name = this.MariginColumnName;
-            advancedDataGridView1.Columns.Add(Name, HeaderText);
-            HeaderText = this.FinalPriceColumnName;
-            Name = this.FinalPriceColumnName;
-            advancedDataGridView1.Columns.Add(Name, HeaderText);
 
-            //Add default marigin value and calculate final price
-            foreach (DataGridViewRow row in advancedDataGridView1.Rows)
-            {
-                //Get all necessary indexes
-                int indexOfCurrentRow = advancedDataGridView1.Rows.IndexOf(row);
-                int indexOfMariginColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.MariginColumnName].ColumnIndex;
-                int indexOfFinalPriceColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.FinalPriceColumnName].ColumnIndex;
-                int indexOfTaxColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.TaxColumnName].ColumnIndex;
-                int indexOfPriceNetColumn = advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.PriceNetColumnName].ColumnIndex;
-
-                //Set amrigin to the default value
-                advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = "20";
-
-                //Calculate final price
-                double price = Convert.ToDouble(advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetColumn].Value);
-                int tax = Convert.ToInt32(advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfTaxColumn].Value);
-                int marigin = Convert.ToInt32(advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value);
-                double finalPrice = Calculations.FinalPrice(price, tax, marigin);
-
-                advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfFinalPriceColumn].Value = finalPrice.ToString();
-
-            }
-
-            //Add checkbox to data grid
-            DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
-            advancedDataGridView1.Columns.Insert(0, chk);
-            chk.HeaderText = this.CheckBoxColumnName;
-            chk.Name = this.CheckBoxColumnName;
-            bDeselectAll.Visible = true;
-            bSelectAll.Visible = true;
-
-            advancedDataGridView1.Columns[1].CellTemplate.ValueType = Type.GetType("Int");
             //Autosize columns
             advancedDataGridView1.AutoResizeColumns();
 
@@ -648,7 +650,11 @@ namespace NaturalnieApp.Forms
             }
 
         }
-    
+        private void bClose_Click(object sender, EventArgs e)
+        {
+            this.Parent.Show();
+            this.Dispose();
+        }
         #endregion
 
         #region Advanced Data Grid View Events
@@ -788,6 +794,7 @@ namespace NaturalnieApp.Forms
 
         }
         #endregion
+
 
     }
 }

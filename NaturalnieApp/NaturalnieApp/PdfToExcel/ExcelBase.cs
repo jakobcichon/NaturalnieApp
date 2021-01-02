@@ -82,7 +82,7 @@ namespace NaturalnieApp.PdfToExcel
             fullPath = Path.Combine(filePath, outFileName + ".xlsb");
 
             //Connection string
-            string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + fullPath + "';Extended Properties=\"Excel 12.0;HDR=YES\"";
+            string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + fullPath + "';Extended Properties=\"Excel 12.0;HDR=NO\"";
 
             //Create message box and show message box
             if (CreateExcelFileFromTemplate(template, connectionString))
@@ -101,15 +101,23 @@ namespace NaturalnieApp.PdfToExcel
             //Initialize data table from template
             foreach (string columnName in template.DataTableSchema_Excel.Values)
             {
-                //dataColumn.ColumnName = columnName;
-                //dataColumn.DataType = Type.GetType("System.String");
                 returnData.Columns.Add(columnName, typeof(String));
             }
 
             //Get data from excel for every sheet
             foreach (DataTable table in data)
             {
-                dataRowsFromFile.AddRange(ExtractDataFromExcel(template, table));
+                DataTable tempDataTable = table;
+                //Remove if any empty column
+                for (int i=0;i< tempDataTable.Columns.Count;i++)
+                {
+                    if (tempDataTable.Rows[0].ItemArray[i].ToString() == "")
+                    {
+                        tempDataTable.Columns.RemoveAt(i);
+                    }
+                }
+
+                dataRowsFromFile.AddRange(ExtractDataFromExcel(template, tempDataTable));
             }
 
             //Check if row contains empty filelds. 
@@ -200,7 +208,10 @@ namespace NaturalnieApp.PdfToExcel
         {
             //Local variables
             List<DataRow> returnList = new List<DataRow>();
-             
+
+            //Debug purpose. Get current row
+            DataRow debugRow = table.Rows[0];
+
             //Check if number of columns from excel match schema
             if (template.NumberOfColumns == table.Columns.Count)
             {
@@ -235,9 +246,8 @@ namespace NaturalnieApp.PdfToExcel
             }
             else
             {
-                MessageBox.Show(string.Format("Błąd! Niezgodna liczba kolumn! Oczekiwane: {0}, Aktualne:{1}", 
-                    template.DataTableSchema_Excel.Values.Count, 
-                    table.Columns.Count));
+                throw new FormatException(string.Format("Błąd! Niezgodna liczba kolumn! Oczekiwane: {0}, Aktualne:{1}",
+                    template.DataTableSchema_Excel.Values.Count, table.Columns.Count));
             }
 
             //Return

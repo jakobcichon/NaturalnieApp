@@ -39,6 +39,7 @@ namespace NaturalnieApp.Forms
             this.bDeselectAll = new System.Windows.Forms.Button();
             this.bSelectAll = new System.Windows.Forms.Button();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
+            this.bClose = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -64,7 +65,7 @@ namespace NaturalnieApp.Forms
             this.bSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSave.Location = new System.Drawing.Point(888, 510);
+            this.bSave.Location = new System.Drawing.Point(782, 510);
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(100, 50);
             this.bSave.TabIndex = 2;
@@ -77,7 +78,7 @@ namespace NaturalnieApp.Forms
             this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bUpdate.Location = new System.Drawing.Point(782, 510);
+            this.bUpdate.Location = new System.Drawing.Point(676, 510);
             this.bUpdate.Name = "bUpdate";
             this.bUpdate.Size = new System.Drawing.Size(100, 50);
             this.bUpdate.TabIndex = 3;
@@ -159,6 +160,20 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.Click += new System.EventHandler(this.advancedDataGridView1_Click);
             this.advancedDataGridView1.DoubleClick += new System.EventHandler(this.advancedDataGridView1_DoubleClick);
             // 
+            // bClose
+            // 
+            this.bClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bClose.Location = new System.Drawing.Point(888, 510);
+            this.bClose.Name = "bClose";
+            this.bClose.Size = new System.Drawing.Size(100, 50);
+            this.bClose.TabIndex = 11;
+            this.bClose.Text = "Zamknij";
+            this.bClose.UseMnemonic = false;
+            this.bClose.UseVisualStyleBackColor = false;
+            this.bClose.Click += new System.EventHandler(this.bClose_Click);
+            // 
             // AddNewProductFromExcel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -166,6 +181,7 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
+            this.Controls.Add(this.bClose);
             this.Controls.Add(this.advancedDataGridView1);
             this.Controls.Add(this.bSelectAll);
             this.Controls.Add(this.bDeselectAll);
@@ -195,5 +211,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bDeselectAll;
         private System.Windows.Forms.Button bSelectAll;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
+        private System.Windows.Forms.Button bClose;
     }
 }
