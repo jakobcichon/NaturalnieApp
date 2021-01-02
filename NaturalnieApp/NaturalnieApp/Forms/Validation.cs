@@ -244,6 +244,21 @@ namespace NaturalnieApp.Forms
             return validatingResult;
         }
 
+        //Method used to validate cash register number
+        static public bool ElzabProductNumberValidation(int input, int startNumber, int lastNumber)
+        {
+            //Local variables
+            bool validatingResult;
+            string text = "Dla podanego producenta, numer w kasie musi zawierać się między " + startNumber + "-" + lastNumber + "!";
+
+            if ((input < startNumber) || (input > lastNumber)) validatingResult = false;
+            else validatingResult = true;
+
+            if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
+
+            return validatingResult;
+        }
+
         //Method used to validate barcode EAN13
         static public bool BarcodeEan13Validation(string input)
         {

@@ -39,37 +39,36 @@ namespace NaturalnieApp
         #endregion
 
         /// <summary>
-        /// Method used to create EAN8 code from EAN13.
+        /// Method used to create EAN8. First 2 digits are the manufacturer id from DB.
+        /// Last 5 digits of EAN8 are product ID from cash register.
+        /// For date included it will be cleriefied later.
         /// </summary>
-        /// <param name="inputBarcode"></param>
+        /// <param name="manufacturerId">Manufacturer ID sotred in DB</param>
+        /// <param name="productId">PRoduct ID in cash register, taked from DB</param>
         /// <returns>Valid EAN8 code</returns>
         #region Barcode methods
-        public static string GenerateEan8FromEan13(string inputBarcode)
+        public static string GenerateEan8(int manufacturerId, int productId)
         {
             //Local variables
             string retVal = "";
-            string stringValue;
-            int numberOfDigits;
+            string stringValue = "";
 
-            //Check if given sring contains only digits
-            Regex regEx = new Regex(@"^[0-9]*$");
-            bool onlyDigits = regEx.IsMatch(inputBarcode);
-
-            //Check if length has 13 digits
-            numberOfDigits = inputBarcode.Count();
-
-            //Substring 7 last digits from original barcode series
-            if (onlyDigits && (numberOfDigits == 13))
+            if (manufacturerId >= 1 && manufacturerId <= 99)
             {
-                //Substring 7 digits from orginal barcode sries
-                stringValue = inputBarcode.Substring(5, 7);
-
-                //Calculate checksum digit and add it to new code
-                retVal = CalcucateChekcSumOfBarcode(stringValue);
+                if (productId >= 1 && productId <= 99999)
+                {
+                    stringValue = string.Format("{0,2}", manufacturerId.ToString()) + string.Format("{0,5}", productId.ToString());
+                    stringValue = stringValue.Replace(" ", "0");
+                    if (stringValue.Length == 7)
+                    {
+                        //Calculate checksum digit and add it to new code
+                        retVal = CalcucateChekcSumOfBarcode(stringValue);
+                    }
+                    else MessageBox.Show("Błąd! Wygenerowany kod EAN8 nie ma 7 znaków!");
+                }
+                else MessageBox.Show("Błąd! Identyfikator produkty jest spoza zakresu 1-99999!");
             }
-            else throw new WrongBarcodeSeries(string.Format("Nie można wygenerować EAN8 dla '{0}'. " +
-                "Dopuszczalny jest jedynie kod EAN13, który zawiera 13 znaków",
-                inputBarcode));
+            else MessageBox.Show("Błąd! Identyfikator producenta jest spoza zakresu 1-99!");
 
             return retVal;
         }

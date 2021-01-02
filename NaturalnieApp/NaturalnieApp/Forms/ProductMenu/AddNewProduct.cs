@@ -23,6 +23,7 @@ namespace NaturalnieApp.Forms
         DatabaseCommands databaseCommands;
         BackgroundWorker backgroundWorker1;
         backgroundWorkerTasks ActualTaskType;
+
         private Product ProductEntity { get; set; }
         private Supplier SupplierEntity { get; set; }
         private Manufacturer ManufacturerEntity { get; set; }
@@ -52,6 +53,9 @@ namespace NaturalnieApp.Forms
             this.ProductEntity = new Product();
             this.SupplierEntity = new Supplier();
             this.ManufacturerEntity = new Manufacturer();
+
+            //Disable Elzab product number. Manifacturer must be selected first
+            tbElzabProductNumber.Enabled = false;
 
         }
         #endregion
@@ -407,6 +411,39 @@ namespace NaturalnieApp.Forms
             ToolTip toolTip = new ToolTip();
             toolTip.SetToolTip(localSender, localSender.Text);
         }
+        private void cbManufacturer_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            //Cast the sender for an object
+            ComboBox localSender = (ComboBox)sender;
+
+            if (localSender.SelectedIndex >= 0)
+            {
+                try
+                {
+                    //Get manufacturer entity
+                    this.ManufacturerEntity = this.databaseCommands.GetManufacturerEntityByName(localSender.SelectedItem.ToString());
+
+                    //Enable text box
+                    this.lElzabProductNumberRange.Text = this.ManufacturerEntity.FirstNumberInCashRegister.ToString() +
+                        " - " + this.ManufacturerEntity.LastNumberInCashRegister.ToString();
+                    this.tbElzabProductNumber.Enabled = true;
+
+                    //If epmty assign first free value
+                    this.tbElzabProductNumber.Text =
+                        this.databaseCommands.CalculateFreeElzabIdForGivenManufacturer(this.ManufacturerEntity.Name).ToString();
+
+                    //Generate EAN8
+                    this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
+                        Convert.ToInt32(this.tbElzabProductNumber.Text));
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+        }
         #endregion
         //====================================================================================================
         //Product list events
@@ -448,6 +485,11 @@ namespace NaturalnieApp.Forms
             TextBox localSender = (TextBox)sender;
             ToolTip toolTip = new ToolTip();
             toolTip.SetToolTip(localSender, localSender.Text);
+        }
+        private void tbProductName_TextChanged(object sender, EventArgs e)
+        {
+            TextBox localSender = (TextBox)sender;
+            if (localSender.Text.Length <= 34) this.tbElzabProductName.Text = localSender.Text;
         }
         #endregion
         //====================================================================================================
@@ -503,9 +545,16 @@ namespace NaturalnieApp.Forms
             //Check if input match to define pattern
             try
             {
-                Validation.GeneralNumberValidation(localSender.Text);
+                int productNumber = Convert.ToInt32(localSender.Text);
+                Validation.ElzabProductNumberValidation(productNumber,
+                    this.ManufacturerEntity.FirstNumberInCashRegister,
+                    this.ManufacturerEntity.LastNumberInCashRegister);
                 this.ProductEntity.ElzabProductId = Convert.ToInt32(localSender.Text);
                 errorProvider1.Clear();
+
+                //Generate EAN8
+                this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
+                    Convert.ToInt32(this.tbElzabProductNumber.Text));
             }
             catch (Validation.ValidatingFailed ex)
             {
@@ -642,7 +691,8 @@ namespace NaturalnieApp.Forms
         #region Tax events
         private void cbTax_SelectionChangeCommited(object sender, EventArgs e)
         {
-            this.TaxEntity.TaxValue = int.Parse(this.cbTax.GetItemText(this.cbTax.SelectedItem).ToString().Replace("%", ""));
+            this.TaxEntity = this.databaseCommands.GetTaxEntityByValue(int.Parse(
+                this.cbTax.GetItemText(this.cbTax.SelectedItem).ToString().Replace("%", "")));
             //Update final price
             UpdateFinalPrice();
         }

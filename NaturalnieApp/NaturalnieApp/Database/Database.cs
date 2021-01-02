@@ -73,6 +73,9 @@ namespace NaturalnieApp.Database
         public int Id { get; set; }
         public string Name { get; set; }
         public string BarcodeEanPrefix { get; set; }
+        public int MaxNumberOfProducts { get; set; }
+        public int FirstNumberInCashRegister{ get; set; }
+        public int LastNumberInCashRegister { get; set; }
         public string Info { get; set; }
 
     }

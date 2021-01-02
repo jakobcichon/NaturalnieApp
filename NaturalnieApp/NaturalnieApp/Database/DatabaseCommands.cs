@@ -87,8 +87,6 @@ namespace NaturalnieApp.Database
             Manufacturer manufaturer;
             List<int> elzabProductIdList = new List<int>();
 
-            //Local settings
-            int numberOfProductPerManufacturer = 50;
 
             //Return value
             int retVal = -1;
@@ -105,9 +103,12 @@ namespace NaturalnieApp.Database
                 if (manufaturer != null)
                 {
 
+                    //Local settings
+                    int numberOfProductPerManufacturer = manufaturer.MaxNumberOfProducts;
+
                     //Calculate first Id for given manufacturer area
-                    int firstElementId = manufaturer.Id * numberOfProductPerManufacturer;
-                    int lastPossibleId = firstElementId + numberOfProductPerManufacturer - 1;
+                    int firstElementId = manufaturer.FirstNumberInCashRegister;
+                    int lastPossibleId = manufaturer.LastNumberInCashRegister;
 
                     var query2 = from p in contextDB.Products
                                  where p.ElzabProductId >= firstElementId && p.ElzabProductId < lastPossibleId
@@ -279,6 +280,23 @@ namespace NaturalnieApp.Database
             }
 
             return result;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Tax entity
+        //====================================================================================================
+        public Tax GetTaxEntityByValue(int value)
+        {
+            Tax localTax = new Tax();
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from t in contextDB.Tax
+                            where t.TaxValue == value
+                            select t;
+
+                localTax = query.SingleOrDefault();
+            }
+            return localTax;
         }
 
         //====================================================================================================
@@ -581,6 +599,23 @@ namespace NaturalnieApp.Database
             }
             return localProduct;
         }
+        //====================================================================================================
+        //Method used to retrieve from DB Manufacturer entity
+        //====================================================================================================
+        public Manufacturer GetManufacturerEntityByName(string manufacturerName)
+        {
+            Manufacturer localManufacturer = new Manufacturer();
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from m in contextDB.Manufacturers
+                            where m.Name == manufacturerName
+                            select m;
+
+                localManufacturer = query.SingleOrDefault();
+            }
+            return localManufacturer;
+        }
+
         //====================================================================================================
         //Method used to retrieve from DB Product entity
         //====================================================================================================

@@ -518,7 +518,6 @@ namespace NaturalnieApp.Forms
                         string rowBarcodeValue = row.Cells[this.BarcodeColumnName].Value.ToString();
                         string rowSupplierCodeValue = row.Cells[this.SupplierCodeColumnName].Value.ToString();
 
-
                         //If product name, barcode and supplier are unique, add it to DB
                         try
                         {
@@ -542,7 +541,7 @@ namespace NaturalnieApp.Forms
                                 product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
                                 product.Marigin = rowMariginValue;
                                 product.BarCode = rowBarcodeValue;
-                                product.BarCodeShort = BarcodeRelated.GenerateEan8FromEan13(rowBarcodeValue);
+                                product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, elzabProductFirstFreeId);
                                 product.ProductInfo = "Brak";
                                 product.FinalPrice = (float) Calculations.FinalPrice(Convert.ToDouble(rowPriceNetValue), rowTaxValue, Convert.ToDouble(rowMariginValue));
                                 if (rowSupplierCodeValue == "") product.SupplierCode = product.BarCode;

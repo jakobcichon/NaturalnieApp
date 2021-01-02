@@ -68,6 +68,8 @@ namespace NaturalnieApp.Forms
             this.tpElzabProductNumber = new System.Windows.Forms.TableLayoutPanel();
             this.tbElzabProductNumber = new System.Windows.Forms.TextBox();
             this.lElzabProductNumber = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lElzabProductNumberRange = new System.Windows.Forms.Label();
             this.tPMarigin = new System.Windows.Forms.TableLayoutPanel();
             this.lMarigin = new System.Windows.Forms.Label();
             this.tpPrice = new System.Windows.Forms.TableLayoutPanel();
@@ -227,6 +229,7 @@ namespace NaturalnieApp.Forms
             this.tbProductName.Name = "tbProductName";
             this.tbProductName.Size = new System.Drawing.Size(329, 70);
             this.tbProductName.TabIndex = 1;
+            this.tbProductName.TextChanged += new System.EventHandler(this.tbProductName_TextChanged);
             this.tbProductName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbProductName_KeyDown);
             this.tbProductName.MouseHover += new System.EventHandler(this.tbProductName_MouseHover);
             this.tbProductName.Validating += new System.ComponentModel.CancelEventHandler(this.tbProductName_Validating);
@@ -319,6 +322,7 @@ namespace NaturalnieApp.Forms
             this.cbManufacturer.Name = "cbManufacturer";
             this.cbManufacturer.Size = new System.Drawing.Size(345, 28);
             this.cbManufacturer.TabIndex = 2;
+            this.cbManufacturer.SelectionChangeCommitted += new System.EventHandler(this.cbManufacturer_SelectionChangeCommitted);
             this.cbManufacturer.Validating += new System.ComponentModel.CancelEventHandler(this.cbManufacturer_Validating);
             // 
             // lManufacturer
@@ -351,6 +355,7 @@ namespace NaturalnieApp.Forms
             // 
             // tbSupplierCode
             // 
+            this.tbSupplierCode.BackColor = System.Drawing.SystemColors.Info;
             this.tbSupplierCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.tbSupplierCode.Location = new System.Drawing.Point(217, 6);
             this.tbSupplierCode.Margin = new System.Windows.Forms.Padding(5);
@@ -393,6 +398,7 @@ namespace NaturalnieApp.Forms
             this.tbShortBarcode.Location = new System.Drawing.Point(217, 6);
             this.tbShortBarcode.Margin = new System.Windows.Forms.Padding(5);
             this.tbShortBarcode.Name = "tbShortBarcode";
+            this.tbShortBarcode.ReadOnly = true;
             this.tbShortBarcode.Size = new System.Drawing.Size(214, 26);
             this.tbShortBarcode.TabIndex = 0;
             this.tbShortBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbShortBarcode_KeyDown);
@@ -519,6 +525,7 @@ namespace NaturalnieApp.Forms
             // 
             // rtbProductInfo
             // 
+            this.rtbProductInfo.BackColor = System.Drawing.SystemColors.Info;
             this.rtbProductInfo.Location = new System.Drawing.Point(6, 47);
             this.rtbProductInfo.Margin = new System.Windows.Forms.Padding(5);
             this.rtbProductInfo.MaxLength = 1024;
@@ -573,14 +580,17 @@ namespace NaturalnieApp.Forms
             // 
             this.tpElzabProductNumber.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
             this.tpElzabProductNumber.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tpElzabProductNumber.ColumnCount = 2;
+            this.tpElzabProductNumber.ColumnCount = 3;
             this.tpElzabProductNumber.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 210F));
+            this.tpElzabProductNumber.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
             this.tpElzabProductNumber.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpElzabProductNumber.Controls.Add(this.tbElzabProductNumber, 0, 0);
             this.tpElzabProductNumber.Controls.Add(this.lElzabProductNumber, 0, 0);
+            this.tpElzabProductNumber.Controls.Add(this.label1, 0, 1);
+            this.tpElzabProductNumber.Controls.Add(this.lElzabProductNumberRange, 2, 0);
             this.tpElzabProductNumber.Location = new System.Drawing.Point(40, 200);
             this.tpElzabProductNumber.Name = "tpElzabProductNumber";
-            this.tpElzabProductNumber.RowCount = 1;
+            this.tpElzabProductNumber.RowCount = 2;
             this.tpElzabProductNumber.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpElzabProductNumber.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tpElzabProductNumber.Size = new System.Drawing.Size(450, 40);
@@ -592,7 +602,7 @@ namespace NaturalnieApp.Forms
             this.tbElzabProductNumber.Location = new System.Drawing.Point(217, 6);
             this.tbElzabProductNumber.Margin = new System.Windows.Forms.Padding(5);
             this.tbElzabProductNumber.Name = "tbElzabProductNumber";
-            this.tbElzabProductNumber.Size = new System.Drawing.Size(213, 26);
+            this.tbElzabProductNumber.Size = new System.Drawing.Size(100, 26);
             this.tbElzabProductNumber.TabIndex = 0;
             this.tbElzabProductNumber.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbElzabProductNumber_KeyDown);
             this.tbElzabProductNumber.Validating += new System.ComponentModel.CancelEventHandler(this.tbElzabProductNumber_Validating);
@@ -608,6 +618,26 @@ namespace NaturalnieApp.Forms
             this.lElzabProductNumber.TabIndex = 0;
             this.lElzabProductNumber.Text = "Nr produktu w kasie Elzab";
             this.lElzabProductNumber.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(4, 42);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(51, 20);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "label1";
+            // 
+            // lElzabProductNumberRange
+            // 
+            this.lElzabProductNumberRange.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lElzabProductNumberRange.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lElzabProductNumberRange.Location = new System.Drawing.Point(346, 1);
+            this.lElzabProductNumberRange.Name = "lElzabProductNumberRange";
+            this.lElzabProductNumberRange.Size = new System.Drawing.Size(101, 40);
+            this.lElzabProductNumberRange.TabIndex = 2;
+            this.lElzabProductNumberRange.Text = "0-0";
+            this.lElzabProductNumberRange.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tPMarigin
             // 
@@ -819,5 +849,7 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TableLayoutPanel tpProductName;
         private System.Windows.Forms.TextBox tbProductName;
         private System.Windows.Forms.Label lProductName;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lElzabProductNumberRange;
     }
 }
