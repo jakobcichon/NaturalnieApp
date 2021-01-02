@@ -93,6 +93,7 @@ namespace NaturalnieApp
             Regex regEx = new Regex(@"^[0-9]*$");
             bool onlyDigits = regEx.IsMatch(codeToCalculateFrom);
             int checksumValue = 0;
+            int checksumDigit = 0;
             bool multiple = true;
 
             //Check if length has 7 or 12 digits
@@ -123,7 +124,8 @@ namespace NaturalnieApp
 
                 //Made modulo annd check what is the checksum number
                 checksumValue %= 10;
-                checksumValue = 10 - checksumValue;
+                checksumDigit = 10 - checksumValue;
+                if (checksumDigit == 10) checksumDigit = 0;
 
                 retVal = (codeToCalculateFrom + checksumValue.ToString());
 

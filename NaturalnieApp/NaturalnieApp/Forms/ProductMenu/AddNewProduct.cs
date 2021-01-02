@@ -209,8 +209,8 @@ namespace NaturalnieApp.Forms
 
                 //Call eachh of validating method
                 cbSupplierName_Validating(this.cbSupplierName, EventArgs.Empty);
-                tbProductName_Validating(this.tbProductName, (CancelEventArgs) CancelEventArgs.Empty);
-                this.tbBarcode_Validating(this.tbBarcode, (CancelEventArgs) CancelEventArgs.Empty);
+                tbProductName_Validating(this.tbProductName, EventArgs.Empty);
+                tbBarcode_Validating(this.tbBarcode, EventArgs.Empty);
                 cbManufacturer_Validating(this.cbManufacturer, EventArgs.Empty);
                 tbElzabProductNumber_Validating(this.tbElzabProductNumber, EventArgs.Empty);
                 tbElzabProductName_Validating(this.tbElzabProductName, EventArgs.Empty);
@@ -309,8 +309,7 @@ namespace NaturalnieApp.Forms
             }
             else if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
             {
-                localControl.SelectNextControl(this, true, true, true, true);
-
+                this.SelectNextControl(this, true, true, true, true);
             }
         }
         #endregion
@@ -340,12 +339,17 @@ namespace NaturalnieApp.Forms
                     if (id > 0) this.ProductEntity.SupplierId = id;
                     else MessageBox.Show(String.Format("Podana nazwa dostawcy ({0}) nie istnieje w bazie danych!", this.cbSupplierName.Text.ToString().ToString()));
 
+                    //Get Id of given Manufacturer and add it to product
+                    id = this.databaseCommands.GetManufacturerIdByName(this.cbManufacturer.Text.ToString());
+                    if (id > 0) this.ProductEntity.ManufacturerId = id;
+                    else MessageBox.Show(String.Format("Podana nazwa dostawcy ({0}) nie istnieje w bazie danych!", this.cbManufacturer.Text.ToString().ToString()));
+
                     //Update Final price
                     this.ProductEntity.FinalPrice = Calculations.CalculateFinalPriceFromProduct(this.ProductEntity,
                         this.databaseCommands.GetTaxByProductName(this.ProductEntity.ProductName).TaxValue);
 
                     //Save current object to database
-                    this.databaseCommands.EditProduct(this.ProductEntity);
+                    this.databaseCommands.AddNewProduct(this.ProductEntity);
 
                     //Show message box
                     MessageBox.Show("Produkt '" + this.ProductEntity.ProductName + "' został zapisany!");
@@ -435,6 +439,7 @@ namespace NaturalnieApp.Forms
                     //Generate EAN8
                     this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
                         Convert.ToInt32(this.tbElzabProductNumber.Text));
+                    ;
 
                 }
                 catch (Exception ex)
@@ -447,19 +452,29 @@ namespace NaturalnieApp.Forms
         #endregion
         //====================================================================================================
         //Product list events
-        #region Product List
+        #region Product Name
         private void tbProductName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                //SelectNextControl((Control)sender, true, true, true, true);
             }
 
         }
-        private void tbProductName_Validating(object sender, CancelEventArgs e)
+        private void tbProductName_Validating(object sender, EventArgs e)
         {
             //Cast the sender for an object
             TextBox localSender = (TextBox)sender;
+
+            localSender.Text = localSender.Text.Replace("\n", "");
+            localSender.Text = localSender.Text.Replace("\r", "");
+            if(localSender.TextLength >= 1)
+            {
+                if (localSender.Text[localSender.TextLength - 1] == ' ')
+                {
+                    localSender.Text = localSender.Text.Remove(localSender.TextLength - 1, 1);
+                }
+            }
+
 
             //Check if input match to define pattern
             try
@@ -473,7 +488,6 @@ namespace NaturalnieApp.Forms
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
                 MessageBox.Show(ex.Message);
-                e.Cancel = true ;
             }
             catch (Exception ex)
             {
@@ -533,7 +547,7 @@ namespace NaturalnieApp.Forms
         {
             if (e.KeyCode == Keys.Enter)
             {
-                SelectNextControl((Control)sender, true, true, true, true);
+                this.SelectNextControl(this, true, true, true, true);
             }
 
         }
@@ -575,7 +589,7 @@ namespace NaturalnieApp.Forms
         {
             if (e.KeyCode == Keys.Enter)
             {
-                SelectNextControl((Control)sender, true, true, true, true);
+                this.SelectNextControl(this, true, true, true, true);
             }
 
         }
@@ -616,7 +630,7 @@ namespace NaturalnieApp.Forms
         {
             if (e.KeyCode == Keys.Enter)
             {
-                SelectNextControl((Control)sender, true, true, true, true);
+                this.SelectNextControl(this, true, true, true, true);
             }
 
         }
@@ -655,7 +669,7 @@ namespace NaturalnieApp.Forms
         {
             if (e.KeyCode == Keys.Enter)
             {
-                SelectNextControl((Control)sender, true, true, true, true);
+                this.SelectNextControl(this, true, true, true, true);
             }
 
         }
@@ -709,8 +723,7 @@ namespace NaturalnieApp.Forms
 
             if (e.KeyCode == Keys.Enter)
             {
-                SelectNextControl((Control)sender, true, true, true, true);
-
+                this.SelectNextControl(this, true, true, true, true);
             }
 
         }
@@ -746,8 +759,7 @@ namespace NaturalnieApp.Forms
 
             if (e.KeyCode == Keys.Enter)
             {
-                SelectNextControl((Control)sender, true, true, true, true);
-
+                this.SelectNextControl(this, true, true, true, true);
             }
 
         }
@@ -756,24 +768,26 @@ namespace NaturalnieApp.Forms
             //Cast the sender for an object
             TextBox localSender = (TextBox)sender;
 
-            //Check if input match to define pattern
-            try
+            if (localSender.TextLength > 0)
             {
-                Validation.SupplierCodeValidation(localSender.Text);
-                this.ProductEntity.SupplierCode = localSender.Text;
-                errorProvider1.Clear();
+                //Check if input match to define pattern
+                try
+                {
+                    Validation.SupplierCodeValidation(localSender.Text);
+                    this.ProductEntity.SupplierCode = localSender.Text;
+                    errorProvider1.Clear();
+                }
+                catch (Validation.ValidatingFailed ex)
+                {
+                    localSender.Text = "";
+                    errorProvider1.SetError(localSender, ex.Message);
+                    MessageBox.Show(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            catch (Validation.ValidatingFailed ex)
-            {
-                localSender.Text = "";
-                errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
         }
         #endregion
         //====================================================================================================
@@ -783,32 +797,36 @@ namespace NaturalnieApp.Forms
         {
             if (e.KeyCode == Keys.Enter)
             {
-                SelectNextControl((Control)sender, true, true, true, true);
+                this.SelectNextControl(this, true, true, true, true);
             }
 
         }
         private void rtbProductInfo_Validating(object sender, EventArgs e)
         {
             //Cast the sender for an object
-            TextBox localSender = (TextBox)sender;
+            RichTextBox localSender = (RichTextBox)sender;
 
-            //Check if input match to define pattern
-            try
+            if (localSender.TextLength >= 1)
             {
-                Validation.GeneralDescriptionValidation(localSender.Text);
-                this.ProductEntity.SupplierCode = localSender.Text;
-                errorProvider1.Clear();
+                //Check if input match to define pattern
+                try
+                {
+                    Validation.GeneralDescriptionValidation(localSender.Text);
+                    this.ProductEntity.SupplierCode = localSender.Text;
+                    errorProvider1.Clear();
+                }
+                catch (Validation.ValidatingFailed ex)
+                {
+                    localSender.Text = "";
+                    errorProvider1.SetError(localSender, ex.Message);
+                    MessageBox.Show(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            catch (Validation.ValidatingFailed ex)
-            {
-                localSender.Text = "";
-                errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+
         }
         #endregion
         //====================================================================================================
@@ -818,12 +836,10 @@ namespace NaturalnieApp.Forms
         {
             if (e.KeyCode == Keys.Enter)
             {
-                SelectNextControl((Control)sender, true, true, true, true);
-               
+                this.SelectNextControl(this, true, true, true, true);
             }
         }
-
-        private void tbBarcode_Validating(object sender, CancelEventArgs e)
+        private void tbBarcode_Validating(object sender, EventArgs e)
         {
             //Cast the sender for an object
             TextBox localSender = (TextBox)sender;
@@ -840,7 +856,6 @@ namespace NaturalnieApp.Forms
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
                 MessageBox.Show(ex.Message);
-                if (localSender.Text == "") e.Cancel = true;
             }
             catch (Exception ex)
             {

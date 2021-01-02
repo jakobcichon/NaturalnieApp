@@ -218,7 +218,7 @@ namespace NaturalnieApp.Forms
             this.tpProductName.RowCount = 1;
             this.tpProductName.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpProductName.Size = new System.Drawing.Size(450, 80);
-            this.tpProductName.TabIndex = 12;
+            this.tpProductName.TabIndex = 2;
             // 
             // tbProductName
             // 
@@ -228,7 +228,7 @@ namespace NaturalnieApp.Forms
             this.tbProductName.Multiline = true;
             this.tbProductName.Name = "tbProductName";
             this.tbProductName.Size = new System.Drawing.Size(329, 70);
-            this.tbProductName.TabIndex = 1;
+            this.tbProductName.TabIndex = 0;
             this.tbProductName.TextChanged += new System.EventHandler(this.tbProductName_TextChanged);
             this.tbProductName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbProductName_KeyDown);
             this.tbProductName.MouseHover += new System.EventHandler(this.tbProductName_MouseHover);
@@ -260,7 +260,7 @@ namespace NaturalnieApp.Forms
             this.tpSupplierName.RowCount = 1;
             this.tpSupplierName.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpSupplierName.Size = new System.Drawing.Size(450, 40);
-            this.tpSupplierName.TabIndex = 11;
+            this.tpSupplierName.TabIndex = 1;
             // 
             // cbSupplierName
             // 
@@ -277,7 +277,7 @@ namespace NaturalnieApp.Forms
             this.cbSupplierName.Margin = new System.Windows.Forms.Padding(5);
             this.cbSupplierName.Name = "cbSupplierName";
             this.cbSupplierName.Size = new System.Drawing.Size(350, 28);
-            this.cbSupplierName.TabIndex = 1;
+            this.cbSupplierName.TabIndex = 0;
             this.cbSupplierName.Validating += new System.ComponentModel.CancelEventHandler(this.cbSupplierName_Validating);
             // 
             // lSupplierName
@@ -306,7 +306,7 @@ namespace NaturalnieApp.Forms
             this.tpManufacturer.RowCount = 1;
             this.tpManufacturer.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpManufacturer.Size = new System.Drawing.Size(450, 40);
-            this.tpManufacturer.TabIndex = 10;
+            this.tpManufacturer.TabIndex = 0;
             // 
             // cbManufacturer
             // 
@@ -321,7 +321,7 @@ namespace NaturalnieApp.Forms
             this.cbManufacturer.Margin = new System.Windows.Forms.Padding(5);
             this.cbManufacturer.Name = "cbManufacturer";
             this.cbManufacturer.Size = new System.Drawing.Size(345, 28);
-            this.cbManufacturer.TabIndex = 2;
+            this.cbManufacturer.TabIndex = 0;
             this.cbManufacturer.SelectionChangeCommitted += new System.EventHandler(this.cbManufacturer_SelectionChangeCommitted);
             this.cbManufacturer.Validating += new System.ComponentModel.CancelEventHandler(this.cbManufacturer_Validating);
             // 
@@ -351,7 +351,7 @@ namespace NaturalnieApp.Forms
             this.tpSupplierCode.RowCount = 1;
             this.tpSupplierCode.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpSupplierCode.Size = new System.Drawing.Size(450, 40);
-            this.tpSupplierCode.TabIndex = 8;
+            this.tpSupplierCode.TabIndex = 11;
             // 
             // tbSupplierCode
             // 
@@ -390,10 +390,11 @@ namespace NaturalnieApp.Forms
             this.tpShortBarcode.RowCount = 1;
             this.tpShortBarcode.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpShortBarcode.Size = new System.Drawing.Size(450, 40);
-            this.tpShortBarcode.TabIndex = 7;
+            this.tpShortBarcode.TabIndex = 10;
             // 
             // tbShortBarcode
             // 
+            this.tbShortBarcode.CausesValidation = false;
             this.tbShortBarcode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.tbShortBarcode.Location = new System.Drawing.Point(217, 6);
             this.tbShortBarcode.Margin = new System.Windows.Forms.Padding(5);
@@ -429,7 +430,7 @@ namespace NaturalnieApp.Forms
             this.tpFinalPrice.RowCount = 1;
             this.tpFinalPrice.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpFinalPrice.Size = new System.Drawing.Size(450, 40);
-            this.tpFinalPrice.TabIndex = 6;
+            this.tpFinalPrice.TabIndex = 9;
             // 
             // tbFinalPrice
             // 
@@ -468,7 +469,7 @@ namespace NaturalnieApp.Forms
             this.tpElzabProductName.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpElzabProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tpElzabProductName.Size = new System.Drawing.Size(450, 40);
-            this.tpElzabProductName.TabIndex = 2;
+            this.tpElzabProductName.TabIndex = 5;
             // 
             // tbElzabProductName
             // 
@@ -509,7 +510,7 @@ namespace NaturalnieApp.Forms
             this.pProductInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.pProductInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.pProductInfo.Size = new System.Drawing.Size(450, 220);
-            this.pProductInfo.TabIndex = 9;
+            this.pProductInfo.TabIndex = 12;
             // 
             // lProductInfo
             // 
@@ -551,7 +552,7 @@ namespace NaturalnieApp.Forms
             this.tpBarcode.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpBarcode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tpBarcode.Size = new System.Drawing.Size(450, 40);
-            this.tpBarcode.TabIndex = 0;
+            this.tpBarcode.TabIndex = 3;
             // 
             // tbBarcode
             // 
@@ -560,7 +561,7 @@ namespace NaturalnieApp.Forms
             this.tbBarcode.Margin = new System.Windows.Forms.Padding(5);
             this.tbBarcode.Name = "tbBarcode";
             this.tbBarcode.Size = new System.Drawing.Size(214, 26);
-            this.tbBarcode.TabIndex = 1;
+            this.tbBarcode.TabIndex = 0;
             this.tbBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbBarcode_KeyDown);
             this.tbBarcode.Validating += new System.ComponentModel.CancelEventHandler(this.tbBarcode_Validating);
             // 
@@ -594,7 +595,7 @@ namespace NaturalnieApp.Forms
             this.tpElzabProductNumber.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpElzabProductNumber.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tpElzabProductNumber.Size = new System.Drawing.Size(450, 40);
-            this.tpElzabProductNumber.TabIndex = 1;
+            this.tpElzabProductNumber.TabIndex = 4;
             // 
             // tbElzabProductNumber
             // 
@@ -653,7 +654,7 @@ namespace NaturalnieApp.Forms
             this.tPMarigin.RowCount = 1;
             this.tPMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tPMarigin.Size = new System.Drawing.Size(450, 40);
-            this.tPMarigin.TabIndex = 5;
+            this.tPMarigin.TabIndex = 8;
             // 
             // lMarigin
             // 
@@ -681,7 +682,7 @@ namespace NaturalnieApp.Forms
             this.tpPrice.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpPrice.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tpPrice.Size = new System.Drawing.Size(450, 40);
-            this.tpPrice.TabIndex = 3;
+            this.tpPrice.TabIndex = 6;
             // 
             // lPrice
             // 
@@ -710,7 +711,7 @@ namespace NaturalnieApp.Forms
             this.tpTax.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpTax.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tpTax.Size = new System.Drawing.Size(450, 40);
-            this.tpTax.TabIndex = 4;
+            this.tpTax.TabIndex = 7;
             // 
             // lTax
             // 
