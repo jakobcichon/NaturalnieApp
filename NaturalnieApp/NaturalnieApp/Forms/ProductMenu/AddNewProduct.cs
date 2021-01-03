@@ -345,14 +345,20 @@ namespace NaturalnieApp.Forms
                     else MessageBox.Show(String.Format("Podana nazwa dostawcy ({0}) nie istnieje w bazie danych!", this.cbManufacturer.Text.ToString().ToString()));
 
                     //Update Final price
-                    this.ProductEntity.FinalPrice = Calculations.CalculateFinalPriceFromProduct(this.ProductEntity,
-                        this.databaseCommands.GetTaxByProductName(this.ProductEntity.ProductName).TaxValue);
+                    UpdateFinalPrice();
+
+                    //If supplier field or info field empty, fill it
+                    if (tbSupplierCode.Text == "") this.ProductEntity.SupplierCode = this.ProductEntity.BarCode;
+                    if (rtbProductInfo.Text == "") this.ProductEntity.ProductInfo = "Brak";
 
                     //Save current object to database
                     this.databaseCommands.AddNewProduct(this.ProductEntity);
 
                     //Show message box
                     MessageBox.Show("Produkt '" + this.ProductEntity.ProductName + "' został zapisany!");
+
+                    //Call update event
+                    bUpdate_Click(sender, e);
                 }
                 catch (Exception ex)
                 {
@@ -360,8 +366,6 @@ namespace NaturalnieApp.Forms
                 }
             }
 
-            //Call update event
-            bUpdate_Click(sender, e);
         }
         private void bUpdate_Click(object sender, EventArgs e)
         {

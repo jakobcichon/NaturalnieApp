@@ -292,7 +292,6 @@ namespace NaturalnieApp.Forms
             // cbProductList
             // 
             this.cbProductList.Dock = System.Windows.Forms.DockStyle.Left;
-            this.cbProductList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbProductList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.cbProductList.FormattingEnabled = true;
             this.cbProductList.ImeMode = System.Windows.Forms.ImeMode.Off;

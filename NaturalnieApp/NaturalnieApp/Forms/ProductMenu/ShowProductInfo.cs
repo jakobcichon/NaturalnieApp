@@ -385,6 +385,9 @@ namespace NaturalnieApp.Forms
                     //Save current object to database
                     this.databaseCommands.EditProduct(this.ProductEntity);
 
+                    //Add current name as selected name (In case of changing name)
+                    this.SelectedProductName = this.ProductEntity.ProductName;
+
                     //Show message box
                     MessageBox.Show("Produkt '" + this.ProductEntity.ProductName + "' został zapisany!");
                 }
@@ -499,7 +502,26 @@ namespace NaturalnieApp.Forms
         }
         private void cbProductList_Validating(object sender, EventArgs e)
         {
-           
+            //Cast the sender for an object
+            ComboBox localSender = (ComboBox)sender;
+
+            //Check if input match to define pattern
+            try
+            {
+                Validation.ProductNameValidation(localSender.Text);
+                this.ProductEntity.ProductName = localSender.Text;
+                errorProvider1.Clear();
+            }
+            catch (Validation.ValidatingFailed ex)
+            {
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, ex.Message);
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         private void cbProductList_MouseHover(object sender, EventArgs e)
         {
