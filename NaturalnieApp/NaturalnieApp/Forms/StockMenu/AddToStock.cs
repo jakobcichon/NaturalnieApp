@@ -524,7 +524,7 @@ namespace NaturalnieApp.Forms
                     try
                     {
                         //Add product to local stock variable
-                        stockPiece.ProductId = this.databaseCommands.GetProductEntityByProductName(element.Field<string>(this.ColumnNames.ProductName)).ElzabProductId;
+                        stockPiece.ProductId = this.databaseCommands.GetProductIdByName(element.Field<string>(this.ColumnNames.ProductName));
                         stockPiece.ActualQuantity = element.Field<int>(this.ColumnNames.NumberOfPieces);
                         stockPiece.ModificationDate = element.Field<DateTime>(this.ColumnNames.AddDate).Date;
                         DateTime expirenceDate = element.Field<DateTime>(this.ColumnNames.ExpirenceDate);
