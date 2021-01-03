@@ -547,7 +547,6 @@ namespace NaturalnieApp.Forms
                                 Product product = new Product();
                                 product.SupplierId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
                                 product.ElzabProductId = elzabProductFirstFreeId;
-                                product.Id = elzabProductFirstFreeId;
                                 product.ManufacturerId = this.databaseCommands.GetManufacturerIdByName(rowManufacturerNameValue);
                                 product.ProductName = rowProductNameValue;
                                 product.ElzabProductName = rowElzabProductNameValue;
