@@ -265,6 +265,7 @@ namespace NaturalnieApp
                 this.timer.Stop();
                 this.Ready = true;
                 this.Valid = false;
+                this.TemporaryBarcodeValue = "";
             }
 
             private void CallBarcodeValidEvent(bool ready, bool valid, string barcode)

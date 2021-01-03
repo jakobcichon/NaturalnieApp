@@ -66,6 +66,9 @@ namespace NaturalnieApp.Forms
             this.dtpExpirationDate = new System.Windows.Forms.DateTimePicker();
             this.lExpirationDate = new System.Windows.Forms.Label();
             this.pSpare4 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.tbFinalPrice = new System.Windows.Forms.TextBox();
+            this.lFinalPrice = new System.Windows.Forms.Label();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -100,6 +103,7 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.AllowUserToAddRows = false;
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.advancedDataGridView1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView1.FilterAndSortEnabled = true;
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 150);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
@@ -116,6 +120,7 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.Name = "pButtonsPanel";
             this.pButtonsPanel.Size = new System.Drawing.Size(1000, 70);
             this.pButtonsPanel.TabIndex = 4;
+            this.pButtonsPanel.Click += new System.EventHandler(this.pButtonsPanel_Click);
             // 
             // bPrint
             // 
@@ -225,7 +230,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 558F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 559F));
             this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -273,7 +278,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 348F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 349F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -540,6 +545,36 @@ namespace NaturalnieApp.Forms
             this.pSpare4.Size = new System.Drawing.Size(298, 10);
             this.pSpare4.TabIndex = 0;
             // 
+            // panel2
+            // 
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(700, 362);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(300, 20);
+            this.panel2.TabIndex = 26;
+            // 
+            // tbFinalPrice
+            // 
+            this.tbFinalPrice.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.tbFinalPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbFinalPrice.Location = new System.Drawing.Point(877, 388);
+            this.tbFinalPrice.Margin = new System.Windows.Forms.Padding(5);
+            this.tbFinalPrice.Name = "tbFinalPrice";
+            this.tbFinalPrice.ReadOnly = true;
+            this.tbFinalPrice.Size = new System.Drawing.Size(123, 26);
+            this.tbFinalPrice.TabIndex = 27;
+            // 
+            // lFinalPrice
+            // 
+            this.lFinalPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lFinalPrice.Location = new System.Drawing.Point(701, 386);
+            this.lFinalPrice.Margin = new System.Windows.Forms.Padding(5);
+            this.lFinalPrice.Name = "lFinalPrice";
+            this.lFinalPrice.Size = new System.Drawing.Size(166, 30);
+            this.lFinalPrice.TabIndex = 28;
+            this.lFinalPrice.Text = "Cena klienta";
+            this.lFinalPrice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // AddToStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -547,6 +582,9 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
+            this.Controls.Add(this.lFinalPrice);
+            this.Controls.Add(this.tbFinalPrice);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.pExpirationDate);
             this.Controls.Add(this.pGap3);
             this.Controls.Add(this.pExpDateReq);
@@ -565,6 +603,7 @@ namespace NaturalnieApp.Forms
             this.Name = "AddToStock";
             this.Text = "PrintBarcode";
             this.Load += new System.EventHandler(this.AddToStock_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.AddToStock_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddToStock_KeyDown);
             this.pHeader.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
@@ -579,6 +618,7 @@ namespace NaturalnieApp.Forms
             this.pExpDateReq.ResumeLayout(false);
             this.pExpirationDate.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -620,5 +660,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lExpirationDate;
         private System.Windows.Forms.Panel pSpare4;
         private System.Windows.Forms.Button bPrint;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.TextBox tbFinalPrice;
+        private System.Windows.Forms.Label lFinalPrice;
     }
 }

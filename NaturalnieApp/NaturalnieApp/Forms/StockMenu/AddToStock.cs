@@ -303,13 +303,18 @@ namespace NaturalnieApp.Forms
 
             if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
             {
-                localControl.SelectNextControl(this, true, true, true, true);
+                this.SelectNextControl(this, true, true, true, true);
+
             }
             else if (e.KeyCode == Keys.Escape)
             {
                 localControl.SelectNextControl(this, true, true, true, true);
             }
-          
+
+        }
+        private void AddToStock_Paint(object sender, PaintEventArgs e)
+        {
+            this.SelectNextControl(this, true, true, true, true);
         }
         private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
         {
@@ -325,6 +330,7 @@ namespace NaturalnieApp.Forms
                     this.cbBarcodes_SelectionChangeCommitted(this.cbBarcodes, EventArgs.Empty);
                 }
                 else MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych");
+
             }
 
             //Set variable informing Bar code read corrected
@@ -416,6 +422,7 @@ namespace NaturalnieApp.Forms
                 manufacturerName = this.databaseCommands.GetManufacturerByProductName(productName).Name;
                 FindTextInComboBoxAndSelect(ref cbManufacturers, manufacturerName);
                 FindTextInComboBoxAndSelect(ref cbProductsList, productName);
+                tbFinalPrice.Text = string.Format("{0:0.00}", this.databaseCommands.GetProductEntityByBarcode(localSender.SelectedItem.ToString()).FinalPrice);
             }
             catch (Exception ex)
             {
@@ -579,7 +586,14 @@ namespace NaturalnieApp.Forms
             if (localSender.Checked) this.pExpirationDate.Show();
             else this.pExpirationDate.Hide();
         }
+
         #endregion
+
+        private void pButtonsPanel_Click(object sender, EventArgs e)
+        {
+            this.ActiveControl = (Control)sender;
+            advancedDataGridView1.SelectNextControl(this.pButtonsPanel, true, true, true, true);
+        }
 
 
     }

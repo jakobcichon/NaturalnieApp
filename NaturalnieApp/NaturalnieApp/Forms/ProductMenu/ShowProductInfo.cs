@@ -352,6 +352,10 @@ namespace NaturalnieApp.Forms
                 localControl.SelectNextControl(this, true, true, true, true);
             }
         }
+        private void ShowProductInfo_Paint(object sender, PaintEventArgs e)
+        {
+            this.SelectNextControl(this, true, true, true, true);
+        }
         #endregion
         //====================================================================================================
         //Buttons events

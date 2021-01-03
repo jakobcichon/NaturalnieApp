@@ -27,12 +27,12 @@ namespace NaturalnieApp.Forms
         int yOffset = 0;
 
         //Forms instances
-        AddNewProductFromExcel addNewProductFromExcel { get; set; }
-        PrintBarcode printBarcode { get; set; }
-        ShowProductInfo showProductInfo { get; set; }
-        AddNewProduct addNewProduct { get; set; }
-        AddToStock addToStock { get; set; }
-        AddManufacturer addManufacturer { get; set; }
+        public AddNewProductFromExcel addNewProductFromExcel { get; set; }
+        public PrintBarcode printBarcode { get; set; }
+        public ShowProductInfo showProductInfo { get; set; }
+        public AddNewProduct addNewProduct { get; set; }
+        public AddToStock addToStock { get; set; }
+        public AddManufacturer addManufacturer { get; set; }
 
 
         //Creat EF databse connection object
@@ -197,6 +197,7 @@ namespace NaturalnieApp.Forms
                 this.showProductInfo.Show();
                 this.showProductInfo.BringToFront();
                 this.showProductInfo.Activate();
+
             }
             catch (ObjectDisposedException)
             {
@@ -267,7 +268,6 @@ namespace NaturalnieApp.Forms
                 this.addToStock.Show();
                 this.addToStock.BringToFront();
                 this.addToStock.Activate();
-                this.addToStock.Focus();
             }
             catch (ObjectDisposedException)
             {
@@ -276,7 +276,6 @@ namespace NaturalnieApp.Forms
                 this.addToStock.Show();
                 this.addToStock.BringToFront();
                 this.addToStock.Activate();
-                this.addToStock.Focus();
             }
 
         }
