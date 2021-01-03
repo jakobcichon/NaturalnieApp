@@ -71,6 +71,8 @@ namespace NaturalnieApp.Forms
             this.lFinalPrice = new System.Windows.Forms.Label();
             this.tbActualQuantity = new System.Windows.Forms.TextBox();
             this.lActualQuantity = new System.Windows.Forms.Label();
+            this.cbAddWithEveryScanCycle = new System.Windows.Forms.CheckBox();
+            this.lAddWithEveryScanCycle = new System.Windows.Forms.Label();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -598,6 +600,28 @@ namespace NaturalnieApp.Forms
             this.lActualQuantity.Text = "Aktualna ilość";
             this.lActualQuantity.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // cbAddWithEveryScanCycle
+            // 
+            this.cbAddWithEveryScanCycle.BackColor = System.Drawing.Color.White;
+            this.cbAddWithEveryScanCycle.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbAddWithEveryScanCycle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbAddWithEveryScanCycle.Location = new System.Drawing.Point(950, 458);
+            this.cbAddWithEveryScanCycle.Name = "cbAddWithEveryScanCycle";
+            this.cbAddWithEveryScanCycle.Size = new System.Drawing.Size(50, 25);
+            this.cbAddWithEveryScanCycle.TabIndex = 3;
+            this.cbAddWithEveryScanCycle.UseVisualStyleBackColor = false;
+            // 
+            // lAddWithEveryScanCycle
+            // 
+            this.lAddWithEveryScanCycle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.lAddWithEveryScanCycle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lAddWithEveryScanCycle.Location = new System.Drawing.Point(706, 458);
+            this.lAddWithEveryScanCycle.Name = "lAddWithEveryScanCycle";
+            this.lAddWithEveryScanCycle.Size = new System.Drawing.Size(238, 26);
+            this.lAddWithEveryScanCycle.TabIndex = 31;
+            this.lAddWithEveryScanCycle.Text = "Dodaj produkt przy odczycie";
+            this.lAddWithEveryScanCycle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // AddToStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -605,6 +629,8 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
+            this.Controls.Add(this.lAddWithEveryScanCycle);
+            this.Controls.Add(this.cbAddWithEveryScanCycle);
             this.Controls.Add(this.lActualQuantity);
             this.Controls.Add(this.tbActualQuantity);
             this.Controls.Add(this.lFinalPrice);
@@ -690,5 +716,7 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lFinalPrice;
         private System.Windows.Forms.TextBox tbActualQuantity;
         private System.Windows.Forms.Label lActualQuantity;
+        private System.Windows.Forms.CheckBox cbAddWithEveryScanCycle;
+        private System.Windows.Forms.Label lAddWithEveryScanCycle;
     }
 }
