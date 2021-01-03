@@ -863,6 +863,28 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to get stock entity from product ID
+        //====================================================================================================
+        public int GetStockQuantity(int productId)
+        {
+            int quantity = 0;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from s in contextDB.Stock
+                            where s.ProductId == productId
+                            select s;
+
+                foreach (Stock element in query)
+                {
+                    quantity += element.ActualQuantity;
+                }
+
+            }
+            return quantity;
+        }
+
+        //====================================================================================================
         //Method used to check if specified product already exist in stock
         //====================================================================================================
         public bool CheckIfProductExistInStock(Stock stockProduct)

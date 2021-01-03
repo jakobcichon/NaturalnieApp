@@ -69,6 +69,8 @@ namespace NaturalnieApp.Forms
             this.panel2 = new System.Windows.Forms.Panel();
             this.tbFinalPrice = new System.Windows.Forms.TextBox();
             this.lFinalPrice = new System.Windows.Forms.Label();
+            this.tbActualQuantity = new System.Windows.Forms.TextBox();
+            this.lActualQuantity = new System.Windows.Forms.Label();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -574,6 +576,28 @@ namespace NaturalnieApp.Forms
             this.lFinalPrice.Text = "Cena klienta";
             this.lFinalPrice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // tbActualQuantity
+            // 
+            this.tbActualQuantity.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.tbActualQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbActualQuantity.Location = new System.Drawing.Point(877, 424);
+            this.tbActualQuantity.Margin = new System.Windows.Forms.Padding(5);
+            this.tbActualQuantity.Name = "tbActualQuantity";
+            this.tbActualQuantity.ReadOnly = true;
+            this.tbActualQuantity.Size = new System.Drawing.Size(123, 26);
+            this.tbActualQuantity.TabIndex = 29;
+            // 
+            // lActualQuantity
+            // 
+            this.lActualQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lActualQuantity.Location = new System.Drawing.Point(701, 422);
+            this.lActualQuantity.Margin = new System.Windows.Forms.Padding(5);
+            this.lActualQuantity.Name = "lActualQuantity";
+            this.lActualQuantity.Size = new System.Drawing.Size(166, 30);
+            this.lActualQuantity.TabIndex = 30;
+            this.lActualQuantity.Text = "Aktualna ilość";
+            this.lActualQuantity.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // AddToStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -581,6 +605,8 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
+            this.Controls.Add(this.lActualQuantity);
+            this.Controls.Add(this.tbActualQuantity);
             this.Controls.Add(this.lFinalPrice);
             this.Controls.Add(this.tbFinalPrice);
             this.Controls.Add(this.panel2);
@@ -662,5 +688,7 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TextBox tbFinalPrice;
         private System.Windows.Forms.Label lFinalPrice;
+        private System.Windows.Forms.TextBox tbActualQuantity;
+        private System.Windows.Forms.Label lActualQuantity;
     }
 }

@@ -423,6 +423,8 @@ namespace NaturalnieApp.Forms
                 FindTextInComboBoxAndSelect(ref cbManufacturers, manufacturerName);
                 FindTextInComboBoxAndSelect(ref cbProductsList, productName);
                 tbFinalPrice.Text = string.Format("{0:0.00}", this.databaseCommands.GetProductEntityByBarcode(localSender.SelectedItem.ToString()).FinalPrice);
+                tbActualQuantity.Text = this.databaseCommands.GetStockQuantity(
+                    this.databaseCommands.GetProductIdByName(productName)).ToString();
             }
             catch (Exception ex)
             {
