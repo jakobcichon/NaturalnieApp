@@ -589,12 +589,6 @@ namespace NaturalnieApp.Forms
 
         #endregion
 
-        private void pButtonsPanel_Click(object sender, EventArgs e)
-        {
-            this.ActiveControl = (Control)sender;
-            advancedDataGridView1.SelectNextControl(this.pButtonsPanel, true, true, true, true);
-        }
-
 
     }
 }

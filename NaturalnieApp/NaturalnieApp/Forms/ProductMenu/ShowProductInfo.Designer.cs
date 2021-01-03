@@ -32,8 +32,6 @@ namespace NaturalnieApp.Forms
             this.components = new System.ComponentModel.Container();
             this.pHeader = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.bSave = new System.Windows.Forms.Button();
-            this.bUpdate = new System.Windows.Forms.Button();
             this.tbPrice = new System.Windows.Forms.TextBox();
             this.tbMarigin = new System.Windows.Forms.TextBox();
             this.cbTax = new System.Windows.Forms.ComboBox();
@@ -76,7 +74,10 @@ namespace NaturalnieApp.Forms
             this.tpTax = new System.Windows.Forms.TableLayoutPanel();
             this.lTax = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.pButtonsPanel = new System.Windows.Forms.Panel();
+            this.bSave = new System.Windows.Forms.Button();
             this.bClose = new System.Windows.Forms.Button();
+            this.bUpdate = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
             this.pManufacturer.SuspendLayout();
             this.gbProductSelection.SuspendLayout();
@@ -94,6 +95,7 @@ namespace NaturalnieApp.Forms
             this.tpPrice.SuspendLayout();
             this.tpTax.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            this.pButtonsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // pHeader
@@ -103,7 +105,7 @@ namespace NaturalnieApp.Forms
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
             this.pHeader.Size = new System.Drawing.Size(1000, 30);
-            this.pHeader.TabIndex = 1;
+            this.pHeader.TabIndex = 0;
             // 
             // panel1
             // 
@@ -111,32 +113,6 @@ namespace NaturalnieApp.Forms
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(200, 100);
             this.panel1.TabIndex = 0;
-            // 
-            // bSave
-            // 
-            this.bSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSave.Location = new System.Drawing.Point(782, 508);
-            this.bSave.Name = "bSave";
-            this.bSave.Size = new System.Drawing.Size(100, 50);
-            this.bSave.TabIndex = 3;
-            this.bSave.Text = "Zapisz";
-            this.bSave.UseVisualStyleBackColor = false;
-            this.bSave.Click += new System.EventHandler(this.bSave_Click);
-            // 
-            // bUpdate
-            // 
-            this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bUpdate.Location = new System.Drawing.Point(676, 508);
-            this.bUpdate.Name = "bUpdate";
-            this.bUpdate.Size = new System.Drawing.Size(100, 50);
-            this.bUpdate.TabIndex = 2;
-            this.bUpdate.Text = "Odśwież";
-            this.bUpdate.UseVisualStyleBackColor = false;
-            this.bUpdate.Click += new System.EventHandler(this.bUpdate_Click);
             // 
             // tbPrice
             // 
@@ -184,7 +160,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 373F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 376F));
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.Controls.Add(this.cbManufacturer, 0, 1);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -240,7 +216,7 @@ namespace NaturalnieApp.Forms
             this.gbProductSelection.Location = new System.Drawing.Point(0, 30);
             this.gbProductSelection.Name = "gbProductSelection";
             this.gbProductSelection.Size = new System.Drawing.Size(1000, 120);
-            this.gbProductSelection.TabIndex = 0;
+            this.gbProductSelection.TabIndex = 1;
             this.gbProductSelection.TabStop = false;
             this.gbProductSelection.Text = "Wybór produktu";
             // 
@@ -300,7 +276,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 583F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 586F));
             this.pProductName.Controls.Add(this.cbProductList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -360,8 +336,8 @@ namespace NaturalnieApp.Forms
             this.gbProductInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.gbProductInfo.Location = new System.Drawing.Point(0, 150);
             this.gbProductInfo.Name = "gbProductInfo";
-            this.gbProductInfo.Size = new System.Drawing.Size(1000, 350);
-            this.gbProductInfo.TabIndex = 1;
+            this.gbProductInfo.Size = new System.Drawing.Size(1000, 346);
+            this.gbProductInfo.TabIndex = 2;
             this.gbProductInfo.TabStop = false;
             this.gbProductInfo.Text = "Dane produktu";
             // 
@@ -736,19 +712,56 @@ namespace NaturalnieApp.Forms
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // pButtonsPanel
+            // 
+            this.pButtonsPanel.Controls.Add(this.bUpdate);
+            this.pButtonsPanel.Controls.Add(this.bSave);
+            this.pButtonsPanel.Controls.Add(this.bClose);
+            this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pButtonsPanel.Location = new System.Drawing.Point(0, 500);
+            this.pButtonsPanel.Name = "pButtonsPanel";
+            this.pButtonsPanel.Size = new System.Drawing.Size(1000, 70);
+            this.pButtonsPanel.TabIndex = 5;
+            // 
+            // bSave
+            // 
+            this.bSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bSave.Location = new System.Drawing.Point(782, 10);
+            this.bSave.Name = "bSave";
+            this.bSave.Size = new System.Drawing.Size(100, 50);
+            this.bSave.TabIndex = 26;
+            this.bSave.Text = "Zapisz";
+            this.bSave.UseVisualStyleBackColor = false;
+            this.bSave.Click += new System.EventHandler(this.bSave_Click);
+            // 
             // bClose
             // 
             this.bClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bClose.Location = new System.Drawing.Point(888, 508);
+            this.bClose.Location = new System.Drawing.Point(888, 10);
             this.bClose.Name = "bClose";
             this.bClose.Size = new System.Drawing.Size(100, 50);
-            this.bClose.TabIndex = 4;
+            this.bClose.TabIndex = 6;
             this.bClose.Text = "Zamknij";
             this.bClose.UseMnemonic = false;
             this.bClose.UseVisualStyleBackColor = false;
             this.bClose.Click += new System.EventHandler(this.bClose_Click);
+            // 
+            // bUpdate
+            // 
+            this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bUpdate.Location = new System.Drawing.Point(676, 10);
+            this.bUpdate.Name = "bUpdate";
+            this.bUpdate.Size = new System.Drawing.Size(100, 50);
+            this.bUpdate.TabIndex = 27;
+            this.bUpdate.Text = "Odśwież";
+            this.bUpdate.UseVisualStyleBackColor = false;
+            this.bUpdate.Click += new System.EventHandler(this.bUpdate_Click);
             // 
             // ShowProductInfo
             // 
@@ -757,11 +770,9 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
-            this.Controls.Add(this.bClose);
+            this.Controls.Add(this.pButtonsPanel);
             this.Controls.Add(this.gbProductInfo);
             this.Controls.Add(this.gbProductSelection);
-            this.Controls.Add(this.bUpdate);
-            this.Controls.Add(this.bSave);
             this.Controls.Add(this.pHeader);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Enabled = false;
@@ -796,14 +807,13 @@ namespace NaturalnieApp.Forms
             this.tpPrice.PerformLayout();
             this.tpTax.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            this.pButtonsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.Panel pHeader;
-        private System.Windows.Forms.Button bSave;
-        private System.Windows.Forms.Button bUpdate;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox tbPrice;
         private System.Windows.Forms.TextBox tbMarigin;
@@ -847,6 +857,9 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TextBox tbShortBarcode;
         private System.Windows.Forms.Label lShortBarcode;
         private System.Windows.Forms.ComboBox cbBarcodes;
+        private System.Windows.Forms.Panel pButtonsPanel;
+        private System.Windows.Forms.Button bUpdate;
+        private System.Windows.Forms.Button bSave;
         private System.Windows.Forms.Button bClose;
     }
 }

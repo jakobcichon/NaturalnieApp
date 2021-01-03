@@ -333,12 +333,6 @@ namespace NaturalnieApp.Forms
         {
             Control localControl = (Control)sender;
 
-            if (e.KeyCode == Keys.Escape)
-            {
-                errorProvider1.Clear();
-                localControl.Controls.Remove(this.ActiveControl);
-            }
-
             this.BarcodeValidEventGenerated = false;
             this.BarcodeReader.CheckIfBarcodeFromReader(e.KeyCode);
 
@@ -350,6 +344,7 @@ namespace NaturalnieApp.Forms
             else if (e.KeyCode == Keys.Escape)
             {
                 localControl.SelectNextControl(this, true, true, true, true);
+                errorProvider1.Clear();
             }
         }
         private void ShowProductInfo_Paint(object sender, PaintEventArgs e)
