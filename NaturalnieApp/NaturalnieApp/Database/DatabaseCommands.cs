@@ -853,7 +853,8 @@ namespace NaturalnieApp.Database
             using (ShopContext contextDB = new ShopContext())
             {
                 var query = from s in contextDB.Stock
-                            where s.ExpirationDate == stockProduct.ExpirationDate &&
+                            where s.ProductId == stockProduct.ProductId &&
+                            s.ExpirationDate == stockProduct.ExpirationDate &&
                             s.BarcodeWithDate == stockProduct.BarcodeWithDate
                             select s;
 
