@@ -25,7 +25,7 @@ namespace NaturalnieApp.PdfToExcel
             this._Properties.StartStringDefineColumnNames = true;
             this._Properties.LastEntity = Properties.LastEntityMark.RowWithLastNumericValueInFirstColumn;
             this._Properties.NumberOfRowByEntity = 2;
-            this.NumberOfColumns = 8;
+            this.NumberOfColumns = 9;
 
 
             //Barcode and supplier code can be used alternately, but use one of it is mandatory
@@ -35,6 +35,7 @@ namespace NaturalnieApp.PdfToExcel
                 {ColumnsAttributes.SupplierName, "Dostawca"},
                 {ColumnsAttributes.ManufacturerName, "Producent"},
                 {ColumnsAttributes.ProductName, "Nazwa towaru"},
+                {ColumnsAttributes.ElzabProductName, "Nazwa towaru Elzab"},
                 {ColumnsAttributes.Barcode_EAN13, "Kod kreskowy"},
                 {ColumnsAttributes.SupplierCode, "Kod dostawcy"},
                 {ColumnsAttributes.PriceNet, "Cena netto"},

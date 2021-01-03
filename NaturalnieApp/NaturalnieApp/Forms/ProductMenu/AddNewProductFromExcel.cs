@@ -115,20 +115,27 @@ namespace NaturalnieApp.Forms
                 dataFromExcel = this.SupplierInvoice.ExtractEntities(this.SupplierInvoice, excelData);
 
                 //Add additional columns
-
-                //Insert column with Elzab name (max 34 signs)
-                DataColumn column = new DataColumn(this.ElzabProductColumnName, typeof(String));
-                dataFromExcel.Columns.Add(column);
-                dataFromExcel.Columns[this.ElzabProductColumnName].SetOrdinal(dataFromExcel.Columns[this.ProductColumnName].Ordinal + 1);
+                if (dataFromExcel.Columns.IndexOf(this.ElzabProductColumnName) == -1)
+                {
+                    //Insert column with Elzab name (max 34 signs)
+                    DataColumn column = new DataColumn(this.ElzabProductColumnName, typeof(String));
+                    dataFromExcel.Columns.Add(column);
+                    dataFromExcel.Columns[this.ElzabProductColumnName].SetOrdinal(dataFromExcel.Columns[this.ProductColumnName].Ordinal + 1);
+                }
 
                 //Copy product name to the column with name of product in Elzab
                 foreach (DataRow row in dataFromExcel.Rows)
                 {
+
                     int indexOfDesireRow = dataFromExcel.Rows.IndexOf(row);
-                    string rowValue;
-                    if (row.Field<string>(this.ProductColumnName).Count() <= 34) rowValue = row.Field<string>(this.ProductColumnName);
-                    else rowValue = row.Field<string>(this.ProductColumnName).Substring(0,34);
-                    dataFromExcel.Rows[indexOfDesireRow].SetField(this.ElzabProductColumnName, rowValue);
+                    string rowValue = row.Field<string>(this.ElzabProductColumnName);
+                    if (rowValue == "")
+                    {
+                        if (row.Field<string>(this.ProductColumnName).Count() <= 34) rowValue = row.Field<string>(this.ProductColumnName);
+                        else rowValue = row.Field<string>(this.ProductColumnName).Substring(0, 34);
+                        dataFromExcel.Rows[indexOfDesireRow].SetField(this.ElzabProductColumnName, rowValue);
+                    }
+
 
                 }
 
@@ -159,7 +166,7 @@ namespace NaturalnieApp.Forms
                     int indexOfPriceNetColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.PriceNetColumnName].ColumnIndex;
 
                     //Set amrigin to the default value
-                    this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = "30";
+                    this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = "29";
 
                     //Calculate final price
                     double price = Convert.ToDouble(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetColumn].Value);
