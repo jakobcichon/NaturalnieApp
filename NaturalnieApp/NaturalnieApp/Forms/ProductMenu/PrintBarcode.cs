@@ -381,8 +381,8 @@ namespace NaturalnieApp.Forms
             ComboBox localSender = (ComboBox)sender;
 
             //Local variables
-            string manufacturerName = "";
-            string barcode = "";
+            string manufacturerName;
+            string barcode;
 
             //Get selected entity
             try
@@ -391,9 +391,6 @@ namespace NaturalnieApp.Forms
                 barcode = this.databaseCommands.GetProductEntityByProductName(localSender.SelectedItem.ToString()).BarCode;
                 FindTextInComboBoxAndSelect(ref cbManufacturers, manufacturerName);
                 FindTextInComboBoxAndSelect(ref cbBarcodes, barcode);
-
-                this.ActiveControl = this.bAdd;
-
             }
             catch (Exception ex)
             {
@@ -411,8 +408,8 @@ namespace NaturalnieApp.Forms
             ComboBox localSender = (ComboBox)sender;
 
             //Local variables
-            string manufacturerName = "";
-            string productName = "";
+            string manufacturerName;
+            string productName;
 
             //Get selected entity
             try
@@ -421,9 +418,6 @@ namespace NaturalnieApp.Forms
                 manufacturerName = this.databaseCommands.GetManufacturerByProductName(productName).Name;
                 FindTextInComboBoxAndSelect(ref cbManufacturers, manufacturerName);
                 FindTextInComboBoxAndSelect(ref cbProductsList, productName);
-
-                this.ActiveControl = this.bAdd;
-
             }
             catch (Exception ex)
             {
@@ -499,6 +493,9 @@ namespace NaturalnieApp.Forms
             {
                 MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
             }
+
+            //Select next control
+            this.SelectNextControl(this, true, true, true, true);
         }
         private void bPrint_Click(object sender, EventArgs e)
         {
@@ -552,7 +549,6 @@ namespace NaturalnieApp.Forms
             }
 
         }
-
         private void bClose_Click(object sender, EventArgs e)
         {
 
@@ -560,7 +556,6 @@ namespace NaturalnieApp.Forms
             this.Dispose();
             ;
         }
-
         #endregion
 
 

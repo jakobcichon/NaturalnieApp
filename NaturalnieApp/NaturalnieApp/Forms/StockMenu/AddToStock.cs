@@ -311,7 +311,6 @@ namespace NaturalnieApp.Forms
             }
           
         }
-
         private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
         {
 
@@ -381,8 +380,8 @@ namespace NaturalnieApp.Forms
             ComboBox localSender = (ComboBox)sender;
 
             //Local variables
-            string manufacturerName = "";
-            string barcode = "";
+            string manufacturerName;
+            string barcode;
 
             //Get selected entity
             try
@@ -433,69 +432,67 @@ namespace NaturalnieApp.Forms
             //Local variables
             Product entity;
 
-            if(true)
+            if (cbBarcodes.SelectedItem != null && cbProductsList.SelectedItem != null)
             {
-                if (cbBarcodes.SelectedItem != null && cbProductsList.SelectedItem != null)
+                try
                 {
-                    try
+                    //Get product entity from DB
+                    entity = this.databaseCommands.GetProductEntityByProductName(cbProductsList.SelectedItem.ToString());
+
+                    //Index of existing row
+                    int indexOfExistingRow = -1;
+                    bool productAlreadyOnTheList = false;
+
+                    //Check if product already exist on list
+                    foreach (DataRow rowElement in this.DataSoruce.Rows)
                     {
-                        //Get product entity from DB
-                        entity = this.databaseCommands.GetProductEntityByProductName(cbProductsList.SelectedItem.ToString());
-
-                        //Index of existing row
-                        int indexOfExistingRow = -1;
-                        bool productAlreadyOnTheList = false;
-
-                        //Check if product already exist on list
-                        foreach (DataRow rowElement in this.DataSoruce.Rows)
+                        string productName = rowElement.Field<string>(this.ColumnNames.ProductName);
+                        if (productName.Contains(entity.ProductName))
                         {
-                            string productName = rowElement.Field<string>(this.ColumnNames.ProductName);
-                            if (productName.Contains(entity.ProductName))
-                            {
-                                indexOfExistingRow = this.DataSoruce.Rows.IndexOf(rowElement);
-                                productAlreadyOnTheList = true;
-                                break;
-                            }
+                            indexOfExistingRow = this.DataSoruce.Rows.IndexOf(rowElement);
+                            productAlreadyOnTheList = true;
+                            break;
                         }
-
-                        //Increment number of copies if product already exist on the list
-                        if (productAlreadyOnTheList)
-                        {
-                            this.DataSoruce.Rows[indexOfExistingRow].SetField(this.ColumnNames.NumberOfPieces,
-                                this.DataSoruce.Rows[indexOfExistingRow].Field<Int32>(this.ColumnNames.NumberOfPieces) + 1);
-                        }
-                        else
-                        {
-                            //New data row type
-                            DataRow row;
-                            row = this.DataSoruce.NewRow();
-
-                            //Set requred fields
-                            row.SetField(this.ColumnNames.ProductName, entity.ProductName);
-                            row.SetField(this.ColumnNames.AddDate, this.dtpDateOfAccept.Value.Date);
-                            row.SetField(this.ColumnNames.NumberOfPieces, Convert.ToInt32(this.mtbQuantity.Text.Trim().Replace(" ", "")));
-                            if (this.chbExpDateReq.Checked) row.SetField(this.ColumnNames.ExpirenceDate, this.dtpExpirationDate.Value.Date);
-                            else row.SetField(this.ColumnNames.ExpirenceDate, DateTime.MinValue);
-
-                            //Assign values to the proper rows
-                            this.DataSoruce.Rows.Add(row);
-
-                        }
-
-                        //AutoResize Columns
-                        advancedDataGridView1.AutoResizeColumns();
                     }
-                    catch (Exception ex)
+
+                    //Increment number of copies if product already exist on the list
+                    if (productAlreadyOnTheList)
                     {
-                        MessageBox.Show(ex.Message);
+                        this.DataSoruce.Rows[indexOfExistingRow].SetField(this.ColumnNames.NumberOfPieces,
+                            this.DataSoruce.Rows[indexOfExistingRow].Field<Int32>(this.ColumnNames.NumberOfPieces) + 1);
                     }
+                    else
+                    {
+                        //New data row type
+                        DataRow row;
+                        row = this.DataSoruce.NewRow();
+
+                        //Set requred fields
+                        row.SetField(this.ColumnNames.ProductName, entity.ProductName);
+                        row.SetField(this.ColumnNames.AddDate, this.dtpDateOfAccept.Value.Date);
+                        row.SetField(this.ColumnNames.NumberOfPieces, Convert.ToInt32(this.mtbQuantity.Text.Trim().Replace(" ", "")));
+                        if (this.chbExpDateReq.Checked) row.SetField(this.ColumnNames.ExpirenceDate, this.dtpExpirationDate.Value.Date);
+                        else row.SetField(this.ColumnNames.ExpirenceDate, DateTime.MinValue);
+
+                        //Assign values to the proper rows
+                        this.DataSoruce.Rows.Add(row);
+
+                    }
+
+                    //AutoResize Columns
+                    advancedDataGridView1.AutoResizeColumns();
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
+                    MessageBox.Show(ex.Message);
                 }
             }
+            else
+            {
+                MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
+            }
 
+            //Select next control
             this.SelectNextControl(this, true, true, true, true);
         }
 
@@ -527,7 +524,7 @@ namespace NaturalnieApp.Forms
                     try
                     {
                         //Add product to local stock variable
-                        stockPiece.ProductId = this.databaseCommands.GetProductIdByName(element.Field<string>(this.ColumnNames.ProductName));
+                        stockPiece.ProductId = this.databaseCommands.GetProductEntityByProductName(element.Field<string>(this.ColumnNames.ProductName)).ElzabProductId;
                         stockPiece.ActualQuantity = element.Field<int>(this.ColumnNames.NumberOfPieces);
                         stockPiece.ModificationDate = element.Field<DateTime>(this.ColumnNames.AddDate).Date;
                         DateTime expirenceDate = element.Field<DateTime>(this.ColumnNames.ExpirenceDate);

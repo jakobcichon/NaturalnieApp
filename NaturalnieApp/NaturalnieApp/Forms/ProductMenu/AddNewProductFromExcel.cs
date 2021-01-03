@@ -36,7 +36,7 @@ namespace NaturalnieApp.Forms
         string BarcodeColumnName { get; set; }
         string SupplierCodeColumnName { get; set; }
         string IndexColumnName { get; set; }
-
+        DataTable DataFromExcel { get; set; }
         string LastExcelFilePath { get; set; }
         AddProduct_General SupplierInvoice { get; set; }
 
@@ -50,6 +50,8 @@ namespace NaturalnieApp.Forms
         public AddNewProductFromExcel(ref DatabaseCommands commandsObj)
         {
             InitializeComponent();
+
+            this.DataFromExcel = new DataTable();
 
             this.SupplierInvoice = new AddProduct_General();
             
@@ -86,16 +88,23 @@ namespace NaturalnieApp.Forms
 
             //Initialization of last cell clicked variable
             this.LastCellCliked = new[] { 0 , 0 };
+
+            //Initialize advanced data grid view
+            InitializeAdvancedDataGridView();
         }
         #endregion
 
         #region General methods
+        private void InitializeAdvancedDataGridView()
+        {
+
+        }
         //Method used to read data from excel from the specified path
         //Method return List of data table, where one list element contains one sheet data from excel file
         private void ReadExcel(string filePath)
         {
             //Local variables
-            DataTable dataFromExcel = new DataTable();
+            DataTable dataFromExcel;
 
             try
             {
@@ -124,14 +133,17 @@ namespace NaturalnieApp.Forms
                 }
 
                 dataFromExcel = ClearString(dataFromExcel, this.SupplierInvoice);
+                this.DataFromExcel = dataFromExcel.Copy();
+                dataFromExcel.Dispose();
 
                 //Set data source on grid view
-                this.advancedDataGridView1.DataSource = dataFromExcel;
+                this.advancedDataGridView1.DataSource = this.DataFromExcel;
 
                 //Add mrigin and final price column to the grid
                 string HeaderText = this.MariginColumnName;
                 string Name = this.MariginColumnName;
                 this.advancedDataGridView1.Columns.Add(Name, HeaderText);
+
                 HeaderText = this.FinalPriceColumnName;
                 Name = this.FinalPriceColumnName;
                 this.advancedDataGridView1.Columns.Add(Name, HeaderText);
@@ -174,11 +186,9 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show(ex.Message);
             }
 
-
+            advancedDataGridView1.Update();
             //Autosize columns
             advancedDataGridView1.AutoResizeColumns();
-
-            dataFromExcel.Dispose();
         }
 
         /// <summary>
@@ -537,6 +547,7 @@ namespace NaturalnieApp.Forms
                                 Product product = new Product();
                                 product.SupplierId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
                                 product.ElzabProductId = elzabProductFirstFreeId;
+                                product.Id = elzabProductFirstFreeId;
                                 product.ManufacturerId = this.databaseCommands.GetManufacturerIdByName(rowManufacturerNameValue);
                                 product.ProductName = rowProductNameValue;
                                 product.ElzabProductName = rowElzabProductNameValue;

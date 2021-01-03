@@ -235,7 +235,7 @@ namespace NaturalnieApp.Dymo_Printer
         {
             //Get printer list
             this.PrinterDevices = DymoPrinter.Instance.GetPrinters().ToList();
-            if (this.PrinterDevices.Count > 0) this.SelectedPrinter = this.PrinterDevices[0];
+            if (this.PrinterDevices.Count > 0 && this.PrinterDevices[0].IsConnected) this.SelectedPrinter = this.PrinterDevices[0];
             else throw new NoPrinterToSelect("No available Dymo printer to select! Connect printer and try again!");
         }
     }
