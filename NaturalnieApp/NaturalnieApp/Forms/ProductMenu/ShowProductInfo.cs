@@ -303,8 +303,17 @@ namespace NaturalnieApp.Forms
 
             if (e.Ready && e.Valid)
             {
+                string barcodeToSearch;
+                //If short barcode try to get full barcode
+                if (e.RecognizedBarcodeValue.Length == 8)
+                {
+                    barcodeToSearch = this.databaseCommands.GetEAN13FromShortBarcode(e.RecognizedBarcodeValue);
+                    if (barcodeToSearch == "" || barcodeToSearch == null) barcodeToSearch = e.RecognizedBarcodeValue;
+                }
+                else barcodeToSearch = e.RecognizedBarcodeValue;
+
                 //Get index
-                int index = this.cbBarcodes.Items.IndexOf(e.RecognizedBarcodeValue);
+                int index = this.cbBarcodes.Items.IndexOf(barcodeToSearch);
                 if (index >= 0) 
                 {
                     this.cbBarcodes.SelectedIndex = index;

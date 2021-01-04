@@ -126,11 +126,10 @@ namespace NaturalnieApp
                 }
 
                 //Made modulo annd check what is the checksum number
-                checksumValue %= 10;
-                checksumDigit = 10 - checksumValue;
+                checksumDigit = 10 - (checksumValue % 10);
                 if (checksumDigit == 10) checksumDigit = 0;
 
-                retVal = (codeToCalculateFrom + checksumValue.ToString());
+                retVal = (codeToCalculateFrom + checksumDigit.ToString());
 
             }
             else throw new WrongBarcodeSeries(string.Format("Nie można wyliczyć cyfry kontrolnej dla '{0}'. " +

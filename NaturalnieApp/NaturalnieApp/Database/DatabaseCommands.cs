@@ -386,7 +386,15 @@ namespace NaturalnieApp.Database
             {
                 foreach (var product in contextDB.Products)
                 {
-                    barcodeList.Add(product.BarCode);
+                    if (product.BarCode == "")
+                    {
+                        barcodeList.Add(product.BarCodeShort);
+                    }
+                    else 
+                    {
+                        barcodeList.Add(product.BarCode);
+                    }
+
                 }
             }
             return barcodeList;
@@ -675,6 +683,44 @@ namespace NaturalnieApp.Database
             }
             return localProduct;
         }
+
+        //====================================================================================================
+        //Method used to retrieve from DB eAN13 barcode from internal EAN8 code
+        //====================================================================================================
+        public string GetEAN13FromShortBarcode(string shortBarcode)
+        {
+            string localProduct;
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from p in contextDB.Products
+                            where p.BarCodeShort == shortBarcode
+                            select p.BarCode;
+
+                localProduct = query.SingleOrDefault();
+            }
+            return localProduct;
+        }
+
+        //====================================================================================================
+        //Method used recalculate all short barcodes from DB
+        //====================================================================================================
+        public void RecalculateAllShortBarcodes()
+        {
+            Product localProduct;
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from p in contextDB.Products
+                            select p;
+
+                foreach (Product element in query)
+                {
+                    localProduct = element;
+                    localProduct.BarCodeShort = BarcodeRelated.GenerateEan8(element.ManufacturerId, element.ElzabProductId);
+                    EditProduct(localProduct);
+                }
+            }
+        }
+
         //====================================================================================================
         //Method used to retrieve from DB Manufacturer entity
         //====================================================================================================

@@ -26,7 +26,7 @@ namespace NaturalnieApp
         /// 
         [STAThread]
         static void Main()
-        {
+        { 
 
             //Read data from config file 
             ConfigFileObject ConfigFileInst = new ConfigFileObject();

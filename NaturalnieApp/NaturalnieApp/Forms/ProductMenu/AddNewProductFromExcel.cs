@@ -425,9 +425,16 @@ namespace NaturalnieApp.Forms
                         Validation.SupplierNameValidation(row.Cells[this.SupplierColumnName].Value.ToString());
                         Validation.ManufacturerNameValidation(row.Cells[this.ManufacturerColumnName].Value.ToString());
 
-                        //Check if given code is full barcode or oly product code without manufacturer prefix
-                        barcodeCheckedVal = GetBarcodePrefixAndCreateFullBarcode(row.Cells[this.ManufacturerColumnName].Value.ToString(),
-                            row.Cells[this.BarcodeColumnName].Value.ToString());
+                        if (row.Cells[this.BarcodeColumnName].Value.ToString() != "")
+                        {
+                            //Check if given code is full barcode or oly product code without manufacturer prefix
+                            barcodeCheckedVal = GetBarcodePrefixAndCreateFullBarcode(row.Cells[this.ManufacturerColumnName].Value.ToString(),
+                                row.Cells[this.BarcodeColumnName].Value.ToString());
+                        }
+                        else
+                        {
+                            barcodeCheckedVal = "";
+                        }
 
                         //Validate every entry 
                         Validation.SupplierNameValidation(row.Cells[this.SupplierColumnName].Value.ToString());
@@ -437,7 +444,7 @@ namespace NaturalnieApp.Forms
                         Validation.MariginValueValidation(row.Cells[this.MariginColumnName].Value.ToString());
                         Validation.PriceNetValueValidation(row.Cells[this.PriceNetColumnName].Value.ToString());
                         Validation.TaxValueValidation(row.Cells[this.TaxColumnName].Value.ToString());
-                        Validation.BarcodeEan13Validation(barcodeCheckedVal);
+                        if (barcodeCheckedVal != "") Validation.BarcodeEan13Validation(barcodeCheckedVal);
                         row.Cells[this.BarcodeColumnName].Value = barcodeCheckedVal;
 
                         //Set validated bit
