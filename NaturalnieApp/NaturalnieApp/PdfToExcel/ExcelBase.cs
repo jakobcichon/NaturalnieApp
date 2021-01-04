@@ -259,10 +259,6 @@ namespace NaturalnieApp.PdfToExcel
         static private void CreateExcelFileFromData(string path, string[] columns)
         {
 
-            //Local variable
-            string fullPath;
-
-
             //Connection string
             string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + path + "';Extended Properties=\"Excel 12.0;HDR=NO\"";
 
