@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Timers;
 using System.Windows.Forms;
+using System.IO;
+using System.Data.OleDb;
 
 namespace NaturalnieApp
 {
@@ -312,5 +314,23 @@ namespace NaturalnieApp
 
         }
 
+        /// <summary>
+        /// Structure used to describe column names for inventory data export
+        /// </summary>
+        public struct InventoryExportColumnNames
+        {
+            public string No { get; set; }
+            public string ManufacturerName { get; set; }
+            public string ProductName { get; set; }
+            public string ProductBarcode { get; set; }
+            public string PriceNet { get; set; }
+            public string Tax { get; set; }
+            public string FinalPrice { get; set; }
+            public string ProductQunatity { get; set; }
+            public string ProductValue { get; set; }
+        }
     }
+
+   
+
 }

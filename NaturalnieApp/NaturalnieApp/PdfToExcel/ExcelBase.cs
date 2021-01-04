@@ -91,7 +91,6 @@ namespace NaturalnieApp.PdfToExcel
             }
 
         }
-
         public DataTable ExtractEntities(IExcel template, List<DataTable> data)
         {
             //LocalVariables
@@ -256,6 +255,60 @@ namespace NaturalnieApp.PdfToExcel
         }
 
         //Method used to create excel file from template
+        static private bool CreateExcelFileFromData(string connectionString, string[] columns)
+        {
+
+            //Local variable
+            bool retValue = false;
+
+            //Create connection
+            OleDbConnection connection = new OleDbConnection();
+
+            try
+            {
+                //Connection string
+                connection.ConnectionString = connectionString;
+                connection.Open();
+                OleDbCommand cmd = connection.CreateCommand();
+
+                //Create command for create columns
+                string columnNames = "";
+                foreach (string element in columns)
+                {
+                    columnNames += "[" + element + "]" + " string, ";
+                }
+
+                //Remove last space and coma from command
+                columnNames = columnNames.Remove(columnNames.Length - 2, 2);
+
+                //Create command string
+                cmd.CommandText = string.Format("CREATE TABLE [Sheet1] ({0})", columnNames);
+
+                //Execute query
+                cmd.ExecuteNonQuery();
+
+                //Set return value
+                retValue = true;
+
+            }
+            catch (OleDbException oleDbEx)
+            {
+                MessageBox.Show(oleDbEx.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                    connection.Close();
+            }
+
+            return retValue;
+        }
+
+        //Method used to create excel file from template
         static private bool CreateExcelFileFromTemplate(IExcel template, string connectionString)
         {
 
@@ -312,12 +365,68 @@ namespace NaturalnieApp.PdfToExcel
             return retValue;
         }
 
+        static public void ExportToExcel(DataTable table, string filePath, string[] columns)
+        {
+
+            //Create file
+            //CreateExcelFileFromData(GetConnectionString(filePath, true), columns);
+
+
+            string query;
+            OleDbConnection connection = new OleDbConnection(GetConnectionString(filePath, true));
+
+            try
+            {
+                using (connection)
+                {
+                    
+                    connection.Open();
+                    OleDbCommand cmd = connection.CreateCommand();
+                    //Create command for create columns
+                    string columnNames = "";
+                    foreach (string element in columns)
+                    {
+                        string ele = element.Replace(".", "");
+                        columnNames += ele + ", ";
+                    }
+                    //Remove last space and coma from command
+                    columnNames = columnNames.Remove(columnNames.Length - 2, 2);
+                    string values = "";
+                    foreach (string element in columns)
+                    {
+                        values += "'" + element + "'" + ", ";
+                    }
+
+                    //Remove last space and coma from command
+                    values = values.Remove(values.Length - 2, 2);
+                    query = String.Format("Insert into [Sheet1$] ({0}) values({1});", columnNames, values);
+                    cmd = new OleDbCommand(query, connection);
+                    cmd.ExecuteNonQuery();
+                    ;
+                }
+            }
+            catch (OleDbException oleDbEx)
+            {
+
+                MessageBox.Show(oleDbEx.Message);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                    connection.Close();
+            }
+        }
 
         //Get all data from excel sheet. Each excel sheet would be separated list element
         public static List<DataTable> GetAllDataFromExcel(string excelPath)
         {
             //Get connection string
-            string connectionString = GetConnectionString(excelPath);
+            string connectionString = GetConnectionString(excelPath, false);
 
             //Get excel sheet names from specified excel
             List<string> sheetNames = GetExcelSheetNames(connectionString);
@@ -400,7 +509,7 @@ namespace NaturalnieApp.PdfToExcel
         }
 
         //Method used to make connection string
-        static private string GetConnectionString(string filePath)
+        static private string GetConnectionString(string filePath, bool write)
         {
             //Local variables
             string connectionString = "";
@@ -414,10 +523,15 @@ namespace NaturalnieApp.PdfToExcel
                 //Set connection string for .xls files
                 connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0; Data Source = '" + filePath + "';Extended Properties=\"Excel 8.0;HDR=NO; IMEX=1\"";
             }
-            else if ((fileExtension == ".xlsx") || (fileExtension == ".xlsb"))
+            else if (((fileExtension == ".xlsx") || (fileExtension == ".xlsb")) && !write)
             {
                 //Set connection string for .xlsx files
                 connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0;HDR=NO; IMEX=1\"";
+            }
+            else if (((fileExtension == ".xlsx") || (fileExtension == ".xlsb")) && write)
+            {
+                //Set connection string for .xlsx files
+                connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0;\"";
             }
             else
             {

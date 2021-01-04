@@ -886,6 +886,34 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to get stock entity from with given manufacturer ID
+        //====================================================================================================
+        public List<Stock> GetStockEntsWithManufacturerId(int manufacturerId)
+        {
+
+            List<Stock> localStock = new List<Stock>();
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from s in contextDB.Stock
+                            join p in contextDB.Products on s.ProductId equals p.Id
+                            join m in contextDB.Manufacturers on p.ManufacturerId equals m.Id
+                            where m.Id == manufacturerId
+                            select new
+                            {
+                                s
+                            };
+
+                foreach (var element in query)
+                {
+                    localStock.Add(element.s);
+                }
+
+            }
+            return localStock;
+        }
+
+
+        //====================================================================================================
         //Method used to check if specified product already exist in stock
         //====================================================================================================
         public bool CheckIfProductExistInStock(Stock stockProduct)

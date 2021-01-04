@@ -178,6 +178,17 @@ namespace NaturalnieApp.Forms
 
                 }
 
+                /*
+                 * Export to excel TESTES!!!!!!!!!!!!!!!!!!!!
+                List<string> test = new List<string>();
+                foreach (DataColumn element in this.DataFromExcel.Columns)
+                {
+                    test.Add(element.ColumnName);
+                }
+                //Test purpose
+                ExcelBase.ExportToExcel(this.DataFromExcel, @"D:\test.xlsb", test.ToArray()) ;
+                */
+
                 //Add checkbox to data grid
                 DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
                 advancedDataGridView1.Columns.Insert(0, chk);

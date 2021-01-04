@@ -33,6 +33,7 @@ namespace NaturalnieApp.Forms
         public AddNewProduct addNewProduct { get; set; }
         public AddToStock addToStock { get; set; }
         public AddManufacturer addManufacturer { get; set; }
+        public PrintFromStock printFromStock { get; set; }
 
 
         //Creat EF databse connection object
@@ -55,6 +56,7 @@ namespace NaturalnieApp.Forms
             this.addNewProduct = new AddNewProduct(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.addToStock = new AddToStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+            this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
 
         }
 
@@ -278,6 +280,26 @@ namespace NaturalnieApp.Forms
                 this.addToStock.Activate();
             }
 
+        }
+
+        private void bPRintFromStock_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            try
+            {
+                this.pContainer.Controls.Add(this.printFromStock);
+                this.printFromStock.Show();
+                this.printFromStock.BringToFront();
+                this.printFromStock.Activate();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+                this.pContainer.Controls.Add(this.printFromStock);
+                this.printFromStock.Show();
+                this.printFromStock.BringToFront();
+                this.printFromStock.Activate();
+            }
         }
 
         #endregion
