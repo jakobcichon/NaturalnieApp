@@ -5,6 +5,7 @@ using NaturalnieApp.Database;
 using System;
 using System.Data;
 using NaturalnieApp.Dymo_Printer;
+using System.Management;
 
 
 namespace NaturalnieApp.Forms
@@ -199,7 +200,12 @@ namespace NaturalnieApp.Forms
                 //Get product entity
                 int id = element.Field<int>(this.ColumnNames.ProductId);
                 Product productEnt = this.databaseCommands.GetProductEntityById(id);
-                localList.Add(productEnt);
+                int numberOfCopies = element.Field<int>(this.ColumnNames.NumberOfCopies);
+                for (int i=1; i<=numberOfCopies; i++)
+                {
+                    localList.Add(productEnt);
+                }
+
             }
 
             return localList;

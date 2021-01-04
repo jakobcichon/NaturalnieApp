@@ -9,6 +9,7 @@ using System.Timers;
 using System.Windows.Forms;
 using System.IO;
 using System.Data.OleDb;
+using System.Printing;
 
 namespace NaturalnieApp
 {
@@ -280,6 +281,29 @@ namespace NaturalnieApp
                 };
                 OnBarcodeValid(e);
             }
+        }
+        #endregion
+
+        #region Get Printer status
+        public static PrintJobStatus GetPrinterStatus(string printerName)
+        {
+            PrintJobStatus retValue = PrintJobStatus.None;
+
+            try
+            {
+                var queue = new LocalPrintServer().GetPrintQueue(printerName);
+                var queueStatus = queue.QueueStatus;
+                var jobStatus = queue.GetPrintJobInfoCollection().FirstOrDefault().JobStatus;
+                retValue = jobStatus;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            return retValue;
+
         }
         #endregion
     }
