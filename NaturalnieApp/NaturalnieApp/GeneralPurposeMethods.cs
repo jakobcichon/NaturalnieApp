@@ -332,6 +332,7 @@ namespace NaturalnieApp
         {
             public string No { get; set; }
             public string ProductName { get; set; }
+            public string ElzabNumber { get; set; }
             public string AddDate { get; set; }
             public string ExpirenceDate { get; set; }
             public string NumberOfPieces { get; set; }

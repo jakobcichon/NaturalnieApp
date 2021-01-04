@@ -32,6 +32,8 @@ namespace NaturalnieApp.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.pMenu = new System.Windows.Forms.Panel();
             this.pStockSubMenu = new System.Windows.Forms.Panel();
+            this.bShowStock = new System.Windows.Forms.Button();
+            this.bPRintFromStock = new System.Windows.Forms.Button();
             this.bAddToStock = new System.Windows.Forms.Button();
             this.bStock = new System.Windows.Forms.Button();
             this.pProductSubMenu = new System.Windows.Forms.Panel();
@@ -52,7 +54,6 @@ namespace NaturalnieApp.Forms
             this.lDatabaseConnState = new System.Windows.Forms.Label();
             this.bExit = new System.Windows.Forms.Button();
             this.pContainer = new System.Windows.Forms.Panel();
-            this.bPRintFromStock = new System.Windows.Forms.Button();
             this.pMenu.SuspendLayout();
             this.pStockSubMenu.SuspendLayout();
             this.pProductSubMenu.SuspendLayout();
@@ -81,13 +82,46 @@ namespace NaturalnieApp.Forms
             // 
             this.pStockSubMenu.AutoSize = true;
             this.pStockSubMenu.BackColor = System.Drawing.Color.DimGray;
+            this.pStockSubMenu.Controls.Add(this.bShowStock);
             this.pStockSubMenu.Controls.Add(this.bPRintFromStock);
             this.pStockSubMenu.Controls.Add(this.bAddToStock);
             this.pStockSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pStockSubMenu.Location = new System.Drawing.Point(0, 446);
             this.pStockSubMenu.Name = "pStockSubMenu";
-            this.pStockSubMenu.Size = new System.Drawing.Size(200, 60);
+            this.pStockSubMenu.Size = new System.Drawing.Size(200, 90);
             this.pStockSubMenu.TabIndex = 7;
+            // 
+            // bShowStock
+            // 
+            this.bShowStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bShowStock.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bShowStock.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bShowStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bShowStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bShowStock.ForeColor = System.Drawing.Color.White;
+            this.bShowStock.Location = new System.Drawing.Point(0, 60);
+            this.bShowStock.Name = "bShowStock";
+            this.bShowStock.Size = new System.Drawing.Size(200, 30);
+            this.bShowStock.TabIndex = 10;
+            this.bShowStock.Text = "Stany magazynowe";
+            this.bShowStock.UseVisualStyleBackColor = false;
+            this.bShowStock.Click += new System.EventHandler(this.bShowStock_Click);
+            // 
+            // bPRintFromStock
+            // 
+            this.bPRintFromStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bPRintFromStock.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bPRintFromStock.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bPRintFromStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bPRintFromStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bPRintFromStock.ForeColor = System.Drawing.Color.White;
+            this.bPRintFromStock.Location = new System.Drawing.Point(0, 30);
+            this.bPRintFromStock.Name = "bPRintFromStock";
+            this.bPRintFromStock.Size = new System.Drawing.Size(200, 30);
+            this.bPRintFromStock.TabIndex = 9;
+            this.bPRintFromStock.Text = "Drukuj z magazynu";
+            this.bPRintFromStock.UseVisualStyleBackColor = false;
+            this.bPRintFromStock.Click += new System.EventHandler(this.bPrintFromStock_Click);
             // 
             // bAddToStock
             // 
@@ -381,22 +415,6 @@ namespace NaturalnieApp.Forms
             this.pContainer.Size = new System.Drawing.Size(1000, 570);
             this.pContainer.TabIndex = 5;
             // 
-            // bPRintFromStock
-            // 
-            this.bPRintFromStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bPRintFromStock.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bPRintFromStock.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.bPRintFromStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bPRintFromStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bPRintFromStock.ForeColor = System.Drawing.Color.White;
-            this.bPRintFromStock.Location = new System.Drawing.Point(0, 30);
-            this.bPRintFromStock.Name = "bPRintFromStock";
-            this.bPRintFromStock.Size = new System.Drawing.Size(200, 30);
-            this.bPRintFromStock.TabIndex = 9;
-            this.bPRintFromStock.Text = "Drukuj z magazynu";
-            this.bPRintFromStock.UseVisualStyleBackColor = false;
-            this.bPRintFromStock.Click += new System.EventHandler(this.bPRintFromStock_Click);
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -446,5 +464,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bStock;
         private System.Windows.Forms.Button bAddManufacturer;
         private System.Windows.Forms.Button bPRintFromStock;
+        private System.Windows.Forms.Button bShowStock;
     }
 }

@@ -34,6 +34,7 @@ namespace NaturalnieApp.Forms
         public AddToStock addToStock { get; set; }
         public AddManufacturer addManufacturer { get; set; }
         public PrintFromStock printFromStock { get; set; }
+        public ShowStock showStock { get; set; }
 
 
         //Creat EF databse connection object
@@ -57,6 +58,7 @@ namespace NaturalnieApp.Forms
             this.addToStock = new AddToStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+            this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
 
         }
 
@@ -282,7 +284,7 @@ namespace NaturalnieApp.Forms
 
         }
 
-        private void bPRintFromStock_Click(object sender, EventArgs e)
+        private void bPrintFromStock_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
             try
@@ -301,7 +303,25 @@ namespace NaturalnieApp.Forms
                 this.printFromStock.Activate();
             }
         }
-
+        private void bShowStock_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            try
+            {
+                this.pContainer.Controls.Add(this.showStock);
+                this.showStock.Show();
+                this.showStock.BringToFront();
+                this.showStock.Activate();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+                this.pContainer.Controls.Add(this.showStock);
+                this.showStock.Show();
+                this.showStock.BringToFront();
+                this.showStock.Activate();
+            }
+        }
         #endregion
 
 
