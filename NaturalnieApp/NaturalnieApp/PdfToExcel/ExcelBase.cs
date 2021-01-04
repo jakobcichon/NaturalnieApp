@@ -91,6 +91,7 @@ namespace NaturalnieApp.PdfToExcel
             }
 
         }
+
         public DataTable ExtractEntities(IExcel template, List<DataTable> data)
         {
             //LocalVariables
@@ -255,11 +256,15 @@ namespace NaturalnieApp.PdfToExcel
         }
 
         //Method used to create excel file from template
-        static private bool CreateExcelFileFromData(string connectionString, string[] columns)
+        static private void CreateExcelFileFromData(string path, string[] columns)
         {
 
             //Local variable
-            bool retValue = false;
+            string fullPath;
+
+
+            //Connection string
+            string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + path + "';Extended Properties=\"Excel 12.0;HDR=NO\"";
 
             //Create connection
             OleDbConnection connection = new OleDbConnection();
@@ -275,7 +280,8 @@ namespace NaturalnieApp.PdfToExcel
                 string columnNames = "";
                 foreach (string element in columns)
                 {
-                    columnNames += "[" + element + "]" + " string, ";
+                    string rep = element.Replace(".", "");
+                    columnNames += "[" + rep + "]" + " string, ";
                 }
 
                 //Remove last space and coma from command
@@ -287,13 +293,11 @@ namespace NaturalnieApp.PdfToExcel
                 //Execute query
                 cmd.ExecuteNonQuery();
 
-                //Set return value
-                retValue = true;
-
             }
             catch (OleDbException oleDbEx)
             {
-                MessageBox.Show(oleDbEx.Message);
+
+                    MessageBox.Show(oleDbEx.Message);
             }
             catch (Exception ex)
             {
@@ -304,8 +308,6 @@ namespace NaturalnieApp.PdfToExcel
                 if (connection.State == ConnectionState.Open)
                     connection.Close();
             }
-
-            return retValue;
         }
 
         //Method used to create excel file from template
@@ -369,7 +371,7 @@ namespace NaturalnieApp.PdfToExcel
         {
 
             //Create file
-            //CreateExcelFileFromData(GetConnectionString(filePath, true), columns);
+            CreateExcelFileFromData(filePath, columns);
 
 
             string query;
@@ -531,7 +533,7 @@ namespace NaturalnieApp.PdfToExcel
             else if (((fileExtension == ".xlsx") || (fileExtension == ".xlsb")) && write)
             {
                 //Set connection string for .xlsx files
-                connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0;\"";
+                connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0;HDR=NO\"";
             }
             else
             {

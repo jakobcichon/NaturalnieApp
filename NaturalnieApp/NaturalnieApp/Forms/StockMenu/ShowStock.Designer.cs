@@ -44,6 +44,7 @@ namespace NaturalnieApp.Forms
             this.tbStockQuantity = new System.Windows.Forms.TextBox();
             this.lStockQuantity = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.bSaveToFile = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -82,6 +83,7 @@ namespace NaturalnieApp.Forms
             // 
             // pButtonsPanel
             // 
+            this.pButtonsPanel.Controls.Add(this.bSaveToFile);
             this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pButtonsPanel.Location = new System.Drawing.Point(0, 500);
@@ -149,7 +151,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 363F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 364F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -236,6 +238,20 @@ namespace NaturalnieApp.Forms
             this.panel5.Size = new System.Drawing.Size(298, 10);
             this.panel5.TabIndex = 0;
             // 
+            // bSaveToFile
+            // 
+            this.bSaveToFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bSaveToFile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bSaveToFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bSaveToFile.Location = new System.Drawing.Point(782, 10);
+            this.bSaveToFile.Name = "bSaveToFile";
+            this.bSaveToFile.Size = new System.Drawing.Size(100, 50);
+            this.bSaveToFile.TabIndex = 7;
+            this.bSaveToFile.Text = "Zapisz do pliku";
+            this.bSaveToFile.UseMnemonic = false;
+            this.bSaveToFile.UseVisualStyleBackColor = false;
+            this.bSaveToFile.Click += new System.EventHandler(this.bSaveToFile_Click);
+            // 
             // ShowStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -281,5 +297,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lNumberOfProducts;
         private System.Windows.Forms.Label lStockQuantity;
         private System.Windows.Forms.Button bShow;
+        private System.Windows.Forms.Button bSaveToFile;
     }
 }

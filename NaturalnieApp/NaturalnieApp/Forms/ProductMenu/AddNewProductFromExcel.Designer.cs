@@ -40,8 +40,12 @@ namespace NaturalnieApp.Forms
             this.bSelectAll = new System.Windows.Forms.Button();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.bClose = new System.Windows.Forms.Button();
+            this.tpMarigin = new System.Windows.Forms.TableLayoutPanel();
+            this.tbMarigin = new System.Windows.Forms.TextBox();
+            this.lMarigin = new System.Windows.Forms.Label();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
+            this.tpMarigin.SuspendLayout();
             this.SuspendLayout();
             // 
             // pHeader
@@ -65,9 +69,9 @@ namespace NaturalnieApp.Forms
             this.bSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSave.Location = new System.Drawing.Point(782, 510);
+            this.bSave.Location = new System.Drawing.Point(732, 510);
             this.bSave.Name = "bSave";
-            this.bSave.Size = new System.Drawing.Size(100, 50);
+            this.bSave.Size = new System.Drawing.Size(150, 50);
             this.bSave.TabIndex = 2;
             this.bSave.Text = "Zapisz do bazy danych";
             this.bSave.UseVisualStyleBackColor = false;
@@ -78,7 +82,7 @@ namespace NaturalnieApp.Forms
             this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bUpdate.Location = new System.Drawing.Point(676, 510);
+            this.bUpdate.Location = new System.Drawing.Point(626, 510);
             this.bUpdate.Name = "bUpdate";
             this.bUpdate.Size = new System.Drawing.Size(100, 50);
             this.bUpdate.TabIndex = 3;
@@ -151,7 +155,7 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 27);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(1000, 475);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(1000, 420);
             this.advancedDataGridView1.TabIndex = 10;
             this.advancedDataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellEndEdit);
             this.advancedDataGridView1.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValidated);
@@ -174,6 +178,46 @@ namespace NaturalnieApp.Forms
             this.bClose.UseVisualStyleBackColor = false;
             this.bClose.Click += new System.EventHandler(this.bClose_Click);
             // 
+            // tpMarigin
+            // 
+            this.tpMarigin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpMarigin.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tpMarigin.ColumnCount = 2;
+            this.tpMarigin.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpMarigin.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpMarigin.Controls.Add(this.tbMarigin, 0, 0);
+            this.tpMarigin.Controls.Add(this.lMarigin, 0, 0);
+            this.tpMarigin.Location = new System.Drawing.Point(4, 453);
+            this.tpMarigin.Name = "tpMarigin";
+            this.tpMarigin.RowCount = 1;
+            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tpMarigin.Size = new System.Drawing.Size(147, 40);
+            this.tpMarigin.TabIndex = 12;
+            // 
+            // tbMarigin
+            // 
+            this.tbMarigin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbMarigin.Location = new System.Drawing.Point(83, 6);
+            this.tbMarigin.Margin = new System.Windows.Forms.Padding(5);
+            this.tbMarigin.Name = "tbMarigin";
+            this.tbMarigin.Size = new System.Drawing.Size(55, 26);
+            this.tbMarigin.TabIndex = 0;
+            this.tbMarigin.Text = "30";
+            this.tbMarigin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbMarigin.Validating += new System.ComponentModel.CancelEventHandler(this.tbMarigin_Validating);
+            // 
+            // lMarigin
+            // 
+            this.lMarigin.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lMarigin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lMarigin.Location = new System.Drawing.Point(6, 6);
+            this.lMarigin.Margin = new System.Windows.Forms.Padding(5);
+            this.lMarigin.Name = "lMarigin";
+            this.lMarigin.Size = new System.Drawing.Size(66, 30);
+            this.lMarigin.TabIndex = 0;
+            this.lMarigin.Text = "Marża";
+            this.lMarigin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // AddNewProductFromExcel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -181,6 +225,7 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
+            this.Controls.Add(this.tpMarigin);
             this.Controls.Add(this.bClose);
             this.Controls.Add(this.advancedDataGridView1);
             this.Controls.Add(this.bSelectAll);
@@ -194,8 +239,11 @@ namespace NaturalnieApp.Forms
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AddNewProductFromExcel";
             this.Text = "Submenu_ElzabInfo";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddNewProductFromExcel_KeyDown);
             this.pHeader.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
+            this.tpMarigin.ResumeLayout(false);
+            this.tpMarigin.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -212,5 +260,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bSelectAll;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
         private System.Windows.Forms.Button bClose;
+        private System.Windows.Forms.TableLayoutPanel tpMarigin;
+        private System.Windows.Forms.TextBox tbMarigin;
+        private System.Windows.Forms.Label lMarigin;
     }
 }

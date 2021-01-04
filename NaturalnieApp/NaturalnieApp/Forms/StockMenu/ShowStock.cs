@@ -6,6 +6,7 @@ using System;
 using System.Data;
 using NaturalnieApp.Dymo_Printer;
 using System.Management;
+using NaturalnieApp.PdfToExcel;
 
 
 namespace NaturalnieApp.Forms
@@ -354,7 +355,22 @@ namespace NaturalnieApp.Forms
             this.Dispose();
         }
 
+
+
         #endregion
- 
+
+        private void bSaveToFile_Click(object sender, EventArgs e)
+        {
+
+            // Export to excel TESTES!!!!!!!!!!!!!!!!!!!!
+            List<string> test = new List<string>();
+            foreach (DataColumn element in this.DataSoruce.Columns)
+            {
+                test.Add(element.ColumnName);
+            }
+            //Test purpose
+            ExcelBase.ExportToExcel(this.DataSoruce, @"F:\test", test.ToArray());
+
+        }
     }
 }

@@ -166,7 +166,7 @@ namespace NaturalnieApp.Forms
                     int indexOfPriceNetColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.PriceNetColumnName].ColumnIndex;
 
                     //Set amrigin to the default value
-                    this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = "29";
+                    this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = "30";
 
                     //Calculate final price
                     double price = Convert.ToDouble(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetColumn].Value);
@@ -177,17 +177,6 @@ namespace NaturalnieApp.Forms
                     this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfFinalPriceColumn].Value = finalPrice.ToString();
 
                 }
-
-                /*
-                 * Export to excel TESTES!!!!!!!!!!!!!!!!!!!!
-                List<string> test = new List<string>();
-                foreach (DataColumn element in this.DataFromExcel.Columns)
-                {
-                    test.Add(element.ColumnName);
-                }
-                //Test purpose
-                ExcelBase.ExportToExcel(this.DataFromExcel, @"D:\test.xlsb", test.ToArray()) ;
-                */
 
                 //Add checkbox to data grid
                 DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
@@ -278,6 +267,7 @@ namespace NaturalnieApp.Forms
                     singleElement = singleElement.Replace("\t", "");
                     singleElement = singleElement.Replace("  ", " ");
                     singleElement = singleElement.Replace("*", "");
+                    singleElement = singleElement.Replace('"'.ToString(), "'");
 
                     //Sepcific string action depending on column attribute
                     //Percentage
@@ -693,6 +683,23 @@ namespace NaturalnieApp.Forms
         }
         #endregion
 
+        #region Current window events
+        private void AddNewProductFromExcel_KeyDown(object sender, KeyEventArgs e)
+        {
+            Control localControl = (Control)sender;
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                localControl.SelectNextControl(bAddFromFile, true, true, true, true);
+
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                localControl.SelectNextControl(bAddFromFile, true, true, true, true);
+            }
+        }
+        #endregion
+
         #region Advanced Data Grid View Events
 
         //Event for advanced data grid view click
@@ -829,8 +836,21 @@ namespace NaturalnieApp.Forms
         {
 
         }
+
         #endregion
 
+        private void tbMarigin_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                Int32.Parse(tbMarigin.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                tbMarigin.Text = 30.ToString();
+            }
+        }
 
     }
 }
