@@ -298,6 +298,7 @@ namespace NaturalnieApp
             public string LabelBarcode { get; set; }
             public string LabelFinalPrice { get; set; }
             public string NumberOfCopies { get; set; }
+            public string ProductId { get; set; }
 
         }
 

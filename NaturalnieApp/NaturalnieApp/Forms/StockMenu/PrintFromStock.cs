@@ -29,6 +29,12 @@ namespace NaturalnieApp.Forms
         //Data source for advanced data grid view
         private DataTable DataSoruce { get; set; }
         private DataSourceRelated.LabelDataSourceColumnNames ColumnNames;
+
+        //Printer instance
+        Printer DymoPrinter;
+        bool CancelPrinting;
+
+
         #endregion
 
         #region Class constructor
@@ -49,6 +55,7 @@ namespace NaturalnieApp.Forms
 
             //Initialize daa grid view
             this.ColumnNames.No = "Lp.";
+            this.ColumnNames.ProductId = "Id produktu";
             this.ColumnNames.LabelBarcode = "Kod kreskowy";
             this.ColumnNames.LabelFinalPrice = "Cena klienta";
             this.ColumnNames.LabelText = "Tekst etykiety";
@@ -56,6 +63,9 @@ namespace NaturalnieApp.Forms
             this.DataSoruce = new DataTable();
 
             InitializeAdvancedDataGridView();
+
+            //List of the product to print
+            this.CancelPrinting = false;
 
         }
         #endregion
@@ -178,6 +188,23 @@ namespace NaturalnieApp.Forms
             this.cbManufacturers.AutoCompleteCustomSource = this.ManufacturerListCollection;
             this.cbManufacturers.Items.AddRange(this.ManufacturersList.ToArray());
         }
+
+        private List<Product> GetListOfTheProductToPrintFromDataTable(DataTable data)
+        {
+            //Local variables
+            List<Product> localList = new List<Product>();
+
+            foreach (DataRow element in data.Rows)
+            {
+                //Get product entity
+                int id = element.Field<int>(this.ColumnNames.ProductId);
+                Product productEnt = this.databaseCommands.GetProductEntityById(id);
+                localList.Add(productEnt);
+            }
+
+            return localList;
+
+        }
         #endregion
         //====================================================================================================
         //Advanced data gid view
@@ -197,6 +224,13 @@ namespace NaturalnieApp.Forms
             column.AutoIncrement = true;
             column.AutoIncrementSeed = 1;
             column.Unique = true;
+            this.DataSoruce.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.ProductId;
+            column.DataType = Type.GetType("System.Int32");
+            column.ReadOnly = true;
             this.DataSoruce.Columns.Add(column);
             column.Dispose();
 
@@ -269,13 +303,55 @@ namespace NaturalnieApp.Forms
         #region Buttons events
         private void bShow_Click(object sender, EventArgs e)
         {
-            ;
-            List<Stock> test = this.databaseCommands.GetStockEntsWithManufacturerId(2);
-            ;
-
             if (cbManufacturers.SelectedItem != null)
             {
-                //Get from stock list of products of given manufacturer
+                //Local variables
+                List<Stock> stockList = new List<Stock>();
+                Product productEnt = new Product();
+
+                if(cbManufacturers.SelectedIndex == 0)
+                {
+
+                }
+                else
+                {
+                    //Get from stock list of products of given manufacturer
+                    int manufacturerId = this.databaseCommands.GetManufacturerIdByName(cbManufacturers.SelectedItem.ToString());
+                    if (manufacturerId > 0)
+                    {
+                        //Cleardata
+                        this.DataSoruce.Rows.Clear();
+
+                        stockList = this.databaseCommands.GetStockEntsWithManufacturerId(manufacturerId);
+                        
+                        foreach (Stock element in stockList)
+                        {
+                            //Get product entity
+                            productEnt = this.databaseCommands.GetProductEntityById(element.ProductId);
+
+                            //Add data to table
+                            DataRow rowElement;
+                            rowElement = this.DataSoruce.NewRow();
+
+                            //Set row fields
+                            rowElement.SetField<string>(this.ColumnNames.No, (this.DataSoruce.Rows.Count + 1).ToString());
+                            rowElement.SetField<int>(this.ColumnNames.ProductId, productEnt.Id);
+                            rowElement.SetField<string>(this.ColumnNames.LabelBarcode, productEnt.BarCodeShort);
+                            rowElement.SetField<string>(this.ColumnNames.LabelText, productEnt.ElzabProductName);
+                            rowElement.SetField<string>(this.ColumnNames.LabelFinalPrice, string.Format("{0:0.00}", productEnt.FinalPrice));
+                            rowElement.SetField<int>(this.ColumnNames.NumberOfCopies, element.ActualQuantity);
+
+                            this.DataSoruce.Rows.Add(rowElement);
+
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nie znaleziono producenta!");
+                    }
+
+                }
+
 
             }
             else
@@ -283,12 +359,65 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show("Najpierw należy wybrać porducenta!");
             }
         }
+
         private void bPrint_Click(object sender, EventArgs e)
         {
-           
+            if (this.DataSoruce.Rows.Count == 0)
+            {
+                MessageBox.Show("Brak wybranch elementów do druku!");
+            }
+            else
+            {
+                //Get printer device
+                try
+                {
+                    //Check if Dymo printer instance already created
+                    if (this.DymoPrinter == null)
+                    {
+                        //Printer instance
+                        this.DymoPrinter = new Printer(Program.GlobalVariables.LabelPath);
+                    }
+
+                    //Check if printer connected
+                    this.DymoPrinter.GetPrinters();
+
+                    //Local variables
+                    List<Product> localList = new List<Product>();
+
+                    localList = GetListOfTheProductToPrintFromDataTable(this.DataSoruce);
+
+                    List<Product> printingList = new List<Product>();
+
+                    //Split it into 5
+                    foreach (Product element in localList)
+                    {
+
+                        printingList.Add(element);
+                        int indexOfElement = localList.IndexOf(element);
+
+                        if ((printingList.Count == 10) || (indexOfElement == localList.Count-1))
+                        {
+                            //Print lables
+                            this.DymoPrinter.PrintPriceCardsFromProductList(printingList);
+                            printingList.Clear();
+                        }
+                        
+                    }
+
+                }
+                catch (NoPrinterToSelect)
+                {
+                    MessageBox.Show("Nie można odnaleźć drukarki firmy Dymo. Podłącz drukarkę i spróbuj ponownie!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
 
             //Select next control
             this.SelectNextControl(this, true, true, true, true);
+
         }
 
         private void bClose_Click(object sender, EventArgs e)
