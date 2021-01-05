@@ -233,7 +233,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 563F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 564F));
             this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -281,7 +281,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 353F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 354F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -343,7 +343,6 @@ namespace NaturalnieApp.Forms
             this.mtbQuantity.Dock = System.Windows.Forms.DockStyle.Left;
             this.mtbQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mtbQuantity.Location = new System.Drawing.Point(150, 10);
-            this.mtbQuantity.Mask = "999";
             this.mtbQuantity.Name = "mtbQuantity";
             this.mtbQuantity.PromptChar = ' ';
             this.mtbQuantity.Size = new System.Drawing.Size(149, 26);

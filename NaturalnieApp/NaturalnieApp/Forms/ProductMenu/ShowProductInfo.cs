@@ -309,7 +309,7 @@ namespace NaturalnieApp.Forms
         private void FindTextInComboBoxAndSelect(ref ComboBox obj, string textToFind)
         {
             //Find search tex index
-            int index = obj.FindString(textToFind);
+            int index = obj.FindStringExact(textToFind);
             obj.SelectedIndex = index;
 
         }
