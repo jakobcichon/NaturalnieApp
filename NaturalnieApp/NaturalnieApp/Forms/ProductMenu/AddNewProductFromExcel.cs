@@ -166,7 +166,7 @@ namespace NaturalnieApp.Forms
                     int indexOfPriceNetColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.PriceNetColumnName].ColumnIndex;
 
                     //Set amrigin to the default value
-                    this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = "30";
+                    this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = this.tbMarigin.Text;
 
                     //Calculate final price
                     double price = Convert.ToDouble(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetColumn].Value);
@@ -690,12 +690,12 @@ namespace NaturalnieApp.Forms
 
             if (e.KeyCode == Keys.Enter)
             {
-                localControl.SelectNextControl(bAddFromFile, true, true, true, true);
+                bDummyForControl.Select();
 
             }
             else if (e.KeyCode == Keys.Escape)
             {
-                localControl.SelectNextControl(bAddFromFile, true, true, true, true);
+                bDummyForControl.Select();
             }
         }
         #endregion
@@ -844,6 +844,7 @@ namespace NaturalnieApp.Forms
             try
             {
                 Int32.Parse(tbMarigin.Text);
+                if (Int32.Parse(tbMarigin.Text) < 0 || Int32.Parse(tbMarigin.Text) > 100) tbMarigin.Text = 30.ToString();
             }
             catch (Exception ex)
             {
@@ -852,5 +853,9 @@ namespace NaturalnieApp.Forms
             }
         }
 
+        private void AddNewProductFromExcel_Load(object sender, EventArgs e)
+        {
+            this.tbMarigin.Text = 30.ToString();
+        }
     }
 }

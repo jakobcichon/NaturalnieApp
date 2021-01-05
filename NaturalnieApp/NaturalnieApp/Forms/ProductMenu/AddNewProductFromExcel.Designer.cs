@@ -30,6 +30,7 @@ namespace NaturalnieApp.Forms
         private void InitializeComponent()
         {
             this.pHeader = new System.Windows.Forms.Panel();
+            this.bDummyForControl = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.bSave = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
@@ -50,19 +51,38 @@ namespace NaturalnieApp.Forms
             // 
             // pHeader
             // 
+            this.pHeader.Controls.Add(this.bDummyForControl);
             this.pHeader.Controls.Add(this.panel1);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
             this.pHeader.Size = new System.Drawing.Size(1000, 30);
-            this.pHeader.TabIndex = 1;
+            this.pHeader.TabIndex = 0;
+            // 
+            // bDummyForControl
+            // 
+            this.bDummyForControl.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.bDummyForControl.BackColor = System.Drawing.Color.Transparent;
+            this.bDummyForControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bDummyForControl.CausesValidation = false;
+            this.bDummyForControl.Cursor = System.Windows.Forms.Cursors.No;
+            this.bDummyForControl.Enabled = false;
+            this.bDummyForControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bDummyForControl.ForeColor = System.Drawing.Color.Transparent;
+            this.bDummyForControl.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.bDummyForControl.Location = new System.Drawing.Point(496, 11);
+            this.bDummyForControl.Name = "bDummyForControl";
+            this.bDummyForControl.Size = new System.Drawing.Size(8, 8);
+            this.bDummyForControl.TabIndex = 0;
+            this.bDummyForControl.UseVisualStyleBackColor = false;
+            this.bDummyForControl.Visible = false;
             // 
             // panel1
             // 
             this.panel1.Location = new System.Drawing.Point(0, 36);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(200, 100);
-            this.panel1.TabIndex = 4;
+            this.panel1.TabIndex = 1;
             // 
             // bSave
             // 
@@ -72,7 +92,7 @@ namespace NaturalnieApp.Forms
             this.bSave.Location = new System.Drawing.Point(732, 510);
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(150, 50);
-            this.bSave.TabIndex = 2;
+            this.bSave.TabIndex = 8;
             this.bSave.Text = "Zapisz do bazy danych";
             this.bSave.UseVisualStyleBackColor = false;
             this.bSave.Click += new System.EventHandler(this.bSave_Click);
@@ -85,7 +105,7 @@ namespace NaturalnieApp.Forms
             this.bUpdate.Location = new System.Drawing.Point(626, 510);
             this.bUpdate.Name = "bUpdate";
             this.bUpdate.Size = new System.Drawing.Size(100, 50);
-            this.bUpdate.TabIndex = 3;
+            this.bUpdate.TabIndex = 7;
             this.bUpdate.Text = "Odśwież";
             this.bUpdate.UseVisualStyleBackColor = false;
             this.bUpdate.Click += new System.EventHandler(this.bUpdate_Click);
@@ -99,7 +119,7 @@ namespace NaturalnieApp.Forms
             this.bGenerateTemplate.Location = new System.Drawing.Point(4, 510);
             this.bGenerateTemplate.Name = "bGenerateTemplate";
             this.bGenerateTemplate.Size = new System.Drawing.Size(100, 50);
-            this.bGenerateTemplate.TabIndex = 6;
+            this.bGenerateTemplate.TabIndex = 3;
             this.bGenerateTemplate.Text = "Generuj formatkę";
             this.bGenerateTemplate.UseVisualStyleBackColor = false;
             this.bGenerateTemplate.Click += new System.EventHandler(this.bGenerateTemplate_Click);
@@ -113,7 +133,7 @@ namespace NaturalnieApp.Forms
             this.bAddFromFile.Location = new System.Drawing.Point(110, 510);
             this.bAddFromFile.Name = "bAddFromFile";
             this.bAddFromFile.Size = new System.Drawing.Size(100, 50);
-            this.bAddFromFile.TabIndex = 7;
+            this.bAddFromFile.TabIndex = 4;
             this.bAddFromFile.Text = "Dodaj plik";
             this.bAddFromFile.UseVisualStyleBackColor = false;
             this.bAddFromFile.Click += new System.EventHandler(this.bAddFromFile_Click);
@@ -127,7 +147,7 @@ namespace NaturalnieApp.Forms
             this.bDeselectAll.Location = new System.Drawing.Point(322, 510);
             this.bDeselectAll.Name = "bDeselectAll";
             this.bDeselectAll.Size = new System.Drawing.Size(100, 50);
-            this.bDeselectAll.TabIndex = 8;
+            this.bDeselectAll.TabIndex = 6;
             this.bDeselectAll.Text = "Odznacz wszystko";
             this.bDeselectAll.UseVisualStyleBackColor = false;
             this.bDeselectAll.Visible = false;
@@ -142,7 +162,7 @@ namespace NaturalnieApp.Forms
             this.bSelectAll.Location = new System.Drawing.Point(216, 510);
             this.bSelectAll.Name = "bSelectAll";
             this.bSelectAll.Size = new System.Drawing.Size(100, 50);
-            this.bSelectAll.TabIndex = 9;
+            this.bSelectAll.TabIndex = 5;
             this.bSelectAll.Text = "Zaznacz wszytsko";
             this.bSelectAll.UseVisualStyleBackColor = false;
             this.bSelectAll.Visible = false;
@@ -151,12 +171,13 @@ namespace NaturalnieApp.Forms
             // advancedDataGridView1
             // 
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView1.FilterAndSortEnabled = true;
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 27);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView1.Size = new System.Drawing.Size(1000, 420);
-            this.advancedDataGridView1.TabIndex = 10;
+            this.advancedDataGridView1.TabIndex = 0;
             this.advancedDataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellEndEdit);
             this.advancedDataGridView1.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValidated);
             this.advancedDataGridView1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.advancedDataGridView1_CellValidating);
@@ -172,7 +193,7 @@ namespace NaturalnieApp.Forms
             this.bClose.Location = new System.Drawing.Point(888, 510);
             this.bClose.Name = "bClose";
             this.bClose.Size = new System.Drawing.Size(100, 50);
-            this.bClose.TabIndex = 11;
+            this.bClose.TabIndex = 9;
             this.bClose.Text = "Zamknij";
             this.bClose.UseMnemonic = false;
             this.bClose.UseVisualStyleBackColor = false;
@@ -192,7 +213,7 @@ namespace NaturalnieApp.Forms
             this.tpMarigin.RowCount = 1;
             this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpMarigin.Size = new System.Drawing.Size(147, 40);
-            this.tpMarigin.TabIndex = 12;
+            this.tpMarigin.TabIndex = 2;
             // 
             // tbMarigin
             // 
@@ -201,7 +222,7 @@ namespace NaturalnieApp.Forms
             this.tbMarigin.Margin = new System.Windows.Forms.Padding(5);
             this.tbMarigin.Name = "tbMarigin";
             this.tbMarigin.Size = new System.Drawing.Size(55, 26);
-            this.tbMarigin.TabIndex = 0;
+            this.tbMarigin.TabIndex = 1;
             this.tbMarigin.Text = "30";
             this.tbMarigin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbMarigin.Validating += new System.ComponentModel.CancelEventHandler(this.tbMarigin_Validating);
@@ -239,6 +260,7 @@ namespace NaturalnieApp.Forms
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AddNewProductFromExcel";
             this.Text = "Submenu_ElzabInfo";
+            this.Load += new System.EventHandler(this.AddNewProductFromExcel_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddNewProductFromExcel_KeyDown);
             this.pHeader.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
@@ -263,5 +285,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TableLayoutPanel tpMarigin;
         private System.Windows.Forms.TextBox tbMarigin;
         private System.Windows.Forms.Label lMarigin;
+        private System.Windows.Forms.Button bDummyForControl;
     }
 }

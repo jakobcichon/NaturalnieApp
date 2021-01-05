@@ -296,18 +296,17 @@ namespace NaturalnieApp.Forms
         }
         private void PrintBarcode_KeyDown(object sender, KeyEventArgs e)
         {
-            Control localControl = (Control)sender;
-
             this.BarcodeValidEventGenerated = false;
             this.BarcodeReader.CheckIfBarcodeFromReader(e.KeyCode);
 
             if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
             {
-                localControl.SelectNextControl(this, true, true, true, true);
+                bDummyForControl.Select();
+
             }
             else if (e.KeyCode == Keys.Escape)
             {
-                localControl.SelectNextControl(this, true, true, true, true);
+                bDummyForControl.Select();
             }
         }
         private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
@@ -315,13 +314,21 @@ namespace NaturalnieApp.Forms
 
             if (e.Ready && e.Valid)
             {
+                string barcodeToSearch;
+                //If short barcode try to get full barcode
+                if (e.RecognizedBarcodeValue.Length == 8)
+                {
+                    barcodeToSearch = this.databaseCommands.GetEAN13FromShortBarcode(e.RecognizedBarcodeValue);
+                    if (barcodeToSearch == "" || barcodeToSearch == null) barcodeToSearch = e.RecognizedBarcodeValue;
+                }
+                else barcodeToSearch = e.RecognizedBarcodeValue;
+
                 //Get index
-                int index = this.cbBarcodes.Items.IndexOf(e.RecognizedBarcodeValue);
+                int index = this.cbBarcodes.Items.IndexOf(barcodeToSearch);
                 if (index >= 0)
                 {
                     this.cbBarcodes.SelectedIndex = index;
-                    cbBarcodes.SelectNextControl(this, true, true, true, true);
-                    this.cbBarcodes_SelectionChangeCommitted(this.cbBarcodes, EventArgs.Empty);
+                    this.cbBarcodes_SelectionChangedCommited(this.cbBarcodes, EventArgs.Empty);
                 }
                 else MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych");
             }
@@ -402,7 +409,7 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Product List events
         #region Barcode events
-        private void cbBarcodes_SelectionChangeCommitted(object sender, EventArgs e)
+        private void cbBarcodes_SelectionChangedCommited(object sender, EventArgs e)
         {
             //Cast an object
             ComboBox localSender = (ComboBox)sender;
@@ -469,6 +476,7 @@ namespace NaturalnieApp.Forms
                         row = this.DataSoruce.NewRow();
 
                         //Set requred fields
+                        row.SetField(this.ColumnNames.No, this.DataSoruce.Rows.Count + 1);
                         row.SetField(this.ColumnNames.LabelBarcode, entity.BarCodeShort);
                         row.SetField(this.ColumnNames.LabelText, entity.ElzabProductName);
                         row.SetField(this.ColumnNames.LabelFinalPrice, string.Format("{0:0.00}", entity.FinalPrice));
@@ -494,8 +502,9 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
             }
 
-            //Select next control
-            this.SelectNextControl(this, true, true, true, true);
+           // this.Controls.Add(bDummyForControl);
+            //bDummyForControl.Select();
+            textBox1.Text = this.ActiveControl.Name.ToString();
         }
         private void bPrint_Click(object sender, EventArgs e)
         {
@@ -546,6 +555,9 @@ namespace NaturalnieApp.Forms
                 {
                     MessageBox.Show(ex.Message);
                 }
+
+                this.ActiveControl = bDummyForControl;
+                bDummyForControl.Select();
             }
 
         }
@@ -556,8 +568,7 @@ namespace NaturalnieApp.Forms
             this.Dispose();
             ;
         }
+
         #endregion
-
-
     }
 }

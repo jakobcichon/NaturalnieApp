@@ -302,11 +302,8 @@ namespace NaturalnieApp.Forms
             bool validatingResult;
             string text = "Kod dostawcy musi składać się wyłacznie z 13 liczb!";
 
-            //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^[0-9]${0,13}";
-
-            //Check if input match to define pattern
-            validatingResult = ValidateInput(input, regPattern);
+            if (input.Length <= 13) validatingResult = true;
+            else validatingResult = false;
 
             if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
 
@@ -325,6 +322,22 @@ namespace NaturalnieApp.Forms
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
+
+            if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
+
+            return validatingResult;
+        }
+
+        //Method used to validate final price
+        static public bool ProductInfoValidation(string input)
+        {
+            //Local variables
+            bool validatingResult;
+            string text = "Informacje o produkcie może zawierać maksymalnie 1024 znaki!!";
+
+            //Check if input match to define pattern
+            if (input.Length <= 1024) validatingResult = true;
+            else validatingResult = false;
 
             if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
 
