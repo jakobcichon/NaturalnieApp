@@ -549,10 +549,12 @@ namespace NaturalnieApp.Forms
                         //If product name, barcode and supplier are unique, add it to DB
                         try
                         {
+                            bool barcodeExist ;
                             //Get from database if already exist
                             bool productNameExist = this.databaseCommands.CheckIfProductNameExist(rowProductNameValue);
                             bool elzabProductNameExist = this.databaseCommands.CheckIfElzabProductNameExist(rowElzabProductNameValue);
-                            bool barcodeExist = this.databaseCommands.CheckIfBarcodeExist(rowBarcodeValue);
+                            if (rowBarcodeValue == "") barcodeExist = false;
+                            else barcodeExist = this.databaseCommands.CheckIfBarcodeExist(rowBarcodeValue);
                             bool supplierCodeExist = this.databaseCommands.CheckIfSupplierNameExist(rowSupplierCodeValue);
                             int elzabProductFirstFreeId = this.databaseCommands.CalculateFreeElzabIdForGivenManufacturer(rowManufacturerNameValue);
 
@@ -568,8 +570,9 @@ namespace NaturalnieApp.Forms
                                 product.PriceNet = rowPriceNetValue;
                                 product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
                                 product.Marigin = rowMariginValue;
-                                product.BarCode = rowBarcodeValue;
                                 product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, elzabProductFirstFreeId);
+                                if (rowBarcodeValue == "") product.BarCode = product.BarCodeShort;
+                                else product.BarCode = rowBarcodeValue;
                                 product.ProductInfo = "Brak";
                                 product.FinalPrice = (float) Calculations.FinalPrice(Convert.ToDouble(rowPriceNetValue), rowTaxValue, Convert.ToDouble(rowMariginValue));
                                 if (rowSupplierCodeValue == "") product.SupplierCode = product.BarCode;
