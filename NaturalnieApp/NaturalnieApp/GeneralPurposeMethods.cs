@@ -274,7 +274,7 @@ namespace NaturalnieApp
                     this.Ready = true;
                     this.BarcodeToReturn = this.TemporaryBarcodeValue;
                     this.TemporaryBarcodeValue = "";
-                    if (this.BarcodeToReturn.Length == 8 || this.BarcodeToReturn.Length == 13)
+                    if (this.BarcodeToReturn.Length == 8 || this.BarcodeToReturn.Length == 12 || this.BarcodeToReturn.Length == 13)
                     {
                         this.Valid = true;
                         CallBarcodeValidEvent(this.Ready, this.Valid, this.BarcodeToReturn);

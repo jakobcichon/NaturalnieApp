@@ -72,7 +72,7 @@ namespace NaturalnieApp.Forms
             this.pExpirationDate.Hide();
 
             //Number of products
-            this.mtbQuantity.Text = "1";
+            this.tbQuantity.Text = "1";
 
             //Initialize daa grid view
             this.ColumnNames.No = "Lp.";
@@ -664,7 +664,7 @@ namespace NaturalnieApp.Forms
                         //Set requred fields
                         row.SetField(this.ColumnNames.ProductName, entity.ProductName);
                         row.SetField(this.ColumnNames.AddDate, this.dtpDateOfAccept.Value.Date);
-                        row.SetField(this.ColumnNames.NumberOfPieces, Convert.ToInt32(this.mtbQuantity.Text.Trim().Replace(" ", "")));
+                        row.SetField(this.ColumnNames.NumberOfPieces, Convert.ToInt32(this.tbQuantity.Text));
                         if (this.chbExpDateReq.Checked) row.SetField(this.ColumnNames.ExpirenceDate, this.dtpExpirationDate.Value.Date);
                         else row.SetField(this.ColumnNames.ExpirenceDate, DateTime.MinValue);
 
@@ -766,6 +766,8 @@ namespace NaturalnieApp.Forms
                 }
 
                 UpdateControl(ref tbDummyForCtrl);
+
+                bUpdate_Click(sender, EventArgs.Empty);
             }
         }
 

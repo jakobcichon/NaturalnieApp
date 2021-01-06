@@ -34,6 +34,7 @@ namespace NaturalnieApp.Forms
             this.panel1 = new System.Windows.Forms.Panel();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
+            this.bUpdate = new System.Windows.Forms.Button();
             this.bPrint = new System.Windows.Forms.Button();
             this.bClose = new System.Windows.Forms.Button();
             this.gbProductSelection = new System.Windows.Forms.GroupBox();
@@ -48,7 +49,6 @@ namespace NaturalnieApp.Forms
             this.cbManufacturers = new System.Windows.Forms.ComboBox();
             this.lManufacturer = new System.Windows.Forms.Label();
             this.pQuantity = new System.Windows.Forms.Panel();
-            this.mtbQuantity = new System.Windows.Forms.MaskedTextBox();
             this.lQuantity = new System.Windows.Forms.Label();
             this.pSpare1 = new System.Windows.Forms.Panel();
             this.pGap1 = new System.Windows.Forms.Panel();
@@ -81,7 +81,7 @@ namespace NaturalnieApp.Forms
             this.lFinalPrice = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.bUpdate = new System.Windows.Forms.Button();
+            this.tbQuantity = new System.Windows.Forms.TextBox();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -148,6 +148,19 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.Name = "pButtonsPanel";
             this.pButtonsPanel.Size = new System.Drawing.Size(1000, 70);
             this.pButtonsPanel.TabIndex = 4;
+            // 
+            // bUpdate
+            // 
+            this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bUpdate.Location = new System.Drawing.Point(676, 10);
+            this.bUpdate.Name = "bUpdate";
+            this.bUpdate.Size = new System.Drawing.Size(100, 50);
+            this.bUpdate.TabIndex = 28;
+            this.bUpdate.Text = "Odśwież";
+            this.bUpdate.UseVisualStyleBackColor = false;
+            this.bUpdate.Click += new System.EventHandler(this.bUpdate_Click);
             // 
             // bPrint
             // 
@@ -257,7 +270,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 578F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 580F));
             this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -305,7 +318,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 368F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 370F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -353,7 +366,7 @@ namespace NaturalnieApp.Forms
             // pQuantity
             // 
             this.pQuantity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pQuantity.Controls.Add(this.mtbQuantity);
+            this.pQuantity.Controls.Add(this.tbQuantity);
             this.pQuantity.Controls.Add(this.lQuantity);
             this.pQuantity.Controls.Add(this.pSpare1);
             this.pQuantity.Dock = System.Windows.Forms.DockStyle.Top;
@@ -361,18 +374,6 @@ namespace NaturalnieApp.Forms
             this.pQuantity.Name = "pQuantity";
             this.pQuantity.Size = new System.Drawing.Size(300, 38);
             this.pQuantity.TabIndex = 18;
-            // 
-            // mtbQuantity
-            // 
-            this.mtbQuantity.Dock = System.Windows.Forms.DockStyle.Left;
-            this.mtbQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mtbQuantity.Location = new System.Drawing.Point(150, 10);
-            this.mtbQuantity.Mask = "999";
-            this.mtbQuantity.Name = "mtbQuantity";
-            this.mtbQuantity.PromptChar = ' ';
-            this.mtbQuantity.Size = new System.Drawing.Size(149, 26);
-            this.mtbQuantity.TabIndex = 3;
-            this.mtbQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // lQuantity
             // 
@@ -604,7 +605,7 @@ namespace NaturalnieApp.Forms
             // 
             // lActualQuantity
             // 
-            this.lActualQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lActualQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lActualQuantity.Location = new System.Drawing.Point(6, 6);
             this.lActualQuantity.Margin = new System.Windows.Forms.Padding(5);
             this.lActualQuantity.Name = "lActualQuantity";
@@ -715,7 +716,7 @@ namespace NaturalnieApp.Forms
             this.lFinalPrice.Name = "lFinalPrice";
             this.lFinalPrice.Size = new System.Drawing.Size(140, 30);
             this.lFinalPrice.TabIndex = 31;
-            this.lFinalPrice.Text = "Final price";
+            this.lFinalPrice.Text = "Cena klienta";
             this.lFinalPrice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tableLayoutPanel2
@@ -750,18 +751,14 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel3.Size = new System.Drawing.Size(300, 35);
             this.tableLayoutPanel3.TabIndex = 34;
             // 
-            // bUpdate
+            // tbQuantity
             // 
-            this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bUpdate.Location = new System.Drawing.Point(676, 10);
-            this.bUpdate.Name = "bUpdate";
-            this.bUpdate.Size = new System.Drawing.Size(100, 50);
-            this.bUpdate.TabIndex = 28;
-            this.bUpdate.Text = "Odśwież";
-            this.bUpdate.UseVisualStyleBackColor = false;
-            this.bUpdate.Click += new System.EventHandler(this.bUpdate_Click);
+            this.tbQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbQuantity.Location = new System.Drawing.Point(155, 10);
+            this.tbQuantity.Name = "tbQuantity";
+            this.tbQuantity.Size = new System.Drawing.Size(142, 26);
+            this.tbQuantity.TabIndex = 2;
+            this.tbQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // AddToStock
             // 
@@ -836,7 +833,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.ComboBox cbProductsList;
         private System.Windows.Forms.Button bClose;
         private System.Windows.Forms.Panel pQuantity;
-        private System.Windows.Forms.MaskedTextBox mtbQuantity;
         private System.Windows.Forms.Label lQuantity;
         private System.Windows.Forms.Panel pSpare1;
         private System.Windows.Forms.Panel pGap1;
@@ -872,5 +868,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button bUpdate;
+        private System.Windows.Forms.TextBox tbQuantity;
     }
 }

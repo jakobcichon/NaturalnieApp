@@ -285,6 +285,32 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB barcode list, fitered by a specific manufacturer
+        //====================================================================================================
+        public List<string> GetBarcodesListByManufacturer(string manufacturerName)
+        {
+            List<string> productList = new List<string>();
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                //Create query to database
+                var query = from p in contextDB.Products
+                            join m in contextDB.Manufacturers
+                            on p.ManufacturerId equals m.Id
+                            where m.Name == manufacturerName
+                            select p;
+
+                //Add product names to the list
+                foreach (var products in query)
+                {
+                    productList.Add(products.BarCode);
+                }
+
+            }
+            return productList;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB Manufacturer name list
         //====================================================================================================
         public List<string> GetManufacturersNameList()

@@ -375,6 +375,9 @@ namespace NaturalnieApp.Forms
                     List<string> filteredProductNames = this.databaseCommands.GetProductsNameListByManufacturer(cbManufacturers.SelectedItem.ToString());
                     cbProductsList.Items.Clear();
                     cbProductsList.Items.AddRange(filteredProductNames.ToArray());
+                    List<string> filteredBarcodes = this.databaseCommands.GetBarcodesListByManufacturer(cbManufacturers.SelectedItem.ToString());
+                    cbBarcodes.Items.Clear();
+                    cbBarcodes.Items.AddRange(filteredBarcodes.ToArray());
 
                 }
                 else
@@ -383,6 +386,9 @@ namespace NaturalnieApp.Forms
                     List<string> productNames = this.databaseCommands.GetProductsNameList();
                     cbProductsList.Items.Clear();
                     cbProductsList.Items.AddRange(productNames.ToArray());
+                    List<string> filteredBarcodes = this.databaseCommands.GetBarcodesListByManufacturer(cbManufacturers.SelectedItem.ToString());
+                    cbBarcodes.Items.Clear();
+                    cbBarcodes.Items.AddRange(filteredBarcodes.ToArray());
                 }
             }
             catch (Exception ex)
