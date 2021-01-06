@@ -315,6 +315,7 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView1.Size = new System.Drawing.Size(732, 362);
             this.advancedDataGridView1.TabIndex = 5;
+            this.advancedDataGridView1.UserDeletingRow += AdvancedDataGridView1_UserDeletingRow;
             // 
             // PrintBarcode
             // 

@@ -297,6 +297,11 @@ namespace NaturalnieApp.Forms
 
             advancedDataGridView1.AutoResizeColumns();
         }
+        private void AdvancedDataGridView1_UserDeletingRow(object sender, System.Windows.Forms.DataGridViewRowCancelEventArgs e)
+        {
+            this.ListOfTheProductToPrint.RemoveAt(e.Row.Index);
+            ;
+        }
         #endregion
         //====================================================================================================
         //Current window events
