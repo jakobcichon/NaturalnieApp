@@ -173,6 +173,10 @@ namespace NaturalnieApp.Dymo_Printer
                     {
                         label.UpdateLabelObject(element, productToPrint.ElzabProductName.Substring(0, 17).ToUpper() + "-");
                     }
+                    else
+                    {
+                        label.UpdateLabelObject(element, productToPrint.ElzabProductName);
+                    }
 
                 }
                 //Change product name on label
@@ -181,6 +185,10 @@ namespace NaturalnieApp.Dymo_Printer
                     if (productToPrint.ElzabProductName.Count() > 17)
                     {
                         label.UpdateLabelObject(element, productToPrint.ElzabProductName.Substring(17, (productToPrint.ElzabProductName.Count() - 18)).ToUpper());
+                    }
+                    else
+                    {
+                        label.UpdateLabelObject(element, "");
                     }
 
                 }

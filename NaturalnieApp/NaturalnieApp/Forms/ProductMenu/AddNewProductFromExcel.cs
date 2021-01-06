@@ -448,6 +448,7 @@ namespace NaturalnieApp.Forms
 
                         if (row.Cells[this.BarcodeColumnName].Value.ToString() != "")
                         {
+
                             //Check if given code is full barcode or oly product code without manufacturer prefix
                             barcodeCheckedVal = GetBarcodePrefixAndCreateFullBarcode(row.Cells[this.ManufacturerColumnName].Value.ToString(),
                                 row.Cells[this.BarcodeColumnName].Value.ToString());
@@ -465,7 +466,8 @@ namespace NaturalnieApp.Forms
                         Validation.MariginValueValidation(row.Cells[this.MariginColumnName].Value.ToString());
                         Validation.PriceNetValueValidation(row.Cells[this.PriceNetColumnName].Value.ToString());
                         Validation.TaxValueValidation(row.Cells[this.TaxColumnName].Value.ToString());
-                        if (barcodeCheckedVal != "") Validation.BarcodeEan13Validation(barcodeCheckedVal);
+                        if (barcodeCheckedVal != "" && barcodeCheckedVal.Length != 8) Validation.BarcodeEan13Validation(barcodeCheckedVal);
+                        if (barcodeCheckedVal.Length == 8) Validation.BarcodeEan8Validation(barcodeCheckedVal);
                         row.Cells[this.BarcodeColumnName].Value = barcodeCheckedVal;
 
                         //Set validated bit
