@@ -69,11 +69,19 @@ namespace NaturalnieApp.Forms
             this.pSpare4 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tbFinalPrice = new System.Windows.Forms.TextBox();
-            this.lFinalPrice = new System.Windows.Forms.Label();
             this.tbActualQuantity = new System.Windows.Forms.TextBox();
             this.lActualQuantity = new System.Windows.Forms.Label();
             this.cbAddWithEveryScanCycle = new System.Windows.Forms.CheckBox();
             this.lAddWithEveryScanCycle = new System.Windows.Forms.Label();
+            this.tpMarigin = new System.Windows.Forms.TableLayoutPanel();
+            this.bMariginChange = new System.Windows.Forms.Button();
+            this.lMarigin = new System.Windows.Forms.Label();
+            this.tbMarigin = new System.Windows.Forms.TextBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lFinalPrice = new System.Windows.Forms.Label();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.bUpdate = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -85,6 +93,10 @@ namespace NaturalnieApp.Forms
             this.pDataOfAccept.SuspendLayout();
             this.pExpDateReq.SuspendLayout();
             this.pExpirationDate.SuspendLayout();
+            this.tpMarigin.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // pHeader
@@ -128,6 +140,7 @@ namespace NaturalnieApp.Forms
             // 
             // pButtonsPanel
             // 
+            this.pButtonsPanel.Controls.Add(this.bUpdate);
             this.pButtonsPanel.Controls.Add(this.bPrint);
             this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -244,7 +257,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 576F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 578F));
             this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -292,7 +305,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 366F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 368F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -388,7 +401,7 @@ namespace NaturalnieApp.Forms
             this.pGap1.Dock = System.Windows.Forms.DockStyle.Top;
             this.pGap1.Location = new System.Drawing.Point(700, 188);
             this.pGap1.Name = "pGap1";
-            this.pGap1.Size = new System.Drawing.Size(300, 20);
+            this.pGap1.Size = new System.Drawing.Size(300, 10);
             this.pGap1.TabIndex = 20;
             // 
             // pDataOfAccept
@@ -398,7 +411,7 @@ namespace NaturalnieApp.Forms
             this.pDataOfAccept.Controls.Add(this.lDateOfAccept);
             this.pDataOfAccept.Controls.Add(this.pSpare2);
             this.pDataOfAccept.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pDataOfAccept.Location = new System.Drawing.Point(700, 208);
+            this.pDataOfAccept.Location = new System.Drawing.Point(700, 198);
             this.pDataOfAccept.Name = "pDataOfAccept";
             this.pDataOfAccept.Size = new System.Drawing.Size(300, 38);
             this.pDataOfAccept.TabIndex = 21;
@@ -442,9 +455,9 @@ namespace NaturalnieApp.Forms
             // pGap2
             // 
             this.pGap2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pGap2.Location = new System.Drawing.Point(700, 246);
+            this.pGap2.Location = new System.Drawing.Point(700, 236);
             this.pGap2.Name = "pGap2";
-            this.pGap2.Size = new System.Drawing.Size(300, 20);
+            this.pGap2.Size = new System.Drawing.Size(300, 10);
             this.pGap2.TabIndex = 22;
             // 
             // pExpDateReq
@@ -454,7 +467,7 @@ namespace NaturalnieApp.Forms
             this.pExpDateReq.Controls.Add(this.lExpDateReq);
             this.pExpDateReq.Controls.Add(this.pSpare3);
             this.pExpDateReq.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pExpDateReq.Location = new System.Drawing.Point(700, 266);
+            this.pExpDateReq.Location = new System.Drawing.Point(700, 246);
             this.pExpDateReq.Name = "pExpDateReq";
             this.pExpDateReq.Size = new System.Drawing.Size(300, 38);
             this.pExpDateReq.TabIndex = 23;
@@ -496,9 +509,9 @@ namespace NaturalnieApp.Forms
             // pGap3
             // 
             this.pGap3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pGap3.Location = new System.Drawing.Point(700, 304);
+            this.pGap3.Location = new System.Drawing.Point(700, 284);
             this.pGap3.Name = "pGap3";
-            this.pGap3.Size = new System.Drawing.Size(300, 20);
+            this.pGap3.Size = new System.Drawing.Size(300, 10);
             this.pGap3.TabIndex = 24;
             // 
             // panel5
@@ -518,7 +531,7 @@ namespace NaturalnieApp.Forms
             this.pExpirationDate.Controls.Add(this.lExpirationDate);
             this.pExpirationDate.Controls.Add(this.pSpare4);
             this.pExpirationDate.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pExpirationDate.Location = new System.Drawing.Point(700, 324);
+            this.pExpirationDate.Location = new System.Drawing.Point(700, 294);
             this.pExpirationDate.Name = "pExpirationDate";
             this.pExpirationDate.Size = new System.Drawing.Size(300, 38);
             this.pExpirationDate.TabIndex = 25;
@@ -562,38 +575,27 @@ namespace NaturalnieApp.Forms
             // panel2
             // 
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(700, 362);
+            this.panel2.Location = new System.Drawing.Point(700, 332);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(300, 20);
+            this.panel2.Size = new System.Drawing.Size(300, 10);
             this.panel2.TabIndex = 26;
             // 
             // tbFinalPrice
             // 
             this.tbFinalPrice.BackColor = System.Drawing.SystemColors.ControlLight;
             this.tbFinalPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbFinalPrice.Location = new System.Drawing.Point(877, 388);
+            this.tbFinalPrice.Location = new System.Drawing.Point(157, 6);
             this.tbFinalPrice.Margin = new System.Windows.Forms.Padding(5);
             this.tbFinalPrice.Name = "tbFinalPrice";
             this.tbFinalPrice.ReadOnly = true;
             this.tbFinalPrice.Size = new System.Drawing.Size(123, 26);
             this.tbFinalPrice.TabIndex = 27;
             // 
-            // lFinalPrice
-            // 
-            this.lFinalPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lFinalPrice.Location = new System.Drawing.Point(701, 386);
-            this.lFinalPrice.Margin = new System.Windows.Forms.Padding(5);
-            this.lFinalPrice.Name = "lFinalPrice";
-            this.lFinalPrice.Size = new System.Drawing.Size(166, 30);
-            this.lFinalPrice.TabIndex = 28;
-            this.lFinalPrice.Text = "Cena klienta";
-            this.lFinalPrice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // tbActualQuantity
             // 
             this.tbActualQuantity.BackColor = System.Drawing.SystemColors.ControlLight;
             this.tbActualQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbActualQuantity.Location = new System.Drawing.Point(877, 424);
+            this.tbActualQuantity.Location = new System.Drawing.Point(157, 6);
             this.tbActualQuantity.Margin = new System.Windows.Forms.Padding(5);
             this.tbActualQuantity.Name = "tbActualQuantity";
             this.tbActualQuantity.ReadOnly = true;
@@ -603,35 +605,163 @@ namespace NaturalnieApp.Forms
             // lActualQuantity
             // 
             this.lActualQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lActualQuantity.Location = new System.Drawing.Point(701, 422);
+            this.lActualQuantity.Location = new System.Drawing.Point(6, 6);
             this.lActualQuantity.Margin = new System.Windows.Forms.Padding(5);
             this.lActualQuantity.Name = "lActualQuantity";
-            this.lActualQuantity.Size = new System.Drawing.Size(166, 30);
+            this.lActualQuantity.Size = new System.Drawing.Size(140, 30);
             this.lActualQuantity.TabIndex = 30;
             this.lActualQuantity.Text = "Aktualna ilość";
             this.lActualQuantity.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // cbAddWithEveryScanCycle
             // 
-            this.cbAddWithEveryScanCycle.BackColor = System.Drawing.Color.White;
+            this.cbAddWithEveryScanCycle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
             this.cbAddWithEveryScanCycle.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbAddWithEveryScanCycle.Dock = System.Windows.Forms.DockStyle.Right;
             this.cbAddWithEveryScanCycle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbAddWithEveryScanCycle.Location = new System.Drawing.Point(950, 458);
+            this.cbAddWithEveryScanCycle.Location = new System.Drawing.Point(246, 4);
             this.cbAddWithEveryScanCycle.Name = "cbAddWithEveryScanCycle";
-            this.cbAddWithEveryScanCycle.Size = new System.Drawing.Size(50, 25);
+            this.cbAddWithEveryScanCycle.Size = new System.Drawing.Size(50, 27);
             this.cbAddWithEveryScanCycle.TabIndex = 3;
             this.cbAddWithEveryScanCycle.UseVisualStyleBackColor = false;
             // 
             // lAddWithEveryScanCycle
             // 
-            this.lAddWithEveryScanCycle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.lAddWithEveryScanCycle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
             this.lAddWithEveryScanCycle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lAddWithEveryScanCycle.Location = new System.Drawing.Point(706, 458);
+            this.lAddWithEveryScanCycle.Location = new System.Drawing.Point(4, 1);
             this.lAddWithEveryScanCycle.Name = "lAddWithEveryScanCycle";
-            this.lAddWithEveryScanCycle.Size = new System.Drawing.Size(238, 26);
+            this.lAddWithEveryScanCycle.Size = new System.Drawing.Size(224, 26);
             this.lAddWithEveryScanCycle.TabIndex = 31;
             this.lAddWithEveryScanCycle.Text = "Dodaj produkt przy odczycie";
             this.lAddWithEveryScanCycle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tpMarigin
+            // 
+            this.tpMarigin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpMarigin.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tpMarigin.ColumnCount = 3;
+            this.tpMarigin.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
+            this.tpMarigin.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tpMarigin.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpMarigin.Controls.Add(this.bMariginChange, 2, 0);
+            this.tpMarigin.Controls.Add(this.lMarigin, 0, 0);
+            this.tpMarigin.Controls.Add(this.tbMarigin, 1, 0);
+            this.tpMarigin.Location = new System.Drawing.Point(700, 342);
+            this.tpMarigin.Name = "tpMarigin";
+            this.tpMarigin.RowCount = 1;
+            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tpMarigin.Size = new System.Drawing.Size(300, 35);
+            this.tpMarigin.TabIndex = 9;
+            // 
+            // bMariginChange
+            // 
+            this.bMariginChange.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bMariginChange.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bMariginChange.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bMariginChange.Location = new System.Drawing.Point(191, 4);
+            this.bMariginChange.Name = "bMariginChange";
+            this.bMariginChange.Size = new System.Drawing.Size(100, 28);
+            this.bMariginChange.TabIndex = 34;
+            this.bMariginChange.Text = "Zmień";
+            this.bMariginChange.UseVisualStyleBackColor = false;
+            this.bMariginChange.Click += new System.EventHandler(this.bMariginChange_Click);
+            // 
+            // lMarigin
+            // 
+            this.lMarigin.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lMarigin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lMarigin.Location = new System.Drawing.Point(6, 6);
+            this.lMarigin.Margin = new System.Windows.Forms.Padding(5);
+            this.lMarigin.Name = "lMarigin";
+            this.lMarigin.Size = new System.Drawing.Size(60, 26);
+            this.lMarigin.TabIndex = 29;
+            this.lMarigin.Text = "Marża";
+            this.lMarigin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tbMarigin
+            // 
+            this.tbMarigin.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.tbMarigin.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tbMarigin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbMarigin.Location = new System.Drawing.Point(92, 6);
+            this.tbMarigin.Margin = new System.Windows.Forms.Padding(5);
+            this.tbMarigin.Name = "tbMarigin";
+            this.tbMarigin.Size = new System.Drawing.Size(90, 26);
+            this.tbMarigin.TabIndex = 33;
+            this.tbMarigin.Validating += new System.ComponentModel.CancelEventHandler(this.tbMarigin_Validating);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.Controls.Add(this.tbFinalPrice, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lFinalPrice, 0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(700, 381);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(300, 35);
+            this.tableLayoutPanel1.TabIndex = 32;
+            // 
+            // lFinalPrice
+            // 
+            this.lFinalPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lFinalPrice.Location = new System.Drawing.Point(6, 6);
+            this.lFinalPrice.Margin = new System.Windows.Forms.Padding(5);
+            this.lFinalPrice.Name = "lFinalPrice";
+            this.lFinalPrice.Size = new System.Drawing.Size(140, 30);
+            this.lFinalPrice.TabIndex = 31;
+            this.lFinalPrice.Text = "Final price";
+            this.lFinalPrice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.Controls.Add(this.lActualQuantity, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.tbActualQuantity, 1, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(700, 420);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(300, 35);
+            this.tableLayoutPanel2.TabIndex = 33;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tableLayoutPanel3.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 230F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel3.Controls.Add(this.cbAddWithEveryScanCycle, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.lAddWithEveryScanCycle, 0, 0);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(700, 460);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(300, 35);
+            this.tableLayoutPanel3.TabIndex = 34;
+            // 
+            // bUpdate
+            // 
+            this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bUpdate.Location = new System.Drawing.Point(676, 10);
+            this.bUpdate.Name = "bUpdate";
+            this.bUpdate.Size = new System.Drawing.Size(100, 50);
+            this.bUpdate.TabIndex = 28;
+            this.bUpdate.Text = "Odśwież";
+            this.bUpdate.UseVisualStyleBackColor = false;
+            this.bUpdate.Click += new System.EventHandler(this.bUpdate_Click);
             // 
             // AddToStock
             // 
@@ -640,12 +770,9 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
-            this.Controls.Add(this.lAddWithEveryScanCycle);
-            this.Controls.Add(this.cbAddWithEveryScanCycle);
-            this.Controls.Add(this.lActualQuantity);
-            this.Controls.Add(this.tbActualQuantity);
-            this.Controls.Add(this.lFinalPrice);
-            this.Controls.Add(this.tbFinalPrice);
+            this.Controls.Add(this.tableLayoutPanel3);
+            this.Controls.Add(this.tableLayoutPanel2);
+            this.Controls.Add(this.tpMarigin);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.pExpirationDate);
             this.Controls.Add(this.pGap3);
@@ -658,6 +785,7 @@ namespace NaturalnieApp.Forms
             this.Controls.Add(this.gbProductSelection);
             this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Enabled = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -679,8 +807,14 @@ namespace NaturalnieApp.Forms
             this.pDataOfAccept.ResumeLayout(false);
             this.pExpDateReq.ResumeLayout(false);
             this.pExpirationDate.ResumeLayout(false);
+            this.tpMarigin.ResumeLayout(false);
+            this.tpMarigin.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -724,11 +858,19 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bPrint;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TextBox tbFinalPrice;
-        private System.Windows.Forms.Label lFinalPrice;
         private System.Windows.Forms.TextBox tbActualQuantity;
         private System.Windows.Forms.Label lActualQuantity;
         private System.Windows.Forms.CheckBox cbAddWithEveryScanCycle;
         private System.Windows.Forms.Label lAddWithEveryScanCycle;
         private System.Windows.Forms.TextBox tbDummyForCtrl;
+        private System.Windows.Forms.TableLayoutPanel tpMarigin;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TextBox tbMarigin;
+        private System.Windows.Forms.Label lMarigin;
+        private System.Windows.Forms.Button bMariginChange;
+        private System.Windows.Forms.Label lFinalPrice;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Button bUpdate;
     }
 }

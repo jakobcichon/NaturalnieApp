@@ -735,7 +735,7 @@ namespace NaturalnieApp.Forms
             try
             {
                 Validation.MariginValueValidation(localSender.Text);
-                this.ProductEntity.Marigin = float.Parse(localSender.Text);
+                this.ProductEntity.Marigin = Int32.Parse(localSender.Text);
                 //Update final price
                 UpdateFinalPrice();
                 errorProvider1.Clear();

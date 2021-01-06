@@ -288,6 +288,35 @@ namespace NaturalnieApp.Forms
 
             advancedDataGridView1.AutoResizeColumns();
         }
+
+
+        private void AdvancedDataGridView1_FilterStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.FilterEventArgs e)
+        {
+        }
+
+        private void AdvancedDataGridView1_SortStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.SortEventArgs e)
+        {
+            Zuby.ADGV.AdvancedDataGridView fdgv = advancedDataGridView1;
+            DataTable dt = null;
+            if (this.DataSoruce == null)
+            {
+                this.DataSoruce = (DataTable)fdgv.DataSource;
+            }
+            if (fdgv.SortString.Length > 0)
+            {
+                dt = (DataTable)fdgv.DataSource;
+            }
+            else//Clear Filter
+            {
+                dt = this.DataSoruce;
+            }
+
+            DataView dv = dt.DefaultView;
+            dv.Sort = fdgv.SortString;
+            DataTable sortedDT = dv.ToTable();
+            fdgv.DataSource = sortedDT;
+
+        }
         #endregion
         //====================================================================================================
         //Current window events

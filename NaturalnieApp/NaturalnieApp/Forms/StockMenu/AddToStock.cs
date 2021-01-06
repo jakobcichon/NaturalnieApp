@@ -24,6 +24,15 @@ namespace NaturalnieApp.Forms
         private List<string> ProductsList { get; set; }
         private List<string> ManufacturersList { get; set; }
         private List<string> BarcodesList { get; set; }
+        private string SelectedProductName { get; set; }
+
+        private Product ProductEntity { get; set; }
+        private Tax TaxEntity { get; set; }
+        private Stock StockEntity { get; set; }
+
+        //Marigin related
+        private int LastValidValueOfMarigin { get; set; }
+        private int MariginValueToChangeTo { get; set; }
 
         //Auto complete string collections
         private AutoCompleteStringCollection ProductListCollection { get; set; }
@@ -80,6 +89,11 @@ namespace NaturalnieApp.Forms
             this.BarcodeReader.BarcodeValid += BarcodeValidAction;
             this.BarcodeValidEventGenerated = false;
 
+
+            //Marigin modification
+            this.LastValidValueOfMarigin = 30;
+            this.MariginValueToChangeTo = this.LastValidValueOfMarigin;
+            this.tbMarigin.Text = this.LastValidValueOfMarigin.ToString();
         }
         #endregion
 
@@ -173,6 +187,10 @@ namespace NaturalnieApp.Forms
                             List<List<string>> returnList = new List<List<string>>();
                             returnList = (List<List<string>>)e.Result;
                             FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1], returnList[2]);
+                            if (this.SelectedProductName != null)
+                            {
+                                this.cbProductsList.SelectedItem = this.SelectedProductName;
+                            }
                         }
                         break;
                 }
@@ -243,6 +261,40 @@ namespace NaturalnieApp.Forms
                 TextBox localSender = (TextBox)sender;
                 localSender.Text = "";
             }
+        }
+
+        //Method used to clear all object (text box, combo box, etc.)  data
+        private void ClearAllObjectsData()
+        {
+            //Supplier name
+            this.cbManufacturers.Items.Clear();
+
+            //Elzab product number
+            this.cbProductsList.Items.Clear();
+            this.cbBarcodes.Items.Clear();
+            this.tbFinalPrice.Text = "";
+            this.tbMarigin.Text = "";
+            this.tbActualQuantity.Text = "";
+        }
+        private void FillWithDataFromObject(Product p, Tax t)
+        {
+            FindTextInComboBoxAndSelect(ref this.cbProductsList, p.ProductName);
+            FindTextInComboBoxAndSelect(ref this.cbBarcodes, p.BarCode);
+
+            //Elzab product number
+            this.tbMarigin.Text = p.Marigin.ToString();
+            this.tbFinalPrice.Text = string.Format("{0:0.00}", p.FinalPrice.ToString());
+        }
+
+        //Method used to update final price value
+        private void UpdateFinalPrice()
+        {
+            //Update Final price
+            this.ProductEntity.FinalPrice = Calculations.CalculateFinalPriceFromProduct(this.ProductEntity,
+                Convert.ToInt32(this.TaxEntity.TaxValue));
+
+            //Show updated value
+            this.tbFinalPrice.Text = string.Format("{0:0.00}", this.ProductEntity.FinalPrice.ToString());
         }
         #endregion
         //====================================================================================================
@@ -384,7 +436,6 @@ namespace NaturalnieApp.Forms
                     List<string> filteredProductNames = this.databaseCommands.GetProductsNameListByManufacturer(cbManufacturers.SelectedItem.ToString());
                     cbProductsList.Items.Clear();
                     cbProductsList.Items.AddRange(filteredProductNames.ToArray());
-
                 }
                 else
                 {
@@ -392,11 +443,6 @@ namespace NaturalnieApp.Forms
                     List<string> productNames = this.databaseCommands.GetProductsNameList();
                     cbProductsList.Items.Clear();
                     cbProductsList.Items.AddRange(productNames.ToArray());
-
-                    cbProductsList.SelectedItem = null;
-                    cbProductsList.Text = null;
-                    cbBarcodes.SelectedItem = null;
-                    cbBarcodes.Text = null;
                 }
             }
             catch (Exception ex)
@@ -409,7 +455,6 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Product List events
         #region Product List events
-
         private void cbProductsList_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Cast an object
@@ -425,15 +470,111 @@ namespace NaturalnieApp.Forms
             {
                 manufacturerName = this.databaseCommands.GetManufacturerByProductName(localSender.SelectedItem.ToString()).Name;
                 barcode = this.databaseCommands.GetProductEntityByProductName(localSender.SelectedItem.ToString()).BarCode;
+
+
+                this.ProductEntity = this.databaseCommands.GetProductEntityByProductName(this.cbProductsList.SelectedItem.ToString());
+                this.TaxEntity = this.databaseCommands.GetTaxByProductName(this.ProductEntity.ProductName);
+                this.FillWithDataFromObject(this.ProductEntity, this.TaxEntity);
+                UpdateFinalPrice();
+
+                tbFinalPrice.Text = this.ProductEntity.FinalPrice.ToString();
+                tbActualQuantity.Text = this.databaseCommands.GetStockQuantity(
+                        this.databaseCommands.GetProductIdByName(this.ProductEntity.ProductName)).ToString();
+
                 FindTextInComboBoxAndSelect(ref cbManufacturers, manufacturerName);
                 FindTextInComboBoxAndSelect(ref cbBarcodes, barcode);
+
+                //Update calss field
+                this.SelectedProductName = localSender.SelectedItem.ToString();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+        #endregion
+        //====================================================================================================
+        //MArigin events
+        #region Marigin events
+        private void tbMarigin_Validating(object sender, CancelEventArgs e)
+        {
+            //Cast an object
+            TextBox localSender = (TextBox)sender;
 
+            try
+            {
+                if (this.cbProductsList.SelectedItem != null)
+                {
+                    int value;
+                    //Try parse input value
+                    value = Int32.Parse(localSender.Text);
+                    if (value > 0 && value <= 100)
+                    {
+                        this.LastValidValueOfMarigin = this.MariginValueToChangeTo;
+                        this.MariginValueToChangeTo = value;
+                        this.ProductEntity.Marigin = this.MariginValueToChangeTo;
+                        UpdateFinalPrice();
+                    }
+                    else localSender.Text = this.LastValidValueOfMarigin.ToString();
+                }
+                else
+                {
+                    MessageBox.Show("Nie wybrano produktu do zmiany marży!");
+                }
+            }
+            catch (FormatException ex)
+            {
+                localSender.Text = this.LastValidValueOfMarigin.ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void bMariginChange_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (this.cbProductsList.SelectedItem != null)
+                {
+                    //Get current selected entity
+                    Product entity = this.databaseCommands.GetProductEntityByProductName(this.cbProductsList.SelectedItem.ToString());
+
+                    //Check if marigin value has changed
+                    if (entity.Marigin != this.MariginValueToChangeTo)
+                    {
+                        //Change Marigin in DB
+                        entity.Marigin = this.MariginValueToChangeTo;
+                        entity.FinalPrice = this.ProductEntity.FinalPrice;
+                        this.databaseCommands.EditProduct(entity);
+                        MessageBox.Show("Udało się zmodyfikować wartość marży!:)");
+
+                        //Update view
+                        this.ActualTaskType = backgroundWorkerTasks.Update;
+                        this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
+
+                        bUpdate_Click(sender, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        //Show message box
+                        MessageBox.Show("Wprowadzona marża jest taka sama jak wprowadzoan w bazie danych. Nie dokonano modyfikacji");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Nie wybrano produktu do zmiany marży!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            UpdateControl(ref tbDummyForCtrl);
+
+        }
         #endregion
         //====================================================================================================
         //Product List events
@@ -454,9 +595,16 @@ namespace NaturalnieApp.Forms
                 manufacturerName = this.databaseCommands.GetManufacturerByProductName(productName).Name;
                 FindTextInComboBoxAndSelect(ref cbManufacturers, manufacturerName);
                 FindTextInComboBoxAndSelect(ref cbProductsList, productName);
-                tbFinalPrice.Text = string.Format("{0:0.00}", this.databaseCommands.GetProductEntityByBarcode(localSender.SelectedItem.ToString()).FinalPrice);
+
+                this.ProductEntity = this.databaseCommands.GetProductEntityByProductName(this.cbProductsList.SelectedItem.ToString());
+                this.TaxEntity = this.databaseCommands.GetTaxByProductName(this.ProductEntity.ProductName);
+                this.FillWithDataFromObject(this.ProductEntity, this.TaxEntity);
+                UpdateFinalPrice();
+
+                tbFinalPrice.Text = this.ProductEntity.FinalPrice.ToString(); 
                 tbActualQuantity.Text = this.databaseCommands.GetStockQuantity(
-                        this.databaseCommands.GetProductIdByName(productName)).ToString();
+                        this.databaseCommands.GetProductIdByName(this.ProductEntity.ProductName)).ToString();
+
                 if (cbAddWithEveryScanCycle.Checked)
                 {
                     bAdd_Click(sender, e);
@@ -621,6 +769,33 @@ namespace NaturalnieApp.Forms
             }
         }
 
+        private void bUpdate_Click(object sender, EventArgs e)
+        {
+            //Get current product name if was chosen
+            if (this.SelectedProductName != null)
+            {
+                if (this.cbProductsList.SelectedItem != null)
+                {
+                    this.SelectedProductName = this.cbProductsList.SelectedItem.ToString();
+                }
+                else
+                {
+                    this.SelectedProductName = null;
+                }
+            }
+
+            cbAddWithEveryScanCycle.Checked = false;
+
+            //Clear all data from current form
+            ClearAllObjectsData();
+
+            //Disable panel and wait until data from db will be fetched
+            this.Enabled = false;
+
+            //Call background worker
+            this.ActualTaskType = backgroundWorkerTasks.Update;
+            this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
+        }
         private void chbExpDateReq_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox localSender = (CheckBox)sender;
@@ -630,6 +805,9 @@ namespace NaturalnieApp.Forms
             UpdateControl(ref tbDummyForCtrl);
         }
 
-        #endregion   
+
+        #endregion
+
+
     }
 }

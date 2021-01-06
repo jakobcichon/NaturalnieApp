@@ -193,7 +193,7 @@ namespace NaturalnieApp.Database
                             for (int i = 0; i < elzabProductIdList.Count(); i++)
                             {
                                 //Recalculate theoretical value of product at given index. If not match use it
-                                int theoVal = firstElementId + elzabProductIdList.Count();
+                                int theoVal = firstElementId + i;
 
                                 //Check value and if not match, assign theoretical one
                                 if (elzabProductIdList[i] != theoVal)
@@ -968,6 +968,7 @@ namespace NaturalnieApp.Database
             }
             return quantity;
         }
+
 
         //====================================================================================================
         //Method used to get stock entity from with given manufacturer ID

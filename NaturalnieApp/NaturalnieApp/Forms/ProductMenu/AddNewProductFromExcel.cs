@@ -578,7 +578,7 @@ namespace NaturalnieApp.Forms
                         string rowElzabProductNameValue = row.Cells[this.ElzabProductColumnName].Value.ToString();
                         float rowPriceNetValue = float.Parse(row.Cells[this.PriceNetColumnName].Value.ToString());
                         int rowTaxValue = Convert.ToInt32(row.Cells[this.TaxColumnName].Value.ToString());
-                        float rowMariginValue = float.Parse(row.Cells[this.MariginColumnName].Value.ToString());
+                        int rowMariginValue = Int32.Parse(row.Cells[this.MariginColumnName].Value.ToString());
                         string rowBarcodeValue = row.Cells[this.BarcodeColumnName].Value.ToString();
                         string rowSupplierCodeValue = row.Cells[this.SupplierCodeColumnName].Value.ToString();
 

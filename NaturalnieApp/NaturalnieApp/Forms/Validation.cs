@@ -177,7 +177,7 @@ namespace NaturalnieApp.Forms
         {
             //Local variables
             bool validatingResult;
-            string text = "Marża jest wartością rzeczywistą, w której miejsce dziesiętne oddzielone jest znakiem '.' (kropka).";
+            string text = "Marża jest liczbą całkowitą";
 
             //Accept only letters an numbers with maximal length of 255 chars
             string regPattern = @"^[0-9]+$";
@@ -234,7 +234,7 @@ namespace NaturalnieApp.Forms
             string text = "Podana warość musi być liczbą całkowitą!";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^[0-9]*$";
+            string regPattern = @"^[0-9]+$";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
