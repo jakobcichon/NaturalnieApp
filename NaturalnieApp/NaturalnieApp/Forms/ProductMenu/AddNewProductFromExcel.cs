@@ -466,8 +466,11 @@ namespace NaturalnieApp.Forms
                         Validation.MariginValueValidation(row.Cells[this.MariginColumnName].Value.ToString());
                         Validation.PriceNetValueValidation(row.Cells[this.PriceNetColumnName].Value.ToString());
                         Validation.TaxValueValidation(row.Cells[this.TaxColumnName].Value.ToString());
-                        if (barcodeCheckedVal != "" && barcodeCheckedVal.Length != 8) Validation.BarcodeEan13Validation(barcodeCheckedVal);
+
+                        //Action depending of barcode type
+                        if (barcodeCheckedVal != "" && barcodeCheckedVal.Length != 8 && barcodeCheckedVal.Length != 12) Validation.BarcodeEan13Validation(barcodeCheckedVal);
                         if (barcodeCheckedVal.Length == 8) Validation.BarcodeEan8Validation(barcodeCheckedVal);
+                        if (barcodeCheckedVal.Length == 12) Validation.GeneralNumberValidation(barcodeCheckedVal);
                         row.Cells[this.BarcodeColumnName].Value = barcodeCheckedVal;
 
                         //Set validated bit
