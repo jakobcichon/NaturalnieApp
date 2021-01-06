@@ -5,7 +5,7 @@ using NaturalnieApp.Database;
 using System;
 using System.Data;
 using NaturalnieApp.Dymo_Printer;
-
+using System.Diagnostics;
 
 namespace NaturalnieApp.Forms
 {
@@ -190,39 +190,59 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //General methods
         #region General methods
-
         //Metchod use to find and select string in ComboBox
         private void FindTextInComboBoxAndSelect(ref ComboBox obj, string textToFind)
         {
             //Find search tex index
-            int index = obj.FindString(textToFind);
+            int index = obj.FindStringExact(textToFind);
             obj.SelectedIndex = index;
+            ;
 
         }
-
         private void FillWithInitialDataFromObject(List<string> productList, List<string> manufacturerList, List<string> barcodeList)
         {
             //Add fetched data to proper combo box
             this.ProductListCollection = new AutoCompleteStringCollection();
             this.ProductsList = this.databaseCommands.GetProductsNameList();
+            this.ProductListCollection.Clear();
             this.ProductListCollection.AddRange(this.ProductsList.ToArray());
             this.cbProductsList.AutoCompleteCustomSource = this.ProductListCollection;
+            this.cbProductsList.Items.Clear();
             this.cbProductsList.Items.AddRange(this.ProductsList.ToArray());
 
             //Add fetched data to proper combo box
             this.ManufacturerListCollection = new AutoCompleteStringCollection();
             this.ManufacturersList = this.databaseCommands.GetManufacturersNameList();
+            this.ManufacturerListCollection.Clear();
             this.ManufacturerListCollection.AddRange(this.ManufacturersList.ToArray());
             this.cbManufacturers.AutoCompleteCustomSource = this.ManufacturerListCollection;
+            this.cbManufacturers.Items.Clear();
             this.cbManufacturers.Items.AddRange(this.ManufacturersList.ToArray());
 
             //Add fetched data to proper combo box
             this.BarcodeListCollection = new AutoCompleteStringCollection();
             this.BarcodesList = this.databaseCommands.GetBarcodeList();
+            this.BarcodeListCollection.Clear();
             this.BarcodeListCollection.AddRange(this.BarcodesList.ToArray());
             this.cbBarcodes.AutoCompleteCustomSource = this.BarcodeListCollection;
+            this.cbBarcodes.Items.Clear();
             this.cbBarcodes.Items.AddRange(this.BarcodesList.ToArray());
 
+        }
+        //Methos used to update control
+        private void UpdateControl(ref TextBox dummyForControl)
+        {
+            //this.Select();
+            this.Focus();
+            dummyForControl.Select();
+        }
+        private void tbDummyForCtrl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Escape || e.KeyCode == Keys.Tab)
+            {
+                TextBox localSender = (TextBox)sender;
+                localSender.Text = "";
+            }
         }
         #endregion
         //====================================================================================================
@@ -293,6 +313,9 @@ namespace NaturalnieApp.Forms
             this.dtpDateOfAccept.Value = DateTime.Now;
             this.dtpExpirationDate.Value = DateTime.Now.AddMonths(3);
 
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
+
         }
         private void AddToStock_KeyDown(object sender, KeyEventArgs e)
         {
@@ -303,34 +326,44 @@ namespace NaturalnieApp.Forms
 
             if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
             {
-                this.SelectNextControl(this, true, true, true, true);
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
 
             }
             else if (e.KeyCode == Keys.Escape)
             {
-                localControl.SelectNextControl(this, true, true, true, true);
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
             }
 
         }
+        /*
         private void AddToStock_Paint(object sender, PaintEventArgs e)
         {
             this.SelectNextControl(this, true, true, true, true);
         }
+        */
         private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
         {
-
             if (e.Ready && e.Valid)
             {
+                string barcodeToSearch;
+                //If short barcode try to get full barcode
+                if (e.RecognizedBarcodeValue.Length == 8)
+                {
+                    barcodeToSearch = this.databaseCommands.GetEAN13FromShortBarcode(e.RecognizedBarcodeValue);
+                    if (barcodeToSearch == "" || barcodeToSearch == null) barcodeToSearch = e.RecognizedBarcodeValue;
+                }
+                else barcodeToSearch = e.RecognizedBarcodeValue;
+
                 //Get index
-                int index = this.cbBarcodes.Items.IndexOf(e.RecognizedBarcodeValue);
+                int index = this.cbBarcodes.Items.IndexOf(barcodeToSearch);
                 if (index >= 0)
                 {
                     this.cbBarcodes.SelectedIndex = index;
-                    cbBarcodes.SelectNextControl(this, true, true, true, true);
-                    this.cbBarcodes_SelectionChangeCommitted(this.cbBarcodes, EventArgs.Empty);
+                    this.cbBarcodes_SelectedIndexChanged(this.cbBarcodes, EventArgs.Empty);
                 }
                 else MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych");
-
             }
 
             //Set variable informing Bar code read corrected
@@ -340,17 +373,12 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Manufacturer  events
         #region Manufacturer  events
-        private void cbManufacturers_SelectionChangeCommitted(object sender, EventArgs e)
+        private void cbManufacturers_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
                 if (this.cbManufacturers.SelectedIndex != 0)
                 {
-
-                    cbProductsList.SelectedItem = null;
-                    cbProductsList.Text = null;
-                    cbBarcodes.SelectedItem = null;
-                    cbBarcodes.Text = null;
 
                     //Fetch filtered information from database
                     List<string> filteredProductNames = this.databaseCommands.GetProductsNameListByManufacturer(cbManufacturers.SelectedItem.ToString());
@@ -375,12 +403,14 @@ namespace NaturalnieApp.Forms
             {
                 MessageBox.Show(ex.Message);
             }
+            UpdateControl(ref tbDummyForCtrl);
         }
         #endregion
         //====================================================================================================
         //Product List events
         #region Product List events
-        private void cbProductsList_SelectionChangeCommitted(object sender, EventArgs e)
+
+        private void cbProductsList_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Cast an object
             ComboBox localSender = (ComboBox)sender;
@@ -388,6 +418,7 @@ namespace NaturalnieApp.Forms
             //Local variables
             string manufacturerName;
             string barcode;
+
 
             //Get selected entity
             try
@@ -402,11 +433,12 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show(ex.Message);
             }
         }
+
         #endregion
         //====================================================================================================
         //Product List events
         #region Barcode events
-        private void cbBarcodes_SelectionChangeCommitted(object sender, EventArgs e)
+        private void cbBarcodes_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Cast an object
             ComboBox localSender = (ComboBox)sender;
@@ -429,14 +461,13 @@ namespace NaturalnieApp.Forms
                 {
                     bAdd_Click(sender, e);
                 }
-
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
 
+            UpdateControl(ref tbDummyForCtrl);
         }
         #endregion
         //====================================================================================================
@@ -508,7 +539,7 @@ namespace NaturalnieApp.Forms
             }
 
             //Select next control
-            this.SelectNextControl(this, true, true, true, true);
+            UpdateControl(ref tbDummyForCtrl);
         }
 
         private void bClose_Click(object sender, EventArgs e)
@@ -585,6 +616,8 @@ namespace NaturalnieApp.Forms
                 {
                     this.DataSoruce.Rows.Remove(element);
                 }
+
+                UpdateControl(ref tbDummyForCtrl);
             }
         }
 
@@ -593,10 +626,10 @@ namespace NaturalnieApp.Forms
             CheckBox localSender = (CheckBox)sender;
             if (localSender.Checked) this.pExpirationDate.Show();
             else this.pExpirationDate.Hide();
+
+            UpdateControl(ref tbDummyForCtrl);
         }
 
-        #endregion
-
-
+        #endregion   
     }
 }

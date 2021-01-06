@@ -30,6 +30,7 @@ namespace NaturalnieApp.Forms
         private void InitializeComponent()
         {
             this.pHeader = new System.Windows.Forms.Panel();
+            this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
@@ -55,12 +56,22 @@ namespace NaturalnieApp.Forms
             // 
             // pHeader
             // 
+            this.pHeader.Controls.Add(this.tbDummyForCtrl);
             this.pHeader.Controls.Add(this.panel1);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
             this.pHeader.Size = new System.Drawing.Size(1000, 30);
             this.pHeader.TabIndex = 1;
+            // 
+            // tbDummyForCtrl
+            // 
+            this.tbDummyForCtrl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tbDummyForCtrl.Location = new System.Drawing.Point(0, 0);
+            this.tbDummyForCtrl.Name = "tbDummyForCtrl";
+            this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
+            this.tbDummyForCtrl.TabIndex = 7;
+            this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
             // 
             // panel1
             // 
@@ -150,7 +161,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 360F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 365F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -166,6 +177,7 @@ namespace NaturalnieApp.Forms
             // 
             // cbManufacturers
             // 
+            this.cbManufacturers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.cbManufacturers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.cbManufacturers.Dock = System.Windows.Forms.DockStyle.Left;
             this.cbManufacturers.DropDownHeight = 200;
@@ -284,6 +296,7 @@ namespace NaturalnieApp.Forms
             this.Load += new System.EventHandler(this.AddToStock_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddToStock_KeyDown);
             this.pHeader.ResumeLayout(false);
+            this.pHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.pButtonsPanel.ResumeLayout(false);
             this.gbProductSelection.ResumeLayout(false);
@@ -311,5 +324,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lActualQuantity;
         private System.Windows.Forms.Label lFinalPrice;
         private System.Windows.Forms.Button bShow;
+        private System.Windows.Forms.TextBox tbDummyForCtrl;
     }
 }

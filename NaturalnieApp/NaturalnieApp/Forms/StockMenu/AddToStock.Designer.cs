@@ -30,6 +30,7 @@ namespace NaturalnieApp.Forms
         private void InitializeComponent()
         {
             this.pHeader = new System.Windows.Forms.Panel();
+            this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
@@ -88,12 +89,22 @@ namespace NaturalnieApp.Forms
             // 
             // pHeader
             // 
+            this.pHeader.Controls.Add(this.tbDummyForCtrl);
             this.pHeader.Controls.Add(this.panel1);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
             this.pHeader.Size = new System.Drawing.Size(1000, 30);
             this.pHeader.TabIndex = 1;
+            // 
+            // tbDummyForCtrl
+            // 
+            this.tbDummyForCtrl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tbDummyForCtrl.Location = new System.Drawing.Point(0, 0);
+            this.tbDummyForCtrl.Name = "tbDummyForCtrl";
+            this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
+            this.tbDummyForCtrl.TabIndex = 6;
+            this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
             // 
             // panel1
             // 
@@ -212,7 +223,7 @@ namespace NaturalnieApp.Forms
             this.cbBarcodes.Name = "cbBarcodes";
             this.cbBarcodes.Size = new System.Drawing.Size(160, 28);
             this.cbBarcodes.TabIndex = 3;
-            this.cbBarcodes.SelectionChangeCommitted += new System.EventHandler(this.cbBarcodes_SelectionChangeCommitted);
+            this.cbBarcodes.SelectedIndexChanged += new System.EventHandler(this.cbBarcodes_SelectedIndexChanged);
             // 
             // lBarcode
             // 
@@ -233,7 +244,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 564F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 575F));
             this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -260,7 +271,7 @@ namespace NaturalnieApp.Forms
             this.cbProductsList.Name = "cbProductsList";
             this.cbProductsList.Size = new System.Drawing.Size(450, 28);
             this.cbProductsList.TabIndex = 2;
-            this.cbProductsList.SelectionChangeCommitted += new System.EventHandler(this.cbProductsList_SelectionChangeCommitted);
+            this.cbProductsList.SelectedIndexChanged += new System.EventHandler(this.cbProductsList_SelectedIndexChanged);
             // 
             // lProductName
             // 
@@ -281,7 +292,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 354F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 365F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -310,7 +321,7 @@ namespace NaturalnieApp.Forms
             this.cbManufacturers.Name = "cbManufacturers";
             this.cbManufacturers.Size = new System.Drawing.Size(240, 28);
             this.cbManufacturers.TabIndex = 1;
-            this.cbManufacturers.SelectionChangeCommitted += new System.EventHandler(this.cbManufacturers_SelectionChangeCommitted);
+            this.cbManufacturers.SelectedIndexChanged += new System.EventHandler(this.cbManufacturers_SelectedIndexChanged);
             // 
             // lManufacturer
             // 
@@ -343,6 +354,7 @@ namespace NaturalnieApp.Forms
             this.mtbQuantity.Dock = System.Windows.Forms.DockStyle.Left;
             this.mtbQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mtbQuantity.Location = new System.Drawing.Point(150, 10);
+            this.mtbQuantity.Mask = "999";
             this.mtbQuantity.Name = "mtbQuantity";
             this.mtbQuantity.PromptChar = ' ';
             this.mtbQuantity.Size = new System.Drawing.Size(149, 26);
@@ -653,9 +665,9 @@ namespace NaturalnieApp.Forms
             this.Name = "AddToStock";
             this.Text = "PrintBarcode";
             this.Load += new System.EventHandler(this.AddToStock_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.AddToStock_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddToStock_KeyDown);
             this.pHeader.ResumeLayout(false);
+            this.pHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.pButtonsPanel.ResumeLayout(false);
             this.gbProductSelection.ResumeLayout(false);
@@ -717,5 +729,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lActualQuantity;
         private System.Windows.Forms.CheckBox cbAddWithEveryScanCycle;
         private System.Windows.Forms.Label lAddWithEveryScanCycle;
+        private System.Windows.Forms.TextBox tbDummyForCtrl;
     }
 }

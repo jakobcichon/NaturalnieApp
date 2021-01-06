@@ -30,7 +30,7 @@ namespace NaturalnieApp.Forms
         private void InitializeComponent()
         {
             this.pHeader = new System.Windows.Forms.Panel();
-            this.bDummyForControl = new System.Windows.Forms.Button();
+            this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.bPrint = new System.Windows.Forms.Button();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
@@ -46,7 +46,6 @@ namespace NaturalnieApp.Forms
             this.pManufacturer = new System.Windows.Forms.TableLayoutPanel();
             this.cbManufacturers = new System.Windows.Forms.ComboBox();
             this.lManufacturer = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.pHeader.SuspendLayout();
@@ -61,7 +60,7 @@ namespace NaturalnieApp.Forms
             // 
             // pHeader
             // 
-            this.pHeader.Controls.Add(this.bDummyForControl);
+            this.pHeader.Controls.Add(this.tbDummyForCtrl);
             this.pHeader.Controls.Add(this.panel1);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
@@ -69,23 +68,14 @@ namespace NaturalnieApp.Forms
             this.pHeader.Size = new System.Drawing.Size(1000, 30);
             this.pHeader.TabIndex = 0;
             // 
-            // bDummyForControl
+            // tbDummyForCtrl
             // 
-            this.bDummyForControl.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.bDummyForControl.BackColor = System.Drawing.Color.Transparent;
-            this.bDummyForControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bDummyForControl.CausesValidation = false;
-            this.bDummyForControl.Cursor = System.Windows.Forms.Cursors.No;
-            this.bDummyForControl.Enabled = false;
-            this.bDummyForControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bDummyForControl.ForeColor = System.Drawing.Color.Transparent;
-            this.bDummyForControl.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.bDummyForControl.Location = new System.Drawing.Point(496, 11);
-            this.bDummyForControl.Name = "bDummyForControl";
-            this.bDummyForControl.Size = new System.Drawing.Size(8, 8);
-            this.bDummyForControl.TabIndex = 1;
-            this.bDummyForControl.UseVisualStyleBackColor = false;
-            this.bDummyForControl.Visible = false;
+            this.tbDummyForCtrl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tbDummyForCtrl.Location = new System.Drawing.Point(0, 0);
+            this.tbDummyForCtrl.Name = "tbDummyForCtrl";
+            this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
+            this.tbDummyForCtrl.TabIndex = 7;
+            this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
             // 
             // panel1
             // 
@@ -164,7 +154,7 @@ namespace NaturalnieApp.Forms
             this.pBarCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pBarCode.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pBarCode.ColumnCount = 1;
-            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 357F));
+            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 367F));
             this.pBarCode.Controls.Add(this.cbBarcodes, 0, 1);
             this.pBarCode.Controls.Add(this.lBarcode, 0, 0);
             this.pBarCode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -191,7 +181,7 @@ namespace NaturalnieApp.Forms
             this.cbBarcodes.Name = "cbBarcodes";
             this.cbBarcodes.Size = new System.Drawing.Size(160, 28);
             this.cbBarcodes.TabIndex = 1;
-            this.cbBarcodes.SelectionChangeCommitted += new System.EventHandler(this.cbBarcodes_SelectionChangedCommited);
+            this.cbBarcodes.SelectedIndexChanged += new System.EventHandler(this.cbBarcodes_SelectedIndexChanged);
             // 
             // lBarcode
             // 
@@ -212,7 +202,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 544F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 554F));
             this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -239,7 +229,7 @@ namespace NaturalnieApp.Forms
             this.cbProductsList.Name = "cbProductsList";
             this.cbProductsList.Size = new System.Drawing.Size(450, 28);
             this.cbProductsList.TabIndex = 1;
-            this.cbProductsList.SelectionChangeCommitted += new System.EventHandler(this.cbProductsList_SelectionChangeCommitted);
+            this.cbProductsList.SelectedIndexChanged += new System.EventHandler(this.cbProductsList_SelectedIndexChanged);
             // 
             // lProductName
             // 
@@ -260,7 +250,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 334F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 344F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -276,6 +266,7 @@ namespace NaturalnieApp.Forms
             // 
             // cbManufacturers
             // 
+            this.cbManufacturers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.cbManufacturers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.cbManufacturers.Dock = System.Windows.Forms.DockStyle.Left;
             this.cbManufacturers.DropDownHeight = 200;
@@ -289,7 +280,7 @@ namespace NaturalnieApp.Forms
             this.cbManufacturers.Name = "cbManufacturers";
             this.cbManufacturers.Size = new System.Drawing.Size(240, 28);
             this.cbManufacturers.TabIndex = 1;
-            this.cbManufacturers.SelectionChangeCommitted += new System.EventHandler(this.cbManufacturers_SelectionChangeCommitted);
+            this.cbManufacturers.SelectedIndexChanged += new System.EventHandler(this.cbManufacturers_SelectedIndexChanged);
             // 
             // lManufacturer
             // 
@@ -305,17 +296,9 @@ namespace NaturalnieApp.Forms
             this.lManufacturer.Text = "Producent";
             this.lManufacturer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(782, 118);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(171, 20);
-            this.textBox1.TabIndex = 4;
-            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.advancedDataGridView1);
-            this.panel2.Controls.Add(this.textBox1);
             this.panel2.Location = new System.Drawing.Point(0, 142);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1000, 362);
@@ -325,6 +308,7 @@ namespace NaturalnieApp.Forms
             // 
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.advancedDataGridView1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView1.FilterAndSortEnabled = true;
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 0);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
@@ -352,13 +336,13 @@ namespace NaturalnieApp.Forms
             this.Load += new System.EventHandler(this.PrintBarcode_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PrintBarcode_KeyDown);
             this.pHeader.ResumeLayout(false);
+            this.pHeader.PerformLayout();
             this.pButtonsPanel.ResumeLayout(false);
             this.gbProductSelection.ResumeLayout(false);
             this.pBarCode.ResumeLayout(false);
             this.pProductName.ResumeLayout(false);
             this.pManufacturer.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.ResumeLayout(false);
 
@@ -381,9 +365,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.ComboBox cbBarcodes;
         private System.Windows.Forms.ComboBox cbProductsList;
         private System.Windows.Forms.Button bClose;
-        private System.Windows.Forms.Button bDummyForControl;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Panel panel2;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
+        private System.Windows.Forms.TextBox tbDummyForCtrl;
     }
 }

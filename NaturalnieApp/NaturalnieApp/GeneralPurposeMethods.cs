@@ -39,6 +39,23 @@ namespace NaturalnieApp
             {
             }
         }
+
+        public class ElementAlreadyExist : Exception
+        {
+            public ElementAlreadyExist()
+            {
+            }
+
+            public ElementAlreadyExist(string message)
+                : base(message)
+            {
+            }
+
+            public ElementAlreadyExist(string message, Exception inner)
+                : base(message, inner)
+            {
+            }
+        }
         #endregion
 
         /// <summary>
@@ -152,6 +169,7 @@ namespace NaturalnieApp
             string TemporaryBarcodeValue { get; set; }
             public bool Ready { get; set; }
             public bool Valid { get; set; }
+            private List<string> debugList { get; set; }
 
             //Register an event
             public event BarcodeValidEventHandler BarcodeValid;
@@ -185,6 +203,8 @@ namespace NaturalnieApp
                 this.timer.Enabled = true;
 
                 this.TemporaryBarcodeValue = "";
+                this.debugList = new List<string>();
+                this.debugList.Add("");
                 this.Ready = true;
             }
             
@@ -246,6 +266,7 @@ namespace NaturalnieApp
                             this.TemporaryBarcodeValue += "9";
                             break;
                     }
+
                 }
                 else if (key == Keys.Enter)
                 {
@@ -260,6 +281,8 @@ namespace NaturalnieApp
                     }
                     else this.Valid = false;
                 }
+
+                this.debugList[debugList.Count - 1] += key;
             }
 
             private void OnTimedEvent(Object source, ElapsedEventArgs e)
@@ -268,6 +291,7 @@ namespace NaturalnieApp
                 this.Ready = true;
                 this.Valid = false;
                 this.TemporaryBarcodeValue = "";
+                if (this.debugList.Count >= 100) this.debugList.Clear();
             }
 
             private void CallBarcodeValidEvent(bool ready, bool valid, string barcode)
@@ -356,6 +380,5 @@ namespace NaturalnieApp
         }
     }
 
-   
 
 }

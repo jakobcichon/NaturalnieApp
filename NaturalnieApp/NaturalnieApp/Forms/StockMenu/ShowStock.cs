@@ -167,7 +167,7 @@ namespace NaturalnieApp.Forms
         private void FindTextInComboBoxAndSelect(ref ComboBox obj, string textToFind)
         {
             //Find search tex index
-            int index = obj.FindString(textToFind);
+            int index = obj.FindStringExact(textToFind);
             obj.SelectedIndex = index;
 
         }
@@ -180,6 +180,20 @@ namespace NaturalnieApp.Forms
             this.ManufacturerListCollection.AddRange(this.ManufacturersList.ToArray());
             this.cbManufacturers.AutoCompleteCustomSource = this.ManufacturerListCollection;
             this.cbManufacturers.Items.AddRange(this.ManufacturersList.ToArray());
+        }
+        private void UpdateControl(ref TextBox dummyForControl)
+        {
+            //this.Select();
+            this.Focus();
+            dummyForControl.Select();
+        }
+        private void tbDummyForCtrl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Escape || e.KeyCode == Keys.Tab)
+            {
+                TextBox localSender = (TextBox)sender;
+                localSender.Text = "";
+            }
         }
         #endregion
         //====================================================================================================
@@ -257,6 +271,9 @@ namespace NaturalnieApp.Forms
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
 
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
+
         }
         private void AddToStock_KeyDown(object sender, KeyEventArgs e)
         {
@@ -264,12 +281,16 @@ namespace NaturalnieApp.Forms
 
             if (e.KeyCode == Keys.Enter)
             {
-                this.SelectNextControl(this, true, true, true, true);
+
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
 
             }
             else if (e.KeyCode == Keys.Escape)
             {
-                localControl.SelectNextControl(this, true, true, true, true);
+
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
             }
 
         }
@@ -284,15 +305,46 @@ namespace NaturalnieApp.Forms
                 //Local variables
                 List<Stock> stockList = new List<Stock>();
                 Product productEnt = new Product();
+                int quantity = 0;
 
-                if(cbManufacturers.SelectedIndex == 0)
+                if (cbManufacturers.SelectedIndex == 0)
                 {
+                    //Cleardata
+                    this.DataSoruce.Rows.Clear();
 
+                    stockList = this.databaseCommands.GetAllStockEnts();
+
+                    foreach (Stock element in stockList)
+                    {
+                        //Get product entity
+                        productEnt = this.databaseCommands.GetProductEntityById(element.ProductId);
+
+                        //Add data to table
+                        DataRow rowElement;
+                        rowElement = this.DataSoruce.NewRow();
+
+                        //Set row fields
+                        rowElement.SetField<string>(this.ColumnNames.No, (this.DataSoruce.Rows.Count + 1).ToString());
+                        rowElement.SetField<int>(this.ColumnNames.ElzabNumber, productEnt.ElzabProductId);
+                        rowElement.SetField<string>(this.ColumnNames.ProductName, productEnt.ProductName);
+                        rowElement.SetField<DateTime>(this.ColumnNames.AddDate, element.ModificationDate);
+                        rowElement.SetField<DateTime>(this.ColumnNames.ExpirenceDate, element.ExpirationDate);
+                        rowElement.SetField<int>(this.ColumnNames.NumberOfPieces, element.ActualQuantity);
+
+                        quantity += element.ActualQuantity;
+
+                        this.DataSoruce.Rows.Add(rowElement);
+
+                    }
+
+                    //Show number of product and quantity
+                    this.tbNumberOfProducts.Text = this.DataSoruce.Rows.Count.ToString();
+                    this.tbStockQuantity.Text = quantity.ToString();
+
+                    this.advancedDataGridView1.AutoResizeColumns();
                 }
                 else
                 {
-                    //Local variable
-                    int quantity = 0;
 
                     //Get from stock list of products of given manufacturer
                     int manufacturerId = this.databaseCommands.GetManufacturerIdByName(cbManufacturers.SelectedItem.ToString());
@@ -346,6 +398,9 @@ namespace NaturalnieApp.Forms
             {
                 MessageBox.Show("Najpierw należy wybrać porducenta!");
             }
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
 
         private void bClose_Click(object sender, EventArgs e)
@@ -355,9 +410,6 @@ namespace NaturalnieApp.Forms
             this.Dispose();
         }
 
-
-
-        #endregion
 
         private void bSaveToFile_Click(object sender, EventArgs e)
         {
@@ -371,6 +423,11 @@ namespace NaturalnieApp.Forms
             //Test purpose
             ExcelBase.ExportToExcel(this.DataSoruce, @"F:\test", test.ToArray());
 
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
+
+        #endregion
+
     }
 }

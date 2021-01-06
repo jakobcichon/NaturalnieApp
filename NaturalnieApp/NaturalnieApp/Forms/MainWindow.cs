@@ -159,17 +159,17 @@ namespace NaturalnieApp.Forms
             try
             {
                 this.pContainer.Controls.Add(this.addNewProduct);
-                this.addNewProduct.Show();
+                this.addNewProduct.Select();
                 this.addNewProduct.BringToFront();
-                this.addNewProduct.Activate();
+                this.addNewProduct.Show();
             }
             catch (ObjectDisposedException)
             {
                 this.addNewProduct = new AddNewProduct(ref this.databaseCommands) { TopLevel = false, TopMost = true };
                 this.pContainer.Controls.Add(this.addNewProduct);
-                this.addNewProduct.Show();
+                this.addNewProduct.Select();
                 this.addNewProduct.BringToFront();
-                this.addNewProduct.Activate();
+                this.addNewProduct.Show();
             }
         }
         private void AddProductFromPdf_Click(object sender, EventArgs e)
@@ -177,17 +177,17 @@ namespace NaturalnieApp.Forms
             try
             {
                 this.pContainer.Controls.Add(this.addNewProductFromExcel);
-                this.addNewProductFromExcel.Show();
+                this.addNewProductFromExcel.Select();
                 this.addNewProductFromExcel.BringToFront();
-                this.addNewProductFromExcel.Activate();
+                this.addNewProductFromExcel.Show();
             }
             catch (ObjectDisposedException)
             {
                 this.addNewProductFromExcel = new AddNewProductFromExcel(ref this.databaseCommands) { TopLevel = false, TopMost = true };
                 this.pContainer.Controls.Add(this.addNewProductFromExcel);
-                this.addNewProductFromExcel.Show();
+                this.addNewProductFromExcel.Select();
                 this.addNewProductFromExcel.BringToFront();
-                this.addNewProductFromExcel.Activate();
+                this.addNewProductFromExcel.Show();
             }
 
         }
@@ -198,18 +198,17 @@ namespace NaturalnieApp.Forms
             try
             {
                 this.pContainer.Controls.Add(this.showProductInfo);
-                this.showProductInfo.Show();
+                this.showProductInfo.Select();
                 this.showProductInfo.BringToFront();
-                this.showProductInfo.Activate();
-
+                this.showProductInfo.Show();
             }
             catch (ObjectDisposedException)
             {
                 this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) { TopLevel = false, TopMost = true };
                 this.pContainer.Controls.Add(this.showProductInfo);
-                this.showProductInfo.Show();
+                this.showProductInfo.Select();
                 this.showProductInfo.BringToFront();
-                this.showProductInfo.Activate();
+                this.showProductInfo.Show();
             }
         }
 
@@ -219,17 +218,17 @@ namespace NaturalnieApp.Forms
             try
             {
                 this.pContainer.Controls.Add(this.printBarcode);
-                this.printBarcode.Show();
+                this.printBarcode.Select();
                 this.printBarcode.BringToFront();
-                this.printBarcode.Activate();
+                this.printBarcode.Show();
             }
             catch (ObjectDisposedException)
             {
                 this.printBarcode = new PrintBarcode(ref this.databaseCommands) { TopLevel = false, TopMost = true };
                 this.pContainer.Controls.Add(this.printBarcode);
-                this.printBarcode.Show();
+                this.printBarcode.Select();
                 this.printBarcode.BringToFront();
-                this.printBarcode.Activate();
+                this.printBarcode.Show();
             }
 
         }
@@ -240,17 +239,17 @@ namespace NaturalnieApp.Forms
             try
             {
                 this.pContainer.Controls.Add(this.addManufacturer);
-                this.addManufacturer.Show();
+                this.addManufacturer.Select();
                 this.addManufacturer.BringToFront();
-                this.addManufacturer.Activate();
+                this.addManufacturer.Show();
             }
             catch (ObjectDisposedException)
             {
                 this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
                 this.pContainer.Controls.Add(this.addManufacturer);
-                this.addManufacturer.Show();
+                this.addManufacturer.Select();
                 this.addManufacturer.BringToFront();
-                this.addManufacturer.Activate();
+                this.addManufacturer.Show();
             }
         }
 
@@ -269,17 +268,17 @@ namespace NaturalnieApp.Forms
             try
             {
                 this.pContainer.Controls.Add(this.addToStock);
-                this.addToStock.Show();
+                this.addToStock.Select();
                 this.addToStock.BringToFront();
-                this.addToStock.Activate();
+                this.addToStock.Show();
             }
             catch (ObjectDisposedException)
             {
                 this.addToStock = new AddToStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
                 this.pContainer.Controls.Add(this.addToStock);
-                this.addToStock.Show();
+                this.addToStock.Select();
                 this.addToStock.BringToFront();
-                this.addToStock.Activate();
+                this.addToStock.Show();
             }
 
         }
@@ -290,17 +289,17 @@ namespace NaturalnieApp.Forms
             try
             {
                 this.pContainer.Controls.Add(this.printFromStock);
-                this.printFromStock.Show();
+                this.printFromStock.Select();
                 this.printFromStock.BringToFront();
-                this.printFromStock.Activate();
+                this.printFromStock.Show();
             }
             catch (ObjectDisposedException)
             {
                 this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
                 this.pContainer.Controls.Add(this.printFromStock);
-                this.printFromStock.Show();
+                this.printFromStock.Select();
                 this.printFromStock.BringToFront();
-                this.printFromStock.Activate();
+                this.printFromStock.Show();
             }
         }
         private void bShowStock_Click(object sender, EventArgs e)
@@ -309,17 +308,17 @@ namespace NaturalnieApp.Forms
             try
             {
                 this.pContainer.Controls.Add(this.showStock);
-                this.showStock.Show();
+                this.showStock.Select();
                 this.showStock.BringToFront();
-                this.showStock.Activate();
+                this.showStock.Show();
             }
             catch (ObjectDisposedException)
             {
                 this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
                 this.pContainer.Controls.Add(this.showStock);
-                this.showStock.Show();
+                this.showStock.Select();
                 this.showStock.BringToFront();
-                this.showStock.Activate();
+                this.showStock.Show();
             }
         }
         #endregion

@@ -196,9 +196,25 @@ namespace NaturalnieApp.Forms
         private void FindTextInComboBoxAndSelect(ref ComboBox obj, string textToFind)
         {
             //Find search tex index
-            int index = obj.FindString(textToFind);
+            int index = obj.FindStringExact(textToFind);
             obj.SelectedIndex = index;
 
+        }
+
+        //Methos used to update control
+        private void UpdateControl(ref TextBox dummyForControl)
+        {
+            //this.Select();
+            this.Focus();
+            dummyForControl.Select();
+        }
+        private void tbDummyForCtrl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Escape || e.KeyCode == Keys.Tab)
+            {
+                TextBox localSender = (TextBox)sender;
+                localSender.Text = "";
+            }
         }
 
         private void FillWithInitialDataFromObject(List<string> productList, List<string> manufacturerList, List<string> barcodeList)
@@ -293,6 +309,9 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
         private void PrintBarcode_KeyDown(object sender, KeyEventArgs e)
         {
@@ -301,12 +320,16 @@ namespace NaturalnieApp.Forms
 
             if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
             {
-                bDummyForControl.Select();
+
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
 
             }
             else if (e.KeyCode == Keys.Escape)
             {
-                bDummyForControl.Select();
+
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
             }
         }
         private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
@@ -328,7 +351,7 @@ namespace NaturalnieApp.Forms
                 if (index >= 0)
                 {
                     this.cbBarcodes.SelectedIndex = index;
-                    this.cbBarcodes_SelectionChangedCommited(this.cbBarcodes, EventArgs.Empty);
+                    this.cbBarcodes_SelectedIndexChanged(this.cbBarcodes, EventArgs.Empty);
                 }
                 else MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych");
             }
@@ -341,17 +364,12 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Manufacturer  events
         #region Manufacturer  events
-        private void cbManufacturers_SelectionChangeCommitted(object sender, EventArgs e)
+        private void cbManufacturers_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
                 if (this.cbManufacturers.SelectedIndex != 0)
                 {
-
-                    cbProductsList.SelectedItem = null;
-                    cbProductsList.Text = null;
-                    cbBarcodes.SelectedItem = null;
-                    cbBarcodes.Text = null;
 
                     //Fetch filtered information from database
                     List<string> filteredProductNames = this.databaseCommands.GetProductsNameListByManufacturer(cbManufacturers.SelectedItem.ToString());
@@ -365,24 +383,22 @@ namespace NaturalnieApp.Forms
                     List<string> productNames = this.databaseCommands.GetProductsNameList();
                     cbProductsList.Items.Clear();
                     cbProductsList.Items.AddRange(productNames.ToArray());
-
-                    cbProductsList.SelectedItem = null;
-                    cbProductsList.Text = null;
-                    cbBarcodes.SelectedItem = null;
-                    cbBarcodes.Text = null;
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
         #endregion
 
         //====================================================================================================
         //Product List events
         #region Product List events
-        private void cbProductsList_SelectionChangeCommitted(object sender, EventArgs e)
+        private void cbProductsList_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Cast an object
             ComboBox localSender = (ComboBox)sender;
@@ -403,13 +419,16 @@ namespace NaturalnieApp.Forms
             {
                 MessageBox.Show(ex.Message);
             }
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
         #endregion
 
         //====================================================================================================
         //Product List events
         #region Barcode events
-        private void cbBarcodes_SelectionChangedCommited(object sender, EventArgs e)
+        private void cbBarcodes_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Cast an object
             ComboBox localSender = (ComboBox)sender;
@@ -430,6 +449,10 @@ namespace NaturalnieApp.Forms
             {
                 MessageBox.Show(ex.Message);
             }
+
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
         #endregion
 
@@ -502,9 +525,9 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
             }
 
-           // this.Controls.Add(bDummyForControl);
-            //bDummyForControl.Select();
-            textBox1.Text = this.ActiveControl.Name.ToString();
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
+
         }
         private void bPrint_Click(object sender, EventArgs e)
         {
@@ -556,8 +579,8 @@ namespace NaturalnieApp.Forms
                     MessageBox.Show(ex.Message);
                 }
 
-                this.ActiveControl = bDummyForControl;
-                bDummyForControl.Select();
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
             }
 
         }
@@ -570,5 +593,7 @@ namespace NaturalnieApp.Forms
         }
 
         #endregion
+
+
     }
 }

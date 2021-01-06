@@ -198,6 +198,21 @@ namespace NaturalnieApp.Forms
             advancedDataGridView1.AutoResizeColumns();
         }
 
+        private void UpdateControl(ref TextBox dummyForControl)
+        {
+            //this.Select();
+            this.Focus();
+            dummyForControl.Select();
+        }
+        private void tbDummyForCtrl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Escape || e.KeyCode == Keys.Tab)
+            {
+                TextBox localSender = (TextBox)sender;
+                localSender.Text = "";
+            }
+        }
+
         /// <summary>
         /// Mathod used for short Barcodes, without manufacturer prefix.
         /// </summary>
@@ -315,6 +330,9 @@ namespace NaturalnieApp.Forms
                 ExcelBase.CreateExcelFile(supplierInvoice, folderBrowserDialog1.SelectedPath, "template");
             }
 
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
+
         }
 
         //Event for "selected all" button for advanced data frid view
@@ -328,6 +346,9 @@ namespace NaturalnieApp.Forms
                     chkchecking.Value = true;
                 }
             }
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
 
         //Event for "deselect all" button for advanced data frid view
@@ -338,6 +359,9 @@ namespace NaturalnieApp.Forms
                 DataGridViewCheckBoxCell chkchecking = row.Cells[0] as DataGridViewCheckBoxCell;
                 chkchecking.Value = false;
             }
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
 
         //Event for "add from file" button
@@ -360,6 +384,9 @@ namespace NaturalnieApp.Forms
 
             }
 
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
+
         }
 
         //Event for "update" button
@@ -367,6 +394,10 @@ namespace NaturalnieApp.Forms
         {
             if (this.LastExcelFilePath.Length > 0) ReadExcel(this.LastExcelFilePath);
             else MessageBox.Show("Nie wybrano pliku wejściowego!");
+
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
 
         //Event for "save" button
@@ -693,18 +724,31 @@ namespace NaturalnieApp.Forms
 
             if (e.KeyCode == Keys.Enter)
             {
-                bDummyForControl.Select();
+
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
 
             }
             else if (e.KeyCode == Keys.Escape)
             {
-                bDummyForControl.Select();
+
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
             }
+        }
+
+        private void AddNewProductFromExcel_Load(object sender, EventArgs e)
+        {
+
+            this.tbMarigin.Text = 30.ToString();
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
+
         }
         #endregion
 
         #region Advanced Data Grid View Events
-
         //Event for advanced data grid view click
         private void advancedDataGridView1_Click(object sender, EventArgs e)
         {
@@ -856,9 +900,6 @@ namespace NaturalnieApp.Forms
             }
         }
 
-        private void AddNewProductFromExcel_Load(object sender, EventArgs e)
-        {
-            this.tbMarigin.Text = 30.ToString();
-        }
+
     }
 }

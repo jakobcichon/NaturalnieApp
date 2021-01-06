@@ -285,24 +285,6 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
-        //Method used to retrieve from DB supplier name list
-        //====================================================================================================
-        public List<string> GetSuppliersNameList()
-        {
-            List<string> productList = new List<string>();
-
-            using (ShopContext contextDB = new ShopContext())
-            {
-                foreach (var supplier in contextDB.Suppliers)
-                {
-                    productList.Add(supplier.Name);
-                }
-            }
-
-            return productList;
-        }
-
-        //====================================================================================================
         //Method used to retrieve from DB Manufacturer name list
         //====================================================================================================
         public List<string> GetManufacturersNameList()
@@ -318,6 +300,24 @@ namespace NaturalnieApp.Database
             }
 
             return manufacturersList;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Supplier name list
+        //====================================================================================================
+        public List<string> GetSupplierNameList()
+        {
+            List<string> supplierList = new List<string>();
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                foreach (var Supplier in contextDB.Suppliers)
+                {
+                    supplierList.Add(Supplier.Name);
+                }
+            }
+
+            return supplierList;
         }
 
         //====================================================================================================
@@ -361,15 +361,15 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         //Method used to retrieve from DB tax list
         //====================================================================================================
-        public List<int> GetTaxList()
+        public List<string> GetTaxList()
         {
-            List<int> taxList = new List<int>();
+            List<string> taxList = new List<string>();
 
             using (ShopContext contextDB = new ShopContext())
             {
                 foreach (var tax in contextDB.Tax)
                 {
-                    taxList.Add(tax.TaxValue);
+                    taxList.Add(tax.TaxValue.ToString()) ;
                 }
             }
             return taxList;
@@ -411,6 +411,27 @@ namespace NaturalnieApp.Database
             {
                 var query = from p in contextDB.Products
                             where p.BarCode == barcode
+                            select p;
+
+                if (query.FirstOrDefault() != null) result = true;
+                else result = false;
+
+            }
+
+            return result;
+        }
+
+        //====================================================================================================
+        //Method used to check if in DB specified Barcode shirt exist
+        //====================================================================================================
+        public bool CheckIfBarcodeShortExist(string barcode)
+        {
+            bool result = false;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from p in contextDB.Products
+                            where p.BarCodeShort == barcode
                             select p;
 
                 if (query.FirstOrDefault() != null) result = true;
@@ -961,6 +982,30 @@ namespace NaturalnieApp.Database
                             join p in contextDB.Products on s.ProductId equals p.Id
                             join m in contextDB.Manufacturers on p.ManufacturerId equals m.Id
                             where m.Id == manufacturerId
+                            select new
+                            {
+                                s
+                            };
+
+                foreach (var element in query)
+                {
+                    localStock.Add(element.s);
+                }
+
+            }
+            return localStock;
+        }
+
+        //====================================================================================================
+        //Method used to get all stock entity
+        //====================================================================================================
+        public List<Stock> GetAllStockEnts()
+        {
+
+            List<Stock> localStock = new List<Stock>();
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from s in contextDB.Stock
                             select new
                             {
                                 s

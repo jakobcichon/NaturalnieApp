@@ -79,7 +79,7 @@ namespace NaturalnieApp.Forms
                         if (this.databaseCommands.ConnectionStatus)
                         {
                             List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
-                            List<string> productSupplierList = this.databaseCommands.GetSuppliersNameList();
+                            List<string> productSupplierList = this.databaseCommands.GetSupplierNameList();
                             returnList.Add(productManufacturerList);
                             returnList.Add(productSupplierList);
                             e.Result = returnList;
@@ -89,7 +89,7 @@ namespace NaturalnieApp.Forms
                         if (this.databaseCommands.ConnectionStatus)
                         {
                             List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
-                            List<string> productSupplierList = this.databaseCommands.GetSuppliersNameList();
+                            List<string> productSupplierList = this.databaseCommands.GetSupplierNameList();
                             returnList.Add(productManufacturerList);
                             returnList.Add(productSupplierList);
                             e.Result = returnList;
@@ -203,6 +203,20 @@ namespace NaturalnieApp.Forms
             this.tbSupplierName.Text = "";
             this.rtbSupplierInfo.Text = "";
         }
+        private void UpdateControl(ref TextBox dummyForControl)
+        {
+            //this.Select();
+            this.Focus();
+            dummyForControl.Select();
+        }
+        private void tbDummyForCtrl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Escape || e.KeyCode == Keys.Tab)
+            {
+                TextBox localSender = (TextBox)sender;
+                localSender.Text = "";
+            }
+        }
         #endregion
         //====================================================================================================
         //Current window events
@@ -215,6 +229,9 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
         private void AddManufacturer_KeyDown(object sender, KeyEventArgs e)
         {
@@ -223,11 +240,13 @@ namespace NaturalnieApp.Forms
             if (e.KeyCode == Keys.Escape)
             {
                 errorProvider1.Clear();
-                this.SelectNextControl(pHeader, true, true, true, true);
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
             }
             else if (e.KeyCode == Keys.Enter)
             {
-                this.SelectNextControl(this, true, true, true, true);
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
             }
         }
         #endregion
@@ -287,6 +306,9 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Update;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
         private void bClose_Click(object sender, EventArgs e)
         {

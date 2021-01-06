@@ -31,6 +31,7 @@ namespace NaturalnieApp.Forms
         {
             this.components = new System.ComponentModel.Container();
             this.pHeader = new System.Windows.Forms.Panel();
+            this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tbPrice = new System.Windows.Forms.TextBox();
             this.tbMarigin = new System.Windows.Forms.TextBox();
@@ -78,7 +79,6 @@ namespace NaturalnieApp.Forms
             this.bUpdate = new System.Windows.Forms.Button();
             this.bSave = new System.Windows.Forms.Button();
             this.bClose = new System.Windows.Forms.Button();
-            this.bDummyForControl = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
             this.pManufacturer.SuspendLayout();
             this.gbProductSelection.SuspendLayout();
@@ -101,13 +101,22 @@ namespace NaturalnieApp.Forms
             // 
             // pHeader
             // 
-            this.pHeader.Controls.Add(this.bDummyForControl);
+            this.pHeader.Controls.Add(this.tbDummyForCtrl);
             this.pHeader.Controls.Add(this.panel1);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
             this.pHeader.Size = new System.Drawing.Size(1000, 30);
             this.pHeader.TabIndex = 0;
+            // 
+            // tbDummyForCtrl
+            // 
+            this.tbDummyForCtrl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tbDummyForCtrl.Location = new System.Drawing.Point(0, 0);
+            this.tbDummyForCtrl.Name = "tbDummyForCtrl";
+            this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
+            this.tbDummyForCtrl.TabIndex = 7;
+            this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
             // 
             // panel1
             // 
@@ -124,7 +133,6 @@ namespace NaturalnieApp.Forms
             this.tbPrice.Name = "tbPrice";
             this.tbPrice.Size = new System.Drawing.Size(213, 26);
             this.tbPrice.TabIndex = 0;
-            //this.tbPrice.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPrice_KeyDown);
             this.tbPrice.Validating += new System.ComponentModel.CancelEventHandler(this.tbPrice_Validating);
             // 
             // tbMarigin
@@ -144,17 +152,12 @@ namespace NaturalnieApp.Forms
             this.cbTax.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.cbTax.FormattingEnabled = true;
             this.cbTax.IntegralHeight = false;
-            this.cbTax.Items.AddRange(new object[] {
-            "0",
-            "5",
-            "8",
-            "23"});
             this.cbTax.Location = new System.Drawing.Point(217, 6);
             this.cbTax.Margin = new System.Windows.Forms.Padding(5);
             this.cbTax.Name = "cbTax";
             this.cbTax.Size = new System.Drawing.Size(214, 28);
             this.cbTax.TabIndex = 0;
-            this.cbTax.SelectionChangeCommitted += new System.EventHandler(this.cbTax_SelectionChangeCommited);
+            this.cbTax.SelectionChangeCommitted += new System.EventHandler(this.cbTax_SelectionChangeCommitted);
             this.cbTax.Validating += new System.ComponentModel.CancelEventHandler(this.cbTax_Validating);
             // 
             // pManufacturer
@@ -162,7 +165,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 386F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 398F));
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.Controls.Add(this.cbManufacturer, 0, 1);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -204,7 +207,7 @@ namespace NaturalnieApp.Forms
             this.cbManufacturer.Name = "cbManufacturer";
             this.cbManufacturer.Size = new System.Drawing.Size(240, 28);
             this.cbManufacturer.TabIndex = 1;
-            this.cbManufacturer.SelectionChangeCommitted += new System.EventHandler(this.cbManufacturer_SelectionChangedCommited);
+            this.cbManufacturer.SelectionChangeCommitted += new System.EventHandler(this.cbManufacturer_SelectionChangeCommitted);
             this.cbManufacturer.MouseHover += new System.EventHandler(this.cbManufacturer_MouseHover);
             this.cbManufacturer.Validating += new System.ComponentModel.CancelEventHandler(this.cbManufacturer_Validating);
             // 
@@ -255,9 +258,7 @@ namespace NaturalnieApp.Forms
             this.cbBarcodes.Name = "cbBarcodes";
             this.cbBarcodes.Size = new System.Drawing.Size(167, 28);
             this.cbBarcodes.TabIndex = 1;
-            this.cbBarcodes.SelectionChangeCommitted += new System.EventHandler(this.cbBarcodes_SelectionChangedCommited);
-            //this.cbBarcodes.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbBarcodes_KeyDown);
-            this.cbBarcodes.Validating += new System.ComponentModel.CancelEventHandler(this.cbBarcodes_Validating);
+            this.cbBarcodes.SelectedIndexChanged += new System.EventHandler(this.cbBarcodes_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -278,7 +279,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 596F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 608F));
             this.pProductName.Controls.Add(this.cbProductList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -294,6 +295,8 @@ namespace NaturalnieApp.Forms
             // 
             // cbProductList
             // 
+            this.cbProductList.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.cbProductList.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.cbProductList.Dock = System.Windows.Forms.DockStyle.Left;
             this.cbProductList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.cbProductList.FormattingEnabled = true;
@@ -304,9 +307,8 @@ namespace NaturalnieApp.Forms
             this.cbProductList.Name = "cbProductList";
             this.cbProductList.Size = new System.Drawing.Size(450, 28);
             this.cbProductList.TabIndex = 1;
-            this.cbProductList.SelectionChangeCommitted += new System.EventHandler(this.cbProductList_SelectionChangedCommited);
+            this.cbProductList.SelectedIndexChanged += new System.EventHandler(this.cbProductList_SelectedIndexChanged);
             this.cbProductList.MouseHover += new System.EventHandler(this.cbProductList_MouseHover);
-            this.cbProductList.Validating += new System.ComponentModel.CancelEventHandler(this.cbProductList_Validating);
             // 
             // lProductName
             // 
@@ -367,7 +369,6 @@ namespace NaturalnieApp.Forms
             this.tbSupplierCode.Name = "tbSupplierCode";
             this.tbSupplierCode.Size = new System.Drawing.Size(214, 26);
             this.tbSupplierCode.TabIndex = 0;
-            //this.tbSupplierCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSupplierCode_KeyDown);
             this.tbSupplierCode.Validating += new System.ComponentModel.CancelEventHandler(this.tbSupplierCode_Validating);
             // 
             // lSupplierCode
@@ -405,7 +406,6 @@ namespace NaturalnieApp.Forms
             this.tbShortBarcode.Name = "tbShortBarcode";
             this.tbShortBarcode.Size = new System.Drawing.Size(214, 26);
             this.tbShortBarcode.TabIndex = 0;
-            //this.tbShortBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbShortBarcode_KeyDown);
             this.tbShortBarcode.Validating += new System.ComponentModel.CancelEventHandler(this.tbShortBarcode_Validating);
             // 
             // lShortBarcode
@@ -482,7 +482,6 @@ namespace NaturalnieApp.Forms
             this.tbElzabProductName.Name = "tbElzabProductName";
             this.tbElzabProductName.Size = new System.Drawing.Size(213, 26);
             this.tbElzabProductName.TabIndex = 0;
-            //this.tbElzabProductName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbElzabProductName_KeyDown);
             this.tbElzabProductName.MouseHover += new System.EventHandler(this.tbElzabProductName_MouseHover);
             this.tbElzabProductName.Validating += new System.ComponentModel.CancelEventHandler(this.tbElzabProductName_Validating);
             // 
@@ -536,7 +535,6 @@ namespace NaturalnieApp.Forms
             this.rtbProductInfo.Size = new System.Drawing.Size(425, 144);
             this.rtbProductInfo.TabIndex = 0;
             this.rtbProductInfo.Text = "";
-            //this.rtbProductInfo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtbProductInfo_KeyDown);
             this.rtbProductInfo.Validating += new System.ComponentModel.CancelEventHandler(this.rtbProductInfo_Validating);
             // 
             // tpSupplierName
@@ -561,11 +559,6 @@ namespace NaturalnieApp.Forms
             this.cbSupplierName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.cbSupplierName.FormattingEnabled = true;
             this.cbSupplierName.IntegralHeight = false;
-            this.cbSupplierName.Items.AddRange(new object[] {
-            "0",
-            "5",
-            "8",
-            "23"});
             this.cbSupplierName.Location = new System.Drawing.Point(217, 6);
             this.cbSupplierName.Margin = new System.Windows.Forms.Padding(5);
             this.cbSupplierName.Name = "cbSupplierName";
@@ -610,7 +603,6 @@ namespace NaturalnieApp.Forms
             this.tbElzabProductNumber.Name = "tbElzabProductNumber";
             this.tbElzabProductNumber.Size = new System.Drawing.Size(213, 26);
             this.tbElzabProductNumber.TabIndex = 0;
-            //this.tbElzabProductNumber.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbElzabProductNumber_KeyDown);
             this.tbElzabProductNumber.Validating += new System.ComponentModel.CancelEventHandler(this.tbElzabProductNumber_Validating);
             // 
             // lElzabProductNumber
@@ -765,24 +757,6 @@ namespace NaturalnieApp.Forms
             this.bClose.UseVisualStyleBackColor = false;
             this.bClose.Click += new System.EventHandler(this.bClose_Click);
             // 
-            // bDummyForControl
-            // 
-            this.bDummyForControl.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.bDummyForControl.BackColor = System.Drawing.Color.Transparent;
-            this.bDummyForControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bDummyForControl.CausesValidation = false;
-            this.bDummyForControl.Cursor = System.Windows.Forms.Cursors.No;
-            this.bDummyForControl.Enabled = false;
-            this.bDummyForControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bDummyForControl.ForeColor = System.Drawing.Color.Transparent;
-            this.bDummyForControl.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.bDummyForControl.Location = new System.Drawing.Point(496, 11);
-            this.bDummyForControl.Name = "bDummyForControl";
-            this.bDummyForControl.Size = new System.Drawing.Size(8, 8);
-            this.bDummyForControl.TabIndex = 2;
-            this.bDummyForControl.UseVisualStyleBackColor = false;
-            this.bDummyForControl.Visible = false;
-            // 
             // ShowProductInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -801,9 +775,9 @@ namespace NaturalnieApp.Forms
             this.Name = "ShowProductInfo";
             this.Text = "Submenu_ElzabInfo";
             this.Load += new System.EventHandler(this.ShowProductInfo_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.ShowProductInfo_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ShowProductInfo_KeyDown);
             this.pHeader.ResumeLayout(false);
+            this.pHeader.PerformLayout();
             this.pManufacturer.ResumeLayout(false);
             this.gbProductSelection.ResumeLayout(false);
             this.pBarCode.ResumeLayout(false);
@@ -881,6 +855,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bUpdate;
         private System.Windows.Forms.Button bSave;
         private System.Windows.Forms.Button bClose;
-        private System.Windows.Forms.Button bDummyForControl;
+        private System.Windows.Forms.TextBox tbDummyForCtrl;
     }
 }

@@ -30,9 +30,11 @@ namespace NaturalnieApp.Forms
         private void InitializeComponent()
         {
             this.pHeader = new System.Windows.Forms.Panel();
+            this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
+            this.bSaveToFile = new System.Windows.Forms.Button();
             this.bClose = new System.Windows.Forms.Button();
             this.gbProductSelection = new System.Windows.Forms.GroupBox();
             this.bShow = new System.Windows.Forms.Button();
@@ -44,7 +46,6 @@ namespace NaturalnieApp.Forms
             this.tbStockQuantity = new System.Windows.Forms.TextBox();
             this.lStockQuantity = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.bSaveToFile = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -54,12 +55,22 @@ namespace NaturalnieApp.Forms
             // 
             // pHeader
             // 
+            this.pHeader.Controls.Add(this.tbDummyForCtrl);
             this.pHeader.Controls.Add(this.panel1);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
             this.pHeader.Size = new System.Drawing.Size(1000, 30);
             this.pHeader.TabIndex = 1;
+            // 
+            // tbDummyForCtrl
+            // 
+            this.tbDummyForCtrl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tbDummyForCtrl.Location = new System.Drawing.Point(0, 0);
+            this.tbDummyForCtrl.Name = "tbDummyForCtrl";
+            this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
+            this.tbDummyForCtrl.TabIndex = 7;
+            this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
             // 
             // panel1
             // 
@@ -90,6 +101,20 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.Name = "pButtonsPanel";
             this.pButtonsPanel.Size = new System.Drawing.Size(1000, 70);
             this.pButtonsPanel.TabIndex = 4;
+            // 
+            // bSaveToFile
+            // 
+            this.bSaveToFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bSaveToFile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bSaveToFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bSaveToFile.Location = new System.Drawing.Point(782, 10);
+            this.bSaveToFile.Name = "bSaveToFile";
+            this.bSaveToFile.Size = new System.Drawing.Size(100, 50);
+            this.bSaveToFile.TabIndex = 7;
+            this.bSaveToFile.Text = "Zapisz do pliku";
+            this.bSaveToFile.UseMnemonic = false;
+            this.bSaveToFile.UseVisualStyleBackColor = false;
+            this.bSaveToFile.Click += new System.EventHandler(this.bSaveToFile_Click);
             // 
             // bClose
             // 
@@ -151,7 +176,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 364F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 368F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -167,6 +192,7 @@ namespace NaturalnieApp.Forms
             // 
             // cbManufacturers
             // 
+            this.cbManufacturers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.cbManufacturers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.cbManufacturers.Dock = System.Windows.Forms.DockStyle.Left;
             this.cbManufacturers.DropDownHeight = 200;
@@ -238,20 +264,6 @@ namespace NaturalnieApp.Forms
             this.panel5.Size = new System.Drawing.Size(298, 10);
             this.panel5.TabIndex = 0;
             // 
-            // bSaveToFile
-            // 
-            this.bSaveToFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bSaveToFile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bSaveToFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSaveToFile.Location = new System.Drawing.Point(782, 10);
-            this.bSaveToFile.Name = "bSaveToFile";
-            this.bSaveToFile.Size = new System.Drawing.Size(100, 50);
-            this.bSaveToFile.TabIndex = 7;
-            this.bSaveToFile.Text = "Zapisz do pliku";
-            this.bSaveToFile.UseMnemonic = false;
-            this.bSaveToFile.UseVisualStyleBackColor = false;
-            this.bSaveToFile.Click += new System.EventHandler(this.bSaveToFile_Click);
-            // 
             // ShowStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -272,6 +284,7 @@ namespace NaturalnieApp.Forms
             this.Load += new System.EventHandler(this.AddToStock_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddToStock_KeyDown);
             this.pHeader.ResumeLayout(false);
+            this.pHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.pButtonsPanel.ResumeLayout(false);
             this.gbProductSelection.ResumeLayout(false);
@@ -298,5 +311,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lStockQuantity;
         private System.Windows.Forms.Button bShow;
         private System.Windows.Forms.Button bSaveToFile;
+        private System.Windows.Forms.TextBox tbDummyForCtrl;
     }
 }

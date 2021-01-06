@@ -94,7 +94,7 @@ namespace NaturalnieApp.Forms
                         if (this.databaseCommands.ConnectionStatus)
                         {
                             List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
-                            List<string> productSupplierList = this.databaseCommands.GetSuppliersNameList();
+                            List<string> productSupplierList = this.databaseCommands.GetSupplierNameList();
                             returnList.Add(productManufacturerList);
                             returnList.Add(productSupplierList);
                             e.Result = returnList;
@@ -104,7 +104,7 @@ namespace NaturalnieApp.Forms
                         if (this.databaseCommands.ConnectionStatus)
                         {
                             List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
-                            List<string> productSupplierList = this.databaseCommands.GetSuppliersNameList();
+                            List<string> productSupplierList = this.databaseCommands.GetSupplierNameList();
                             returnList.Add(productManufacturerList);
                             returnList.Add(productSupplierList);
                             e.Result = returnList;
@@ -188,6 +188,7 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //General methods
         #region General methods
+
         private void FillWithInitialDataFromObject(List<string> manufacturerList, List<string> supplierList)
         {
             cbManufacturer.Items.Clear();
@@ -321,6 +322,20 @@ namespace NaturalnieApp.Forms
             //Set variable informing Bar code read corrected
             this.BarcodeValidEventGenerated = true;
         }
+        private void UpdateControl(ref TextBox dummyForControl)
+        {
+            //this.Select();
+            this.Focus();
+            dummyForControl.Select();
+        }
+        private void tbDummyForCtrl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Escape || e.KeyCode == Keys.Tab)
+            {
+                TextBox localSender = (TextBox)sender;
+                localSender.Text = "";
+            }
+        }
         #endregion
         //====================================================================================================
         //Current window events
@@ -334,6 +349,9 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
         private void AddNewProduct_KeyDown(object sender, KeyEventArgs e)
         {
@@ -344,11 +362,13 @@ namespace NaturalnieApp.Forms
             if (e.KeyCode == Keys.Escape)
             {
                 errorProvider1.Clear();
-                bDummyForControl.Select();
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
             }
             else if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
             {
-                bDummyForControl.Select();
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
             }
         }
         #endregion
@@ -368,6 +388,28 @@ namespace NaturalnieApp.Forms
             {
                 try
                 {
+                    //Check if all uniqe fields are unique
+                    bool exist = this.databaseCommands.CheckIfElzabProductNameExist(this.ProductEntity.ElzabProductName);
+                    if (exist) throw new BarcodeRelated.ElementAlreadyExist("Nazwa w kasie Elzab '" +
+                        this.ProductEntity.ElzabProductName + "' już istnieje w bazie danych");
+
+                    exist = this.databaseCommands.CheckIfProductNameExist(this.ProductEntity.ProductName);
+                    if (exist) throw new BarcodeRelated.ElementAlreadyExist("Nazwa produktu '" +
+                        this.ProductEntity.ProductName + "' już istnieje w bazie danych");
+
+                    exist = this.databaseCommands.CheckIfElzabProductIdExist(this.ProductEntity.ElzabProductId);
+                    if (exist) throw new BarcodeRelated.ElementAlreadyExist("Produkt z numerem kasy Elzab '" +
+                        this.ProductEntity.ElzabProductId + "' już istnieje w bazie danych");
+
+                    exist = this.databaseCommands.CheckIfBarcodeExist(this.ProductEntity.BarCode);
+                    if (exist) throw new BarcodeRelated.ElementAlreadyExist("Kod kreskowy produktu '" +
+                        this.ProductEntity.BarCode + "' już istnieje w bazie danych");
+
+                    exist = this.databaseCommands.CheckIfBarcodeShortExist(this.ProductEntity.BarCodeShort);
+                    if (exist) throw new BarcodeRelated.ElementAlreadyExist("Kod kreskowy wewnętrzny '" +
+                        this.ProductEntity.BarCodeShort + "' już istnieje w bazie danych");
+
+
                     //Get Id of given Tax and add it to product
                     id = this.databaseCommands.GetTaxIdByValue(int.Parse(this.cbTax.Text.ToString()));
                     if (id > 0) this.ProductEntity.TaxId = id;
@@ -419,6 +461,9 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Update;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
         private void bClose_Click(object sender, EventArgs e)
         {
@@ -710,7 +755,7 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Marigin events
         #region Tax events
-        private void cbTax_SelectionChangeCommited(object sender, EventArgs e)
+        private void cbTax_SelectionChangeCommitted(object sender, EventArgs e)
         {
             this.TaxEntity = this.databaseCommands.GetTaxEntityByValue(int.Parse(
                 this.cbTax.GetItemText(this.cbTax.SelectedItem).ToString().Replace("%", "")));

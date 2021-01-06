@@ -31,10 +31,15 @@ namespace NaturalnieApp.Forms
         {
             this.components = new System.ComponentModel.Container();
             this.pHeader = new System.Windows.Forms.Panel();
+            this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.bSave = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
             this.gbManufacturerInfo = new System.Windows.Forms.GroupBox();
+            this.tpLastNumberInCashRegister = new System.Windows.Forms.TableLayoutPanel();
+            this.tbLastNumberInCashRegister = new System.Windows.Forms.TextBox();
+            this.lLastNumberInCashRegister = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.tpFirstNumberInCashRegister = new System.Windows.Forms.TableLayoutPanel();
             this.tbFirstNumberInCashRegister = new System.Windows.Forms.TextBox();
             this.lFirstNumberInCashRegister = new System.Windows.Forms.Label();
@@ -55,10 +60,6 @@ namespace NaturalnieApp.Forms
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.bClose = new System.Windows.Forms.Button();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
-            this.tpLastNumberInCashRegister = new System.Windows.Forms.TableLayoutPanel();
-            this.tbLastNumberInCashRegister = new System.Windows.Forms.TextBox();
-            this.lLastNumberInCashRegister = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.gbSupplierInfo = new System.Windows.Forms.GroupBox();
             this.tpSupplierName = new System.Windows.Forms.TableLayoutPanel();
             this.tbSupplierName = new System.Windows.Forms.TextBox();
@@ -68,13 +69,13 @@ namespace NaturalnieApp.Forms
             this.rtbSupplierInfo = new System.Windows.Forms.RichTextBox();
             this.pHeader.SuspendLayout();
             this.gbManufacturerInfo.SuspendLayout();
+            this.tpLastNumberInCashRegister.SuspendLayout();
             this.tpFirstNumberInCashRegister.SuspendLayout();
             this.tpManufacturer.SuspendLayout();
             this.tpBarcodePrefix.SuspendLayout();
             this.pManufacturerInfo.SuspendLayout();
             this.tpMaxNumberOfProducts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
-            this.tpLastNumberInCashRegister.SuspendLayout();
             this.gbSupplierInfo.SuspendLayout();
             this.tpSupplierName.SuspendLayout();
             this.tpSupplierInfo.SuspendLayout();
@@ -82,12 +83,22 @@ namespace NaturalnieApp.Forms
             // 
             // pHeader
             // 
+            this.pHeader.Controls.Add(this.tbDummyForCtrl);
             this.pHeader.Controls.Add(this.panel1);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
             this.pHeader.Size = new System.Drawing.Size(1000, 30);
             this.pHeader.TabIndex = 1;
+            // 
+            // tbDummyForCtrl
+            // 
+            this.tbDummyForCtrl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tbDummyForCtrl.Location = new System.Drawing.Point(0, 0);
+            this.tbDummyForCtrl.Name = "tbDummyForCtrl";
+            this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
+            this.tbDummyForCtrl.TabIndex = 7;
+            this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
             // 
             // panel1
             // 
@@ -139,13 +150,61 @@ namespace NaturalnieApp.Forms
             this.gbManufacturerInfo.TabStop = false;
             this.gbManufacturerInfo.Text = "Dane producenta";
             // 
+            // tpLastNumberInCashRegister
+            // 
+            this.tpLastNumberInCashRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpLastNumberInCashRegister.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tpLastNumberInCashRegister.ColumnCount = 2;
+            this.tpLastNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
+            this.tpLastNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 241F));
+            this.tpLastNumberInCashRegister.Controls.Add(this.tbLastNumberInCashRegister, 0, 0);
+            this.tpLastNumberInCashRegister.Controls.Add(this.lLastNumberInCashRegister, 0, 0);
+            this.tpLastNumberInCashRegister.Controls.Add(this.label4, 0, 1);
+            this.tpLastNumberInCashRegister.Location = new System.Drawing.Point(40, 210);
+            this.tpLastNumberInCashRegister.Name = "tpLastNumberInCashRegister";
+            this.tpLastNumberInCashRegister.RowCount = 2;
+            this.tpLastNumberInCashRegister.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tpLastNumberInCashRegister.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
+            this.tpLastNumberInCashRegister.Size = new System.Drawing.Size(450, 40);
+            this.tpLastNumberInCashRegister.TabIndex = 14;
+            // 
+            // tbLastNumberInCashRegister
+            // 
+            this.tbLastNumberInCashRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbLastNumberInCashRegister.Location = new System.Drawing.Point(307, 6);
+            this.tbLastNumberInCashRegister.Margin = new System.Windows.Forms.Padding(5);
+            this.tbLastNumberInCashRegister.Name = "tbLastNumberInCashRegister";
+            this.tbLastNumberInCashRegister.Size = new System.Drawing.Size(123, 26);
+            this.tbLastNumberInCashRegister.TabIndex = 0;
+            // 
+            // lLastNumberInCashRegister
+            // 
+            this.lLastNumberInCashRegister.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lLastNumberInCashRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lLastNumberInCashRegister.Location = new System.Drawing.Point(6, 6);
+            this.lLastNumberInCashRegister.Margin = new System.Windows.Forms.Padding(5);
+            this.lLastNumberInCashRegister.Name = "lLastNumberInCashRegister";
+            this.lLastNumberInCashRegister.Size = new System.Drawing.Size(290, 30);
+            this.lLastNumberInCashRegister.TabIndex = 0;
+            this.lLastNumberInCashRegister.Text = "Numer ostatniego produktu w kasie";
+            this.lLastNumberInCashRegister.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(4, 42);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(51, 20);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "label4";
+            // 
             // tpFirstNumberInCashRegister
             // 
             this.tpFirstNumberInCashRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
             this.tpFirstNumberInCashRegister.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tpFirstNumberInCashRegister.ColumnCount = 2;
             this.tpFirstNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
-            this.tpFirstNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 238F));
+            this.tpFirstNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 241F));
             this.tpFirstNumberInCashRegister.Controls.Add(this.tbFirstNumberInCashRegister, 0, 0);
             this.tpFirstNumberInCashRegister.Controls.Add(this.lFirstNumberInCashRegister, 0, 0);
             this.tpFirstNumberInCashRegister.Controls.Add(this.label3, 0, 1);
@@ -301,7 +360,6 @@ namespace NaturalnieApp.Forms
             this.rtbManufacturerInfo.Size = new System.Drawing.Size(425, 144);
             this.rtbManufacturerInfo.TabIndex = 0;
             this.rtbManufacturerInfo.Text = "";
-
             // 
             // tpMaxNumberOfProducts
             // 
@@ -309,7 +367,7 @@ namespace NaturalnieApp.Forms
             this.tpMaxNumberOfProducts.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tpMaxNumberOfProducts.ColumnCount = 2;
             this.tpMaxNumberOfProducts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
-            this.tpMaxNumberOfProducts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 238F));
+            this.tpMaxNumberOfProducts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 241F));
             this.tpMaxNumberOfProducts.Controls.Add(this.tbMaxNumberOfProducts, 0, 0);
             this.tpMaxNumberOfProducts.Controls.Add(this.lMaxNumberOfProducts, 0, 0);
             this.tpMaxNumberOfProducts.Controls.Add(this.label1, 0, 1);
@@ -376,54 +434,6 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.Name = "pButtonsPanel";
             this.pButtonsPanel.Size = new System.Drawing.Size(1000, 70);
             this.pButtonsPanel.TabIndex = 5;
-            // 
-            // tpLastNumberInCashRegister
-            // 
-            this.tpLastNumberInCashRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
-            this.tpLastNumberInCashRegister.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tpLastNumberInCashRegister.ColumnCount = 2;
-            this.tpLastNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
-            this.tpLastNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 238F));
-            this.tpLastNumberInCashRegister.Controls.Add(this.tbLastNumberInCashRegister, 0, 0);
-            this.tpLastNumberInCashRegister.Controls.Add(this.lLastNumberInCashRegister, 0, 0);
-            this.tpLastNumberInCashRegister.Controls.Add(this.label4, 0, 1);
-            this.tpLastNumberInCashRegister.Location = new System.Drawing.Point(40, 210);
-            this.tpLastNumberInCashRegister.Name = "tpLastNumberInCashRegister";
-            this.tpLastNumberInCashRegister.RowCount = 2;
-            this.tpLastNumberInCashRegister.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tpLastNumberInCashRegister.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
-            this.tpLastNumberInCashRegister.Size = new System.Drawing.Size(450, 40);
-            this.tpLastNumberInCashRegister.TabIndex = 14;
-            // 
-            // tbLastNumberInCashRegister
-            // 
-            this.tbLastNumberInCashRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbLastNumberInCashRegister.Location = new System.Drawing.Point(307, 6);
-            this.tbLastNumberInCashRegister.Margin = new System.Windows.Forms.Padding(5);
-            this.tbLastNumberInCashRegister.Name = "tbLastNumberInCashRegister";
-            this.tbLastNumberInCashRegister.Size = new System.Drawing.Size(123, 26);
-            this.tbLastNumberInCashRegister.TabIndex = 0;
-            // 
-            // lLastNumberInCashRegister
-            // 
-            this.lLastNumberInCashRegister.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lLastNumberInCashRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lLastNumberInCashRegister.Location = new System.Drawing.Point(6, 6);
-            this.lLastNumberInCashRegister.Margin = new System.Windows.Forms.Padding(5);
-            this.lLastNumberInCashRegister.Name = "lLastNumberInCashRegister";
-            this.lLastNumberInCashRegister.Size = new System.Drawing.Size(290, 30);
-            this.lLastNumberInCashRegister.TabIndex = 0;
-            this.lLastNumberInCashRegister.Text = "Numer ostatniego produktu w kasie";
-            this.lLastNumberInCashRegister.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(4, 42);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(51, 20);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "label4";
             // 
             // gbSupplierInfo
             // 
@@ -539,7 +549,10 @@ namespace NaturalnieApp.Forms
             this.Load += new System.EventHandler(this.AddManufacturer_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddManufacturer_KeyDown);
             this.pHeader.ResumeLayout(false);
+            this.pHeader.PerformLayout();
             this.gbManufacturerInfo.ResumeLayout(false);
+            this.tpLastNumberInCashRegister.ResumeLayout(false);
+            this.tpLastNumberInCashRegister.PerformLayout();
             this.tpFirstNumberInCashRegister.ResumeLayout(false);
             this.tpFirstNumberInCashRegister.PerformLayout();
             this.tpManufacturer.ResumeLayout(false);
@@ -550,8 +563,6 @@ namespace NaturalnieApp.Forms
             this.tpMaxNumberOfProducts.ResumeLayout(false);
             this.tpMaxNumberOfProducts.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            this.tpLastNumberInCashRegister.ResumeLayout(false);
-            this.tpLastNumberInCashRegister.PerformLayout();
             this.gbSupplierInfo.ResumeLayout(false);
             this.tpSupplierName.ResumeLayout(false);
             this.tpSupplierName.PerformLayout();
@@ -597,5 +608,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TableLayoutPanel tpSupplierInfo;
         private System.Windows.Forms.Label lSupplierInfo;
         private System.Windows.Forms.RichTextBox rtbSupplierInfo;
+        private System.Windows.Forms.TextBox tbDummyForCtrl;
     }
 }

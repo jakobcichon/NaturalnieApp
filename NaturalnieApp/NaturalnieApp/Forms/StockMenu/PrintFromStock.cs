@@ -175,7 +175,7 @@ namespace NaturalnieApp.Forms
         private void FindTextInComboBoxAndSelect(ref ComboBox obj, string textToFind)
         {
             //Find search tex index
-            int index = obj.FindString(textToFind);
+            int index = obj.FindStringExact(textToFind);
             obj.SelectedIndex = index;
 
         }
@@ -210,6 +210,20 @@ namespace NaturalnieApp.Forms
 
             return localList;
 
+        }
+        private void UpdateControl(ref TextBox dummyForControl)
+        {
+            //this.Select();
+            this.Focus();
+            dummyForControl.Select();
+        }
+        private void tbDummyForCtrl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Escape || e.KeyCode == Keys.Tab)
+            {
+                TextBox localSender = (TextBox)sender;
+                localSender.Text = "";
+            }
         }
         #endregion
         //====================================================================================================
@@ -287,6 +301,9 @@ namespace NaturalnieApp.Forms
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
 
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
+
         }
         private void AddToStock_KeyDown(object sender, KeyEventArgs e)
         {
@@ -294,12 +311,16 @@ namespace NaturalnieApp.Forms
 
             if (e.KeyCode == Keys.Enter)
             {
-                this.SelectNextControl(this, true, true, true, true);
+
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
 
             }
             else if (e.KeyCode == Keys.Escape)
             {
-                localControl.SelectNextControl(this, true, true, true, true);
+
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
             }
 
         }
@@ -364,6 +385,9 @@ namespace NaturalnieApp.Forms
             {
                 MessageBox.Show("Najpierw należy wybrać porducenta!");
             }
+
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
         }
 
         private void bPrint_Click(object sender, EventArgs e)
@@ -421,8 +445,8 @@ namespace NaturalnieApp.Forms
                 }
             }
 
-            //Select next control
-            this.SelectNextControl(this, true, true, true, true);
+            //Update control
+            UpdateControl(ref tbDummyForCtrl);
 
         }
 

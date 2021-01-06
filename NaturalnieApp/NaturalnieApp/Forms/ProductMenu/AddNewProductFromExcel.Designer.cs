@@ -30,6 +30,7 @@ namespace NaturalnieApp.Forms
         private void InitializeComponent()
         {
             this.pHeader = new System.Windows.Forms.Panel();
+            this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.bDummyForControl = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.bSave = new System.Windows.Forms.Button();
@@ -51,6 +52,7 @@ namespace NaturalnieApp.Forms
             // 
             // pHeader
             // 
+            this.pHeader.Controls.Add(this.tbDummyForCtrl);
             this.pHeader.Controls.Add(this.bDummyForControl);
             this.pHeader.Controls.Add(this.panel1);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
@@ -58,6 +60,15 @@ namespace NaturalnieApp.Forms
             this.pHeader.Name = "pHeader";
             this.pHeader.Size = new System.Drawing.Size(1000, 30);
             this.pHeader.TabIndex = 0;
+            // 
+            // tbDummyForCtrl
+            // 
+            this.tbDummyForCtrl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tbDummyForCtrl.Location = new System.Drawing.Point(0, 0);
+            this.tbDummyForCtrl.Name = "tbDummyForCtrl";
+            this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
+            this.tbDummyForCtrl.TabIndex = 7;
+            this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
             // 
             // bDummyForControl
             // 
@@ -263,6 +274,7 @@ namespace NaturalnieApp.Forms
             this.Load += new System.EventHandler(this.AddNewProductFromExcel_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddNewProductFromExcel_KeyDown);
             this.pHeader.ResumeLayout(false);
+            this.pHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.tpMarigin.ResumeLayout(false);
             this.tpMarigin.PerformLayout();
@@ -286,5 +298,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TextBox tbMarigin;
         private System.Windows.Forms.Label lMarigin;
         private System.Windows.Forms.Button bDummyForControl;
+        private System.Windows.Forms.TextBox tbDummyForCtrl;
     }
 }
