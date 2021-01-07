@@ -219,7 +219,12 @@ namespace NaturalnieApp.Forms
                     //Call eachh of validating method
                     Validation.SupplierNameValidation(this.cbSupplierName.SelectedItem.ToString());
                     Validation.ProductNameValidation(this.tbProductName.Text);
-                    Validation.BarcodeEan13Validation(this.tbBarcode.Text);
+
+                    if(this.tbBarcode.Text.Length == 13) Validation.BarcodeEan13Validation(this.tbBarcode.Text);
+                    else if (this.tbBarcode.Text.Length == 8) Validation.BarcodeEan8Validation(this.tbBarcode.Text);
+                    else if (this.tbBarcode.Text.Length == 12) Validation.GeneralNumberValidation(this.tbBarcode.Text);
+                    else Validation.BarcodeEan13Validation(this.tbBarcode.Text);
+
                     Validation.ManufacturerNameValidation(this.cbManufacturer.Text);
 
                     int productNumber = Convert.ToInt32(this.tbElzabProductNumber.Text);
@@ -863,7 +868,13 @@ namespace NaturalnieApp.Forms
             //Check if input match to define pattern
             try
             {
-                Validation.BarcodeEan13Validation(localSender.Text);
+                if (localSender.Text == "") localSender.Text = tbShortBarcode.Text;
+
+                if (localSender.Text.Length == 13) Validation.BarcodeEan13Validation(localSender.Text);
+                else if (localSender.Text.Length == 8) Validation.BarcodeEan8Validation(localSender.Text);
+                else if (localSender.Text.Length == 12) Validation.GeneralNumberValidation(localSender.Text);
+                else Validation.BarcodeEan13Validation(localSender.Text);
+
                 this.ProductEntity.BarCode = localSender.Text;
                 errorProvider1.Clear();
             }
