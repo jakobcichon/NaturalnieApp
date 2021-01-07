@@ -49,6 +49,7 @@ namespace NaturalnieApp.Forms
             this.cbManufacturers = new System.Windows.Forms.ComboBox();
             this.lManufacturer = new System.Windows.Forms.Label();
             this.pQuantity = new System.Windows.Forms.Panel();
+            this.tbQuantity = new System.Windows.Forms.TextBox();
             this.lQuantity = new System.Windows.Forms.Label();
             this.pSpare1 = new System.Windows.Forms.Panel();
             this.pGap1 = new System.Windows.Forms.Panel();
@@ -81,7 +82,6 @@ namespace NaturalnieApp.Forms
             this.lFinalPrice = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.tbQuantity = new System.Windows.Forms.TextBox();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -270,7 +270,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 580F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 581F));
             this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -318,7 +318,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 370F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 371F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -374,6 +374,15 @@ namespace NaturalnieApp.Forms
             this.pQuantity.Name = "pQuantity";
             this.pQuantity.Size = new System.Drawing.Size(300, 38);
             this.pQuantity.TabIndex = 18;
+            // 
+            // tbQuantity
+            // 
+            this.tbQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbQuantity.Location = new System.Drawing.Point(155, 10);
+            this.tbQuantity.Name = "tbQuantity";
+            this.tbQuantity.Size = new System.Drawing.Size(142, 26);
+            this.tbQuantity.TabIndex = 2;
+            this.tbQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // lQuantity
             // 
@@ -750,15 +759,6 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.Size = new System.Drawing.Size(300, 35);
             this.tableLayoutPanel3.TabIndex = 34;
-            // 
-            // tbQuantity
-            // 
-            this.tbQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbQuantity.Location = new System.Drawing.Point(155, 10);
-            this.tbQuantity.Name = "tbQuantity";
-            this.tbQuantity.Size = new System.Drawing.Size(142, 26);
-            this.tbQuantity.TabIndex = 2;
-            this.tbQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // AddToStock
             // 

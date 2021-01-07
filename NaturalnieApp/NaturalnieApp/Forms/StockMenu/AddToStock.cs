@@ -412,8 +412,15 @@ namespace NaturalnieApp.Forms
                 int index = this.cbBarcodes.Items.IndexOf(barcodeToSearch);
                 if (index >= 0)
                 {
-                    this.cbBarcodes.SelectedIndex = index;
-                    this.cbBarcodes_SelectedIndexChanged(this.cbBarcodes, EventArgs.Empty);
+                    if (this.cbBarcodes.SelectedIndex == index)
+                    {
+                        cbBarcodes_SelectedIndexChanged(cbBarcodes, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        this.cbBarcodes.SelectedIndex = index;
+                    }
+
                 }
                 else MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych");
             }
