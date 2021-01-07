@@ -21,8 +21,6 @@ namespace NaturalnieApp.Database
         public DatabaseCommands()
         {
             this.CheckConnection(false);
-            //this.ConnectionStatus = false;
-
         }
 
         //====================================================================================================
@@ -134,7 +132,63 @@ namespace NaturalnieApp.Database
             }
 
         }
+        
+        //====================================================================================================
+        // Method used to update all product discount values
+        //====================================================================================================
+        public void UpdateAllDiscountValues(List<string> productNames, int newDiscount)
+        {
+            try
+            {
+                foreach (string element in productNames)
+                {
+                    using (ShopContext contextDB = new ShopContext())
+                    {
+                        var query = from p in contextDB.Products
+                                    where p.ProductName == element
+                                    select p;
+                        Product product = query.FirstOrDefault();
+                        product.Discount = newDiscount;
+                        EditProduct(product);
+                    }
+                }
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+        
+        //====================================================================================================
+        // Method used to recalculate all PriceNetWithDiscount based on discount value nad PriceNet
+        //====================================================================================================
+        public void UpdateAllPriceNetWithDiscountValues(List<string> productNames)
+        {
+            try
+            {
+                foreach (string element in productNames)
+                {
+                    using (ShopContext contextDB = new ShopContext())
+                    {
+                        var query = from p in contextDB.Products
+                                    where p.ProductName == element
+                                    select p;
+                        Product product = query.FirstOrDefault();
+                        product.PriceNetWithDiscount = Calculations.CalculatePriceNetWithDiscount(product);
+
+                        EditProduct(product);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
         ///====================================================================================================
         ///<summary> Method used calculate Product number in Elzab
         ///Formula was specified as ManufacturerId * 100 (taken first empty value)

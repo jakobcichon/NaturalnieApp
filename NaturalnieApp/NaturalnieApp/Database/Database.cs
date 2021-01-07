@@ -23,6 +23,8 @@ namespace NaturalnieApp.Database
         public string ProductName { get; set; }
         public string ElzabProductName { get; set; }
         public float PriceNet { get; set; }
+        public int Discount { get; set; }
+        public float PriceNetWithDiscount { get; set; }
         public int TaxId { get; set; }
         public int Marigin { get; set; }
         public float FinalPrice { get; set; }

@@ -48,6 +48,20 @@ namespace NaturalnieApp
             return float.Parse(finalPrice.ToString());
         }
 
+        
+        static public float CalculatePriceNetWithDiscount(Product product)
+        {
+            double priceNetWithDiscount;
+
+            if (product.Discount == 0) return product.PriceNet;
+            else
+            {
+                priceNetWithDiscount = product.PriceNet - (product.PriceNet * product.Discount / 100);
+            }
+
+            return float.Parse(priceNetWithDiscount.ToString());
+        }
+        
         //Calculate final price from price net, tax and marigin
         static public double FinalPrice(double priceNet, int tax, double marigin)
         {

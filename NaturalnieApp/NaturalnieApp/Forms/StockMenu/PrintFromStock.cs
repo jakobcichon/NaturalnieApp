@@ -454,7 +454,7 @@ namespace NaturalnieApp.Forms
                         printingList.Add(element);
                         int indexOfElement = localList.IndexOf(element);
 
-                        if ((printingList.Count == 10) || (indexOfElement == localList.Count-1))
+                        if ((printingList.Count == 10) || (indexOfElement == localList.Count-1) || true)
                         {
                             //Print lables
                             this.DymoPrinter.PrintPriceCardsFromProductList(printingList);
@@ -472,6 +472,8 @@ namespace NaturalnieApp.Forms
                 {
                     MessageBox.Show(ex.Message);
                 }
+
+                this.DymoPrinter = null;
             }
 
             //Update control
