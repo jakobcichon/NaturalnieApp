@@ -337,7 +337,12 @@ namespace NaturalnieApp.Forms
                     //Call eachh of validating method
                     Validation.SupplierNameValidation(this.cbSupplierName.SelectedItem.ToString());
                     Validation.ProductNameValidation(this.cbProductList.SelectedItem.ToString());
-                    Validation.BarcodeEan13Validation(this.cbBarcodes.SelectedItem.ToString());
+
+                    if (this.cbBarcodes.Text.Length == 13) Validation.BarcodeEan13Validation(this.cbBarcodes.Text);
+                    else if (this.cbBarcodes.Text.Length == 8) Validation.BarcodeEan8Validation(this.cbBarcodes.Text);
+                    else if (this.cbBarcodes.Text.Length == 12) Validation.GeneralNumberValidation(this.cbBarcodes.Text);
+                    else Validation.BarcodeEan13Validation(this.cbBarcodes.Text);
+
                     Validation.ManufacturerNameValidation(this.cbManufacturer.Text);
 
                     int productNumber = Convert.ToInt32(this.tbElzabProductNumber.Text);
