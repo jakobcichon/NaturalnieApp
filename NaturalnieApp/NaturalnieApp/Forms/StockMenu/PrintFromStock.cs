@@ -447,20 +447,23 @@ namespace NaturalnieApp.Forms
 
                     List<Product> printingList = new List<Product>();
 
+                    int i = 0;
+
                     //Split it into 5
                     foreach (Product element in localList)
                     {
 
                         printingList.Add(element);
-                        int indexOfElement = localList.IndexOf(element);
 
-                        if ((printingList.Count == 10) || (indexOfElement == localList.Count-1) || true)
+                        if ((printingList.Count == 2) || (i == localList.Count-1) )
                         {
                             //Print lables
                             this.DymoPrinter.PrintPriceCardsFromProductList(printingList);
                             printingList.Clear();
                         }
-                        
+
+                        i++;
+
                     }
 
                 }

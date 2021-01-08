@@ -35,6 +35,7 @@ namespace NaturalnieApp.Forms
         string ManufacturerColumnName { get; set; }
         string BarcodeColumnName { get; set; }
         string SupplierCodeColumnName { get; set; }
+        string Discount { get; set; }
         string IndexColumnName { get; set; }
         DataTable DataFromExcel { get; set; }
         string LastExcelFilePath { get; set; }
@@ -70,6 +71,8 @@ namespace NaturalnieApp.Forms
                 e => e.Key == ColumnsAttributes.Barcode_EAN13).Value;
             this.SupplierCodeColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
                 e => e.Key == ColumnsAttributes.SupplierCode).Value;
+            this.Discount = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.Discount).Value;
 
             //Get additiona data from Wiun Form schema
             this.FinalPriceColumnName = this.SupplierInvoice.DataTableSchema_WinForm.FirstOrDefault(

@@ -25,7 +25,7 @@ namespace NaturalnieApp.PdfToExcel
             this._Properties.StartStringDefineColumnNames = true;
             this._Properties.LastEntity = Properties.LastEntityMark.RowWithLastNumericValueInFirstColumn;
             this._Properties.NumberOfRowByEntity = 2;
-            this.NumberOfColumns = 9;
+
 
 
             //Barcode and supplier code can be used alternately, but use one of it is mandatory
@@ -40,7 +40,12 @@ namespace NaturalnieApp.PdfToExcel
                 {ColumnsAttributes.SupplierCode, "Kod dostawcy"},
                 {ColumnsAttributes.PriceNet, "Cena netto"},
                 {ColumnsAttributes.Tax, "VAT"},
+                {ColumnsAttributes.Discount, "Rabat dostawcy"}
             };
+
+            //Count number of columns
+            this.NumberOfColumns = this.DataTableSchema_Excel.Count();
+
             this.DataTableSchema_WinForm = new Dictionary<ColumnsAttributes, string>
             {
                 {ColumnsAttributes.IndexColumnName, "Lp."},
@@ -54,7 +59,8 @@ namespace NaturalnieApp.PdfToExcel
                 {ColumnsAttributes.FinalPrice, "Cena klienta" },
                 {ColumnsAttributes.Tax, "VAT"},
                 {ColumnsAttributes.Marigin, "Marża"},
-                {ColumnsAttributes.CheckBox, "Zaznacz"}
+                {ColumnsAttributes.CheckBox, "Zaznacz"},
+                {ColumnsAttributes.Discount, "Rabat dostawcy"}
             };
 
         }
