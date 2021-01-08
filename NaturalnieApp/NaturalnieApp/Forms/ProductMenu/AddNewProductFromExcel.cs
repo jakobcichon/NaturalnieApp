@@ -869,10 +869,13 @@ namespace NaturalnieApp.Forms
                 //If discount changed, recalculate net price with discount
                 if (cell.ColumnIndex == indexOfDiscount)
                 {
-                    double price = Convert.ToDouble(localSender.Rows[cell.RowIndex].Cells[indexOfPriceNet].Value);
+
+                    float price = Convert.ToSingle(localSender.Rows[cell.RowIndex].Cells[indexOfPriceNet].Value);
                     int tax = Convert.ToInt32(localSender.Rows[cell.RowIndex].Cells[indexOfTax].Value);
                     int marigin = Convert.ToInt32(localSender.Rows[cell.RowIndex].Cells[indexOfMarigin].Value);
-                    localSender.Rows[cell.RowIndex].Cells[indexOfPriceNetWithDiscount].Value = Calculations.FinalPrice(price, tax, marigin).ToString();
+                    int discount = Convert.ToInt32(localSender.Rows[cell.RowIndex].Cells[indexOfDiscount].Value);
+                    localSender.Rows[cell.RowIndex].Cells[indexOfPriceNetWithDiscount].Value = Calculations.CalculatePriceNetWithDiscount(price, discount).ToString();
+                    localSender.Rows[cell.RowIndex].Cells[indexOfFinalPrice].Value = Calculations.FinalPrice(price, tax, marigin).ToString();
                 }
 
                 //If marigin has changed, recalculate final price
