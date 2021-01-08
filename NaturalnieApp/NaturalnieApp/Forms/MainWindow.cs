@@ -51,9 +51,6 @@ namespace NaturalnieApp.Forms
             //check if Database reachable 
             this.databaseCommands.CheckConnection(true);
 
-            List<string> test = this.databaseCommands.GetProductsNameListByManufacturer("Ziaja");
-            this.databaseCommands.UpdateAllFinalPrices(test);
-
             this.addNewProductFromExcel = new AddNewProductFromExcel(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.printBarcode = new PrintBarcode(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) { TopLevel = false, TopMost = true };
