@@ -61,6 +61,7 @@ namespace NaturalnieApp.Forms
             this.ColumnNames.LabelFinalPrice = "Cena klienta";
             this.ColumnNames.LabelText = "Tekst etykiety";
             this.ColumnNames.NumberOfCopies = "Liczba kopii";
+            this.ColumnNames.ModificationDate = "Data modyfikacji";
             this.DataSoruce = new DataTable();
 
             InitializeAdvancedDataGridView();
@@ -301,6 +302,13 @@ namespace NaturalnieApp.Forms
             this.DataSoruce.Columns.Add(column);
             column.Dispose();
 
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.ModificationDate;
+            column.DataType = Type.GetType("System.DateTime");
+            column.ReadOnly = false;
+            this.DataSoruce.Columns.Add(column);
+            column.Dispose();
+
             advancedDataGridView1.DataSource = this.DataSoruce;
 
             advancedDataGridView1.AutoResizeColumns();
@@ -418,6 +426,7 @@ namespace NaturalnieApp.Forms
                             rowElement.SetField<string>(this.ColumnNames.LabelText, productEnt.ElzabProductName);
                             rowElement.SetField<string>(this.ColumnNames.LabelFinalPrice, string.Format("{0:0.00}", productEnt.FinalPrice));
                             rowElement.SetField<int>(this.ColumnNames.NumberOfCopies, element.ActualQuantity);
+                            rowElement.SetField<DateTime>(this.ColumnNames.ModificationDate, element.ModificationDate);
 
                             this.DataSoruce.Rows.Add(rowElement);
 
