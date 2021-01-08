@@ -120,7 +120,7 @@ namespace NaturalnieApp.Dymo_Printer
                         listOfTheLabelToPrint[k] = ChangeLabelObjectsValues(listOfTheLabelToPrint[k], listOfProductToPrint[i], true);
 
                         //Change lower lable objects
-                        listOfTheLabelToPrint[k] = ChangeLabelObjectsValues(listOfTheLabelToPrint[k], listOfProductToPrint[i], false);
+                        //listOfTheLabelToPrint[k] = ChangeLabelObjectsValues(listOfTheLabelToPrint[k], listOfProductToPrint[i], false);
                     }
                     else
                     {

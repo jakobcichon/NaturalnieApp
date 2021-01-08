@@ -296,6 +296,25 @@ namespace NaturalnieApp.Forms
             //Show updated value
             this.tbFinalPrice.Text = string.Format("{0:0.00}", this.ProductEntity.FinalPrice.ToString());
         }
+
+        //Method used to update stock quantity
+        private void UpdateQuantityOnList()
+        {
+            int quantity = 0;
+
+            if (this.DataSoruce.Rows.Count > 0)
+            {
+
+                foreach (DataRow element in this.DataSoruce.Rows)
+                {
+                    //Get quantity for each row
+                    quantity += element.Field<int>(this.ColumnNames.NumberOfPieces);
+                }
+            }
+
+            this.tbQuantityOnList.Text = quantity.ToString();
+        }
+
         #endregion
         //====================================================================================================
         //Advanced data gid view
@@ -348,6 +367,17 @@ namespace NaturalnieApp.Forms
             advancedDataGridView1.DataSource = this.DataSoruce;
 
             advancedDataGridView1.AutoResizeColumns();
+        }
+        private void advancedDataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            //Update quantity on list
+            UpdateQuantityOnList();
+        }
+
+        private void advancedDataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            //Update quantity on list
+            UpdateQuantityOnList();
         }
         #endregion
         //====================================================================================================
@@ -557,10 +587,6 @@ namespace NaturalnieApp.Forms
                         this.databaseCommands.EditProduct(entity);
                         MessageBox.Show("Udało się zmodyfikować wartość marży!:)");
 
-                        //Update view
-                        this.ActualTaskType = backgroundWorkerTasks.Update;
-                        this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
-
                         bUpdate_Click(sender, EventArgs.Empty);
                     }
                     else
@@ -693,6 +719,9 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
             }
 
+            //Update quantity on list
+            UpdateQuantityOnList();
+
             //Select next control
             UpdateControl(ref tbDummyForCtrl);
         }
@@ -815,8 +844,9 @@ namespace NaturalnieApp.Forms
         }
 
 
-        #endregion
 
+
+        #endregion
 
     }
 }

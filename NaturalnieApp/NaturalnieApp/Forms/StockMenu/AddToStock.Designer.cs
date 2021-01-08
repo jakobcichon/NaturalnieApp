@@ -34,6 +34,8 @@ namespace NaturalnieApp.Forms
             this.panel1 = new System.Windows.Forms.Panel();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
+            this.tbQuantityOnList = new System.Windows.Forms.TextBox();
+            this.lQuantityOnList = new System.Windows.Forms.Label();
             this.bUpdate = new System.Windows.Forms.Button();
             this.bPrint = new System.Windows.Forms.Button();
             this.bClose = new System.Windows.Forms.Button();
@@ -137,9 +139,13 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView1.Size = new System.Drawing.Size(700, 350);
             this.advancedDataGridView1.TabIndex = 2;
+            this.advancedDataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValueChanged);
+            this.advancedDataGridView1.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.advancedDataGridView1_UserDeletedRow);
             // 
             // pButtonsPanel
             // 
+            this.pButtonsPanel.Controls.Add(this.tbQuantityOnList);
+            this.pButtonsPanel.Controls.Add(this.lQuantityOnList);
             this.pButtonsPanel.Controls.Add(this.bUpdate);
             this.pButtonsPanel.Controls.Add(this.bPrint);
             this.pButtonsPanel.Controls.Add(this.bClose);
@@ -148,6 +154,28 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.Name = "pButtonsPanel";
             this.pButtonsPanel.Size = new System.Drawing.Size(1000, 70);
             this.pButtonsPanel.TabIndex = 4;
+            // 
+            // tbQuantityOnList
+            // 
+            this.tbQuantityOnList.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.tbQuantityOnList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbQuantityOnList.Location = new System.Drawing.Point(280, 22);
+            this.tbQuantityOnList.Margin = new System.Windows.Forms.Padding(5);
+            this.tbQuantityOnList.Name = "tbQuantityOnList";
+            this.tbQuantityOnList.ReadOnly = true;
+            this.tbQuantityOnList.Size = new System.Drawing.Size(123, 26);
+            this.tbQuantityOnList.TabIndex = 31;
+            // 
+            // lQuantityOnList
+            // 
+            this.lQuantityOnList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lQuantityOnList.Location = new System.Drawing.Point(53, 20);
+            this.lQuantityOnList.Margin = new System.Windows.Forms.Padding(5);
+            this.lQuantityOnList.Name = "lQuantityOnList";
+            this.lQuantityOnList.Size = new System.Drawing.Size(228, 30);
+            this.lQuantityOnList.TabIndex = 32;
+            this.lQuantityOnList.Text = "Ilość produktów na liście";
+            this.lQuantityOnList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // bUpdate
             // 
@@ -270,7 +298,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 583F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 585F));
             this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -318,7 +346,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 373F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 375F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -714,6 +742,8 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(300, 35);
             this.tableLayoutPanel1.TabIndex = 32;
             // 
@@ -795,6 +825,7 @@ namespace NaturalnieApp.Forms
             this.pHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.pButtonsPanel.ResumeLayout(false);
+            this.pButtonsPanel.PerformLayout();
             this.gbProductSelection.ResumeLayout(false);
             this.pBarCode.ResumeLayout(false);
             this.pProductName.ResumeLayout(false);
@@ -869,5 +900,7 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button bUpdate;
         private System.Windows.Forms.TextBox tbQuantity;
+        private System.Windows.Forms.TextBox tbQuantityOnList;
+        private System.Windows.Forms.Label lQuantityOnList;
     }
 }

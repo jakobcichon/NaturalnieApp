@@ -225,6 +225,23 @@ namespace NaturalnieApp.Forms
                 localSender.Text = "";
             }
         }
+        //Method used to update stock quantity
+        private void UpdateQuantityOnList()
+        {
+            int quantity = 0;
+
+            if (this.DataSoruce.Rows.Count > 0)
+            {
+
+                foreach (DataRow element in this.DataSoruce.Rows)
+                {
+                    //Get quantity for each row
+                    quantity += element.Field<int>(this.ColumnNames.NumberOfCopies);
+                }
+            }
+
+            this.tbNumberOfLabels.Text = quantity.ToString();
+        }
         #endregion
         //====================================================================================================
         //Advanced data gid view
@@ -288,12 +305,9 @@ namespace NaturalnieApp.Forms
 
             advancedDataGridView1.AutoResizeColumns();
         }
-
-
         private void AdvancedDataGridView1_FilterStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.FilterEventArgs e)
         {
         }
-
         private void AdvancedDataGridView1_SortStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.SortEventArgs e)
         {
             Zuby.ADGV.AdvancedDataGridView fdgv = advancedDataGridView1;
@@ -316,6 +330,14 @@ namespace NaturalnieApp.Forms
             DataTable sortedDT = dv.ToTable();
             fdgv.DataSource = sortedDT;
 
+        }
+        private void advancedDataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            UpdateQuantityOnList();
+        }
+        private void advancedDataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            UpdateQuantityOnList();
         }
         #endregion
         //====================================================================================================
@@ -415,6 +437,8 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show("Najpierw należy wybrać porducenta!");
             }
 
+            UpdateQuantityOnList();
+
             //Update control
             UpdateControl(ref tbDummyForCtrl);
         }
@@ -492,6 +516,7 @@ namespace NaturalnieApp.Forms
         }
 
         #endregion
- 
+
+
     }
 }

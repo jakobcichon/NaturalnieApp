@@ -42,11 +42,8 @@ namespace NaturalnieApp.Forms
             this.cbManufacturers = new System.Windows.Forms.ComboBox();
             this.lManufacturer = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.tbActualQuantity = new System.Windows.Forms.TextBox();
-            this.cbAddWithEveryScanCycle = new System.Windows.Forms.CheckBox();
-            this.tbFinalPrice = new System.Windows.Forms.TextBox();
-            this.lActualQuantity = new System.Windows.Forms.Label();
-            this.lFinalPrice = new System.Windows.Forms.Label();
+            this.tbNumberOfLabels = new System.Windows.Forms.TextBox();
+            this.lNumberOfLabels = new System.Windows.Forms.Label();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -92,9 +89,13 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView1.Size = new System.Drawing.Size(700, 350);
             this.advancedDataGridView1.TabIndex = 2;
+            this.advancedDataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValueChanged);
+            this.advancedDataGridView1.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.advancedDataGridView1_UserDeletedRow);
             // 
             // pButtonsPanel
             // 
+            this.pButtonsPanel.Controls.Add(this.tbNumberOfLabels);
+            this.pButtonsPanel.Controls.Add(this.lNumberOfLabels);
             this.pButtonsPanel.Controls.Add(this.bPrint);
             this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -161,7 +162,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 368F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 369F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -216,60 +217,27 @@ namespace NaturalnieApp.Forms
             this.panel5.Size = new System.Drawing.Size(298, 10);
             this.panel5.TabIndex = 0;
             // 
-            // tbActualQuantity
+            // tbNumberOfLabels
             // 
-            this.tbActualQuantity.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.tbActualQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbActualQuantity.Location = new System.Drawing.Point(877, 424);
-            this.tbActualQuantity.Margin = new System.Windows.Forms.Padding(5);
-            this.tbActualQuantity.Name = "tbActualQuantity";
-            this.tbActualQuantity.ReadOnly = true;
-            this.tbActualQuantity.Size = new System.Drawing.Size(123, 26);
-            this.tbActualQuantity.TabIndex = 29;
+            this.tbNumberOfLabels.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.tbNumberOfLabels.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbNumberOfLabels.Location = new System.Drawing.Point(281, 11);
+            this.tbNumberOfLabels.Margin = new System.Windows.Forms.Padding(5);
+            this.tbNumberOfLabels.Name = "tbNumberOfLabels";
+            this.tbNumberOfLabels.ReadOnly = true;
+            this.tbNumberOfLabels.Size = new System.Drawing.Size(64, 29);
+            this.tbNumberOfLabels.TabIndex = 27;
             // 
-            // cbAddWithEveryScanCycle
+            // lNumberOfLabels
             // 
-            this.cbAddWithEveryScanCycle.BackColor = System.Drawing.Color.White;
-            this.cbAddWithEveryScanCycle.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.cbAddWithEveryScanCycle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbAddWithEveryScanCycle.Location = new System.Drawing.Point(950, 458);
-            this.cbAddWithEveryScanCycle.Name = "cbAddWithEveryScanCycle";
-            this.cbAddWithEveryScanCycle.Size = new System.Drawing.Size(50, 25);
-            this.cbAddWithEveryScanCycle.TabIndex = 3;
-            this.cbAddWithEveryScanCycle.UseVisualStyleBackColor = false;
-            // 
-            // tbFinalPrice
-            // 
-            this.tbFinalPrice.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.tbFinalPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbFinalPrice.Location = new System.Drawing.Point(877, 388);
-            this.tbFinalPrice.Margin = new System.Windows.Forms.Padding(5);
-            this.tbFinalPrice.Name = "tbFinalPrice";
-            this.tbFinalPrice.ReadOnly = true;
-            this.tbFinalPrice.Size = new System.Drawing.Size(123, 26);
-            this.tbFinalPrice.TabIndex = 27;
-            // 
-            // lActualQuantity
-            // 
-            this.lActualQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lActualQuantity.Location = new System.Drawing.Point(701, 422);
-            this.lActualQuantity.Margin = new System.Windows.Forms.Padding(5);
-            this.lActualQuantity.Name = "lActualQuantity";
-            this.lActualQuantity.Size = new System.Drawing.Size(166, 30);
-            this.lActualQuantity.TabIndex = 30;
-            this.lActualQuantity.Text = "Aktualna ilość";
-            this.lActualQuantity.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lFinalPrice
-            // 
-            this.lFinalPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lFinalPrice.Location = new System.Drawing.Point(701, 386);
-            this.lFinalPrice.Margin = new System.Windows.Forms.Padding(5);
-            this.lFinalPrice.Name = "lFinalPrice";
-            this.lFinalPrice.Size = new System.Drawing.Size(166, 30);
-            this.lFinalPrice.TabIndex = 28;
-            this.lFinalPrice.Text = "Cena klienta";
-            this.lFinalPrice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lNumberOfLabels.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lNumberOfLabels.Location = new System.Drawing.Point(105, 10);
+            this.lNumberOfLabels.Margin = new System.Windows.Forms.Padding(5);
+            this.lNumberOfLabels.Name = "lNumberOfLabels";
+            this.lNumberOfLabels.Size = new System.Drawing.Size(197, 30);
+            this.lNumberOfLabels.TabIndex = 28;
+            this.lNumberOfLabels.Text = "Liczba etykiet do druku";
+            this.lNumberOfLabels.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // PrintFromStock
             // 
@@ -278,11 +246,6 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1000, 570);
-            this.Controls.Add(this.cbAddWithEveryScanCycle);
-            this.Controls.Add(this.lActualQuantity);
-            this.Controls.Add(this.tbActualQuantity);
-            this.Controls.Add(this.lFinalPrice);
-            this.Controls.Add(this.tbFinalPrice);
             this.Controls.Add(this.advancedDataGridView1);
             this.Controls.Add(this.gbProductSelection);
             this.Controls.Add(this.pHeader);
@@ -299,10 +262,10 @@ namespace NaturalnieApp.Forms
             this.pHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.pButtonsPanel.ResumeLayout(false);
+            this.pButtonsPanel.PerformLayout();
             this.gbProductSelection.ResumeLayout(false);
             this.pManufacturer.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -318,11 +281,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bClose;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Button bPrint;
-        private System.Windows.Forms.TextBox tbActualQuantity;
-        private System.Windows.Forms.CheckBox cbAddWithEveryScanCycle;
-        private System.Windows.Forms.TextBox tbFinalPrice;
-        private System.Windows.Forms.Label lActualQuantity;
-        private System.Windows.Forms.Label lFinalPrice;
+        private System.Windows.Forms.TextBox tbNumberOfLabels;
+        private System.Windows.Forms.Label lNumberOfLabels;
         private System.Windows.Forms.Button bShow;
         private System.Windows.Forms.TextBox tbDummyForCtrl;
     }
