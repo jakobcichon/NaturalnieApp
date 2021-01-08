@@ -660,6 +660,25 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB Product Name using product Id
+        //====================================================================================================
+        public string GetProductNameById(int id)
+        {
+            string productName;
+
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from p in contextDB.Products
+                            where p.Id == id
+                            select p.ProductName;
+
+                productName = query.SingleOrDefault();
+            }
+
+            return productName;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB Supplier value using Supplier name
         //====================================================================================================
         public int GetSupplierIdByName(string supplierName)
@@ -751,16 +770,33 @@ namespace NaturalnieApp.Database
             return localProduct;
             }
 
-            //====================================================================================================
-            //Method used to retrieve from DB Product entity
-            //====================================================================================================
-            public Product GetProductEntityByProductName(string productName)
+        //====================================================================================================
+        //Method used to retrieve from DB Product entity
+        //====================================================================================================
+        public Product GetProductEntityByProductName(string productName)
         {
             Product localProduct = new Product();
             using (ShopContext contextDB = new ShopContext())
             {
                 var query = from p in contextDB.Products
                             where p.ProductName == productName
+                            select p;
+
+                localProduct = query.SingleOrDefault();
+            }
+            return localProduct;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Product entity
+        //====================================================================================================
+        public Product GetProductEntityByProductId(int productId)
+        {
+            Product localProduct = new Product();
+            using (ShopContext contextDB = new ShopContext())
+            {
+                var query = from p in contextDB.Products
+                            where p.Id == productId
                             select p;
 
                 localProduct = query.SingleOrDefault();

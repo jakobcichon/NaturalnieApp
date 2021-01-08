@@ -39,9 +39,9 @@ namespace NaturalnieApp.Forms
             this.pProductSubMenu = new System.Windows.Forms.Panel();
             this.bAddManufacturer = new System.Windows.Forms.Button();
             this.bPrintBarcode = new System.Windows.Forms.Button();
-            this.bShowProductInfo = new System.Windows.Forms.Button();
             this.AddProductFromPdf = new System.Windows.Forms.Button();
             this.bNewProduct = new System.Windows.Forms.Button();
+            this.bShowProductInfo = new System.Windows.Forms.Button();
             this.bProductMenu = new System.Windows.Forms.Button();
             this.pCashRegisterSubMenu = new System.Windows.Forms.Panel();
             this.bCashRegisterSettings = new System.Windows.Forms.Button();
@@ -53,6 +53,7 @@ namespace NaturalnieApp.Forms
             this.lDtabaseStatus = new System.Windows.Forms.Label();
             this.lDatabaseConnState = new System.Windows.Forms.Label();
             this.bExit = new System.Windows.Forms.Button();
+            this.pMenuDeliminer = new System.Windows.Forms.Panel();
             this.pContainer = new System.Windows.Forms.Panel();
             this.pMenu.SuspendLayout();
             this.pStockSubMenu.SuspendLayout();
@@ -63,7 +64,7 @@ namespace NaturalnieApp.Forms
             // 
             // pMenu
             // 
-            this.pMenu.BackColor = System.Drawing.Color.White;
+            this.pMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.pMenu.Controls.Add(this.pStockSubMenu);
             this.pMenu.Controls.Add(this.bStock);
             this.pMenu.Controls.Add(this.pProductSubMenu);
@@ -75,7 +76,7 @@ namespace NaturalnieApp.Forms
             this.pMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.pMenu.Location = new System.Drawing.Point(0, 30);
             this.pMenu.Name = "pMenu";
-            this.pMenu.Size = new System.Drawing.Size(200, 570);
+            this.pMenu.Size = new System.Drawing.Size(300, 800);
             this.pMenu.TabIndex = 0;
             // 
             // pStockSubMenu
@@ -86,9 +87,10 @@ namespace NaturalnieApp.Forms
             this.pStockSubMenu.Controls.Add(this.bPRintFromStock);
             this.pStockSubMenu.Controls.Add(this.bAddToStock);
             this.pStockSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pStockSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pStockSubMenu.Location = new System.Drawing.Point(0, 446);
             this.pStockSubMenu.Name = "pStockSubMenu";
-            this.pStockSubMenu.Size = new System.Drawing.Size(200, 90);
+            this.pStockSubMenu.Size = new System.Drawing.Size(300, 90);
             this.pStockSubMenu.TabIndex = 7;
             // 
             // bShowStock
@@ -101,7 +103,7 @@ namespace NaturalnieApp.Forms
             this.bShowStock.ForeColor = System.Drawing.Color.White;
             this.bShowStock.Location = new System.Drawing.Point(0, 60);
             this.bShowStock.Name = "bShowStock";
-            this.bShowStock.Size = new System.Drawing.Size(200, 30);
+            this.bShowStock.Size = new System.Drawing.Size(300, 30);
             this.bShowStock.TabIndex = 10;
             this.bShowStock.Text = "Stany magazynowe";
             this.bShowStock.UseVisualStyleBackColor = false;
@@ -117,7 +119,7 @@ namespace NaturalnieApp.Forms
             this.bPRintFromStock.ForeColor = System.Drawing.Color.White;
             this.bPRintFromStock.Location = new System.Drawing.Point(0, 30);
             this.bPRintFromStock.Name = "bPRintFromStock";
-            this.bPRintFromStock.Size = new System.Drawing.Size(200, 30);
+            this.bPRintFromStock.Size = new System.Drawing.Size(300, 30);
             this.bPRintFromStock.TabIndex = 9;
             this.bPRintFromStock.Text = "Drukuj z magazynu";
             this.bPRintFromStock.UseVisualStyleBackColor = false;
@@ -133,7 +135,7 @@ namespace NaturalnieApp.Forms
             this.bAddToStock.ForeColor = System.Drawing.Color.White;
             this.bAddToStock.Location = new System.Drawing.Point(0, 0);
             this.bAddToStock.Name = "bAddToStock";
-            this.bAddToStock.Size = new System.Drawing.Size(200, 30);
+            this.bAddToStock.Size = new System.Drawing.Size(300, 30);
             this.bAddToStock.TabIndex = 8;
             this.bAddToStock.Text = "Dodaj do magazynu";
             this.bAddToStock.UseVisualStyleBackColor = false;
@@ -141,15 +143,15 @@ namespace NaturalnieApp.Forms
             // 
             // bStock
             // 
-            this.bStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(154)))), ((int)(((byte)(72)))));
             this.bStock.Dock = System.Windows.Forms.DockStyle.Top;
             this.bStock.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.bStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bStock.ForeColor = System.Drawing.Color.White;
+            this.bStock.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.bStock.Location = new System.Drawing.Point(0, 406);
             this.bStock.Name = "bStock";
-            this.bStock.Size = new System.Drawing.Size(200, 40);
+            this.bStock.Size = new System.Drawing.Size(300, 40);
             this.bStock.TabIndex = 6;
             this.bStock.Text = "Magazyn";
             this.bStock.UseVisualStyleBackColor = false;
@@ -161,13 +163,14 @@ namespace NaturalnieApp.Forms
             this.pProductSubMenu.BackColor = System.Drawing.Color.DimGray;
             this.pProductSubMenu.Controls.Add(this.bAddManufacturer);
             this.pProductSubMenu.Controls.Add(this.bPrintBarcode);
-            this.pProductSubMenu.Controls.Add(this.bShowProductInfo);
             this.pProductSubMenu.Controls.Add(this.AddProductFromPdf);
             this.pProductSubMenu.Controls.Add(this.bNewProduct);
+            this.pProductSubMenu.Controls.Add(this.bShowProductInfo);
             this.pProductSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pProductSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pProductSubMenu.Location = new System.Drawing.Point(0, 256);
             this.pProductSubMenu.Name = "pProductSubMenu";
-            this.pProductSubMenu.Size = new System.Drawing.Size(200, 150);
+            this.pProductSubMenu.Size = new System.Drawing.Size(300, 150);
             this.pProductSubMenu.TabIndex = 5;
             // 
             // bAddManufacturer
@@ -176,11 +179,11 @@ namespace NaturalnieApp.Forms
             this.bAddManufacturer.Dock = System.Windows.Forms.DockStyle.Top;
             this.bAddManufacturer.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.bAddManufacturer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bAddManufacturer.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bAddManufacturer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bAddManufacturer.ForeColor = System.Drawing.Color.White;
             this.bAddManufacturer.Location = new System.Drawing.Point(0, 120);
             this.bAddManufacturer.Name = "bAddManufacturer";
-            this.bAddManufacturer.Size = new System.Drawing.Size(200, 30);
+            this.bAddManufacturer.Size = new System.Drawing.Size(300, 30);
             this.bAddManufacturer.TabIndex = 9;
             this.bAddManufacturer.Text = "Dodaj producenta/dostawcę";
             this.bAddManufacturer.UseVisualStyleBackColor = false;
@@ -196,27 +199,11 @@ namespace NaturalnieApp.Forms
             this.bPrintBarcode.ForeColor = System.Drawing.Color.White;
             this.bPrintBarcode.Location = new System.Drawing.Point(0, 90);
             this.bPrintBarcode.Name = "bPrintBarcode";
-            this.bPrintBarcode.Size = new System.Drawing.Size(200, 30);
+            this.bPrintBarcode.Size = new System.Drawing.Size(300, 30);
             this.bPrintBarcode.TabIndex = 8;
             this.bPrintBarcode.Text = "Drukuj kod kreskowy";
             this.bPrintBarcode.UseVisualStyleBackColor = false;
             this.bPrintBarcode.Click += new System.EventHandler(this.bPrintBarcode_Click);
-            // 
-            // bShowProductInfo
-            // 
-            this.bShowProductInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bShowProductInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bShowProductInfo.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.bShowProductInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bShowProductInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bShowProductInfo.ForeColor = System.Drawing.Color.White;
-            this.bShowProductInfo.Location = new System.Drawing.Point(0, 60);
-            this.bShowProductInfo.Name = "bShowProductInfo";
-            this.bShowProductInfo.Size = new System.Drawing.Size(200, 30);
-            this.bShowProductInfo.TabIndex = 7;
-            this.bShowProductInfo.Text = "Znajdź produkt";
-            this.bShowProductInfo.UseVisualStyleBackColor = false;
-            this.bShowProductInfo.Click += new System.EventHandler(this.bShowProductInfo_Click);
             // 
             // AddProductFromPdf
             // 
@@ -226,9 +213,9 @@ namespace NaturalnieApp.Forms
             this.AddProductFromPdf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddProductFromPdf.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddProductFromPdf.ForeColor = System.Drawing.Color.White;
-            this.AddProductFromPdf.Location = new System.Drawing.Point(0, 30);
+            this.AddProductFromPdf.Location = new System.Drawing.Point(0, 60);
             this.AddProductFromPdf.Name = "AddProductFromPdf";
-            this.AddProductFromPdf.Size = new System.Drawing.Size(200, 30);
+            this.AddProductFromPdf.Size = new System.Drawing.Size(300, 30);
             this.AddProductFromPdf.TabIndex = 6;
             this.AddProductFromPdf.Text = "Dodaj produkty z pdf";
             this.AddProductFromPdf.UseVisualStyleBackColor = false;
@@ -243,25 +230,41 @@ namespace NaturalnieApp.Forms
             this.bNewProduct.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bNewProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bNewProduct.ForeColor = System.Drawing.Color.White;
-            this.bNewProduct.Location = new System.Drawing.Point(0, 0);
+            this.bNewProduct.Location = new System.Drawing.Point(0, 30);
             this.bNewProduct.Name = "bNewProduct";
-            this.bNewProduct.Size = new System.Drawing.Size(200, 30);
+            this.bNewProduct.Size = new System.Drawing.Size(300, 30);
             this.bNewProduct.TabIndex = 4;
             this.bNewProduct.Text = "Dodaj nowy produkt";
             this.bNewProduct.UseVisualStyleBackColor = false;
             this.bNewProduct.Click += new System.EventHandler(this.bNewProduct_Click);
             // 
+            // bShowProductInfo
+            // 
+            this.bShowProductInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bShowProductInfo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bShowProductInfo.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bShowProductInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bShowProductInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bShowProductInfo.ForeColor = System.Drawing.Color.White;
+            this.bShowProductInfo.Location = new System.Drawing.Point(0, 0);
+            this.bShowProductInfo.Name = "bShowProductInfo";
+            this.bShowProductInfo.Size = new System.Drawing.Size(300, 30);
+            this.bShowProductInfo.TabIndex = 7;
+            this.bShowProductInfo.Text = "Znajdź produkt";
+            this.bShowProductInfo.UseVisualStyleBackColor = false;
+            this.bShowProductInfo.Click += new System.EventHandler(this.bShowProductInfo_Click);
+            // 
             // bProductMenu
             // 
-            this.bProductMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bProductMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(154)))), ((int)(((byte)(72)))));
             this.bProductMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.bProductMenu.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.bProductMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bProductMenu.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bProductMenu.ForeColor = System.Drawing.Color.White;
+            this.bProductMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.bProductMenu.Location = new System.Drawing.Point(0, 216);
             this.bProductMenu.Name = "bProductMenu";
-            this.bProductMenu.Size = new System.Drawing.Size(200, 40);
+            this.bProductMenu.Size = new System.Drawing.Size(300, 40);
             this.bProductMenu.TabIndex = 4;
             this.bProductMenu.Text = "Menu produktu";
             this.bProductMenu.UseVisualStyleBackColor = false;
@@ -273,9 +276,10 @@ namespace NaturalnieApp.Forms
             this.pCashRegisterSubMenu.Controls.Add(this.bCashRegisterSettings);
             this.pCashRegisterSubMenu.Controls.Add(this.bCashRegisterInfo);
             this.pCashRegisterSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pCashRegisterSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pCashRegisterSubMenu.Location = new System.Drawing.Point(0, 156);
             this.pCashRegisterSubMenu.Name = "pCashRegisterSubMenu";
-            this.pCashRegisterSubMenu.Size = new System.Drawing.Size(200, 60);
+            this.pCashRegisterSubMenu.Size = new System.Drawing.Size(300, 60);
             this.pCashRegisterSubMenu.TabIndex = 3;
             // 
             // bCashRegisterSettings
@@ -288,7 +292,7 @@ namespace NaturalnieApp.Forms
             this.bCashRegisterSettings.ForeColor = System.Drawing.Color.White;
             this.bCashRegisterSettings.Location = new System.Drawing.Point(0, 30);
             this.bCashRegisterSettings.Name = "bCashRegisterSettings";
-            this.bCashRegisterSettings.Size = new System.Drawing.Size(200, 30);
+            this.bCashRegisterSettings.Size = new System.Drawing.Size(300, 30);
             this.bCashRegisterSettings.TabIndex = 5;
             this.bCashRegisterSettings.Text = "Ustawienia";
             this.bCashRegisterSettings.UseVisualStyleBackColor = false;
@@ -305,7 +309,7 @@ namespace NaturalnieApp.Forms
             this.bCashRegisterInfo.ForeColor = System.Drawing.Color.White;
             this.bCashRegisterInfo.Location = new System.Drawing.Point(0, 0);
             this.bCashRegisterInfo.Name = "bCashRegisterInfo";
-            this.bCashRegisterInfo.Size = new System.Drawing.Size(200, 30);
+            this.bCashRegisterInfo.Size = new System.Drawing.Size(300, 30);
             this.bCashRegisterInfo.TabIndex = 4;
             this.bCashRegisterInfo.Text = "Informacje";
             this.bCashRegisterInfo.UseVisualStyleBackColor = false;
@@ -313,15 +317,15 @@ namespace NaturalnieApp.Forms
             // 
             // bCashRegister
             // 
-            this.bCashRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bCashRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(154)))), ((int)(((byte)(72)))));
             this.bCashRegister.Dock = System.Windows.Forms.DockStyle.Top;
             this.bCashRegister.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.bCashRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bCashRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bCashRegister.ForeColor = System.Drawing.Color.White;
+            this.bCashRegister.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.bCashRegister.Location = new System.Drawing.Point(0, 116);
             this.bCashRegister.Name = "bCashRegister";
-            this.bCashRegister.Size = new System.Drawing.Size(200, 40);
+            this.bCashRegister.Size = new System.Drawing.Size(300, 40);
             this.bCashRegister.TabIndex = 2;
             this.bCashRegister.Text = "Kasa fiskalna";
             this.bCashRegister.UseVisualStyleBackColor = false;
@@ -329,28 +333,29 @@ namespace NaturalnieApp.Forms
             // 
             // bMainMenu
             // 
-            this.bMainMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bMainMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(154)))), ((int)(((byte)(72)))));
             this.bMainMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.bMainMenu.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.bMainMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bMainMenu.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bMainMenu.ForeColor = System.Drawing.Color.White;
+            this.bMainMenu.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bMainMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.bMainMenu.Location = new System.Drawing.Point(0, 76);
             this.bMainMenu.Name = "bMainMenu";
-            this.bMainMenu.Size = new System.Drawing.Size(200, 40);
+            this.bMainMenu.Size = new System.Drawing.Size(300, 40);
             this.bMainMenu.TabIndex = 1;
             this.bMainMenu.Text = "Menu główne";
             this.bMainMenu.UseVisualStyleBackColor = false;
             // 
             // pLogo
             // 
+            this.pLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.pLogo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pLogo.BackgroundImage")));
             this.pLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pLogo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pLogo.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.pLogo.Location = new System.Drawing.Point(0, 0);
             this.pLogo.Name = "pLogo";
-            this.pLogo.Size = new System.Drawing.Size(200, 76);
+            this.pLogo.Size = new System.Drawing.Size(300, 76);
             this.pLogo.TabIndex = 0;
             // 
             // pHeader
@@ -362,7 +367,7 @@ namespace NaturalnieApp.Forms
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
-            this.pHeader.Size = new System.Drawing.Size(1200, 30);
+            this.pHeader.Size = new System.Drawing.Size(1302, 30);
             this.pHeader.TabIndex = 4;
             this.pHeader.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseDown);
             this.pHeader.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseMove);
@@ -399,21 +404,32 @@ namespace NaturalnieApp.Forms
             this.bExit.Dock = System.Windows.Forms.DockStyle.Right;
             this.bExit.FlatAppearance.BorderSize = 0;
             this.bExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bExit.Location = new System.Drawing.Point(1170, 0);
+            this.bExit.Location = new System.Drawing.Point(1272, 0);
             this.bExit.Name = "bExit";
             this.bExit.Size = new System.Drawing.Size(30, 30);
             this.bExit.TabIndex = 0;
             this.bExit.UseVisualStyleBackColor = true;
             this.bExit.Click += new System.EventHandler(this.bExit_Click);
             // 
+            // pMenuDeliminer
+            // 
+            this.pMenuDeliminer.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.pMenuDeliminer.BackColor = System.Drawing.Color.DimGray;
+            this.pMenuDeliminer.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pMenuDeliminer.Enabled = false;
+            this.pMenuDeliminer.Location = new System.Drawing.Point(300, 30);
+            this.pMenuDeliminer.Name = "pMenuDeliminer";
+            this.pMenuDeliminer.Size = new System.Drawing.Size(2, 800);
+            this.pMenuDeliminer.TabIndex = 6;
+            // 
             // pContainer
             // 
             this.pContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
-            this.pContainer.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pContainer.Location = new System.Drawing.Point(200, 30);
+            this.pContainer.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pContainer.Location = new System.Drawing.Point(302, 30);
             this.pContainer.Name = "pContainer";
-            this.pContainer.Size = new System.Drawing.Size(1000, 570);
-            this.pContainer.TabIndex = 5;
+            this.pContainer.Size = new System.Drawing.Size(1000, 800);
+            this.pContainer.TabIndex = 7;
             // 
             // MainWindow
             // 
@@ -421,9 +437,10 @@ namespace NaturalnieApp.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1200, 600);
-            this.Controls.Add(this.pMenu);
+            this.ClientSize = new System.Drawing.Size(1302, 830);
             this.Controls.Add(this.pContainer);
+            this.Controls.Add(this.pMenuDeliminer);
+            this.Controls.Add(this.pMenu);
             this.Controls.Add(this.pHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
@@ -450,7 +467,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bCashRegister;
         private System.Windows.Forms.Panel pHeader;
         private System.Windows.Forms.Button bExit;
-        private System.Windows.Forms.Panel pContainer;
         private System.Windows.Forms.Panel pProductSubMenu;
         private System.Windows.Forms.Button bNewProduct;
         private System.Windows.Forms.Button bProductMenu;
@@ -465,5 +481,7 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bAddManufacturer;
         private System.Windows.Forms.Button bPRintFromStock;
         private System.Windows.Forms.Button bShowStock;
+        private System.Windows.Forms.Panel pMenuDeliminer;
+        private System.Windows.Forms.Panel pContainer;
     }
 }

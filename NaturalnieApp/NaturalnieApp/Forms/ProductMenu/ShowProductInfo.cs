@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
-
-
+using NaturalnieApp.Forms.TestForm;
+using System.Drawing;
 
 namespace NaturalnieApp.Forms
 {
@@ -27,7 +27,7 @@ namespace NaturalnieApp.Forms
         private Supplier SupplierEntity { get; set; }
         private Manufacturer ManufacturerEntity { get; set; }
         private Tax TaxEntity { get; set; }
-        private string SelectedProductName { get; set; }
+        private int SelectedProductId { get; set; }
 
         //Barcode reader
         private BarcodeRelated.BarcodeReader BarcodeReader { get; set; }
@@ -83,7 +83,6 @@ namespace NaturalnieApp.Forms
             // this event will define what the worker will do when finished
             this.backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
         }
-
         // This event handler is where the actual, potentially time-consuming work is done.
         void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -140,7 +139,6 @@ namespace NaturalnieApp.Forms
             }
   
         }
-
         // This event handler is where the actual, potentially time-consuming work is done.
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -176,9 +174,9 @@ namespace NaturalnieApp.Forms
                             List<List<string>> returnList = new List<List<string>>();
                             returnList = (List<List<string>>)e.Result;
                             FillWithInitialDataFromObject(returnList[0], returnList[1], returnList[2], returnList[3], returnList[4]);
-                            if (this.SelectedProductName != null)
+                            if (this.SelectedProductId >= 0)
                             {
-                                this.cbProductList.SelectedItem = this.SelectedProductName;
+                                this.cbProductList.SelectedItem = this.databaseCommands.GetProductNameById(this.SelectedProductId);
                             }
                             //Call event
                             cbProductList_SelectedIndexChanged(this.cbProductList, EventArgs.Empty);
@@ -203,7 +201,7 @@ namespace NaturalnieApp.Forms
         private void VerifyUniqueFields(Product candidateToSave)
         {
             //Get entity from DB and verify wat has changed
-            Product orginalEntity = this.databaseCommands.GetProductEntityByProductName(this.ProductEntity.ProductName);
+            Product orginalEntity = this.databaseCommands.GetProductEntityByProductId(this.ProductEntity.Id);
 
             bool exist = false;
 
@@ -240,7 +238,6 @@ namespace NaturalnieApp.Forms
                     this.ProductEntity.BarCode + "' już istnieje w bazie danych");
             }
         }
-
         private void FillWithDataFromObject(Product p, Supplier s, Manufacturer m, Tax t)
         {
             //Initialize calass fields
@@ -252,6 +249,7 @@ namespace NaturalnieApp.Forms
 
             FindTextInComboBoxAndSelect(ref this.cbProductList, p.ProductName);
             FindTextInComboBoxAndSelect(ref this.cbBarcodes, p.BarCode);
+            FindTextInComboBoxAndSelect(ref this.cbManufacturerToEdit, m.Name);
 
             //Elzab product number
             this.tbElzabProductNumber.Text = p.ElzabProductId.ToString();
@@ -267,8 +265,9 @@ namespace NaturalnieApp.Forms
             this.tbSupplierCode.Text = p.SupplierCode;
             this.tbDiscount.Text = p.Discount.ToString();
             this.tbPriceNetWithDiscount.Text = string.Format("{0:0.00}", p.PriceNetWithDiscount.ToString());
+            this.tbBarcodeToEdit.Text = p.BarCode;
+            this.tbProductNameToEdit.Text = p.ProductName;
         }
-
         private void FillWithInitialDataFromObject(List<string> productList, List<string> manufacturerList, List<string> barcodeList, List<string> supplierList, List<string> taxList)
         {
             //Add fetched data to proper combo box
@@ -288,6 +287,10 @@ namespace NaturalnieApp.Forms
             this.cbManufacturer.AutoCompleteCustomSource = this.ManufacturerListCollection;
             this.cbManufacturer.Items.Clear();
             this.cbManufacturer.Items.AddRange(this.ManufacturersList.ToArray());
+
+            //Add fetched data to proper combo box
+            this.cbManufacturerToEdit.Items.Clear();
+            this.cbManufacturerToEdit.Items.AddRange(manufacturerList.ToArray());
 
             //Add fetched data to proper combo box
             this.BarcodeListCollection = new AutoCompleteStringCollection();
@@ -318,7 +321,6 @@ namespace NaturalnieApp.Forms
 
 
         }
-
         private bool ValidateAllInputFields()
         {
             //Local variable
@@ -377,13 +379,13 @@ namespace NaturalnieApp.Forms
 
 
         }
-
         //Method used to clear all object (text box, combo box, etc.)  data
         private void ClearAllObjectsData()
         {
             //Supplier name
             this.cbSupplierName.Text = "";
             this.cbManufacturer.Items.Clear();
+            this.cbManufacturerToEdit.Items.Clear();
 
             //Elzab product number
             this.cbProductList.Items.Clear();
@@ -400,8 +402,9 @@ namespace NaturalnieApp.Forms
             this.cbBarcodes.Items.Clear();
             this.tbDiscount.Text = "";
             this.tbPriceNetWithDiscount.Text = "";
+            this.tbBarcodeToEdit.Text = "";
+            this.tbProductNameToEdit.Text = "";
         }
-
         //Metchod use to find and select string in ComboBox
         private void FindTextInComboBoxAndSelect(ref ComboBox obj, string textToFind)
         {
@@ -410,7 +413,23 @@ namespace NaturalnieApp.Forms
             obj.SelectedIndex = index;
             obj.Update();
         }
+        //Method used to adjust input string
+        private string AdjustInputString(string inputString)
+        {
+            //Local variable
+            string returnString;
 
+            returnString = inputString.Replace("\n", "");
+            returnString = returnString.Replace("\r", "");
+            if (returnString.Length >= 1)
+            {
+                if (returnString[returnString.Length - 1] == ' ')
+                {
+                    returnString = returnString.Remove(returnString.Length - 1, 1);
+                }
+            }
+            return returnString;
+        }
         //Method used to update final price value
         private void UpdateFinalPrice()
         {
@@ -421,7 +440,6 @@ namespace NaturalnieApp.Forms
             //Show updated value
             this.tbFinalPrice.Text = string.Format("{0:0.00}", this.ProductEntity.FinalPrice.ToString());
         }
-
         //Method used to update price net with discount
         private void UpdatePriceNetWithDiscount()
         {
@@ -549,7 +567,7 @@ namespace NaturalnieApp.Forms
                     this.databaseCommands.EditProduct(this.ProductEntity);
 
                     //Add current name as selected name (In case of changing name)
-                    this.SelectedProductName = this.ProductEntity.ProductName;
+                    this.SelectedProductId = this.ProductEntity.Id;
 
                     //Show message box
                     MessageBox.Show("Produkt '" + this.ProductEntity.ProductName + "' został zapisany!");
@@ -566,19 +584,6 @@ namespace NaturalnieApp.Forms
         private void bUpdate_Click(object sender, EventArgs e)
         {
             errorProvider1.Clear();
-
-            //Get current product name if was chosen
-            if (this.SelectedProductName != null)
-            {
-                if (this.cbProductList.SelectedItem != null)
-                {
-                    this.SelectedProductName = this.cbProductList.SelectedItem.ToString();
-                }
-                else
-                {
-                    this.SelectedProductName = null;
-                }
-            }
 
             //Clear all data from current form
             ClearAllObjectsData();
@@ -647,7 +652,6 @@ namespace NaturalnieApp.Forms
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -659,6 +663,72 @@ namespace NaturalnieApp.Forms
             ComboBox localSender = (ComboBox)sender;
             ToolTip toolTip = new ToolTip();
             toolTip.SetToolTip(localSender, localSender.Text);
+        }
+        #endregion
+        //====================================================================================================
+        //ManufacturerToEdit events
+        #region Manifacturer to edit events
+        private void cbManufacturerToEdit_Validating(object sender, EventArgs e)
+        {
+            //Cast the sender for an object
+            ComboBox localSender = (ComboBox)sender;
+
+            //Check if input match to define pattern
+            try
+            {
+                Validation.ManufacturerNameValidation(localSender.Text);
+                this.ManufacturerEntity.Name = localSender.Text;
+                errorProvider1.Clear();
+            }
+            catch (Validation.ValidatingFailed ex)
+            {
+                errorProvider1.SetError(localSender, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void cbManufacturerToEdit_MouseHover(object sender, EventArgs e)
+        {
+            ComboBox localSender = (ComboBox)sender;
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(localSender, localSender.Text);
+        }
+        private void cbManufacturerToEdit_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            //Cast the sender for an object
+            ComboBox localSender = (ComboBox)sender;
+
+            if (localSender.SelectedIndex >= 0)
+            {
+                try
+                {
+                    //Get ManufacturerToEdit entity
+                    this.ManufacturerEntity = this.databaseCommands.GetManufacturerEntityByName(localSender.SelectedItem.ToString());
+
+                    //Enable text box
+                    this.lElzabProductNumberRange.Text = this.ManufacturerEntity.FirstNumberInCashRegister.ToString() +
+                        " - " + this.ManufacturerEntity.LastNumberInCashRegister.ToString();
+                    this.tbElzabProductNumber.Enabled = true;
+
+                    //If epmty assign first free value
+                    this.tbElzabProductNumber.Text =
+                        this.databaseCommands.CalculateFreeElzabIdForGivenManufacturer(this.ManufacturerEntity.Name).ToString();
+                    this.ProductEntity.ElzabProductId = Convert.ToInt32(this.tbElzabProductNumber.Text);
+
+                    //Generate EAN8
+                    this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
+                        Convert.ToInt32(this.tbElzabProductNumber.Text));
+                    this.ProductEntity.BarCodeShort = this.tbShortBarcode.Text;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
         }
         #endregion
         //====================================================================================================
@@ -681,7 +751,7 @@ namespace NaturalnieApp.Forms
                     this.FillWithDataFromObject(this.ProductEntity, this.SupplierEntity, this.ManufacturerEntity, this.TaxEntity);
 
                     //Update calss field
-                    this.SelectedProductName = this.cbProductList.SelectedItem.ToString();
+                    this.SelectedProductId = this.databaseCommands.GetProductIdByName(this.cbProductList.SelectedItem.ToString());
                 }
             }
             catch (Exception ex)
@@ -697,6 +767,52 @@ namespace NaturalnieApp.Forms
             ComboBox localSender = (ComboBox)sender;
             ToolTip toolTip = new ToolTip();
             toolTip.SetToolTip(localSender, localSender.Text);
+        }
+        #endregion
+        //====================================================================================================
+        //Product list events
+        #region Product Name
+        private void tbProductNameToEdit_Validating(object sender, EventArgs e)
+        {
+            //Cast the sender for an object
+            TextBox localSender = (TextBox)sender;
+
+            localSender.Text = AdjustInputString(localSender.Text);
+
+            //Check if input match to define pattern
+            try
+            {
+                Validation.ProductNameValidation(localSender.Text);
+                this.ProductEntity.ProductName = localSender.Text;
+                errorProvider1.Clear();
+            }
+            catch (Validation.ValidatingFailed ex)
+            {
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void tbProductNameToEdit_MouseHover(object sender, EventArgs e)
+        {
+            TextBox localSender = (TextBox)sender;
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(localSender, localSender.Text);
+        }
+        private void tbProductNameToEdit_TextChanged(object sender, EventArgs e)
+        {
+            TextBox localSender = (TextBox)sender;
+            if (localSender.Text.Length <= 34)
+            {
+                if (this.tbElzabProductName.Text == "")
+                {
+                    this.tbElzabProductName.Text = localSender.Text;
+                    this.ProductEntity.ElzabProductName = localSender.Text;
+                }
+            }
         }
         #endregion
         //====================================================================================================
@@ -728,7 +844,6 @@ namespace NaturalnieApp.Forms
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -792,7 +907,6 @@ namespace NaturalnieApp.Forms
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -921,7 +1035,6 @@ namespace NaturalnieApp.Forms
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -948,7 +1061,6 @@ namespace NaturalnieApp.Forms
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -1005,6 +1117,37 @@ namespace NaturalnieApp.Forms
 
             localSender.Select();
             UpdateControl(ref tbDummyForCtrl);
+        }
+        #endregion
+        //====================================================================================================
+        //Barcode events
+        #region BarcodeToEdit events
+        private void tbBarcodeToEdit_Validating(object sender, EventArgs e)
+        {
+            //Cast the sender for an object
+            TextBox localSender = (TextBox)sender;
+
+            //Check if input match to define pattern
+            try
+            {
+                if (localSender.Text == "") localSender.Text = tbShortBarcode.Text;
+
+                if (localSender.Text.Length == 13) Validation.BarcodeEan13Validation(localSender.Text);
+                else if (localSender.Text.Length == 8) Validation.BarcodeEan8Validation(localSender.Text);
+                else if (localSender.Text.Length == 12) Validation.GeneralNumberValidation(localSender.Text);
+                else Validation.BarcodeEan13Validation(localSender.Text);
+
+                this.ProductEntity.BarCode = localSender.Text;
+                errorProvider1.Clear();
+            }
+            catch (Validation.ValidatingFailed ex)
+            {
+                errorProvider1.SetError(localSender, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         #endregion
     }

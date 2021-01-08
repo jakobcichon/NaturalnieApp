@@ -595,8 +595,11 @@ namespace NaturalnieApp.Forms
             TextBox localSender = (TextBox)sender;
             if (localSender.Text.Length <= 34)
             {
-                this.tbElzabProductName.Text = localSender.Text;
-                this.ProductEntity.ElzabProductName = localSender.Text;
+                if (this.tbElzabProductName.Text == "")
+                {
+                    this.tbElzabProductName.Text = localSender.Text;
+                    this.ProductEntity.ElzabProductName = localSender.Text;
+                }
             }
         }
         #endregion

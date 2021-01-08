@@ -259,6 +259,12 @@
     <Compile Include="Forms\StockMenu\AddToStock.Designer.cs">
       <DependentUpon>AddToStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TestForm\UserControl1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\TestForm\UserControl1.Designer.cs">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Validation.cs" />
     <Compile Include="GeneralPurposeMethods.cs" />
     <Compile Include="Initialization\ConfigFile.cs" />
@@ -302,6 +308,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\StockMenu\AddToStock.resx">
       <DependentUpon>AddToStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TestForm\UserControl1.resx">
+      <DependentUpon>UserControl1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -321,8 +321,12 @@ namespace NaturalnieApp.Forms
                 this.showStock.Show();
             }
         }
+
         #endregion
 
+        private void pContainer_Paint(object sender, PaintEventArgs e)
+        {
 
+        }
     }
 }
