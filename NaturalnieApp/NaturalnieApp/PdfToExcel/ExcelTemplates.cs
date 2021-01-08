@@ -60,7 +60,8 @@ namespace NaturalnieApp.PdfToExcel
                 {ColumnsAttributes.Tax, "VAT"},
                 {ColumnsAttributes.Marigin, "Marża"},
                 {ColumnsAttributes.CheckBox, "Zaznacz"},
-                {ColumnsAttributes.Discount, "Rabat dostawcy"}
+                {ColumnsAttributes.Discount, "Rabat dostawcy"},
+                {ColumnsAttributes.PriceNetWithDiscount, "Cena netto ze zniżką"}
             };
 
         }

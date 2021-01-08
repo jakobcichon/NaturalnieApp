@@ -35,7 +35,8 @@ namespace NaturalnieApp.Forms
         string ManufacturerColumnName { get; set; }
         string BarcodeColumnName { get; set; }
         string SupplierCodeColumnName { get; set; }
-        string Discount { get; set; }
+        string DiscountColumnName { get; set; }
+        string PriceNetWithDiscountColumnName { get; set; }
         string IndexColumnName { get; set; }
         DataTable DataFromExcel { get; set; }
         string LastExcelFilePath { get; set; }
@@ -71,7 +72,7 @@ namespace NaturalnieApp.Forms
                 e => e.Key == ColumnsAttributes.Barcode_EAN13).Value;
             this.SupplierCodeColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
                 e => e.Key == ColumnsAttributes.SupplierCode).Value;
-            this.Discount = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
+            this.DiscountColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
                 e => e.Key == ColumnsAttributes.Discount).Value;
 
             //Get additiona data from Wiun Form schema
@@ -85,6 +86,8 @@ namespace NaturalnieApp.Forms
                 e => e.Key == ColumnsAttributes.ElzabProductName).Value;
             this.IndexColumnName = this.SupplierInvoice.DataTableSchema_WinForm.FirstOrDefault(
                 e => e.Key == ColumnsAttributes.IndexColumnName).Value;
+            this.PriceNetWithDiscountColumnName = this.SupplierInvoice.DataTableSchema_WinForm.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.PriceNetWithDiscount).Value;
 
             this.LastExcelFilePath = "";
             this.databaseCommands = commandsObj;
@@ -139,6 +142,22 @@ namespace NaturalnieApp.Forms
                         dataFromExcel.Rows[indexOfDesireRow].SetField(this.ElzabProductColumnName, rowValue);
                     }
 
+                    string discountStringValue = row.Field<string>(this.DiscountColumnName);
+                    //If Discount empty or out of bordes, set to 0
+                    int discountValue = 0;
+                    try
+                    {
+                        discountValue = Int32.Parse(discountStringValue);
+                    }
+                    catch (FormatException)
+                    {
+                        discountValue = 0;
+                    }
+
+                    if (discountValue < 0) discountValue = 0;
+                    else if (discountValue > 100) discountValue = 100;
+
+                    row.SetField<int>(this.DiscountColumnName, discountValue);
 
                 }
 
@@ -158,6 +177,10 @@ namespace NaturalnieApp.Forms
                 Name = this.FinalPriceColumnName;
                 this.advancedDataGridView1.Columns.Add(Name, HeaderText);
 
+                HeaderText = this.PriceNetWithDiscountColumnName;
+                Name = this.PriceNetWithDiscountColumnName;
+                this.advancedDataGridView1.Columns.Add(Name, HeaderText);
+
                 //Add default marigin value and calculate final price
                 foreach (DataGridViewRow row in this.advancedDataGridView1.Rows)
                 {
@@ -167,17 +190,25 @@ namespace NaturalnieApp.Forms
                     int indexOfFinalPriceColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.FinalPriceColumnName].ColumnIndex;
                     int indexOfTaxColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.TaxColumnName].ColumnIndex;
                     int indexOfPriceNetColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.PriceNetColumnName].ColumnIndex;
+                    int indexOfDiscountColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.DiscountColumnName].ColumnIndex;
+                    int indexOfPriceNetWithDiscountColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.PriceNetWithDiscountColumnName].ColumnIndex;
 
                     //Set amrigin to the default value
                     this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = this.tbMarigin.Text;
 
+                    //Calculate Final price with discount
+                    float priceNet = Convert.ToSingle(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetColumn].Value);
+                    int discount = Convert.ToInt32(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfDiscountColumn].Value);
+                    this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetWithDiscountColumn].Value = Calculations.CalculatePriceNetWithDiscount(priceNet, discount);
+
                     //Calculate final price
-                    double price = Convert.ToDouble(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetColumn].Value);
+                    double price = Convert.ToDouble(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetWithDiscountColumn].Value);
                     int tax = Convert.ToInt32(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfTaxColumn].Value);
                     int marigin = Convert.ToInt32(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value);
                     double finalPrice = Calculations.FinalPrice(price, tax, marigin);
 
                     this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfFinalPriceColumn].Value = finalPrice.ToString();
+
 
                 }
 
@@ -469,6 +500,7 @@ namespace NaturalnieApp.Forms
                         Validation.MariginValueValidation(row.Cells[this.MariginColumnName].Value.ToString());
                         Validation.PriceNetValueValidation(row.Cells[this.PriceNetColumnName].Value.ToString());
                         Validation.TaxValueValidation(row.Cells[this.TaxColumnName].Value.ToString());
+                        Validation.GeneralNumberValidation(row.Cells[this.DiscountColumnName].Value.ToString());
 
                         //Action depending of barcode type
                         if (barcodeCheckedVal != "" && barcodeCheckedVal.Length != 8 && barcodeCheckedVal.Length != 12) Validation.BarcodeEan13Validation(barcodeCheckedVal);
@@ -584,6 +616,8 @@ namespace NaturalnieApp.Forms
                         int rowMariginValue = Int32.Parse(row.Cells[this.MariginColumnName].Value.ToString());
                         string rowBarcodeValue = row.Cells[this.BarcodeColumnName].Value.ToString();
                         string rowSupplierCodeValue = row.Cells[this.SupplierCodeColumnName].Value.ToString();
+                        int rowDiscountValue = Convert.ToInt32(row.Cells[this.DiscountColumnName].Value);
+                        float rowPriceNetWithDiscount = Calculations.CalculatePriceNetWithDiscount(rowPriceNetValue, rowDiscountValue);
 
                         //If product name, barcode and supplier are unique, add it to DB
                         try
@@ -610,10 +644,12 @@ namespace NaturalnieApp.Forms
                                 product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
                                 product.Marigin = rowMariginValue;
                                 product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, elzabProductFirstFreeId);
+                                product.Discount = rowDiscountValue;
+                                product.PriceNetWithDiscount = rowPriceNetWithDiscount;
                                 if (rowBarcodeValue == "") product.BarCode = product.BarCodeShort;
                                 else product.BarCode = rowBarcodeValue;
                                 product.ProductInfo = "Brak";
-                                product.FinalPrice = (float) Calculations.FinalPrice(Convert.ToDouble(rowPriceNetValue), rowTaxValue, Convert.ToDouble(rowMariginValue));
+                                product.FinalPrice = (float) Calculations.FinalPrice(Convert.ToDouble(rowPriceNetWithDiscount), rowTaxValue, Convert.ToDouble(rowMariginValue));
                                 if (rowSupplierCodeValue == "") product.SupplierCode = product.BarCode;
                                 else product.SupplierCode = rowSupplierCodeValue;
 
@@ -814,6 +850,8 @@ namespace NaturalnieApp.Forms
                 int indexOfFinalPrice = localSender.Columns[this.FinalPriceColumnName].Index;
                 int indexOfTax = localSender.Columns[this.TaxColumnName].Index;
                 int indexOfPriceNet = localSender.Columns[this.PriceNetColumnName].Index;
+                int indexOfDiscount = localSender.Columns[this.DiscountColumnName].Index;
+                int indexOfPriceNetWithDiscount = localSender.Columns[this.PriceNetWithDiscountColumnName].Index;
 
                 //If product name has changed, change also Elzab product name
                 if (cell.ColumnIndex == indexPrimaryColumn)
@@ -828,14 +866,24 @@ namespace NaturalnieApp.Forms
                     }
                 }
 
-                //If marigin has changed, recalculate final price
-                if (cell.ColumnIndex == indexOfMarigin)
+                //If discount changed, recalculate net price with discount
+                if (cell.ColumnIndex == indexOfDiscount)
                 {
                     double price = Convert.ToDouble(localSender.Rows[cell.RowIndex].Cells[indexOfPriceNet].Value);
                     int tax = Convert.ToInt32(localSender.Rows[cell.RowIndex].Cells[indexOfTax].Value);
                     int marigin = Convert.ToInt32(localSender.Rows[cell.RowIndex].Cells[indexOfMarigin].Value);
+                    localSender.Rows[cell.RowIndex].Cells[indexOfPriceNetWithDiscount].Value = Calculations.FinalPrice(price, tax, marigin).ToString();
+                }
+
+                //If marigin has changed, recalculate final price
+                if (cell.ColumnIndex == indexOfMarigin)
+                {
+                    double price = Convert.ToDouble(localSender.Rows[cell.RowIndex].Cells[indexOfPriceNetWithDiscount].Value);
+                    int tax = Convert.ToInt32(localSender.Rows[cell.RowIndex].Cells[indexOfTax].Value);
+                    int marigin = Convert.ToInt32(localSender.Rows[cell.RowIndex].Cells[indexOfMarigin].Value);
                     localSender.Rows[cell.RowIndex].Cells[indexOfFinalPrice].Value = Calculations.FinalPrice(price, tax, marigin).ToString();
                 }
+
             }
         }
 

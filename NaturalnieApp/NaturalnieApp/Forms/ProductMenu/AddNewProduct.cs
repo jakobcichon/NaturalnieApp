@@ -210,7 +210,8 @@ namespace NaturalnieApp.Forms
                     this.tbBarcode.Text != "" && this.cbManufacturer.Text !=  null &&
                     this.tbElzabProductNumber.Text != "" && this.tbElzabProductName.Text != "" &&
                     this.tbPrice.Text != "" && this.cbTax.SelectedItem != null &&
-                    this.tbMarigin.Text != "" && this.tbShortBarcode.Text != "")
+                    this.tbMarigin.Text != "" && this.tbShortBarcode.Text != "" &&
+                    this.tbDiscount.Text != "" && this.tbPriceNetWithDiscount.Text != "")
                 {
 
                     //Set local variable to true
@@ -239,6 +240,8 @@ namespace NaturalnieApp.Forms
                     Validation.BarcodeEan8Validation(this.tbShortBarcode.Text);
                     Validation.SupplierCodeValidation(this.tbSupplierCode.Text);
                     Validation.ProductInfoValidation(this.rtbProductInfo.Text);
+                    Validation.GeneralNumberValidation(this.tbDiscount.Text);
+                    Validation.PriceNetValueValidation(this.tbPriceNetWithDiscount.Text);
                 }
                 else
                 {
@@ -293,6 +296,16 @@ namespace NaturalnieApp.Forms
 
             //Show updated value
             this.tbFinalPrice.Text = string.Format("{0:0.00}", this.ProductEntity.FinalPrice.ToString());
+        }
+
+        //Method used to update price net with discount
+        private void UpdatePriceNetWithDiscount()
+        {
+            //Update Final price
+            this.ProductEntity.PriceNetWithDiscount = Calculations.CalculatePriceNetWithDiscountFromProduct(this.ProductEntity);
+
+            //Show updated value
+            this.tbPriceNetWithDiscount.Text = string.Format("{0:0.00}", this.ProductEntity.PriceNetWithDiscount.ToString());
         }
 
         //Method used to adjust input string
@@ -729,6 +742,41 @@ namespace NaturalnieApp.Forms
         }
         #endregion
         //====================================================================================================
+        //Discount event
+        #region Discount events
+        private void tbDiscount_Validating(object sender, EventArgs e)
+        {
+            //Cast the sender for an object
+            TextBox localSender = (TextBox)sender;
+
+            //Check if input match to define pattern
+            try
+            {
+                localSender.Text = localSender.Text.Replace(",", ".");
+                Validation.GeneralNumberValidation(localSender.Text);
+                if (Int32.Parse(localSender.Text) < 0) localSender.Text = "0";
+                if (Int32.Parse(localSender.Text) > 100) localSender.Text = "100";
+
+                this.ProductEntity.Discount = Int32.Parse(localSender.Text);
+                //Update Final price
+                UpdatePriceNetWithDiscount();
+                UpdateFinalPrice();
+                errorProvider1.Clear();
+                localSender.Text = string.Format("{0:00}", localSender.Text);
+            }
+            catch (Validation.ValidatingFailed ex)
+            {
+                errorProvider1.SetError(localSender, ex.Message);
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+        #endregion
+        //====================================================================================================
         //Marigin events
         #region Marigin events
         private void tbMarigin_Validating(object sender, EventArgs e)
@@ -889,5 +937,7 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
+
+
     }
 }

@@ -43,25 +43,40 @@ namespace NaturalnieApp
             //Local variable
             double finalPrice;
 
-            finalPrice = FinalPrice(product.PriceNet, tax, product.Marigin);
+            finalPrice = FinalPrice(product.PriceNetWithDiscount, tax, product.Marigin);
 
             return float.Parse(finalPrice.ToString());
         }
 
-        
-        static public float CalculatePriceNetWithDiscount(Product product)
+        //Calculate PRiceNetWithDiscount from product entity
+        static public float CalculatePriceNetWithDiscountFromProduct(Product product)
         {
             double priceNetWithDiscount;
 
             if (product.Discount == 0) return product.PriceNet;
             else
             {
-                priceNetWithDiscount = product.PriceNet - (product.PriceNet * product.Discount / 100);
+                priceNetWithDiscount = CalculatePriceNetWithDiscount(product.PriceNet, product.Discount);
             }
 
             return float.Parse(priceNetWithDiscount.ToString());
         }
-        
+
+        //Calculate PRiceNetWithDiscount from product entity
+        static public float CalculatePriceNetWithDiscount(float priceNet, int discount)
+        {
+            double priceNetWithDiscount;
+
+            if (discount == 0) return priceNet;
+            else
+            {
+                priceNetWithDiscount = priceNet - (priceNet * discount / 100);
+                Math.Round(priceNetWithDiscount, 2);
+            }
+
+            return float.Parse(priceNetWithDiscount.ToString());
+        }
+
         //Calculate final price from price net, tax and marigin
         static public double FinalPrice(double priceNet, int tax, double marigin)
         {

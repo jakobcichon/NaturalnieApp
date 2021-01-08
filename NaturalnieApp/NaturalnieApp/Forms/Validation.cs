@@ -73,6 +73,12 @@ namespace NaturalnieApp.Forms
                 case ColumnsAttributes.Barcode_EAN8:
                     BarcodeEan8Validation(value);
                     break;
+                case ColumnsAttributes.Discount:
+                   GeneralNumberValidation(value);
+                    break;
+                case ColumnsAttributes.PriceNetWithDiscount:
+                    PriceNetValueValidation(value);
+                    break;
             }
 
         }

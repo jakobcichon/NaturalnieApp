@@ -176,7 +176,7 @@ namespace NaturalnieApp.Database
                                     where p.ProductName == element
                                     select p;
                         Product product = query.FirstOrDefault();
-                        product.PriceNetWithDiscount = Calculations.CalculatePriceNetWithDiscount(product);
+                        product.PriceNetWithDiscount = Calculations.CalculatePriceNetWithDiscountFromProduct(product);
 
                         EditProduct(product);
                     }

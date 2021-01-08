@@ -265,6 +265,8 @@ namespace NaturalnieApp.Forms
             this.tbFinalPrice.Text = string.Format("{0:0.00}", p.FinalPrice.ToString());
             this.tbShortBarcode.Text = p.BarCodeShort;
             this.tbSupplierCode.Text = p.SupplierCode;
+            this.tbDiscount.Text = p.Discount.ToString();
+            this.tbPriceNetWithDiscount.Text = string.Format("{0:0.00}", p.PriceNetWithDiscount.ToString());
         }
 
         private void FillWithInitialDataFromObject(List<string> productList, List<string> manufacturerList, List<string> barcodeList, List<string> supplierList, List<string> taxList)
@@ -396,6 +398,8 @@ namespace NaturalnieApp.Forms
             this.tbShortBarcode.Text = "";
             this.tbSupplierCode.Text = "";
             this.cbBarcodes.Items.Clear();
+            this.tbDiscount.Text = "";
+            this.tbPriceNetWithDiscount.Text = "";
         }
 
         //Metchod use to find and select string in ComboBox
@@ -415,9 +419,18 @@ namespace NaturalnieApp.Forms
                 Convert.ToInt32(this.cbTax.SelectedItem));
 
             //Show updated value
-            this.tbFinalPrice.Text = string.Format("{0:0.00}",this.ProductEntity.FinalPrice.ToString());
+            this.tbFinalPrice.Text = string.Format("{0:0.00}", this.ProductEntity.FinalPrice.ToString());
         }
 
+        //Method used to update price net with discount
+        private void UpdatePriceNetWithDiscount()
+        {
+            //Update Final price
+            this.ProductEntity.PriceNetWithDiscount = Calculations.CalculatePriceNetWithDiscountFromProduct(this.ProductEntity);
+
+            //Show updated value
+            this.tbPriceNetWithDiscount.Text = string.Format("{0:0.00}", this.ProductEntity.PriceNetWithDiscount.ToString());
+        }
         private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
         {
 
@@ -521,6 +534,9 @@ namespace NaturalnieApp.Forms
                     id = this.databaseCommands.GetSupplierIdByName(this.cbSupplierName.Text.ToString());
                     if (id > 0) this.ProductEntity.SupplierId = id;
                     else MessageBox.Show(String.Format("Podana nazwa dostawcy ({0}) nie istnieje w bazie danych!", this.cbSupplierName.Text.ToString().ToString()));
+
+                    //Update price net with discount
+                    this.ProductEntity.PriceNetWithDiscount = Calculations.CalculatePriceNetWithDiscountFromProduct(this.ProductEntity);
 
                     //Update Final price
                     this.ProductEntity.FinalPrice = Calculations.CalculateFinalPriceFromProduct(this.ProductEntity,
@@ -648,7 +664,6 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Product list events
         #region Product List
-
         private void cbProductList_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Cast an object
@@ -775,6 +790,41 @@ namespace NaturalnieApp.Forms
             catch (Validation.ValidatingFailed ex)
             {
                 localSender.Text = "";
+                errorProvider1.SetError(localSender, ex.Message);
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+        #endregion
+        //====================================================================================================
+        //Discount event
+        #region Discount events
+        private void tbDiscount_Validating(object sender, EventArgs e)
+        {
+            //Cast the sender for an object
+            TextBox localSender = (TextBox)sender;
+
+            //Check if input match to define pattern
+            try
+            {
+                localSender.Text = localSender.Text.Replace(",", ".");
+                Validation.GeneralNumberValidation(localSender.Text);
+                if (Int32.Parse(localSender.Text) < 0) localSender.Text = "0";
+                if (Int32.Parse(localSender.Text) > 100) localSender.Text = "100";
+
+                this.ProductEntity.Discount = Int32.Parse(localSender.Text);
+                //Update Final price
+                UpdatePriceNetWithDiscount();
+                UpdateFinalPrice();
+                errorProvider1.Clear();
+                localSender.Text = string.Format("{0:00}", localSender.Text);
+            }
+            catch (Validation.ValidatingFailed ex)
+            {
                 errorProvider1.SetError(localSender, ex.Message);
                 MessageBox.Show(ex.Message);
             }
@@ -954,6 +1004,5 @@ namespace NaturalnieApp.Forms
             UpdateControl(ref tbDummyForCtrl);
         }
         #endregion
-
     }
 }
