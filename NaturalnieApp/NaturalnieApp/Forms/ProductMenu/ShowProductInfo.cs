@@ -783,6 +783,7 @@ namespace NaturalnieApp.Forms
                 Validation.PriceNetValueValidation(localSender.Text);
                 this.ProductEntity.PriceNet = float.Parse(localSender.Text);
                 //Update Final price
+                UpdatePriceNetWithDiscount();
                 UpdateFinalPrice();
                 errorProvider1.Clear();
                 localSender.Text = string.Format("{0:00}", localSender.Text);
@@ -857,6 +858,7 @@ namespace NaturalnieApp.Forms
                 Validation.MariginValueValidation(localSender.Text);
                 this.ProductEntity.Marigin = Int32.Parse(localSender.Text);
                 //Update final price
+                UpdatePriceNetWithDiscount();
                 UpdateFinalPrice();
                 errorProvider1.Clear();
                 localSender.Text = string.Format("{0:00}", localSender.Text);
@@ -880,6 +882,7 @@ namespace NaturalnieApp.Forms
         {
             this.TaxEntity.TaxValue = int.Parse(this.cbTax.GetItemText(this.cbTax.SelectedItem).ToString().Replace("%", ""));
             //Update final price
+            UpdatePriceNetWithDiscount();
             UpdateFinalPrice();
 
             //Update control

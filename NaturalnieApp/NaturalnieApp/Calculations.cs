@@ -71,7 +71,7 @@ namespace NaturalnieApp
             else
             {
                 priceNetWithDiscount = priceNet - (priceNet * discount / 100);
-                Math.Round(priceNetWithDiscount, 2);
+                priceNetWithDiscount = Math.Round(priceNetWithDiscount, 2);
             }
 
             return float.Parse(priceNetWithDiscount.ToString());
