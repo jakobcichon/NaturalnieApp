@@ -150,3 +150,5 @@
 2021-01-09T07:16:55.193096Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
 2021-01-09T07:16:55.193963Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
 2021-01-09T07:16:55.252182Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2021-01-09T13:14:45.140928Z 56 [Warning] [MY-010055] [Server] IP address '192.168.1.100' could not be resolved: No such host is known. 
+2021-01-09T13:14:45.140850Z 57 [Warning] [MY-010055] [Server] IP address '192.168.1.100' could not be resolved: No such host is known. 
