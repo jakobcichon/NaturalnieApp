@@ -452,7 +452,7 @@ namespace NaturalnieApp.Forms
         private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
         {
 
-            if (e.Ready && e.Valid)
+            if (e.Ready && e.Valid && !cbDeactivateBarcodeSearching.Checked)
             {
                 string barcodeToSearch;
                 //If short barcode try to get full barcode

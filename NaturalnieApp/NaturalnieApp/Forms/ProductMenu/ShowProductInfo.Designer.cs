@@ -47,6 +47,9 @@ namespace NaturalnieApp.Forms
             this.cbProductList = new System.Windows.Forms.ComboBox();
             this.lProductName = new System.Windows.Forms.Label();
             this.gbProductInfo = new System.Windows.Forms.GroupBox();
+            this.tpDeactivateBarcodeSearching = new System.Windows.Forms.TableLayoutPanel();
+            this.lDeactivateBarcodeSearching = new System.Windows.Forms.Label();
+            this.cbDeactivateBarcodeSearching = new System.Windows.Forms.CheckBox();
             this.tpElzabProductNumber = new System.Windows.Forms.TableLayoutPanel();
             this.tbElzabProductNumber = new System.Windows.Forms.TextBox();
             this.lElzabProductNumber = new System.Windows.Forms.Label();
@@ -102,6 +105,7 @@ namespace NaturalnieApp.Forms
             this.pBarCode.SuspendLayout();
             this.pProductName.SuspendLayout();
             this.gbProductInfo.SuspendLayout();
+            this.tpDeactivateBarcodeSearching.SuspendLayout();
             this.tpElzabProductNumber.SuspendLayout();
             this.tpProductNameToEdit.SuspendLayout();
             this.tpBarcodeToEdit.SuspendLayout();
@@ -187,7 +191,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 414F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 415F));
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.Controls.Add(this.cbManufacturer, 0, 1);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -301,7 +305,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 624F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 625F));
             this.pProductName.Controls.Add(this.cbProductList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -348,6 +352,7 @@ namespace NaturalnieApp.Forms
             // 
             // gbProductInfo
             // 
+            this.gbProductInfo.Controls.Add(this.tpDeactivateBarcodeSearching);
             this.gbProductInfo.Controls.Add(this.tpElzabProductNumber);
             this.gbProductInfo.Controls.Add(this.tpProductNameToEdit);
             this.gbProductInfo.Controls.Add(this.tpBarcodeToEdit);
@@ -371,6 +376,45 @@ namespace NaturalnieApp.Forms
             this.gbProductInfo.TabIndex = 2;
             this.gbProductInfo.TabStop = false;
             this.gbProductInfo.Text = "Dane produktu";
+            // 
+            // tpDeactivateBarcodeSearching
+            // 
+            this.tpDeactivateBarcodeSearching.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpDeactivateBarcodeSearching.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tpDeactivateBarcodeSearching.ColumnCount = 2;
+            this.tpDeactivateBarcodeSearching.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
+            this.tpDeactivateBarcodeSearching.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpDeactivateBarcodeSearching.Controls.Add(this.lDeactivateBarcodeSearching, 0, 0);
+            this.tpDeactivateBarcodeSearching.Controls.Add(this.cbDeactivateBarcodeSearching, 1, 0);
+            this.tpDeactivateBarcodeSearching.Location = new System.Drawing.Point(40, 515);
+            this.tpDeactivateBarcodeSearching.Name = "tpDeactivateBarcodeSearching";
+            this.tpDeactivateBarcodeSearching.RowCount = 1;
+            this.tpDeactivateBarcodeSearching.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tpDeactivateBarcodeSearching.Size = new System.Drawing.Size(375, 35);
+            this.tpDeactivateBarcodeSearching.TabIndex = 35;
+            // 
+            // lDeactivateBarcodeSearching
+            // 
+            this.lDeactivateBarcodeSearching.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.lDeactivateBarcodeSearching.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lDeactivateBarcodeSearching.Location = new System.Drawing.Point(4, 1);
+            this.lDeactivateBarcodeSearching.Name = "lDeactivateBarcodeSearching";
+            this.lDeactivateBarcodeSearching.Size = new System.Drawing.Size(294, 26);
+            this.lDeactivateBarcodeSearching.TabIndex = 31;
+            this.lDeactivateBarcodeSearching.Text = "Dezaktywuj odczytywanie ze skanera";
+            this.lDeactivateBarcodeSearching.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cbDeactivateBarcodeSearching
+            // 
+            this.cbDeactivateBarcodeSearching.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.cbDeactivateBarcodeSearching.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbDeactivateBarcodeSearching.Dock = System.Windows.Forms.DockStyle.Right;
+            this.cbDeactivateBarcodeSearching.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDeactivateBarcodeSearching.Location = new System.Drawing.Point(321, 4);
+            this.cbDeactivateBarcodeSearching.Name = "cbDeactivateBarcodeSearching";
+            this.cbDeactivateBarcodeSearching.Size = new System.Drawing.Size(50, 27);
+            this.cbDeactivateBarcodeSearching.TabIndex = 3;
+            this.cbDeactivateBarcodeSearching.UseVisualStyleBackColor = false;
             // 
             // tpElzabProductNumber
             // 
@@ -1033,6 +1077,7 @@ namespace NaturalnieApp.Forms
             this.pBarCode.ResumeLayout(false);
             this.pProductName.ResumeLayout(false);
             this.gbProductInfo.ResumeLayout(false);
+            this.tpDeactivateBarcodeSearching.ResumeLayout(false);
             this.tpElzabProductNumber.ResumeLayout(false);
             this.tpElzabProductNumber.PerformLayout();
             this.tpProductNameToEdit.ResumeLayout(false);
@@ -1132,5 +1177,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lElzabProductNumber;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lElzabProductNumberRange;
+        private System.Windows.Forms.TableLayoutPanel tpDeactivateBarcodeSearching;
+        private System.Windows.Forms.Label lDeactivateBarcodeSearching;
+        private System.Windows.Forms.CheckBox cbDeactivateBarcodeSearching;
     }
 }
