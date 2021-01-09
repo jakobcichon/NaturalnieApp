@@ -152,3 +152,7 @@
 2021-01-09T07:16:55.252182Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
 2021-01-09T13:14:45.140928Z 56 [Warning] [MY-010055] [Server] IP address '192.168.1.100' could not be resolved: No such host is known. 
 2021-01-09T13:14:45.140850Z 57 [Warning] [MY-010055] [Server] IP address '192.168.1.100' could not be resolved: No such host is known. 
+2021-01-09T17:07:54.023053Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2021-01-09T17:07:56.044187Z 0 [Warning] [MY-010909] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Forcing close of thread 48  user: 'root'.
+2021-01-09T17:07:56.045151Z 0 [Warning] [MY-010909] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Forcing close of thread 49  user: 'root'.
+2021-01-09T17:07:57.278890Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.

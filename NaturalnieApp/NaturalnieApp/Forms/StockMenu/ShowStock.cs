@@ -7,6 +7,7 @@ using System.Data;
 using NaturalnieApp.Dymo_Printer;
 using System.Management;
 using NaturalnieApp.PdfToExcel;
+using System.IO;
 
 
 namespace NaturalnieApp.Forms
@@ -417,14 +418,34 @@ namespace NaturalnieApp.Forms
             //Open folder dialog browser
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                //File string
+                string fileString = saveFileDialog1.FileName;
+
                 // Export to excel TESTES!!!!!!!!!!!!!!!!!!!!
                 List<string> test = new List<string>();
                 foreach (DataColumn element in this.DataSoruce.Columns)
                 {
                     test.Add(element.ColumnName);
                 }
-                //Test purpose
-                ExcelBase.ExportToExcel(this.DataSoruce, saveFileDialog1.FileName, test.ToArray());
+
+                //Check extension
+                string extension = Path.GetExtension(fileString);
+                if (extension == "" || extension == ".xlsb")
+                {
+                    if (extension == "")
+                    {
+                        extension = ".xlsb";
+                        fileString += extension;
+                    }
+
+                    //Test purpose
+                    ExcelBase.ExportToExcel(this.DataSoruce, fileString, test.ToArray());
+                }
+                else
+                {
+                    MessageBox.Show("Błąd! Dopuszczalne rozszerzenie pliku to .xlsb");
+                }
+
 
                 //Update control
                 UpdateControl(ref tbDummyForCtrl);

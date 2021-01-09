@@ -258,7 +258,7 @@ namespace NaturalnieApp.PdfToExcel
         }
 
         //Method used to create excel file from template
-        static private void CreateExcelFileFromData(string path, string[] columns)
+        static private void CreateExcelFileFromData(string path, List<string> columns)
         {
 
             //Connection string
@@ -365,43 +365,78 @@ namespace NaturalnieApp.PdfToExcel
             return retValue;
         }
 
-        static public void ExportToExcel(DataTable table, string filePath, string[] columns)
+        static public void ExportToExcel(DataTable table, string filePath)
         {
+            List<string> columnsNames = new List<string>();
+
+            //Get Names of Columns for given data table
+            foreach (DataColumn element in table.Columns)
+            {
+                columnsNames.Add(element.ColumnName);
+            }
 
             //Create file
-            CreateExcelFileFromData(filePath, columns);
+            CreateExcelFileFromData(filePath, columnsNames);
 
-
-            string query;
+            //Get connection string
             OleDbConnection connection = new OleDbConnection(GetConnectionString(filePath, true));
-
             try
             {
                 using (connection)
                 {
-                    
-                    connection.Open();
-                    OleDbCommand cmd = connection.CreateCommand();
-                    //Create command for create columns
+                    //Prepare column names to the insert into sql command
                     string columnNames = "";
-                    foreach (string element in columns)
+                    foreach (string element in columnsNames)
                     {
-                        string ele = element.Replace(".", "");
-                        columnNames += ele + ", ";
-                    }
-                    //Remove last space and coma from command
-                    columnNames = columnNames.Remove(columnNames.Length - 2, 2);
-                    string values = "";
-                    foreach (string element in columns)
-                    {
-                        values += "'" + element + "'" + ", ";
+                        string rep = element.Replace(".", "");
+                        columnNames += "[" + rep + "], ";
                     }
 
                     //Remove last space and coma from command
-                    values = values.Remove(values.Length - 2, 2);
-                    query = String.Format("Insert into [Sheet1$] ({0}) values({1});", columnNames, values);
-                    cmd = new OleDbCommand(query, connection);
-                    cmd.ExecuteNonQuery();
+                    columnNames = columnNames.Remove(columnNames.Length - 2, 2);
+
+                    //Prepare number of values to write
+                    string values = "";
+                    foreach (string element in columnsNames)
+                    {
+                        values += "'" + element + "'" + ", ";
+                    }
+                    string valuesString = "";
+                    //Values names
+                    for (int i = 0; i < columnsNames.Count; i++)
+                    {
+                        valuesString += "@" + i.ToString() + ",";
+                    }
+                    valuesString = valuesString.Remove(valuesString.Length - 1, 1);
+                    //Remove last space and coma from command
+                    values = values.Remove(values.Length - 1, 1);
+
+                    OleDbCommand cmd = new OleDbCommand();
+                    cmd.CommandType = CommandType.Text;
+
+                    //Pas all values
+                    foreach (DataRow element in table.Rows)
+                    {
+
+                        cmd.CommandText = string.Format("insert into [Sheet1$] ({0}) values ({1})", columnNames, valuesString);
+                        //List of elements 
+                        List<string> valuesList = new List<string>();
+                        foreach (var tempVal in element.ItemArray)
+                        {
+                            valuesList.Add(tempVal.ToString());
+                        }
+                        foreach (string value in valuesList)
+                        {
+                            int i = valuesList.IndexOf(value);
+                            cmd.Parameters.AddWithValue("@" + i, "TesT");
+   
+                        }
+                        cmd.Connection = connection;
+                        connection.Open();
+                        cmd.ExecuteNonQuery();
+
+                    }
+
                 }
             }
             catch (OleDbException oleDbEx)
@@ -530,7 +565,7 @@ namespace NaturalnieApp.PdfToExcel
             else if (((fileExtension == ".xlsx") || (fileExtension == ".xlsb")) && write)
             {
                 //Set connection string for .xlsx files
-                connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0;HDR=NO\"";
+                connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0;HDR=YES\"";
             }
             else
             {
