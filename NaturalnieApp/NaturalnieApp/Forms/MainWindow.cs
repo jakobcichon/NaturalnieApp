@@ -60,6 +60,7 @@ namespace NaturalnieApp.Forms
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
 
+            MessageBox.Show("2.");
         }
 
         //====================================================================================================
