@@ -59,8 +59,6 @@ namespace NaturalnieApp.Forms
             this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
-
-            MessageBox.Show("2.2");
         }
 
         //====================================================================================================

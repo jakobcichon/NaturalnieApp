@@ -306,9 +306,9 @@ namespace NaturalnieApp.Forms
         {
             //Local variables
             bool validatingResult;
-            string text = "Kod dostawcy musi składać się wyłacznie z 13 liczb!";
+            string text = "Kod dostawcy musi składać się wyłacznie z 255 znaków!";
 
-            if (input.Length <= 34) validatingResult = true;
+            if (input.Length <= 255) validatingResult = true;
             else validatingResult = false;
 
             if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
