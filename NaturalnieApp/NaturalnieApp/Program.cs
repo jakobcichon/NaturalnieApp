@@ -40,10 +40,14 @@ namespace NaturalnieApp
             ElzabCommand_ZGRUPA ZapisGrupy = new ElzabCommand_ZGRUPA(path, cashRegisterID);
             ElzabCommand_KGRUPA KasowanieGrupy = new ElzabCommand_KGRUPA(path, cashRegisterID);
             ElzabCommand_OPSPRZED OdczytSprzedazy = new ElzabCommand_OPSPRZED(path, cashRegisterID);
-           
+
+            MessageBox.Show("1");
 
             Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(true);
+            MessageBox.Show("2");
             Application.Run(new MainWindow(ConfigFileInst));
+            MessageBox.Show("3");
 
         }
     }
