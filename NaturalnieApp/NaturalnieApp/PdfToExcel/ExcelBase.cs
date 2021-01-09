@@ -402,7 +402,6 @@ namespace NaturalnieApp.PdfToExcel
                     query = String.Format("Insert into [Sheet1$] ({0}) values({1});", columnNames, values);
                     cmd = new OleDbCommand(query, connection);
                     cmd.ExecuteNonQuery();
-                    ;
                 }
             }
             catch (OleDbException oleDbEx)

@@ -46,6 +46,7 @@ namespace NaturalnieApp.Forms
             this.tbStockQuantity = new System.Windows.Forms.TextBox();
             this.lStockQuantity = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -176,7 +177,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 369F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 370F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -312,5 +313,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bShow;
         private System.Windows.Forms.Button bSaveToFile;
         private System.Windows.Forms.TextBox tbDummyForCtrl;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }

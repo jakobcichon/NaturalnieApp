@@ -414,17 +414,23 @@ namespace NaturalnieApp.Forms
         private void bSaveToFile_Click(object sender, EventArgs e)
         {
 
-            // Export to excel TESTES!!!!!!!!!!!!!!!!!!!!
-            List<string> test = new List<string>();
-            foreach (DataColumn element in this.DataSoruce.Columns)
+            //Open folder dialog browser
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                test.Add(element.ColumnName);
-            }
-            //Test purpose
-            ExcelBase.ExportToExcel(this.DataSoruce, @"F:\test", test.ToArray());
+                // Export to excel TESTES!!!!!!!!!!!!!!!!!!!!
+                List<string> test = new List<string>();
+                foreach (DataColumn element in this.DataSoruce.Columns)
+                {
+                    test.Add(element.ColumnName);
+                }
+                //Test purpose
+                ExcelBase.ExportToExcel(this.DataSoruce, saveFileDialog1.FileName, test.ToArray());
 
-            //Update control
-            UpdateControl(ref tbDummyForCtrl);
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
+            }
+
+
         }
 
         #endregion
