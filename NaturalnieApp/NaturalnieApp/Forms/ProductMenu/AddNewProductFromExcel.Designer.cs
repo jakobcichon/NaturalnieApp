@@ -256,7 +256,7 @@ namespace NaturalnieApp.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1000, 570);
+            this.ClientSize = new System.Drawing.Size(1000, 800);
             this.Controls.Add(this.tpMarigin);
             this.Controls.Add(this.bClose);
             this.Controls.Add(this.advancedDataGridView1);

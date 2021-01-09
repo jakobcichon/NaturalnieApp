@@ -486,10 +486,11 @@ namespace NaturalnieApp.Forms
                             //Check if given code is full barcode or oly product code without manufacturer prefix
                             barcodeCheckedVal = GetBarcodePrefixAndCreateFullBarcode(row.Cells[this.ManufacturerColumnName].Value.ToString(),
                                 row.Cells[this.BarcodeColumnName].Value.ToString());
+                            if(barcodeCheckedVal == "") barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
                         }
                         else
                         {
-                            barcodeCheckedVal = "";
+                            barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
                         }
 
                         //Validate every entry 
