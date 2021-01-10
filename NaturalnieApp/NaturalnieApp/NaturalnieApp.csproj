@@ -86,6 +86,7 @@
   <ItemGroup>
     <Reference Include="AdvancedDataGridView, Version=1.1.24722.8, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DG.AdvancedDataGridView.1.1.24722.8\lib\net40\AdvancedDataGridView.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Aspose.PDF, Version=20.11.0.0, Culture=neutral, PublicKeyToken=f0262d67fe233d63, processorArchitecture=MSIL">
       <HintPath>..\packages\Aspose.PDF.20.11.0\lib\net4.0\Aspose.PDF.dll</HintPath>
@@ -337,8 +338,6 @@
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>
-    <None Include="NaturalnieApp_1_TemporaryKey.pfx" />
-    <None Include="NaturalnieApp_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
