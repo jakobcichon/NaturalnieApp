@@ -55,6 +55,7 @@ namespace NaturalnieApp.Forms
             this.bExit = new System.Windows.Forms.Button();
             this.pMenuDeliminer = new System.Windows.Forms.Panel();
             this.pContainer = new System.Windows.Forms.Panel();
+            this.bMinimize = new System.Windows.Forms.Button();
             this.pMenu.SuspendLayout();
             this.pStockSubMenu.SuspendLayout();
             this.pProductSubMenu.SuspendLayout();
@@ -361,6 +362,7 @@ namespace NaturalnieApp.Forms
             // pHeader
             // 
             this.pHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.pHeader.Controls.Add(this.bMinimize);
             this.pHeader.Controls.Add(this.lDtabaseStatus);
             this.pHeader.Controls.Add(this.lDatabaseConnState);
             this.pHeader.Controls.Add(this.bExit);
@@ -431,6 +433,20 @@ namespace NaturalnieApp.Forms
             this.pContainer.Size = new System.Drawing.Size(1000, 800);
             this.pContainer.TabIndex = 7;
             // 
+            // bMinimize
+            // 
+            this.bMinimize.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bMinimize.BackgroundImage")));
+            this.bMinimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.bMinimize.Dock = System.Windows.Forms.DockStyle.Right;
+            this.bMinimize.FlatAppearance.BorderSize = 0;
+            this.bMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bMinimize.Location = new System.Drawing.Point(1242, 0);
+            this.bMinimize.Name = "bMinimize";
+            this.bMinimize.Size = new System.Drawing.Size(30, 30);
+            this.bMinimize.TabIndex = 3;
+            this.bMinimize.UseVisualStyleBackColor = true;
+            this.bMinimize.Click += new System.EventHandler(this.bMinimize_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -483,5 +499,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bShowStock;
         private System.Windows.Forms.Panel pMenuDeliminer;
         private System.Windows.Forms.Panel pContainer;
+        private System.Windows.Forms.Button bMinimize;
     }
 }

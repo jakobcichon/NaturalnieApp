@@ -104,6 +104,11 @@ namespace NaturalnieApp.Forms
         {
             Application.Exit();
         }
+
+        private void bMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
         #endregion
 
         #region Method used to operate with submenu
