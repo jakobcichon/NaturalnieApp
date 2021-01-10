@@ -332,6 +332,27 @@ namespace NaturalnieApp.Forms
             return returnString;
         }
 
+        //Method used to clear given entity
+        private void ClearProductentity()
+        {
+            this.ProductEntity.BarCode = "";
+            this.ProductEntity.BarCodeShort = "";
+            this.ProductEntity.Discount = 0;
+            this.ProductEntity.ElzabProductId = 0;
+            this.ProductEntity.ElzabProductName = "";
+            this.ProductEntity.FinalPrice = 0;
+            this.ProductEntity.Id = 0;
+            this.ProductEntity.ManufacturerId = 0;
+            this.ProductEntity.Marigin = 0;
+            this.ProductEntity.PriceNet = 0;
+            this.ProductEntity.PriceNetWithDiscount = 0;
+            this.ProductEntity.ProductInfo = "";
+            this.ProductEntity.ProductName = "";
+            this.ProductEntity.SupplierCode = "";
+            this.ProductEntity.SupplierId = 0;
+            this.ProductEntity.TaxId = 0;
+        }
+
         private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
         {
 
@@ -465,6 +486,8 @@ namespace NaturalnieApp.Forms
 
                     //Call update event
                     bUpdate_Click(sender, e);
+
+                    ClearProductentity();
                 }
                 catch (Exception ex)
                 {
