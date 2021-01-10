@@ -186,7 +186,7 @@ namespace NaturalnieApp.Forms
             this.cbTax.Name = "cbTax";
             this.cbTax.Size = new System.Drawing.Size(214, 28);
             this.cbTax.TabIndex = 0;
-            this.cbTax.SelectionChangeCommitted += new System.EventHandler(this.cbTax_SelectionChangeCommitted);
+            this.cbTax.SelectedIndexChanged += new System.EventHandler(this.cbTax_SelectedIndexChanged);
             this.cbTax.Validating += new System.ComponentModel.CancelEventHandler(this.cbTax_Validating);
             // 
             // gbProductInfo
@@ -365,6 +365,7 @@ namespace NaturalnieApp.Forms
             this.cbSupplierName.Name = "cbSupplierName";
             this.cbSupplierName.Size = new System.Drawing.Size(334, 28);
             this.cbSupplierName.TabIndex = 0;
+            this.cbSupplierName.SelectedIndexChanged += new System.EventHandler(this.cbSupplierName_SelectedIndexChanged);
             this.cbSupplierName.Validating += new System.ComponentModel.CancelEventHandler(this.cbSupplierName_Validating);
             // 
             // lSupplierName
@@ -409,7 +410,7 @@ namespace NaturalnieApp.Forms
             this.cbManufacturer.Name = "cbManufacturer";
             this.cbManufacturer.Size = new System.Drawing.Size(328, 28);
             this.cbManufacturer.TabIndex = 0;
-            this.cbManufacturer.SelectionChangeCommitted += new System.EventHandler(this.cbManufacturer_SelectionChangeCommitted);
+            this.cbManufacturer.SelectedIndexChanged += new System.EventHandler(this.cbManufacturer_SelectedIndexChanged);
             this.cbManufacturer.Validating += new System.ComponentModel.CancelEventHandler(this.cbManufacturer_Validating);
             // 
             // lManufacturer
@@ -547,14 +548,14 @@ namespace NaturalnieApp.Forms
             this.tpElzabProductName.ColumnCount = 3;
             this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 69F));
+            this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 72F));
             this.tpElzabProductName.Controls.Add(this.lElzabProductName, 0, 0);
             this.tpElzabProductName.Controls.Add(this.tbElzabProductName, 1, 0);
             this.tpElzabProductName.Controls.Add(this.lElzabNameLength, 2, 0);
             this.tpElzabProductName.Location = new System.Drawing.Point(40, 154);
             this.tpElzabProductName.Name = "tpElzabProductName";
             this.tpElzabProductName.RowCount = 1;
-            this.tpElzabProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 65F));
+            this.tpElzabProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 68F));
             this.tpElzabProductName.Size = new System.Drawing.Size(450, 40);
             this.tpElzabProductName.TabIndex = 5;
             // 

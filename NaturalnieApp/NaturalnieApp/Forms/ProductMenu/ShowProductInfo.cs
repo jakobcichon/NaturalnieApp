@@ -274,10 +274,14 @@ namespace NaturalnieApp.Forms
             this.ProductListCollection = new AutoCompleteStringCollection();
             this.ProductsList = this.databaseCommands.GetProductsNameList();
             this.ProductListCollection.Clear();
-            this.ProductListCollection.AddRange(this.ProductsList.ToArray());
+            string[] sorted = this.ProductsList.ToArray();
+            Array.Sort(sorted);
+            this.ProductListCollection.AddRange(sorted);
             this.cbProductList.AutoCompleteCustomSource = this.ProductListCollection;
             this.cbProductList.Items.Clear();
-            this.cbProductList.Items.AddRange(this.ProductsList.ToArray());
+            sorted = this.ProductsList.ToArray();
+            Array.Sort(sorted);
+            this.cbProductList.Items.AddRange(sorted);
 
             //Add fetched data to proper combo box
             this.ManufacturerListCollection = new AutoCompleteStringCollection();
@@ -286,38 +290,54 @@ namespace NaturalnieApp.Forms
             this.ManufacturerListCollection.Clear();
             this.cbManufacturer.AutoCompleteCustomSource = this.ManufacturerListCollection;
             this.cbManufacturer.Items.Clear();
-            this.cbManufacturer.Items.AddRange(this.ManufacturersList.ToArray());
+            sorted = this.ManufacturersList.ToArray();
+            Array.Sort(sorted);
+            this.cbManufacturer.Items.AddRange(sorted);
 
             //Add fetched data to proper combo box
             this.cbManufacturerToEdit.Items.Clear();
-            this.cbManufacturerToEdit.Items.AddRange(manufacturerList.ToArray());
+            sorted = manufacturerList.ToArray();
+            Array.Sort(sorted);
+            this.cbManufacturerToEdit.Items.AddRange(sorted);
 
             //Add fetched data to proper combo box
             this.BarcodeListCollection = new AutoCompleteStringCollection();
             this.BarcodesList = this.databaseCommands.GetBarcodeList();
             this.BarcodeListCollection.Clear();
-            this.BarcodeListCollection.AddRange(this.BarcodesList.ToArray());
+            sorted = this.BarcodesList.ToArray();
+            Array.Sort(sorted);
+            this.BarcodeListCollection.AddRange(sorted);
             this.cbBarcodes.AutoCompleteCustomSource = this.BarcodeListCollection;
             this.cbBarcodes.Items.Clear();
-            this.cbBarcodes.Items.AddRange(this.BarcodesList.ToArray());
+            sorted = this.BarcodesList.ToArray();
+            Array.Sort(sorted);
+            this.cbBarcodes.Items.AddRange(sorted);
 
             //Add fetched data to proper combo box
             this.SupplierListCollection = new AutoCompleteStringCollection();
             this.SupplierList = this.databaseCommands.GetSupplierNameList();
             this.SupplierListCollection.Clear();
-            this.SupplierListCollection.AddRange(this.SupplierList.ToArray());
+            sorted = this.SupplierList.ToArray();
+            Array.Sort(sorted);
+            this.SupplierListCollection.AddRange(sorted);
             this.cbSupplierName.AutoCompleteCustomSource = this.SupplierListCollection;
             this.cbSupplierName.Items.Clear();
-            this.cbSupplierName.Items.AddRange(this.SupplierList.ToArray());
+            sorted = this.SupplierList.ToArray();
+            Array.Sort(sorted);
+            this.cbSupplierName.Items.AddRange(sorted);
 
             //Add fetched data to proper combo box
             this.TaxListCollection = new AutoCompleteStringCollection();
             this.TaxList = this.databaseCommands.GetTaxList();
             this.TaxListCollection.Clear();
-            this.TaxListCollection.AddRange(this.TaxList.ToArray());
+            sorted = this.TaxList.ToArray();
+            Array.Sort(sorted);
+            this.TaxListCollection.AddRange(sorted);
             this.cbTax.AutoCompleteCustomSource = this.TaxListCollection;
             this.cbTax.Items.Clear();
-            this.cbTax.Items.AddRange(this.TaxList.ToArray());
+            sorted = this.TaxList.ToArray();
+            Array.Sort(sorted);
+            this.cbTax.Items.AddRange(sorted);
 
 
         }

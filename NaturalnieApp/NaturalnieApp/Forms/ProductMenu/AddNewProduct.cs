@@ -192,9 +192,13 @@ namespace NaturalnieApp.Forms
         private void FillWithInitialDataFromObject(List<string> manufacturerList, List<string> supplierList)
         {
             cbManufacturer.Items.Clear();
-            cbManufacturer.Items.AddRange(manufacturerList.ToArray());
+            string[] sorted = manufacturerList.ToArray();
+            Array.Sort(sorted);
+            cbManufacturer.Items.AddRange(sorted);
             cbSupplierName.Items.Clear();
-            cbSupplierName.Items.AddRange(supplierList.ToArray());
+            sorted = supplierList.ToArray();
+            Array.Sort(sorted);
+            cbSupplierName.Items.AddRange(sorted);
             cbTax.Items.Clear();
             cbTax.Items.AddRange(this.databaseCommands.GetTaxListRetString().ToArray());
         }
@@ -285,6 +289,8 @@ namespace NaturalnieApp.Forms
             this.tbFinalPrice.Text = "";
             this.tbShortBarcode.Text = "";
             this.tbSupplierCode.Text = "";
+            this.tbDiscount.Text = "";
+            this.tbPriceNetWithDiscount.Text = "";
         }
 
         //Method used to update final price value
@@ -507,7 +513,6 @@ namespace NaturalnieApp.Forms
             catch (Validation.ValidatingFailed ex)
             {
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -520,11 +525,12 @@ namespace NaturalnieApp.Forms
             ToolTip toolTip = new ToolTip();
             toolTip.SetToolTip(localSender, localSender.Text);
         }
-        private void cbManufacturer_SelectionChangeCommitted(object sender, EventArgs e)
+        private void cbManufacturer_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Cast the sender for an object
             ComboBox localSender = (ComboBox)sender;
 
+            
             if (localSender.SelectedIndex >= 0)
             {
                 try
@@ -553,7 +559,6 @@ namespace NaturalnieApp.Forms
                     MessageBox.Show(ex.Message);
                 }
             }
-
         }
         #endregion
         //====================================================================================================
@@ -577,7 +582,6 @@ namespace NaturalnieApp.Forms
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -622,7 +626,6 @@ namespace NaturalnieApp.Forms
             {
                 localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -635,6 +638,20 @@ namespace NaturalnieApp.Forms
             ComboBox localSender = (ComboBox)sender;
             ToolTip toolTip = new ToolTip();
             toolTip.SetToolTip(localSender, localSender.Text);
+        }
+        private void cbSupplierName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                ComboBox localSender = (ComboBox)sender;
+                this.ProductEntity.SupplierId = this.databaseCommands.GetSupplierIdByName(localSender.SelectedItem.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
         #endregion
         //====================================================================================================
@@ -663,7 +680,6 @@ namespace NaturalnieApp.Forms
             catch (Validation.ValidatingFailed ex)
             {
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -691,7 +707,6 @@ namespace NaturalnieApp.Forms
             catch (Validation.ValidatingFailed ex)
             {
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -727,7 +742,8 @@ namespace NaturalnieApp.Forms
                 localSender.Text = localSender.Text.Replace(",", ".");
                 Validation.PriceNetValueValidation(localSender.Text);
                 this.ProductEntity.PriceNet = float.Parse(localSender.Text);
-                //Update Final price
+                //Update Final pric
+                UpdatePriceNetWithDiscount();
                 UpdateFinalPrice();
                 errorProvider1.Clear();
                 localSender.Text = string.Format("{0:00}", localSender.Text);
@@ -735,7 +751,6 @@ namespace NaturalnieApp.Forms
             catch (Validation.ValidatingFailed ex)
             {
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -770,7 +785,6 @@ namespace NaturalnieApp.Forms
             catch (Validation.ValidatingFailed ex)
             {
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -793,6 +807,7 @@ namespace NaturalnieApp.Forms
                 Validation.MariginValueValidation(localSender.Text);
                 this.ProductEntity.Marigin = Int32.Parse(localSender.Text);
                 //Update final price
+                UpdatePriceNetWithDiscount();
                 UpdateFinalPrice();
                 errorProvider1.Clear();
                 localSender.Text = string.Format("{0:00}", localSender.Text);
@@ -800,7 +815,6 @@ namespace NaturalnieApp.Forms
             catch (Validation.ValidatingFailed ex)
             {
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -811,12 +825,20 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Marigin events
         #region Tax events
-        private void cbTax_SelectionChangeCommitted(object sender, EventArgs e)
+        private void cbTax_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.TaxEntity = this.databaseCommands.GetTaxEntityByValue(int.Parse(
+            try
+            {
+                this.TaxEntity = this.databaseCommands.GetTaxEntityByValue(int.Parse(
                 this.cbTax.GetItemText(this.cbTax.SelectedItem).ToString().Replace("%", "")));
-            //Update final price
-            UpdateFinalPrice();
+                //Update final price
+                UpdatePriceNetWithDiscount();
+                UpdateFinalPrice();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         private void cbTax_Validating(object sender, EventArgs e)
         {
@@ -841,7 +863,6 @@ namespace NaturalnieApp.Forms
             catch (Validation.ValidatingFailed ex)
             {
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
@@ -869,7 +890,6 @@ namespace NaturalnieApp.Forms
                 catch (Validation.ValidatingFailed ex)
                 {
                     errorProvider1.SetError(localSender, ex.Message);
-                    MessageBox.Show(ex.Message);
                 }
                 catch (Exception ex)
                 {
@@ -898,7 +918,6 @@ namespace NaturalnieApp.Forms
                 catch (Validation.ValidatingFailed ex)
                 {
                     errorProvider1.SetError(localSender, ex.Message);
-                    MessageBox.Show(ex.Message);
                 }
                 catch (Exception ex)
                 {
@@ -932,13 +951,13 @@ namespace NaturalnieApp.Forms
             catch (Validation.ValidatingFailed ex)
             {
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+
         #endregion
 
 
