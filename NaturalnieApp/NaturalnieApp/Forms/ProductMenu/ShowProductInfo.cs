@@ -915,6 +915,7 @@ namespace NaturalnieApp.Forms
             //Check if input match to define pattern
             try
             {
+                localSender.Text = localSender.Text.Replace(",", ".");
                 Validation.PriceNetValueValidation(localSender.Text);
                 this.ProductEntity.PriceNet = float.Parse(localSender.Text);
                 //Update Final price
