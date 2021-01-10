@@ -450,6 +450,7 @@ namespace NaturalnieApp.Forms
                     else MessageBox.Show(String.Format("Podana nazwa dostawcy ({0}) nie istnieje w bazie danych!", this.cbManufacturer.Text.ToString().ToString()));
 
                     //Update Final price
+                    UpdatePriceNetWithDiscount();
                     UpdateFinalPrice();
 
                     //If supplier field or info field empty, fill it
