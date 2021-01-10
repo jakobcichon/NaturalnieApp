@@ -177,9 +177,12 @@ namespace NaturalnieApp.Forms
                             if (this.SelectedProductId >= 0)
                             {
                                 this.cbProductList.SelectedItem = this.databaseCommands.GetProductNameById(this.SelectedProductId);
+                                this.ProductEntity = this.databaseCommands.GetProductEntityById(this.SelectedProductId);
                             }
+                            else ClearProductentity();
                             //Call event
                             cbProductList_SelectedIndexChanged(this.cbProductList, EventArgs.Empty);
+
                         }
                         break;
                 }
@@ -510,6 +513,26 @@ namespace NaturalnieApp.Forms
                 localSender.Text = "";
             }
         }
+        //Method used to clear given entity
+        private void ClearProductentity()
+        {
+            this.ProductEntity.BarCode = "";
+            this.ProductEntity.BarCodeShort = "";
+            this.ProductEntity.Discount = 0;
+            this.ProductEntity.ElzabProductId = 0;
+            this.ProductEntity.ElzabProductName = "";
+            this.ProductEntity.FinalPrice = 0;
+            this.ProductEntity.Id = 0;
+            this.ProductEntity.ManufacturerId = 0;
+            this.ProductEntity.Marigin = 0;
+            this.ProductEntity.PriceNet = 0;
+            this.ProductEntity.PriceNetWithDiscount = 0;
+            this.ProductEntity.ProductInfo = "";
+            this.ProductEntity.ProductName = "";
+            this.ProductEntity.SupplierCode = "";
+            this.ProductEntity.SupplierId = 0;
+            this.ProductEntity.TaxId = 0;
+        }
         #endregion
         //====================================================================================================
         //Current window events
@@ -573,12 +596,8 @@ namespace NaturalnieApp.Forms
                     if (id > 0) this.ProductEntity.SupplierId = id;
                     else MessageBox.Show(String.Format("Podana nazwa dostawcy ({0}) nie istnieje w bazie danych!", this.cbSupplierName.Text.ToString().ToString()));
 
-                    //Update price net with discount
-                    this.ProductEntity.PriceNetWithDiscount = Calculations.CalculatePriceNetWithDiscountFromProduct(this.ProductEntity);
-
-                    //Update Final price
-                    this.ProductEntity.FinalPrice = Calculations.CalculateFinalPriceFromProduct(this.ProductEntity,
-                        this.databaseCommands.GetTaxByProductName(this.ProductEntity.ProductName).TaxValue);
+                    UpdatePriceNetWithDiscount();
+                    UpdateFinalPrice();
 
                     //Verify unique fields
                     VerifyUniqueFields(this.ProductEntity);
