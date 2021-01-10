@@ -413,7 +413,7 @@ namespace NaturalnieApp.PdfToExcel
 
                     OleDbCommand cmd = new OleDbCommand();
                     cmd.CommandType = CommandType.Text;
-
+                    connection.Open();
                     //Pas all values
                     foreach (DataRow element in table.Rows)
                     {
@@ -428,16 +428,17 @@ namespace NaturalnieApp.PdfToExcel
                         foreach (string value in valuesList)
                         {
                             int i = valuesList.IndexOf(value);
-                            cmd.Parameters.AddWithValue("@" + i, "TesT");
+                            cmd.Parameters.AddWithValue("@" + i, element[i].ToString());
    
                         }
                         cmd.Connection = connection;
-                        connection.Open();
                         cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
 
                     }
 
                 }
+                MessageBox.Show("Pomyślnie wyeksportowano dane");
             }
             catch (OleDbException oleDbEx)
             {
@@ -453,6 +454,8 @@ namespace NaturalnieApp.PdfToExcel
             {
                 if (connection.State == ConnectionState.Open)
                     connection.Close();
+
+
             }
         }
 

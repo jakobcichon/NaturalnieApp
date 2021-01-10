@@ -415,18 +415,12 @@ namespace NaturalnieApp.Forms
         private void bSaveToFile_Click(object sender, EventArgs e)
         {
 
+            saveFileDialog1.DefaultExt = ".xlsb";
             //Open folder dialog browser
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 //File string
                 string fileString = saveFileDialog1.FileName;
-
-                // Export to excel TESTES!!!!!!!!!!!!!!!!!!!!
-                List<string> test = new List<string>();
-                foreach (DataColumn element in this.DataSoruce.Columns)
-                {
-                    test.Add(element.ColumnName);
-                }
 
                 //Check extension
                 string extension = Path.GetExtension(fileString);
@@ -439,7 +433,7 @@ namespace NaturalnieApp.Forms
                     }
 
                     //Test purpose
-                    ExcelBase.ExportToExcel(this.DataSoruce, fileString, test.ToArray());
+                    ExcelBase.ExportToExcel(this.DataSoruce, fileString);
                 }
                 else
                 {

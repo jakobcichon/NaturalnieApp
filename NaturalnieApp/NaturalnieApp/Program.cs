@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using NaturalnieApp.PdfToExcel;
 using System.Data;
 using NaturalnieApp.Dymo_Printer;
+using System.Diagnostics;
 
 namespace NaturalnieApp
 {
@@ -28,22 +29,32 @@ namespace NaturalnieApp
         static void Main()
         { 
 
-            //Read data from config file 
-            ConfigFileObject ConfigFileInst = new ConfigFileObject();
+            try
+            {
+                //Read data from config file 
+                ConfigFileObject ConfigFileInst = new ConfigFileObject();
 
-            int cashRegisterID = 1;
-            string path = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
-            GlobalVariables.LabelPath = ConfigFileInst.GetValueByVariableName("LabelPath");
+                int cashRegisterID = 1;
+                string path = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
+                GlobalVariables.LabelPath = ConfigFileInst.GetValueByVariableName("LabelPath");
 
-           // ElzabCommand_OBAJTY Test = new ElzabCommand_OBAJTY(path, cashRegisterID);
-            ElzabCommand_OGRUPA OdczytGrupy = new ElzabCommand_OGRUPA(path, cashRegisterID);
-            ElzabCommand_ZGRUPA ZapisGrupy = new ElzabCommand_ZGRUPA(path, cashRegisterID);
-            ElzabCommand_KGRUPA KasowanieGrupy = new ElzabCommand_KGRUPA(path, cashRegisterID);
-            ElzabCommand_OPSPRZED OdczytSprzedazy = new ElzabCommand_OPSPRZED(path, cashRegisterID);
+                // ElzabCommand_OBAJTY Test = new ElzabCommand_OBAJTY(path, cashRegisterID);
+                ElzabCommand_OGRUPA OdczytGrupy = new ElzabCommand_OGRUPA(path, cashRegisterID);
+                ElzabCommand_ZGRUPA ZapisGrupy = new ElzabCommand_ZGRUPA(path, cashRegisterID);
+                ElzabCommand_KGRUPA KasowanieGrupy = new ElzabCommand_KGRUPA(path, cashRegisterID);
+                ElzabCommand_OPSPRZED OdczytSprzedazy = new ElzabCommand_OPSPRZED(path, cashRegisterID);
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(true);
-            Application.Run(new MainWindow(ConfigFileInst));
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(true);
+                Application.Run(new MainWindow(ConfigFileInst));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                Debug.WriteLine(ex.ToString());
+            }
+
+
         }
     }
 }

@@ -547,14 +547,14 @@ namespace NaturalnieApp.Forms
             this.tpElzabProductName.ColumnCount = 3;
             this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 68F));
+            this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 69F));
             this.tpElzabProductName.Controls.Add(this.lElzabProductName, 0, 0);
             this.tpElzabProductName.Controls.Add(this.tbElzabProductName, 1, 0);
             this.tpElzabProductName.Controls.Add(this.lElzabNameLength, 2, 0);
             this.tpElzabProductName.Location = new System.Drawing.Point(40, 154);
             this.tpElzabProductName.Name = "tpElzabProductName";
             this.tpElzabProductName.RowCount = 1;
-            this.tpElzabProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
+            this.tpElzabProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 65F));
             this.tpElzabProductName.Size = new System.Drawing.Size(450, 40);
             this.tpElzabProductName.TabIndex = 5;
             // 

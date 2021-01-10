@@ -34,6 +34,8 @@ namespace NaturalnieApp.Forms
             this.panel1 = new System.Windows.Forms.Panel();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
+            this.tbNumberOfLabels = new System.Windows.Forms.TextBox();
+            this.lNumberOfLabels = new System.Windows.Forms.Label();
             this.bPrint = new System.Windows.Forms.Button();
             this.bClose = new System.Windows.Forms.Button();
             this.gbProductSelection = new System.Windows.Forms.GroupBox();
@@ -42,8 +44,6 @@ namespace NaturalnieApp.Forms
             this.cbManufacturers = new System.Windows.Forms.ComboBox();
             this.lManufacturer = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.tbNumberOfLabels = new System.Windows.Forms.TextBox();
-            this.lNumberOfLabels = new System.Windows.Forms.Label();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -104,6 +104,28 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.Size = new System.Drawing.Size(1000, 70);
             this.pButtonsPanel.TabIndex = 4;
             // 
+            // tbNumberOfLabels
+            // 
+            this.tbNumberOfLabels.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.tbNumberOfLabels.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbNumberOfLabels.Location = new System.Drawing.Point(281, 11);
+            this.tbNumberOfLabels.Margin = new System.Windows.Forms.Padding(5);
+            this.tbNumberOfLabels.Name = "tbNumberOfLabels";
+            this.tbNumberOfLabels.ReadOnly = true;
+            this.tbNumberOfLabels.Size = new System.Drawing.Size(64, 29);
+            this.tbNumberOfLabels.TabIndex = 27;
+            // 
+            // lNumberOfLabels
+            // 
+            this.lNumberOfLabels.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lNumberOfLabels.Location = new System.Drawing.Point(105, 10);
+            this.lNumberOfLabels.Margin = new System.Windows.Forms.Padding(5);
+            this.lNumberOfLabels.Name = "lNumberOfLabels";
+            this.lNumberOfLabels.Size = new System.Drawing.Size(197, 30);
+            this.lNumberOfLabels.TabIndex = 28;
+            this.lNumberOfLabels.Text = "Liczba etykiet do druku";
+            this.lNumberOfLabels.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // bPrint
             // 
             this.bPrint.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
@@ -162,7 +184,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 369F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 370F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -216,28 +238,6 @@ namespace NaturalnieApp.Forms
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(298, 10);
             this.panel5.TabIndex = 0;
-            // 
-            // tbNumberOfLabels
-            // 
-            this.tbNumberOfLabels.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.tbNumberOfLabels.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbNumberOfLabels.Location = new System.Drawing.Point(281, 11);
-            this.tbNumberOfLabels.Margin = new System.Windows.Forms.Padding(5);
-            this.tbNumberOfLabels.Name = "tbNumberOfLabels";
-            this.tbNumberOfLabels.ReadOnly = true;
-            this.tbNumberOfLabels.Size = new System.Drawing.Size(64, 29);
-            this.tbNumberOfLabels.TabIndex = 27;
-            // 
-            // lNumberOfLabels
-            // 
-            this.lNumberOfLabels.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lNumberOfLabels.Location = new System.Drawing.Point(105, 10);
-            this.lNumberOfLabels.Margin = new System.Windows.Forms.Padding(5);
-            this.lNumberOfLabels.Name = "lNumberOfLabels";
-            this.lNumberOfLabels.Size = new System.Drawing.Size(197, 30);
-            this.lNumberOfLabels.TabIndex = 28;
-            this.lNumberOfLabels.Text = "Liczba etykiet do druku";
-            this.lNumberOfLabels.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // PrintFromStock
             // 
