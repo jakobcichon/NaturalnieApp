@@ -379,7 +379,6 @@ namespace NaturalnieApp
             public string ProductQunatity { get; set; }
             public string ProductValue { get; set; }
         }
-    }
 
 
 }

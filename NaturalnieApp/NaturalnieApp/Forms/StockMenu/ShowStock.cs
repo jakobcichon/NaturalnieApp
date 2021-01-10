@@ -415,7 +415,9 @@ namespace NaturalnieApp.Forms
         private void bSaveToFile_Click(object sender, EventArgs e)
         {
 
-            saveFileDialog1.DefaultExt = ".xlsb";
+            saveFileDialog1.FileName = "Stan magazynowy " + DateTime.Now;
+            saveFileDialog1.Filter = "Plik programu excel | *.xlsb";
+            saveFileDialog1.DefaultExt = "xlsb";
             //Open folder dialog browser
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {

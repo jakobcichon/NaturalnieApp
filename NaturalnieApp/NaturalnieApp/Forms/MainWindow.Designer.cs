@@ -50,12 +50,12 @@ namespace NaturalnieApp.Forms
             this.bMainMenu = new System.Windows.Forms.Button();
             this.pLogo = new System.Windows.Forms.Panel();
             this.pHeader = new System.Windows.Forms.Panel();
+            this.bMinimize = new System.Windows.Forms.Button();
             this.lDtabaseStatus = new System.Windows.Forms.Label();
             this.lDatabaseConnState = new System.Windows.Forms.Label();
             this.bExit = new System.Windows.Forms.Button();
             this.pMenuDeliminer = new System.Windows.Forms.Panel();
             this.pContainer = new System.Windows.Forms.Panel();
-            this.bMinimize = new System.Windows.Forms.Button();
             this.pMenu.SuspendLayout();
             this.pStockSubMenu.SuspendLayout();
             this.pProductSubMenu.SuspendLayout();
@@ -375,6 +375,20 @@ namespace NaturalnieApp.Forms
             this.pHeader.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseMove);
             this.pHeader.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseUp);
             // 
+            // bMinimize
+            // 
+            this.bMinimize.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bMinimize.BackgroundImage")));
+            this.bMinimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.bMinimize.Dock = System.Windows.Forms.DockStyle.Right;
+            this.bMinimize.FlatAppearance.BorderSize = 0;
+            this.bMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bMinimize.Location = new System.Drawing.Point(1242, 0);
+            this.bMinimize.Name = "bMinimize";
+            this.bMinimize.Size = new System.Drawing.Size(30, 30);
+            this.bMinimize.TabIndex = 3;
+            this.bMinimize.UseVisualStyleBackColor = true;
+            this.bMinimize.Click += new System.EventHandler(this.bMinimize_Click);
+            // 
             // lDtabaseStatus
             // 
             this.lDtabaseStatus.Dock = System.Windows.Forms.DockStyle.Left;
@@ -427,25 +441,12 @@ namespace NaturalnieApp.Forms
             // pContainer
             // 
             this.pContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.pContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pContainer.Dock = System.Windows.Forms.DockStyle.Left;
             this.pContainer.Location = new System.Drawing.Point(302, 30);
             this.pContainer.Name = "pContainer";
             this.pContainer.Size = new System.Drawing.Size(1000, 800);
             this.pContainer.TabIndex = 7;
-            // 
-            // bMinimize
-            // 
-            this.bMinimize.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bMinimize.BackgroundImage")));
-            this.bMinimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.bMinimize.Dock = System.Windows.Forms.DockStyle.Right;
-            this.bMinimize.FlatAppearance.BorderSize = 0;
-            this.bMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bMinimize.Location = new System.Drawing.Point(1242, 0);
-            this.bMinimize.Name = "bMinimize";
-            this.bMinimize.Size = new System.Drawing.Size(30, 30);
-            this.bMinimize.TabIndex = 3;
-            this.bMinimize.UseVisualStyleBackColor = true;
-            this.bMinimize.Click += new System.EventHandler(this.bMinimize_Click);
             // 
             // MainWindow
             // 
