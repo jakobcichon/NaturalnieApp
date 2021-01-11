@@ -236,6 +236,7 @@ namespace NaturalnieApp.Forms
             this.cbManufacturers.AutoCompleteCustomSource = this.ManufacturerListCollection;
             this.cbManufacturers.Items.Clear();
             this.cbManufacturers.Items.AddRange(this.ManufacturersList.ToArray());
+            this.cbManufacturers.Items.Insert(0, "Wszyscy");
 
             //Add fetched data to proper combo box
             this.BarcodeListCollection = new AutoCompleteStringCollection();
@@ -466,7 +467,7 @@ namespace NaturalnieApp.Forms
         {
             try
             {
-                if (this.cbManufacturers.SelectedIndex != 0)
+                if (this.cbManufacturers.SelectedItem.ToString() != "Wszyscy")
                 {
 
                     //Fetch filtered information from database
@@ -523,6 +524,7 @@ namespace NaturalnieApp.Forms
 
                 //Update calss field
                 this.SelectedProductName = localSender.SelectedItem.ToString();
+
             }
             catch (Exception ex)
             {
