@@ -439,6 +439,7 @@ namespace NaturalnieApp.Forms
                 else barcodeToSearch = e.RecognizedBarcodeValue;
 
                 //Get index
+
                 int index = this.cbBarcodes.Items.IndexOf(barcodeToSearch);
                 if (index >= 0)
                 {
