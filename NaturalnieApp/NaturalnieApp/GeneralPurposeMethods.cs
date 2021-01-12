@@ -375,9 +375,28 @@ namespace NaturalnieApp
             public string ProductBarcode { get; set; }
             public string PriceNet { get; set; }
             public string Tax { get; set; }
+            public string Discount { get; set; }
+            public string PriceNetWithDiscount { get; set; }
             public string FinalPrice { get; set; }
             public string ProductQunatity { get; set; }
-            public string ProductValue { get; set; }
+            public string ProductValueNet { get; set; }
+        }
+    }
+
+    public class ElzabRelated
+    {
+        /// <summary>
+        /// Method used convert numeric tax value to it letter representation in cash register
+        /// </summary>
+        /// <param name="taxValue"></param>
+        /// <returns>Can retrun A-G</returns>
+        static public string TranslateTaxNumericValueToLetter(int taxValue)
+        {
+            if (taxValue == 0) return "4";
+            else if (taxValue == 5) return "3";
+            else if (taxValue == 8) return "2";
+            else if (taxValue == 23) return "1";
+            else return "";
         }
     }
 

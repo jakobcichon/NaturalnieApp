@@ -5,6 +5,42 @@ using ElzabDriver;
 namespace ElzabCommands
 {
     //-----------------------------------------------------------------------------------------------------------------------------------------
+    public class ElzabCommand_ZDBARKOD : InitStructure
+    {
+        //Local variable
+        public ElzabFileObject DataFromElzab { get; set; }
+        public ElzabFileObject DataToElzab { get; set; }
+        private string CommandName { get { return "ZDBARKOD"; } }
+        private string ElementAttributesPatternOutFile
+        {
+            get
+            {
+                return "";
+            }
+        }
+
+        private string ElementAttributesPatternInFile
+        {
+            get
+            {
+                return "nr_tow bkodd";
+            }
+        }
+
+        //Class constructor
+        public ElzabCommand_ZDBARKOD(string path, int cashRegisterID)
+        {
+            //Call method used to initialize base structure for data from Elzab
+            this.DataFromElzab = InitBaseStructuresDataFromElzab(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
+
+            //Call method used to initialize base structure for data to Elzab
+            this.DataToElzab = InitBaseStructuresDataToElzab(path, cashRegisterID, CommandName, ElementAttributesPatternInFile);
+        }
+
+
+
+    }
+    //-----------------------------------------------------------------------------------------------------------------------------------------
     public class ElzabCommand_OPSPRZED : InitStructure
     {
         //Local variable

@@ -47,6 +47,7 @@ namespace NaturalnieApp.Forms
             this.lStockQuantity = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.bGenerateCashRegisterProductList = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -95,6 +96,7 @@ namespace NaturalnieApp.Forms
             // 
             // pButtonsPanel
             // 
+            this.pButtonsPanel.Controls.Add(this.bGenerateCashRegisterProductList);
             this.pButtonsPanel.Controls.Add(this.bSaveToFile);
             this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -177,7 +179,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 372F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 375F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -265,6 +267,20 @@ namespace NaturalnieApp.Forms
             this.panel5.Size = new System.Drawing.Size(298, 10);
             this.panel5.TabIndex = 0;
             // 
+            // bGenerateCashRegisterProductList
+            // 
+            this.bGenerateCashRegisterProductList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bGenerateCashRegisterProductList.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bGenerateCashRegisterProductList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bGenerateCashRegisterProductList.Location = new System.Drawing.Point(537, 10);
+            this.bGenerateCashRegisterProductList.Name = "bGenerateCashRegisterProductList";
+            this.bGenerateCashRegisterProductList.Size = new System.Drawing.Size(239, 50);
+            this.bGenerateCashRegisterProductList.TabIndex = 8;
+            this.bGenerateCashRegisterProductList.Text = "Generuj listę produktów Elzab";
+            this.bGenerateCashRegisterProductList.UseMnemonic = false;
+            this.bGenerateCashRegisterProductList.UseVisualStyleBackColor = false;
+            this.bGenerateCashRegisterProductList.Click += new System.EventHandler(this.bGenerateCashRegisterProductList_Click);
+            // 
             // ShowStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -314,5 +330,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bSaveToFile;
         private System.Windows.Forms.TextBox tbDummyForCtrl;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Button bGenerateCashRegisterProductList;
     }
 }

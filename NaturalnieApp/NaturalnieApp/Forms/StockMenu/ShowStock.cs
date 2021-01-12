@@ -8,7 +8,8 @@ using NaturalnieApp.Dymo_Printer;
 using System.Management;
 using NaturalnieApp.PdfToExcel;
 using System.IO;
-
+using ElzabCommands;
+using static NaturalnieApp.Program;
 
 namespace NaturalnieApp.Forms
 {
@@ -32,6 +33,9 @@ namespace NaturalnieApp.Forms
         //Data source for advanced data grid view
         private DataTable DataSoruce { get; set; }
         private DataSourceRelated.AddToStockDataSourceColumnNames ColumnNames;
+
+        //Data schema for exported invenotry list
+        private DataSourceRelated.InventoryExportColumnNames InventoryColumnNames;
         #endregion
 
         #region Class constructor
@@ -259,6 +263,102 @@ namespace NaturalnieApp.Forms
 
             advancedDataGridView1.AutoResizeColumns();
         }
+
+        private void InitializeInventoryDataTable(ref DataTable dataTable)
+        {
+
+            //Initialize daa grid view
+            this.InventoryColumnNames.No = "Lp";
+            this.InventoryColumnNames.ManufacturerName = "Nazwa producenta";
+            this.InventoryColumnNames.ProductName = "Nazwa produktu";
+            this.InventoryColumnNames.ProductBarcode = "Kod kreskowy";
+            this.InventoryColumnNames.PriceNet = "Cena netto";
+            this.InventoryColumnNames.Tax = "VAT";
+            this.InventoryColumnNames.Discount = "Rabat dostawcy";
+            this.InventoryColumnNames.PriceNetWithDiscount = "Cena netto po rabacie";
+            this.InventoryColumnNames.FinalPrice = "Cena brutto";
+            this.InventoryColumnNames.ProductQunatity = "Ilość";
+            this.InventoryColumnNames.ProductValueNet= "Wartość netto";
+
+
+            //Create data source columns
+            DataColumn column = new DataColumn();
+
+            column.ColumnName = this.InventoryColumnNames.No;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            column.AutoIncrement = true;
+            column.AutoIncrementSeed = 1;
+            column.Unique = true;
+            dataTable.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.InventoryColumnNames.ManufacturerName;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            dataTable.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.InventoryColumnNames.ProductName;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            column.Unique = true;
+            dataTable.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.InventoryColumnNames.ProductBarcode;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            column.Unique = true;
+            dataTable.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.InventoryColumnNames.PriceNet;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            dataTable.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.InventoryColumnNames.Tax;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = this.InventoryColumnNames.Discount;
+            column.DataType = Type.GetType("System.Int32");
+            column.ReadOnly = true;
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = this.InventoryColumnNames.PriceNetWithDiscount;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = this.InventoryColumnNames.FinalPrice;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = this.InventoryColumnNames.ProductQunatity;
+            column.DataType = Type.GetType("System.Int32");
+            column.ReadOnly = true;
+            dataTable.Columns.Add(column);
+
+            column = new DataColumn();
+            column.ColumnName = this.InventoryColumnNames.ProductValueNet;
+            column.DataType = Type.GetType("System.Single");
+            column.ReadOnly = true;
+            dataTable.Columns.Add(column);
+        }
         #endregion
         //====================================================================================================
         //Current window events
@@ -414,8 +514,9 @@ namespace NaturalnieApp.Forms
 
         private void bSaveToFile_Click(object sender, EventArgs e)
         {
-
-            saveFileDialog1.FileName = "Stan magazynowy " + DateTime.Now;
+            string tempString = ("Stan magazynowy " + DateTime.Now).Replace("/", "_");
+            tempString = tempString.Replace(":", "_");
+            saveFileDialog1.FileName = tempString;
             saveFileDialog1.Filter = "Plik programu excel | *.xlsb";
             saveFileDialog1.DefaultExt = "xlsb";
             //Open folder dialog browser
@@ -434,8 +535,17 @@ namespace NaturalnieApp.Forms
                         fileString += extension;
                     }
 
+                    List<int> productsIds = new List<int>();
+                    foreach (DataRow row in this.DataSoruce.Rows)
+                    {
+                        int productId = this.databaseCommands.GetProductIdByName(row.Field<string>(this.ColumnNames.ProductName));
+                        productsIds.Add(productId);
+                    }
+
+                    DataTable dataTable = FetchInventoryDataFromDB(productsIds);
+
                     //Test purpose
-                    ExcelBase.ExportToExcel(this.DataSoruce, fileString);
+                    ExcelBase.ExportToExcel(dataTable, fileString);
                 }
                 else
                 {
@@ -450,7 +560,113 @@ namespace NaturalnieApp.Forms
 
         }
 
+        private DataTable FetchInventoryDataFromDB(List<int> productsIdsToRead)
+        {
+
+            DataTable dataTable = new DataTable();
+            InitializeInventoryDataTable(ref dataTable);
+
+            foreach(int id in productsIdsToRead)
+            {
+                //Fetch data from DB for given product ID
+                Product productEntity = this.databaseCommands.GetProductEntityByProductId(id);
+                Tax taxEntity = this.databaseCommands.GetTaxByProductName(productEntity.ProductName);
+                Manufacturer manufacturerEntity = this.databaseCommands.GetManufacturerByProductName(productEntity.ProductName);
+                int productQuantityInStock = this.databaseCommands.GetStockQuantity(productEntity.Id);
+
+                //Create new data row
+                DataRow localDataRow;
+                localDataRow = dataTable.NewRow();
+
+                //Fill data row with data
+                localDataRow.SetField<string>(this.InventoryColumnNames.ManufacturerName, manufacturerEntity.Name);
+                localDataRow.SetField<string>(this.InventoryColumnNames.ProductName, productEntity.ProductName);
+                localDataRow.SetField<string>(this.InventoryColumnNames.ProductBarcode, productEntity.BarCode);
+                localDataRow.SetField<string>(this.InventoryColumnNames.PriceNet, productEntity.PriceNet.ToString());
+                localDataRow.SetField<int>(this.InventoryColumnNames.Tax, taxEntity.TaxValue);
+                localDataRow.SetField<int>(this.InventoryColumnNames.Discount, productEntity.Discount);
+                localDataRow.SetField<string>(this.InventoryColumnNames.PriceNetWithDiscount, productEntity.PriceNetWithDiscount.ToString());
+                localDataRow.SetField<string>(this.InventoryColumnNames.FinalPrice, productEntity.FinalPrice.ToString());
+                localDataRow.SetField<int>(this.InventoryColumnNames.ProductQunatity, productQuantityInStock);
+                float productValue = (productEntity.PriceNetWithDiscount * productQuantityInStock);
+                localDataRow.SetField<float>(this.InventoryColumnNames.ProductValueNet, productValue);
+
+                //Add row to datatable
+                dataTable.Rows.Add(localDataRow);
+            }
+
+            return dataTable;
+
+        }
+
         #endregion
 
+        private void bGenerateCashRegisterProductList_Click(object sender, EventArgs e)
+        {
+            //Get all product from DB
+            List<string> productNameList = new List<string>();
+            List<Product> productsList = new List<Product>();
+            productNameList = this.databaseCommands.GetProductsNameList();
+
+            if (productNameList.Count > 0 && productNameList.Count < 4096)
+            {
+                foreach (string productName in productNameList)
+                {
+                    productsList.Add(this.databaseCommands.GetProductEntityByProductName(productName));
+                }
+
+                ElzabCommand_ZTOWAR ZapisTowaru = new ElzabCommand_ZTOWAR(GlobalVariables.ElzabCommandPath, 1);
+                ElzabCommand_ZDBARKOD ZapisDodatkowychBcod = new ElzabCommand_ZDBARKOD(GlobalVariables.ElzabCommandPath, 1);
+
+                foreach (Product product in productsList)
+                {
+                    List<string> attributesValues = new List<string>();
+                    List<string> attributesValues2 = new List<string>();
+                    //nr_tow
+                    attributesValues.Add(product.ElzabProductId.ToString());
+                    //naz_tow
+                    attributesValues.Add(product.ElzabProductName);
+                    //ST
+                    int taxValue = this.databaseCommands.GetTaxByProductName(product.ProductName).TaxValue;
+                    attributesValues.Add(ElzabRelated.TranslateTaxNumericValueToLetter(taxValue));
+                    //GR
+                    attributesValues.Add("1");
+                    //MP
+                    attributesValues.Add("2");
+                    //JM
+                    attributesValues.Add("1");
+                    //BL
+                    attributesValues.Add("0");
+                    //bkod
+                    attributesValues.Add(product.BarCode);
+                    //cena
+                    string formatedString = String.Format("{0:0.00}", product.FinalPrice);
+                    formatedString = formatedString.Replace(".", "");
+                    attributesValues.Add(formatedString);
+                    //OP
+                    attributesValues.Add("0");
+
+
+                    if(product.BarCode != product.BarCodeShort)
+                    {
+                        attributesValues2.Add(product.ElzabProductId.ToString());
+                        attributesValues2.Add(product.BarCodeShort);
+                        ZapisDodatkowychBcod.DataToElzab.AddElement(product.ElzabProductId.ToString());
+                        ZapisDodatkowychBcod.DataToElzab.ChangeAllElementValues(product.ElzabProductId.ToString(), attributesValues2.ToArray());
+                    }
+
+
+                    ZapisTowaru.DataToElzab.AddElement(product.ElzabProductId.ToString());
+                    ZapisTowaru.DataToElzab.ChangeAllElementValues(product.ElzabProductId.ToString(), attributesValues.ToArray());
+                }
+
+                ZapisTowaru.DataToElzab.RunCommand();
+                ZapisDodatkowychBcod.DataToElzab.RunCommand();
+            }
+            else
+            {
+                MessageBox.Show("Maksymalna ilość towarów do zapisania to 0-4095!");
+            }
+        }
     }
 }
