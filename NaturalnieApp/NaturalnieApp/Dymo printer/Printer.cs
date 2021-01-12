@@ -184,7 +184,7 @@ namespace NaturalnieApp.Dymo_Printer
                 {
                     if (productToPrint.ElzabProductName.Count() > 17)
                     {
-                        label.UpdateLabelObject(element, productToPrint.ElzabProductName.Substring(17, (productToPrint.ElzabProductName.Count() - 18)).ToUpper());
+                        label.UpdateLabelObject(element, productToPrint.ElzabProductName.Substring(17, (productToPrint.ElzabProductName.Count() - 17)).ToUpper());
                     }
                     else
                     {
