@@ -195,7 +195,7 @@ namespace NaturalnieApp.Dymo_Printer
                 //Change barcode value
                 else if (element.Name == "barcode" + sufix)
                 {
-                    label.UpdateLabelObject(element, productToPrint.BarCodeShort.Substring(0, 7));
+                    label.UpdateLabelObject(element, productToPrint.BarCodeShort.Substring(0, 7).ToUpper());
                 }
                 //Change price
                 else if (element.Name == "price" + sufix)
