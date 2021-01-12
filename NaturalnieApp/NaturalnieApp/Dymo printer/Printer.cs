@@ -175,7 +175,7 @@ namespace NaturalnieApp.Dymo_Printer
                     }
                     else
                     {
-                        label.UpdateLabelObject(element, productToPrint.ElzabProductName);
+                        label.UpdateLabelObject(element, productToPrint.ElzabProductName.ToUpper());
                     }
 
                 }
