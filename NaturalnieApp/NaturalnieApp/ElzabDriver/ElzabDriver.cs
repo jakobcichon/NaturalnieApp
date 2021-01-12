@@ -6,7 +6,7 @@ using System.Collections;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
-
+using System.Text;
 
 namespace ElzabDriver
 {
@@ -235,17 +235,27 @@ namespace ElzabDriver
             //Convert element object to string list
             foreach (AttributeValueObject obj in this.Element)
             {
+
+                int i = 0;
                 //Loop through all element attributes values. Add Element mark and attribute separator to it
                 string elementAllValues = this.ElementMark;
                 foreach (string attributeValue in obj)
                 {
-                    dummyString = GenerateStringWithGivenChar(this.NrOfCharsInElementAttribute - attributeValue.Length, ' ');
-                    elementAllValues += attributeValue + dummyString + this.AttributesSeparator;
+                    if (i == 1)
+                    {
+                        dummyString = GenerateStringWithGivenChar(34 - attributeValue.Length, ' ');
+                        elementAllValues += attributeValue + dummyString + this.AttributesSeparator;
+                    }
+                    else
+                    {
+                        elementAllValues += attributeValue + this.AttributesSeparator;
+                    }
+                    i++;
+
                 }
                 elementAllValues = elementAllValues.Remove(elementAllValues.Length - 1, 1);
                 retValue.Add(elementAllValues);
             }
-
 
             //Assing created string list to internal variable
             this.RawData = retValue;
@@ -480,11 +490,13 @@ namespace ElzabDriver
             try
             {
                 //Use File stream to write data to file
-                using (StreamWriter fs = File.CreateText(fullPath))
+                FileStream stream = new FileStream(fullPath, FileMode.OpenOrCreate);
+                using (StreamWriter fs = new StreamWriter(stream, Encoding.GetEncoding("UTF-8")))
                 {
                     foreach (string lineToWrite in data)
                     {
-                        fs.WriteLine(lineToWrite);
+                       string decoded = fnStringConverterCodepage(lineToWrite);
+                        fs.WriteLine(decoded);
                     }
 
                     //Close file
@@ -499,13 +511,30 @@ namespace ElzabDriver
             }
         }
 
+        public static string fnStringConverterCodepage(string sText, string sCodepageIn = "ISO-8859-8", string sCodepageOut = "UTF-8")
+        {
+            string sResultado = string.Empty;
+            try
+            {
+                byte[] tempBytes;
+                tempBytes = System.Text.Encoding.GetEncoding(sCodepageIn).GetBytes(sText);
+                sResultado = System.Text.Encoding.GetEncoding(sCodepageOut).GetString(tempBytes);
+            }
+            catch (Exception)
+            {
+                sResultado = "";
+            }
+            return sResultado;
+        }
+
         //Method use to create input or config file
         private void CreateFile(string fullPath)
         {
             try
             {
-                //Use File stream to creale file
-                using (StreamWriter fs = File.CreateText(fullPath))
+                //Use File stream to write data to file
+                FileStream stream = new FileStream(fullPath, FileMode.CreateNew);
+                using (StreamWriter fs = new StreamWriter(stream, Encoding.GetEncoding("UTF-8")))
                 {
                     //Close file
                     fs.Close();

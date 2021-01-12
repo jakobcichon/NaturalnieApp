@@ -1,8 +1,10 @@
 ﻿using System;
 using System.CodeDom;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using NaturalnieApp.Database;
 using NaturalnieApp.Initialization;
 
 namespace NaturalnieApp.Forms
@@ -126,5 +128,6 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show("Akcja zakończona sukcesem!");
             }
         }
+
     }
 }
