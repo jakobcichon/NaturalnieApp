@@ -400,4 +400,12 @@ namespace NaturalnieApp
         }
     }
 
+    public class WinFormRelated
+    {
+        static public void FilterProductByManufacturer(string manufacturerName, ref ComboBox ProductComboBox)
+        {
+            //Get from DB product list for given manufacturer
+        }
+    }
+
 }

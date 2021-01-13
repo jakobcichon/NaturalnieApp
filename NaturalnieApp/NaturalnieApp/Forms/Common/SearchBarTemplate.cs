@@ -8,13 +8,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NaturalnieApp.Forms.TestForm
+namespace NaturalnieApp.Forms.Common
 {
-    public partial class usAddQuantity : UserControl
+    public partial class SearchBarTemplate : UserControl
     {
-        public usAddQuantity()
+        public SearchBarTemplate()
         {
             InitializeComponent();
         }
+
+
+        public void UpdateCurrentEntity()
+        {
+            ;
+        }
     }
+
 }

@@ -58,7 +58,7 @@ namespace NaturalnieApp.Forms
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
-            this.pHeader.Size = new System.Drawing.Size(1000, 30);
+            this.pHeader.Size = new System.Drawing.Size(1094, 30);
             this.pHeader.TabIndex = 0;
             // 
             // tbDummyForCtrl
@@ -256,7 +256,7 @@ namespace NaturalnieApp.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1000, 800);
+            this.ClientSize = new System.Drawing.Size(1094, 696);
             this.Controls.Add(this.tpMarigin);
             this.Controls.Add(this.bClose);
             this.Controls.Add(this.advancedDataGridView1);

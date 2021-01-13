@@ -14,7 +14,7 @@ using System.Drawing;
 
 namespace NaturalnieApp.Forms
 {
-    public partial class ShowProductInfo : Form
+    public partial class ShowProductInfo : UserControl
     {
         //====================================================================================================
         //Class fields
@@ -192,7 +192,6 @@ namespace NaturalnieApp.Forms
 
 
                 this.Focus();
-                this.Activate();
             }
         }
         //=============================================================================
@@ -1190,5 +1189,6 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
+
     }
 }

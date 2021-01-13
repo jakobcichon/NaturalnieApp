@@ -57,6 +57,8 @@ namespace NaturalnieApp.Forms
             this.label1 = new System.Windows.Forms.Label();
             this.lCOMPortNr = new System.Windows.Forms.Label();
             this.bDefaults = new System.Windows.Forms.Button();
+            this.bTest = new System.Windows.Forms.Button();
+            this.pSearchPanel = new System.Windows.Forms.Panel();
             this.pSettingNr1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -67,9 +69,9 @@ namespace NaturalnieApp.Forms
             this.pSettingNr1.Controls.Add(this.bBrowsePath);
             this.pSettingNr1.Controls.Add(this.lElzabPath);
             this.pSettingNr1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pSettingNr1.Location = new System.Drawing.Point(0, 30);
+            this.pSettingNr1.Location = new System.Drawing.Point(0, 155);
             this.pSettingNr1.Name = "pSettingNr1";
-            this.pSettingNr1.Size = new System.Drawing.Size(1000, 40);
+            this.pSettingNr1.Size = new System.Drawing.Size(1094, 40);
             this.pSettingNr1.TabIndex = 0;
             // 
             // tbElzabPath
@@ -90,7 +92,7 @@ namespace NaturalnieApp.Forms
             this.bBrowsePath.BackColor = System.Drawing.Color.White;
             this.bBrowsePath.Dock = System.Windows.Forms.DockStyle.Right;
             this.bBrowsePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bBrowsePath.Location = new System.Drawing.Point(960, 0);
+            this.bBrowsePath.Location = new System.Drawing.Point(1054, 0);
             this.bBrowsePath.Name = "bBrowsePath";
             this.bBrowsePath.Size = new System.Drawing.Size(40, 40);
             this.bBrowsePath.TabIndex = 2;
@@ -116,7 +118,7 @@ namespace NaturalnieApp.Forms
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
-            this.pHeader.Size = new System.Drawing.Size(1000, 30);
+            this.pHeader.Size = new System.Drawing.Size(1094, 30);
             this.pHeader.TabIndex = 1;
             // 
             // bSave
@@ -165,7 +167,7 @@ namespace NaturalnieApp.Forms
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.lCOMPortNr);
             this.panel1.Controls.Add(this.cCOMPorts);
-            this.panel1.Location = new System.Drawing.Point(12, 87);
+            this.panel1.Location = new System.Drawing.Point(4, 347);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(333, 129);
             this.panel1.TabIndex = 7;
@@ -233,18 +235,41 @@ namespace NaturalnieApp.Forms
             this.bDefaults.UseVisualStyleBackColor = false;
             this.bDefaults.Click += new System.EventHandler(this.bDefaults_Click);
             // 
+            // bTest
+            // 
+            this.bTest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bTest.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bTest.Location = new System.Drawing.Point(676, 508);
+            this.bTest.Name = "bTest";
+            this.bTest.Size = new System.Drawing.Size(100, 50);
+            this.bTest.TabIndex = 9;
+            this.bTest.Text = "Test";
+            this.bTest.UseVisualStyleBackColor = false;
+            this.bTest.Click += new System.EventHandler(this.bTest_Click);
+            // 
+            // pSearchPanel
+            // 
+            this.pSearchPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pSearchPanel.Location = new System.Drawing.Point(0, 30);
+            this.pSearchPanel.Name = "pSearchPanel";
+            this.pSearchPanel.Size = new System.Drawing.Size(1094, 125);
+            this.pSearchPanel.TabIndex = 10;
+            // 
             // ElzabSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1000, 570);
+            this.ClientSize = new System.Drawing.Size(1094, 570);
+            this.Controls.Add(this.bTest);
             this.Controls.Add(this.bDefaults);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.bUpdate);
             this.Controls.Add(this.bSave);
             this.Controls.Add(this.pSettingNr1);
+            this.Controls.Add(this.pSearchPanel);
             this.Controls.Add(this.pHeader);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -273,5 +298,7 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RichTextBox tbElzabPath;
         private System.Windows.Forms.Button bDefaults;
+        private System.Windows.Forms.Button bTest;
+        private System.Windows.Forms.Panel pSearchPanel;
     }
 }

@@ -5,6 +5,7 @@ using System.IO.Ports;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using NaturalnieApp.Database;
+using NaturalnieApp.Forms.TestForm;
 using NaturalnieApp.Initialization;
 
 namespace NaturalnieApp.Forms
@@ -129,5 +130,11 @@ namespace NaturalnieApp.Forms
             }
         }
 
+        private void bTest_Click(object sender, EventArgs e)
+        {
+            PopupMessage test = new PopupMessage();
+            test.CustomMessageBox();
+
+        }
     }
 }

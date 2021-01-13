@@ -47,7 +47,6 @@ namespace NaturalnieApp
                 ElzabCommand_OPSPRZED OdczytSprzedazy = new ElzabCommand_OPSPRZED(path, cashRegisterID);
 
                 Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(true);
                 Application.Run(new MainWindow(ConfigFileInst));
             }
             catch (Exception ex)

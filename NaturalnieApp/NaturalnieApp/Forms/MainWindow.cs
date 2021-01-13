@@ -42,6 +42,9 @@ namespace NaturalnieApp.Forms
 
         public MainWindow(ConfigFileObject conFileObj)
         {
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
+
+
             this.ConfigFileOjbInst = conFileObj;
             InitializeComponent();
             customizeDesign();
@@ -53,7 +56,7 @@ namespace NaturalnieApp.Forms
 
             this.addNewProductFromExcel = new AddNewProductFromExcel(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.printBarcode = new PrintBarcode(ref this.databaseCommands) { TopLevel = false, TopMost = true };
-            this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+            this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) ;
             this.addNewProduct = new AddNewProduct(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.addToStock = new AddToStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
@@ -62,12 +65,63 @@ namespace NaturalnieApp.Forms
         }
 
         //====================================================================================================
-        //Clipboard events
-        #region Clipboard events
-        
- 
-        #endregion
+        //Resizable window
+        #region Resizable window
+        protected override void WndProc(ref Message m)
+        {
+            const int RESIZE_HANDLE_SIZE = 10;
+            switch (m.Msg)
+            {
+                case 0x0084/*NCHITTEST*/ :
+                    base.WndProc(ref m);
 
+                    if ((int)m.Result == 0x01/*HTCLIENT*/)
+                    {
+                        Point screenPoint = new Point(m.LParam.ToInt32());
+                        Point clientPoint = this.PointToClient(screenPoint);
+                        if ((clientPoint.Y <= RESIZE_HANDLE_SIZE))
+                        {
+                            if (clientPoint.X <= RESIZE_HANDLE_SIZE)
+                                m.Result = (IntPtr)13/*HTTOPLEFT*/ ;
+                            else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
+                                m.Result = (IntPtr)12/*HTTOP*/ ;
+                            else
+                                m.Result = (IntPtr)14/*HTTOPRIGHT*/ ;
+                        }
+                        else if ((clientPoint.Y <= (Size.Height - RESIZE_HANDLE_SIZE)) )
+                        {
+                            if (clientPoint.X <= RESIZE_HANDLE_SIZE)
+                                m.Result = (IntPtr)10/*HTLEFT*/ ;
+                            else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
+                                m.Result = (IntPtr)2/*HTCAPTION*/ ;
+                            else
+                                m.Result = (IntPtr)11/*HTRIGHT*/ ;
+                        }
+                        else
+                        {
+                            if ((clientPoint.X <= RESIZE_HANDLE_SIZE))
+                                m.Result = (IntPtr)16/*HTBOTTOMLEFT*/ ;
+                            else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
+                                m.Result = (IntPtr)15/*HTBOTTOM*/ ;
+                            else
+                                m.Result = (IntPtr)17/*HTBOTTOMRIGHT*/ ;
+                        }
+
+                    }
+                    return;
+            }
+            base.WndProc(ref m);
+        }
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.Style |= 0x20000; // <--- use 0x20000
+                return cp;
+            }
+        }
+        #endregion
         #region Movable window
         private void pHeader_MouseDown(object sender, MouseEventArgs e)
         {
@@ -108,6 +162,11 @@ namespace NaturalnieApp.Forms
         private void bMinimize_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
+        }
+        private void bMaximize_Click(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Normal) this.WindowState = FormWindowState.Maximized;
+            else if(this.WindowState == FormWindowState.Maximized) this.WindowState = FormWindowState.Normal;
         }
         #endregion
 
@@ -208,7 +267,7 @@ namespace NaturalnieApp.Forms
             }
             catch (ObjectDisposedException)
             {
-                this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+                this.showProductInfo = new ShowProductInfo(ref this.databaseCommands);
                 this.pContainer.Controls.Add(this.showProductInfo);
                 this.showProductInfo.Select();
                 this.showProductInfo.BringToFront();
@@ -326,11 +385,7 @@ namespace NaturalnieApp.Forms
             }
         }
 
+
         #endregion
-
-        private void pContainer_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
 }
