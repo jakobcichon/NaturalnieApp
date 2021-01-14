@@ -23,6 +23,7 @@ namespace NaturalnieApp.Forms
 
         public void UpdateView(ConfigFileObject conFileObj)
         {
+
             //Update object with information from file
             conFileObj.ReadData();
 
@@ -34,8 +35,14 @@ namespace NaturalnieApp.Forms
             COMPortsFormat(conFileObj);
 
             //Baud rate - setting for connection baud rate  ComboBox
+            
             int indexNumber = cBaudRate.Items.IndexOf(conFileObj.GetValueByVariableName("ElzabBaudRate"));
-            cBaudRate.SelectedItem = cBaudRate.Items[indexNumber];
+            if (indexNumber >= 0) cBaudRate.SelectedItem = cBaudRate.Items[indexNumber];
+
+            //Database name
+            this.rtbDatabaseName.Text = conFileObj.GetValueByVariableName("DatabaseName");
+
+            ;
 
         }
 
@@ -49,7 +56,8 @@ namespace NaturalnieApp.Forms
             {
                 cCOMPorts.Items.Add(element);
             }
-            cCOMPorts.SelectedItem = cCOMPorts.Items[0];
+            
+            if(cCOMPorts.Items.Count > 0) cCOMPorts.SelectedItem = cCOMPorts.Items[0];
         }
 
         //Method used to handle formatting of textBox
@@ -106,6 +114,9 @@ namespace NaturalnieApp.Forms
             //Update value of path
             ConfigFileObjInst.ChangeVariableValue("ElzabCommandPath", tbElzabPath.Text.ToString());
 
+            //Update database name
+            ConfigFileObjInst.ChangeVariableValue("DatabaseName", rtbDatabaseName.Text.ToString());
+
             ConfigFileObjInst.SaveData();
         }
 
@@ -128,13 +139,6 @@ namespace NaturalnieApp.Forms
                 //Show message
                 MessageBox.Show("Akcja zakończona sukcesem!");
             }
-        }
-
-        private void bTest_Click(object sender, EventArgs e)
-        {
-            PopupMessage test = new PopupMessage();
-            test.CustomMessageBox();
-
         }
     }
 }

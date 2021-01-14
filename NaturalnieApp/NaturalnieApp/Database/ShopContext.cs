@@ -1,6 +1,7 @@
 ﻿using MySql.Data.Entity;
 using System.Data.Common;
 using System.Data.Entity;
+using System.Data.SqlClient;
 
 
 namespace NaturalnieApp.Database
@@ -22,12 +23,18 @@ namespace NaturalnieApp.Database
 
         }
 
+        public ShopContext(string connectionString)
+            : base(connectionString)
+        {
+
+        }
         // Constructor to use on a DbConnection that is already opened
         public ShopContext(DbConnection existingConnection, bool contextOwnsConnection)
           : base(existingConnection, contextOwnsConnection)
         {
 
         }
+
     }
 
 }

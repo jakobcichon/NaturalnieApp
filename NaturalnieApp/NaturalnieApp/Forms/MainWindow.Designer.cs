@@ -48,6 +48,8 @@ namespace NaturalnieApp.Forms
             this.bCashRegisterSettings = new System.Windows.Forms.Button();
             this.bCashRegisterInfo = new System.Windows.Forms.Button();
             this.bCashRegister = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.bMainMenu = new System.Windows.Forms.Button();
             this.pLogo = new System.Windows.Forms.Panel();
             this.pHeader = new System.Windows.Forms.Panel();
@@ -62,6 +64,7 @@ namespace NaturalnieApp.Forms
             this.pStockSubMenu.SuspendLayout();
             this.pProductSubMenu.SuspendLayout();
             this.pCashRegisterSubMenu.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.pHeader.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -77,6 +80,7 @@ namespace NaturalnieApp.Forms
             this.pMenu.Controls.Add(this.bProductMenu);
             this.pMenu.Controls.Add(this.pCashRegisterSubMenu);
             this.pMenu.Controls.Add(this.bCashRegister);
+            this.pMenu.Controls.Add(this.panel2);
             this.pMenu.Controls.Add(this.bMainMenu);
             this.pMenu.Controls.Add(this.pLogo);
             this.pMenu.Dock = System.Windows.Forms.DockStyle.Left;
@@ -89,10 +93,10 @@ namespace NaturalnieApp.Forms
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 614);
+            this.panel1.Location = new System.Drawing.Point(0, 644);
             this.panel1.MinimumSize = new System.Drawing.Size(300, 10);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(300, 84);
+            this.panel1.Size = new System.Drawing.Size(300, 54);
             this.panel1.TabIndex = 8;
             // 
             // pStockSubMenu
@@ -104,7 +108,7 @@ namespace NaturalnieApp.Forms
             this.pStockSubMenu.Controls.Add(this.bAddToStock);
             this.pStockSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pStockSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pStockSubMenu.Location = new System.Drawing.Point(0, 524);
+            this.pStockSubMenu.Location = new System.Drawing.Point(0, 554);
             this.pStockSubMenu.Name = "pStockSubMenu";
             this.pStockSubMenu.Size = new System.Drawing.Size(300, 90);
             this.pStockSubMenu.TabIndex = 7;
@@ -168,8 +172,8 @@ namespace NaturalnieApp.Forms
             this.bStock.FlatAppearance.BorderSize = 0;
             this.bStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bStock.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bStock.Location = new System.Drawing.Point(0, 474);
+            this.bStock.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.bStock.Location = new System.Drawing.Point(0, 504);
             this.bStock.Name = "bStock";
             this.bStock.Size = new System.Drawing.Size(300, 50);
             this.bStock.TabIndex = 6;
@@ -188,7 +192,7 @@ namespace NaturalnieApp.Forms
             this.pProductSubMenu.Controls.Add(this.bShowProductInfo);
             this.pProductSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pProductSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pProductSubMenu.Location = new System.Drawing.Point(0, 324);
+            this.pProductSubMenu.Location = new System.Drawing.Point(0, 354);
             this.pProductSubMenu.Name = "pProductSubMenu";
             this.pProductSubMenu.Size = new System.Drawing.Size(300, 150);
             this.pProductSubMenu.TabIndex = 5;
@@ -287,8 +291,8 @@ namespace NaturalnieApp.Forms
             this.bProductMenu.FlatAppearance.BorderSize = 0;
             this.bProductMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bProductMenu.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bProductMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bProductMenu.Location = new System.Drawing.Point(0, 274);
+            this.bProductMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.bProductMenu.Location = new System.Drawing.Point(0, 304);
             this.bProductMenu.Name = "bProductMenu";
             this.bProductMenu.Size = new System.Drawing.Size(300, 50);
             this.bProductMenu.TabIndex = 4;
@@ -303,7 +307,7 @@ namespace NaturalnieApp.Forms
             this.pCashRegisterSubMenu.Controls.Add(this.bCashRegisterInfo);
             this.pCashRegisterSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pCashRegisterSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pCashRegisterSubMenu.Location = new System.Drawing.Point(0, 214);
+            this.pCashRegisterSubMenu.Location = new System.Drawing.Point(0, 244);
             this.pCashRegisterSubMenu.Name = "pCashRegisterSubMenu";
             this.pCashRegisterSubMenu.Size = new System.Drawing.Size(300, 60);
             this.pCashRegisterSubMenu.TabIndex = 3;
@@ -351,14 +355,42 @@ namespace NaturalnieApp.Forms
             this.bCashRegister.FlatAppearance.BorderSize = 0;
             this.bCashRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bCashRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bCashRegister.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bCashRegister.Location = new System.Drawing.Point(0, 164);
+            this.bCashRegister.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.bCashRegister.Location = new System.Drawing.Point(0, 194);
             this.bCashRegister.Name = "bCashRegister";
             this.bCashRegister.Size = new System.Drawing.Size(300, 50);
             this.bCashRegister.TabIndex = 2;
             this.bCashRegister.Text = "Kasa fiskalna";
             this.bCashRegister.UseVisualStyleBackColor = false;
             this.bCashRegister.Click += new System.EventHandler(this.bCashRegister_Click);
+            // 
+            // panel2
+            // 
+            this.panel2.AutoSize = true;
+            this.panel2.BackColor = System.Drawing.Color.DimGray;
+            this.panel2.Controls.Add(this.button1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.panel2.Location = new System.Drawing.Point(0, 164);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(300, 30);
+            this.panel2.TabIndex = 9;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.button1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(0, 0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(300, 30);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Ustawienia";
+            this.button1.UseVisualStyleBackColor = false;
             // 
             // bMainMenu
             // 
@@ -368,7 +400,7 @@ namespace NaturalnieApp.Forms
             this.bMainMenu.FlatAppearance.BorderSize = 0;
             this.bMainMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bMainMenu.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bMainMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bMainMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.bMainMenu.Location = new System.Drawing.Point(0, 114);
             this.bMainMenu.Margin = new System.Windows.Forms.Padding(0);
             this.bMainMenu.Name = "bMainMenu";
@@ -400,7 +432,7 @@ namespace NaturalnieApp.Forms
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(1, 1);
             this.pHeader.Name = "pHeader";
-            this.pHeader.Size = new System.Drawing.Size(1398, 30);
+            this.pHeader.Size = new System.Drawing.Size(1238, 30);
             this.pHeader.TabIndex = 4;
             this.pHeader.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseDown);
             this.pHeader.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseMove);
@@ -413,7 +445,7 @@ namespace NaturalnieApp.Forms
             this.bMinimize.Dock = System.Windows.Forms.DockStyle.Right;
             this.bMinimize.FlatAppearance.BorderSize = 0;
             this.bMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bMinimize.Location = new System.Drawing.Point(1308, 0);
+            this.bMinimize.Location = new System.Drawing.Point(1148, 0);
             this.bMinimize.Name = "bMinimize";
             this.bMinimize.Size = new System.Drawing.Size(30, 30);
             this.bMinimize.TabIndex = 5;
@@ -427,7 +459,7 @@ namespace NaturalnieApp.Forms
             this.bMaximize.Dock = System.Windows.Forms.DockStyle.Right;
             this.bMaximize.FlatAppearance.BorderSize = 0;
             this.bMaximize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bMaximize.Location = new System.Drawing.Point(1338, 0);
+            this.bMaximize.Location = new System.Drawing.Point(1178, 0);
             this.bMaximize.Name = "bMaximize";
             this.bMaximize.Size = new System.Drawing.Size(30, 30);
             this.bMaximize.TabIndex = 4;
@@ -465,7 +497,7 @@ namespace NaturalnieApp.Forms
             this.bExit.Dock = System.Windows.Forms.DockStyle.Right;
             this.bExit.FlatAppearance.BorderSize = 0;
             this.bExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bExit.Location = new System.Drawing.Point(1368, 0);
+            this.bExit.Location = new System.Drawing.Point(1208, 0);
             this.bExit.Name = "bExit";
             this.bExit.Size = new System.Drawing.Size(30, 30);
             this.bExit.TabIndex = 0;
@@ -496,15 +528,15 @@ namespace NaturalnieApp.Forms
             this.pContainer.Margin = new System.Windows.Forms.Padding(0);
             this.pContainer.MinimumSize = new System.Drawing.Size(300, 300);
             this.pContainer.Name = "pContainer";
-            this.pContainer.Size = new System.Drawing.Size(1096, 698);
+            this.pContainer.Size = new System.Drawing.Size(936, 698);
             this.pContainer.TabIndex = 7;
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
-            this.ClientSize = new System.Drawing.Size(1400, 730);
+            this.BackColor = System.Drawing.Color.Black;
+            this.ClientSize = new System.Drawing.Size(1240, 730);
             this.Controls.Add(this.pContainer);
             this.Controls.Add(this.pMenuDeliminer);
             this.Controls.Add(this.pMenu);
@@ -513,7 +545,7 @@ namespace NaturalnieApp.Forms
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
-            this.MinimumSize = new System.Drawing.Size(900, 600);
+            this.MinimumSize = new System.Drawing.Size(940, 600);
             this.Name = "MainWindow";
             this.Padding = new System.Windows.Forms.Padding(1);
             this.Text = "ElzabCommands";
@@ -522,6 +554,7 @@ namespace NaturalnieApp.Forms
             this.pStockSubMenu.ResumeLayout(false);
             this.pProductSubMenu.ResumeLayout(false);
             this.pCashRegisterSubMenu.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.pHeader.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -558,5 +591,7 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bMinimize;
         private System.Windows.Forms.Button bMaximize;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button button1;
     }
 }

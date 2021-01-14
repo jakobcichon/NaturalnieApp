@@ -1,5 +1,5 @@
 \\Elzab command path
-#ElzabCommandPath = D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\config\
+#ElzabCommandPath = C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\config\
 
 
 \\Elzab default COM port
@@ -11,10 +11,10 @@
 
 
 \\Test database name
-#DatabseName = TestDatabaseName
+#DatabaseName = localhost
 
 
 \\Path to the label file
-#LabelPath = D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\label\BarcodeFinal.label
+#LabelPath = C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\Labels\default label.label
 
 

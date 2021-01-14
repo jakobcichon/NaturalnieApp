@@ -62,7 +62,7 @@ namespace NaturalnieApp.Forms
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
-            this.pHeader.Size = new System.Drawing.Size(1094, 30);
+            this.pHeader.Size = new System.Drawing.Size(920, 30);
             this.pHeader.TabIndex = 1;
             // 
             // tbDummyForCtrl
@@ -91,7 +91,7 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 150);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(1000, 476);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(920, 470);
             this.advancedDataGridView1.TabIndex = 2;
             // 
             // pButtonsPanel
@@ -100,9 +100,9 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.Controls.Add(this.bSaveToFile);
             this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pButtonsPanel.Location = new System.Drawing.Point(0, 626);
+            this.pButtonsPanel.Location = new System.Drawing.Point(0, 620);
             this.pButtonsPanel.Name = "pButtonsPanel";
-            this.pButtonsPanel.Size = new System.Drawing.Size(1094, 70);
+            this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
             this.pButtonsPanel.TabIndex = 4;
             // 
             // bGenerateCashRegisterProductList
@@ -110,7 +110,7 @@ namespace NaturalnieApp.Forms
             this.bGenerateCashRegisterProductList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bGenerateCashRegisterProductList.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bGenerateCashRegisterProductList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bGenerateCashRegisterProductList.Location = new System.Drawing.Point(537, 10);
+            this.bGenerateCashRegisterProductList.Location = new System.Drawing.Point(457, 10);
             this.bGenerateCashRegisterProductList.Name = "bGenerateCashRegisterProductList";
             this.bGenerateCashRegisterProductList.Size = new System.Drawing.Size(239, 50);
             this.bGenerateCashRegisterProductList.TabIndex = 8;
@@ -124,7 +124,7 @@ namespace NaturalnieApp.Forms
             this.bSaveToFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bSaveToFile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bSaveToFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSaveToFile.Location = new System.Drawing.Point(782, 10);
+            this.bSaveToFile.Location = new System.Drawing.Point(702, 10);
             this.bSaveToFile.Name = "bSaveToFile";
             this.bSaveToFile.Size = new System.Drawing.Size(100, 50);
             this.bSaveToFile.TabIndex = 7;
@@ -138,7 +138,7 @@ namespace NaturalnieApp.Forms
             this.bClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bClose.Location = new System.Drawing.Point(888, 10);
+            this.bClose.Location = new System.Drawing.Point(808, 10);
             this.bClose.Name = "bClose";
             this.bClose.Size = new System.Drawing.Size(100, 50);
             this.bClose.TabIndex = 6;
@@ -159,7 +159,7 @@ namespace NaturalnieApp.Forms
             this.gbProductSelection.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.gbProductSelection.Location = new System.Drawing.Point(0, 30);
             this.gbProductSelection.Name = "gbProductSelection";
-            this.gbProductSelection.Size = new System.Drawing.Size(1094, 120);
+            this.gbProductSelection.Size = new System.Drawing.Size(920, 120);
             this.gbProductSelection.TabIndex = 17;
             this.gbProductSelection.TabStop = false;
             this.gbProductSelection.Text = "Wybór produktu";
@@ -193,7 +193,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 376F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 378F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -287,13 +287,14 @@ namespace NaturalnieApp.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1094, 696);
+            this.ClientSize = new System.Drawing.Size(920, 690);
             this.Controls.Add(this.advancedDataGridView1);
             this.Controls.Add(this.gbProductSelection);
             this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Enabled = false;
+            this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.Name = "ShowStock";

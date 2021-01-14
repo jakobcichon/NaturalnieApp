@@ -108,7 +108,7 @@ namespace NaturalnieApp.Forms
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
-            this.pHeader.Size = new System.Drawing.Size(1094, 30);
+            this.pHeader.Size = new System.Drawing.Size(920, 30);
             this.pHeader.TabIndex = 1;
             // 
             // tbDummyForCtrl
@@ -137,7 +137,7 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 150);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(700, 476);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(568, 470);
             this.advancedDataGridView1.TabIndex = 2;
             this.advancedDataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValueChanged);
             this.advancedDataGridView1.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.advancedDataGridView1_UserDeletedRow);
@@ -150,9 +150,9 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.Controls.Add(this.bPrint);
             this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pButtonsPanel.Location = new System.Drawing.Point(0, 626);
+            this.pButtonsPanel.Location = new System.Drawing.Point(0, 620);
             this.pButtonsPanel.Name = "pButtonsPanel";
-            this.pButtonsPanel.Size = new System.Drawing.Size(1094, 70);
+            this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
             this.pButtonsPanel.TabIndex = 4;
             // 
             // tbQuantityOnList
@@ -182,7 +182,7 @@ namespace NaturalnieApp.Forms
             this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bUpdate.Location = new System.Drawing.Point(676, 10);
+            this.bUpdate.Location = new System.Drawing.Point(596, 10);
             this.bUpdate.Name = "bUpdate";
             this.bUpdate.Size = new System.Drawing.Size(100, 50);
             this.bUpdate.TabIndex = 28;
@@ -195,7 +195,7 @@ namespace NaturalnieApp.Forms
             this.bPrint.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bPrint.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bPrint.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bPrint.Location = new System.Drawing.Point(782, 10);
+            this.bPrint.Location = new System.Drawing.Point(702, 10);
             this.bPrint.Name = "bPrint";
             this.bPrint.Size = new System.Drawing.Size(100, 50);
             this.bPrint.TabIndex = 26;
@@ -208,7 +208,7 @@ namespace NaturalnieApp.Forms
             this.bClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bClose.Location = new System.Drawing.Point(888, 10);
+            this.bClose.Location = new System.Drawing.Point(808, 10);
             this.bClose.Name = "bClose";
             this.bClose.Size = new System.Drawing.Size(100, 50);
             this.bClose.TabIndex = 6;
@@ -227,7 +227,7 @@ namespace NaturalnieApp.Forms
             this.gbProductSelection.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.gbProductSelection.Location = new System.Drawing.Point(0, 30);
             this.gbProductSelection.Name = "gbProductSelection";
-            this.gbProductSelection.Size = new System.Drawing.Size(1094, 120);
+            this.gbProductSelection.Size = new System.Drawing.Size(920, 120);
             this.gbProductSelection.TabIndex = 17;
             this.gbProductSelection.TabStop = false;
             this.gbProductSelection.Text = "Wybór produktu";
@@ -298,7 +298,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 588F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 590F));
             this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -346,7 +346,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 378F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 380F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -398,9 +398,9 @@ namespace NaturalnieApp.Forms
             this.pQuantity.Controls.Add(this.lQuantity);
             this.pQuantity.Controls.Add(this.pSpare1);
             this.pQuantity.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pQuantity.Location = new System.Drawing.Point(700, 150);
+            this.pQuantity.Location = new System.Drawing.Point(568, 150);
             this.pQuantity.Name = "pQuantity";
-            this.pQuantity.Size = new System.Drawing.Size(394, 38);
+            this.pQuantity.Size = new System.Drawing.Size(352, 38);
             this.pQuantity.TabIndex = 18;
             // 
             // tbQuantity
@@ -431,15 +431,15 @@ namespace NaturalnieApp.Forms
             this.pSpare1.Dock = System.Windows.Forms.DockStyle.Top;
             this.pSpare1.Location = new System.Drawing.Point(0, 0);
             this.pSpare1.Name = "pSpare1";
-            this.pSpare1.Size = new System.Drawing.Size(392, 10);
+            this.pSpare1.Size = new System.Drawing.Size(350, 10);
             this.pSpare1.TabIndex = 0;
             // 
             // pGap1
             // 
             this.pGap1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pGap1.Location = new System.Drawing.Point(700, 188);
+            this.pGap1.Location = new System.Drawing.Point(568, 188);
             this.pGap1.Name = "pGap1";
-            this.pGap1.Size = new System.Drawing.Size(394, 10);
+            this.pGap1.Size = new System.Drawing.Size(352, 10);
             this.pGap1.TabIndex = 20;
             // 
             // pDataOfAccept
@@ -449,9 +449,9 @@ namespace NaturalnieApp.Forms
             this.pDataOfAccept.Controls.Add(this.lDateOfAccept);
             this.pDataOfAccept.Controls.Add(this.pSpare2);
             this.pDataOfAccept.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pDataOfAccept.Location = new System.Drawing.Point(700, 198);
+            this.pDataOfAccept.Location = new System.Drawing.Point(568, 198);
             this.pDataOfAccept.Name = "pDataOfAccept";
-            this.pDataOfAccept.Size = new System.Drawing.Size(394, 38);
+            this.pDataOfAccept.Size = new System.Drawing.Size(352, 38);
             this.pDataOfAccept.TabIndex = 21;
             // 
             // dtpDateOfAccept
@@ -487,15 +487,15 @@ namespace NaturalnieApp.Forms
             this.pSpare2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pSpare2.Location = new System.Drawing.Point(0, 0);
             this.pSpare2.Name = "pSpare2";
-            this.pSpare2.Size = new System.Drawing.Size(392, 10);
+            this.pSpare2.Size = new System.Drawing.Size(350, 10);
             this.pSpare2.TabIndex = 0;
             // 
             // pGap2
             // 
             this.pGap2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pGap2.Location = new System.Drawing.Point(700, 236);
+            this.pGap2.Location = new System.Drawing.Point(568, 236);
             this.pGap2.Name = "pGap2";
-            this.pGap2.Size = new System.Drawing.Size(394, 10);
+            this.pGap2.Size = new System.Drawing.Size(352, 10);
             this.pGap2.TabIndex = 22;
             // 
             // pExpDateReq
@@ -505,9 +505,9 @@ namespace NaturalnieApp.Forms
             this.pExpDateReq.Controls.Add(this.lExpDateReq);
             this.pExpDateReq.Controls.Add(this.pSpare3);
             this.pExpDateReq.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pExpDateReq.Location = new System.Drawing.Point(700, 246);
+            this.pExpDateReq.Location = new System.Drawing.Point(568, 246);
             this.pExpDateReq.Name = "pExpDateReq";
-            this.pExpDateReq.Size = new System.Drawing.Size(394, 38);
+            this.pExpDateReq.Size = new System.Drawing.Size(352, 38);
             this.pExpDateReq.TabIndex = 23;
             // 
             // chbExpDateReq
@@ -541,15 +541,15 @@ namespace NaturalnieApp.Forms
             this.pSpare3.Dock = System.Windows.Forms.DockStyle.Top;
             this.pSpare3.Location = new System.Drawing.Point(0, 0);
             this.pSpare3.Name = "pSpare3";
-            this.pSpare3.Size = new System.Drawing.Size(392, 10);
+            this.pSpare3.Size = new System.Drawing.Size(350, 10);
             this.pSpare3.TabIndex = 0;
             // 
             // pGap3
             // 
             this.pGap3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pGap3.Location = new System.Drawing.Point(700, 284);
+            this.pGap3.Location = new System.Drawing.Point(568, 284);
             this.pGap3.Name = "pGap3";
-            this.pGap3.Size = new System.Drawing.Size(394, 10);
+            this.pGap3.Size = new System.Drawing.Size(352, 10);
             this.pGap3.TabIndex = 24;
             // 
             // panel5
@@ -569,9 +569,9 @@ namespace NaturalnieApp.Forms
             this.pExpirationDate.Controls.Add(this.lExpirationDate);
             this.pExpirationDate.Controls.Add(this.pSpare4);
             this.pExpirationDate.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pExpirationDate.Location = new System.Drawing.Point(700, 294);
+            this.pExpirationDate.Location = new System.Drawing.Point(568, 294);
             this.pExpirationDate.Name = "pExpirationDate";
-            this.pExpirationDate.Size = new System.Drawing.Size(394, 38);
+            this.pExpirationDate.Size = new System.Drawing.Size(352, 38);
             this.pExpirationDate.TabIndex = 25;
             // 
             // dtpExpirationDate
@@ -607,15 +607,15 @@ namespace NaturalnieApp.Forms
             this.pSpare4.Dock = System.Windows.Forms.DockStyle.Top;
             this.pSpare4.Location = new System.Drawing.Point(0, 0);
             this.pSpare4.Name = "pSpare4";
-            this.pSpare4.Size = new System.Drawing.Size(392, 10);
+            this.pSpare4.Size = new System.Drawing.Size(350, 10);
             this.pSpare4.TabIndex = 0;
             // 
             // panel2
             // 
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(700, 332);
+            this.panel2.Location = new System.Drawing.Point(568, 332);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(394, 10);
+            this.panel2.Size = new System.Drawing.Size(352, 10);
             this.panel2.TabIndex = 26;
             // 
             // tbFinalPrice
@@ -685,7 +685,7 @@ namespace NaturalnieApp.Forms
             this.tpMarigin.Controls.Add(this.bMariginChange, 2, 0);
             this.tpMarigin.Controls.Add(this.lMarigin, 0, 0);
             this.tpMarigin.Controls.Add(this.tbMarigin, 1, 0);
-            this.tpMarigin.Location = new System.Drawing.Point(700, 342);
+            this.tpMarigin.Location = new System.Drawing.Point(566, 344);
             this.tpMarigin.Name = "tpMarigin";
             this.tpMarigin.RowCount = 1;
             this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -738,7 +738,7 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.Controls.Add(this.tbFinalPrice, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.lFinalPrice, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(700, 381);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(566, 382);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -767,7 +767,7 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.Controls.Add(this.lActualQuantity, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.tbActualQuantity, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(700, 420);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(568, 422);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -783,7 +783,7 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.Controls.Add(this.cbAddWithEveryScanCycle, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.lAddWithEveryScanCycle, 0, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(700, 460);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(568, 463);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -796,7 +796,7 @@ namespace NaturalnieApp.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1094, 696);
+            this.ClientSize = new System.Drawing.Size(920, 690);
             this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tpMarigin);
@@ -815,6 +815,7 @@ namespace NaturalnieApp.Forms
             this.Controls.Add(this.tableLayoutPanel1);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Enabled = false;
+            this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.Name = "AddToStock";

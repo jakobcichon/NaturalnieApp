@@ -32,7 +32,6 @@ namespace NaturalnieApp.Forms
             this.components = new System.ComponentModel.Container();
             this.pHeader = new System.Windows.Forms.Panel();
             this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.bSave = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
             this.gbManufacturerInfo = new System.Windows.Forms.GroupBox();
@@ -84,11 +83,10 @@ namespace NaturalnieApp.Forms
             // pHeader
             // 
             this.pHeader.Controls.Add(this.tbDummyForCtrl);
-            this.pHeader.Controls.Add(this.panel1);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
-            this.pHeader.Size = new System.Drawing.Size(1000, 30);
+            this.pHeader.Size = new System.Drawing.Size(920, 30);
             this.pHeader.TabIndex = 1;
             // 
             // tbDummyForCtrl
@@ -100,19 +98,13 @@ namespace NaturalnieApp.Forms
             this.tbDummyForCtrl.TabIndex = 7;
             this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
             // 
-            // panel1
-            // 
-            this.panel1.Location = new System.Drawing.Point(0, 36);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 100);
-            this.panel1.TabIndex = 0;
-            // 
             // bSave
             // 
             this.bSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSave.Location = new System.Drawing.Point(782, 508);
+            this.bSave.ForeColor = System.Drawing.Color.Black;
+            this.bSave.Location = new System.Drawing.Point(678, 508);
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(100, 50);
             this.bSave.TabIndex = 3;
@@ -125,7 +117,8 @@ namespace NaturalnieApp.Forms
             this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bUpdate.Location = new System.Drawing.Point(676, 508);
+            this.bUpdate.ForeColor = System.Drawing.Color.Black;
+            this.bUpdate.Location = new System.Drawing.Point(572, 508);
             this.bUpdate.Name = "bUpdate";
             this.bUpdate.Size = new System.Drawing.Size(100, 50);
             this.bUpdate.TabIndex = 2;
@@ -145,7 +138,7 @@ namespace NaturalnieApp.Forms
             this.gbManufacturerInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.gbManufacturerInfo.Location = new System.Drawing.Point(0, 30);
             this.gbManufacturerInfo.Name = "gbManufacturerInfo";
-            this.gbManufacturerInfo.Size = new System.Drawing.Size(1000, 270);
+            this.gbManufacturerInfo.Size = new System.Drawing.Size(920, 270);
             this.gbManufacturerInfo.TabIndex = 1;
             this.gbManufacturerInfo.TabStop = false;
             this.gbManufacturerInfo.Text = "Dane producenta";
@@ -156,11 +149,12 @@ namespace NaturalnieApp.Forms
             this.tpLastNumberInCashRegister.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tpLastNumberInCashRegister.ColumnCount = 2;
             this.tpLastNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
-            this.tpLastNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 242F));
+            this.tpLastNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 245F));
             this.tpLastNumberInCashRegister.Controls.Add(this.tbLastNumberInCashRegister, 0, 0);
             this.tpLastNumberInCashRegister.Controls.Add(this.lLastNumberInCashRegister, 0, 0);
             this.tpLastNumberInCashRegister.Controls.Add(this.label4, 0, 1);
-            this.tpLastNumberInCashRegister.Location = new System.Drawing.Point(40, 210);
+            this.tpLastNumberInCashRegister.ForeColor = System.Drawing.Color.Black;
+            this.tpLastNumberInCashRegister.Location = new System.Drawing.Point(6, 208);
             this.tpLastNumberInCashRegister.Name = "tpLastNumberInCashRegister";
             this.tpLastNumberInCashRegister.RowCount = 2;
             this.tpLastNumberInCashRegister.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -204,11 +198,12 @@ namespace NaturalnieApp.Forms
             this.tpFirstNumberInCashRegister.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tpFirstNumberInCashRegister.ColumnCount = 2;
             this.tpFirstNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
-            this.tpFirstNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 242F));
+            this.tpFirstNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 245F));
             this.tpFirstNumberInCashRegister.Controls.Add(this.tbFirstNumberInCashRegister, 0, 0);
             this.tpFirstNumberInCashRegister.Controls.Add(this.lFirstNumberInCashRegister, 0, 0);
             this.tpFirstNumberInCashRegister.Controls.Add(this.label3, 0, 1);
-            this.tpFirstNumberInCashRegister.Location = new System.Drawing.Point(40, 164);
+            this.tpFirstNumberInCashRegister.ForeColor = System.Drawing.Color.Black;
+            this.tpFirstNumberInCashRegister.Location = new System.Drawing.Point(6, 162);
             this.tpFirstNumberInCashRegister.Name = "tpFirstNumberInCashRegister";
             this.tpFirstNumberInCashRegister.RowCount = 2;
             this.tpFirstNumberInCashRegister.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -255,7 +250,8 @@ namespace NaturalnieApp.Forms
             this.tpManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpManufacturer.Controls.Add(this.tbManufacturerName, 1, 0);
             this.tpManufacturer.Controls.Add(this.lManufacturer, 0, 0);
-            this.tpManufacturer.Location = new System.Drawing.Point(40, 25);
+            this.tpManufacturer.ForeColor = System.Drawing.Color.Black;
+            this.tpManufacturer.Location = new System.Drawing.Point(6, 23);
             this.tpManufacturer.Name = "tpManufacturer";
             this.tpManufacturer.RowCount = 1;
             this.tpManufacturer.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -291,7 +287,8 @@ namespace NaturalnieApp.Forms
             this.tpBarcodePrefix.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpBarcodePrefix.Controls.Add(this.tbBarcodePrefix, 0, 0);
             this.tpBarcodePrefix.Controls.Add(this.lBarcodePrefix, 0, 0);
-            this.tpBarcodePrefix.Location = new System.Drawing.Point(40, 72);
+            this.tpBarcodePrefix.ForeColor = System.Drawing.Color.Black;
+            this.tpBarcodePrefix.Location = new System.Drawing.Point(6, 70);
             this.tpBarcodePrefix.Name = "tpBarcodePrefix";
             this.tpBarcodePrefix.RowCount = 1;
             this.tpBarcodePrefix.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -328,13 +325,14 @@ namespace NaturalnieApp.Forms
             this.pManufacturerInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.pManufacturerInfo.Controls.Add(this.lManufacturerInfo, 0, 0);
             this.pManufacturerInfo.Controls.Add(this.rtbManufacturerInfo, 0, 1);
-            this.pManufacturerInfo.Location = new System.Drawing.Point(510, 25);
+            this.pManufacturerInfo.ForeColor = System.Drawing.Color.Black;
+            this.pManufacturerInfo.Location = new System.Drawing.Point(462, 23);
             this.pManufacturerInfo.Name = "pManufacturerInfo";
             this.pManufacturerInfo.RowCount = 3;
             this.pManufacturerInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.pManufacturerInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.pManufacturerInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.pManufacturerInfo.Size = new System.Drawing.Size(450, 220);
+            this.pManufacturerInfo.Size = new System.Drawing.Size(450, 225);
             this.pManufacturerInfo.TabIndex = 12;
             // 
             // lManufacturerInfo
@@ -367,11 +365,12 @@ namespace NaturalnieApp.Forms
             this.tpMaxNumberOfProducts.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tpMaxNumberOfProducts.ColumnCount = 2;
             this.tpMaxNumberOfProducts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
-            this.tpMaxNumberOfProducts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 242F));
+            this.tpMaxNumberOfProducts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 245F));
             this.tpMaxNumberOfProducts.Controls.Add(this.tbMaxNumberOfProducts, 0, 0);
             this.tpMaxNumberOfProducts.Controls.Add(this.lMaxNumberOfProducts, 0, 0);
             this.tpMaxNumberOfProducts.Controls.Add(this.label1, 0, 1);
-            this.tpMaxNumberOfProducts.Location = new System.Drawing.Point(40, 118);
+            this.tpMaxNumberOfProducts.ForeColor = System.Drawing.Color.Black;
+            this.tpMaxNumberOfProducts.Location = new System.Drawing.Point(6, 116);
             this.tpMaxNumberOfProducts.Name = "tpMaxNumberOfProducts";
             this.tpMaxNumberOfProducts.RowCount = 2;
             this.tpMaxNumberOfProducts.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -418,7 +417,8 @@ namespace NaturalnieApp.Forms
             this.bClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bClose.Location = new System.Drawing.Point(888, 508);
+            this.bClose.ForeColor = System.Drawing.Color.Black;
+            this.bClose.Location = new System.Drawing.Point(784, 508);
             this.bClose.Name = "bClose";
             this.bClose.Size = new System.Drawing.Size(100, 50);
             this.bClose.TabIndex = 4;
@@ -430,9 +430,9 @@ namespace NaturalnieApp.Forms
             // pButtonsPanel
             // 
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pButtonsPanel.Location = new System.Drawing.Point(0, 500);
+            this.pButtonsPanel.Location = new System.Drawing.Point(0, 620);
             this.pButtonsPanel.Name = "pButtonsPanel";
-            this.pButtonsPanel.Size = new System.Drawing.Size(1000, 70);
+            this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
             this.pButtonsPanel.TabIndex = 5;
             // 
             // gbSupplierInfo
@@ -443,7 +443,7 @@ namespace NaturalnieApp.Forms
             this.gbSupplierInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.gbSupplierInfo.Location = new System.Drawing.Point(0, 300);
             this.gbSupplierInfo.Name = "gbSupplierInfo";
-            this.gbSupplierInfo.Size = new System.Drawing.Size(1000, 202);
+            this.gbSupplierInfo.Size = new System.Drawing.Size(920, 202);
             this.gbSupplierInfo.TabIndex = 6;
             this.gbSupplierInfo.TabStop = false;
             this.gbSupplierInfo.Text = "Dane produktu";
@@ -457,7 +457,7 @@ namespace NaturalnieApp.Forms
             this.tpSupplierName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpSupplierName.Controls.Add(this.tbSupplierName, 1, 0);
             this.tpSupplierName.Controls.Add(this.lSupplierName, 0, 0);
-            this.tpSupplierName.Location = new System.Drawing.Point(40, 25);
+            this.tpSupplierName.Location = new System.Drawing.Point(6, 25);
             this.tpSupplierName.Name = "tpSupplierName";
             this.tpSupplierName.RowCount = 1;
             this.tpSupplierName.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -476,6 +476,7 @@ namespace NaturalnieApp.Forms
             // lSupplierName
             // 
             this.lSupplierName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lSupplierName.ForeColor = System.Drawing.Color.Black;
             this.lSupplierName.Location = new System.Drawing.Point(6, 6);
             this.lSupplierName.Margin = new System.Windows.Forms.Padding(5);
             this.lSupplierName.Name = "lSupplierName";
@@ -492,7 +493,7 @@ namespace NaturalnieApp.Forms
             this.tpSupplierInfo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpSupplierInfo.Controls.Add(this.lSupplierInfo, 0, 0);
             this.tpSupplierInfo.Controls.Add(this.rtbSupplierInfo, 0, 1);
-            this.tpSupplierInfo.Location = new System.Drawing.Point(506, 25);
+            this.tpSupplierInfo.Location = new System.Drawing.Point(462, 25);
             this.tpSupplierInfo.Name = "tpSupplierInfo";
             this.tpSupplierInfo.RowCount = 3;
             this.tpSupplierInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
@@ -505,6 +506,7 @@ namespace NaturalnieApp.Forms
             // 
             this.lSupplierInfo.Dock = System.Windows.Forms.DockStyle.Top;
             this.lSupplierInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lSupplierInfo.ForeColor = System.Drawing.Color.Black;
             this.lSupplierInfo.Location = new System.Drawing.Point(4, 4);
             this.lSupplierInfo.Margin = new System.Windows.Forms.Padding(3);
             this.lSupplierInfo.Name = "lSupplierInfo";
@@ -532,7 +534,7 @@ namespace NaturalnieApp.Forms
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1000, 570);
+            this.ClientSize = new System.Drawing.Size(920, 690);
             this.Controls.Add(this.gbSupplierInfo);
             this.Controls.Add(this.bClose);
             this.Controls.Add(this.gbManufacturerInfo);
@@ -575,7 +577,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Panel pHeader;
         private System.Windows.Forms.Button bSave;
         private System.Windows.Forms.Button bUpdate;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox gbManufacturerInfo;
         private System.Windows.Forms.TableLayoutPanel pManufacturerInfo;
         private System.Windows.Forms.Label lManufacturerInfo;

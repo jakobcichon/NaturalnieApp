@@ -165,7 +165,11 @@ namespace NaturalnieApp.Forms
         }
         private void bMaximize_Click(object sender, EventArgs e)
         {
-            if (this.WindowState == FormWindowState.Normal) this.WindowState = FormWindowState.Maximized;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+                this.WindowState = FormWindowState.Maximized;
+            }
             else if(this.WindowState == FormWindowState.Maximized) this.WindowState = FormWindowState.Normal;
         }
         #endregion

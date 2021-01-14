@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using System.Windows.Forms;
 using System.Data.Entity;
+using static NaturalnieApp.Program;
 
 namespace NaturalnieApp.Database
 {
@@ -33,7 +34,7 @@ namespace NaturalnieApp.Database
             Product entity = new Product();
             int step = 0;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 //Check if product name already exist. If not, continue checking
                 if (productName != "")
@@ -83,7 +84,7 @@ namespace NaturalnieApp.Database
             {
                 foreach (string element in productNames)
                 {
-                    using (ShopContext contextDB = new ShopContext())
+                    using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
                     {
                         var query = from p in contextDB.Products
                                     where p.ProductName == element
@@ -114,7 +115,7 @@ namespace NaturalnieApp.Database
             {
                 foreach (string element in productNames)
                 {
-                    using (ShopContext contextDB = new ShopContext())
+                    using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
                     {
                         var query = from p in contextDB.Products
                                     where p.ProductName == element
@@ -142,7 +143,7 @@ namespace NaturalnieApp.Database
             {
                 foreach (string element in productNames)
                 {
-                    using (ShopContext contextDB = new ShopContext())
+                    using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
                     {
                         var query = from p in contextDB.Products
                                     where p.ProductName == element
@@ -170,7 +171,7 @@ namespace NaturalnieApp.Database
             {
                 foreach (string element in productNames)
                 {
-                    using (ShopContext contextDB = new ShopContext())
+                    using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
                     {
                         var query = from p in contextDB.Products
                                     where p.ProductName == element
@@ -204,7 +205,7 @@ namespace NaturalnieApp.Database
             //Return value
             int retVal = -1;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from m in contextDB.Manufacturers
                             where m.Name == manufacturerName
@@ -281,7 +282,7 @@ namespace NaturalnieApp.Database
         {
             List<string> productList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 foreach (var product in contextDB.Products)
                 {
@@ -298,7 +299,7 @@ namespace NaturalnieApp.Database
         {
             bool result = false;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             where p.ProductName == productName
@@ -319,7 +320,7 @@ namespace NaturalnieApp.Database
         {
             List<string> productList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 //Create query to database
                 var query = from p in contextDB.Products
@@ -345,7 +346,7 @@ namespace NaturalnieApp.Database
         {
             List<string> productList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 //Create query to database
                 var query = from p in contextDB.Products
@@ -371,7 +372,7 @@ namespace NaturalnieApp.Database
         {
             List<string> manufacturersList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 foreach (var Manufacturer in contextDB.Manufacturers)
                 {
@@ -389,7 +390,7 @@ namespace NaturalnieApp.Database
         {
             List<string> supplierList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 foreach (var Supplier in contextDB.Suppliers)
                 {
@@ -407,7 +408,7 @@ namespace NaturalnieApp.Database
         {
             bool result = false;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from m in contextDB.Manufacturers
                             where m.Name == manufacturerName
@@ -427,7 +428,7 @@ namespace NaturalnieApp.Database
         public Tax GetTaxEntityByValue(int value)
         {
             Tax localTax = new Tax();
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from t in contextDB.Tax
                             where t.TaxValue == value
@@ -445,7 +446,7 @@ namespace NaturalnieApp.Database
         {
             List<string> taxList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 foreach (var tax in contextDB.Tax)
                 {
@@ -462,7 +463,7 @@ namespace NaturalnieApp.Database
         {
             List<string> barcodeList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 foreach (var product in contextDB.Products)
                 {
@@ -487,7 +488,7 @@ namespace NaturalnieApp.Database
         {
             bool result = false;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             where p.BarCode == barcode
@@ -508,7 +509,7 @@ namespace NaturalnieApp.Database
         {
             bool result = false;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             where p.BarCodeShort == barcode
@@ -529,7 +530,7 @@ namespace NaturalnieApp.Database
         {
             List<string> supplierCodeList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 foreach (var product in contextDB.Products)
                 {
@@ -546,7 +547,7 @@ namespace NaturalnieApp.Database
         {
             bool result = false;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             where p.SupplierCode == supplierCode
@@ -567,7 +568,7 @@ namespace NaturalnieApp.Database
         {
             bool result = false;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from s in contextDB.Suppliers
                             where s.Name == supplierName
@@ -588,7 +589,7 @@ namespace NaturalnieApp.Database
         {
             bool result = false;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             where p.ElzabProductId == elzabProductId
@@ -609,7 +610,7 @@ namespace NaturalnieApp.Database
         {
             bool result = false;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             where p.ElzabProductName == elzabProductName
@@ -630,7 +631,7 @@ namespace NaturalnieApp.Database
         {
             List<string> taxList = new List<string>();
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 foreach (var tax in contextDB.Tax)
                 {
@@ -647,7 +648,7 @@ namespace NaturalnieApp.Database
         {
             int productId = -1;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             where p.ProductName == productName
@@ -666,7 +667,7 @@ namespace NaturalnieApp.Database
         {
             string productName;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             where p.Id == id
@@ -685,7 +686,7 @@ namespace NaturalnieApp.Database
         {
             int supplierId = -1;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from s in contextDB.Suppliers
                             where s.Name == supplierName
@@ -704,7 +705,7 @@ namespace NaturalnieApp.Database
         {
             int manufacturerId = -1;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from m in contextDB.Manufacturers
                             where m.Name == manufacturerName
@@ -723,7 +724,7 @@ namespace NaturalnieApp.Database
         {
             string eanPrefix = "";
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from m in contextDB.Manufacturers
                             where m.Name == manufacturerName
@@ -741,7 +742,7 @@ namespace NaturalnieApp.Database
         {
             int taxId = -1;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from t in contextDB.Tax
                            where t.TaxValue == taxValue
@@ -759,7 +760,7 @@ namespace NaturalnieApp.Database
         public Product GetProductEntityById(int productId)
         {
             Product localProduct = new Product();
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             where p.Id == productId
@@ -776,7 +777,7 @@ namespace NaturalnieApp.Database
         public Product GetProductEntityByProductName(string productName)
         {
             Product localProduct = new Product();
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             where p.ProductName == productName
@@ -793,7 +794,7 @@ namespace NaturalnieApp.Database
         public Product GetProductEntityByProductId(int productId)
         {
             Product localProduct = new Product();
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             where p.Id == productId
@@ -810,7 +811,7 @@ namespace NaturalnieApp.Database
         public Product GetProductEntityByBarcode(string barcode)
         {
             Product localProduct = new Product();
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             where p.BarCode == barcode
@@ -827,7 +828,7 @@ namespace NaturalnieApp.Database
         public string GetEAN13FromShortBarcode(string shortBarcode)
         {
             string localProduct;
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             where p.BarCodeShort == shortBarcode
@@ -844,7 +845,7 @@ namespace NaturalnieApp.Database
         public void RecalculateAllShortBarcodes()
         {
             Product localProduct;
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             select p;
@@ -864,7 +865,7 @@ namespace NaturalnieApp.Database
         public Manufacturer GetManufacturerEntityByName(string manufacturerName)
         {
             Manufacturer localManufacturer = new Manufacturer();
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from m in contextDB.Manufacturers
                             where m.Name == manufacturerName
@@ -882,7 +883,7 @@ namespace NaturalnieApp.Database
         public Manufacturer GetManufacturerByProductName(string productName)
         {
             Manufacturer localManufacturer = new Manufacturer();
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             join m in contextDB.Manufacturers
@@ -908,7 +909,7 @@ namespace NaturalnieApp.Database
         public Manufacturer GetManufacturerByBarcode(string barcode)
         {
             Manufacturer localManufacturer = new Manufacturer();
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             join m in contextDB.Manufacturers
@@ -933,7 +934,7 @@ namespace NaturalnieApp.Database
         public Tax GetTaxByProductName(string productName)
         {
             Tax localTax = new Tax();
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                             join t in contextDB.Tax
@@ -960,7 +961,7 @@ namespace NaturalnieApp.Database
         {
             Supplier localSupplier = new Supplier();
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from p in contextDB.Products
                              join s in contextDB.Suppliers
@@ -987,7 +988,7 @@ namespace NaturalnieApp.Database
         {
             int localQuantity = 0;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from s in contextDB.Stock
                             join p in contextDB.Products
@@ -1010,7 +1011,7 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         public void AddNewProduct(Product product)
         {
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 contextDB.Products.Add(product);
                 int test = contextDB.SaveChanges();
@@ -1022,7 +1023,7 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         public void AddSupplier(Supplier supplier)
         {
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 contextDB.Suppliers.Add(supplier);
                 int retVal = contextDB.SaveChanges();
@@ -1035,7 +1036,7 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         public void AddManufacturer(Manufacturer manufacturer)
         {
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 contextDB.Manufacturers.Add(manufacturer);
                 int retVal = contextDB.SaveChanges();
@@ -1050,7 +1051,7 @@ namespace NaturalnieApp.Database
         {
             Stock localStock = new Stock();
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from s in contextDB.Stock
                             where s.ProductId == stockProduct.ProductId &&
@@ -1070,7 +1071,7 @@ namespace NaturalnieApp.Database
         {
             int quantity = 0;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from s in contextDB.Stock
                             where s.ProductId == productId
@@ -1093,7 +1094,7 @@ namespace NaturalnieApp.Database
         {
 
             List<Stock> localStock = new List<Stock>();
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from s in contextDB.Stock
                             join p in contextDB.Products on s.ProductId equals p.Id
@@ -1120,7 +1121,7 @@ namespace NaturalnieApp.Database
         {
 
             List<Stock> localStock = new List<Stock>();
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from s in contextDB.Stock
                             select new
@@ -1145,7 +1146,7 @@ namespace NaturalnieApp.Database
         {
             bool result = false;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from s in contextDB.Stock
                             where s.ProductId == stockProduct.ProductId &&
@@ -1165,7 +1166,7 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         public void AddToStock(Stock stockPiece)
         {
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 contextDB.Stock.Add(stockPiece);
                 int retVal = contextDB.SaveChanges();
@@ -1177,7 +1178,7 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         public void EditInStock(Stock stockProduct)
         {
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 contextDB.Stock.Add(stockProduct);
                 contextDB.Entry(stockProduct).State = EntityState.Modified;
@@ -1190,7 +1191,7 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         public void EditProduct(Product product)
         {
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 contextDB.Products.Add(product);
                 contextDB.Entry(product).State = EntityState.Modified;
@@ -1203,7 +1204,7 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         public void EditSupplier(Supplier supplier)
         {
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 contextDB.Suppliers.Add(supplier);
                 contextDB.Entry(supplier).State = EntityState.Modified;
@@ -1216,7 +1217,7 @@ namespace NaturalnieApp.Database
 
         public void EditManufacturer(Manufacturer manufacturer)
         {
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 contextDB.Manufacturers.Add(manufacturer);
                 contextDB.Entry(manufacturer).State = EntityState.Modified;
@@ -1229,7 +1230,7 @@ namespace NaturalnieApp.Database
 
         public void EditTax(Tax Tax)
         {
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 contextDB.Tax.Add(Tax);
                 contextDB.Entry(Tax).State = EntityState.Modified;
@@ -1244,7 +1245,7 @@ namespace NaturalnieApp.Database
 
             bool state = false;
 
-            using (ShopContext contextDB = new ShopContext())
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 try
                 {

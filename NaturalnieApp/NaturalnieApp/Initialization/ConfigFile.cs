@@ -339,10 +339,10 @@ namespace NaturalnieApp.Initialization
             retList.Add(new ConfigElement("ElzabBaudRate", "115200", "Elzab default baud rate"));
 
             //Add next element to list
-            retList.Add(new ConfigElement("DatabseName", "TestDatabaseName", "Test database name"));
+            retList.Add(new ConfigElement("DatabaseName", "localhost", "Test database name"));
             
             //Add next element to list
-            retList.Add(new ConfigElement("LabelPath", Directory.GetCurrentDirectory() + "\\label\\BarcodeFinal.label", "Path to the label file"));
+            retList.Add(new ConfigElement("LabelPath", Directory.GetCurrentDirectory() + "\\Labels\\default label.label", "Path to the label file"));
 
             //To Add next element to list, act as above
             //Placeholder for next element

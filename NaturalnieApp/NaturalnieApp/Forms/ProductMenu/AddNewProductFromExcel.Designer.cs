@@ -58,7 +58,7 @@ namespace NaturalnieApp.Forms
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
-            this.pHeader.Size = new System.Drawing.Size(1094, 30);
+            this.pHeader.Size = new System.Drawing.Size(920, 30);
             this.pHeader.TabIndex = 0;
             // 
             // tbDummyForCtrl
@@ -100,7 +100,7 @@ namespace NaturalnieApp.Forms
             this.bSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSave.Location = new System.Drawing.Point(732, 510);
+            this.bSave.Location = new System.Drawing.Point(652, 510);
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(150, 50);
             this.bSave.TabIndex = 8;
@@ -113,7 +113,7 @@ namespace NaturalnieApp.Forms
             this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bUpdate.Location = new System.Drawing.Point(626, 510);
+            this.bUpdate.Location = new System.Drawing.Point(546, 510);
             this.bUpdate.Name = "bUpdate";
             this.bUpdate.Size = new System.Drawing.Size(100, 50);
             this.bUpdate.TabIndex = 7;
@@ -181,13 +181,15 @@ namespace NaturalnieApp.Forms
             // 
             // advancedDataGridView1
             // 
+            this.advancedDataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView1.FilterAndSortEnabled = true;
+            this.advancedDataGridView1.GridColor = System.Drawing.Color.Black;
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 27);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(1000, 420);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(920, 420);
             this.advancedDataGridView1.TabIndex = 0;
             this.advancedDataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellEndEdit);
             this.advancedDataGridView1.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValidated);
@@ -201,7 +203,7 @@ namespace NaturalnieApp.Forms
             this.bClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bClose.Location = new System.Drawing.Point(888, 510);
+            this.bClose.Location = new System.Drawing.Point(808, 510);
             this.bClose.Name = "bClose";
             this.bClose.Size = new System.Drawing.Size(100, 50);
             this.bClose.TabIndex = 9;
@@ -256,7 +258,7 @@ namespace NaturalnieApp.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1094, 696);
+            this.ClientSize = new System.Drawing.Size(920, 690);
             this.Controls.Add(this.tpMarigin);
             this.Controls.Add(this.bClose);
             this.Controls.Add(this.advancedDataGridView1);
@@ -268,6 +270,7 @@ namespace NaturalnieApp.Forms
             this.Controls.Add(this.bSave);
             this.Controls.Add(this.pHeader);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AddNewProductFromExcel";
             this.Text = "Submenu_ElzabInfo";
