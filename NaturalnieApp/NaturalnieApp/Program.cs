@@ -37,8 +37,8 @@ namespace NaturalnieApp
             try
             {
 
-                //AssemblyResolver.Hook(@"C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
-                AssemblyResolver.Hook(@"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
+                AssemblyResolver.Hook(@"C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
+                //AssemblyResolver.Hook(@"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
 
                 //Read data from config file 
                 ConfigFileObject ConfigFileInst = new ConfigFileObject();

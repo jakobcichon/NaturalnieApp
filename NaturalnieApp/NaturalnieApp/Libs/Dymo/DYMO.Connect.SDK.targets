@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+   
+    <!-- Common -->
+    <ItemGroup >
+        <!-- Windows -->
+		 <None Include="$(MSBuildThisFileDirectory)..\Build\DYMOLib\DYMO.Common.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\DYMOLib\DYMO.Common.dll')">
+            <Link>DYMO.Common.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None> 
+        <None Include="$(MSBuildThisFileDirectory)..\Build\DYMOLib\DYMO.CrossPlatform.Common.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\DYMOLib\DYMO.CrossPlatform.Common.dll')">
+            <Link>DYMO.CrossPlatform.Common.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>     
+		 <None Include="$(MSBuildThisFileDirectory)..\Build\DYMOLib\DYMO.CrossPlatform.Common.PlatformSpecific.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\DYMOLib\DYMO.CrossPlatform.Common.PlatformSpecific.dll')">
+            <Link>DYMO.CrossPlatform.Common.PlatformSpecific.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+		<None Include="$(MSBuildThisFileDirectory)..\Build\DYMOLib\DYMO.LabelAPI.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\DYMOLib\DYMO.LabelAPI.dll')">
+            <Link>DYMO.LabelAPI.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>	
+		<None Include="$(MSBuildThisFileDirectory)..\Build\DYMOLib\DYMO.LabelAPI.PlatformSpecific.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\DYMOLib\DYMO.LabelAPI.PlatformSpecific.dll')">
+            <Link>DYMO.LabelAPI.PlatformSpecific.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>			
+		
+    </ItemGroup>
+    <!-- x86 -->
+    <ItemGroup Condition="'$(PlatformTarget)' == 'x86'">
+        <!-- Windows -->
+        <None Include="$(MSBuildThisFileDirectory)..\Build\libdymobarcode.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\libdymobarcode.dll')">
+            <Link>libdymobarcode.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>         
+		<None Include="$(MSBuildThisFileDirectory)..\Build\PrintingSupportLibrary.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\PrintingSupportLibrary.dll')">
+            <Link>PrintingSupportLibrary.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>  
+		<None Include="$(MSBuildThisFileDirectory)..\Build\DYMOPrinting.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\DYMOPrinting.dll')">
+            <Link>DYMOPrinting.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>			
+    </ItemGroup>
+	<!-- x64 -->
+    <ItemGroup Condition="'$(PlatformTarget)' == 'x64'">
+         <!-- Windows -->        
+        <None Include="$(MSBuildThisFileDirectory)..\Build\x64\libdymobarcode.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\x64\libdymobarcode.dll')">
+            <Link>libdymobarcode.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>  		
+        <None Include="$(MSBuildThisFileDirectory)..\Build\x64\PrintingSupportLibrary_x64.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\x64\PrintingSupportLibrary_x64.dll')">
+            <Link>PrintingSupportLibrary_x64.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+		<None Include="$(MSBuildThisFileDirectory)..\Build\x64\DYMOPrinting_x64.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\x64\DYMOPrinting_x64.dll')">
+            <Link>DYMOPrinting_x64.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>		
+    </ItemGroup>
+   <!-- a special case for Any CPU -->
+    <ItemGroup Condition=" ( '$(PlatformTarget)' != 'x64' and '$(PlatformTarget)' != 'x86' ) ">
+        <!-- Windows -->
+        <None Include="$(MSBuildThisFileDirectory)..\Build\libdymobarcode.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\libdymobarcode.dll')">
+            <Link>libdymobarcode.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="$(MSBuildThisFileDirectory)..\Build\x64\libdymobarcode_x64.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\x64\libdymobarcode_x64.dll')">
+            <Link>x64\libdymobarcode.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>  
+		<None Include="$(MSBuildThisFileDirectory)..\Build\PrintingSupportLibrary.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\PrintingSupportLibrary.dll')">
+            <Link>PrintingSupportLibrary.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="$(MSBuildThisFileDirectory)..\Build\x64\PrintingSupportLibrary_x64.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\x64\PrintingSupportLibrary_x64.dll')">
+            <Link>PrintingSupportLibrary_x64.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>  
+		<None Include="$(MSBuildThisFileDirectory)..\Build\DYMOPrinting.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\DYMOPrinting.dll')">
+            <Link>DYMOPrinting.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+		<None Include="$(MSBuildThisFileDirectory)..\Build\x64\DYMOPrinting_x64.dll"
+              Condition="Exists('$(MSBuildThisFileDirectory)..\Build\x64\DYMOPrinting_x64.dll')">
+            <Link>DYMOPrinting_x64.dll</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>	
+    </ItemGroup>
+</Project>
+  

@@ -149,8 +149,7 @@ namespace NaturalnieApp.Forms
             this.tbDummyForCtrl.Name = "tbDummyForCtrl";
             this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
             this.tbDummyForCtrl.TabIndex = 7;
-            this.tbDummyForCtrl.Visible = false;
-            this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
+            this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ShowProductInfo_KeyDown);
             // 
             // tbPrice
             // 

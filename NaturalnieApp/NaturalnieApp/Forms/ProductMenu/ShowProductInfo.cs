@@ -506,11 +506,7 @@ namespace NaturalnieApp.Forms
         }
         private void tbDummyForCtrl_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Escape || e.KeyCode == Keys.Tab)
-            {
-                TextBox localSender = (TextBox)sender;
-                localSender.Text = "";
-            }
+
         }
         //Method used to clear given entity
         private void ClearProductentity()

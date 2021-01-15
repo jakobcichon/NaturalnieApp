@@ -237,7 +237,7 @@ namespace NaturalnieApp.Forms
             this.bAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bAdd.Location = new System.Drawing.Point(922, 30);
+            this.bAdd.Location = new System.Drawing.Point(849, 30);
             this.bAdd.Name = "bAdd";
             this.bAdd.Size = new System.Drawing.Size(70, 70);
             this.bAdd.TabIndex = 5;
@@ -254,7 +254,7 @@ namespace NaturalnieApp.Forms
             this.pBarCode.Controls.Add(this.cbBarcodes, 0, 1);
             this.pBarCode.Controls.Add(this.lBarcode, 0, 0);
             this.pBarCode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.pBarCode.Location = new System.Drawing.Point(740, 30);
+            this.pBarCode.Location = new System.Drawing.Point(673, 30);
             this.pBarCode.Margin = new System.Windows.Forms.Padding(0);
             this.pBarCode.Name = "pBarCode";
             this.pBarCode.RowCount = 2;
@@ -298,7 +298,7 @@ namespace NaturalnieApp.Forms
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 590F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -308,14 +308,14 @@ namespace NaturalnieApp.Forms
             this.pProductName.RowCount = 2;
             this.pProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.pProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.pProductName.Size = new System.Drawing.Size(462, 70);
+            this.pProductName.Size = new System.Drawing.Size(400, 70);
             this.pProductName.TabIndex = 15;
             // 
             // cbProductsList
             // 
             this.cbProductsList.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.cbProductsList.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.cbProductsList.Dock = System.Windows.Forms.DockStyle.Left;
+            this.cbProductsList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbProductsList.DropDownHeight = 200;
             this.cbProductsList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.cbProductsList.FormattingEnabled = true;
@@ -323,20 +323,20 @@ namespace NaturalnieApp.Forms
             this.cbProductsList.ItemHeight = 20;
             this.cbProductsList.Location = new System.Drawing.Point(4, 35);
             this.cbProductsList.Name = "cbProductsList";
-            this.cbProductsList.Size = new System.Drawing.Size(450, 28);
+            this.cbProductsList.Size = new System.Drawing.Size(392, 28);
             this.cbProductsList.TabIndex = 2;
             this.cbProductsList.SelectedIndexChanged += new System.EventHandler(this.cbProductsList_SelectedIndexChanged);
             // 
             // lProductName
             // 
             this.lProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.lProductName.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lProductName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lProductName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.lProductName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lProductName.Location = new System.Drawing.Point(6, 6);
             this.lProductName.Margin = new System.Windows.Forms.Padding(5);
             this.lProductName.Name = "lProductName";
-            this.lProductName.Size = new System.Drawing.Size(450, 20);
+            this.lProductName.Size = new System.Drawing.Size(388, 20);
             this.lProductName.TabIndex = 0;
             this.lProductName.Text = "Nazwa produktu";
             this.lProductName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -346,7 +346,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 380F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 381F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
