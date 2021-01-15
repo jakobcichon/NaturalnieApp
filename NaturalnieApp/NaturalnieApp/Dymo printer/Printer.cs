@@ -10,7 +10,7 @@ using DymoSDK.Interfaces;
 
 namespace NaturalnieApp.Dymo_Printer
 {
-    
+
     #region Class specific exception
     [Serializable()]
     public class InvalidPath : Exception
@@ -82,7 +82,7 @@ namespace NaturalnieApp.Dymo_Printer
         public void PrintPriceCardFromProduct(Product productToPrint)
         {
             //Change upper lable objects
-            this.LabelToPrint =  ChangeLabelObjectsValues(this.LabelToPrint, productToPrint, true);
+            this.LabelToPrint = ChangeLabelObjectsValues(this.LabelToPrint, productToPrint, true);
 
             //Change lower lable objects
             this.LabelToPrint = ChangeLabelObjectsValues(this.LabelToPrint, productToPrint, false);
@@ -106,11 +106,11 @@ namespace NaturalnieApp.Dymo_Printer
             {
 
                 //Loop through all lable objects
-                for (int i=0; i<=numberOfElements-1; i += 2)
+                for (int i = 0; i <= numberOfElements - 1; i += 2)
                 {
                     int j = i + 1;
 
-                    if (j>numberOfElements-1)
+                    if (j > numberOfElements - 1)
                     {
                         DymoLabel temp = new DymoLabel();
                         temp.LoadLabelFromFilePath(this.LabelPath);
@@ -200,7 +200,7 @@ namespace NaturalnieApp.Dymo_Printer
                 //Change price
                 else if (element.Name == "price" + sufix)
                 {
-                    label.UpdateLabelObject(element, (string.Format("{0:0.00}",productToPrint.FinalPrice) + " PLN").ToUpper());
+                    label.UpdateLabelObject(element, (string.Format("{0:0.00}", productToPrint.FinalPrice) + " PLN").ToUpper());
                 }
             }
 
@@ -209,11 +209,11 @@ namespace NaturalnieApp.Dymo_Printer
             return retLabel;
         }
 
-            /// <summary>
-            /// Method used to verify if given file exist and if it contain .label excention.
-            /// </summary>
-            /// <param name="label"></param>
-            public void ChangeLabelFilePath(string label)
+        /// <summary>
+        /// Method used to verify if given file exist and if it contain .label excention.
+        /// </summary>
+        /// <param name="label"></param>
+        public void ChangeLabelFilePath(string label)
         {
             //Local variable
             string extension;
@@ -245,6 +245,21 @@ namespace NaturalnieApp.Dymo_Printer
             this.PrinterDevices = DymoPrinter.Instance.GetPrinters().ToList();
             if (this.PrinterDevices.Count > 0 && this.PrinterDevices[0].IsConnected) this.SelectedPrinter = this.PrinterDevices[0];
             else throw new NoPrinterToSelect("No available Dymo printer to select! Connect printer and try again!");
+        }
+
+    }
+
+    public static class PrinterMethods
+    {
+
+        public static List<string> GetPrintersNameList()
+        {
+            //Local list
+            List<string> localList = new List<string>();
+
+            localList.AddRange(DymoPrinter.Instance.GetPrinters().Select(p => p.Name));
+
+            return localList;
         }
     }
 }

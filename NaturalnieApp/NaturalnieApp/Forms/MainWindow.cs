@@ -36,6 +36,8 @@ namespace NaturalnieApp.Forms
         public PrintFromStock printFromStock { get; set; }
         public ShowStock showStock { get; set; }
 
+        public DymoSettings dymoSettings { get; set; }
+
 
         //Creat EF databse connection object
         DatabaseCommands databaseCommands;
@@ -62,6 +64,7 @@ namespace NaturalnieApp.Forms
             this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+            this.dymoSettings = new DymoSettings();
         }
 
         //====================================================================================================
@@ -171,6 +174,28 @@ namespace NaturalnieApp.Forms
                 this.WindowState = FormWindowState.Maximized;
             }
             else if(this.WindowState == FormWindowState.Maximized) this.WindowState = FormWindowState.Normal;
+        }
+        #endregion
+
+        #region Main menu subMenu
+        private void bDymoSettings_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            try
+            {
+                this.pContainer.Controls.Add(this.dymoSettings);
+                this.dymoSettings.Select();
+                this.dymoSettings.BringToFront();
+                this.dymoSettings.Show();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.dymoSettings = new DymoSettings();
+                this.pContainer.Controls.Add(this.dymoSettings);
+                this.dymoSettings.Select();
+                this.dymoSettings.BringToFront();
+                this.dymoSettings.Show();
+            }
         }
         #endregion
 

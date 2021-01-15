@@ -49,7 +49,7 @@ namespace NaturalnieApp.Forms
             this.bCashRegisterInfo = new System.Windows.Forms.Button();
             this.bCashRegister = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.bDymoSettings = new System.Windows.Forms.Button();
             this.bMainMenu = new System.Windows.Forms.Button();
             this.pLogo = new System.Windows.Forms.Panel();
             this.pHeader = new System.Windows.Forms.Panel();
@@ -368,7 +368,7 @@ namespace NaturalnieApp.Forms
             // 
             this.panel2.AutoSize = true;
             this.panel2.BackColor = System.Drawing.Color.DimGray;
-            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.bDymoSettings);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.panel2.Location = new System.Drawing.Point(0, 164);
@@ -376,21 +376,22 @@ namespace NaturalnieApp.Forms
             this.panel2.Size = new System.Drawing.Size(300, 30);
             this.panel2.TabIndex = 9;
             // 
-            // button1
+            // bDymoSettings
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.button1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(0, 0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(300, 30);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Ustawienia";
-            this.button1.UseVisualStyleBackColor = false;
+            this.bDymoSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bDymoSettings.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bDymoSettings.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bDymoSettings.FlatAppearance.BorderSize = 0;
+            this.bDymoSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bDymoSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bDymoSettings.ForeColor = System.Drawing.Color.White;
+            this.bDymoSettings.Location = new System.Drawing.Point(0, 0);
+            this.bDymoSettings.Name = "bDymoSettings";
+            this.bDymoSettings.Size = new System.Drawing.Size(300, 30);
+            this.bDymoSettings.TabIndex = 5;
+            this.bDymoSettings.Text = "Ustawienia drukarki Dymo";
+            this.bDymoSettings.UseVisualStyleBackColor = false;
+            this.bDymoSettings.Click += new System.EventHandler(this.bDymoSettings_Click);
             // 
             // bMainMenu
             // 
@@ -592,6 +593,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bMaximize;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bDymoSettings;
     }
 }
