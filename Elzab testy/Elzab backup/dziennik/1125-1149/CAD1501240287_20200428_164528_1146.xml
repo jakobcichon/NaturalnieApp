@@ -1,0 +1,39 @@
+<xml>
+  <ActionList>
+    <Action PrintoutName="rep.day" BeginPosition="0" EndPosition="1898" Canceled="N">
+      <sign>E4142186A48D6351A0150EA39D2D7E4182F7D18D</sign>
+      <day_n.printouts>1</day_n.printouts>
+      <grn_n.printouts>1635</grn_n.printouts>
+      <po.date>28.04.2020</po.date>
+      <po.time>16:44:00</po.time>
+      <day.rcpt_tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_tot.v>
+      <day.rcpt_vat.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_vat.v>
+      <day.rcpt_tot_canc>+0,00</day.rcpt_tot_canc>
+      <grn_n.day_clos>1146</grn_n.day_clos>
+      <day_n.rcpt_clos>0</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <grn.vat.v>+13400,45/+545,10/+398,93/+0,00/+0,00/+0,00/+0,00</grn.vat.v>
+      <grn.tot>+1057527,91</grn.tot>
+      <cs_po.sha-e>#396BBF1DD911046FE9953B26C22E0C64250379E9</cs_po.sha-e>
+    </Action>
+  </ActionList>
+  <Info
+    begin.date="28.04.2020"
+    begin.time="16:44:00"
+    vat_rates="A2300/B0800/C0500/D0000/E====/F0000/G0000"
+    serial="CAD1501240287"
+    nip="NIP:6412472651"
+    model="JOTA E"
+    version="MA1C.01"
+    currency="PLN"
+    daynumber="1146"
+    fiscalmode="true"
+    end.date="28.04.2020"
+    end.time="16:44:00"
+    shopid="0000000000000000"
+    posid="01"
+    codepage="ISO8859-2"
+    data.sign="#ACF24AFFA026CE2B9C11D55C9456D29471A0D199"
+    day.sign="#396BBF1DD911046FE9953B26C22E0C64250379E9"
+  />
+</xml>

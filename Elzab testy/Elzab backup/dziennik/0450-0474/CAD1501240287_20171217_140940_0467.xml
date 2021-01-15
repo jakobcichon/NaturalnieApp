@@ -1,0 +1,111 @@
+<xml>
+  <ActionList>
+    <Action PrintoutName="rcpt" BeginPosition="0" EndPosition="670"  Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;SZKŁO,PORCELANA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>26,90</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;YANKEE CANDLE&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>9,00</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;VIANEK KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>17,90</itmval>
+      <sign>637CF6A1F1EC7FA6D40B61ED401A555A4F31196F</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+53,80</tra.tot.v>
+      <day_n.rcpt_clos>1</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>1</day_n.printouts>
+      <grn_n.printouts>2379</grn_n.printouts>
+      <po.date>17.12.2017</po.date>
+      <po.time>10:35:00</po.time>
+      <cs_po.sha-e>#5C076D918C914B29560188CCB56B96F9520A6FDC</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="671" EndPosition="1095"   Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;SZKŁO,PORCELANA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>21,50</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;WODA TOALETOWA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>39,98</itmval>
+      <sign>DC070969A3E7E3F25BF9FC15225675098F088AAD</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+61,48</tra.tot.v>
+      <day_n.rcpt_clos>2</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>2</day_n.printouts>
+      <grn_n.printouts>2379</grn_n.printouts>
+      <po.date>17.12.2017</po.date>
+      <po.time>12:07:00</po.time>
+      <cs_po.sha-e>#5E29D9B0BA3D2E127689B264E3C4C592905D0270</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="1096" EndPosition="1520"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;ZDROWA ŻYWNOŚĆ 5&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>7,70</itmval>
+      <sign>2496F2D96339EF7A8FC19E2A224E13F4E9E67465</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+7,70</tra.tot.v>
+      <day_n.rcpt_clos>3</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>3</day_n.printouts>
+      <grn_n.printouts>2379</grn_n.printouts>
+      <po.date>17.12.2017</po.date>
+      <po.time>12:11:00</po.time>
+      <cs_po.sha-e>#6EF91CB477B91710473E24CF0DB9034177BBA53D</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="1521" EndPosition="1904"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;LUMENE KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>199,00</itmval>
+      <sign>92A7B9D5EECA0B62C2F3096BDF38F8A531E27403</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+199,00</tra.tot.v>
+      <day_n.rcpt_clos>4</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>4</day_n.printouts>
+      <grn_n.printouts>2379</grn_n.printouts>
+      <po.date>17.12.2017</po.date>
+      <po.time>12:49:00</po.time>
+      <cs_po.sha-e>#C0DD3564DD4EB6825D4914B59982C3DCF3202F15</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.day" BeginPosition="1905" EndPosition="3704"    Canceled="N">
+      <sign>745369F8D6F49A1AB83D5EE28FE86705F3180997</sign>
+      <day_n.printouts>5</day_n.printouts>
+      <grn_n.printouts>2379</grn_n.printouts>
+      <po.date>17.12.2017</po.date>
+      <po.time>14:09:00</po.time>
+      <day.rcpt_tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+321,98</day.rcpt_tot.v>
+      <day.rcpt_vat.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_vat.v>
+      <day.rcpt_tot_canc>+0,00</day.rcpt_tot_canc>
+      <grn_n.day_clos>467</grn_n.day_clos>
+      <day_n.rcpt_clos>4</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <grn.vat.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</grn.vat.v>
+      <grn.tot>+344840,94</grn.tot>
+      <cs_po.sha-e>#36CC5F81929E1732EBD1B161317BA166DEB7D657</cs_po.sha-e>
+    </Action>
+  </ActionList>
+  <Info
+    begin.date="17.12.2017"
+    begin.time="10:35:00"
+    vat_rates="A2300/B0800/C0500/D0000/E0000/F0000/G===="
+    serial="CAD1501240287"
+    nip="NIP:6412472651"
+    model="JOTA E"
+    version="MA1C.01"
+    currency="PLN"
+    daynumber="467"
+    fiscalmode="true"
+    end.date="17.12.2017"
+    end.time="14:09:00"
+    shopid="0000000000000000"
+    posid="01"
+    codepage="ISO8859-2"
+    data.sign="#98131F2B20C745B3197F4FC5F2776F166D2B871D"
+    day.sign="#7636850F4F6341B1BD00C8E9268091DF68A4A1A9"
+  />
+</xml>

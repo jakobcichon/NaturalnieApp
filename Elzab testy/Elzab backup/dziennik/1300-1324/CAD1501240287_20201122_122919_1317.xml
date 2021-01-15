@@ -1,0 +1,136 @@
+<xml>
+  <ActionList>
+    <Action PrintoutName="rcpt" BeginPosition="0" EndPosition="1232" Canceled="Y">
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>void</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>void</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>void</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>void</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>void</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>void</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>void</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>void</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>void</itmtype>
+      <itmval>149,99</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>void</itmtype>
+      <itmval>149,99</itmval>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>0</day_n.rcpt_clos>
+      <day_n.rcpt_canc>1</day_n.rcpt_canc>
+      <day_n.printouts>1</day_n.printouts>
+      <grn_n.printouts>5946</grn_n.printouts>
+      <po.date>22.11.2020</po.date>
+      <po.time>11:50:00</po.time>
+      <cs_po.sha-e>#BB6FDEAC61110A6E4E93B5DFD5C6888CEE8F5BB3</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.change_item" BeginPosition="1233" EndPosition="1824"    Canceled="N">
+      <day_n.printouts>2</day_n.printouts>
+      <grn_n.printouts>5946</grn_n.printouts>
+      <po.date>22.11.2020</po.date>
+      <po.time>12:23:00</po.time>
+      <cs_po.sha-e>#EA90017245553EF0DE2353D9CA0737D416DACC80</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.day" BeginPosition="1825" EndPosition="3747"    Canceled="N">
+      <sign>CC679708B4781053DE9A8DB52AB764E1FB5C3371</sign>
+      <day_n.printouts>3</day_n.printouts>
+      <grn_n.printouts>5946</grn_n.printouts>
+      <po.date>22.11.2020</po.date>
+      <po.time>12:23:00</po.time>
+      <day.rcpt_tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_tot.v>
+      <day.rcpt_vat.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_vat.v>
+      <day.rcpt_tot_canc>+0,00</day.rcpt_tot_canc>
+      <grn_n.day_clos>1317</grn_n.day_clos>
+      <day_n.rcpt_clos>0</day_n.rcpt_clos>
+      <day_n.rcpt_canc>1</day_n.rcpt_canc>
+      <grn.vat.v>+42986,47/+1581,68/+1033,79/+0,00/+0,00/+0,00/+0,00</grn.vat.v>
+      <grn.tot>+1243076,81</grn.tot>
+      <cs_po.sha-e>#32F35934F97FD4E647474F447751D65CD86D832B</cs_po.sha-e>
+    </Action>
+  </ActionList>
+  <Info
+    begin.date="22.11.2020"
+    begin.time="11:50:00"
+    vat_rates="A2300/B0800/C0500/D0000/E====/F0000/G0000"
+    serial="CAD1501240287"
+    nip="NIP:6412472651"
+    model="JOTA E"
+    version="MA1C.01"
+    currency="PLN"
+    daynumber="1317"
+    fiscalmode="true"
+    end.date="22.11.2020"
+    end.time="12:23:00"
+    shopid="0000000000000000"
+    posid="01"
+    codepage="ISO8859-2"
+    data.sign="#01641F441DF949596395F1ACBA2769654AD00C87"
+    day.sign="#316A8EA01A47A9A045C803A7A6E096E2E084B850"
+  />
+</xml>

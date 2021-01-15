@@ -1,0 +1,44 @@
+#1	COM1:9600:MUX0:1	1	2004.03.26	13:48	PoSekwSt	WIN 8.40a	POSEKWST.IN	POSEKWST.OUT
+#
+#Elzab
+;***********************************************************************************************
+;
+; odpowiedz na pytanie o zerowy bajt statusu
+; $0 na poczatku oznacza, ze sekwencje obsluzono poprawnie
+; 00H na koncu to wartosc odczytanego bajtu statusu
+; 54h	2	0	0 to skladnia sekwencji ESC, 54h skopiowana z pliku wejsciowego
+; xxh:xxh... to zaslepka, aby utrzymac staly format wszystkich sekwencji
+;
+$0	54h	2	0	0	xxh:xxh...	00H
+;
+;***********************************************************************************************
+;
+; poczatek paragonu
+;
+$0	20h	1	4	0	02h:00:00:00	06H
+;
+;***********************************************************************************************
+;
+; pozycja paragonowa
+;
+$0	06h	0	43	0	20h:'abcde67890123456789012345678':'0':02h:00h:00h:00h:'0':'litr':01h:00h:00h:00h	
+;
+;***********************************************************************************************
+;
+; stawka podatkowa
+;
+$0	'A'	0	4	0	02h:00h:00h:00h	
+;
+;***********************************************************************************************
+;
+; koniec pozycji paragonowych
+;
+$0	07h	0	0	0	xxh:xxh...	
+;
+;***********************************************************************************************
+;
+; koniec paragonu
+;
+$0	24h	1	0	0	xxh:xxh...	06H
+;
+;***********************************************************************************************

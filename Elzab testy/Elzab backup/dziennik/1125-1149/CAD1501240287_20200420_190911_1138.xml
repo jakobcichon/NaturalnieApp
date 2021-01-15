@@ -1,0 +1,111 @@
+<xml>
+  <ActionList>
+    <Action PrintoutName="rcpt" BeginPosition="0" EndPosition="752"  Canceled="N">
+      <itmvat>B</itmvat>
+      <itmname>&quot;OLEOFARM 8&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>18,90</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;HERBATA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>14,40</itmval>
+      <sign>01B8226F50077E9CAA00C9F139CBE2F0B290F012</sign>
+      <tra.tot.v>+14,40/+18,90/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>1</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>1</day_n.printouts>
+      <grn_n.printouts>1408</grn_n.printouts>
+      <po.date>20.04.2020</po.date>
+      <po.time>09:56:00</po.time>
+      <cs_po.sha-e>#D55B186F29CE0F65A3C06E494F01BACED7752805</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="753" EndPosition="1218"   Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;ZIOŁA 23&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>3,90</itmval>
+      <sign>520871FA57B1879B953796358FD886AB8ED9902A</sign>
+      <tra.tot.v>+3,90/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>2</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>2</day_n.printouts>
+      <grn_n.printouts>1408</grn_n.printouts>
+      <po.date>20.04.2020</po.date>
+      <po.time>09:59:00</po.time>
+      <cs_po.sha-e>#2C4E950B70961A9CBF66DF38030DC4FD2F89F767</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="1219" EndPosition="1725"    Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;ROSYJSKIE KOSMETYK&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>6,90</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;OLEJEK ETERYCZNY&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>12,80</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;YOPE KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>14,50</itmval>
+      <sign>E3E99B7A30302732C0ED41905A05D3DB8E392364</sign>
+      <tra.tot.v>+34,20/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>3</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>3</day_n.printouts>
+      <grn_n.printouts>1408</grn_n.printouts>
+      <po.date>20.04.2020</po.date>
+      <po.time>13:00:00</po.time>
+      <cs_po.sha-e>#ED5644D2A7C27EA1511ECE118A7E0217C885F094</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="1726" EndPosition="2150"    Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;YERBA MATE&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>25,90</itmval>
+      <sign>59E2643A59005FCD0761F5188387EB7EF60B258E</sign>
+      <tra.tot.v>+25,90/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>4</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>4</day_n.printouts>
+      <grn_n.printouts>1408</grn_n.printouts>
+      <po.date>20.04.2020</po.date>
+      <po.time>13:29:00</po.time>
+      <cs_po.sha-e>#DEB99BF91A7184BB9720C76B2D6A044AC6D6D026</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.day" BeginPosition="2151" EndPosition="4073"    Canceled="N">
+      <sign>ADEDAD3EF6D3A86E4453BF7AC6C48E2379A7F6E3</sign>
+      <day_n.printouts>5</day_n.printouts>
+      <grn_n.printouts>1408</grn_n.printouts>
+      <po.date>20.04.2020</po.date>
+      <po.time>19:08:00</po.time>
+      <day.rcpt_tot.v>+78,40/+18,90/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_tot.v>
+      <day.rcpt_vat.v>+14,66/+1,40/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_vat.v>
+      <day.rcpt_tot_canc>+0,00</day.rcpt_tot_canc>
+      <grn_n.day_clos>1138</grn_n.day_clos>
+      <day_n.rcpt_clos>4</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <grn.vat.v>+12001,58/+507,50/+367,77/+0,00/+0,00/+0,00/+0,00</grn.vat.v>
+      <grn.tot>+1048885,32</grn.tot>
+      <cs_po.sha-e>#8257EECE8F0702DC869858F51736A570E9D49512</cs_po.sha-e>
+    </Action>
+  </ActionList>
+  <Info
+    begin.date="20.04.2020"
+    begin.time="09:56:00"
+    vat_rates="A2300/B0800/C0500/D0000/E====/F0000/G0000"
+    serial="CAD1501240287"
+    nip="NIP:6412472651"
+    model="JOTA E"
+    version="MA1C.01"
+    currency="PLN"
+    daynumber="1138"
+    fiscalmode="true"
+    end.date="20.04.2020"
+    end.time="19:08:00"
+    shopid="0000000000000000"
+    posid="01"
+    codepage="ISO8859-2"
+    data.sign="#92DE2B1A8701FFE1C0D7BC77309259C3CF47C077"
+    day.sign="#C08E8199F2251D1162996DE45872B12DDF0B3414"
+  />
+</xml>

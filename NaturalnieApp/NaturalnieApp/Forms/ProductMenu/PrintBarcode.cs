@@ -559,7 +559,7 @@ namespace NaturalnieApp.Forms
                     }
 
                     //Check if printer connected
-                    this.DymoPrinter.GetPrinters();
+                    this.DymoPrinter.ChangePrinter(Program.GlobalVariables.DymoPrinterName);
 
                     //Local variables
                     List<Product> localList = new List<Product>();

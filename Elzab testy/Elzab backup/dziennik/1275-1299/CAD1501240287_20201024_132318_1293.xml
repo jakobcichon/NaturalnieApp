@@ -1,0 +1,345 @@
+<xml>
+  <ActionList>
+    <Action PrintoutName="rcpt" BeginPosition="0" EndPosition="670"  Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;YODEYMA PERFUMY&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>19,80</itmval>
+      <sign>15A7C004BE2434918EEFBAC3AE3FFA0D910788AF</sign>
+      <tra.tot.v>+19,80/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>1</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>1</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>10:20:00</po.time>
+      <cs_po.sha-e>#25563573A0297A517D9B5BBF44458794BC306891</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="671" EndPosition="1177"   Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;HERBATA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>6,60</itmval>
+      <itmvat>B</itmvat>
+      <itmname>&quot;ZIOŁA FIX 8&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>5,50</itmval>
+      <sign>92BD57606990F95D594D2FDF90768788DEADD47C</sign>
+      <tra.tot.v>+6,60/+5,50/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>2</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>2</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>10:26:00</po.time>
+      <cs_po.sha-e>#2391DC2E387AEC6C41464D1E2C32A298DF512356</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="1178" EndPosition="1643"    Canceled="N">
+      <itmvat>C</itmvat>
+      <itmname>&quot;MIÓD 5&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>33,00</itmval>
+      <sign>B9BF7915E4DBF47CA8FF1ABB4D44B452B71F6365</sign>
+      <tra.tot.v>+0,00/+0,00/+33,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>3</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>3</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>10:28:00</po.time>
+      <cs_po.sha-e>#140C2FE2C9988E519548E97F92340B5F92BEC31F</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="1644" EndPosition="2068"    Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;YODEYMA PERFUMY&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>59,90</itmval>
+      <sign>25163CDAF6FC841F988F4D80798163782BD637DA</sign>
+      <tra.tot.v>+59,90/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>4</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>4</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>10:32:00</po.time>
+      <cs_po.sha-e>#F2879EA4FF5949ADBA269516221D18DFE8409EE6</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="2069" EndPosition="2493"    Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;MASKA OCHR.3WARSTW.&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>7,90</itmval>
+      <sign>022E9EF78894BCA794DBF006552D885D3D5721CD</sign>
+      <tra.tot.v>+7,90/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>5</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>5</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>10:35:00</po.time>
+      <cs_po.sha-e>#EEA3A1821F70211F3A689978E4E369D98F7802C1</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="2494" EndPosition="3041"    Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>59,90</itmval>
+      <itmvat>B</itmvat>
+      <itmname>&quot;OLEOFARM 8&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>15,90</itmval>
+      <sign>72E0AC550FD11EA732072B1DC5AF3B61F8BA1E80</sign>
+      <tra.tot.v>+59,90/+15,90/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>6</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>6</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>10:59:00</po.time>
+      <cs_po.sha-e>#683A9CDDA2B2340E761E257F7B054A37E1D28548</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="3042" EndPosition="3507"    Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;HERBATA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>26,90</itmval>
+      <sign>E2B2A7A38222254B9F3C6B183CA3E82B5328AA2F</sign>
+      <tra.tot.v>+26,90/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>7</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>7</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>11:01:00</po.time>
+      <cs_po.sha-e>#1CA91376545C8C4021D410977848D9737B0A7223</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="3508" EndPosition="3973"    Canceled="N">
+      <itmvat>C</itmvat>
+      <itmname>&quot;ZDROWA ŻYWNOŚĆ 5&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>8,70</itmval>
+      <sign>C363B9FF56DAF5882CE11293817DA22A03F770A8</sign>
+      <tra.tot.v>+0,00/+0,00/+8,70/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>8</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>8</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>11:30:00</po.time>
+      <cs_po.sha-e>#E809B78D4AE90A78C2BDEFAEB342E0B71630EBC8</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="3974" EndPosition="4398"    Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;ZDROWA ŻYWNOŚĆ 23&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>31,80</itmval>
+      <sign>C903B22BD9CFDE531346164BD8B932CE3019ABBD</sign>
+      <tra.tot.v>+31,80/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>9</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>9</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>11:32:00</po.time>
+      <cs_po.sha-e>#D03A509BC9878D427AD52D50CD1E16F1D30684BC</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="4399" EndPosition="5151"    Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;YANKEE CANDLE&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>54,00</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;OLEJEK ETERYCZNY&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>19,20</itmval>
+      <itmvat>C</itmvat>
+      <itmname>&quot;EKAMEDICA 5&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>4,90</itmval>
+      <sign>1A512E82BF56B7CAE35B0F4E03CA07BADED882CB</sign>
+      <tra.tot.v>+73,20/+0,00/+4,90/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>10</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>10</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>11:38:00</po.time>
+      <cs_po.sha-e>#69985BF2727D3A73E3790FCD3B82E71AD41A05A7</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="5152" EndPosition="5658"    Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;KOMINEK/PAROWNIK&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>32,90</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;YANKEE CANDLE&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>18,00</itmval>
+      <sign>5A99CAAD1DD14F673FE9FE6D674D67A4CFDCC952</sign>
+      <tra.tot.v>+50,90/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>11</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>11</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>11:50:00</po.time>
+      <cs_po.sha-e>#22E9C0E42711AE5AD7D581839A7957E207C65F89</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="5659" EndPosition="6206"    Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;YANKEE CANDLE&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>31,50</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;LAKIER DO PAZNOKCI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>10,90</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;OLEJEK ETERYCZNY&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>6,40</itmval>
+      <sign>F989FD24C6E0675C12684263B99DA74EA35619EE</sign>
+      <tra.tot.v>+48,80/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>12</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>12</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>12:01:00</po.time>
+      <cs_po.sha-e>#D5D75492B5690E1270427311200F87EC533C2541</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="6207" EndPosition="6672"    Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;RĘKAWICZKI CHIRURG&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>1,80</itmval>
+      <sign>F71B377EDA08D5FB502BBAE1E0A95E629A84B713</sign>
+      <tra.tot.v>+1,80/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>13</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>13</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>12:04:00</po.time>
+      <cs_po.sha-e>#6A1454BD9161DD5E226E80B30E89D98BFF5F7B40</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="6673" EndPosition="7138"    Canceled="N">
+      <itmvat>C</itmvat>
+      <itmname>&quot;MIÓD 5&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>23,50</itmval>
+      <itmvat>C</itmvat>
+      <itmname>&quot;MIÓD 5&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>17,50</itmval>
+      <sign>CC51329235D4B46C6E78BA9D760853E4F920B298</sign>
+      <tra.tot.v>+0,00/+0,00/+41,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>14</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>14</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>12:36:00</po.time>
+      <cs_po.sha-e>#8D49D4FC281B64F12CF27F099721FDBD2890E39D</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="7139" EndPosition="7563"    Canceled="N">
+      <itmvat>B</itmvat>
+      <itmname>&quot;OLEOFARM 8&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>33,90</itmval>
+      <sign>CDFE16D25993A98183711DE5F64318A570A19964</sign>
+      <tra.tot.v>+0,00/+33,90/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>15</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>15</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>12:37:00</po.time>
+      <cs_po.sha-e>#65501DE24A8BFC6F0B73AAB8B4C85BD6C17D7B27</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="7564" EndPosition="8070"    Canceled="N">
+      <itmvat>B</itmvat>
+      <itmname>&quot;ZIOŁA JEDNORODNE 8&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>4,60</itmval>
+      <itmvat>C</itmvat>
+      <itmname>&quot;EKAMEDICA 5&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>9,40</itmval>
+      <sign>A74F672A3CF59D857E9520AAB5405DC84165DA62</sign>
+      <tra.tot.v>+0,00/+4,60/+9,40/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>16</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>16</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>12:41:00</po.time>
+      <cs_po.sha-e>#D4FE94798CC9EDE86D0F0282FC85B7658945E74B</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="8071" EndPosition="8495"    Canceled="N">
+      <itmvat>C</itmvat>
+      <itmname>&quot;ZDROWA ŻYWNOŚĆ 5&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>15,50</itmval>
+      <sign>9F4ACB8C667777C56CB52FBF8093843033422C26</sign>
+      <tra.tot.v>+0,00/+0,00/+15,50/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>17</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>17</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>12:43:00</po.time>
+      <cs_po.sha-e>#6E33765BC5F7AD7CCBA9B9DCFDA05E9FABADA613</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="8496" EndPosition="8920"    Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;YODEYMA PERFUMY&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>59,90</itmval>
+      <sign>488108CB73E6A5229B545848A5531540F3A0E3F5</sign>
+      <tra.tot.v>+59,90/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>18</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>18</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>13:09:00</po.time>
+      <cs_po.sha-e>#5C36150D0727FF2F862C5F8C7716134F287EF422</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.day" BeginPosition="8921" EndPosition="10843"   Canceled="N">
+      <sign>9D082D5160B764AD4F24218D8BFAE192E9D0A015</sign>
+      <day_n.printouts>19</day_n.printouts>
+      <grn_n.printouts>5303</grn_n.printouts>
+      <po.date>24.10.2020</po.date>
+      <po.time>13:22:00</po.time>
+      <day.rcpt_tot.v>+447,40/+59,90/+112,50/+0,00/+0,00/+0,00/+0,00</day.rcpt_tot.v>
+      <day.rcpt_vat.v>+83,66/+4,44/+5,36/+0,00/+0,00/+0,00/+0,00</day.rcpt_vat.v>
+      <day.rcpt_tot_canc>+0,00</day.rcpt_tot_canc>
+      <grn_n.day_clos>1293</grn_n.day_clos>
+      <day_n.rcpt_clos>18</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <grn.vat.v>+38523,80/+1351,03/+880,64/+0,00/+0,00/+0,00/+0,00</grn.vat.v>
+      <grn.tot>+1212881,01</grn.tot>
+      <cs_po.sha-e>#C0FBEFE2E00AB986637B96CB8FEE55293C1E360D</cs_po.sha-e>
+    </Action>
+  </ActionList>
+  <Info
+    begin.date="24.10.2020"
+    begin.time="10:20:00"
+    vat_rates="A2300/B0800/C0500/D0000/E====/F0000/G0000"
+    serial="CAD1501240287"
+    nip="NIP:6412472651"
+    model="JOTA E"
+    version="MA1C.01"
+    currency="PLN"
+    daynumber="1293"
+    fiscalmode="true"
+    end.date="24.10.2020"
+    end.time="13:22:00"
+    shopid="0000000000000000"
+    posid="01"
+    codepage="ISO8859-2"
+    data.sign="#5B710AFC66C9AA0442DE43C882D7507C7FE471A7"
+    day.sign="#521C22D3FB5C70FC8CA4163F18F2576CC6CE18B5"
+  />
+</xml>

@@ -1,0 +1,624 @@
+<xml>
+  <ActionList>
+    <Action PrintoutName="rcpt" BeginPosition="0" EndPosition="629"  Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;MIÓD&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>35,50</itmval>
+      <sign>CA0663147B2978492822002CD9C38E1CE6045F95</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+35,50</tra.tot.v>
+      <day_n.rcpt_clos>1</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>1</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>09:42:00</po.time>
+      <cs_po.sha-e>#EA060372030EEDCA9AE3DE5B11047499097F0EC2</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="630" EndPosition="1095"   Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;ZIOŁA JEDNORODNE&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>3,00</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;ZIOŁA JEDNORODNE 8&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>2,90</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;ZIOŁA JEDNORODNE&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>2,60</itmval>
+      <sign>85AC7756BFEA3846F3760FB6D0E8E503085F7592</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+8,50</tra.tot.v>
+      <day_n.rcpt_clos>2</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>2</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>09:46:00</po.time>
+      <cs_po.sha-e>#5997D6CAF62851182054822F4D4A7CC5D0C21D3B</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="1096" EndPosition="1602"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;ZMYWACZ DO PAZNOKC&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>1,80</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;DC PERFECTA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>4,00</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;KALLOS KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>12,60</itmval>
+      <sign>9C85237B34820324F0030E5D64BAD23AB5417D07</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+18,40</tra.tot.v>
+      <day_n.rcpt_clos>3</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>3</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>09:47:00</po.time>
+      <cs_po.sha-e>#22CAF9F5F0A33D20B71E306C68B4FEA4BCD6C1D1</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="1603" EndPosition="2027"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;LUMENE KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>24,90</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;LUMENE KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>24,90</itmval>
+      <sign>F3938A87578E0518D117FEE55C858A5D74986F81</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+49,80</tra.tot.v>
+      <day_n.rcpt_clos>4</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>4</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>10:10:00</po.time>
+      <cs_po.sha-e>#4ADDD145AC2A2FBCA0C3A085F1A8A303AF7CCD9E</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="2028" EndPosition="2452"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;OLEJEK ETERYCZNY&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>11,00</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;HERBATA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>6,60</itmval>
+      <sign>414D98A6200FBCC4AE2AFDD860824CB1AE163156</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+17,60</tra.tot.v>
+      <day_n.rcpt_clos>5</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>5</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>11:09:00</po.time>
+      <cs_po.sha-e>#5EA804AB951371723B64CA2107CE4F7A4FF8D766</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="2453" EndPosition="2877"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;SZAMPON KOLORYZUJĄ&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>8,90</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;SZAMPON KOLORYZUJĄ&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>5,90</itmval>
+      <sign>69E503635CF189F4AC5EFB44E565EA3B10812824</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+14,80</tra.tot.v>
+      <day_n.rcpt_clos>6</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>6</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>11:12:00</po.time>
+      <cs_po.sha-e>#2D0FB6D3B25A72655B8157CA7328B8493C799065</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="2878" EndPosition="3302"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;HERBATA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>7,50</itmval>
+      <sign>583D497A96CF57F484AD08C273D57BBCD47BDA76</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+7,50</tra.tot.v>
+      <day_n.rcpt_clos>7</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>7</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>11:48:00</po.time>
+      <cs_po.sha-e>#597D0F01D5017BB7316B1A7FC0BF563507B4C687</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="3303" EndPosition="3973"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;HERBATA ZIELONA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>8,70</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;HERBATA ZIELONA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>16,60</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;HERBATA ZIELONA&quot;</itmname>
+      <itmtype>void</itmtype>
+      <itmval>16,60</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;HERBATA ZIELONA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>17,60</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;HERBATA ZIELONA&quot;</itmname>
+      <itmtype>void</itmtype>
+      <itmval>17,60</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;HERBATA ZIELONA&quot;</itmname>
+      <itmtype>void</itmtype>
+      <itmval>8,70</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;DEZODORANT&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>9,50</itmval>
+      <sign>03379D08D5DFC050EBFE89A423EB3565418F6090</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+9,50</tra.tot.v>
+      <day_n.rcpt_clos>8</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>8</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>11:59:00</po.time>
+      <cs_po.sha-e>#70CC130BE3381BB558121CE0AFC7F7A6160AACC3</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="3974" EndPosition="4398"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;DEZODORANT&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>6,90</itmval>
+      <sign>3708149B3E24D4F13054954FF9426C51615297CA</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+6,90</tra.tot.v>
+      <day_n.rcpt_clos>9</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>9</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>12:05:00</po.time>
+      <cs_po.sha-e>#6F9C1462457666DADB08815232544478CE23313A</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="4399" EndPosition="4946"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;BIELENDA KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>24,90</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;BIELENDA KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>17,90</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;BIELENDA KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>17,50</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;PRZYPRAWY&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>3,70</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;CUKIERKI SZAŁWIOWE&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>2,00</itmval>
+      <sign>80D5108173DF0CCEF0AB933914C15E3E78FDF100</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+66,00</tra.tot.v>
+      <day_n.rcpt_clos>10</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>10</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>12:18:00</po.time>
+      <cs_po.sha-e>#3C7F52E98E607A9009C1152ACAA16445CE4F2072</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="4947" EndPosition="5371"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;LUMENE KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>84,90</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;DEZODORANT&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>9,90</itmval>
+      <sign>9E377EBCD3559D5DEB04BD5A43F6375CFACEB927</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+94,80</tra.tot.v>
+      <day_n.rcpt_clos>11</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>11</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>12:37:00</po.time>
+      <cs_po.sha-e>#F5DCA8CAAE9C08B9491175A916588552CC43B25F</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="5372" EndPosition="5796"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;WODA TOALETOWA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>16,50</itmval>
+      <sign>35B4C90FBD1159683891EDD945815612CBA869C3</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+16,50</tra.tot.v>
+      <day_n.rcpt_clos>12</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>12</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>12:41:00</po.time>
+      <cs_po.sha-e>#778AE3B965A041A086DEEA865DE95D8F19F89FB4</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="5797" EndPosition="6180"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;LAKIER DO PAZNOKCI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>6,40</itmval>
+      <sign>AC6A39A0E3D8038ACF2A54DA0403C64A4A11D660</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+6,40</tra.tot.v>
+      <day_n.rcpt_clos>13</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>13</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>12:41:00</po.time>
+      <cs_po.sha-e>#68E97242A0FA1E81E2CF37B8C5D2007682A90D54</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="6181" EndPosition="6605"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;GOLDEN ROSE KOSMET&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>25,90</itmval>
+      <sign>2234EBB4D87FF26C479FBFEF28BD68D9B5697FE0</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+25,90</tra.tot.v>
+      <day_n.rcpt_clos>14</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>14</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>12:42:00</po.time>
+      <cs_po.sha-e>#2CF11ACD2E0D7C341927B19503A9ADF0E8D81EB8</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="6606" EndPosition="7030"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;ZIOŁA JEDNORODNE 8&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>5,00</itmval>
+      <sign>8699C36EC0C4D66B48CA67E03E5FC8FC15212E74</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+5,00</tra.tot.v>
+      <day_n.rcpt_clos>15</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>15</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>13:04:00</po.time>
+      <cs_po.sha-e>#2C421DDB2078ABC53F212B7FC83B57D10DDF2180</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="7031" EndPosition="7455"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;CHUSTECZKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>2,00</itmval>
+      <sign>C6232FCDFE56375DF7618EA089F31DE48AF73941</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+1,80</tra.tot.v>
+      <day_n.rcpt_clos>16</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>16</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>13:12:00</po.time>
+      <cs_po.sha-e>#6689B9198C68FA3C1CDEB64D8B6618458AAC930B</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="7456" EndPosition="7880"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;YOPE KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>16,90</itmval>
+      <sign>86741EAA38DC56142AA83F611BEDAFE062B379B3</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+16,90</tra.tot.v>
+      <day_n.rcpt_clos>17</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>17</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>13:41:00</po.time>
+      <cs_po.sha-e>#511CE1A8F61E4F7F3FE3673B83D8C7260B9C778F</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="7881" EndPosition="8363"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;HERBATA OWOCOWA FI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>6,80</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;HERBATA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>5,50</itmval>
+      <sign>4854BB42C9EA71CD321C026D31146A1070398F0C</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+9,84</tra.tot.v>
+      <day_n.rcpt_clos>18</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>18</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>13:55:00</po.time>
+      <cs_po.sha-e>#F02E456A06806CDF57F0923C2BF52F0E1BC9B5A9</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="8364" EndPosition="8788"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;OLEOFARM&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>26,90</itmval>
+      <sign>09EB85F15024A01EA0CA65E666420EF42343543C</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+26,90</tra.tot.v>
+      <day_n.rcpt_clos>19</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>19</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>14:07:00</po.time>
+      <cs_po.sha-e>#BD694A4AFC3C2715031B722000F5067C41694A44</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="8789" EndPosition="9172"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;LUMENE KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>21,90</itmval>
+      <sign>A56626132A5A2D5BE985F1F4A8ACE46322C8CB7A</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+21,90</tra.tot.v>
+      <day_n.rcpt_clos>20</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>20</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>14:19:00</po.time>
+      <cs_po.sha-e>#AF0F11B6B10C4ABF370577145A98A2B68F06BD2D</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="9173" EndPosition="9597"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;EKOMEDICA 8PR&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>13,90</itmval>
+      <sign>5ED4D2BAA5F320552ACFB29FFA851B225FDC52A3</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+13,90</tra.tot.v>
+      <day_n.rcpt_clos>21</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>21</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>14:50:00</po.time>
+      <cs_po.sha-e>#EFBF6085A3D9FEC8B3B5B05C347C3F7B6B437881</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="9598" EndPosition="10022"   Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;HERBATA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>9,90</itmval>
+      <sign>A67434DE1AA1CB3AA1F84FDB0D05C933F0E5DDAF</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+9,90</tra.tot.v>
+      <day_n.rcpt_clos>22</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>22</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>14:51:00</po.time>
+      <cs_po.sha-e>#6090A468C2078EE9D7C54FF752752D7A0752E595</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="10023" EndPosition="10570"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;MIESZANKI ZIOŁ.23&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>7,30</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;APAP TABL.&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>5,40</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;TABL MUSUJĄCE&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>9,90</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;MIÓD&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>15,00</itmval>
+      <sign>10A8681EEBEC3D39E538918D61BB7A0E2F22EFD9</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+37,60</tra.tot.v>
+      <day_n.rcpt_clos>23</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>23</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>15:25:00</po.time>
+      <cs_po.sha-e>#06E0C4D9F27BD78C75D0583ABBD0913CE0706B6D</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="10571" EndPosition="11036"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;ZIOŁA JEDNORODNE&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>3,40</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;FLOS LEK KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>8,90</itmval>
+      <sign>DCEDF5604553FBC6301458D61D0D2074F4B3BD0B</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+12,30</tra.tot.v>
+      <day_n.rcpt_clos>24</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>24</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>15:36:00</po.time>
+      <cs_po.sha-e>#9D077417A37570D6094D7C5E54BF29130DBA6DC6</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="11037" EndPosition="11502"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;SYROP DO WODY&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>10,90</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;YOPE KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>16,90</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;VAX ODŻYWKA,SZAMPO&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>5,00</itmval>
+      <sign>FD9177EC4C7486E8B60BA7F7BC0174C81608957F</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+32,80</tra.tot.v>
+      <day_n.rcpt_clos>25</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>25</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>15:57:00</po.time>
+      <cs_po.sha-e>#4B1968C9D64D5406344C43A48426D951E58682B9</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="11503" EndPosition="12050"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;LAKIER DO PAZNOKCI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>12,20</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;GOLDEN ROSE KOSMET&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>7,00</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;GOLDEN ROSE KOSMET&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>12,50</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;PENSETA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>7,80</itmval>
+      <sign>313B5309CE09A57783D82F09E387AE8A0E98FDE6</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+39,50</tra.tot.v>
+      <day_n.rcpt_clos>26</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>26</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>16:15:00</po.time>
+      <cs_po.sha-e>#FEC561D21EA11FB22191F605D605458871EA5A19</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="12051" EndPosition="12475"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;HERBATA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>7,40</itmval>
+      <sign>CBB40ED9C72D5EA6F08BFBBE07D12244C5CAD5D6</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+7,40</tra.tot.v>
+      <day_n.rcpt_clos>27</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>27</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>16:23:00</po.time>
+      <cs_po.sha-e>#E5C96D6ADF3CA041D434AFD55199189DEA67ABAC</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="12476" EndPosition="12900"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;ZIOŁA JEDNORODNE&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>1,90</itmval>
+      <sign>A3F9711A26D9DAFA86C6BD4305C22B492722AF84</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+1,90</tra.tot.v>
+      <day_n.rcpt_clos>28</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>28</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>16:24:00</po.time>
+      <cs_po.sha-e>#F1E4515D635CDBF24AC784C4A461F8F54881F3AA</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="12901" EndPosition="13284"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;GILLETTE KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>19,90</itmval>
+      <sign>3DC3ED5C9D10BB72FADC3D5E98D0FD6A68D7957B</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+19,90</tra.tot.v>
+      <day_n.rcpt_clos>29</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>29</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>17:28:00</po.time>
+      <cs_po.sha-e>#EC6FDB881B654167E532D3FC71E385C5450968B8</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="13285" EndPosition="13750"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;LAKIER DO PAZNOKCI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>7,40</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;VAX ODŻYWKA,SZAMPO&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>1,50</itmval>
+      <sign>2CF87EE3C0078C832838CE5E321F3DFD6B4BBCAA</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+8,90</tra.tot.v>
+      <day_n.rcpt_clos>30</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>30</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>17:34:00</po.time>
+      <cs_po.sha-e>#4F71B09A3891E3167D7C5187A9D0DD4785AD0D93</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="13751" EndPosition="14175"    Canceled="N">
+      <itmvat>G</itmvat>
+      <itmname>&quot;LAKIER DO PAZNOKCI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>11,00</itmval>
+      <itmvat>G</itmvat>
+      <itmname>&quot;LAKIER DO PAZNOKCI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>10,00</itmval>
+      <sign>5044C27128C41C7E4FAA710198909968C936B9A6</sign>
+      <tra.tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+21,00</tra.tot.v>
+      <day_n.rcpt_clos>31</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>31</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>17:50:00</po.time>
+      <cs_po.sha-e>#A95494442637BE0FC3775BED58B0E8BC718107F2</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.day" BeginPosition="14176" EndPosition="15975"    Canceled="N">
+      <sign>7CDE287D4F8353FE263BFA822A2455C6B4F0FB8D</sign>
+      <day_n.printouts>32</day_n.printouts>
+      <grn_n.printouts>578</grn_n.printouts>
+      <po.date>17.06.2016</po.date>
+      <po.time>18:11:00</po.time>
+      <day.rcpt_tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+665,54</day.rcpt_tot.v>
+      <day.rcpt_vat.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_vat.v>
+      <day.rcpt_tot_canc>+0,00</day.rcpt_tot_canc>
+      <grn_n.day_clos>21</grn_n.day_clos>
+      <day_n.rcpt_clos>31</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <grn.vat.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</grn.vat.v>
+      <grn.tot>+13971,13</grn.tot>
+      <cs_po.sha-e>#6A8F53EF31DFAFE1EB28051017126740633C86DD</cs_po.sha-e>
+    </Action>
+  </ActionList>
+  <Info
+    begin.date="17.06.2016"
+    begin.time="09:42:00"
+    vat_rates="A2300/B0800/C0500/D0000/E0000/F0000/G===="
+    serial="CAD1501240287"
+    nip="NIP:6412472651"
+    model="JOTA E"
+    version="MA1C.01"
+    currency="PLN"
+    daynumber="21"
+    fiscalmode="true"
+    end.date="17.06.2016"
+    end.time="18:11:00"
+    shopid="0000000000000000"
+    posid="01"
+    codepage="ISO8859-2"
+    data.sign="#B4A300224D726F4862BF84BA3D98147B0F965B68"
+    day.sign="#97216B7C7C70858F748A09D41E8EC06D196D4F36"
+  />
+</xml>

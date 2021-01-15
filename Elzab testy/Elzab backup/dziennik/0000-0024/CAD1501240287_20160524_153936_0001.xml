@@ -1,0 +1,46 @@
+<xml>
+  <ActionList>
+    <Action PrintoutName="rep.set_vat" BeginPosition="0" EndPosition="508"  Canceled="N">
+      <day_n.printouts>1</day_n.printouts>
+      <grn_n.printouts>0</grn_n.printouts>
+      <po.date>24.05.2016</po.date>
+      <po.time>15:39:00</po.time>
+      <cs_po.sha-e>#94EFD84A3C51AE849E37691088BE073003183628</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.day" BeginPosition="512" EndPosition="2492"   Canceled="N">
+      <sign>EFB821F8BCDA71C28E8DEBC7B51EFBDC0D3CF3D6</sign>
+      <day_n.printouts>2</day_n.printouts>
+      <grn_n.printouts>0</grn_n.printouts>
+      <po.date>24.05.2016</po.date>
+      <po.time>15:39:00</po.time>
+      <day.rcpt_tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_tot.v>
+      <day.rcpt_vat.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_vat.v>
+      <day.rcpt_tot_canc>+0,00</day.rcpt_tot_canc>
+      <grn_n.day_clos>1</grn_n.day_clos>
+      <day_n.rcpt_clos>0</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <grn.vat.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</grn.vat.v>
+      <grn.tot>+0,00</grn.tot>
+      <cs_po.sha-e>#898E9A64238352191E626B3A6EBD30966F88281C</cs_po.sha-e>
+    </Action>
+  </ActionList>
+  <Info
+    begin.date="24.05.2016"
+    begin.time="15:39:00"
+    vat_rates="A2300/B0800/C0500/D0000/E0000/F0000/G===="
+    serial="CAD1501240287"
+    nip="NIP:6412472651"
+    model="JOTA E"
+    version="MA1C.01"
+    currency="PLN"
+    daynumber="1"
+    fiscalmode="true"
+    end.date="24.05.2016"
+    end.time="15:39:00"
+    shopid="0000000000000000"
+    posid="01"
+    codepage="ISO8859-2"
+    data.sign="#76947D41BC0C443A3CB0953E9533A34E8D3EFBF6"
+    day.sign="#5394E930202715EF5D8BA12DB9296D1C845D803E"
+  />
+</xml>

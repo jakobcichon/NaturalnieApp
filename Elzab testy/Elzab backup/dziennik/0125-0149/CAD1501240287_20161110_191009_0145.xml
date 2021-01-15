@@ -1,0 +1,39 @@
+<xml>
+  <ActionList>
+    <Action PrintoutName="rep.day" BeginPosition="0" EndPosition="1775" Canceled="N">
+      <sign>EE592E54BCE1B6FBA026D829EC99CBBAAE7F05FC</sign>
+      <day_n.printouts>1</day_n.printouts>
+      <grn_n.printouts>3388</grn_n.printouts>
+      <po.date>10.11.2016</po.date>
+      <po.time>19:10:00</po.time>
+      <day.rcpt_tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_tot.v>
+      <day.rcpt_vat.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_vat.v>
+      <day.rcpt_tot_canc>+0,00</day.rcpt_tot_canc>
+      <grn_n.day_clos>145</grn_n.day_clos>
+      <day_n.rcpt_clos>0</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <grn.vat.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</grn.vat.v>
+      <grn.tot>+76873,96</grn.tot>
+      <cs_po.sha-e>#6D6D15A2BEFCC30B9EB3C72740D829BE35D7A131</cs_po.sha-e>
+    </Action>
+  </ActionList>
+  <Info
+    begin.date="10.11.2016"
+    begin.time="19:10:00"
+    vat_rates="A2300/B0800/C0500/D0000/E0000/F0000/G===="
+    serial="CAD1501240287"
+    nip="NIP:6412472651"
+    model="JOTA E"
+    version="MA1C.01"
+    currency="PLN"
+    daynumber="145"
+    fiscalmode="true"
+    end.date="10.11.2016"
+    end.time="19:10:00"
+    shopid="0000000000000000"
+    posid="01"
+    codepage="ISO8859-2"
+    data.sign="#1BFADCF069D70AD6D6340A9F05915A5D5E23992A"
+    day.sign="#6D6D15A2BEFCC30B9EB3C72740D829BE35D7A131"
+  />
+</xml>

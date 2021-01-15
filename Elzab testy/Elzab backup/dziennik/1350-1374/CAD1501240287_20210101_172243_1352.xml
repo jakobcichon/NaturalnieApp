@@ -1,0 +1,83 @@
+<xml>
+  <ActionList>
+    <Action PrintoutName="rep.period" BeginPosition="0" EndPosition="2753" Canceled="N">
+      <day_n.printouts>1</day_n.printouts>
+      <grn_n.printouts>7105</grn_n.printouts>
+      <po.date>01.01.2021</po.date>
+      <po.time>15:59:00</po.time>
+      <cs_po.sha-e>#5816B4685DC4A9E1B20A384F8B1714A1AF095E8C</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.period" BeginPosition="2754" EndPosition="5290"    Canceled="N">
+      <day_n.printouts>2</day_n.printouts>
+      <grn_n.printouts>7105</grn_n.printouts>
+      <po.date>01.01.2021</po.date>
+      <po.time>16:02:00</po.time>
+      <cs_po.sha-e>#4EB5ABDA1792A15852401F439B03482A8ECB24FD</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.period" BeginPosition="5291" EndPosition="7827"    Canceled="N">
+      <day_n.printouts>3</day_n.printouts>
+      <grn_n.printouts>7105</grn_n.printouts>
+      <po.date>01.01.2021</po.date>
+      <po.time>16:03:00</po.time>
+      <cs_po.sha-e>#9F76BF1C7087BD50B40475F07524C7BF35AFA430</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rcpt" BeginPosition="7828" EndPosition="8334"    Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>39,90</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>39,90</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;MOKOSH TEST&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>39,90</itmval>
+      <sign>5B97F9081BDA491FF87B22954575A45FCA647049</sign>
+      <tra.tot.v>+119,70/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>1</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>4</day_n.printouts>
+      <grn_n.printouts>7105</grn_n.printouts>
+      <po.date>01.01.2021</po.date>
+      <po.time>17:19:00</po.time>
+      <cs_po.sha-e>#C450B401451DBE7FDF998B8FEBAE848495B75331</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.day" BeginPosition="8335" EndPosition="10257"   Canceled="N">
+      <sign>78C81237C6C057E2164172EDDAAE6E0600AAC2EA</sign>
+      <day_n.printouts>5</day_n.printouts>
+      <grn_n.printouts>7105</grn_n.printouts>
+      <po.date>01.01.2021</po.date>
+      <po.time>17:22:00</po.time>
+      <day.rcpt_tot.v>+119,70/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_tot.v>
+      <day.rcpt_vat.v>+22,38/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_vat.v>
+      <day.rcpt_tot_canc>+0,00</day.rcpt_tot_canc>
+      <grn_n.day_clos>1352</grn_n.day_clos>
+      <day_n.rcpt_clos>1</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <grn.vat.v>+53325,85/+1923,56/+1319,54/+0,00/+0,00/+0,00/+0,00</grn.vat.v>
+      <grn.tot>+1308986,53</grn.tot>
+      <cs_po.sha-e>#E876E92D17D643ACAD629F0B6593740CA34463BE</cs_po.sha-e>
+    </Action>
+  </ActionList>
+  <Info
+    begin.date="01.01.2021"
+    begin.time="15:59:00"
+    vat_rates="A2300/B0800/C0500/D0000/E====/F0000/G0000"
+    serial="CAD1501240287"
+    nip="NIP:6412472651"
+    model="JOTA E"
+    version="MA1C.01"
+    currency="PLN"
+    daynumber="1352"
+    fiscalmode="true"
+    end.date="01.01.2021"
+    end.time="17:22:00"
+    shopid="0000000000000000"
+    posid="01"
+    codepage="ISO8859-2"
+    data.sign="#D034DCD94DF345F0AE4BC17A5764BA8F3F28C4BD"
+    day.sign="#F2ACCD7DC5646486B39EDC0C6EAE76071215A127"
+  />
+</xml>

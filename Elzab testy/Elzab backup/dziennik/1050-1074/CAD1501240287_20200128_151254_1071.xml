@@ -1,0 +1,60 @@
+<xml>
+  <ActionList>
+    <Action PrintoutName="rep.serv.fmstat" BeginPosition="0" EndPosition="1424" Canceled="N">
+      <day_n.printouts>1</day_n.printouts>
+      <grn_n.printouts>9514</grn_n.printouts>
+      <po.date>27.01.2020</po.date>
+      <po.time>12:32:00</po.time>
+      <cs_po.sha-e>#56FEAD941845935E7B610FDC36637C12A2D50D41</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.sales_item.z" BeginPosition="1425" EndPosition="23005"   Canceled="N">
+      <day_n.printouts>2</day_n.printouts>
+      <grn_n.printouts>9514</grn_n.printouts>
+      <po.date>27.01.2020</po.date>
+      <po.time>13:25:00</po.time>
+      <cs_po.sha-e>#91BF43A06A700959610B630C19AAE55007D2F15D</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.change_item" BeginPosition="23006" EndPosition="25239"    Canceled="N">
+      <day_n.printouts>3</day_n.printouts>
+      <grn_n.printouts>9514</grn_n.printouts>
+      <po.date>28.01.2020</po.date>
+      <po.time>15:12:00</po.time>
+      <cs_po.sha-e>#F313C5BEEFCC85C12788281509375D93565AA5DB</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.day" BeginPosition="25240" EndPosition="27015"    Canceled="N">
+      <sign>D9DBA6A36DF52F3E9DB4A69AB5D26D503C3F3FA4</sign>
+      <day_n.printouts>4</day_n.printouts>
+      <grn_n.printouts>9514</grn_n.printouts>
+      <po.date>28.01.2020</po.date>
+      <po.time>15:12:00</po.time>
+      <day.rcpt_tot.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_tot.v>
+      <day.rcpt_vat.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_vat.v>
+      <day.rcpt_tot_canc>+0,00</day.rcpt_tot_canc>
+      <grn_n.day_clos>1071</grn_n.day_clos>
+      <day_n.rcpt_clos>0</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <grn.vat.v>+0,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</grn.vat.v>
+      <grn.tot>+970129,00</grn.tot>
+      <cs_po.sha-e>#63761B135C476179A1761C2181E92C436D2E2A5F</cs_po.sha-e>
+    </Action>
+  </ActionList>
+  <Info
+    begin.date="27.01.2020"
+    begin.time="12:32:00"
+    vat_rates="A2300/B0800/C0500/D0000/E====/F0000/G0000"
+    serial="CAD1501240287"
+    nip="NIP:6412472651"
+    model="JOTA E"
+    version="MA1C.01"
+    currency="PLN"
+    daynumber="1071"
+    fiscalmode="true"
+    end.date="28.01.2020"
+    end.time="15:12:00"
+    shopid="0000000000000000"
+    posid="01"
+    codepage="ISO8859-2"
+    data.sign="#B22870B931587B6018F861633219218ED09643B3"
+    day.sign="#AE43F0E980FDCE1197723F914A0A37349DEA88B2"
+  />
+</xml>

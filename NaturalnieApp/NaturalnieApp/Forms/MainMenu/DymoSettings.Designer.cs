@@ -162,6 +162,7 @@ namespace NaturalnieApp.Forms
             this.cbAvailablePrintersList.Name = "cbAvailablePrintersList";
             this.cbAvailablePrintersList.Size = new System.Drawing.Size(227, 28);
             this.cbAvailablePrintersList.TabIndex = 1;
+            this.cbAvailablePrintersList.SelectedIndexChanged += new System.EventHandler(this.cbAvailablePrintersList_SelectedIndexChanged);
             // 
             // pButtonsPanel
             // 
@@ -200,6 +201,7 @@ namespace NaturalnieApp.Forms
             this.bSave.TabIndex = 28;
             this.bSave.Text = "Zapisz";
             this.bSave.UseVisualStyleBackColor = false;
+            this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
             // DymoSettings
             // 

@@ -1,0 +1,58 @@
+<xml>
+  <ActionList>
+    <Action PrintoutName="rcpt" BeginPosition="0" EndPosition="465"  Canceled="N">
+      <itmvat>A</itmvat>
+      <itmname>&quot;GOSH KOSMETYKI&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>94,50</itmval>
+      <itmvat>A</itmvat>
+      <itmname>&quot;KAWA&quot;</itmname>
+      <itmtype>sale</itmtype>
+      <itmval>49,90</itmval>
+      <sign>60DDD9C7598CC2AE3CAD7A787030A73FDB984C00</sign>
+      <tra.tot.v>+144,40/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</tra.tot.v>
+      <day_n.rcpt_clos>1</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <day_n.printouts>1</day_n.printouts>
+      <grn_n.printouts>2612</grn_n.printouts>
+      <po.date>13.06.2020</po.date>
+      <po.time>13:15:00</po.time>
+      <cs_po.sha-e>#CC406F52CE77FBCAF82FE201846298198C05EB76</cs_po.sha-e>
+    </Action>
+    <Action PrintoutName="rep.day" BeginPosition="466" EndPosition="2593"   Canceled="N">
+      <sign>EA1A7FC7D7EFE52DCD2841003BE9F788E2F38ED6</sign>
+      <day_n.printouts>2</day_n.printouts>
+      <grn_n.printouts>2612</grn_n.printouts>
+      <po.date>15.06.2020</po.date>
+      <po.time>09:49:00</po.time>
+      <day.rcpt_tot.v>+144,40/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_tot.v>
+      <day.rcpt_vat.v>+27,00/+0,00/+0,00/+0,00/+0,00/+0,00/+0,00</day.rcpt_vat.v>
+      <day.rcpt_tot_canc>+0,00</day.rcpt_tot_canc>
+      <grn_n.day_clos>1185</grn_n.day_clos>
+      <day_n.rcpt_clos>1</day_n.rcpt_clos>
+      <day_n.rcpt_canc>0</day_n.rcpt_canc>
+      <grn.vat.v>+20210,46/+732,87/+521,20/+0,00/+0,00/+0,00/+0,00</grn.vat.v>
+      <grn.tot>+1099049,79</grn.tot>
+      <cs_po.sha-e>#3D7AB2F209434B8D6748A7F92CED7216155C573B</cs_po.sha-e>
+    </Action>
+  </ActionList>
+  <Info
+    begin.date="13.06.2020"
+    begin.time="13:15:00"
+    vat_rates="A2300/B0800/C0500/D0000/E====/F0000/G0000"
+    serial="CAD1501240287"
+    nip="NIP:6412472651"
+    model="JOTA E"
+    version="MA1C.01"
+    currency="PLN"
+    daynumber="1185"
+    fiscalmode="true"
+    end.date="15.06.2020"
+    end.time="09:49:00"
+    shopid="0000000000000000"
+    posid="01"
+    codepage="ISO8859-2"
+    data.sign="#3EB43C205D325D1A73E6CDE551B40F8528844AA4"
+    day.sign="#3732B2C9EC381575167FF159B353556CB49D81B3"
+  />
+</xml>

@@ -247,6 +247,25 @@ namespace NaturalnieApp.Dymo_Printer
             else throw new NoPrinterToSelect("No available Dymo printer to select! Connect printer and try again!");
         }
 
+        public void ChangePrinter(string printerName)
+        {
+            //Local variable
+            string printerToSelect = "";
+
+            //Get printer list
+            this.PrinterDevices = DymoPrinter.Instance.GetPrinters().ToList();
+            foreach (IPrinter printer in this.PrinterDevices)
+            {
+                if (printer.Name == printerName)
+                {
+                    this.SelectedPrinter = printer;
+                    printerToSelect = printer.Name;
+                    break;
+                }
+            }
+            if (printerToSelect == "") throw new NoPrinterToSelect("No available printer with given name!");
+        }
+
     }
 
     public static class PrinterMethods
