@@ -23,6 +23,8 @@ namespace NaturalnieApp
             static public string LabelPath { get; set; }
             static public string ElzabCommandPath { get; set; }
             static public int ElzabCashRegisterId { get; set; }
+            static public int ElzabPortCom { get; set; }
+            static public int ElzabBaudRate { get; set; }
             static public string SqlServerName { get; set; }
             static public string ConnectionString { get; set; }
             static public string DymoPrinterName { get; set; }
@@ -48,6 +50,8 @@ namespace NaturalnieApp
                 string path = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
                 GlobalVariables.ElzabCommandPath = path;
                 GlobalVariables.ElzabCashRegisterId = 1;
+                GlobalVariables.ElzabBaudRate = Int32.Parse(ConfigFileInst.GetValueByVariableName("ElzabBaudRate"));
+                GlobalVariables.ElzabPortCom = Int32.Parse(ConfigFileInst.GetValueByVariableName("ElzabCOMPort"));
                 GlobalVariables.LabelPath = ConfigFileInst.GetValueByVariableName("LabelPath");
                 GlobalVariables.SqlServerName = ConfigFileInst.GetValueByVariableName("DatabaseName");
                 GlobalVariables.ConnectionString = string.Format("server = {0}; port = 3306; database = shop;" +

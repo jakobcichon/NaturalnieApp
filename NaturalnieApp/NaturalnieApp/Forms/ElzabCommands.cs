@@ -41,7 +41,7 @@ namespace NaturalnieApp.Forms
                 //ChangeStatus
                 this.StatusBox.Text = "Generowanie listy produktów";
                 //Generate all product numbers
-                List<int> productToReadList = GenerateProductNumbers(1, 4095);
+                List<int> productToReadList = GenerateProductNumbers(1, 6);
                 int i = 0;
                 foreach(int element in productToReadList)
                 {

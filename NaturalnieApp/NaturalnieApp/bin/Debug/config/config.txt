@@ -3,11 +3,11 @@
 
 
 \\Elzab default COM port
-#ElzabCOMPort = COM3
+#ElzabCOMPort = 3
 
 
 \\Elzab default baud rate
-#ElzabBaudRate = 115200
+#ElzabBaudRate = 57600
 
 
 \\Test database name

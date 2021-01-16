@@ -149,7 +149,7 @@
             this.tpProductNameToEdit.Location = new System.Drawing.Point(171, 41);
             this.tpProductNameToEdit.Name = "tpProductNameToEdit";
             this.tpProductNameToEdit.RowCount = 1;
-            this.tpProductNameToEdit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 51F));
+            this.tpProductNameToEdit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
             this.tpProductNameToEdit.Size = new System.Drawing.Size(633, 50);
             this.tpProductNameToEdit.TabIndex = 28;
             // 
@@ -161,7 +161,7 @@
             this.tbStatus.Margin = new System.Windows.Forms.Padding(5);
             this.tbStatus.Multiline = true;
             this.tbStatus.Name = "tbStatus";
-            this.tbStatus.Size = new System.Drawing.Size(520, 41);
+            this.tbStatus.Size = new System.Drawing.Size(520, 42);
             this.tbStatus.TabIndex = 2;
             // 
             // lStatus
@@ -171,7 +171,7 @@
             this.lStatus.Location = new System.Drawing.Point(6, 6);
             this.lStatus.Margin = new System.Windows.Forms.Padding(5);
             this.lStatus.Name = "lStatus";
-            this.lStatus.Size = new System.Drawing.Size(90, 41);
+            this.lStatus.Size = new System.Drawing.Size(90, 42);
             this.lStatus.TabIndex = 1;
             this.lStatus.Text = "Status";
             this.lStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

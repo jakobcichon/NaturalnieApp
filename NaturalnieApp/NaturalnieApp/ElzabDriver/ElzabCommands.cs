@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using ElzabDriver;
 using NaturalnieApp.ElzabDriver;
+using static NaturalnieApp.Program;
 
 namespace ElzabCommands
 {
@@ -13,6 +14,7 @@ namespace ElzabCommands
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "ZDBARKOD"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -21,7 +23,6 @@ namespace ElzabCommands
                 return "";
             }
         }
-
         private string ElementAttributesPatternInFile
         {
             get
@@ -36,6 +37,13 @@ namespace ElzabCommands
                 return "";
             }
         }
+        private string ElementAttributesPatternConfigFile
+        {
+            get
+            {
+                return " device_number, connection_data, time_out";
+            }
+        }
 
         //Class constructor
         public ElzabCommand_ZDBARKOD(string path, int cashRegisterID)
@@ -48,6 +56,9 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Report data
             this.Report = InitBaseStructuresReport(path, cashRegisterID, CommandName, ElementAttributesPatternReportFile);
+
+            //Call method used to initialize base structure for Config data
+            this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
         }
 
         //Execute command
@@ -67,6 +78,7 @@ namespace ElzabCommands
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "OPSPRZED"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -75,7 +87,6 @@ namespace ElzabCommands
                 return "nr_rap nr_par nr_poz_par zwrot nr_tow il_sp wart_rabw";
             }
         }
-
         private string ElementAttributesPatternInFile
         {
             get
@@ -90,6 +101,14 @@ namespace ElzabCommands
                 return "";
             }
         }
+        private string ElementAttributesPatternConfigFile
+        {
+            get
+            {
+                return " device_number, connection_data, time_out";
+            }
+        }
+
 
         //Class constructor
         public ElzabCommand_OPSPRZED(string path, int cashRegisterID)
@@ -102,6 +121,9 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Report data
             this.Report = InitBaseStructuresReport(path, cashRegisterID, CommandName, ElementAttributesPatternReportFile);
+
+            //Call method used to initialize base structure for Config data
+            this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
         }
 
         //Execute command
@@ -120,6 +142,7 @@ namespace ElzabCommands
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "KGRUPA"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -128,7 +151,6 @@ namespace ElzabCommands
                 return "";
             }
         }
-
         private string ElementAttributesPatternInFile
         {
             get
@@ -143,6 +165,13 @@ namespace ElzabCommands
                 return "";
             }
         }
+        private string ElementAttributesPatternConfigFile
+        {
+            get
+            {
+                return " device_number, connection_data, time_out";
+            }
+        }
 
         //Class constructor
         public ElzabCommand_KGRUPA(string path, int cashRegisterID)
@@ -155,6 +184,9 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Report data
             this.Report = InitBaseStructuresReport(path, cashRegisterID, CommandName, ElementAttributesPatternReportFile);
+
+            //Call method used to initialize base structure for Config data
+            this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
         }
 
         //Execute command
@@ -172,6 +204,7 @@ namespace ElzabCommands
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "ZGRUPA"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -180,7 +213,6 @@ namespace ElzabCommands
                 return "";
             }
         }
-
         private string ElementAttributesPatternInFile
         {
             get
@@ -195,6 +227,13 @@ namespace ElzabCommands
                 return "";
             }
         }
+        private string ElementAttributesPatternConfigFile
+        {
+            get
+            {
+                return " device_number, connection_data, time_out";
+            }
+        }
 
         //Class constructor
         public ElzabCommand_ZGRUPA(string path, int cashRegisterID)
@@ -207,6 +246,9 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Report data
             this.Report = InitBaseStructuresReport(path, cashRegisterID, CommandName, ElementAttributesPatternReportFile);
+
+            //Call method used to initialize base structure for Config data
+            this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
         }
 
         //Execute command
@@ -224,6 +266,7 @@ namespace ElzabCommands
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "OGRUPA"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -232,7 +275,6 @@ namespace ElzabCommands
                 return "nr_gr naz_gr";
             }
         }
-
         private string ElementAttributesPatternInFile
         {
             get
@@ -247,6 +289,13 @@ namespace ElzabCommands
                 return "";
             }
         }
+        private string ElementAttributesPatternConfigFile
+        {
+            get
+            {
+                return " device_number, connection_data, time_out";
+            }
+        }
 
         //Class constructor
         public ElzabCommand_OGRUPA(string path, int cashRegisterID)
@@ -259,6 +308,9 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Report data
             this.Report = InitBaseStructuresReport(path, cashRegisterID, CommandName, ElementAttributesPatternReportFile);
+
+            //Call method used to initialize base structure for Config data
+            this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
         }
 
         //Execute command
@@ -277,6 +329,7 @@ namespace ElzabCommands
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "OBAJTY"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -285,7 +338,6 @@ namespace ElzabCommands
                 return "$nr_bit bit";
             }
         }
-
         private string ElementAttributesPatternInFile
         {
             get
@@ -300,6 +352,13 @@ namespace ElzabCommands
                 return "";
             }
         }
+        private string ElementAttributesPatternConfigFile
+        {
+            get
+            {
+                return " device_number, connection_data, time_out";
+            }
+        }
 
         //Class constructor
         public ElzabCommand_OBAJTY(string path, int cashRegisterID)
@@ -312,6 +371,9 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Report data
             this.Report = InitBaseStructuresReport(path, cashRegisterID, CommandName, ElementAttributesPatternReportFile);
+
+            //Call method used to initialize base structure for Config data
+            this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
         }
 
         //Execute command
@@ -329,6 +391,7 @@ namespace ElzabCommands
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "ZTOWAR"; } }
         private string ElementAttributesPatternInFile
         {
@@ -344,6 +407,13 @@ namespace ElzabCommands
                 return "";
             }
         }
+        private string ElementAttributesPatternConfigFile
+        {
+            get
+            {
+                return " device_number, connection_data, time_out";
+            }
+        }
 
         //Class constructor
         public ElzabCommand_ZTOWAR(string path, int cashRegisterID)
@@ -353,6 +423,9 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Report data
             this.Report = InitBaseStructuresReport(path, cashRegisterID, CommandName, ElementAttributesPatternReportFile);
+
+            //Call method used to initialize base structure for Config data
+            this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
         }
 
         //Execute command
@@ -371,8 +444,8 @@ namespace ElzabCommands
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "OTOWAR"; } }
-
         private string ElementAttributesPatternOutFile
         {
             get
@@ -383,7 +456,6 @@ namespace ElzabCommands
                         "< scale_no > < last_sale_date_time >link_plu_no >";
             }
         }
-
         private string ElementAttributesPatternInFile
         {
             get
@@ -398,6 +470,13 @@ namespace ElzabCommands
                 return "";
             }
         }
+        private string ElementAttributesPatternConfigFile
+        {
+            get
+            {
+                return " device_number, connection_data, time_out";
+            }
+        }
 
         //Class constructor
         public ElzabCommand_OTOWAR(string path, int cashRegisterID)
@@ -410,6 +489,10 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Report data
             this.Report = InitBaseStructuresReport(path, cashRegisterID, CommandName, ElementAttributesPatternReportFile);
+
+            //Call method used to initialize base structure for Config data
+            this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+
         }
 
         //Execute command
@@ -422,6 +505,17 @@ namespace ElzabCommands
 
     public class InitStructure
     {
+        protected ElzabFileObject InitBaseStructuresConfig(string path, int cashRegisterID, string commandName,
+        string elementAttributesPatternOutFile)
+        {
+
+            //Initialize object containing information from ELZAB
+            ElzabFileObject _dataReport = new ElzabFileObject(path, commandName, FileType.ConfigFile, cashRegisterID,
+                elementAttributesPattern: elementAttributesPatternOutFile);
+
+            return _dataReport;
+        }
+
         protected ElzabFileObject InitBaseStructuresReport(string path, int cashRegisterID, string commandName,
         string elementAttributesPatternOutFile)
         {
@@ -432,6 +526,7 @@ namespace ElzabCommands
 
             return _dataReport;
         }
+
         protected ElzabFileObject InitBaseStructuresDataFromElzab(string path, int cashRegisterID, string commandName,
         string elementAttributesPatternOutFile)
         {
@@ -460,8 +555,21 @@ namespace ElzabCommands
 
         protected bool ExecuteCommand(IElzabCommandInterface commandInstance)
         {
-            //Check if out file exits. If yes, copy it to backup and remove orginal one.
-            bool result = commandInstance.DataFromElzab.BackupFileAndRemove();
+            //Override config file elements
+            commandInstance.Config.AddElement();
+            string connData = commandInstance.Config.GenerateConnectionData(GlobalVariables.ElzabPortCom, GlobalVariables.ElzabBaudRate);
+            commandInstance.Config.ChangeAllElementValues("1", "1", connData, "3");
+            commandInstance.Config.GenerateRawDataFromObject();
+            commandInstance.Config.WriteDataToFile();
+
+            bool result = true;
+
+            //If data from elzab are used, execute method
+            if (commandInstance.DataFromElzab != null)
+            {
+                //Check if out file exits. If yes, copy it to backup and remove orginal one.
+                result = commandInstance.DataFromElzab.BackupFileAndRemove();
+            }
 
             //Check if report file exist.If yes, copy it to backup and remove orginal one.
             if (result) result = commandInstance.Report.BackupFileAndRemove();

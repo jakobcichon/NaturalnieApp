@@ -7,6 +7,7 @@ using System.Windows.Forms.VisualStyles;
 using NaturalnieApp.Database;
 using NaturalnieApp.Forms.TestForm;
 using NaturalnieApp.Initialization;
+using static NaturalnieApp.Program;
 
 namespace NaturalnieApp.Forms
 {
@@ -105,19 +106,31 @@ namespace NaturalnieApp.Forms
 
         private void bSave_Click(object sender, EventArgs e)
         {
-            //Update value of COM port
-            ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", cCOMPorts.SelectedItem.ToString());
+            try
+            {
+                //Update value of COM port
+                ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", cCOMPorts.SelectedItem.ToString());
+                GlobalVariables.ElzabPortCom = Int32.Parse(cCOMPorts.SelectedItem.ToString());
 
-            //Update value of Baud rate
-            ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", cBaudRate.SelectedItem.ToString());
+                //Update value of Baud rate
+                ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", cBaudRate.SelectedItem.ToString());
+                GlobalVariables.ElzabPortCom = Int32.Parse(cBaudRate.SelectedItem.ToString());
 
-            //Update value of path
-            ConfigFileObjInst.ChangeVariableValue("ElzabCommandPath", tbElzabPath.Text.ToString());
+                //Update value of path
+                ConfigFileObjInst.ChangeVariableValue("ElzabCommandPath", tbElzabPath.Text.ToString());
+                GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();
 
-            //Update database name
-            ConfigFileObjInst.ChangeVariableValue("DatabaseName", rtbDatabaseName.Text.ToString());
+                //Update database name
+                ConfigFileObjInst.ChangeVariableValue("DatabaseName", rtbDatabaseName.Text.ToString());
+                GlobalVariables.SqlServerName = rtbDatabaseName.Text.ToString();
 
-            ConfigFileObjInst.SaveData();
+                ConfigFileObjInst.SaveData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void bDefaults_Click(object sender, EventArgs e)

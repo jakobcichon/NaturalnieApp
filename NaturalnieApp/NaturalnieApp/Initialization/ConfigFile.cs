@@ -333,10 +333,10 @@ namespace NaturalnieApp.Initialization
             retList.Add(new ConfigElement("ElzabCommandPath", fullPath, "Elzab command path"));
 
             //Add next element to list
-            retList.Add(new ConfigElement("ElzabCOMPort", "COM3", "Elzab default COM port"));
+            retList.Add(new ConfigElement("ElzabCOMPort", "3", "Elzab default COM port"));
 
             //Add next element to list
-            retList.Add(new ConfigElement("ElzabBaudRate", "115200", "Elzab default baud rate"));
+            retList.Add(new ConfigElement("ElzabBaudRate", "57600", "Elzab default baud rate"));
 
             //Add next element to list
             retList.Add(new ConfigElement("DatabaseName", "localhost", "Test database name"));

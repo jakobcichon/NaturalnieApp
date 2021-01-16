@@ -41,6 +41,7 @@ namespace ElzabDriver
         private string HeaderSeparator { get; set; }
         private string CommentMark { get; set; }
         private string ElementMark { get; set; }
+        private string AdditionMarkForConfigFile { get; set; }
         private string Path { get; }
         private string BackupPath { get; }
         private string CommandName { get; }
@@ -62,7 +63,7 @@ namespace ElzabDriver
             string headerPatternLine1 = "< cash_register_number > < cash_register_comm_data > < comm_timeout > <execution_date >" +
             "< execution_time > < command_name > < version_number> < input_file_name > <output_file_name>", 
             string headerPatternLine2 = " < error_number > < error_text > ", string headerPatternLine3 = " <cash_register_id > ",
-            string elementAttributesPattern = " < empty_element>", string attributeNameAsID = "", int nrOfCharsInElementAttribute = 19)
+            string elementAttributesPattern = " < empty_element>", string attributeNameAsID = "", int nrOfCharsInElementAttribute = 34)
         {
 
             //Initialize object variables
@@ -71,6 +72,7 @@ namespace ElzabDriver
             this.CommandName = commandName;
             this.TypeOfFile = typeOfFile;
             this.FileNameWithExtension = FileNameDependingOfType(this.CommandName, this.TypeOfFile);
+            base.SetEncoding();
 
             //Create instance of Raw data object
             this.RawData = new List<string>();
@@ -79,19 +81,22 @@ namespace ElzabDriver
             SetMarksAndSeparators();
 
             //Create instance of header object and initialize it
-            this.Header = new ElzabCommHeaderObject();
-            this.Header.HeaderLine1.AddAttributesFromList(ParsePattern(headerPatternLine1));
-            this.Header.HeaderLine2.AddAttributesFromList(ParsePattern(headerPatternLine2));
-            this.Header.HeaderLine3.AddAttributesFromList(ParsePattern(headerPatternLine3));
-            if (typeOfFile == FileType.InputFile)
+            if (this.TypeOfFile != FileType.ConfigFile)
             {
-                //Initialize basic header information
-                this.Header.HeaderLine1.AddElement();
-                this.Header.HeaderLine1.ChangeAttributeValue(0, "device_number", cashRegisterID.ToString());
-                this.Header.HeaderLine2.AddElement();
-                this.Header.HeaderLine2.ChangeAttributeValue(0, "", "");
-                this.Header.HeaderLine3.AddElement();
-                this.Header.HeaderLine3.ChangeAttributeValue(0, "", "");
+                this.Header = new ElzabCommHeaderObject();
+                this.Header.HeaderLine1.AddAttributesFromList(ParsePattern(headerPatternLine1));
+                this.Header.HeaderLine2.AddAttributesFromList(ParsePattern(headerPatternLine2));
+                this.Header.HeaderLine3.AddAttributesFromList(ParsePattern(headerPatternLine3));
+                if (typeOfFile == FileType.InputFile)
+                {
+                    //Initialize basic header information
+                    this.Header.HeaderLine1.AddElement();
+                    this.Header.HeaderLine1.ChangeAttributeValue(0, "device_number", cashRegisterID.ToString());
+                    this.Header.HeaderLine2.AddElement();
+                    this.Header.HeaderLine2.ChangeAttributeValue(0, "", "");
+                    this.Header.HeaderLine3.AddElement();
+                    this.Header.HeaderLine3.ChangeAttributeValue(0, "", "");
+                }
             }
 
             //Create instance of element object and initialize it
@@ -119,7 +124,7 @@ namespace ElzabDriver
         //Method used to set basic information about file
         public void SetMarksAndSeparators(char attributeSeparator = '\t', char headerMark = '#',
                                         char headerSeparator = '\t', char commentMark = ';',
-                                        char elementMark = '$')
+                                        char elementMark = '$', char additionmarkforConfigFile = '\t')
         {
             //Set values to variables
             this.AttributesSeparator = attributeSeparator.ToString();
@@ -127,6 +132,48 @@ namespace ElzabDriver
             this.HeaderSeparator = headerSeparator.ToString();
             this.CommentMark = commentMark.ToString();
             this.ElementMark = elementMark.ToString();
+            this.AdditionMarkForConfigFile = additionmarkforConfigFile.ToString();
+        }
+
+        //Method used only for config file
+        public string GenerateConnectionData(int comPortNumber, int baudRate)
+        {
+            //Local variable
+            string retVal = "";
+
+            bool checkBaudRate = CheckBaudRateValue(baudRate);
+
+            if (comPortNumber > - 1 && checkBaudRate)
+            {
+                string connectionData = "COM" + comPortNumber + ":" + baudRate + ":" + "MUX0:1";
+                retVal = connectionData;
+            }
+            else
+            {
+                MessageBox.Show("Baud rate lub numer portu COM ma niewłaściwą wartość! " + baudRate + " " + comPortNumber);
+            }
+
+            return retVal;
+
+        }
+
+        private bool CheckBaudRateValue(int baudRate)
+        {
+            //Return value
+            bool retVal = false;
+
+            //List of allowed baudrates
+            int[] baudRatesList = { 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 230400, 460800 };
+            foreach (int element in baudRatesList)
+            {
+                if (element == baudRate)
+                {
+                    retVal = true;
+                    break;
+                }
+            }
+
+            return retVal;
         }
 
         public void GenerateObjectFromRawData()
@@ -265,33 +312,36 @@ namespace ElzabDriver
 
             try
             {
-                //Convert header object to string list
-                retValue.Add(ConvertFromListToString(this.Header.HeaderLine1.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
-                retValue.Add(ConvertFromListToString(this.Header.HeaderLine2.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
-                retValue.Add(ConvertFromListToString(this.Header.HeaderLine3.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
-
+                if (this.TypeOfFile != FileType.ConfigFile)
+                {
+                    //Convert header object to string list
+                    retValue.Add(ConvertFromListToString(this.Header.HeaderLine1.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
+                    retValue.Add(ConvertFromListToString(this.Header.HeaderLine2.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
+                    retValue.Add(ConvertFromListToString(this.Header.HeaderLine3.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
+                }
                 //Convert element object to string list
                 foreach (AttributeValueObject obj in this.Element)
                 {
 
-                    int i = 0;
+                    int i = 1;
                     //Loop through all element attributes values. Add Element mark and attribute separator to it
                     string elementAllValues = this.ElementMark;
                     foreach (string attributeValue in obj)
                     {
-                        if (i == 1)
+                        if (i == obj.AttributeValue.Count())
                         {
-                            dummyString = GenerateStringWithGivenChar(34 - attributeValue.Length, ' ');
-                            elementAllValues += attributeValue + dummyString + this.AttributesSeparator;
+                            elementAllValues += attributeValue;
                         }
                         else
                         {
-                            elementAllValues += attributeValue + this.AttributesSeparator;
+                            //elementAllValues += attributeValue + this.AttributesSeparator;
+                            dummyString = GenerateStringWithGivenChar(this.NrOfCharsInElementAttribute - attributeValue.Length, ' ');
+                            elementAllValues += attributeValue + dummyString + this.AttributesSeparator;
                         }
                         i++;
 
                     }
-                    elementAllValues = elementAllValues.Remove(elementAllValues.Length - 1, 1);
+                    //elementAllValues = elementAllValues.Remove(elementAllValues.Length - 1, 1);
                     retValue.Add(elementAllValues);
                 }
 
@@ -463,8 +513,13 @@ namespace ElzabDriver
     {
         private string elzabFilePath { get; set; }
         private string elzabCommandName { get; set; }
+        private Encoding FileEncoding { get; set; }
 
-        //Define file type as enum
+        //Set encoding type
+        protected void SetEncoding()
+        {
+            this.FileEncoding = new UTF8Encoding(false);
+        }
 
         //Method used to add Elzab command name
         protected void SetElzabCommandName(string elzabCommandName)
@@ -552,7 +607,7 @@ namespace ElzabDriver
             {
                 //Use File stream to write data to file
                 FileStream stream = new FileStream(fullPath, FileMode.OpenOrCreate);
-                using (StreamWriter fs = new StreamWriter(stream, Encoding.GetEncoding("UTF-8")))
+                using (StreamWriter fs = new StreamWriter(stream, this.FileEncoding))
                 {
                     foreach (string lineToWrite in data)
                     {
@@ -576,20 +631,13 @@ namespace ElzabDriver
             return retVal;
         }
 
-        public static string fnStringConverterCodepage(string sText, string sCodepageIn = "ISO-8859-8", string sCodepageOut = "UTF-8")
+        public static string fnStringConverterCodepage(string sText, string sCodepageIn = "UTF-8", string sCodepageOut = "UTF-8")
         {
-            string sResultado = string.Empty;
-            try
-            {
-                byte[] tempBytes;
-                tempBytes = System.Text.Encoding.GetEncoding(sCodepageIn).GetBytes(sText);
-                sResultado = System.Text.Encoding.GetEncoding(sCodepageOut).GetString(tempBytes);
-            }
-            catch (Exception)
-            {
-                sResultado = "";
-            }
-            return sResultado;
+            string myString = sText;
+            byte[] bytes = Encoding.UTF32.GetBytes(myString);
+            bytes = Encoding.Convert(Encoding.UTF32, Encoding.UTF8, bytes);
+            myString = Encoding.UTF8.GetString(bytes);
+            return myString;
         }
 
         //Method use to create input or config file
@@ -609,7 +657,7 @@ namespace ElzabDriver
 
                 //Use File stream to write data to file
                 FileStream stream = new FileStream(fullPath, FileMode.CreateNew);
-                using (StreamWriter fs = new StreamWriter(stream, Encoding.GetEncoding("UTF-8")))
+                using (StreamWriter fs = new StreamWriter(stream, this.FileEncoding))
                 {
                     //Close file
                     fs.Close();

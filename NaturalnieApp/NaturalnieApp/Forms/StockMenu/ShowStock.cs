@@ -606,9 +606,17 @@ namespace NaturalnieApp.Forms
             //Get all product from DB
             List<string> productNameList = new List<string>();
             List<Product> productsList = new List<Product>();
-            productNameList = this.databaseCommands.GetProductsNameList();
+            if (cbManufacturers.SelectedItem.ToString() == "Wszyscy")
+            {
+                productNameList = this.databaseCommands.GetProductsNameList();
+            }
+            else if (cbManufacturers.SelectedItem != null)
+            {
+                productNameList = this.databaseCommands.GetProductsNameListByManufacturer(cbManufacturers.SelectedItem.ToString());
+            }
 
-            if (productNameList.Count > 0 && productNameList.Count < 4096)
+
+                if (productNameList.Count > 0 && productNameList.Count < 4096)
             {
                 foreach (string productName in productNameList)
                 {
@@ -660,8 +668,8 @@ namespace NaturalnieApp.Forms
                     ZapisTowaru.DataToElzab.ChangeAllElementValues(product.ElzabProductId.ToString(), attributesValues.ToArray());
                 }
 
-                ZapisTowaru.DataToElzab.RunCommand();
-                ZapisDodatkowychBcod.DataToElzab.RunCommand();
+                ZapisTowaru.ExecuteCommand();
+                ZapisDodatkowychBcod.ExecuteCommand();
             }
             else
             {
