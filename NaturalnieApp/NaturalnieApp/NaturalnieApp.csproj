@@ -237,6 +237,7 @@
     <Compile Include="Dymo Printer\Printer.cs" />
     <Compile Include="ElzabDriver\ElzabDriver.cs" />
     <Compile Include="ElzabDriver\ElzabCommands.cs" />
+    <Compile Include="ElzabDriver\IElzabCommandInterface.cs" />
     <Compile Include="Forms\Common\SearchBarTemplate.cs">
       <SubType>UserControl</SubType>
     </Compile>

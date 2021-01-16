@@ -26,6 +26,7 @@ namespace NaturalnieApp
             static public string SqlServerName { get; set; }
             static public string ConnectionString { get; set; }
             static public string DymoPrinterName { get; set; }
+            static public string LibraryPath { get; set; }
         }
         /// <summary>
         /// Główny punkt wejścia dla aplikacji.
@@ -51,6 +52,7 @@ namespace NaturalnieApp
                 GlobalVariables.SqlServerName = ConfigFileInst.GetValueByVariableName("DatabaseName");
                 GlobalVariables.ConnectionString = string.Format("server = {0}; port = 3306; database = shop;" +
                     "uid = admin; password = admin; Connection Timeout = 60", GlobalVariables.SqlServerName);
+                GlobalVariables.LibraryPath = ConfigFileInst.GetValueByVariableName("LibraryPath");
 
                 // ElzabCommand_OBAJTY Test = new ElzabCommand_OBAJTY(path, cashRegisterID);
                 /*

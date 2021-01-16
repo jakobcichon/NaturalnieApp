@@ -36,11 +36,11 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.gbSynchronization = new System.Windows.Forms.GroupBox();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.bReadingFromCashRegister = new System.Windows.Forms.Button();
             this.tpProductNameToEdit = new System.Windows.Forms.TableLayoutPanel();
-            this.lStatus = new System.Windows.Forms.Label();
             this.tbStatus = new System.Windows.Forms.TextBox();
+            this.lStatus = new System.Windows.Forms.Label();
+            this.bReadingFromCashRegister = new System.Windows.Forms.Button();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.pButtonsPanel.SuspendLayout();
             this.pHeader.SuspendLayout();
             this.gbSynchronization.SuspendLayout();
@@ -137,6 +137,45 @@
             this.gbSynchronization.TabStop = false;
             this.gbSynchronization.Text = "Synchronizacja z kasą";
             // 
+            // tpProductNameToEdit
+            // 
+            this.tpProductNameToEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpProductNameToEdit.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tpProductNameToEdit.ColumnCount = 2;
+            this.tpProductNameToEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tpProductNameToEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpProductNameToEdit.Controls.Add(this.tbStatus, 0, 0);
+            this.tpProductNameToEdit.Controls.Add(this.lStatus, 0, 0);
+            this.tpProductNameToEdit.Location = new System.Drawing.Point(171, 41);
+            this.tpProductNameToEdit.Name = "tpProductNameToEdit";
+            this.tpProductNameToEdit.RowCount = 1;
+            this.tpProductNameToEdit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 51F));
+            this.tpProductNameToEdit.Size = new System.Drawing.Size(633, 50);
+            this.tpProductNameToEdit.TabIndex = 28;
+            // 
+            // tbStatus
+            // 
+            this.tbStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbStatus.Location = new System.Drawing.Point(107, 6);
+            this.tbStatus.Margin = new System.Windows.Forms.Padding(5);
+            this.tbStatus.Multiline = true;
+            this.tbStatus.Name = "tbStatus";
+            this.tbStatus.Size = new System.Drawing.Size(520, 41);
+            this.tbStatus.TabIndex = 2;
+            // 
+            // lStatus
+            // 
+            this.lStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lStatus.Location = new System.Drawing.Point(6, 6);
+            this.lStatus.Margin = new System.Windows.Forms.Padding(5);
+            this.lStatus.Name = "lStatus";
+            this.lStatus.Size = new System.Drawing.Size(90, 41);
+            this.lStatus.TabIndex = 1;
+            this.lStatus.Text = "Status";
+            this.lStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // bReadingFromCashRegister
             // 
             this.bReadingFromCashRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
@@ -150,45 +189,6 @@
             this.bReadingFromCashRegister.Text = "Odczyt z kasy";
             this.bReadingFromCashRegister.UseVisualStyleBackColor = false;
             this.bReadingFromCashRegister.Click += new System.EventHandler(this.bReadingFromCashRegister_Click);
-            // 
-            // tpProductNameToEdit
-            // 
-            this.tpProductNameToEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
-            this.tpProductNameToEdit.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tpProductNameToEdit.ColumnCount = 2;
-            this.tpProductNameToEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tpProductNameToEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tpProductNameToEdit.Controls.Add(this.tbStatus, 0, 0);
-            this.tpProductNameToEdit.Controls.Add(this.lStatus, 0, 0);
-            this.tpProductNameToEdit.Location = new System.Drawing.Point(171, 41);
-            this.tpProductNameToEdit.Name = "tpProductNameToEdit";
-            this.tpProductNameToEdit.RowCount = 1;
-            this.tpProductNameToEdit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tpProductNameToEdit.Size = new System.Drawing.Size(633, 50);
-            this.tpProductNameToEdit.TabIndex = 28;
-            // 
-            // lStatus
-            // 
-            this.lStatus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lStatus.Location = new System.Drawing.Point(6, 6);
-            this.lStatus.Margin = new System.Windows.Forms.Padding(5);
-            this.lStatus.Name = "lStatus";
-            this.lStatus.Size = new System.Drawing.Size(90, 40);
-            this.lStatus.TabIndex = 1;
-            this.lStatus.Text = "Status";
-            this.lStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tbStatus
-            // 
-            this.tbStatus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbStatus.Location = new System.Drawing.Point(107, 6);
-            this.tbStatus.Margin = new System.Windows.Forms.Padding(5);
-            this.tbStatus.Multiline = true;
-            this.tbStatus.Name = "tbStatus";
-            this.tbStatus.Size = new System.Drawing.Size(520, 40);
-            this.tbStatus.TabIndex = 2;
             // 
             // ElzabCommands
             // 

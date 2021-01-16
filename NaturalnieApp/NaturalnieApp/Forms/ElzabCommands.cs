@@ -50,7 +50,9 @@ namespace NaturalnieApp.Forms
 
                 //ChangeStatus
                 this.StatusBox.Text = "Generowanie pliku textowego do kasy Elzab";
-                this.AllProductsReading.DataToElzab.RunCommand();
+                this.AllProductsReading.ExecuteCommand();
+                //this.AllProductsReading.Report.GenerateObjectFromRawData();
+                ;
 
             }
             catch (Exception ex)

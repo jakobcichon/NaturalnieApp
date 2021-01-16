@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Text;
+using static NaturalnieApp.Program;
 
 namespace ElzabDriver
 {
@@ -49,6 +50,7 @@ namespace ElzabDriver
         private List<string> RawData { get; set; }
         private string AttributeNameAsID { get; set; }
         private int NrOfCharsInElementAttribute { get; set; }
+        private string FileNameWithExtension { get; set; }
 
         //Class constructor
         public ElzabFileObject()
@@ -68,6 +70,7 @@ namespace ElzabDriver
             this.BackupPath = System.IO.Path.Combine(this.Path, "Backup");
             this.CommandName = commandName;
             this.TypeOfFile = typeOfFile;
+            this.FileNameWithExtension = FileNameDependingOfType(this.CommandName, this.TypeOfFile);
 
             //Create instance of Raw data object
             this.RawData = new List<string>();
@@ -191,77 +194,118 @@ namespace ElzabDriver
         }
 
         //Method used to prepare data from object, save it to file and run command
-        public void RunCommand()
+        public bool RunCommand()
         {
-            //Generate raw data from object. This data will be used to write to file
-            this.GenerateRawDataFromObject();
+            //Local variables
+            bool retVal = false;
 
-            //Write raw data to the file
-            this.WriteRawDataToFile(this.Path, this.CommandName, FileType.InputFile, this.RawData);
-
-            //Check if command file exist
-            bool commandExist = File.Exists(this.Path + "\\" + this.CommandName + ".exe");
-
-            if (commandExist)
+            try
             {
-                //Generate command called in Windows command prompt
-                string command = this.CommandName + ".exe" + " " + this.FileNameDependingOfType(this.CommandName, FileType.InputFile)
-                    + " " + this.FileNameDependingOfType(this.CommandName, FileType.OutputFile);
+                //Check if command file exist
+                string execFullFilePath = System.IO.Path.Combine(this.Path, this.CommandName + ".exe");
+                bool commandExist = File.Exists(execFullFilePath);
 
-                var processStartInfo = new ProcessStartInfo();
-                processStartInfo.WorkingDirectory = this.Path;
-                processStartInfo.FileName = "cmd.exe";
-                processStartInfo.Arguments = "/C " + command;
-                Process proc = Process.Start(processStartInfo);
+                //If not exist try to copy one from command default path
+                if (!commandExist)
+                {
+                    string defaultPathWithCommandName = System.IO.Path.Combine(GlobalVariables.ElzabCommandPath, "Commands", this.CommandName + ".exe");
+                    File.Copy(defaultPathWithCommandName, execFullFilePath);
+                }
+
+                //Check again
+                commandExist = File.Exists(execFullFilePath);
+
+                //Check if dll exist in command directory
+                string dllFullFilePath = System.IO.Path.Combine(this.Path, "WinIP.dll");
+                bool dllExist = File.Exists(dllFullFilePath);
+                if (!dllExist)
+                {
+                    string defaultPathWithDlls = System.IO.Path.Combine(this.Path, System.IO.Path.Combine(GlobalVariables.LibraryPath, "WinIP.dll"));
+                    File.Copy(defaultPathWithDlls, dllFullFilePath);
+                    dllExist = true;
+                }
+
+                if (commandExist && dllExist)
+                {
+                    //Generate command called in Windows command prompt
+                    string command = this.CommandName + ".exe" + " " + this.FileNameDependingOfType(this.CommandName, FileType.InputFile)
+                        + " " + this.FileNameDependingOfType(this.CommandName, FileType.OutputFile);
+
+                    var processStartInfo = new ProcessStartInfo();
+                    processStartInfo.WorkingDirectory = this.Path;
+                    processStartInfo.FileName = "cmd.exe";
+                    processStartInfo.Arguments = "/C " + command;
+                    Process proc = Process.Start(processStartInfo);
+                    retVal = true;
+                    ;
+                }
+                else
+                {
+                    retVal = false;
+                    MessageBox.Show("Command with name: " + this.CommandName + " does not exist under: " + this.Path + " .Command was not executed!");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Command with name: " + this.CommandName + " does not exist under: " + this.Path + " .Command was not executed!");
+                retVal = false;
+                MessageBox.Show(ex.Message);
             }
 
+            return retVal;
 
         }
 
         //Method used to generate raw data from an object
-        public void GenerateRawDataFromObject()
+        public bool GenerateRawDataFromObject()
         {
             //Local variable
             List<string> retValue = new List<string>();
             string dummyString = "";
+            bool returnValue = false;
 
-            //Convert header object to string list
-            retValue.Add(ConvertFromListToString(this.Header.HeaderLine1.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
-            retValue.Add(ConvertFromListToString(this.Header.HeaderLine2.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
-            retValue.Add(ConvertFromListToString(this.Header.HeaderLine3.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
-
-            //Convert element object to string list
-            foreach (AttributeValueObject obj in this.Element)
+            try
             {
+                //Convert header object to string list
+                retValue.Add(ConvertFromListToString(this.Header.HeaderLine1.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
+                retValue.Add(ConvertFromListToString(this.Header.HeaderLine2.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
+                retValue.Add(ConvertFromListToString(this.Header.HeaderLine3.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
 
-                int i = 0;
-                //Loop through all element attributes values. Add Element mark and attribute separator to it
-                string elementAllValues = this.ElementMark;
-                foreach (string attributeValue in obj)
+                //Convert element object to string list
+                foreach (AttributeValueObject obj in this.Element)
                 {
-                    if (i == 1)
-                    {
-                        dummyString = GenerateStringWithGivenChar(34 - attributeValue.Length, ' ');
-                        elementAllValues += attributeValue + dummyString + this.AttributesSeparator;
-                    }
-                    else
-                    {
-                        elementAllValues += attributeValue + this.AttributesSeparator;
-                    }
-                    i++;
 
+                    int i = 0;
+                    //Loop through all element attributes values. Add Element mark and attribute separator to it
+                    string elementAllValues = this.ElementMark;
+                    foreach (string attributeValue in obj)
+                    {
+                        if (i == 1)
+                        {
+                            dummyString = GenerateStringWithGivenChar(34 - attributeValue.Length, ' ');
+                            elementAllValues += attributeValue + dummyString + this.AttributesSeparator;
+                        }
+                        else
+                        {
+                            elementAllValues += attributeValue + this.AttributesSeparator;
+                        }
+                        i++;
+
+                    }
+                    elementAllValues = elementAllValues.Remove(elementAllValues.Length - 1, 1);
+                    retValue.Add(elementAllValues);
                 }
-                elementAllValues = elementAllValues.Remove(elementAllValues.Length - 1, 1);
-                retValue.Add(elementAllValues);
+
+                //Assing created string list to internal variable
+                this.RawData = retValue;
+                returnValue = true;
+            }
+            catch (Exception ex)
+            {
+                returnValue = false;
+                MessageBox.Show(ex.Message);
             }
 
-            //Assing created string list to internal variable
-            this.RawData = retValue;
-            
+            return returnValue;
         }
 
         //Method used to generate string from given char
@@ -337,6 +381,12 @@ namespace ElzabDriver
             this.WriteDataToFile(path, this.BackupPath, commandName, typeOfFile, dataToWrite);
         }
 
+        //Method used to write data to file
+        public bool WriteDataToFile()
+        {
+            return this.WriteDataToFile(this.Path, this.BackupPath, this.CommandName, this.TypeOfFile, this.RawData);
+        }
+
         //Method used to prepare raw data from Elzab documentation
         private List<string> ParsePattern(string pattern)
         {
@@ -370,7 +420,6 @@ namespace ElzabDriver
             return retVal;
         }
 
-
         //Method use to parse string to the element list. It using specified divider, to split input string.
         private List<string> ParseStringToList(string inputString, string divider)
         {
@@ -396,6 +445,15 @@ namespace ElzabDriver
             //Return value
             return retVal;
 
+        }
+
+        //Method used to check if file exist. If yes, it will move it to backup folder and remove orginal one.
+        internal bool BackupFileAndRemove()
+        {
+
+            bool result = base.BackupFileAndRemove(this.FileNameWithExtension, this.Path, this.BackupPath);
+            ;
+            return result;
         }
 
     }
@@ -486,8 +544,10 @@ namespace ElzabDriver
         }
 
         //Method used to save raw data to file
-        private void SaveDataToFile(string fullPath, List<string> data)
+        private bool SaveDataToFile(string fullPath, List<string> data)
         {
+            //Local variable
+            bool retVal = false;
             try
             {
                 //Use File stream to write data to file
@@ -502,14 +562,18 @@ namespace ElzabDriver
 
                     //Close file
                     fs.Close();
+                    retVal = true;
                 }
 
             }
             catch (Exception ex)
             {
+                retVal = false;
                 //Message if exception
                 MessageBox.Show(ex.ToString());
             }
+
+            return retVal;
         }
 
         public static string fnStringConverterCodepage(string sText, string sCodepageIn = "ISO-8859-8", string sCodepageOut = "UTF-8")
@@ -529,8 +593,10 @@ namespace ElzabDriver
         }
 
         //Method use to create input or config file
-        private void CreateFile(string fullPath)
+        private bool CreateFile(string fullPath)
         {
+            //Local variable
+            bool retVal = false;
             try
             {
                 //Check if directory exist
@@ -539,7 +605,6 @@ namespace ElzabDriver
                 {
                     string dirName = Path.GetDirectoryName(fullPath);
                     Directory.CreateDirectory(dirName);
-                    ;
                 }
 
                 //Use File stream to write data to file
@@ -548,18 +613,22 @@ namespace ElzabDriver
                 {
                     //Close file
                     fs.Close();
+                    retVal = true;
                 }
 
             }
             catch (Exception ex)
             {
+                retVal = false;
                 //Message if exception
                 MessageBox.Show(ex.ToString());
             }
+
+            return retVal;
             
         }
 
-        //Method use to delete file
+        //Method use to make file backup and remove it. It has user control build in.
         private bool DeleteFile(string fullPath, string backupPath)
         {
             bool retVal = false;
@@ -594,26 +663,75 @@ namespace ElzabDriver
             return retVal;
         }
 
+        //Method use to delete file.
+        private bool DeleteFile(string fullPath)
+        {
+            bool retVal = false;
+            try
+            {
+                //Delete file
+                File.Delete(fullPath);
+                retVal = true;
+            }
+            catch (Exception ex)
+            {
+                //Message if exception
+                MessageBox.Show(ex.ToString());
+                retVal = false;
+            }
+
+            return retVal;
+        }
+
+        protected bool BackupFileAndRemove(string fileName, string fullPath, string backupPath)
+        {
+            //Local variable
+            bool retVal = false;
+
+            //Full path to file to delete
+            string fullFilePath = Path.Combine(fullPath, fileName);
+
+            //If file exist, make backup
+            bool backupDone = MakeFileBackup(fullFilePath, backupPath);
+
+            //Remove orginal file
+            if (backupDone)
+            {
+                if (DeleteFile(fullFilePath)) retVal = true;
+
+            }
+
+            return retVal;
+        }
+
+        //Method used to make file backup.
+        //Return true if file to backup does not exist or backup was done successfully
         private bool MakeFileBackup(string fullPath, string backupPath)
         {
             //Local variable
             bool retVal = false; ;
-            bool subFolderCreated = false; ;
+            bool subFolderCreated = false;
+
+            string fileNameWithExtension = Path.GetFileName(fullPath);
 
             try
             {
                 //Check if file exist
                 bool exist = File.Exists(fullPath);
-                
+
                 if (exist)
                 {
                     //Generate subdirectory name and check if exist
-                    string date = DateTime.Now.Date.ToString("MM/dd/yy");
-                    string time = DateTime.Now.TimeOfDay.Hours.ToString("00") + "." + DateTime.Now.TimeOfDay.Minutes.ToString("00") + "." + DateTime.Now.TimeOfDay.Seconds.ToString("00");
-                    string subDirName = System.IO.Path.Combine(backupPath, date + "_" + time);
+                    string date = DateTime.Now.Date.ToString("MM/dd/yyyy");
+                    string time = DateTime.Now.TimeOfDay.Hours.ToString("00") + "." +
+                        DateTime.Now.TimeOfDay.Minutes.ToString("00");
+                    string subDirName = Path.Combine(backupPath, date + "_" + time);
+
+                    //Backup path with file
+                    string backupPathWithFile = Path.Combine(subDirName, fileNameWithExtension);
 
                     //Check if backup directory exist
-                    bool dirExist = Directory.Exists(subDirName);
+                    bool dirExist = File.Exists(backupPathWithFile);
                     if (!dirExist)
                     {
                         subFolderCreated = Directory.CreateDirectory(subDirName).Exists;
@@ -621,13 +739,16 @@ namespace ElzabDriver
                     else
                     {
                         //Try to create another name
-                        for (int i=1; i<=10; i++)
+                        for (int i = 1; i <= 10; i++)
                         {
-                            subDirName += " (" + i + ")";
-                            dirExist = Directory.Exists(subDirName);
+                            string candidateDirName = subDirName;
+                            candidateDirName += " (" + i + ")";
+                            backupPathWithFile = Path.Combine(candidateDirName, fileNameWithExtension);
+                            dirExist = File.Exists(backupPathWithFile);
                             if (!dirExist)
                             {
-                                Directory.CreateDirectory(subDirName);
+                                Directory.CreateDirectory(candidateDirName);
+                                subDirName = candidateDirName;
                                 subFolderCreated = true;
                                 break;
                             }
@@ -635,7 +756,7 @@ namespace ElzabDriver
                     }
                     if (subFolderCreated)
                     {
-                        string fullPathToCopy = Path.Combine(subDirName,Path.GetFileName(fullPath));
+                        string fullPathToCopy = Path.Combine(subDirName, Path.GetFileName(fullPath));
                         File.Copy(fullPath, fullPathToCopy);
                         retVal = true;
                         MessageBox.Show("Kopia zapasowa została wykonana!");
@@ -645,6 +766,7 @@ namespace ElzabDriver
                         MessageBox.Show("Nie udało się utworzyć podfolderu!");
                     }
                 }
+                else retVal = true;
             }
             catch (Exception ex)
             {
@@ -724,35 +846,47 @@ namespace ElzabDriver
         }
 
         //Method used to write data to specified file
-        public void WriteDataToFile(string path, string backupPath, string commandName, FileType typeOfFile, List<string> dataToWrite)
+        public bool WriteDataToFile(string path, string backupPath, string commandName, FileType typeOfFile, List<string> dataToWrite)
         {
             //Local variables
-            string fullPath;
-            bool fileExist;
+            string fullPath = "";
+            bool fileExist = false;
+            bool retVal;
 
-            //Generate full path to file
-            fullPath = ConsolidatePath(path, commandName, typeOfFile);
+            try
+            {
+                //Generate full path to file
+                fullPath = ConsolidatePath(path, commandName, typeOfFile);
 
-            //Check if given file exist
-            fileExist = CheckIfFileExist(fullPath);
-            if (fileExist)
+                //Check if given file exist
+                fileExist = CheckIfFileExist(fullPath);
+                retVal = true;
+            }
+            catch (Exception ex)
+            {
+                retVal = false;
+                MessageBox.Show(ex.Message);
+            }
+
+            if (fileExist && retVal)
             {
 
                 //Remove old file first
-                DeleteFile(fullPath, backupPath);
+                retVal = DeleteFile(fullPath, backupPath);
 
                 //Call method to write data to file
-                SaveDataToFile(fullPath, dataToWrite);
+                if(retVal) retVal = SaveDataToFile(fullPath, dataToWrite);
             }
             //If file/path not valid, show message box
             else
             {
                 //If file does not exist, create one
-                CreateFile(fullPath);
+                retVal = CreateFile(fullPath);
 
                 //Call method to write data to file
-                SaveDataToFile(fullPath, dataToWrite);
+                if (retVal) retVal = SaveDataToFile(fullPath, dataToWrite);
             }
+            return retVal;
         }
 
     }
