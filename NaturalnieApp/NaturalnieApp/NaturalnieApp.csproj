@@ -79,13 +79,19 @@
     <ManifestKeyFile>NaturalnieApp_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>mainIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AdvancedDataGridView, Version=1.1.24722.8, Culture=neutral, processorArchitecture=MSIL">
@@ -237,11 +243,11 @@
     <Compile Include="Forms\Common\SearchBarTemplate.Designer.cs">
       <DependentUpon>SearchBarTemplate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ElzabInfo.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Forms\ElzabCommands.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\ElzabInfo.Designer.cs">
-      <DependentUpon>ElzabInfo.cs</DependentUpon>
+    <Compile Include="Forms\ElzabCommands.Designer.cs">
+      <DependentUpon>ElzabCommands.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ElzabSetting.cs">
       <SubType>Form</SubType>
@@ -332,8 +338,8 @@
     <EmbeddedResource Include="Forms\Common\SearchBarTemplate.resx">
       <DependentUpon>SearchBarTemplate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ElzabInfo.resx">
-      <DependentUpon>ElzabInfo.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ElzabCommands.resx">
+      <DependentUpon>ElzabCommands.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ElzabSetting.resx">
       <DependentUpon>ElzabSetting.cs</DependentUpon>
@@ -386,6 +392,7 @@
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>
+    <None Include="app.manifest" />
     <None Include="NaturalnieApp_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

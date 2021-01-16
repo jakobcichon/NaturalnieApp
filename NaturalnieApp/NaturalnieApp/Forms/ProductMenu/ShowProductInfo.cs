@@ -544,25 +544,25 @@ namespace NaturalnieApp.Forms
             //Update control
             UpdateControl(ref tbDummyForCtrl);
         }
-        private void ShowProductInfo_KeyDown(object sender, KeyEventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            Control localControl = (Control)sender;
-
             this.BarcodeValidEventGenerated = false;
-            this.BarcodeReader.CheckIfBarcodeFromReader(e.KeyCode);
+            this.BarcodeReader.CheckIfBarcodeFromReader(keyData);
 
-            if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
+            if ((keyData == Keys.Enter) && (!this.BarcodeValidEventGenerated))
             {
                 //Update control
                 UpdateControl(ref tbDummyForCtrl);
 
             }
-            else if (e.KeyCode == Keys.Escape)
+            else if (keyData == Keys.Escape)
             {
                 //Update control
                 UpdateControl(ref tbDummyForCtrl);
                 errorProvider1.Clear();
             }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
         #endregion
         //====================================================================================================
@@ -1185,6 +1185,5 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
-
     }
 }

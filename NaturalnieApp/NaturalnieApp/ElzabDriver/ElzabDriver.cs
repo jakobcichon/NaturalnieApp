@@ -41,6 +41,7 @@ namespace ElzabDriver
         private string CommentMark { get; set; }
         private string ElementMark { get; set; }
         private string Path { get; }
+        private string BackupPath { get; }
         private string CommandName { get; }
         private FileType TypeOfFile { get; }
         public ElzabCommHeaderObject Header { get; set; }
@@ -63,7 +64,8 @@ namespace ElzabDriver
         {
 
             //Initialize object variables
-            this.Path = path;
+            this.Path = System.IO.Path.Combine(path, commandName);
+            this.BackupPath = System.IO.Path.Combine(this.Path, "Backup");
             this.CommandName = commandName;
             this.TypeOfFile = typeOfFile;
 
@@ -315,10 +317,9 @@ namespace ElzabDriver
 
         public void ChangeAllElementValues(string elementID, params string[] values)
         {
-            this.Element.ChangeAllElementValues(this.AttributeNameAsID, elementID, values);
+            this.Element.ChangeAllElementsValue(this.AttributeNameAsID, elementID, values);
 
         }
-
         //Method used to add element to the object
         public void AddElement()
         {
@@ -326,14 +327,14 @@ namespace ElzabDriver
         }
 
         //Method used to add element to the object
-        public void AddElement(string attributeID)
+        public void AddElement(string attributeIDValue)
         {
-            this.Element.AddElement(this.AttributeNameAsID, attributeID);
+            this.Element.AddElement(this.AttributeNameAsID, attributeIDValue);
         }
 
         private void WriteRawDataToFile(string path, string commandName, FileType typeOfFile, List<string> dataToWrite)
         {
-            this.WriteDataToFile(path, commandName, typeOfFile, dataToWrite);
+            this.WriteDataToFile(path, this.BackupPath, commandName, typeOfFile, dataToWrite);
         }
 
         //Method used to prepare raw data from Elzab documentation
@@ -532,6 +533,15 @@ namespace ElzabDriver
         {
             try
             {
+                //Check if directory exist
+                bool dirExist = Directory.Exists(fullPath);
+                if (!dirExist)
+                {
+                    string dirName = Path.GetDirectoryName(fullPath);
+                    Directory.CreateDirectory(dirName);
+                    ;
+                }
+
                 //Use File stream to write data to file
                 FileStream stream = new FileStream(fullPath, FileMode.CreateNew);
                 using (StreamWriter fs = new StreamWriter(stream, Encoding.GetEncoding("UTF-8")))
@@ -547,6 +557,104 @@ namespace ElzabDriver
                 MessageBox.Show(ex.ToString());
             }
             
+        }
+
+        //Method use to delete file
+        private bool DeleteFile(string fullPath, string backupPath)
+        {
+            bool retVal = false;
+            try
+            {
+                string fileName = Path.GetFileName(fullPath);
+                DialogResult result = MessageBox.Show(string.Format("Uwaga plik {0} zostanie przeniesiony, czy chcesz kontunuowac?", fileName), 
+                    "Usuwanie pliku", MessageBoxButtons.YesNo);
+                if(result == DialogResult.Yes)
+                {
+                    bool backupDone = MakeFileBackup(fullPath, backupPath);
+                    if (backupDone)
+                    {
+                        File.Delete(fullPath);
+                        retVal = true;
+                    }
+
+                }
+                else
+                {
+                    retVal = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //Message if exception
+                MessageBox.Show(ex.ToString());
+                retVal = false;
+            }
+
+            return retVal;
+        }
+
+        private bool MakeFileBackup(string fullPath, string backupPath)
+        {
+            //Local variable
+            bool retVal = false; ;
+            bool subFolderCreated = false; ;
+
+            try
+            {
+                //Check if file exist
+                bool exist = File.Exists(fullPath);
+                
+                if (exist)
+                {
+                    //Generate subdirectory name and check if exist
+                    string date = DateTime.Now.Date.ToString("MM/dd/yy");
+                    string time = DateTime.Now.TimeOfDay.Hours.ToString("00") + "." + DateTime.Now.TimeOfDay.Minutes.ToString("00") + "." + DateTime.Now.TimeOfDay.Seconds.ToString("00");
+                    string subDirName = System.IO.Path.Combine(backupPath, date + "_" + time);
+
+                    //Check if backup directory exist
+                    bool dirExist = Directory.Exists(subDirName);
+                    if (!dirExist)
+                    {
+                        subFolderCreated = Directory.CreateDirectory(subDirName).Exists;
+                    }
+                    else
+                    {
+                        //Try to create another name
+                        for (int i=1; i<=10; i++)
+                        {
+                            subDirName += " (" + i + ")";
+                            dirExist = Directory.Exists(subDirName);
+                            if (!dirExist)
+                            {
+                                Directory.CreateDirectory(subDirName);
+                                subFolderCreated = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (subFolderCreated)
+                    {
+                        string fullPathToCopy = Path.Combine(subDirName,Path.GetFileName(fullPath));
+                        File.Copy(fullPath, fullPathToCopy);
+                        retVal = true;
+                        MessageBox.Show("Kopia zapasowa została wykonana!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nie udało się utworzyć podfolderu!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                MessageBox.Show(string.Format("Kopia zapasowa pliku {0} nie została wykonana!", Path.GetFileName(fullPath)));
+                retVal = false;
+
+            }
+
+            return retVal;
         }
 
         //Method used to consolidate path, command name and file type
@@ -616,7 +724,7 @@ namespace ElzabDriver
         }
 
         //Method used to write data to specified file
-        public void WriteDataToFile(string path, string commandName, FileType typeOfFile, List<string> dataToWrite)
+        public void WriteDataToFile(string path, string backupPath, string commandName, FileType typeOfFile, List<string> dataToWrite)
         {
             //Local variables
             string fullPath;
@@ -629,6 +737,10 @@ namespace ElzabDriver
             fileExist = CheckIfFileExist(fullPath);
             if (fileExist)
             {
+
+                //Remove old file first
+                DeleteFile(fullPath, backupPath);
+
                 //Call method to write data to file
                 SaveDataToFile(fullPath, dataToWrite);
             }
@@ -730,7 +842,7 @@ namespace ElzabDriver
 
 
         //Method used to add element to the object
-        public void AddElement(string attributeName, string attributeID)
+        public void AddElement(string attributeName, string attributeIDValue)
         {
             this.ElementsList.Add(new AttributeValueObject());
             foreach (var element in this.AttributeName)
@@ -740,7 +852,7 @@ namespace ElzabDriver
 
             //Find ID of given attribute name
             int attributeIndex = this.AttributeName.IndexOf(attributeName);
-            this.ElementsList.Last().AttributeValue[attributeIndex] = attributeID;
+            this.ElementsList.Last().AttributeValue[attributeIndex] = attributeIDValue;
 
         }
 
@@ -844,35 +956,10 @@ namespace ElzabDriver
 
 
         }
-        /*
-        //Method used to change all value of given element name
-        //Only first occurence of element will be changed.
-        public void ChangeAllElementValues(string elementID, params string[] values)
-        {
-            //Check if number of given numbers, are not greater than number of element valuess
-            if (values.Length > this.ElementsList[elementID].AttributeValue.Count)
-            {
-                MessageBox.Show("Number of parameters to change are bigger than number of attribute values. " +
-                    "Debug: ElzabCommElementObject.ChangeAllElementValues");
-            }
-            else
-            {
-
-                //Change attribute value
-                for (int i = 0; i < values.Length; i++)
-                {
-                    this.ElementsList[elementID].AttributeValue[i] = values[i];
-                }
-
-            }
-
-        }
-        */
-
         //Method used to change all value of given element name
         //Only first occurence of element will be changed.
         //attributeID is used to determine with of attribute is used as ID value;
-        public void ChangeAllElementValues(string attributeName, string attributeID, params string[] values)
+        public void ChangeAllElementsValue(string attributeName, string attributeID, params string[] values)
         {
 
             //Find index of attribute with given name
@@ -899,6 +986,31 @@ namespace ElzabDriver
                 else if(i == this.ElementsList.Count() - 1)
                 {
                     MessageBox.Show("Element with given ID was not found!");
+                }
+            }
+
+        }
+
+        //Method used to change all value of given element name
+        //Only first occurence of element will be changed.;
+        public void ChangeAllElementsAttribute(string attributeName, params string[] values)
+        {
+
+            //Find index of attribute with given name
+            int attributeIndex = this.AttributeName.IndexOf(attributeName);
+
+            //Find element index using given attribute index
+            for (int i = 0; i < this.ElementsList.Count(); i++)
+            {
+                //Change attribute value
+                for (int j = 0; j < values.Length; j++)
+                {
+                    //Change everything except attribute with is taken as ID
+                    if (this.AttributeName[j] != attributeName)
+                    {
+                        this.ElementsList[i].AttributeValue[j] = values[j];
+                    }
+
                 }
             }
 

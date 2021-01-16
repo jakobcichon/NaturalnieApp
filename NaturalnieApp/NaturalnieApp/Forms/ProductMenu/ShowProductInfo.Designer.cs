@@ -149,7 +149,6 @@ namespace NaturalnieApp.Forms
             this.tbDummyForCtrl.Name = "tbDummyForCtrl";
             this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
             this.tbDummyForCtrl.TabIndex = 7;
-            this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ShowProductInfo_KeyDown);
             // 
             // tbPrice
             // 
@@ -1068,12 +1067,11 @@ namespace NaturalnieApp.Forms
             this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.Enabled = false;
+            this.DoubleBuffered = true;
             this.MinimumSize = new System.Drawing.Size(920, 690);
             this.Name = "ShowProductInfo";
             this.Size = new System.Drawing.Size(920, 690);
             this.Load += new System.EventHandler(this.ShowProductInfo_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ShowProductInfo_KeyDown);
             this.pHeader.ResumeLayout(false);
             this.pHeader.PerformLayout();
             this.pManufacturer.ResumeLayout(false);

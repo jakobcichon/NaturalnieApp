@@ -328,7 +328,7 @@ namespace NaturalnieApp.Initialization
             //Template of config file
 
             //Get current path of applciation and add "config" to it
-            string fullPath = Directory.GetCurrentDirectory() + "\\config\\";
+            string fullPath = Directory.GetCurrentDirectory() + "\\Elzab commands\\";
             //Add first element to list
             retList.Add(new ConfigElement("ElzabCommandPath", fullPath, "Elzab command path"));
 

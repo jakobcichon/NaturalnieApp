@@ -219,7 +219,7 @@ namespace NaturalnieApp.Forms
         private void bCashRegisterInfo_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
-            ElzabInfo frm = new ElzabInfo() { TopLevel = false, TopMost = true };
+            ElzabCommands frm = new ElzabCommands();
             this.pContainer.Controls.Add(frm);
             frm.Show();
 

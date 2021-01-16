@@ -22,6 +22,7 @@ namespace NaturalnieApp
         {
             static public string LabelPath { get; set; }
             static public string ElzabCommandPath { get; set; }
+            static public int ElzabCashRegisterId { get; set; }
             static public string SqlServerName { get; set; }
             static public string ConnectionString { get; set; }
             static public string DymoPrinterName { get; set; }
@@ -43,19 +44,21 @@ namespace NaturalnieApp
                 //Read data from config file 
                 ConfigFileObject ConfigFileInst = new ConfigFileObject();
 
-                int cashRegisterID = 1;
                 string path = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
                 GlobalVariables.ElzabCommandPath = path;
+                GlobalVariables.ElzabCashRegisterId = 1;
                 GlobalVariables.LabelPath = ConfigFileInst.GetValueByVariableName("LabelPath");
                 GlobalVariables.SqlServerName = ConfigFileInst.GetValueByVariableName("DatabaseName");
                 GlobalVariables.ConnectionString = string.Format("server = {0}; port = 3306; database = shop;" +
                     "uid = admin; password = admin; Connection Timeout = 60", GlobalVariables.SqlServerName);
 
                 // ElzabCommand_OBAJTY Test = new ElzabCommand_OBAJTY(path, cashRegisterID);
+                /*
                 ElzabCommand_OGRUPA OdczytGrupy = new ElzabCommand_OGRUPA(path, cashRegisterID);
                 ElzabCommand_ZGRUPA ZapisGrupy = new ElzabCommand_ZGRUPA(path, cashRegisterID);
                 ElzabCommand_KGRUPA KasowanieGrupy = new ElzabCommand_KGRUPA(path, cashRegisterID);
                 ElzabCommand_OPSPRZED OdczytSprzedazy = new ElzabCommand_OPSPRZED(path, cashRegisterID);
+                */
 
                 Application.EnableVisualStyles();
                 Application.Run(new MainWindow(ConfigFileInst));
