@@ -95,7 +95,7 @@ namespace NaturalnieApp.Forms
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.FinalPrice;
-            column.DataType = Type.GetType("System.Float");
+            column.DataType = Type.GetType("System.Single");
             column.ReadOnly = true;
             this.DataSoruce.Columns.Add(column);
             column.Dispose();
@@ -114,106 +114,12 @@ namespace NaturalnieApp.Forms
             this.DataSoruce.Columns.Add(column);
             column.Dispose();
 
+            this.DataSoruce.DefaultView.Sort = this.ColumnNames.ProductNumber + " asc";
             advancedDataGridView1.DataSource = this.DataSoruce;
 
             advancedDataGridView1.AutoResizeColumns();
         }
 
-        private void InitializeInventoryDataTable(ref DataTable dataTable)
-        {
-
-            //Initialize daa grid view
-            this.InventoryColumnNames.No = "Lp";
-            this.InventoryColumnNames.ManufacturerName = "Nazwa producenta";
-            this.InventoryColumnNames.ProductName = "Nazwa produktu";
-            this.InventoryColumnNames.ProductBarcode = "Kod kreskowy";
-            this.InventoryColumnNames.PriceNet = "Cena netto";
-            this.InventoryColumnNames.Tax = "VAT";
-            this.InventoryColumnNames.Discount = "Rabat dostawcy";
-            this.InventoryColumnNames.PriceNetWithDiscount = "Cena netto po rabacie";
-            this.InventoryColumnNames.FinalPrice = "Cena brutto";
-            this.InventoryColumnNames.ProductQunatity = "Ilość";
-            this.InventoryColumnNames.ProductValueNet = "Wartość netto";
-
-
-            //Create data source columns
-            DataColumn column = new DataColumn();
-
-            column.ColumnName = this.InventoryColumnNames.No;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
-            column.AutoIncrement = true;
-            column.AutoIncrementSeed = 1;
-            column.Unique = true;
-            dataTable.Columns.Add(column);
-            column.Dispose();
-
-            column = new DataColumn();
-            column.ColumnName = this.InventoryColumnNames.ManufacturerName;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
-            dataTable.Columns.Add(column);
-            column.Dispose();
-
-            column = new DataColumn();
-            column.ColumnName = this.InventoryColumnNames.ProductName;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
-            column.Unique = true;
-            dataTable.Columns.Add(column);
-            column.Dispose();
-
-            column = new DataColumn();
-            column.ColumnName = this.InventoryColumnNames.ProductBarcode;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
-            column.Unique = true;
-            dataTable.Columns.Add(column);
-            column.Dispose();
-
-            column = new DataColumn();
-            column.ColumnName = this.InventoryColumnNames.PriceNet;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
-            dataTable.Columns.Add(column);
-            column.Dispose();
-
-            column = new DataColumn();
-            column.ColumnName = this.InventoryColumnNames.Tax;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
-            dataTable.Columns.Add(column);
-
-            column = new DataColumn();
-            column.ColumnName = this.InventoryColumnNames.Discount;
-            column.DataType = Type.GetType("System.Int32");
-            column.ReadOnly = true;
-            dataTable.Columns.Add(column);
-
-            column = new DataColumn();
-            column.ColumnName = this.InventoryColumnNames.PriceNetWithDiscount;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
-            dataTable.Columns.Add(column);
-
-            column = new DataColumn();
-            column.ColumnName = this.InventoryColumnNames.FinalPrice;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
-            dataTable.Columns.Add(column);
-
-            column = new DataColumn();
-            column.ColumnName = this.InventoryColumnNames.ProductQunatity;
-            column.DataType = Type.GetType("System.Int32");
-            column.ReadOnly = true;
-            dataTable.Columns.Add(column);
-
-            column = new DataColumn();
-            column.ColumnName = this.InventoryColumnNames.ProductValueNet;
-            column.DataType = Type.GetType("System.Single");
-            column.ReadOnly = true;
-            dataTable.Columns.Add(column);
-        }
         #endregion
 
         private void bReadingFromCashRegister_Click(object sender, EventArgs e)
@@ -236,14 +142,14 @@ namespace NaturalnieApp.Forms
                 CommandExecutionStatus status = this.AllProductsReading.ExecuteCommand();
 
 
-                if (status.ErrorNumber == 0)
+                if (status.ErrorNumber == 0 && status.ErrorText != null)
                 {
                     this.StatusBox.Text = "Parsowanie odczytanych produktów";
                     List<Product> allProductFromElzab = ElzabRelated.ParseElzabProductDataToDbObject(this.databaseCommands, this.AllProductsReading.DataFromElzab);
 
                     this.StatusBox.Text = "Odczyt dodatkowych kodów z kasy";
                     status = this.AdditionBarcodesReading.ExecuteCommand();
-                    if (status.ErrorNumber == 0)
+                    if (status.ErrorNumber == 0 && status.ErrorText != null)
                     {
                         this.StatusBox.Text = "Parsowanie odczytanych produktów";
                         List<Product> allAdditionaBarcodesFromElzab = ElzabRelated.ParseElzabAddBarcodesToDbObject(this.databaseCommands, this.AllProductsReading.DataFromElzab);
@@ -261,25 +167,25 @@ namespace NaturalnieApp.Forms
 
                         this.StatusBox.Text = "Porównywanie informacji z bazy danych i kasy fiskalnej";
                         List<Product> diffProductList = ElzabRelated.ComapreDbProductDataWithElzab(allProductFromElzab, dbProductList);
-                        MessageBox.Show("Udało się wykonać polecenie");
 
+                        this.StatusBox.Text = "Przygotowanie danych do wyświetlenia";
                         //Show on the list
-                        //Add data to table
-                        DataRow rowElement;
-                        rowElement = this.DataSoruce.NewRow();
-
                         foreach (Product productEnt in diffProductList)
                         {
+                            //Add data to table
+                            DataRow rowElement;
+                            rowElement = this.DataSoruce.NewRow();
+
                             //Set row fields
-                            rowElement.SetField<string>(this.ColumnNames.ProductNumber, productEnt.ElzabProductName);
-                            rowElement.SetField<int>(this.ColumnNames.ProductName, productEnt.ElzabProductId);
-                            rowElement.SetField<int>(this.ColumnNames.Tax, ElzabRelated.TranslateTaxValueToCashRegisterGroup(productEnt.TaxId));
-                            rowElement.SetField<float>(this.ColumnNames.FinalPrice, element.ModificationDate);
-                            rowElement.SetField<string>(this.ColumnNames.Barcode, element.ExpirationDate);
-                            rowElement.SetField<string>(this.ColumnNames.AdditionaBarcode, element.ActualQuantity);
+                            rowElement.SetField<int>(this.ColumnNames.ProductNumber, productEnt.ElzabProductId);
+                            rowElement.SetField<string>(this.ColumnNames.ProductName, productEnt.ElzabProductName);
+                            int taxValue = this.databaseCommands.GetTaxByProductName(productEnt.ProductName).TaxValue;
+                            rowElement.SetField<int>(this.ColumnNames.Tax, taxValue);
+                            rowElement.SetField<float>(this.ColumnNames.FinalPrice, productEnt.FinalPrice);
+                            rowElement.SetField<string>(this.ColumnNames.Barcode, productEnt.BarCode);
+                            rowElement.SetField<string>(this.ColumnNames.AdditionaBarcode, productEnt.BarCodeShort);
                             this.DataSoruce.Rows.Add(rowElement);
                         }
-
 
                     }
                     else
@@ -307,6 +213,61 @@ namespace NaturalnieApp.Forms
             }
         }
 
+        private void bSave_Click(object sender, EventArgs e)
+        {
+            if (this.DataSoruce.Rows.Count > 0)
+            {
+
+                DialogResult result = MessageBox.Show("Czy na pewno chcesz nadpisać produkty w kasie ELzab?", 
+                    "zmiana produtów", MessageBoxButtons.YesNo);
+                if(result == DialogResult.Yes)
+                {
+                    List<Product> productsToSave = new List<Product>();
+                    foreach(DataRow element in this.DataSoruce.Rows)
+                    {
+                        productsToSave.Add(this.databaseCommands.GetProductEntityByElzabId(element.Field<int>(this.ColumnNames.ProductNumber)));
+                    }
+
+                    this.ProductWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabProductData(this.databaseCommands, productsToSave, this.ProductWriting.DataToElzab);
+                    this.AdditionBarcodesWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabAddBarcodes(this.databaseCommands, productsToSave, this.AdditionBarcodesWriting.DataToElzab);
+                    
+                    CommandExecutionStatus status = this.ProductWriting.ExecuteCommand();
+                    if (status.ErrorNumber == 0 && status.ErrorText != null)
+                    {
+                        status = this.AdditionBarcodesWriting.ExecuteCommand();
+                        if (status.ErrorNumber == 0 && status.ErrorText != null)
+                        {
+                            MessageBox.Show("Zapisano!");
+                        }
+                        else
+                        {
+                            MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
+                            status.ErrorNumber, status.ErrorText),
+                            "Błąd komunikacji z kasą Elzab!",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
+                        status.ErrorNumber, status.ErrorText),
+                        "Błąd komunikacji z kasą Elzab!",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Anulowano..");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Nie wybrano produktów do zapisu!");
+            }
+
+        }
+
         private List<int> GenerateProductNumbers(int startIndex, int count)
         {
 
@@ -330,6 +291,7 @@ namespace NaturalnieApp.Forms
                 return null;
             }
         }
+
 
     }
 }

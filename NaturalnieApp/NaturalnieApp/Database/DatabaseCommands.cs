@@ -789,6 +789,23 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB Product entity by elzab Id
+        //====================================================================================================
+        public Product GetProductEntityByElzabId(int Id)
+        {
+            Product localProduct = new Product();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            where p.ElzabProductId == Id
+                            select p;
+
+                localProduct = query.SingleOrDefault();
+            }
+            return localProduct;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB Product entity
         //====================================================================================================
         public Product GetProductEntityByProductId(int productId)

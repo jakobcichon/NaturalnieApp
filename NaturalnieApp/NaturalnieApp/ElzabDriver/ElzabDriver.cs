@@ -304,6 +304,7 @@ namespace ElzabDriver
                     processStartInfo.FileName = "cmd.exe";
                     processStartInfo.Arguments = "/C " + command;
                     Process proc = Process.Start(processStartInfo);
+                    proc.WaitForExit();
                     retVal = true;
                 }
                 else

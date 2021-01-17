@@ -11,7 +11,7 @@ using static NaturalnieApp.Program;
 
 namespace NaturalnieApp.Forms
 {
-    public partial class ElzabSettings : Form
+    public partial class ElzabSettings : UserControl
     {
         private ConfigFileObject ConfigFileObjInst;
 

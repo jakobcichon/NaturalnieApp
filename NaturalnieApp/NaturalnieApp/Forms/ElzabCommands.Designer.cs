@@ -86,6 +86,7 @@
             this.bSave.TabIndex = 26;
             this.bSave.Text = "Zapisz";
             this.bSave.UseVisualStyleBackColor = false;
+            this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
             // bClose
             // 
@@ -132,6 +133,7 @@
             this.gbSynchronization.Controls.Add(this.bReadingFromCashRegister);
             this.gbSynchronization.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbSynchronization.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.gbSynchronization.ForeColor = System.Drawing.Color.Black;
             this.gbSynchronization.Location = new System.Drawing.Point(0, 30);
             this.gbSynchronization.Name = "gbSynchronization";
             this.gbSynchronization.Size = new System.Drawing.Size(920, 134);
@@ -151,7 +153,7 @@
             this.tpProductNameToEdit.Location = new System.Drawing.Point(171, 41);
             this.tpProductNameToEdit.Name = "tpProductNameToEdit";
             this.tpProductNameToEdit.RowCount = 1;
-            this.tpProductNameToEdit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
+            this.tpProductNameToEdit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
             this.tpProductNameToEdit.Size = new System.Drawing.Size(633, 50);
             this.tpProductNameToEdit.TabIndex = 28;
             // 
@@ -163,7 +165,7 @@
             this.tbStatus.Margin = new System.Windows.Forms.Padding(5);
             this.tbStatus.Multiline = true;
             this.tbStatus.Name = "tbStatus";
-            this.tbStatus.Size = new System.Drawing.Size(520, 43);
+            this.tbStatus.Size = new System.Drawing.Size(520, 44);
             this.tbStatus.TabIndex = 2;
             // 
             // lStatus
@@ -173,7 +175,7 @@
             this.lStatus.Location = new System.Drawing.Point(6, 6);
             this.lStatus.Margin = new System.Windows.Forms.Padding(5);
             this.lStatus.Name = "lStatus";
-            this.lStatus.Size = new System.Drawing.Size(90, 43);
+            this.lStatus.Size = new System.Drawing.Size(90, 44);
             this.lStatus.TabIndex = 1;
             this.lStatus.Text = "Status";
             this.lStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -217,6 +219,7 @@
             this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.ForeColor = System.Drawing.Color.Black;
             this.Name = "ElzabCommands";
             this.Size = new System.Drawing.Size(920, 690);
             this.pButtonsPanel.ResumeLayout(false);

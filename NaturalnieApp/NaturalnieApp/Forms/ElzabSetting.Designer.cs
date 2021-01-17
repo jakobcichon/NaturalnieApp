@@ -58,15 +58,15 @@ namespace NaturalnieApp.Forms
             this.rtbDatabaseName = new System.Windows.Forms.RichTextBox();
             this.lDatabaseName = new System.Windows.Forms.Label();
             this.gpConnectionSettings = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tpPortNumber = new System.Windows.Forms.TableLayoutPanel();
             this.lCOMPortNr = new System.Windows.Forms.Label();
             this.cCOMPorts = new System.Windows.Forms.ComboBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pSettingNr1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.gpConnectionSettings.SuspendLayout();
-            this.tpPortNumber.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tpPortNumber.SuspendLayout();
             this.SuspendLayout();
             // 
             // pSettingNr1
@@ -251,6 +251,24 @@ namespace NaturalnieApp.Forms
             this.gpConnectionSettings.TabStop = false;
             this.gpConnectionSettings.Text = "Ustawienie połączenia";
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 210F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.cBaudRate, 1, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(8, 81);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(450, 40);
+            this.tableLayoutPanel1.TabIndex = 20;
+            // 
             // tpPortNumber
             // 
             this.tpPortNumber.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
@@ -265,7 +283,7 @@ namespace NaturalnieApp.Forms
             this.tpPortNumber.Padding = new System.Windows.Forms.Padding(2);
             this.tpPortNumber.RowCount = 1;
             this.tpPortNumber.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tpPortNumber.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
+            this.tpPortNumber.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tpPortNumber.Size = new System.Drawing.Size(450, 40);
             this.tpPortNumber.TabIndex = 19;
             // 
@@ -294,31 +312,12 @@ namespace NaturalnieApp.Forms
             this.cCOMPorts.Size = new System.Drawing.Size(227, 28);
             this.cCOMPorts.TabIndex = 9;
             // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
-            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 210F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.cBaudRate, 1, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(8, 81);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(2);
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(450, 40);
-            this.tableLayoutPanel1.TabIndex = 20;
-            // 
             // ElzabSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(920, 690);
             this.Controls.Add(this.gpConnectionSettings);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.bTest);
@@ -328,15 +327,15 @@ namespace NaturalnieApp.Forms
             this.Controls.Add(this.pSettingNr1);
             this.Controls.Add(this.pHeader);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.ForeColor = System.Drawing.Color.Black;
             this.Name = "ElzabSettings";
-            this.Text = "Submenu_ElzabInfo";
+            this.Size = new System.Drawing.Size(920, 690);
             this.Load += new System.EventHandler(this.ElzabSettings_Load);
             this.pSettingNr1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.gpConnectionSettings.ResumeLayout(false);
-            this.tpPortNumber.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tpPortNumber.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

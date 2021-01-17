@@ -594,6 +594,7 @@ namespace NaturalnieApp
             return retList;
         }
 
+
         //Method used to convert from elzab price reprezentation to floating one
         public static float ConvertFromElzabPriceToFloat(string elzabPrice)
         {
