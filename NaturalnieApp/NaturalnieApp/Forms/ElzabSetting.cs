@@ -15,11 +15,13 @@ namespace NaturalnieApp.Forms
     {
         private ConfigFileObject ConfigFileObjInst;
 
+
         public ElzabSettings(ConfigFileObject conFileObj)
         {
             this.ConfigFileObjInst = conFileObj;
             InitializeComponent();
             UpdateView(conFileObj);
+
         }
 
         public void UpdateView(ConfigFileObject conFileObj)

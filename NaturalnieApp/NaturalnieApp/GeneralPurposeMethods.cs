@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.IO;
 using System.Data.OleDb;
 using System.Printing;
+using NaturalnieApp.Database;
+using ElzabDriver;
 
 namespace NaturalnieApp
 {
@@ -365,6 +367,19 @@ namespace NaturalnieApp
         }
 
         /// <summary>
+        /// Structure used to describe column names for cash register product fields
+        /// </summary>
+        public struct CashRegisterProductColumnNames
+        {
+            public string ProductNumber { get; set; }
+            public string ProductName { get; set; }
+            public string Tax { get; set; }
+            public string FinalPrice{ get; set; }
+            public string Barcode { get; set; }
+            public string AdditionaBarcode { get; set; }
+        }
+
+        /// <summary>
         /// Structure used to describe column names for inventory data export
         /// </summary>
         public struct InventoryExportColumnNames
@@ -383,20 +398,215 @@ namespace NaturalnieApp
         }
     }
 
-    public class ElzabRelated
+    static public class ElzabRelated
     {
         /// <summary>
-        /// Method used convert numeric tax value to it letter representation in cash register
+        /// Method used convert numeric tax value cash register group
         /// </summary>
         /// <param name="taxValue"></param>
-        /// <returns>Can retrun A-G</returns>
-        static public string TranslateTaxNumericValueToLetter(int taxValue)
+        /// <returns>Can retrun 1-7</returns>
+        static public string TranslateTaxValueToCashRegisterGroup(int taxValue)
         {
             if (taxValue == 0) return "4";
             else if (taxValue == 5) return "3";
             else if (taxValue == 8) return "2";
             else if (taxValue == 23) return "1";
             else return "";
+        }
+
+        /// <summary>
+        /// Method used convert cash register tax group to tax value
+        /// </summary>
+        /// <param name="taxGroup"></param>
+        /// <returns>Can retrun 0,5,8,23</returns>
+        static public string TranslateCashRegisterGroupToTaxValue(int taxGroup)
+        {
+            if (taxGroup == 4) return "0";
+            else if (taxGroup == 3) return "5";
+            else if (taxGroup == 2) return "8";
+            else if (taxGroup == 1) return "23";
+            else return "";
+        }
+
+        //Method used to parse from elzab data to database product object
+        static public List<Product> ParseElzabProductDataToDbObject(DatabaseCommands db, ElzabFileObject dataFromElzab)
+        {
+            //Return list
+            List<Product> retList = new List<Product>();
+            foreach (AttributeValueObject element in dataFromElzab.Element.ElementsList)
+            {
+                try
+                {
+                    //Local product
+                    Product product = new Product();
+                    product.ElzabProductName = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "naz_tow");
+                    product.ElzabProductId = Int32.Parse(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "nr_tow"));
+                    product.FinalPrice = ElzabRelated.ConvertFromElzabPriceToFloat(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "cena"));
+                    product.BarCode = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "bkod");
+                    string taxValue = ElzabRelated.TranslateCashRegisterGroupToTaxValue(
+                        Int32.Parse(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "ST")));
+                    product.TaxId = db.GetTaxIdByValue(Int32.Parse(taxValue));
+
+                    //AddProduct to the list
+                    retList.Add(product);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
+
+            return retList;
+        }
+
+        //Method used to parse from elzab additiona barcodes to database product object
+        static public List<Product> ParseElzabAddBarcodesToDbObject(DatabaseCommands db, ElzabFileObject dataFromElzab)
+        {
+            //Return list
+            List<Product> retList = new List<Product>();
+            foreach (AttributeValueObject element in dataFromElzab.Element.ElementsList)
+            {
+                try
+                {
+                    //Local product
+                    Product product = new Product();
+                    product.ElzabProductId = Int32.Parse(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "nr_tow"));
+                    product.BarCode = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "bbkod");
+                    
+                    //AddProduct to the list
+                    retList.Add(product);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
+
+            return retList;
+        }
+
+        //Method used to parse from database product object to elzab data
+        static public ElzabFileObject ParseDbObjectToElzabProductData(DatabaseCommands db, List<Product> dataToElzab, ElzabFileObject elzabTemplate)
+        {
+            //Return list
+            ElzabFileObject retData = elzabTemplate;
+            retData.Element.RemoveAllElements();
+
+            foreach (Product product in dataToElzab)
+            {
+                try
+                {
+                    List<string> attributesValues = new List<string>();
+                    //nr_tow
+                    attributesValues.Add(product.ElzabProductId.ToString());
+                    //naz_tow
+                    attributesValues.Add(product.ElzabProductName);
+                    //ST
+                    int taxValue = db.GetTaxByProductName(product.ProductName).TaxValue;
+                    attributesValues.Add(ElzabRelated.TranslateTaxValueToCashRegisterGroup(taxValue));
+                    //GR
+                    attributesValues.Add("1");
+                    //MP
+                    attributesValues.Add("2");
+                    //JM
+                    attributesValues.Add("1");
+                    //BL
+                    attributesValues.Add("0");
+                    //bkod
+                    attributesValues.Add(product.BarCode);
+                    //cena
+                    string formatedString = String.Format("{0:0.00}", product.FinalPrice);
+                    formatedString = formatedString.Replace(".", "");
+                    attributesValues.Add(formatedString);
+                    //OP
+                    attributesValues.Add("0");
+
+                    //Add data to elzab object
+                    retData.AddElement(product.ElzabProductId.ToString());
+                    retData.ChangeAllElementValues(product.ElzabProductId.ToString(), attributesValues.ToArray());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
+
+            return retData;
+        }
+
+        //Method used to parse from database product object to elzab additional barcodes data
+        static public ElzabFileObject ParseDbObjectToElzabAddBarcodes(DatabaseCommands db, List<Product> dataToElzab, ElzabFileObject elzabTemplate)
+        {
+            //Return list
+            ElzabFileObject retData = elzabTemplate;
+            retData.Element.RemoveAllElements();
+
+            foreach (Product product in dataToElzab)
+            {
+                try
+                {
+                    List<string> attributesValues = new List<string>();
+                    if (product.BarCode != product.BarCodeShort)
+                    {
+                        attributesValues.Add(product.ElzabProductId.ToString());
+                        attributesValues.Add(product.BarCodeShort);
+                        retData.AddElement(product.ElzabProductId.ToString());
+                        retData.ChangeAllElementValues(product.ElzabProductId.ToString(), attributesValues.ToArray());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
+
+            return retData;
+        }
+
+        //Method used to compare product data from DB with data from elzab
+        static public List<Product> ComapreDbProductDataWithElzab(List<Product> dataFromElzab, List<Product> dataFromDb)
+        {
+            //Return list of differences
+            List<Product> retList = new List<Product>();
+
+            foreach (Product element in dataFromDb)
+            {
+                //Find product with given id in cash register
+                Product product = dataFromElzab.Find(p => p.ElzabProductId == element.ElzabProductId);
+                if( product == null)
+                {
+                    retList.Add(element);
+                }
+                else
+                {
+                    if( (element.BarCode != product.BarCode) || (element.ElzabProductName != product.ElzabProductName) ||
+                        (element.TaxId != product.TaxId) || ( element.FinalPrice != product.FinalPrice))
+                    {
+                        retList.Add(element);
+                    }
+                }
+            }
+
+            return retList;
+        }
+
+        //Method used to convert from elzab price reprezentation to floating one
+        public static float ConvertFromElzabPriceToFloat(string elzabPrice)
+        {
+                string formatedString = elzabPrice.Insert(elzabPrice.Length - 2, ".");
+                float retVal = float.Parse(formatedString);
+                return retVal;
+        }
+        //Method used to convert from float to elzab price representation
+        public static string ConvertFromFloatToElzabPrice(float price)
+        {
+            string formatedString = String.Format("{0:0.00}", price);
+            formatedString = formatedString.Replace(".", "");
+            return formatedString;
         }
     }
 

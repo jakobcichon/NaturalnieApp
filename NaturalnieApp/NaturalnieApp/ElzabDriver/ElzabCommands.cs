@@ -8,12 +8,79 @@ namespace ElzabCommands
 {
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
+    public class ElzabCommand_ODBARKOD : InitStructure, IElzabCommandInterface
+    {
+        //Local variable
+        public ElzabFileObject DataFromElzab { get; set; }
+        public ElzabFileObject DataToElzab { get; set; }
+        public ElzabFileObject Report { get; set; }
+        public CommandExecutionStatus ReportStatus { get; set; }
+        public ElzabFileObject Config { get; set; }
+        private string CommandName { get { return "ODBARKOD"; } }
+        private string ElementAttributesPatternOutFile
+        {
+            get
+            {
+                return "nr_tow bkodd";
+            }
+        }
+        private string ElementAttributesPatternInFile
+        {
+            get
+            {
+                return "";
+            }
+        }
+        private string ElementAttributesPatternReportFile
+        {
+            get
+            {
+                return "";
+            }
+        }
+        private string ElementAttributesPatternConfigFile
+        {
+            get
+            {
+                return " device_number, connection_data, time_out";
+            }
+        }
+
+        //Class constructor
+        public ElzabCommand_ODBARKOD(string path, int cashRegisterID)
+        {
+            //Call method used to initialize base structure for data from Elzab
+            this.DataFromElzab = InitBaseStructuresDataFromElzab(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
+
+            //Call method used to initialize base structure for data to Elzab
+            this.DataToElzab = InitBaseStructuresDataToElzab(path, cashRegisterID, CommandName, ElementAttributesPatternInFile);
+
+            //Call method used to initialize base structure for Report data
+            this.Report = InitBaseStructuresReport(path, cashRegisterID, CommandName, ElementAttributesPatternReportFile);
+
+            //Call method used to initialize base structure for Config data
+            this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+        }
+
+        //Execute command
+        public CommandExecutionStatus ExecuteCommand()
+        {
+            CommandExecutionStatus status = base.ExecuteCommand(this);
+            return status;
+        }
+
+
+
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------
     public class ElzabCommand_ZDBARKOD : InitStructure, IElzabCommandInterface
     {
         //Local variable
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "ZDBARKOD"; } }
         private string ElementAttributesPatternOutFile
@@ -62,10 +129,10 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public bool ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand()
         {
-            base.ExecuteCommand(this);
-            return true;
+            CommandExecutionStatus status = base.ExecuteCommand(this);
+            return status;
         }
 
 
@@ -78,6 +145,7 @@ namespace ElzabCommands
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "OPSPRZED"; } }
         private string ElementAttributesPatternOutFile
@@ -127,10 +195,10 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public bool ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand()
         {
-            base.ExecuteCommand(this);
-            return true;
+            CommandExecutionStatus status = base.ExecuteCommand(this);
+            return status;
         }
 
     }
@@ -142,6 +210,7 @@ namespace ElzabCommands
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "KGRUPA"; } }
         private string ElementAttributesPatternOutFile
@@ -190,10 +259,10 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public bool ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand()
         {
-            base.ExecuteCommand(this);
-            return true;
+            CommandExecutionStatus status = base.ExecuteCommand(this);
+            return status;
         }
     }
 
@@ -204,6 +273,7 @@ namespace ElzabCommands
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "ZGRUPA"; } }
         private string ElementAttributesPatternOutFile
@@ -252,10 +322,10 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public bool ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand()
         {
-            base.ExecuteCommand(this);
-            return true;
+            CommandExecutionStatus status = base.ExecuteCommand(this);
+            return status;
         }
     }
 
@@ -266,6 +336,7 @@ namespace ElzabCommands
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "OGRUPA"; } }
         private string ElementAttributesPatternOutFile
@@ -314,10 +385,10 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public bool ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand()
         {
-            base.ExecuteCommand(this);
-            return true;
+            CommandExecutionStatus status = base.ExecuteCommand(this);
+            return status;
         }
 
     }
@@ -329,6 +400,7 @@ namespace ElzabCommands
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "OBAJTY"; } }
         private string ElementAttributesPatternOutFile
@@ -377,10 +449,10 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public bool ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand()
         {
-            base.ExecuteCommand(this);
-            return true;
+            CommandExecutionStatus status = base.ExecuteCommand(this);
+            return status;
         }
     }
 
@@ -391,6 +463,7 @@ namespace ElzabCommands
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "ZTOWAR"; } }
         private string ElementAttributesPatternInFile
@@ -429,10 +502,10 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public bool ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand()
         {
-            base.ExecuteCommand(this);
-            return true;
+            CommandExecutionStatus status = base.ExecuteCommand(this);
+            return status;
         }
     }
 
@@ -444,16 +517,14 @@ namespace ElzabCommands
         public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
+        public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "OTOWAR"; } }
         private string ElementAttributesPatternOutFile
         {
             get
             {
-                return "< plu_no > < art_name > < tax_rate_no > " +
-                        "< dept_no > < quantity_precision > < unit_no > < sale_bloc > < main_barcode > " +
-                        "< price > < is_pack > < disc_sur_bloc > < free_price_allow > < on_handy_list > " +
-                        "< scale_no > < last_sale_date_time >link_plu_no >";
+                return "nr_tow naz_tow ST GR MP JM BL bkod cena OP wyl_zrn wpr_ceny lista_podr nr_wag licz_starz";
             }
         }
         private string ElementAttributesPatternInFile
@@ -496,10 +567,10 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public bool ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand()
         {
-            base.ExecuteCommand(this);
-            return true;
+            CommandExecutionStatus status = base.ExecuteCommand(this);
+            return status;
         }
     }
 
@@ -515,7 +586,6 @@ namespace ElzabCommands
 
             return _dataReport;
         }
-
         protected ElzabFileObject InitBaseStructuresReport(string path, int cashRegisterID, string commandName,
         string elementAttributesPatternOutFile)
         {
@@ -552,9 +622,11 @@ namespace ElzabCommands
             return _dataToElzab;
         }
 
-
-        protected bool ExecuteCommand(IElzabCommandInterface commandInstance)
+        protected CommandExecutionStatus ExecuteCommand(IElzabCommandInterface commandInstance)
         {
+            //Local variables
+            CommandExecutionStatus reportStatus = new CommandExecutionStatus();
+
             //Override config file elements
             commandInstance.Config.AddElement();
             string connData = commandInstance.Config.GenerateConnectionData(GlobalVariables.ElzabPortCom, GlobalVariables.ElzabBaudRate);
@@ -574,9 +646,6 @@ namespace ElzabCommands
             //Check if report file exist.If yes, copy it to backup and remove orginal one.
             if (result) result = commandInstance.Report.BackupFileAndRemove();
 
-            //Check if report file exist.If yes, copy it to backup and remove orginal one.
-            if (result) result = commandInstance.Report.BackupFileAndRemove();
-
             //Generate raw data from object. This data will be used to write to file
             if (result) result = commandInstance.DataToElzab.GenerateRawDataFromObject();
 
@@ -585,8 +654,26 @@ namespace ElzabCommands
 
             //Execute command
             if (result) result = commandInstance.DataToElzab.RunCommand();
+            
+            if (result)
+            {
 
-            return result;
+                //Read report data
+                commandInstance.Report.GenerateObjectFromRawData();
+                reportStatus = commandInstance.Report.ParseReportFileToObject();
+
+                //Read data from object
+                if(reportStatus.ErrorNumber == 0)
+                {
+                    //Read data from files
+                    if (commandInstance.DataFromElzab != null)
+                    {
+                        commandInstance.DataFromElzab.GenerateObjectFromRawData();
+                    }
+                }
+            }
+
+            return reportStatus;
         }
     }
 

@@ -35,8 +35,9 @@ namespace NaturalnieApp.Forms
         public AddManufacturer addManufacturer { get; set; }
         public PrintFromStock printFromStock { get; set; }
         public ShowStock showStock { get; set; }
-
         public DymoSettings dymoSettings { get; set; }
+        public ElzabSettings cashRegisterSettings { get; set; }
+        public ElzabCommands cashRegisterCommands { get; set; }
 
 
         //Creat EF databse connection object
@@ -65,6 +66,8 @@ namespace NaturalnieApp.Forms
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.dymoSettings = new DymoSettings();
+            this.cashRegisterSettings = new ElzabSettings(this.ConfigFileOjbInst);
+            this.cashRegisterCommands = new ElzabCommands(ref this.databaseCommands);
         }
 
         //====================================================================================================
@@ -219,18 +222,42 @@ namespace NaturalnieApp.Forms
         private void bCashRegisterInfo_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
-            ElzabCommands frm = new ElzabCommands();
-            this.pContainer.Controls.Add(frm);
-            frm.Show();
+            try
+            {
+                this.pContainer.Controls.Add(this.cashRegisterCommands);
+                this.cashRegisterCommands.Select();
+                this.cashRegisterCommands.BringToFront();
+                this.cashRegisterCommands.Show();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.cashRegisterCommands = new ElzabCommands(ref this.databaseCommands);
+                this.pContainer.Controls.Add(this.cashRegisterCommands);
+                this.cashRegisterCommands.Select();
+                this.cashRegisterCommands.BringToFront();
+                this.cashRegisterCommands.Show();
+            }
 
         }
 
         private void bCashRegisterSettings_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
-            ElzabSettings frm = new ElzabSettings(ConfigFileOjbInst) { TopLevel = false, TopMost = true };
-            this.pContainer.Controls.Add(frm);
-            frm.Show();
+            try
+            {
+                this.pContainer.Controls.Add(this.cashRegisterSettings);
+                this.cashRegisterSettings.Select();
+                this.cashRegisterSettings.BringToFront();
+                this.cashRegisterSettings.Show();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.cashRegisterSettings = new ElzabSettings(this.ConfigFileOjbInst);
+                this.pContainer.Controls.Add(this.cashRegisterSettings);
+                this.cashRegisterSettings.Select();
+                this.cashRegisterSettings.BringToFront();
+                this.cashRegisterSettings.Show();
+            }
 
         }
         private void bCashRegister_Click(object sender, EventArgs e)

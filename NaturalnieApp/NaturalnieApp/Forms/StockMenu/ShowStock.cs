@@ -636,7 +636,7 @@ namespace NaturalnieApp.Forms
                     attributesValues.Add(product.ElzabProductName);
                     //ST
                     int taxValue = this.databaseCommands.GetTaxByProductName(product.ProductName).TaxValue;
-                    attributesValues.Add(ElzabRelated.TranslateTaxNumericValueToLetter(taxValue));
+                    attributesValues.Add(ElzabRelated.TranslateTaxValueToCashRegisterGroup(taxValue));
                     //GR
                     attributesValues.Add("1");
                     //MP
@@ -645,8 +645,7 @@ namespace NaturalnieApp.Forms
                     attributesValues.Add("1");
                     //BL
                     attributesValues.Add("0");
-                    //bkod
-                    attributesValues.Add(product.BarCode);
+                    //bkod 
                     //cena
                     string formatedString = String.Format("{0:0.00}", product.FinalPrice);
                     formatedString = formatedString.Replace(".", "");

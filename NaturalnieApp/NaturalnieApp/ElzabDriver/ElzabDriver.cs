@@ -26,6 +26,21 @@ namespace ElzabDriver
 
     }
 
+    public class CommandExecutionStatus
+    {
+        public int CashRegisterNumber { get; set; }
+        public int CashRegisterComPort { get; set; }
+        public int CashRegisterBaudRate { get; set; }
+        public int TimeoutValue { get; set; }
+        public DateTime ExecutionDateAndTime { get; set; }
+        public string CommandName { get; set; }
+        public string InFileName { get; set; }
+        public string OutFileName { get; set; }
+        public int ErrorNumber { get; set; }
+        public string ErrorText { get; set; }
+
+    }
+
     //-----------------------------------------------------------------------------------------------------------------------------------------
     public enum FileType
     {
@@ -47,7 +62,7 @@ namespace ElzabDriver
         private string CommandName { get; }
         private FileType TypeOfFile { get; }
         public ElzabCommHeaderObject Header { get; set; }
-        private ElzabCommElementObject Element { get; set; }
+        public ElzabCommElementObject Element { get; set; }
         private List<string> RawData { get; set; }
         private string AttributeNameAsID { get; set; }
         private int NrOfCharsInElementAttribute { get; set; }
@@ -184,12 +199,18 @@ namespace ElzabDriver
             //Read raw data from file
             this.RawData = ReadDataFromFile(this.Path, this.CommandName, this.TypeOfFile);
 
+            //Clear old data
+            this.Header.HeaderLine1.RemoveAllElements();
+            this.Header.HeaderLine2.RemoveAllElements();
+            this.Header.HeaderLine3.RemoveAllElements();
+            this.Element.RemoveAllElements();
+
             //Parse data
             //Define header pattern
             Regex regPatternHeader = new Regex(@"^" + this.HeaderMark + ".*$");
 
             //Define elements pattern
-            Regex regPatternElements = new Regex(@"^" + this.ElementMark + ".*$");
+            Regex regPatternElements = new Regex(@"^\" + this.ElementMark + ".*$");
 
             foreach (string element in this.RawData)
             {
@@ -284,7 +305,6 @@ namespace ElzabDriver
                     processStartInfo.Arguments = "/C " + command;
                     Process proc = Process.Start(processStartInfo);
                     retVal = true;
-                    ;
                 }
                 else
                 {
@@ -426,6 +446,20 @@ namespace ElzabDriver
             this.Element.AddElement(this.AttributeNameAsID, attributeIDValue);
         }
 
+        //Method used to get all elements values
+        public List<AttributeValueObject> GetAllElements()
+        {
+            //Local variables
+            List<AttributeValueObject> retList = new List<AttributeValueObject>();
+
+            foreach (var element in this.Element.ElementsList)
+            {
+                retList.Add(element);
+            }
+
+            return retList;
+        }
+
         private void WriteRawDataToFile(string path, string commandName, FileType typeOfFile, List<string> dataToWrite)
         {
             this.WriteDataToFile(path, this.BackupPath, commandName, typeOfFile, dataToWrite);
@@ -506,6 +540,44 @@ namespace ElzabDriver
             return result;
         }
 
+        //Method used to parse dataa from report file to object
+        internal CommandExecutionStatus ParseReportFileToObject()
+        {
+            //Local variable
+            CommandExecutionStatus commandStatus = new CommandExecutionStatus();
+
+            if (this.TypeOfFile == FileType.ReportFile)
+            {
+                try
+                {
+                    commandStatus.CashRegisterNumber = Int32.Parse(this.Header.HeaderLine1.GetAttributeValue(0, "cash_register_number"));
+
+                    string commData = this.Header.HeaderLine1.GetAttributeValue(0, "cash_register_comm_data");
+                    string[] commDataSplited = commData.Split(':');
+                    commandStatus.CashRegisterComPort = Int32.Parse(commDataSplited[0].Replace("COM", ""));
+                    commandStatus.CashRegisterBaudRate = Int32.Parse(commDataSplited[1]);
+
+                    commandStatus.TimeoutValue = Int32.Parse(this.Header.HeaderLine1.GetAttributeValue(0, "comm_timeout"));
+                    string dateTime = this.Header.HeaderLine1.GetAttributeValue(0, "execution_date") + " " + this.Header.HeaderLine1.GetAttributeValue(0, "execution_time");
+                    commandStatus.ExecutionDateAndTime = DateTime.Parse(dateTime);
+                    commandStatus.CommandName = this.Header.HeaderLine1.GetAttributeValue(0, "command_name");
+                    commandStatus.InFileName = this.Header.HeaderLine1.GetAttributeValue(0, "input_file_name");
+                    commandStatus.OutFileName = this.Header.HeaderLine1.GetAttributeValue(0, "output_file_name");
+
+                    commandStatus.ErrorNumber = Int32.Parse(this.Header.HeaderLine2.GetAttributeValue(0, "error_number"));
+                    commandStatus.ErrorText = this.Header.HeaderLine2.GetAttributeValue(0, "error_text");
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            return commandStatus;
+
+        }
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -683,23 +755,12 @@ namespace ElzabDriver
             try
             {
                 string fileName = Path.GetFileName(fullPath);
-                DialogResult result = MessageBox.Show(string.Format("Uwaga plik {0} zostanie przeniesiony, czy chcesz kontunuowac?", fileName), 
-                    "Usuwanie pliku", MessageBoxButtons.YesNo);
-                if(result == DialogResult.Yes)
+                bool backupDone = MakeFileBackup(fullPath, backupPath);
+                if (backupDone)
                 {
-                    bool backupDone = MakeFileBackup(fullPath, backupPath);
-                    if (backupDone)
-                    {
-                        File.Delete(fullPath);
-                        retVal = true;
-                    }
-
+                    File.Delete(fullPath);
+                    retVal = true;
                 }
-                else
-                {
-                    retVal = false;
-                }
-
             }
             catch (Exception ex)
             {
@@ -807,7 +868,6 @@ namespace ElzabDriver
                         string fullPathToCopy = Path.Combine(subDirName, Path.GetFileName(fullPath));
                         File.Copy(fullPath, fullPathToCopy);
                         retVal = true;
-                        MessageBox.Show("Kopia zapasowa została wykonana!");
                     }
                     else
                     {
@@ -988,8 +1048,8 @@ namespace ElzabDriver
         }
 
         //Define class elements
-        private List<string> AttributeName { get; set; }
-        private List<AttributeValueObject> ElementsList { get; set; }
+        public List<string> AttributeName { get; set; }
+        public List<AttributeValueObject> ElementsList { get; set; }
 
         public ElzabCommElementObject()
         { 
@@ -1022,6 +1082,18 @@ namespace ElzabDriver
             }
         }
 
+        //Method used to remove all elements
+        public void RemoveAllElements()
+        {
+
+            int count = this.ElementsList.Count();
+            for (int i = count -1; i >= 0; i--)
+            {
+                this.ElementsList.RemoveAt(i);
+            }
+
+        }
+
 
         //Method used to add element to the object
         public void AddElement(string attributeName, string attributeIDValue)
@@ -1044,8 +1116,6 @@ namespace ElzabDriver
             //Return last element ID
             return this.ElementsList.Count - 1;
         }
-        
-
 
         //Method used to find value of given element name. 
         //Only first occurence of element will be found.
@@ -1101,7 +1171,6 @@ namespace ElzabDriver
             return this.AttributeName[index];
 
         }
-
 
         //Method used to change value of given element ID
         //Only first occurence of element will be changed.
@@ -1197,7 +1266,6 @@ namespace ElzabDriver
             }
 
         }
-
 
         //Method used to delete given attribute and its value
         //Only first occurence of element will be deleted.

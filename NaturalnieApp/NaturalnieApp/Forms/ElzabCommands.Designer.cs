@@ -41,10 +41,12 @@
             this.lStatus = new System.Windows.Forms.Label();
             this.bReadingFromCashRegister = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.pButtonsPanel.SuspendLayout();
             this.pHeader.SuspendLayout();
             this.gbSynchronization.SuspendLayout();
             this.tpProductNameToEdit.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // pButtonsPanel
@@ -149,7 +151,7 @@
             this.tpProductNameToEdit.Location = new System.Drawing.Point(171, 41);
             this.tpProductNameToEdit.Name = "tpProductNameToEdit";
             this.tpProductNameToEdit.RowCount = 1;
-            this.tpProductNameToEdit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
+            this.tpProductNameToEdit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
             this.tpProductNameToEdit.Size = new System.Drawing.Size(633, 50);
             this.tpProductNameToEdit.TabIndex = 28;
             // 
@@ -161,7 +163,7 @@
             this.tbStatus.Margin = new System.Windows.Forms.Padding(5);
             this.tbStatus.Multiline = true;
             this.tbStatus.Name = "tbStatus";
-            this.tbStatus.Size = new System.Drawing.Size(520, 42);
+            this.tbStatus.Size = new System.Drawing.Size(520, 43);
             this.tbStatus.TabIndex = 2;
             // 
             // lStatus
@@ -171,7 +173,7 @@
             this.lStatus.Location = new System.Drawing.Point(6, 6);
             this.lStatus.Margin = new System.Windows.Forms.Padding(5);
             this.lStatus.Name = "lStatus";
-            this.lStatus.Size = new System.Drawing.Size(90, 42);
+            this.lStatus.Size = new System.Drawing.Size(90, 43);
             this.lStatus.TabIndex = 1;
             this.lStatus.Text = "Status";
             this.lStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -190,6 +192,19 @@
             this.bReadingFromCashRegister.UseVisualStyleBackColor = false;
             this.bReadingFromCashRegister.Click += new System.EventHandler(this.bReadingFromCashRegister_Click);
             // 
+            // advancedDataGridView1
+            // 
+            this.advancedDataGridView1.AllowUserToAddRows = false;
+            this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.advancedDataGridView1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
+            this.advancedDataGridView1.FilterAndSortEnabled = true;
+            this.advancedDataGridView1.Location = new System.Drawing.Point(0, 164);
+            this.advancedDataGridView1.Name = "advancedDataGridView1";
+            this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.advancedDataGridView1.Size = new System.Drawing.Size(920, 456);
+            this.advancedDataGridView1.TabIndex = 9;
+            // 
             // ElzabCommands
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -197,6 +212,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.Controls.Add(this.advancedDataGridView1);
             this.Controls.Add(this.gbSynchronization);
             this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
@@ -209,6 +225,7 @@
             this.gbSynchronization.ResumeLayout(false);
             this.tpProductNameToEdit.ResumeLayout(false);
             this.tpProductNameToEdit.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -228,5 +245,6 @@
         private System.Windows.Forms.TableLayoutPanel tpProductNameToEdit;
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.Label lStatus;
+        private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
     }
 }

@@ -12,8 +12,9 @@ namespace NaturalnieApp.ElzabDriver
         ElzabFileObject DataFromElzab { get; set; }
         ElzabFileObject DataToElzab { get; set; }
         ElzabFileObject Report { get; set; }
+        CommandExecutionStatus ReportStatus { get; set; }
         ElzabFileObject Config { get; set; }
-        bool ExecuteCommand();
+        CommandExecutionStatus ExecuteCommand();
 
     }
 }
