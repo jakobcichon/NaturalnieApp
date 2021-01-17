@@ -13,6 +13,7 @@ using System.Data;
 using NaturalnieApp.Dymo_Printer;
 using System.Diagnostics;
 using System.Reflection;
+using System.IO.Ports;
 
 namespace NaturalnieApp
 {
@@ -51,7 +52,18 @@ namespace NaturalnieApp
                 GlobalVariables.ElzabCommandPath = path;
                 GlobalVariables.ElzabCashRegisterId = 1;
                 GlobalVariables.ElzabBaudRate = Int32.Parse(ConfigFileInst.GetValueByVariableName("ElzabBaudRate"));
+
+                //Check available com ports
                 GlobalVariables.ElzabPortCom = Int32.Parse(ConfigFileInst.GetValueByVariableName("ElzabCOMPort"));
+                string[] ports = SerialPort.GetPortNames();
+                bool result = false;
+                foreach (string port in ports)
+                {
+                    int portInt = Int32.Parse(port.Replace("COM", ""));
+                    if (GlobalVariables.ElzabPortCom == portInt) result = true;
+                }
+                if (!result && ports.Count() > 0) GlobalVariables.ElzabPortCom = Int32.Parse(ports[0].Replace("COM", ""));
+
                 GlobalVariables.LabelPath = ConfigFileInst.GetValueByVariableName("LabelPath");
                 GlobalVariables.SqlServerName = ConfigFileInst.GetValueByVariableName("DatabaseName");
                 GlobalVariables.ConnectionString = string.Format("server = {0}; port = 3306; database = shop;" +

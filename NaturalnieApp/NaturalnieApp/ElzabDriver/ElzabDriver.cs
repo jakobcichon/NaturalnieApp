@@ -331,7 +331,7 @@ namespace ElzabDriver
             string dummyString = "";
             bool returnValue = false;
 
-            try
+           try
             {
                 if (this.TypeOfFile != FileType.ConfigFile)
                 {
@@ -343,8 +343,17 @@ namespace ElzabDriver
                 //Convert element object to string list
                 foreach (AttributeValueObject obj in this.Element)
                 {
-
-                    int i = 1;
+                    //Get index of product name
+                    int indexOfProducNameAttribute = -1;
+                    foreach (string attributeName in this.Element.AttributeName)
+                    {
+                        if (attributeName == "naz_tow")
+                        {
+                            indexOfProducNameAttribute = this.Element.AttributeName.IndexOf("naz_tow");
+                            break;
+                        }
+                    }
+                    int i = 0;
                     //Loop through all element attributes values. Add Element mark and attribute separator to it
                     string elementAllValues = this.ElementMark;
                     foreach (string attributeValue in obj)
@@ -356,7 +365,11 @@ namespace ElzabDriver
                         else
                         {
                             //elementAllValues += attributeValue + this.AttributesSeparator;
-                            dummyString = GenerateStringWithGivenChar(this.NrOfCharsInElementAttribute - attributeValue.Length, ' ');
+                            if (indexOfProducNameAttribute > -1 && i == indexOfProducNameAttribute)
+                            {
+                                dummyString = GenerateStringWithGivenChar(this.NrOfCharsInElementAttribute - attributeValue.Length, ' ');
+                            }
+                            else dummyString = "";
                             elementAllValues += attributeValue + dummyString + this.AttributesSeparator;
                         }
                         i++;
@@ -704,13 +717,28 @@ namespace ElzabDriver
             return retVal;
         }
 
-        public static string fnStringConverterCodepage(string sText, string sCodepageIn = "UTF-8", string sCodepageOut = "UTF-8")
+        public static string fnStringConverterCodepage(string sText, string sCodepageIn = "ISO-8859-8", string sCodepageOut = "UTF-8")
         {
+            /*
             string myString = sText;
-            byte[] bytes = Encoding.UTF32.GetBytes(myString);
-            bytes = Encoding.Convert(Encoding.UTF32, Encoding.UTF8, bytes);
+            byte[] bytes = Encoding.UTF8.GetBytes(myString);
+            //bytes = Encoding.Convert(Encoding.UTF32, Encoding.UTF8, bytes);
+            //bytes = Encoding.Convert(Encoding.UTF32, Encoding.GetEncoding("ibm852"), bytes);
             myString = Encoding.UTF8.GetString(bytes);
             return myString;
+            */
+            string sResultado = string.Empty;
+            try
+            {
+                byte[] tempBytes;
+                tempBytes = System.Text.Encoding.GetEncoding(sCodepageIn).GetBytes(sText);
+                sResultado = System.Text.Encoding.GetEncoding(sCodepageOut).GetString(tempBytes);
+            }
+            catch (Exception)
+            {
+                sResultado = "";
+            }
+            return sResultado;
         }
 
         //Method use to create input or config file
@@ -1135,6 +1163,7 @@ namespace ElzabDriver
                 {
                     index = i;
                     findingResult = true;
+                    break;
                 }
             }
 

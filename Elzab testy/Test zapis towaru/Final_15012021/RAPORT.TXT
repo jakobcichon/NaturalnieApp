@@ -1,11 +1,11 @@
-#1	COM6:57600:MUX0:1	3	2021.01.15	21:51	ZDBarkod	WIN 13.32.2020	ZDBARKODIN.TXT
-#0	; akcja zakonczona sukcesem
+#1	COM6:57600:MUX0:1	3	2021.01.17	22:32	ZTowar	WIN 13.32.2020	ZTOWARIN.TXT
+#11	; niepoprawny format pliku wejsciowego (ZTOWARIN.TXT)
 #Jota E 4095 PLU II gen. ver. 01 (identyfikator odczytany z urzadzenia i pliku ECRTBUF.TXT)
-$2437
-$2433
+$4
+$1
 $0
-$2437
+$4
 $0
 $00000	00000
-$2437	0	
+$4	2	$300	YOPE Mydło Dziecięcie Antyb.      	1	1	2	1	0	5900168901490	2190	0
 $0000

@@ -441,7 +441,8 @@ namespace NaturalnieApp
                     Product product = new Product();
                     product.ElzabProductName = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "naz_tow");
                     product.ElzabProductId = Int32.Parse(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "nr_tow"));
-                    product.FinalPrice = ElzabRelated.ConvertFromElzabPriceToFloat(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "cena"));
+                    string price = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "cena");
+                    product.FinalPrice = ElzabRelated.ConvertFromElzabPriceToFloat(price);
                     product.BarCode = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "bkod");
                     string taxValue = ElzabRelated.TranslateCashRegisterGroupToTaxValue(
                         Int32.Parse(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "ST")));
@@ -452,6 +453,7 @@ namespace NaturalnieApp
                 }
                 catch(Exception ex)
                 {
+                    Product test = retList.Last();
                     MessageBox.Show(ex.Message);
                 }
 
@@ -583,7 +585,9 @@ namespace NaturalnieApp
                 }
                 else
                 {
-                    if( (element.BarCode != product.BarCode) || (element.ElzabProductName != product.ElzabProductName) ||
+                    //Convert without polish sings
+                    string localProductName = fnStringConverterCodepage(element.ElzabProductName.ToUpper());
+                    if ( (element.BarCode != product.BarCode) || (localProductName != product.ElzabProductName) ||
                         (element.TaxId != product.TaxId) || ( element.FinalPrice != product.FinalPrice))
                     {
                         retList.Add(element);
@@ -593,14 +597,45 @@ namespace NaturalnieApp
 
             return retList;
         }
+        public static string fnStringConverterCodepage(string sText, string sCodepageIn = "ISO-8859-8", string sCodepageOut = "UTF-8")
+        {
+            string sResultado = string.Empty;
+            try
+            {
+                byte[] tempBytes;
+                tempBytes = System.Text.Encoding.GetEncoding(sCodepageIn).GetBytes(sText);
+                sResultado = System.Text.Encoding.GetEncoding(sCodepageOut).GetString(tempBytes);
+            }
+            catch (Exception)
+            {
+                sResultado = "";
+            }
+            return sResultado;
+        }
 
 
         //Method used to convert from elzab price reprezentation to floating one
         public static float ConvertFromElzabPriceToFloat(string elzabPrice)
         {
-                string formatedString = elzabPrice.Insert(elzabPrice.Length - 2, ".");
-                float retVal = float.Parse(formatedString);
-                return retVal;
+            float retVal;
+            string localPrice;
+            if (elzabPrice.Length == 1)
+            {
+                localPrice = "00" + elzabPrice;
+                ;
+            }
+            else if (elzabPrice.Length == 2)
+            {
+                localPrice = "0" + elzabPrice;
+                ;
+            }
+            else localPrice = elzabPrice;
+
+            string formatedString = localPrice.Insert(localPrice.Length - 2, ".");
+            retVal = float.Parse(formatedString);
+
+            return retVal;
+
         }
         //Method used to convert from float to elzab price representation
         public static string ConvertFromFloatToElzabPrice(float price)

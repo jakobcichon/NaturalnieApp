@@ -129,6 +129,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3E4B7AD331604E69AA082E3122A1EC85"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3EB2A545863E46CFA2A1BC42D98F4401"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -143,6 +149,12 @@
         {
         "MsmKey" = "8:_40BF86212F821B1F0200E0E9AAA7C3C1"
         "OwnerKey" = "8:_C3062B90E5FE4389922B8B7AF6F80198"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_444BC746B3B348D08E00BACDA2B9253A"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -280,13 +292,13 @@
         "Entry"
         {
         "MsmKey" = "8:_7860A3647C1049BCA21299B5B12F04CA"
-        "OwnerKey" = "8:_3D3D65E9BBB44DEE941C5D1EEA261BB3"
+        "OwnerKey" = "8:_5BAC9B8E0A3A456E909AC53EB70B774C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_7860A3647C1049BCA21299B5B12F04CA"
-        "OwnerKey" = "8:_5BAC9B8E0A3A456E909AC53EB70B774C"
+        "OwnerKey" = "8:_3D3D65E9BBB44DEE941C5D1EEA261BB3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -423,6 +435,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_8FAFE2D95046454B899C89852095BBFC"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_8FE02318626ABF8DF97E6CD36D18430D"
         "OwnerKey" = "8:_C3062B90E5FE4389922B8B7AF6F80198"
         "MsmSig" = "8:_UNDEFINED"
@@ -490,6 +508,12 @@
         "Entry"
         {
         "MsmKey" = "8:_A87108DCA44A41458EA0815B39361B06"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B04E7E9D86674BA685F95553B7C32B25"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -694,13 +718,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5BAC9B8E0A3A456E909AC53EB70B774C"
+        "OwnerKey" = "8:_FFFE264690DA4E1C822F3731CDDD7CE3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FFFE264690DA4E1C822F3731CDDD7CE3"
+        "OwnerKey" = "8:_A87108DCA44A41458EA0815B39361B06"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5BAC9B8E0A3A456E909AC53EB70B774C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -713,12 +743,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_3D3D65E9BBB44DEE941C5D1EEA261BB3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A87108DCA44A41458EA0815B39361B06"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1280,6 +1304,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3E4B7AD331604E69AA082E3122A1EC85"
+            {
+            "SourcePath" = "8:..\\..\\..\\Elzab commands\\ZTowar.exe"
+            "TargetName" = "8:ZTowar.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_E00C9A9446E64DAFBDB5947D347F56DA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3EB2A545863E46CFA2A1BC42D98F4401"
             {
             "SourcePath" = "8:..\\..\\NaturalnieApp\\Libs\\Dymo\\libdymobarcode.dll"
@@ -1360,6 +1404,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_444BC746B3B348D08E00BACDA2B9253A"
+            {
+            "SourcePath" = "8:..\\..\\..\\Elzab commands\\ZDBarkod.exe"
+            "TargetName" = "8:ZDBarkod.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_E00C9A9446E64DAFBDB5947D347F56DA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4D2A0AC57B73DFE3CD7AE3785A5899A6"
@@ -1909,6 +1973,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8FAFE2D95046454B899C89852095BBFC"
+            {
+            "SourcePath" = "8:..\\..\\..\\Elzab commands\\OTowar.exe"
+            "TargetName" = "8:OTowar.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_E00C9A9446E64DAFBDB5947D347F56DA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8FE02318626ABF8DF97E6CD36D18430D"
             {
             "AssemblyRegister" = "3:1"
@@ -2203,6 +2287,26 @@
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E24759E323734665A46817CB542439EE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B04E7E9D86674BA685F95553B7C32B25"
+            {
+            "SourcePath" = "8:..\\..\\..\\Elzab commands\\ODBarkod.exe"
+            "TargetName" = "8:ODBarkod.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_E00C9A9446E64DAFBDB5947D347F56DA"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2654,6 +2758,17 @@
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
                     "Property" = "8:_9D32D6EF457242018B8A856464E87B87"
+                        "Folders"
+                        {
+                        }
+                    }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_E00C9A9446E64DAFBDB5947D347F56DA"
+                    {
+                    "Name" = "8:Elzab commands"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_8BED7D676A48482D97C7AE24DE0908BD"
                         "Folders"
                         {
                         }
@@ -3248,7 +3363,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C3062B90E5FE4389922B8B7AF6F80198"
             {
-            "SourcePath" = "8:..\\..\\NaturalnieApp\\obj\\Release\\NaturalnieApp.exe"
+            "SourcePath" = "8:..\\..\\NaturalnieApp\\obj\\Debug\\NaturalnieApp.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5F662A595D04A2593D09418C621B2E2"

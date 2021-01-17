@@ -126,39 +126,47 @@ namespace NaturalnieApp.Forms
         {
             try
             {
+                this.DataSoruce.Clear();
 
                 //ChangeStatus
                 this.StatusBox.Text = "Generowanie listy produktów";
                 //Generate all product numbers
                 List<int> productToReadList = GenerateProductNumbers(1, 4095);
                 int i = 0;
-                foreach(int element in productToReadList)
+                this.AllProductsReading.DataToElzab.Element.RemoveAllElements();
+                foreach (int element in productToReadList)
                 {
                     this.AllProductsReading.DataToElzab.AddElement(element.ToString());
                 }
 
                 //ChangeStatus
                 this.StatusBox.Text = "Odczyt produktów z kasy";
+                this.StatusBox.Update();
                 CommandExecutionStatus status = this.AllProductsReading.ExecuteCommand();
 
 
                 if (status.ErrorNumber == 0 && status.ErrorText != null)
                 {
                     this.StatusBox.Text = "Parsowanie odczytanych produktów";
+                    this.StatusBox.Update();
                     List<Product> allProductFromElzab = ElzabRelated.ParseElzabProductDataToDbObject(this.databaseCommands, this.AllProductsReading.DataFromElzab);
 
                     this.StatusBox.Text = "Odczyt dodatkowych kodów z kasy";
+                    this.StatusBox.Update();
                     status = this.AdditionBarcodesReading.ExecuteCommand();
                     if (status.ErrorNumber == 0 && status.ErrorText != null)
                     {
                         this.StatusBox.Text = "Parsowanie odczytanych produktów";
+                        this.StatusBox.Update();
                         List<Product> allAdditionaBarcodesFromElzab = ElzabRelated.ParseElzabAddBarcodesToDbObject(this.databaseCommands, this.AllProductsReading.DataFromElzab);
 
                         //Compare db product data with Elzab data
                         //Get all products from DB
                         this.StatusBox.Text = "Pobieranie nazw wszystkich produktów z bazy danych";
+                        this.StatusBox.Update();
                         List<string> nameList = this.databaseCommands.GetProductsNameList();
                         this.StatusBox.Text = "Pobieranie z bazy danych informacji o wszystkich produktach";
+                        this.StatusBox.Update();
                         List<Product> dbProductList = new List<Product>();
                         foreach (string productName in nameList)
                         {
@@ -166,9 +174,11 @@ namespace NaturalnieApp.Forms
                         }
 
                         this.StatusBox.Text = "Porównywanie informacji z bazy danych i kasy fiskalnej";
+                        this.StatusBox.Update();
                         List<Product> diffProductList = ElzabRelated.ComapreDbProductDataWithElzab(allProductFromElzab, dbProductList);
 
                         this.StatusBox.Text = "Przygotowanie danych do wyświetlenia";
+                        this.StatusBox.Update();
                         //Show on the list
                         foreach (Product productEnt in diffProductList)
                         {
