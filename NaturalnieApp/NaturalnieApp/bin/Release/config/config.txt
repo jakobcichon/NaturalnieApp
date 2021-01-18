@@ -1,20 +1,24 @@
 \\Elzab command path
-#ElzabCommandPath = C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Release\config\
+#ElzabCommandPath = C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Release\Elzab commands\
 
 
 \\Elzab default COM port
-#ElzabCOMPort = COM3
+#ElzabCOMPort = 3
 
 
 \\Elzab default baud rate
-#ElzabBaudRate = 115200
+#ElzabBaudRate = 57600
 
 
 \\Test database name
-#DatabseName = TestDatabaseName
+#DatabaseName = localhost
 
 
 \\Path to the label file
-#LabelPath = C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Release\label\BarcodeFinal.label
+#LabelPath = C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Release\Labels\default label.label
+
+
+\\Path to the librarys files
+#LibraryPath = C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Release\Libs\
 
 

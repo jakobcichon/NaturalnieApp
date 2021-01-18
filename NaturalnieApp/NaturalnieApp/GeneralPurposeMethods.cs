@@ -360,6 +360,9 @@ namespace NaturalnieApp
             public string No { get; set; }
             public string ProductName { get; set; }
             public string ElzabNumber { get; set; }
+            public string PriceNet { get; set; }
+            public string FinalPrice { get; set; }
+            public string Tax { get; set; }
             public string AddDate { get; set; }
             public string ExpirenceDate { get; set; }
             public string NumberOfPieces { get; set; }
@@ -474,7 +477,7 @@ namespace NaturalnieApp
                     //Local product
                     Product product = new Product();
                     product.ElzabProductId = Int32.Parse(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "nr_tow"));
-                    product.BarCode = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "bbkod");
+                    product.BarCodeShort = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "bkodd");
                     
                     //AddProduct to the list
                     retList.Add(product);
@@ -585,35 +588,37 @@ namespace NaturalnieApp
                 }
                 else
                 {
-                    //Convert without polish sings
-                    string localProductName = fnStringConverterCodepage(element.ElzabProductName.ToUpper());
-                    if ( (element.BarCode != product.BarCode) || (localProductName != product.ElzabProductName) ||
-                        (element.TaxId != product.TaxId) || ( element.FinalPrice != product.FinalPrice))
+                    //If barcode is short, Elzab will return leadings zeros. That it was conversion must be done
+                    string elzabBarcodeString, dbBarcodeString;
+
+                    if ((element.BarCode != product.BarCode))
                     {
+                        Int64 dbBarcode, elzabBarcode;
+                        dbBarcode = Int64.Parse(element.BarCode);
+                        elzabBarcode = Int64.Parse(product.BarCode);
+                        elzabBarcodeString = elzabBarcode.ToString();
+                        dbBarcodeString = dbBarcode.ToString();
+                    }
+                    else
+                    {
+                        elzabBarcodeString = product.BarCode;
+                        dbBarcodeString = element.BarCode;
+                    }
+                    //Convert without polish sings
+                    string localProductNameFromDb = EncodingConversionRelated.StringConverterCodepage(CleanInput(element.ElzabProductName)).ToUpper().Replace("-", "");
+                    string localProductNameFromElzab = EncodingConversionRelated.StringConverterCodepage(CleanInput(product.ElzabProductName));
+                    if ((elzabBarcodeString != dbBarcodeString) || (localProductNameFromDb != localProductNameFromElzab) ||
+                        (element.TaxId != product.TaxId) || (element.FinalPrice != product.FinalPrice))
+                    {
+
                         retList.Add(element);
+
                     }
                 }
             }
 
             return retList;
         }
-        public static string fnStringConverterCodepage(string sText, string sCodepageIn = "ISO-8859-8", string sCodepageOut = "UTF-8")
-        {
-            string sResultado = string.Empty;
-            try
-            {
-                byte[] tempBytes;
-                tempBytes = System.Text.Encoding.GetEncoding(sCodepageIn).GetBytes(sText);
-                sResultado = System.Text.Encoding.GetEncoding(sCodepageOut).GetString(tempBytes);
-            }
-            catch (Exception)
-            {
-                sResultado = "";
-            }
-            return sResultado;
-        }
-
-
         //Method used to convert from elzab price reprezentation to floating one
         public static float ConvertFromElzabPriceToFloat(string elzabPrice)
         {
@@ -644,6 +649,23 @@ namespace NaturalnieApp
             formatedString = formatedString.Replace(".", "");
             return formatedString;
         }
+
+        //Method used to clean string from any of special character
+        static string CleanInput(string strIn)
+        {
+            // Replace invalid characters with empty strings.
+            try
+            {
+                return Regex.Replace(strIn, @"[^\w\.@-]", "",
+                                     RegexOptions.None, TimeSpan.FromSeconds(1.5));
+            }
+            // If we timeout when replacing invalid characters,
+            // we should return Empty.
+            catch (RegexMatchTimeoutException)
+            {
+                return String.Empty;
+            }
+        }
     }
 
     public class WinFormRelated
@@ -651,6 +673,41 @@ namespace NaturalnieApp
         static public void FilterProductByManufacturer(string manufacturerName, ref ComboBox ProductComboBox)
         {
             //Get from DB product list for given manufacturer
+        }
+    }
+
+    static public class EncodingConversionRelated
+    {
+        public static string StringConverterCodepage(string sText, string sCodepageIn = "ISO-8859-8", string sCodepageOut = "UTF-8")
+        {
+            string sResultado = string.Empty;
+            try
+            {
+                byte[] tempBytes;
+                tempBytes = Encoding.GetEncoding(sCodepageIn).GetBytes(sText);
+                sResultado = Encoding.GetEncoding(sCodepageOut).GetString(tempBytes);
+            }
+            catch (Exception)
+            {
+                sResultado = "";
+            }
+            return sResultado;
+        }
+        public static string ConvertFromUTF32ToAnsi(string sText)
+        {
+            string sResult = string.Empty;
+            try
+            {
+                byte[] tempBytes;
+                tempBytes = Encoding.UTF32.GetBytes(sText);
+                tempBytes = Encoding.Convert(Encoding.UTF32, Encoding.Default, tempBytes);
+                sResult = Encoding.Default.GetString(tempBytes);
+            }
+            catch (Exception)
+            {
+                sResult= "";
+            }
+            return sResult;
         }
     }
 

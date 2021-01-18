@@ -110,29 +110,48 @@ namespace NaturalnieApp.Forms
         {
             try
             {
-                //Update value of COM port
-                ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", cCOMPorts.SelectedItem.ToString());
-                GlobalVariables.ElzabPortCom = Int32.Parse(cCOMPorts.SelectedItem.ToString());
+                if (AllObjectSelected())
+                {
+                    //Update value of COM port
+                    string comPort = cCOMPorts.SelectedItem.ToString().Replace("COM", "");
+                    ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", comPort);
+                    GlobalVariables.ElzabPortCom = Int32.Parse(comPort);
 
-                //Update value of Baud rate
-                ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", cBaudRate.SelectedItem.ToString());
-                GlobalVariables.ElzabPortCom = Int32.Parse(cBaudRate.SelectedItem.ToString());
+                    //Update value of Baud rate
+                    ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", cBaudRate.SelectedItem.ToString());
+                    GlobalVariables.ElzabPortCom = Int32.Parse(cBaudRate.SelectedItem.ToString());
 
-                //Update value of path
-                ConfigFileObjInst.ChangeVariableValue("ElzabCommandPath", tbElzabPath.Text.ToString());
-                GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();
+                    //Update value of path
+                    ConfigFileObjInst.ChangeVariableValue("ElzabCommandPath", tbElzabPath.Text.ToString());
+                    GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();
 
-                //Update database name
-                ConfigFileObjInst.ChangeVariableValue("DatabaseName", rtbDatabaseName.Text.ToString());
-                GlobalVariables.SqlServerName = rtbDatabaseName.Text.ToString();
+                    //Update database name
+                    ConfigFileObjInst.ChangeVariableValue("DatabaseName", rtbDatabaseName.Text.ToString());
+                    GlobalVariables.SqlServerName = rtbDatabaseName.Text.ToString();
 
-                ConfigFileObjInst.SaveData();
+                    ConfigFileObjInst.SaveData();
+
+                    MessageBox.Show("Zapisano zmiany!");
+                }
+                
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
 
+        }
+
+        private bool AllObjectSelected()
+        {
+            bool retVal = false;
+            if (cCOMPorts.SelectedIndex != -1 && cBaudRate.SelectedIndex != -1 && tbElzabPath.Text != "" && rtbDatabaseName.Text != "")
+            {
+                retVal = true;
+            }
+
+            return retVal;
         }
 
         private void bDefaults_Click(object sender, EventArgs e)
@@ -153,6 +172,37 @@ namespace NaturalnieApp.Forms
 
                 //Show message
                 MessageBox.Show("Akcja zakończona sukcesem!");
+            }
+        }
+
+        private void bApply_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (AllObjectSelected())
+                {
+                    //Update value of COM port
+                    string comPort = cCOMPorts.SelectedItem.ToString().Replace("COM", "");
+                    GlobalVariables.ElzabPortCom = Int32.Parse(comPort);
+
+                    //Update value of Baud rate
+                    GlobalVariables.ElzabPortCom = Int32.Parse(cBaudRate.SelectedItem.ToString());
+
+                    //Update value of path
+                    GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();
+
+                    //Update database name
+                    GlobalVariables.SqlServerName = rtbDatabaseName.Text.ToString();
+
+                    MessageBox.Show("Zastosowano zmiany!");
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

@@ -134,6 +134,9 @@ namespace NaturalnieApp.Forms
                 List<int> productToReadList = GenerateProductNumbers(1, 4095);
                 int i = 0;
                 this.AllProductsReading.DataToElzab.Element.RemoveAllElements();
+                this.AllProductsReading.DataFromElzab.Element.RemoveAllElements();
+                this.AdditionBarcodesReading.DataFromElzab.Element.RemoveAllElements();
+
                 foreach (int element in productToReadList)
                 {
                     this.AllProductsReading.DataToElzab.AddElement(element.ToString());
@@ -158,7 +161,7 @@ namespace NaturalnieApp.Forms
                     {
                         this.StatusBox.Text = "Parsowanie odczytanych produktów";
                         this.StatusBox.Update();
-                        List<Product> allAdditionaBarcodesFromElzab = ElzabRelated.ParseElzabAddBarcodesToDbObject(this.databaseCommands, this.AllProductsReading.DataFromElzab);
+                        List<Product> allAdditionaBarcodesFromElzab = ElzabRelated.ParseElzabAddBarcodesToDbObject(this.databaseCommands, this.AdditionBarcodesReading.DataFromElzab);
 
                         //Compare db product data with Elzab data
                         //Get all products from DB
@@ -233,7 +236,7 @@ namespace NaturalnieApp.Forms
                 if(result == DialogResult.Yes)
                 {
                     List<Product> productsToSave = new List<Product>();
-                    foreach(DataRow element in this.DataSoruce.Rows)
+                    foreach (DataRow element in this.DataSoruce.Rows)
                     {
                         productsToSave.Add(this.databaseCommands.GetProductEntityByElzabId(element.Field<int>(this.ColumnNames.ProductNumber)));
                     }

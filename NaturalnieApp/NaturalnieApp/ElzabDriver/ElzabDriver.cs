@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Text;
 using static NaturalnieApp.Program;
+using NaturalnieApp;
 
 namespace ElzabDriver
 {
@@ -115,19 +116,22 @@ namespace ElzabDriver
             }
 
             //Create instance of element object and initialize it
-            this.Element = new ElzabCommElementObject();
-            if (elementAttributesPattern == "") elementAttributesPattern = "< empty_element >";
-            this.Element.AddAttributesFromList(ParsePattern(elementAttributesPattern));
+            if (elementAttributesPattern != "")
+            {
+                this.Element = new ElzabCommElementObject();
+                //if (elementAttributesPattern == "") elementAttributesPattern = "< empty_element >";
+                this.Element.AddAttributesFromList(ParsePattern(elementAttributesPattern));
 
-            //attributeNameAsID specify with attribute must be consider as ID number of element
-            //If attributeNameAsID was not secified, it will take attribute name from index 0
-            if (attributeNameAsID == "")
-            {
-                this.AttributeNameAsID = this.Element.GetAttributNameOfIndex(0);
-            }
-            else
-            {
-                this.AttributeNameAsID = attributeNameAsID;
+                //attributeNameAsID specify with attribute must be consider as ID number of element
+                //If attributeNameAsID was not secified, it will take attribute name from index 0
+                if (attributeNameAsID == "")
+                {
+                    this.AttributeNameAsID = this.Element.GetAttributNameOfIndex(0);
+                }
+                else
+                {
+                    this.AttributeNameAsID = attributeNameAsID;
+                }
             }
 
             //nrOfCharsInElementAttribute specify number of char of each element attribute
@@ -203,7 +207,7 @@ namespace ElzabDriver
             this.Header.HeaderLine1.RemoveAllElements();
             this.Header.HeaderLine2.RemoveAllElements();
             this.Header.HeaderLine3.RemoveAllElements();
-            this.Element.RemoveAllElements();
+            if (this.Element != null) this.Element.RemoveAllElements();
 
             //Parse data
             //Define header pattern
@@ -214,7 +218,6 @@ namespace ElzabDriver
 
             foreach (string element in this.RawData)
             {
-
 
                 //Parse header
                 //Check if current element match to the pattern
@@ -245,19 +248,23 @@ namespace ElzabDriver
                     i++;
                 }
 
-                //Parse elements
-                if (regPatternElements.IsMatch(element))
+                if (this.Element != null)
                 {
-                    //Local variable
-                    string clearedElement;
+                    //Parse elements
+                    if (regPatternElements.IsMatch(element))
+                    {
+                        //Local variable
+                        string clearedElement;
 
-                    //Remove mark sign
-                    clearedElement = element.Replace(this.ElementMark.Replace("\\",""), "");
+                        //Remove mark sign
+                        clearedElement = element.Replace(this.ElementMark.Replace("\\", ""), "");
 
-                    //Read every element and add it to an object
-                    this.Element.AddElement();
-                    this.Element.StringListToAttributesValue(this.Element.GetLastElementID(), ParseStringToList(clearedElement, this.AttributesSeparator));
+                        //Read every element and add it to an object
+                        this.Element.AddElement();
+                        this.Element.StringListToAttributesValue(this.Element.GetLastElementID(), ParseStringToList(clearedElement, this.AttributesSeparator));
+                    }
                 }
+
             }
         }
 
@@ -340,45 +347,47 @@ namespace ElzabDriver
                     retValue.Add(ConvertFromListToString(this.Header.HeaderLine2.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
                     retValue.Add(ConvertFromListToString(this.Header.HeaderLine3.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
                 }
-                //Convert element object to string list
-                foreach (AttributeValueObject obj in this.Element)
+
+                if(this.Element != null)
                 {
-                    //Get index of product name
-                    int indexOfProducNameAttribute = -1;
-                    foreach (string attributeName in this.Element.AttributeName)
+                    //Convert element object to string list
+                    foreach (AttributeValueObject obj in this.Element)
                     {
-                        if (attributeName == "naz_tow")
+                        //Get index of product name
+                        int indexOfProducNameAttribute = -1;
+                        foreach (string attributeName in this.Element.AttributeName)
                         {
-                            indexOfProducNameAttribute = this.Element.AttributeName.IndexOf("naz_tow");
-                            break;
-                        }
-                    }
-                    int i = 0;
-                    //Loop through all element attributes values. Add Element mark and attribute separator to it
-                    string elementAllValues = this.ElementMark;
-                    foreach (string attributeValue in obj)
-                    {
-                        if (i == obj.AttributeValue.Count())
-                        {
-                            elementAllValues += attributeValue;
-                        }
-                        else
-                        {
-                            //elementAllValues += attributeValue + this.AttributesSeparator;
-                            if (indexOfProducNameAttribute > -1 && i == indexOfProducNameAttribute)
+                            if (attributeName == "naz_tow")
                             {
-                                dummyString = GenerateStringWithGivenChar(this.NrOfCharsInElementAttribute - attributeValue.Length, ' ');
+                                indexOfProducNameAttribute = this.Element.AttributeName.IndexOf("naz_tow");
+                                break;
                             }
-                            else dummyString = "";
-                            elementAllValues += attributeValue + dummyString + this.AttributesSeparator;
                         }
-                        i++;
+                        int i = 0, j = 1;
+                        //Loop through all element attributes values. Add Element mark and attribute separator to it
+                        string elementAllValues = this.ElementMark;
+                        foreach (string attributeValue in obj)
+                        {
+                            if (j == obj.AttributeValue.Count())
+                            {
+                                elementAllValues += attributeValue;
+                            }
+                            else
+                            {
+                                if (indexOfProducNameAttribute > -1 && i == indexOfProducNameAttribute)
+                                {
+                                    dummyString = GenerateStringWithGivenChar(this.NrOfCharsInElementAttribute - attributeValue.Length, ' ');
+                                }
+                                else dummyString = "";
+                                elementAllValues += attributeValue + dummyString + this.AttributesSeparator;
+                            }
+                            i++;
+                            j++;
 
+                        }
+                        retValue.Add(elementAllValues);
                     }
-                    //elementAllValues = elementAllValues.Remove(elementAllValues.Length - 1, 1);
-                    retValue.Add(elementAllValues);
                 }
-
                 //Assing created string list to internal variable
                 this.RawData = retValue;
                 returnValue = true;
@@ -604,7 +613,7 @@ namespace ElzabDriver
         //Set encoding type
         protected void SetEncoding()
         {
-            this.FileEncoding = new UTF8Encoding(false);
+            this.FileEncoding = Encoding.Default;
         }
 
         //Method used to add Elzab command name
@@ -697,7 +706,7 @@ namespace ElzabDriver
                 {
                     foreach (string lineToWrite in data)
                     {
-                       string decoded = fnStringConverterCodepage(lineToWrite);
+                       string decoded = EncodingConversionRelated.StringConverterCodepage(lineToWrite);
                         fs.WriteLine(decoded);
                     }
 
@@ -715,30 +724,6 @@ namespace ElzabDriver
             }
 
             return retVal;
-        }
-
-        public static string fnStringConverterCodepage(string sText, string sCodepageIn = "ISO-8859-8", string sCodepageOut = "UTF-8")
-        {
-            /*
-            string myString = sText;
-            byte[] bytes = Encoding.UTF8.GetBytes(myString);
-            //bytes = Encoding.Convert(Encoding.UTF32, Encoding.UTF8, bytes);
-            //bytes = Encoding.Convert(Encoding.UTF32, Encoding.GetEncoding("ibm852"), bytes);
-            myString = Encoding.UTF8.GetString(bytes);
-            return myString;
-            */
-            string sResultado = string.Empty;
-            try
-            {
-                byte[] tempBytes;
-                tempBytes = System.Text.Encoding.GetEncoding(sCodepageIn).GetBytes(sText);
-                sResultado = System.Text.Encoding.GetEncoding(sCodepageOut).GetString(tempBytes);
-            }
-            catch (Exception)
-            {
-                sResultado = "";
-            }
-            return sResultado;
         }
 
         //Method use to create input or config file

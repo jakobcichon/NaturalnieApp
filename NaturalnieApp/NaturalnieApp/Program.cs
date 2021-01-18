@@ -70,13 +70,10 @@ namespace NaturalnieApp
                     "uid = admin; password = admin; Connection Timeout = 60", GlobalVariables.SqlServerName);
                 GlobalVariables.LibraryPath = ConfigFileInst.GetValueByVariableName("LibraryPath");
 
-                // ElzabCommand_OBAJTY Test = new ElzabCommand_OBAJTY(path, cashRegisterID);
-                /*
-                ElzabCommand_OGRUPA OdczytGrupy = new ElzabCommand_OGRUPA(path, cashRegisterID);
-                ElzabCommand_ZGRUPA ZapisGrupy = new ElzabCommand_ZGRUPA(path, cashRegisterID);
-                ElzabCommand_KGRUPA KasowanieGrupy = new ElzabCommand_KGRUPA(path, cashRegisterID);
-                ElzabCommand_OPSPRZED OdczytSprzedazy = new ElzabCommand_OPSPRZED(path, cashRegisterID);
-                */
+                //Pronter selection
+                List<string> printersNames = PrinterMethods.GetPrintersNameList();
+                if (printersNames.Count > 0) GlobalVariables.DymoPrinterName = printersNames[0];
+
 
                 Application.EnableVisualStyles();
                 Application.Run(new MainWindow(ConfigFileInst));

@@ -216,6 +216,7 @@ namespace NaturalnieApp.Forms
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Name = "DymoSettings";
             this.Size = new System.Drawing.Size(920, 690);
+            this.Load += new System.EventHandler(this.DymoSettings_Load);
             this.pHeader.ResumeLayout(false);
             this.pHeader.PerformLayout();
             this.gbPrinterSelection.ResumeLayout(false);

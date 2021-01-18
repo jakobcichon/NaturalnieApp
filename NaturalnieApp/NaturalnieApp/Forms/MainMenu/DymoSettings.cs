@@ -52,6 +52,8 @@ namespace NaturalnieApp.Forms
                 try
                 {
                     Program.GlobalVariables.DymoPrinterName = tbSelectedPrinterName.Text.Substring(indexOfDeliminer + 1, numberOfCharsToCopy);
+                    MessageBox.Show("Zapisano!");
+
                 }
                 catch(Exception ex)
                 {
@@ -67,6 +69,25 @@ namespace NaturalnieApp.Forms
         private void cbAvailablePrintersList_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbAvailablePrintersList.SelectedIndex > -1) tbSelectedPrinterName.Text = cbAvailablePrintersList.SelectedItem.ToString();
+        }
+
+        private void DymoSettings_Load(object sender, EventArgs e)
+        {
+            List<string> printersNames = PrinterMethods.GetPrintersNameList();
+            if (printersNames.Count != 0)
+            {
+                cbAvailablePrintersList.Items.Clear();
+                int i = 0;
+                foreach (string printerName in printersNames)
+                {
+                    cbAvailablePrintersList.Items.Add(i.ToString() + "." + printerName);
+                    i++;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Nie znaleziono drukarki dymo");
+            }
         }
     }
 }

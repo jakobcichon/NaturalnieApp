@@ -77,6 +77,9 @@ namespace NaturalnieApp.Forms
             //Initialize daa grid view
             this.ColumnNames.No = "Lp.";
             this.ColumnNames.ProductName = "Nazwa produktu";
+            this.ColumnNames.PriceNet = "Cena netto";
+            this.ColumnNames.FinalPrice = "Cena klienta";
+            this.ColumnNames.Tax = "VAT";
             this.ColumnNames.AddDate = "Data dodania";
             this.ColumnNames.NumberOfPieces = "Liczba produktów";
             this.ColumnNames.ExpirenceDate = "Data ważności";
@@ -346,8 +349,23 @@ namespace NaturalnieApp.Forms
             column.Dispose();
 
             column = new DataColumn();
-            column.ColumnName = this.ColumnNames.AddDate;
-            column.DataType = Type.GetType("System.DateTime");
+            column.ColumnName = this.ColumnNames.PriceNet;
+            column.DataType = Type.GetType("System.Single");
+            column.ReadOnly = true;
+            this.DataSoruce.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.Tax;
+            column.DataType = Type.GetType("System.Int32");
+            column.ReadOnly = true;
+            this.DataSoruce.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.FinalPrice;
+            column.DataType = Type.GetType("System.Single");
+            column.ReadOnly = true;
             this.DataSoruce.Columns.Add(column);
             column.Dispose();
 
@@ -355,6 +373,12 @@ namespace NaturalnieApp.Forms
             column.ColumnName = this.ColumnNames.NumberOfPieces;
             column.DataType = Type.GetType("System.Int32");
             column.ReadOnly = false;
+            this.DataSoruce.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.AddDate;
+            column.DataType = Type.GetType("System.DateTime");
             this.DataSoruce.Columns.Add(column);
             column.Dispose();
 
@@ -453,7 +477,7 @@ namespace NaturalnieApp.Forms
                     }
 
                 }
-                else MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych");
+                else MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych", "Brak kodu", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             //Set variable informing Bar code read corrected
@@ -659,6 +683,7 @@ namespace NaturalnieApp.Forms
         {
             //Local variables
             Product entity;
+            Tax taxEntity;
 
             if (cbBarcodes.SelectedItem != null && cbProductsList.SelectedItem != null)
             {
@@ -666,6 +691,7 @@ namespace NaturalnieApp.Forms
                 {
                     //Get product entity from DB
                     entity = this.databaseCommands.GetProductEntityByProductName(cbProductsList.SelectedItem.ToString());
+                    taxEntity = this.databaseCommands.GetTaxByProductName(entity.ProductName);
 
                     //Index of existing row
                     int indexOfExistingRow = -1;
@@ -697,6 +723,9 @@ namespace NaturalnieApp.Forms
 
                         //Set requred fields
                         row.SetField(this.ColumnNames.ProductName, entity.ProductName);
+                        row.SetField(this.ColumnNames.PriceNet, entity.PriceNet);
+                        row.SetField(this.ColumnNames.Tax, taxEntity.TaxValue);
+                        row.SetField(this.ColumnNames.FinalPrice, entity.FinalPrice);
                         row.SetField(this.ColumnNames.AddDate, this.dtpDateOfAccept.Value.Date);
                         row.SetField(this.ColumnNames.NumberOfPieces, Convert.ToInt32(this.tbQuantity.Text));
                         if (this.chbExpDateReq.Checked) row.SetField(this.ColumnNames.ExpirenceDate, this.dtpExpirationDate.Value.Date);

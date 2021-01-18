@@ -62,6 +62,7 @@ namespace NaturalnieApp.Forms
             this.tpPortNumber = new System.Windows.Forms.TableLayoutPanel();
             this.lCOMPortNr = new System.Windows.Forms.Label();
             this.cCOMPorts = new System.Windows.Forms.ComboBox();
+            this.bApply = new System.Windows.Forms.Button();
             this.pSettingNr1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.gpConnectionSettings.SuspendLayout();
@@ -147,7 +148,7 @@ namespace NaturalnieApp.Forms
             this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bUpdate.Location = new System.Drawing.Point(671, 508);
+            this.bUpdate.Location = new System.Drawing.Point(559, 508);
             this.bUpdate.Name = "bUpdate";
             this.bUpdate.Size = new System.Drawing.Size(100, 50);
             this.bUpdate.TabIndex = 3;
@@ -163,6 +164,7 @@ namespace NaturalnieApp.Forms
             this.cBaudRate.Items.AddRange(new object[] {
             "9600",
             "19200",
+            "57600",
             "115200"});
             this.cBaudRate.Location = new System.Drawing.Point(217, 6);
             this.cBaudRate.Name = "cBaudRate";
@@ -312,12 +314,26 @@ namespace NaturalnieApp.Forms
             this.cCOMPorts.Size = new System.Drawing.Size(227, 28);
             this.cCOMPorts.TabIndex = 9;
             // 
+            // bApply
+            // 
+            this.bApply.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bApply.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bApply.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bApply.Location = new System.Drawing.Point(665, 508);
+            this.bApply.Name = "bApply";
+            this.bApply.Size = new System.Drawing.Size(100, 50);
+            this.bApply.TabIndex = 14;
+            this.bApply.Text = "Zastosuj";
+            this.bApply.UseVisualStyleBackColor = false;
+            this.bApply.Click += new System.EventHandler(this.bApply_Click);
+            // 
             // ElzabSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.Controls.Add(this.bApply);
             this.Controls.Add(this.gpConnectionSettings);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.bTest);
@@ -361,5 +377,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TableLayoutPanel tpPortNumber;
         private System.Windows.Forms.Label lCOMPortNr;
         private System.Windows.Forms.ComboBox cCOMPorts;
+        private System.Windows.Forms.Button bApply;
     }
 }

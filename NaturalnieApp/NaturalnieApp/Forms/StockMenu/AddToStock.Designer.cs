@@ -137,7 +137,7 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 150);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(568, 470);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(618, 470);
             this.advancedDataGridView1.TabIndex = 2;
             this.advancedDataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValueChanged);
             this.advancedDataGridView1.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.advancedDataGridView1_UserDeletedRow);
@@ -346,7 +346,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 381F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 382F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -398,9 +398,9 @@ namespace NaturalnieApp.Forms
             this.pQuantity.Controls.Add(this.lQuantity);
             this.pQuantity.Controls.Add(this.pSpare1);
             this.pQuantity.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pQuantity.Location = new System.Drawing.Point(568, 150);
+            this.pQuantity.Location = new System.Drawing.Point(618, 150);
             this.pQuantity.Name = "pQuantity";
-            this.pQuantity.Size = new System.Drawing.Size(352, 38);
+            this.pQuantity.Size = new System.Drawing.Size(302, 38);
             this.pQuantity.TabIndex = 18;
             // 
             // tbQuantity
@@ -431,15 +431,15 @@ namespace NaturalnieApp.Forms
             this.pSpare1.Dock = System.Windows.Forms.DockStyle.Top;
             this.pSpare1.Location = new System.Drawing.Point(0, 0);
             this.pSpare1.Name = "pSpare1";
-            this.pSpare1.Size = new System.Drawing.Size(350, 10);
+            this.pSpare1.Size = new System.Drawing.Size(300, 10);
             this.pSpare1.TabIndex = 0;
             // 
             // pGap1
             // 
             this.pGap1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pGap1.Location = new System.Drawing.Point(568, 188);
+            this.pGap1.Location = new System.Drawing.Point(618, 188);
             this.pGap1.Name = "pGap1";
-            this.pGap1.Size = new System.Drawing.Size(352, 10);
+            this.pGap1.Size = new System.Drawing.Size(302, 10);
             this.pGap1.TabIndex = 20;
             // 
             // pDataOfAccept
@@ -449,9 +449,9 @@ namespace NaturalnieApp.Forms
             this.pDataOfAccept.Controls.Add(this.lDateOfAccept);
             this.pDataOfAccept.Controls.Add(this.pSpare2);
             this.pDataOfAccept.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pDataOfAccept.Location = new System.Drawing.Point(568, 198);
+            this.pDataOfAccept.Location = new System.Drawing.Point(618, 198);
             this.pDataOfAccept.Name = "pDataOfAccept";
-            this.pDataOfAccept.Size = new System.Drawing.Size(352, 38);
+            this.pDataOfAccept.Size = new System.Drawing.Size(302, 38);
             this.pDataOfAccept.TabIndex = 21;
             // 
             // dtpDateOfAccept
@@ -487,15 +487,15 @@ namespace NaturalnieApp.Forms
             this.pSpare2.Dock = System.Windows.Forms.DockStyle.Top;
             this.pSpare2.Location = new System.Drawing.Point(0, 0);
             this.pSpare2.Name = "pSpare2";
-            this.pSpare2.Size = new System.Drawing.Size(350, 10);
+            this.pSpare2.Size = new System.Drawing.Size(300, 10);
             this.pSpare2.TabIndex = 0;
             // 
             // pGap2
             // 
             this.pGap2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pGap2.Location = new System.Drawing.Point(568, 236);
+            this.pGap2.Location = new System.Drawing.Point(618, 236);
             this.pGap2.Name = "pGap2";
-            this.pGap2.Size = new System.Drawing.Size(352, 10);
+            this.pGap2.Size = new System.Drawing.Size(302, 10);
             this.pGap2.TabIndex = 22;
             // 
             // pExpDateReq
@@ -505,9 +505,9 @@ namespace NaturalnieApp.Forms
             this.pExpDateReq.Controls.Add(this.lExpDateReq);
             this.pExpDateReq.Controls.Add(this.pSpare3);
             this.pExpDateReq.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pExpDateReq.Location = new System.Drawing.Point(568, 246);
+            this.pExpDateReq.Location = new System.Drawing.Point(618, 246);
             this.pExpDateReq.Name = "pExpDateReq";
-            this.pExpDateReq.Size = new System.Drawing.Size(352, 38);
+            this.pExpDateReq.Size = new System.Drawing.Size(302, 38);
             this.pExpDateReq.TabIndex = 23;
             // 
             // chbExpDateReq
@@ -541,15 +541,15 @@ namespace NaturalnieApp.Forms
             this.pSpare3.Dock = System.Windows.Forms.DockStyle.Top;
             this.pSpare3.Location = new System.Drawing.Point(0, 0);
             this.pSpare3.Name = "pSpare3";
-            this.pSpare3.Size = new System.Drawing.Size(350, 10);
+            this.pSpare3.Size = new System.Drawing.Size(300, 10);
             this.pSpare3.TabIndex = 0;
             // 
             // pGap3
             // 
             this.pGap3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pGap3.Location = new System.Drawing.Point(568, 284);
+            this.pGap3.Location = new System.Drawing.Point(618, 284);
             this.pGap3.Name = "pGap3";
-            this.pGap3.Size = new System.Drawing.Size(352, 10);
+            this.pGap3.Size = new System.Drawing.Size(302, 10);
             this.pGap3.TabIndex = 24;
             // 
             // panel5
@@ -569,9 +569,9 @@ namespace NaturalnieApp.Forms
             this.pExpirationDate.Controls.Add(this.lExpirationDate);
             this.pExpirationDate.Controls.Add(this.pSpare4);
             this.pExpirationDate.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pExpirationDate.Location = new System.Drawing.Point(568, 294);
+            this.pExpirationDate.Location = new System.Drawing.Point(618, 294);
             this.pExpirationDate.Name = "pExpirationDate";
-            this.pExpirationDate.Size = new System.Drawing.Size(352, 38);
+            this.pExpirationDate.Size = new System.Drawing.Size(302, 38);
             this.pExpirationDate.TabIndex = 25;
             // 
             // dtpExpirationDate
@@ -607,15 +607,15 @@ namespace NaturalnieApp.Forms
             this.pSpare4.Dock = System.Windows.Forms.DockStyle.Top;
             this.pSpare4.Location = new System.Drawing.Point(0, 0);
             this.pSpare4.Name = "pSpare4";
-            this.pSpare4.Size = new System.Drawing.Size(350, 10);
+            this.pSpare4.Size = new System.Drawing.Size(300, 10);
             this.pSpare4.TabIndex = 0;
             // 
             // panel2
             // 
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(568, 332);
+            this.panel2.Location = new System.Drawing.Point(618, 332);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(352, 10);
+            this.panel2.Size = new System.Drawing.Size(302, 10);
             this.panel2.TabIndex = 26;
             // 
             // tbFinalPrice
@@ -685,7 +685,7 @@ namespace NaturalnieApp.Forms
             this.tpMarigin.Controls.Add(this.bMariginChange, 2, 0);
             this.tpMarigin.Controls.Add(this.lMarigin, 0, 0);
             this.tpMarigin.Controls.Add(this.tbMarigin, 1, 0);
-            this.tpMarigin.Location = new System.Drawing.Point(566, 344);
+            this.tpMarigin.Location = new System.Drawing.Point(620, 345);
             this.tpMarigin.Name = "tpMarigin";
             this.tpMarigin.RowCount = 1;
             this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -738,7 +738,7 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.Controls.Add(this.tbFinalPrice, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.lFinalPrice, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(566, 382);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(620, 385);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -767,7 +767,7 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.Controls.Add(this.lActualQuantity, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.tbActualQuantity, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(568, 422);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(619, 425);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -783,7 +783,7 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel3.Controls.Add(this.cbAddWithEveryScanCycle, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.lAddWithEveryScanCycle, 0, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(568, 463);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(619, 465);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
