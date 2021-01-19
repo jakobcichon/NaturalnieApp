@@ -39,6 +39,13 @@ namespace NaturalnieApp.Forms
             this.bPrint = new System.Windows.Forms.Button();
             this.bClose = new System.Windows.Forms.Button();
             this.gbProductSelection = new System.Windows.Forms.GroupBox();
+            this.tpDateTo = new System.Windows.Forms.TableLayoutPanel();
+            this.lDateTo = new System.Windows.Forms.Label();
+            this.dpDateTo = new System.Windows.Forms.DateTimePicker();
+            this.tpFromDate = new System.Windows.Forms.TableLayoutPanel();
+            this.lFromDate = new System.Windows.Forms.Label();
+            this.dpFromDate = new System.Windows.Forms.DateTimePicker();
+            this.chFromStockHistoryOnly = new System.Windows.Forms.CheckBox();
             this.bShow = new System.Windows.Forms.Button();
             this.pManufacturer = new System.Windows.Forms.TableLayoutPanel();
             this.cbManufacturers = new System.Windows.Forms.ComboBox();
@@ -48,6 +55,8 @@ namespace NaturalnieApp.Forms
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
             this.gbProductSelection.SuspendLayout();
+            this.tpDateTo.SuspendLayout();
+            this.tpFromDate.SuspendLayout();
             this.pManufacturer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,6 +98,8 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView1.Size = new System.Drawing.Size(920, 470);
             this.advancedDataGridView1.TabIndex = 2;
+            this.advancedDataGridView1.SortStringChanged += new System.EventHandler<Zuby.ADGV.AdvancedDataGridView.SortEventArgs>(this.AdvancedDataGridView1_SortStringChanged);
+            this.advancedDataGridView1.FilterStringChanged += new System.EventHandler<Zuby.ADGV.AdvancedDataGridView.FilterEventArgs>(this.AdvancedDataGridView1_FilterStringChanged);
             this.advancedDataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValueChanged);
             this.advancedDataGridView1.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.advancedDataGridView1_UserDeletedRow);
             // 
@@ -155,6 +166,9 @@ namespace NaturalnieApp.Forms
             // 
             // gbProductSelection
             // 
+            this.gbProductSelection.Controls.Add(this.tpDateTo);
+            this.gbProductSelection.Controls.Add(this.tpFromDate);
+            this.gbProductSelection.Controls.Add(this.chFromStockHistoryOnly);
             this.gbProductSelection.Controls.Add(this.bShow);
             this.gbProductSelection.Controls.Add(this.pManufacturer);
             this.gbProductSelection.Dock = System.Windows.Forms.DockStyle.Top;
@@ -165,6 +179,92 @@ namespace NaturalnieApp.Forms
             this.gbProductSelection.TabIndex = 17;
             this.gbProductSelection.TabStop = false;
             this.gbProductSelection.Text = "Wybór produktu";
+            // 
+            // tpDateTo
+            // 
+            this.tpDateTo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpDateTo.ColumnCount = 2;
+            this.tpDateTo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tpDateTo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tpDateTo.Controls.Add(this.lDateTo, 0, 0);
+            this.tpDateTo.Controls.Add(this.dpDateTo, 1, 0);
+            this.tpDateTo.Location = new System.Drawing.Point(552, 70);
+            this.tpDateTo.Name = "tpDateTo";
+            this.tpDateTo.RowCount = 1;
+            this.tpDateTo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tpDateTo.Size = new System.Drawing.Size(300, 30);
+            this.tpDateTo.TabIndex = 19;
+            this.tpDateTo.Visible = false;
+            // 
+            // lDateTo
+            // 
+            this.lDateTo.AutoSize = true;
+            this.lDateTo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lDateTo.Location = new System.Drawing.Point(3, 0);
+            this.lDateTo.Name = "lDateTo";
+            this.lDateTo.Size = new System.Drawing.Size(94, 30);
+            this.lDateTo.TabIndex = 0;
+            this.lDateTo.Text = "Pokaż do";
+            this.lDateTo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // dpDateTo
+            // 
+            this.dpDateTo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dpDateTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dpDateTo.Location = new System.Drawing.Point(103, 3);
+            this.dpDateTo.MinDate = new System.DateTime(2020, 1, 1, 0, 0, 0, 0);
+            this.dpDateTo.Name = "dpDateTo";
+            this.dpDateTo.Size = new System.Drawing.Size(194, 26);
+            this.dpDateTo.TabIndex = 16;
+            // 
+            // tpFromDate
+            // 
+            this.tpFromDate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpFromDate.ColumnCount = 2;
+            this.tpFromDate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tpFromDate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tpFromDate.Controls.Add(this.lFromDate, 0, 0);
+            this.tpFromDate.Controls.Add(this.dpFromDate, 1, 0);
+            this.tpFromDate.Location = new System.Drawing.Point(552, 25);
+            this.tpFromDate.Name = "tpFromDate";
+            this.tpFromDate.RowCount = 1;
+            this.tpFromDate.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tpFromDate.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tpFromDate.Size = new System.Drawing.Size(300, 30);
+            this.tpFromDate.TabIndex = 18;
+            this.tpFromDate.Visible = false;
+            // 
+            // lFromDate
+            // 
+            this.lFromDate.AutoSize = true;
+            this.lFromDate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lFromDate.Location = new System.Drawing.Point(3, 0);
+            this.lFromDate.Name = "lFromDate";
+            this.lFromDate.Size = new System.Drawing.Size(94, 30);
+            this.lFromDate.TabIndex = 0;
+            this.lFromDate.Text = "Pokaż od";
+            this.lFromDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // dpFromDate
+            // 
+            this.dpFromDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dpFromDate.Location = new System.Drawing.Point(103, 3);
+            this.dpFromDate.MinDate = new System.DateTime(2020, 1, 1, 0, 0, 0, 0);
+            this.dpFromDate.Name = "dpFromDate";
+            this.dpFromDate.Size = new System.Drawing.Size(194, 26);
+            this.dpFromDate.TabIndex = 16;
+            // 
+            // chFromStockHistoryOnly
+            // 
+            this.chFromStockHistoryOnly.AutoSize = true;
+            this.chFromStockHistoryOnly.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.chFromStockHistoryOnly.Location = new System.Drawing.Point(358, 47);
+            this.chFromStockHistoryOnly.Name = "chFromStockHistoryOnly";
+            this.chFromStockHistoryOnly.Size = new System.Drawing.Size(176, 38);
+            this.chFromStockHistoryOnly.TabIndex = 17;
+            this.chFromStockHistoryOnly.Text = "Pokaż ostatnio dodane";
+            this.chFromStockHistoryOnly.UseVisualStyleBackColor = true;
+            this.chFromStockHistoryOnly.CheckedChanged += new System.EventHandler(this.chFromStockHistoryOnly_CheckedChanged);
             // 
             // bShow
             // 
@@ -184,7 +284,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 376F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 379F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -265,6 +365,11 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.ResumeLayout(false);
             this.pButtonsPanel.PerformLayout();
             this.gbProductSelection.ResumeLayout(false);
+            this.gbProductSelection.PerformLayout();
+            this.tpDateTo.ResumeLayout(false);
+            this.tpDateTo.PerformLayout();
+            this.tpFromDate.ResumeLayout(false);
+            this.tpFromDate.PerformLayout();
             this.pManufacturer.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -286,5 +391,12 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lNumberOfLabels;
         private System.Windows.Forms.Button bShow;
         private System.Windows.Forms.TextBox tbDummyForCtrl;
+        private System.Windows.Forms.CheckBox chFromStockHistoryOnly;
+        private System.Windows.Forms.DateTimePicker dpFromDate;
+        private System.Windows.Forms.TableLayoutPanel tpFromDate;
+        private System.Windows.Forms.Label lFromDate;
+        private System.Windows.Forms.TableLayoutPanel tpDateTo;
+        private System.Windows.Forms.Label lDateTo;
+        private System.Windows.Forms.DateTimePicker dpDateTo;
     }
 }

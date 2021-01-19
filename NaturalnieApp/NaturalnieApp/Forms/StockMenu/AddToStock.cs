@@ -92,11 +92,13 @@ namespace NaturalnieApp.Forms
             this.BarcodeReader.BarcodeValid += BarcodeValidAction;
             this.BarcodeValidEventGenerated = false;
 
-
             //Marigin modification
             this.LastValidValueOfMarigin = 30;
             this.MariginValueToChangeTo = this.LastValidValueOfMarigin;
             this.tbMarigin.Text = this.LastValidValueOfMarigin.ToString();
+
+            //Printing event delegate
+            
         }
         #endregion
 
@@ -786,6 +788,7 @@ namespace NaturalnieApp.Forms
                         //Add product to local stock variable
                         stockPiece.ProductId = this.databaseCommands.GetProductIdByName(element.Field<string>(this.ColumnNames.ProductName));
                         stockPiece.ActualQuantity = element.Field<int>(this.ColumnNames.NumberOfPieces);
+                        stockPiece.LastQuantity = stockPiece.ActualQuantity;
                         stockPiece.ModificationDate = element.Field<DateTime>(this.ColumnNames.AddDate).Date;
                         DateTime expirenceDate = element.Field<DateTime>(this.ColumnNames.ExpirenceDate);
 
@@ -803,6 +806,7 @@ namespace NaturalnieApp.Forms
                         {
                             Stock localStock = this.databaseCommands.GetStockEntityByUserStock(stockPiece);
                             int localQuantity = stockPiece.ActualQuantity;
+                            localStock.LastQuantity = stockPiece.ActualQuantity;
                             localStock.ActualQuantity += localQuantity;
                             this.databaseCommands.EditInStock(localStock);
                         }

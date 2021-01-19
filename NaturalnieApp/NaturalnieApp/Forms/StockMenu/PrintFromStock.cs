@@ -14,6 +14,7 @@ namespace NaturalnieApp.Forms
     public partial class PrintFromStock : Form
     {
         #region Object fields
+
         //Set the instance fields
         private DatabaseCommands databaseCommands { get; set; }
 
@@ -68,6 +69,10 @@ namespace NaturalnieApp.Forms
 
             //List of the product to print
             this.CancelPrinting = false;
+
+            //Set custom format for data time picker
+            this.dpDateTo.CustomFormat = "dd/MM/yy HH:mm:ss";
+            this.dpFromDate.CustomFormat = "dd/MM/yy HH:mm:ss";
 
         }
         #endregion
@@ -191,12 +196,12 @@ namespace NaturalnieApp.Forms
             this.cbManufacturers.Items.AddRange(this.ManufacturersList.ToArray());
         }
 
-        private List<Product> GetListOfTheProductToPrintFromDataTable(DataTable data)
+        private List<Product> GetListOfTheProductToPrintFromDataTable(DataRow[] data)
         {
             //Local variables
             List<Product> localList = new List<Product>();
 
-            foreach (DataRow element in data.Rows)
+            foreach (DataRow element in data)
             {
                 //Get product entity
                 int id = element.Field<int>(this.ColumnNames.ProductId);
@@ -231,10 +236,13 @@ namespace NaturalnieApp.Forms
         {
             int quantity = 0;
 
-            if (this.DataSoruce.Rows.Count > 0)
+            //Get rows to print
+            DataRow[] rowsToPrint = this.DataSoruce.Select(this.DataSoruce.DefaultView.RowFilter);
+
+            if (rowsToPrint.Length > 0)
             {
 
-                foreach (DataRow element in this.DataSoruce.Rows)
+                foreach (DataRow element in rowsToPrint)
                 {
                     //Get quantity for each row
                     quantity += element.Field<int>(this.ColumnNames.NumberOfCopies);
@@ -276,7 +284,6 @@ namespace NaturalnieApp.Forms
             column.ColumnName = this.ColumnNames.LabelBarcode;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
-            column.Unique = true;
             this.DataSoruce.Columns.Add(column);
             column.Dispose();
 
@@ -284,7 +291,6 @@ namespace NaturalnieApp.Forms
             column.ColumnName = this.ColumnNames.LabelText;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
-            column.Unique = true;
             this.DataSoruce.Columns.Add(column);
             column.Dispose();
 
@@ -310,33 +316,41 @@ namespace NaturalnieApp.Forms
             column.Dispose();
 
             advancedDataGridView1.DataSource = this.DataSoruce;
-
+            this.DataSoruce.DefaultView.Sort = this.ColumnNames.ProductId + " asc";
             advancedDataGridView1.AutoResizeColumns();
         }
         private void AdvancedDataGridView1_FilterStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.FilterEventArgs e)
         {
+            Zuby.ADGV.AdvancedDataGridView fdgv = advancedDataGridView1;
+            DataTable dataTable = (DataTable)fdgv.DataSource;
+
+            if (fdgv.FilterString.Length > 0)
+            {
+                dataTable.DefaultView.RowFilter = fdgv.FilterString;
+            }
+            //Clear Filter
+            else
+            {
+                dataTable.DefaultView.RowFilter = "";
+            }
+            
+            UpdateQuantityOnList();
+
         }
         private void AdvancedDataGridView1_SortStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.SortEventArgs e)
         {
             Zuby.ADGV.AdvancedDataGridView fdgv = advancedDataGridView1;
-            DataTable dt = null;
-            if (this.DataSoruce == null)
-            {
-                this.DataSoruce = (DataTable)fdgv.DataSource;
-            }
+            DataTable dataTable = (DataTable)fdgv.DataSource;
+
             if (fdgv.SortString.Length > 0)
             {
-                dt = (DataTable)fdgv.DataSource;
+                dataTable.DefaultView.Sort = fdgv.SortString;
             }
-            else//Clear Filter
+            //Clear Filter
+            else
             {
-                dt = this.DataSoruce;
+                dataTable.DefaultView.Sort = dataTable.Columns[0].ColumnName + " asc";
             }
-
-            DataView dv = dt.DefaultView;
-            dv.Sort = fdgv.SortString;
-            DataTable sortedDT = dv.ToTable();
-            fdgv.DataSource = sortedDT;
 
         }
         private void advancedDataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
@@ -363,6 +377,10 @@ namespace NaturalnieApp.Forms
             //Update control
             UpdateControl(ref tbDummyForCtrl);
 
+            //Set date and time to default value
+            DateTime s = DateTime.Now;
+            this.dpFromDate.Value = new DateTime(s.Year, s.Month, s.Day, 0, 0, 0);
+            this.dpDateTo.Value = new DateTime(s.Year, s.Month, s.AddDays(1).Day, 0, 0, 0);
         }
         private void AddToStock_KeyDown(object sender, KeyEventArgs e)
         {
@@ -391,55 +409,88 @@ namespace NaturalnieApp.Forms
         {
             if (cbManufacturers.SelectedItem != null)
             {
+                if (this.dpDateTo.Value < this.dpFromDate.Value) MessageBox.Show("Data początkowa nie może być większa od daty końcowej!");
+
                 //Local variables
                 List<Stock> stockList = new List<Stock>();
+                List<StockHistory> stockHistoryList = new List<StockHistory>();
+                List<int> manufacturersIdList = new List<int>();
                 Product productEnt = new Product();
 
-                if(cbManufacturers.SelectedIndex == 0)
+                if (cbManufacturers.SelectedIndex == 0)
                 {
-
+                    manufacturersIdList = this.databaseCommands.GetAllManufacturersId();
                 }
                 else
                 {
                     //Get from stock list of products of given manufacturer
-                    int manufacturerId = this.databaseCommands.GetManufacturerIdByName(cbManufacturers.SelectedItem.ToString());
+                    manufacturersIdList.Add(this.databaseCommands.GetManufacturerIdByName(cbManufacturers.SelectedItem.ToString()));
+                }
+
+                //Cleardata
+                this.DataSoruce.Rows.Clear();
+
+                foreach (int manufacturerId in manufacturersIdList)
+                {
                     if (manufacturerId > 0)
                     {
-                        //Cleardata
-                        this.DataSoruce.Rows.Clear();
-
-                        stockList = this.databaseCommands.GetStockEntsWithManufacturerId(manufacturerId);
-                        
-                        foreach (Stock element in stockList)
+                        if (!chFromStockHistoryOnly.Checked)
                         {
-                            //Get product entity
-                            productEnt = this.databaseCommands.GetProductEntityById(element.ProductId);
+                            stockList = this.databaseCommands.GetStockEntsWithManufacturerId(manufacturerId);
 
-                            //Add data to table
-                            DataRow rowElement;
-                            rowElement = this.DataSoruce.NewRow();
+                            foreach (Stock element in stockList)
+                            {
+                                //Get product entity
+                                productEnt = this.databaseCommands.GetProductEntityById(element.ProductId);
 
-                            //Set row fields
-                            rowElement.SetField<string>(this.ColumnNames.No, (this.DataSoruce.Rows.Count + 1).ToString());
-                            rowElement.SetField<int>(this.ColumnNames.ProductId, productEnt.Id);
-                            rowElement.SetField<string>(this.ColumnNames.LabelBarcode, productEnt.BarCodeShort);
-                            rowElement.SetField<string>(this.ColumnNames.LabelText, productEnt.ElzabProductName);
-                            rowElement.SetField<string>(this.ColumnNames.LabelFinalPrice, string.Format("{0:0.00}", productEnt.FinalPrice));
-                            rowElement.SetField<int>(this.ColumnNames.NumberOfCopies, element.ActualQuantity);
-                            rowElement.SetField<DateTime>(this.ColumnNames.ModificationDate, element.ModificationDate);
+                                //Add data to table
+                                DataRow rowElement;
+                                rowElement = this.DataSoruce.NewRow();
 
-                            this.DataSoruce.Rows.Add(rowElement);
+                                //Set row fields
+                                rowElement.SetField<string>(this.ColumnNames.No, (this.DataSoruce.Rows.Count + 1).ToString());
+                                rowElement.SetField<int>(this.ColumnNames.ProductId, productEnt.Id);
+                                rowElement.SetField<string>(this.ColumnNames.LabelBarcode, productEnt.BarCodeShort);
+                                rowElement.SetField<string>(this.ColumnNames.LabelText, productEnt.ElzabProductName);
+                                rowElement.SetField<string>(this.ColumnNames.LabelFinalPrice, string.Format("{0:0.00}", productEnt.FinalPrice));
+                                rowElement.SetField<int>(this.ColumnNames.NumberOfCopies, element.ActualQuantity);
+                                rowElement.SetField<DateTime>(this.ColumnNames.ModificationDate, element.ModificationDate);
 
+                                this.DataSoruce.Rows.Add(rowElement);
+                            }
+                        }
+                        else
+                        {
+                            stockHistoryList = this.databaseCommands.GetStockHistoryEntsWithManufacturerIdAndDate(manufacturerId, dpFromDate.Value, dpDateTo.Value);
+
+                            foreach (StockHistory element in stockHistoryList)
+                            {
+                                //Get product entity
+                                productEnt = this.databaseCommands.GetProductEntityById(element.ProductId);
+
+                                //Add data to table
+                                DataRow rowElement;
+                                rowElement = this.DataSoruce.NewRow();
+
+                                //Set row fields
+                                rowElement.SetField<string>(this.ColumnNames.No, (this.DataSoruce.Rows.Count + 1).ToString());
+                                rowElement.SetField<int>(this.ColumnNames.ProductId, productEnt.Id);
+                                rowElement.SetField<string>(this.ColumnNames.LabelBarcode, productEnt.BarCodeShort);
+                                rowElement.SetField<string>(this.ColumnNames.LabelText, productEnt.ElzabProductName);
+                                rowElement.SetField<string>(this.ColumnNames.LabelFinalPrice, string.Format("{0:0.00}", productEnt.FinalPrice));
+                                rowElement.SetField<int>(this.ColumnNames.NumberOfCopies, element.Quantity);
+                                rowElement.SetField<DateTime>(this.ColumnNames.ModificationDate, element.DateAndTime);
+
+                                this.DataSoruce.Rows.Add(rowElement);
+
+                            }
                         }
                     }
                     else
                     {
                         MessageBox.Show("Nie znaleziono producenta!");
                     }
-
                 }
-
-
             }
             else
             {
@@ -454,67 +505,80 @@ namespace NaturalnieApp.Forms
 
         private void bPrint_Click(object sender, EventArgs e)
         {
-            if (this.DataSoruce.Rows.Count == 0)
+            DataRow[] rowsToPrint = this.DataSoruce.Select(this.DataSoruce.DefaultView.RowFilter);
+
+            if (rowsToPrint.Length == 0)
             {
                 MessageBox.Show("Brak wybranch elementów do druku!");
             }
             else
             {
-                //Get printer device
-                try
+                DialogResult decision = DialogResult.Yes;
+                if (Int32.Parse(this.tbNumberOfLabels.Text) > 100)
                 {
-                    //Check if Dymo printer instance already created
-                    if (this.DymoPrinter == null)
+                    decision = MessageBox.Show(string.Format("Uwaga! Wybrano {0} etykiet do druku. Czy na pewno chcesz kontynułować?",
+                        this.tbNumberOfLabels.Text)
+                        , "Duża liczba etykiet do druku.", MessageBoxButtons.YesNo);
+                }
+
+                if (decision == DialogResult.Yes)
+                {
+                    //Get printer device
+                    try
                     {
-                        //Printer instance
-                        this.DymoPrinter = new Printer(Program.GlobalVariables.LabelPath);
-                    }
-
-                    //Check if printer connected
-                    this.DymoPrinter.ChangePrinter(Program.GlobalVariables.DymoPrinterName);
-
-                    //Local variables
-                    List<Product> localList = new List<Product>();
-
-                    localList = GetListOfTheProductToPrintFromDataTable(this.DataSoruce);
-
-                    List<Product> printingList = new List<Product>();
-
-                    int i = 0;
-
-                    //Split it into 5
-                    foreach (Product element in localList)
-                    {
-
-                        printingList.Add(element);
-
-                        if ((printingList.Count == 2) || (i == localList.Count-1) )
+                        //Check if Dymo printer instance already created
+                        if (this.DymoPrinter == null)
                         {
-                            //Print lables
-                            this.DymoPrinter.PrintPriceCardsFromProductList(printingList);
-                            printingList.Clear();
+                            //Printer instance
+                            this.DymoPrinter = new Printer(Program.GlobalVariables.LabelPath);
                         }
 
-                        i++;
+                        //Check if printer connected
+                        this.DymoPrinter.ChangePrinter(Program.GlobalVariables.DymoPrinterName);
+
+                        //Local variables
+                        List<Product> localList = new List<Product>();
+
+                        localList = GetListOfTheProductToPrintFromDataTable(rowsToPrint);
+
+                        List<Product> printingList = new List<Product>();
+
+                        int i = 0;
+
+                        //Split it into 5
+                        foreach (Product element in localList)
+                        {
+
+                            printingList.Add(element);
+
+                            if ((printingList.Count == 2) || (i == localList.Count - 1))
+                            {
+                                //Print lables
+                                this.DymoPrinter.PrintPriceCardsFromProductList(printingList);
+                                printingList.Clear();
+                            }
+
+                            i++;
+
+                        }
 
                     }
-
+                    catch (NoPrinterToSelect)
+                    {
+                        MessageBox.Show("Nie można odnaleźć drukarki firmy Dymo. Podłącz drukarkę i spróbuj ponownie!");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
-                catch (NoPrinterToSelect)
-                {
-                    MessageBox.Show("Nie można odnaleźć drukarki firmy Dymo. Podłącz drukarkę i spróbuj ponownie!");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-
-                this.DymoPrinter = null;
+                else MessageBox.Show("Anulowano!");
             }
+
+            this.DymoPrinter = null;
 
             //Update control
             UpdateControl(ref tbDummyForCtrl);
-
         }
 
         private void bClose_Click(object sender, EventArgs e)
@@ -524,8 +588,36 @@ namespace NaturalnieApp.Forms
             this.Dispose();
         }
 
+
         #endregion
 
+        private void chFromStockHistoryOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            //Local variables
+            CheckBox localSender = (CheckBox)sender;
 
+            //Add date if date from and to are equal
+            if (this.dpDateTo.Value == this.dpFromDate.Value)
+            {
+                this.dpDateTo.Value = this.dpDateTo.Value.AddDays(1);
+            }
+
+            //Show date picker
+            if (localSender.Checked)
+            {
+                tpDateTo.Visible = true;
+                tpFromDate.Visible = true;
+            }
+            else
+            {
+                tpDateTo.Visible = false;
+                tpFromDate.Visible = false;
+                //Set date and time to default value
+                DateTime s = DateTime.Now;
+                this.dpFromDate.Value = new DateTime(s.Year, s.Month, s.Day, 0, 0, 0);
+                this.dpDateTo.Value = new DateTime(s.Year, s.Month, s.AddDays(1).Day, 0, 0, 0);
+            }
+
+        }
     }
 }

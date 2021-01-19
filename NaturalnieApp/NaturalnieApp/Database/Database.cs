@@ -41,9 +41,20 @@ namespace NaturalnieApp.Database
         public int Id { get; set; }
         public int ProductId { get; set; }
         public int ActualQuantity { get; set; }
+        public int LastQuantity { get; set; }
         public DateTime ModificationDate { get; set; }
         public DateTime ExpirationDate { get; set; }
         public string BarcodeWithDate { get; set; }
+    }
+
+    [Table("stock_history")]
+    public class StockHistory
+    {
+        [Key]
+        public int Id { get; set; }
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
+        public DateTime DateAndTime { get; set; }
     }
 
 

@@ -718,6 +718,23 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB all Manufacturers Ids
+        //====================================================================================================
+        public List<int> GetAllManufacturersId()
+        {
+            List<int> manufacturesrList = new List<int>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                foreach (var manufacturer in contextDB.Manufacturers)
+                {
+                    manufacturesrList.Add(manufacturer.Id);
+                }
+            }
+            return manufacturesrList;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB manufacturer EAN barcode prefix, if exist
         //====================================================================================================
         public string GetManufacturerEanPrefixByName(string manufacturerName)
@@ -1132,6 +1149,33 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to get stock entity history from with given manufacturer ID and date frame
+        //====================================================================================================
+        public List<StockHistory> GetStockHistoryEntsWithManufacturerIdAndDate(int manufacturerId, DateTime startDate, DateTime endDate)
+        {
+
+            List<StockHistory> localStock = new List<StockHistory>();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from s in contextDB.StockHistory
+                            join p in contextDB.Products on s.ProductId equals p.Id
+                            join m in contextDB.Manufacturers on p.ManufacturerId equals m.Id
+                            where m.Id == manufacturerId && s.DateAndTime >= startDate && s.DateAndTime <= endDate
+                            select new
+                            {
+                                s
+                            };
+
+                foreach (var element in query)
+                {
+                    localStock.Add(element.s);
+                }
+
+            }
+            return localStock;
+        }
+
+        //====================================================================================================
         //Method used to get all stock entity
         //====================================================================================================
         public List<Stock> GetAllStockEnts()
@@ -1188,19 +1232,45 @@ namespace NaturalnieApp.Database
                 contextDB.Stock.Add(stockPiece);
                 int retVal = contextDB.SaveChanges();
             }
+
+            //Add item to stock history
+            AddToStockHistory(stockPiece);
+        }
+
+        //====================================================================================================
+        //Method used to add to stock
+        //====================================================================================================
+        public void AddToStockHistory(Stock stockPiece)
+        {
+            //Local variable
+            StockHistory stockHistory = new StockHistory();
+            stockHistory.ProductId = stockPiece.ProductId;
+            stockHistory.Quantity = stockPiece.LastQuantity;
+            stockHistory.DateAndTime = DateTime.Now;
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+
+                contextDB.StockHistory.Add(stockHistory);
+                int retVal = contextDB.SaveChanges();
+            }
         }
 
         //====================================================================================================
         //Method used to edit product product in stock
         //====================================================================================================
-        public void EditInStock(Stock stockProduct)
+        public void EditInStock(Stock stockPiece)
         {
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
-                contextDB.Stock.Add(stockProduct);
-                contextDB.Entry(stockProduct).State = EntityState.Modified;
+
+                contextDB.Stock.Add(stockPiece);
+                contextDB.Entry(stockPiece).State = EntityState.Modified;
                 int retVal = contextDB.SaveChanges();
             }
+
+            //Add item to stock history
+            AddToStockHistory(stockPiece);
         }
 
         //====================================================================================================

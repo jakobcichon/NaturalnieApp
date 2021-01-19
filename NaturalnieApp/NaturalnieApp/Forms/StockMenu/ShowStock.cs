@@ -263,6 +263,38 @@ namespace NaturalnieApp.Forms
 
             advancedDataGridView1.AutoResizeColumns();
         }
+        private void AdvancedDataGridView1_FilterStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.FilterEventArgs e)
+        {
+            Zuby.ADGV.AdvancedDataGridView fdgv = advancedDataGridView1;
+            DataTable dataTable = (DataTable)fdgv.DataSource;
+
+            if (fdgv.FilterString.Length > 0)
+            {
+                dataTable.DefaultView.RowFilter = fdgv.FilterString;
+            }
+            //Clear Filter
+            else
+            {
+                dataTable.DefaultView.RowFilter = "";
+            }
+
+        }
+        private void AdvancedDataGridView1_SortStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.SortEventArgs e)
+        {
+            Zuby.ADGV.AdvancedDataGridView fdgv = advancedDataGridView1;
+            DataTable dataTable = (DataTable)fdgv.DataSource;
+
+            if (fdgv.SortString.Length > 0)
+            {
+                dataTable.DefaultView.Sort = fdgv.SortString;
+            }
+            //Clear Filter
+            else
+            {
+                dataTable.DefaultView.Sort = dataTable.Columns[0].ColumnName + " asc";
+            }
+
+        }
 
         private void InitializeInventoryDataTable(ref DataTable dataTable)
         {

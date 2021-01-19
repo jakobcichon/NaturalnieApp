@@ -13,6 +13,7 @@ namespace NaturalnieApp.Database
         public DbSet<Product> Products { get; set; }
         public DbSet<Sales> Sales { get; set; }
         public DbSet<Stock> Stock { get; set; }
+        public DbSet<StockHistory> StockHistory { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<Tax> Tax { get; set; }
