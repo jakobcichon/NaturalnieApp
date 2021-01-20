@@ -847,10 +847,27 @@ namespace NaturalnieApp.Forms
                 if (rowsToRemove.Count == this.DataSoruce.Rows.Count) MessageBox.Show("Wszystkie produkty zostały dodane do bazy danych!");
                 else if (rowsToRemove.Count > 0) MessageBox.Show("Nie wszystkie produkty zostały dodane do bazy danych");
 
-                //Remove added rows from data source
-                foreach (DataRow element in rowsToRemove)
+
+                DialogResult decision = MessageBox.Show("Czy chcesz od razu wydrukować etykiety?", "Drukować?", MessageBoxButtons.YesNoCancel);
+
+                if (decision == DialogResult.Yes)
                 {
-                    this.DataSoruce.Rows.Remove(element);
+                    bPrint_Click(sender, e);
+
+                    //Remove added rows from data source
+                    foreach (DataRow element in rowsToRemove)
+                    {
+                        this.DataSoruce.Rows.Remove(element);
+                    }
+
+                }
+                else if (decision == DialogResult.No)
+                {
+                    //Remove added rows from data source
+                    foreach (DataRow element in rowsToRemove)
+                    {
+                        this.DataSoruce.Rows.Remove(element);
+                    }
                 }
 
                 UpdateControl(ref tbDummyForCtrl);
@@ -858,7 +875,6 @@ namespace NaturalnieApp.Forms
                 bUpdate_Click(sender, EventArgs.Empty);
             }
         }
-
         private void bUpdate_Click(object sender, EventArgs e)
         {
             //Get current product name if was chosen

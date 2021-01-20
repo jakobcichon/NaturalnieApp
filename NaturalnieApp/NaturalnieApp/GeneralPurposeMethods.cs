@@ -879,7 +879,7 @@ namespace NaturalnieApp
             printerInstance = null;
         }
 
-        private static List<Product> GetListOfTheProductToPrintFromDataRows(DataRow[] data, int productNameColumnNumber,
+        private static List<Product> GetListOfTheProductToPrintFromDataRowsByProductName(DataRow[] data, int productNameColumnNumber,
             int numberOfCopiesColumnName, DatabaseCommands databaseCommands)
         {
             //Local variables
@@ -901,7 +901,7 @@ namespace NaturalnieApp
 
         }
 
-        private static List<Product> GetListOfTheProductToPrintFromDataRowsByProductName(DataRow[] data, int productIdColumnNumber,
+        private static List<Product> GetListOfTheProductToPrintFromDataRows(DataRow[] data, int productIdColumnNumber,
             int numberOfCopiesColumnName, DatabaseCommands databaseCommands)
         {
             //Local variables
@@ -910,7 +910,7 @@ namespace NaturalnieApp
             foreach (DataRow element in data)
             {
                 //Get product entity
-                Product productEnt = databaseCommands.GetProductEntityById(productIdColumnNumber);
+                Product productEnt = databaseCommands.GetProductEntityById(element.Field<int>(productIdColumnNumber));
                 int numberOfCopies = element.Field<int>(numberOfCopiesColumnName);
                 for (int i = 1; i <= numberOfCopies; i++)
                 {

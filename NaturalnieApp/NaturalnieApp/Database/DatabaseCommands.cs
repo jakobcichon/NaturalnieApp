@@ -1067,7 +1067,51 @@ namespace NaturalnieApp.Database
                 contextDB.Products.Add(product);
                 int test = contextDB.SaveChanges();
             }
+
+            AddProductToChangelog(product);
         }
+
+        //====================================================================================================
+        //Method used to add new product
+        //====================================================================================================
+        public void AddProductToChangelog(Product product)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                ProductChangelog productChangelog = FillProductChangelogFromProduct(product);
+                contextDB.ProductsChangelog.Add(productChangelog);
+                int test = contextDB.SaveChanges();
+            }
+        }
+
+        //====================================================================================================
+        //Method used to fill product with changelog
+        //====================================================================================================
+        public ProductChangelog FillProductChangelogFromProduct(Product product)
+        {
+            ProductChangelog productChangelog = new ProductChangelog();
+
+            productChangelog.SupplierId = product.SupplierId;
+            productChangelog.ElzabProductId = product.ElzabProductId;
+            productChangelog.ManufacturerId = product.ManufacturerId;
+            productChangelog.ProductName = product.ProductName;
+            productChangelog.ElzabProductName = product.ElzabProductName;
+            productChangelog.PriceNet = product.PriceNet;
+            productChangelog.Discount = product.Discount;
+            productChangelog.PriceNetWithDiscount = product.PriceNetWithDiscount;
+            productChangelog.TaxId = product.TaxId;
+            productChangelog.Marigin = product.Marigin;
+            productChangelog.FinalPrice = product.FinalPrice;
+            productChangelog.BarCode = product.BarCode;
+            productChangelog.BarCodeShort = product.BarCodeShort;
+            productChangelog.SupplierCode = product.SupplierCode;
+            productChangelog.ProductInfo = product.ProductInfo;
+            productChangelog.DateAndTime = DateTime.Now;
+
+            return productChangelog;
+        }
+
+
 
         //====================================================================================================
         //Method used to add new supplier
@@ -1301,6 +1345,8 @@ namespace NaturalnieApp.Database
                 contextDB.Entry(product).State = EntityState.Modified;
                 int retVal = contextDB.SaveChanges();
             }
+
+            AddProductToChangelog(product);
         }
 
         //====================================================================================================

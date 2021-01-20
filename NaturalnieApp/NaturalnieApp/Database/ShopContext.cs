@@ -11,6 +11,7 @@ namespace NaturalnieApp.Database
     public class ShopContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductChangelog> ProductsChangelog { get; set; }
         public DbSet<Sales> Sales { get; set; }
         public DbSet<Stock> Stock { get; set; }
         public DbSet<StockHistory> StockHistory { get; set; }

@@ -45,6 +45,7 @@ namespace NaturalnieApp.Forms
             this.tpMarigin = new System.Windows.Forms.TableLayoutPanel();
             this.tbMarigin = new System.Windows.Forms.TextBox();
             this.lMarigin = new System.Windows.Forms.Label();
+            this.bChangeTaxAndPrice = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.tpMarigin.SuspendLayout();
@@ -252,6 +253,19 @@ namespace NaturalnieApp.Forms
             this.lMarigin.Text = "Marża";
             this.lMarigin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // bChangeTaxAndPrice
+            // 
+            this.bChangeTaxAndPrice.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bChangeTaxAndPrice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bChangeTaxAndPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bChangeTaxAndPrice.Location = new System.Drawing.Point(428, 510);
+            this.bChangeTaxAndPrice.Name = "bChangeTaxAndPrice";
+            this.bChangeTaxAndPrice.Size = new System.Drawing.Size(100, 50);
+            this.bChangeTaxAndPrice.TabIndex = 10;
+            this.bChangeTaxAndPrice.Text = "zmień cenę i VAT";
+            this.bChangeTaxAndPrice.UseVisualStyleBackColor = false;
+            this.bChangeTaxAndPrice.Click += new System.EventHandler(this.bChangeTaxAndPrice_Click);
+            // 
             // AddNewProductFromExcel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -259,6 +273,7 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(920, 690);
+            this.Controls.Add(this.bChangeTaxAndPrice);
             this.Controls.Add(this.tpMarigin);
             this.Controls.Add(this.bClose);
             this.Controls.Add(this.advancedDataGridView1);
@@ -302,5 +317,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lMarigin;
         private System.Windows.Forms.Button bDummyForControl;
         private System.Windows.Forms.TextBox tbDummyForCtrl;
+        private System.Windows.Forms.Button bChangeTaxAndPrice;
     }
 }

@@ -563,7 +563,7 @@ namespace NaturalnieApp.PdfToExcel
             else if (((fileExtension == ".xlsx") || (fileExtension == ".xlsb")) && !write)
             {
                 //Set connection string for .xlsx files
-                connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0;HDR=NO; IMEX=1\"";
+                connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0 Xml;HDR=NO; IMEX=1\"";
             }
             else if (((fileExtension == ".xlsx") || (fileExtension == ".xlsb")) && write)
             {
