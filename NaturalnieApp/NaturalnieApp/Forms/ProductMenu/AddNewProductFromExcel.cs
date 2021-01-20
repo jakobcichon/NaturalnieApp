@@ -45,7 +45,7 @@ namespace NaturalnieApp.Forms
 
         //Variable used to identify last cell clicked on advanced data grid view
         //This is used to start cell modification with singe clik
-        private int[] LastCellCliked { get; set;}
+        private int[] LastCellCliked { get; set; }
         #endregion
 
         #region Class constructor
@@ -56,7 +56,7 @@ namespace NaturalnieApp.Forms
             this.DataFromExcel = new DataTable();
 
             this.SupplierInvoice = new AddProduct_General();
-            
+
             //Get data from excel schema
             this.ProductColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
                 e => e.Key == ColumnsAttributes.ProductName).Value;
@@ -93,7 +93,7 @@ namespace NaturalnieApp.Forms
             this.databaseCommands = commandsObj;
 
             //Initialization of last cell clicked variable
-            this.LastCellCliked = new[] { 0 , 0 };
+            this.LastCellCliked = new[] { 0, 0 };
 
             //Initialize advanced data grid view
             InitializeAdvancedDataGridView();
@@ -222,7 +222,7 @@ namespace NaturalnieApp.Forms
 
                 advancedDataGridView1.Columns[1].CellTemplate.ValueType = Type.GetType("Int");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -327,7 +327,7 @@ namespace NaturalnieApp.Forms
 
                         //Try parse to real value, and convert for decimal value
                         double temp = Convert.ToDouble(singleElement);
-                        if ( temp < 1.0)
+                        if (temp < 1.0)
                         {
                             temp *= 100;
                         }
@@ -468,7 +468,7 @@ namespace NaturalnieApp.Forms
             {
                 //Get only checked rows
                 DataGridViewCheckBoxCell chkChecking = row.Cells[this.CheckBoxColumnName] as DataGridViewCheckBoxCell;
-                bool chck =  Convert.ToBoolean(chkChecking.Value);
+                bool chck = Convert.ToBoolean(chkChecking.Value);
 
                 //If row chcecked and not new row
                 if ((!row.IsNewRow) && (chck == true))
@@ -486,7 +486,7 @@ namespace NaturalnieApp.Forms
                             //Check if given code is full barcode or oly product code without manufacturer prefix
                             barcodeCheckedVal = GetBarcodePrefixAndCreateFullBarcode(row.Cells[this.ManufacturerColumnName].Value.ToString(),
                                 row.Cells[this.BarcodeColumnName].Value.ToString());
-                            if(barcodeCheckedVal == "") barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
+                            if (barcodeCheckedVal == "") barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
                         }
                         else
                         {
@@ -515,7 +515,7 @@ namespace NaturalnieApp.Forms
                     catch (Validation.ValidatingFailed ex)
                     {
                         //Show message and exit
-                        MessageBox.Show(ex.Message + " Numer Lp: " + row.Cells[this.IndexColumnName].Value.ToString()) ;
+                        MessageBox.Show(ex.Message + " Numer Lp: " + row.Cells[this.IndexColumnName].Value.ToString());
                         validated = false;
                         break;
                     }
@@ -567,7 +567,7 @@ namespace NaturalnieApp.Forms
                                 supplier.Name = rowSupplierNameValue;
                                 this.databaseCommands.AddSupplier(supplier);
                                 supplierNameExist = this.databaseCommands.CheckIfSupplierNameExist(rowSupplierNameValue);
-                                MessageBox.Show("Dostawca '" + rowSupplierNameValue +"' został dodany do bazy danych!");
+                                MessageBox.Show("Dostawca '" + rowSupplierNameValue + "' został dodany do bazy danych!");
                             }
                             catch (Exception ex)
                             {
@@ -623,7 +623,7 @@ namespace NaturalnieApp.Forms
                         //If product name, barcode and supplier are unique, add it to DB
                         try
                         {
-                            bool barcodeExist ;
+                            bool barcodeExist;
                             //Get from database if already exist
                             bool productNameExist = this.databaseCommands.CheckIfProductNameExist(rowProductNameValue);
                             bool elzabProductNameExist = this.databaseCommands.CheckIfElzabProductNameExist(rowElzabProductNameValue);
@@ -650,7 +650,7 @@ namespace NaturalnieApp.Forms
                                 if (rowBarcodeValue == "") product.BarCode = product.BarCodeShort;
                                 else product.BarCode = rowBarcodeValue;
                                 product.ProductInfo = "Brak";
-                                product.FinalPrice = (float) Calculations.FinalPrice(Convert.ToDouble(rowPriceNetWithDiscount), rowTaxValue, Convert.ToDouble(rowMariginValue));
+                                product.FinalPrice = (float)Calculations.FinalPrice(Convert.ToDouble(rowPriceNetWithDiscount), rowTaxValue, Convert.ToDouble(rowMariginValue));
                                 if (rowSupplierCodeValue == "") product.SupplierCode = product.BarCode;
                                 else product.SupplierCode = rowSupplierCodeValue;
 
@@ -923,7 +923,7 @@ namespace NaturalnieApp.Forms
                         }
                     }
                 }
-               
+
             }
 
         }
@@ -960,6 +960,7 @@ namespace NaturalnieApp.Forms
             }
         }
 
+        /*
         private void bChangeTaxAndPrice_Click(object sender, EventArgs e)
         {
             List<Product> listToEdit = new List<Product>();
@@ -1005,6 +1006,23 @@ namespace NaturalnieApp.Forms
                 ;
             }
 
+
+        }
+        */
+        private void bChangeTaxAndPrice_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<string> productNamesList = new List<string>();
+                productNamesList = this.databaseCommands.GetProductsNameListByManufacturer("Flos");
+                this.databaseCommands.UpdateAllPriceNetWithDiscountValues(productNamesList);
+                this.databaseCommands.UpdateAllFinalPrices(productNamesList);
+                MessageBox.Show(string.Format("Koniec! Zmieniono {0} pozycji!", productNamesList.Count()));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
         }
     }
