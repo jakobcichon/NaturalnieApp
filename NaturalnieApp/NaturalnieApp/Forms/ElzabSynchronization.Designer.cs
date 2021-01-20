@@ -1,6 +1,6 @@
 ﻿namespace NaturalnieApp.Forms
 {
-    partial class ElzabCommands
+    partial class ElzabSynchronization
     {
         /// <summary>
         /// Required designer variable.
@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
-            this.bUpdate = new System.Windows.Forms.Button();
             this.bSave = new System.Windows.Forms.Button();
             this.bClose = new System.Windows.Forms.Button();
             this.pHeader = new System.Windows.Forms.Panel();
@@ -42,18 +42,23 @@
             this.bReadingFromCashRegister = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
+            this.tpProgress = new System.Windows.Forms.TableLayoutPanel();
+            this.lElapsedTime = new System.Windows.Forms.Label();
+            this.pbProgress = new System.Windows.Forms.ProgressBar();
+            this.tbElapsedTime = new System.Windows.Forms.TextBox();
+            this.tProgressTime = new System.Windows.Forms.Timer(this.components);
             this.pButtonsPanel.SuspendLayout();
             this.pHeader.SuspendLayout();
             this.gbSynchronization.SuspendLayout();
             this.tpProductNameToEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
+            this.tpProgress.SuspendLayout();
             this.SuspendLayout();
             // 
             // pButtonsPanel
             // 
             this.pButtonsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
             this.pButtonsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pButtonsPanel.Controls.Add(this.bUpdate);
             this.pButtonsPanel.Controls.Add(this.bSave);
             this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -62,18 +67,6 @@
             this.pButtonsPanel.Name = "pButtonsPanel";
             this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
             this.pButtonsPanel.TabIndex = 6;
-            // 
-            // bUpdate
-            // 
-            this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bUpdate.Location = new System.Drawing.Point(703, 7);
-            this.bUpdate.Name = "bUpdate";
-            this.bUpdate.Size = new System.Drawing.Size(100, 50);
-            this.bUpdate.TabIndex = 27;
-            this.bUpdate.Text = "Odśwież";
-            this.bUpdate.UseVisualStyleBackColor = false;
             // 
             // bSave
             // 
@@ -84,7 +77,7 @@
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(100, 50);
             this.bSave.TabIndex = 26;
-            this.bSave.Text = "Zapisz";
+            this.bSave.Text = "Zapisz do kasy";
             this.bSave.UseVisualStyleBackColor = false;
             this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
@@ -129,6 +122,7 @@
             // 
             // gbSynchronization
             // 
+            this.gbSynchronization.Controls.Add(this.tpProgress);
             this.gbSynchronization.Controls.Add(this.tpProductNameToEdit);
             this.gbSynchronization.Controls.Add(this.bReadingFromCashRegister);
             this.gbSynchronization.Dock = System.Windows.Forms.DockStyle.Top;
@@ -150,10 +144,10 @@
             this.tpProductNameToEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpProductNameToEdit.Controls.Add(this.tbStatus, 0, 0);
             this.tpProductNameToEdit.Controls.Add(this.lStatus, 0, 0);
-            this.tpProductNameToEdit.Location = new System.Drawing.Point(171, 41);
+            this.tpProductNameToEdit.Location = new System.Drawing.Point(277, 27);
             this.tpProductNameToEdit.Name = "tpProductNameToEdit";
             this.tpProductNameToEdit.RowCount = 1;
-            this.tpProductNameToEdit.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.tpProductNameToEdit.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tpProductNameToEdit.Size = new System.Drawing.Size(633, 50);
             this.tpProductNameToEdit.TabIndex = 28;
             // 
@@ -165,7 +159,7 @@
             this.tbStatus.Margin = new System.Windows.Forms.Padding(5);
             this.tbStatus.Multiline = true;
             this.tbStatus.Name = "tbStatus";
-            this.tbStatus.Size = new System.Drawing.Size(520, 45);
+            this.tbStatus.Size = new System.Drawing.Size(520, 38);
             this.tbStatus.TabIndex = 2;
             // 
             // lStatus
@@ -175,7 +169,7 @@
             this.lStatus.Location = new System.Drawing.Point(6, 6);
             this.lStatus.Margin = new System.Windows.Forms.Padding(5);
             this.lStatus.Name = "lStatus";
-            this.lStatus.Size = new System.Drawing.Size(90, 45);
+            this.lStatus.Size = new System.Drawing.Size(90, 38);
             this.lStatus.TabIndex = 1;
             this.lStatus.Text = "Status";
             this.lStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -185,12 +179,12 @@
             this.bReadingFromCashRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bReadingFromCashRegister.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bReadingFromCashRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bReadingFromCashRegister.Location = new System.Drawing.Point(8, 41);
+            this.bReadingFromCashRegister.Location = new System.Drawing.Point(12, 27);
             this.bReadingFromCashRegister.Margin = new System.Windows.Forms.Padding(5);
             this.bReadingFromCashRegister.Name = "bReadingFromCashRegister";
-            this.bReadingFromCashRegister.Size = new System.Drawing.Size(155, 50);
+            this.bReadingFromCashRegister.Size = new System.Drawing.Size(261, 50);
             this.bReadingFromCashRegister.TabIndex = 27;
-            this.bReadingFromCashRegister.Text = "Odczyt z kasy";
+            this.bReadingFromCashRegister.Text = "Odczyt danych o produktach z kasy fiskalnej";
             this.bReadingFromCashRegister.UseVisualStyleBackColor = false;
             this.bReadingFromCashRegister.Click += new System.EventHandler(this.bReadingFromCashRegister_Click);
             // 
@@ -207,7 +201,59 @@
             this.advancedDataGridView1.Size = new System.Drawing.Size(920, 456);
             this.advancedDataGridView1.TabIndex = 9;
             // 
-            // ElzabCommands
+            // tpProgress
+            // 
+            this.tpProgress.ColumnCount = 3;
+            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 165F));
+            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpProgress.Controls.Add(this.lElapsedTime, 0, 0);
+            this.tpProgress.Controls.Add(this.tbElapsedTime, 1, 0);
+            this.tpProgress.Controls.Add(this.pbProgress, 2, 0);
+            this.tpProgress.Location = new System.Drawing.Point(12, 85);
+            this.tpProgress.Name = "tpProgress";
+            this.tpProgress.RowCount = 1;
+            this.tpProgress.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tpProgress.Size = new System.Drawing.Size(898, 30);
+            this.tpProgress.TabIndex = 29;
+            // 
+            // lElapsedTime
+            // 
+            this.lElapsedTime.AutoSize = true;
+            this.lElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lElapsedTime.Location = new System.Drawing.Point(3, 0);
+            this.lElapsedTime.Name = "lElapsedTime";
+            this.lElapsedTime.Size = new System.Drawing.Size(159, 30);
+            this.lElapsedTime.TabIndex = 0;
+            this.lElapsedTime.Text = "Czas trwania";
+            this.lElapsedTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pbProgress
+            // 
+            this.pbProgress.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbProgress.Location = new System.Drawing.Point(268, 3);
+            this.pbProgress.Name = "pbProgress";
+            this.pbProgress.Size = new System.Drawing.Size(627, 24);
+            this.pbProgress.TabIndex = 2;
+            // 
+            // tbElapsedTime
+            // 
+            this.tbElapsedTime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.tbElapsedTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbElapsedTime.Location = new System.Drawing.Point(168, 5);
+            this.tbElapsedTime.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
+            this.tbElapsedTime.Name = "tbElapsedTime";
+            this.tbElapsedTime.Size = new System.Drawing.Size(94, 19);
+            this.tbElapsedTime.TabIndex = 1;
+            this.tbElapsedTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // tProgressTime
+            // 
+            this.tProgressTime.Interval = 1000;
+            this.tProgressTime.Tick += new System.EventHandler(this.tProgressTime_Tick);
+            // 
+            // ElzabSynchronization
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -220,7 +266,7 @@
             this.Controls.Add(this.pButtonsPanel);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.ForeColor = System.Drawing.Color.Black;
-            this.Name = "ElzabCommands";
+            this.Name = "ElzabSynchronization";
             this.Size = new System.Drawing.Size(920, 690);
             this.pButtonsPanel.ResumeLayout(false);
             this.pHeader.ResumeLayout(false);
@@ -229,6 +275,8 @@
             this.tpProductNameToEdit.ResumeLayout(false);
             this.tpProductNameToEdit.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
+            this.tpProgress.ResumeLayout(false);
+            this.tpProgress.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -236,7 +284,6 @@
         #endregion
 
         private System.Windows.Forms.Panel pButtonsPanel;
-        private System.Windows.Forms.Button bUpdate;
         private System.Windows.Forms.Button bSave;
         private System.Windows.Forms.Button bClose;
         private System.Windows.Forms.Panel pHeader;
@@ -249,5 +296,10 @@
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.Label lStatus;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
+        private System.Windows.Forms.TableLayoutPanel tpProgress;
+        private System.Windows.Forms.Label lElapsedTime;
+        private System.Windows.Forms.ProgressBar pbProgress;
+        private System.Windows.Forms.TextBox tbElapsedTime;
+        private System.Windows.Forms.Timer tProgressTime;
     }
 }

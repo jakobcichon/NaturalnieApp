@@ -735,6 +735,23 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB all Products ents
+        //====================================================================================================
+        public List<Product> GetAllProductsEnts()
+        {
+            List<Product> productsList = new List<Product>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                foreach (var product in contextDB.Products)
+                {
+                    productsList.Add(product);
+                }
+            }
+            return productsList;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB manufacturer EAN barcode prefix, if exist
         //====================================================================================================
         public string GetManufacturerEanPrefixByName(string manufacturerName)

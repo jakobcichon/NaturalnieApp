@@ -15,7 +15,7 @@ using static NaturalnieApp.Program;
 namespace NaturalnieApp.Forms
 {
 
-    public partial class ElzabCommands : UserControl
+    public partial class ElzabSynchronization : UserControl
     {
         //Declaration of used elzab commands
         ElzabCommand_OTOWAR AllProductsReading { get; set; }
@@ -26,11 +26,14 @@ namespace NaturalnieApp.Forms
         DatabaseCommands databaseCommands;
         TextBox StatusBox { get; set; }
 
+        int ProgressTimerSeconds { get; set; }
+        int ProgressTimerMinutes { get; set; }
+
         //Data source for advanced data grid view
         private DataTable DataSoruce { get; set; }
         private DataSourceRelated.CashRegisterProductColumnNames ColumnNames;
 
-        public ElzabCommands(ref DatabaseCommands commandsObj)
+        public ElzabSynchronization(ref DatabaseCommands commandsObj)
         {
             InitializeComponent();
 
@@ -58,6 +61,8 @@ namespace NaturalnieApp.Forms
             this.DataSoruce = new DataTable();
 
             InitializeAdvancedDataGridView();
+
+            StartTimer();
         }
         //====================================================================================================
         //Advanced data gid view
@@ -129,7 +134,7 @@ namespace NaturalnieApp.Forms
                 this.DataSoruce.Clear();
 
                 //ChangeStatus
-                this.StatusBox.Text = "Generowanie listy produktów";
+                this.StatusBox.Text = "1.Generowanie listy produktów";
                 //Generate all product numbers
                 List<int> productToReadList = GenerateProductNumbers(1, 4095);
                 int i = 0;
@@ -143,44 +148,40 @@ namespace NaturalnieApp.Forms
                 }
 
                 //ChangeStatus
-                this.StatusBox.Text = "Odczyt produktów z kasy";
+                this.StatusBox.Text = "2.Odczyt produktów z kasy";
                 this.StatusBox.Update();
                 CommandExecutionStatus status = this.AllProductsReading.ExecuteCommand();
 
 
                 if (status.ErrorNumber == 0 && status.ErrorText != null)
                 {
-                    this.StatusBox.Text = "Parsowanie odczytanych produktów";
+                    this.StatusBox.Text = "3.Parsowanie odczytanych produktów";
                     this.StatusBox.Update();
                     List<Product> allProductFromElzab = ElzabRelated.ParseElzabProductDataToDbObject(this.databaseCommands, this.AllProductsReading.DataFromElzab);
 
-                    this.StatusBox.Text = "Odczyt dodatkowych kodów z kasy";
+                    this.StatusBox.Text = "4.Odczyt dodatkowych kodów z kasy";
                     this.StatusBox.Update();
                     status = this.AdditionBarcodesReading.ExecuteCommand();
                     if (status.ErrorNumber == 0 && status.ErrorText != null)
                     {
-                        this.StatusBox.Text = "Parsowanie odczytanych produktów";
+                        this.StatusBox.Text = "5.Parsowanie odczytanych produktów";
                         this.StatusBox.Update();
                         List<Product> allAdditionaBarcodesFromElzab = ElzabRelated.ParseElzabAddBarcodesToDbObject(this.databaseCommands, this.AdditionBarcodesReading.DataFromElzab);
 
                         //Compare db product data with Elzab data
                         //Get all products from DB
-                        this.StatusBox.Text = "Pobieranie nazw wszystkich produktów z bazy danych";
+                        this.StatusBox.Text = "6.Pobieranie nazw wszystkich produktów z bazy danych";
                         this.StatusBox.Update();
-                        List<string> nameList = this.databaseCommands.GetProductsNameList();
-                        this.StatusBox.Text = "Pobieranie z bazy danych informacji o wszystkich produktach";
-                        this.StatusBox.Update();
-                        List<Product> dbProductList = new List<Product>();
-                        foreach (string productName in nameList)
-                        {
-                            dbProductList.Add(this.databaseCommands.GetProductEntityByProductName(productName));
-                        }
 
-                        this.StatusBox.Text = "Porównywanie informacji z bazy danych i kasy fiskalnej";
+                        this.StatusBox.Text = "7.Pobieranie z bazy danych informacji o wszystkich produktach";
+                        this.StatusBox.Update();
+                        List<Product> dbProductList = this.databaseCommands.GetAllProductsEnts();
+
+                        this.StatusBox.Text = "8.Porównywanie informacji z bazy danych i kasy fiskalnej";
                         this.StatusBox.Update();
                         List<Product> diffProductList = ElzabRelated.ComapreDbProductDataWithElzab(allProductFromElzab, dbProductList);
 
-                        this.StatusBox.Text = "Przygotowanie danych do wyświetlenia";
+                        this.StatusBox.Text = "9.Przygotowanie danych do wyświetlenia";
                         this.StatusBox.Update();
                         //Show on the list
                         foreach (Product productEnt in diffProductList)
@@ -198,6 +199,18 @@ namespace NaturalnieApp.Forms
                             rowElement.SetField<string>(this.ColumnNames.Barcode, productEnt.BarCode);
                             rowElement.SetField<string>(this.ColumnNames.AdditionaBarcode, productEnt.BarCodeShort);
                             this.DataSoruce.Rows.Add(rowElement);
+                        }
+
+                        if(diffProductList.Count == 0)
+                        {
+                            MessageBox.Show("Nie znaleziono żadnych różnic między bazą danych a kasą fiskalną:).");
+                        }
+                        else
+                        {
+                            this.StatusBox.Text = "9.Oczekiwanie na akcję użytkownika";
+                            this.StatusBox.Update();
+                            MessageBox.Show(string.Format("Znaleziono {0} różnic.", diffProductList.Count()));
+
                         }
 
                     }
@@ -231,7 +244,7 @@ namespace NaturalnieApp.Forms
             if (this.DataSoruce.Rows.Count > 0)
             {
 
-                DialogResult result = MessageBox.Show("Czy na pewno chcesz nadpisać produkty w kasie ELzab?", 
+                DialogResult result = MessageBox.Show("Czy na pewno chcesz nadpisać produkty w kasie Elzab?", 
                     "zmiana produtów", MessageBoxButtons.YesNo);
                 if(result == DialogResult.Yes)
                 {
@@ -305,6 +318,48 @@ namespace NaturalnieApp.Forms
             }
         }
 
+        //Progres time related
+        #region Progress time related
+        private void tProgressTime_Tick(object sender, EventArgs e)
+        {
+            //Increment seconds
+            this.ProgressTimerSeconds += 1;
 
+            //If minutes equals 99, stop timer
+            if (this.ProgressTimerMinutes >= 99 && this.ProgressTimerSeconds >= 60)
+            {
+                StopTimer();
+            }
+            //If match 60, increment minutes
+            else if (this.ProgressTimerSeconds >= 60)
+            {
+                this.ProgressTimerMinutes += 1;
+                this.ProgressTimerSeconds = 0;
+            }
+
+            UpdateTimeDisplay();
+
+        }
+
+        private void StopTimer()
+        {
+            this.ProgressTimerSeconds = 0;
+            this.ProgressTimerMinutes = 0;
+            this.tProgressTime.Stop();
+            UpdateTimeDisplay();
+        }
+
+        private void StartTimer()
+        {
+            this.ProgressTimerSeconds = 0;
+            this.ProgressTimerMinutes = 0;
+            this.tProgressTime.Start();
+        }
+
+        private void UpdateTimeDisplay()
+        {
+            this.tbElapsedTime.Text = (this.ProgressTimerMinutes.ToString("00") + ":" + this.ProgressTimerSeconds.ToString("00"));
+        }
+        #endregion
     }
 }

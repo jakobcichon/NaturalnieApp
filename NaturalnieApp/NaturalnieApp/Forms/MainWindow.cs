@@ -37,7 +37,7 @@ namespace NaturalnieApp.Forms
         public ShowStock showStock { get; set; }
         public DymoSettings dymoSettings { get; set; }
         public ElzabSettings cashRegisterSettings { get; set; }
-        public ElzabCommands cashRegisterCommands { get; set; }
+        public ElzabSynchronization cashRegisterCommands { get; set; }
 
 
         //Creat EF databse connection object
@@ -67,7 +67,7 @@ namespace NaturalnieApp.Forms
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.dymoSettings = new DymoSettings();
             this.cashRegisterSettings = new ElzabSettings(this.ConfigFileOjbInst);
-            this.cashRegisterCommands = new ElzabCommands(ref this.databaseCommands);
+            this.cashRegisterCommands = new ElzabSynchronization(ref this.databaseCommands);
         }
 
         //====================================================================================================
@@ -231,7 +231,7 @@ namespace NaturalnieApp.Forms
             }
             catch (ObjectDisposedException)
             {
-                this.cashRegisterCommands = new ElzabCommands(ref this.databaseCommands);
+                this.cashRegisterCommands = new ElzabSynchronization(ref this.databaseCommands);
                 this.pContainer.Controls.Add(this.cashRegisterCommands);
                 this.cashRegisterCommands.Select();
                 this.cashRegisterCommands.BringToFront();

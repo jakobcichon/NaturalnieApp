@@ -82,7 +82,7 @@
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>mainIcon.ico</ApplicationIcon>
@@ -244,17 +244,17 @@
     <Compile Include="Forms\Common\SearchBarTemplate.Designer.cs">
       <DependentUpon>SearchBarTemplate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ElzabCommands.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\ElzabCommands.Designer.cs">
-      <DependentUpon>ElzabCommands.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\ElzabSetting.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\ElzabSetting.Designer.cs">
       <DependentUpon>ElzabSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ElzabSynchronization.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ElzabSynchronization.Designer.cs">
+      <DependentUpon>ElzabSynchronization.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainMenu\DymoSettings.cs">
       <SubType>UserControl</SubType>
@@ -339,11 +339,11 @@
     <EmbeddedResource Include="Forms\Common\SearchBarTemplate.resx">
       <DependentUpon>SearchBarTemplate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ElzabCommands.resx">
-      <DependentUpon>ElzabCommands.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ElzabSetting.resx">
       <DependentUpon>ElzabSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ElzabSynchronization.resx">
+      <DependentUpon>ElzabSynchronization.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainMenu\DymoSettings.resx">
       <DependentUpon>DymoSettings.cs</DependentUpon>
@@ -394,7 +394,6 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="app.manifest" />
-    <None Include="NaturalnieApp_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
