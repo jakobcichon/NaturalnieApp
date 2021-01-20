@@ -46,7 +46,6 @@ namespace NaturalnieApp.Forms
         //Barcode reader
         private BarcodeRelated.BarcodeReader BarcodeReader { get; set; }
         private bool BarcodeValidEventGenerated { get; set; }
-
         //Printer instance
         Printer DymoPrinter;
         #endregion
@@ -101,7 +100,7 @@ namespace NaturalnieApp.Forms
             this.tbMarigin.Text = this.LastValidValueOfMarigin.ToString();
 
             //Printing event delegate
-            
+
         }
         #endregion
 
@@ -244,7 +243,6 @@ namespace NaturalnieApp.Forms
             this.cbManufacturers.AutoCompleteCustomSource = this.ManufacturerListCollection;
             this.cbManufacturers.Items.Clear();
             this.cbManufacturers.Items.AddRange(this.ManufacturersList.ToArray());
-            this.cbManufacturers.Items.Insert(0, "Wszyscy");
 
             //Add fetched data to proper combo box
             this.BarcodeListCollection = new AutoCompleteStringCollection();
@@ -256,40 +254,6 @@ namespace NaturalnieApp.Forms
             this.cbBarcodes.Items.AddRange(this.BarcodesList.ToArray());
 
         }
-
-        private void CancelFiltering()
-        {
-            //Add fetched data to proper combo box
-            this.ProductListCollection = new AutoCompleteStringCollection();
-            this.ProductsList = this.databaseCommands.GetProductsNameList();
-            this.ProductListCollection.Clear();
-            this.ProductListCollection.AddRange(this.ProductsList.ToArray());
-            this.cbProductsList.AutoCompleteCustomSource = this.ProductListCollection;
-            this.cbProductsList.Items.Clear();
-            this.cbProductsList.Items.AddRange(this.ProductsList.ToArray());
-
-            //Add fetched data to proper combo box
-            this.ManufacturerListCollection = new AutoCompleteStringCollection();
-            this.ManufacturersList = this.databaseCommands.GetManufacturersNameList();
-            this.ManufacturerListCollection.Clear();
-            this.ManufacturerListCollection.AddRange(this.ManufacturersList.ToArray());
-            this.cbManufacturers.AutoCompleteCustomSource = this.ManufacturerListCollection;
-            this.cbManufacturers.Items.Clear();
-            this.cbManufacturers.Items.AddRange(this.ManufacturersList.ToArray());
-            this.cbManufacturers.Items.Insert(0, "Wszyscy");
-
-            //Add fetched data to proper combo box
-            this.BarcodeListCollection = new AutoCompleteStringCollection();
-            this.BarcodesList = this.databaseCommands.GetBarcodeList();
-            this.BarcodeListCollection.Clear();
-            this.BarcodeListCollection.AddRange(this.BarcodesList.ToArray());
-            this.cbBarcodes.AutoCompleteCustomSource = this.BarcodeListCollection;
-            this.cbBarcodes.Items.Clear();
-            this.cbBarcodes.Items.AddRange(this.BarcodesList.ToArray());
-
-        }
-
-
         //Methos used to update control
         private void UpdateControl(ref TextBox dummyForControl)
         {
@@ -315,20 +279,6 @@ namespace NaturalnieApp.Forms
             //Elzab product number
             this.cbProductsList.Items.Clear();
             this.cbBarcodes.Items.Clear();
-            this.tbFinalPrice.Text = "";
-            this.tbMarigin.Text = "";
-            this.tbActualQuantity.Text = "";
-        }
-        private void ClearAllProductData()
-        {
-            //Elzab product number
-            this.cbProductsList.Items.Clear();
-            this.cbProductsList.SelectedItem = -1;
-            this.cbProductsList.Text = "";
-            this.cbBarcodes.Items.Clear();
-            this.cbBarcodes.SelectedItem = -1;
-            this.cbBarcodes.Text = "";
-
             this.tbFinalPrice.Text = "";
             this.tbMarigin.Text = "";
             this.tbActualQuantity.Text = "";
@@ -451,10 +401,6 @@ namespace NaturalnieApp.Forms
             //Update quantity on list
             UpdateQuantityOnList();
         }
-        private void AdvancedDataGridView1_FilterStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.FilterEventArgs e)
-        {
-
-        }
         private void AdvancedDataGridView1_SortStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.SortEventArgs e)
         {
             Zuby.ADGV.AdvancedDataGridView fdgv = advancedDataGridView1;
@@ -471,6 +417,7 @@ namespace NaturalnieApp.Forms
             }
 
         }
+
         private void advancedDataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
             //Update quantity on list
@@ -537,20 +484,16 @@ namespace NaturalnieApp.Forms
 
                 //Get index
 
-                int index = this.BarcodesList.IndexOf(barcodeToSearch);
+                int index = this.cbBarcodes.Items.IndexOf(barcodeToSearch);
                 if (index >= 0)
                 {
-                    CancelFiltering();
-
-                    int index2 = this.cbBarcodes.Items.IndexOf(barcodeToSearch);
-                    if (this.cbBarcodes.SelectedIndex == index2)
+                    if (this.cbBarcodes.SelectedIndex == index)
                     {
-
                         cbBarcodes_SelectedIndexChanged(cbBarcodes, EventArgs.Empty);
                     }
                     else
                     {
-                        this.cbBarcodes.SelectedIndex = index2;
+                        this.cbBarcodes.SelectedIndex = index;
                     }
 
                 }
@@ -573,21 +516,15 @@ namespace NaturalnieApp.Forms
 
                     //Fetch filtered information from database
                     List<string> filteredProductNames = this.databaseCommands.GetProductsNameListByManufacturer(cbManufacturers.SelectedItem.ToString());
-                    List<string> filteredBarcodes = this.databaseCommands.GetBarcodesListByManufacturer(cbManufacturers.SelectedItem.ToString());
-                    ClearAllProductData();
+                    cbProductsList.Items.Clear();
                     cbProductsList.Items.AddRange(filteredProductNames.ToArray());
-                    cbBarcodes.Items.AddRange(filteredBarcodes.ToArray());
-
                 }
                 else
                 {
                     //Fetch filtered information from database
                     List<string> productNames = this.databaseCommands.GetProductsNameList();
-                    List<string> filteredBarcodes = this.databaseCommands.GetBarcodesListByManufacturer(cbManufacturers.SelectedItem.ToString());
-                    ClearAllProductData();
+                    cbProductsList.Items.Clear();
                     cbProductsList.Items.AddRange(productNames.ToArray());
-                    cbBarcodes.Items.AddRange(filteredBarcodes.ToArray());
-
                 }
             }
             catch (Exception ex)
@@ -742,7 +679,7 @@ namespace NaturalnieApp.Forms
                 this.FillWithDataFromObject(this.ProductEntity, this.TaxEntity);
                 UpdateFinalPrice();
 
-                tbFinalPrice.Text = this.ProductEntity.FinalPrice.ToString(); 
+                tbFinalPrice.Text = this.ProductEntity.FinalPrice.ToString();
                 tbActualQuantity.Text = this.databaseCommands.GetStockQuantity(
                         this.databaseCommands.GetProductIdByName(this.ProductEntity.ProductName)).ToString();
 
@@ -903,34 +840,17 @@ namespace NaturalnieApp.Forms
                     {
                         MessageBox.Show(ex.Message);
                     }
-                                    
+
                 }
 
                 //Show message
                 if (rowsToRemove.Count == this.DataSoruce.Rows.Count) MessageBox.Show("Wszystkie produkty zostały dodane do bazy danych!");
                 else if (rowsToRemove.Count > 0) MessageBox.Show("Nie wszystkie produkty zostały dodane do bazy danych");
 
-
-                DialogResult decision = MessageBox.Show("Czy chcesz od razu wydrukować etykiety?", "Drukować?", MessageBoxButtons.YesNoCancel);
-
-                if (decision == DialogResult.Yes)
+                //Remove added rows from data source
+                foreach (DataRow element in rowsToRemove)
                 {
-                    bPrint_Click(sender, e);
-
-                    //Remove added rows from data source
-                    foreach (DataRow element in rowsToRemove)
-                    {
-                        this.DataSoruce.Rows.Remove(element);
-                    }
-
-                }
-                else if (decision == DialogResult.No)
-                {
-                    //Remove added rows from data source
-                    foreach (DataRow element in rowsToRemove)
-                    {
-                        this.DataSoruce.Rows.Remove(element);
-                    }
+                    this.DataSoruce.Rows.Remove(element);
                 }
 
                 UpdateControl(ref tbDummyForCtrl);
@@ -966,8 +886,16 @@ namespace NaturalnieApp.Forms
             this.ActualTaskType = backgroundWorkerTasks.Update;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
         }
+        private void chbExpDateReq_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox localSender = (CheckBox)sender;
+            if (localSender.Checked) this.pExpirationDate.Show();
+            else this.pExpirationDate.Hide();
 
-        private void bPrint_Click(object sender, EventArgs e)
+            UpdateControl(ref tbDummyForCtrl);
+        }
+
+                private void bPrint_Click(object sender, EventArgs e)
         {
             DataRow[] rowsToPrint = this.DataSoruce.Select(this.DataSoruce.DefaultView.RowFilter);
 
@@ -980,14 +908,8 @@ namespace NaturalnieApp.Forms
             UpdateControl(ref tbDummyForCtrl);
         }
 
-        private void chbExpDateReq_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox localSender = (CheckBox)sender;
-            if (localSender.Checked) this.pExpirationDate.Show();
-            else this.pExpirationDate.Hide();
 
-            UpdateControl(ref tbDummyForCtrl);
-        }
         #endregion
+
     }
 }
