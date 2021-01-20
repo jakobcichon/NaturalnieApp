@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.IO.Ports;
+using System.IO;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using NaturalnieApp.Database;
@@ -204,6 +205,26 @@ namespace NaturalnieApp.Forms
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void tbElzabPath_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Path.GetInvalidPathChars()
+        }
+
+        private void rtbDatabaseName_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+        private void cCOMPorts_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+        private void cBaudRate_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
         }
     }
 }

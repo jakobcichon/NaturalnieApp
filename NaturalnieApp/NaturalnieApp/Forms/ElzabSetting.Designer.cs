@@ -95,6 +95,7 @@ namespace NaturalnieApp.Forms
             this.tbElzabPath.TabIndex = 8;
             this.tbElzabPath.Text = "";
             this.tbElzabPath.TextChanged += new System.EventHandler(this.tbElzabPath_TextChanged);
+            this.tbElzabPath.Validating += new System.ComponentModel.CancelEventHandler(this.tbElzabPath_Validating);
             // 
             // bBrowsePath
             // 
@@ -170,6 +171,7 @@ namespace NaturalnieApp.Forms
             this.cBaudRate.Name = "cBaudRate";
             this.cBaudRate.Size = new System.Drawing.Size(227, 28);
             this.cBaudRate.TabIndex = 9;
+            this.cBaudRate.Validating += new System.ComponentModel.CancelEventHandler(this.cBaudRate_Validating);
             // 
             // label1
             // 
@@ -227,6 +229,7 @@ namespace NaturalnieApp.Forms
             this.rtbDatabaseName.Size = new System.Drawing.Size(281, 40);
             this.rtbDatabaseName.TabIndex = 8;
             this.rtbDatabaseName.Text = "";
+            this.rtbDatabaseName.Validating += new System.ComponentModel.CancelEventHandler(this.rtbDatabaseName_Validating);
             // 
             // lDatabaseName
             // 
@@ -313,6 +316,7 @@ namespace NaturalnieApp.Forms
             this.cCOMPorts.Name = "cCOMPorts";
             this.cCOMPorts.Size = new System.Drawing.Size(227, 28);
             this.cCOMPorts.TabIndex = 9;
+            this.cCOMPorts.Validating += new System.ComponentModel.CancelEventHandler(this.cCOMPorts_Validating);
             // 
             // bApply
             // 

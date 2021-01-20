@@ -59,7 +59,7 @@ namespace NaturalnieApp
                 bool result = false;
                 foreach (string port in ports)
                 {
-                    int portInt = Int32.Parse(port.Replace("COM", ""));
+                    int portInt = ElzabRelated.ComPortNumberFromName(port);
                     if (GlobalVariables.ElzabPortCom == portInt) result = true;
                 }
                 if (!result && ports.Count() > 0) GlobalVariables.ElzabPortCom = Int32.Parse(ports[0].Replace("COM", ""));

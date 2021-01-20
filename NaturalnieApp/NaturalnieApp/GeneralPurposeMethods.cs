@@ -666,6 +666,20 @@ namespace NaturalnieApp
                 return String.Empty;
             }
         }
+
+        //Method used to convert from com port number (ex. 1) to name (ex.COM1)
+        static public string ComPortNameFromNumber(int comPortNumber)
+        {
+            string comPortName = "COM" + comPortNumber.ToString();
+            return comPortName;
+        }
+
+        //Method used to convert from name (ex.COM1) to com port number (ex. 1) 
+        static public int ComPortNumberFromName(string comPortName)
+        {
+            int comPortNumber = Int32.Parse(comPortName.Replace("COM", ""));
+            return comPortNumber;
+        }
     }
 
     public class WinFormRelated
