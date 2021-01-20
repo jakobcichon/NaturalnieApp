@@ -195,28 +195,6 @@ namespace NaturalnieApp.Forms
             this.cbManufacturers.AutoCompleteCustomSource = this.ManufacturerListCollection;
             this.cbManufacturers.Items.AddRange(this.ManufacturersList.ToArray());
         }
-
-        private List<Product> GetListOfTheProductToPrintFromDataTable(DataRow[] data)
-        {
-            //Local variables
-            List<Product> localList = new List<Product>();
-
-            foreach (DataRow element in data)
-            {
-                //Get product entity
-                int id = element.Field<int>(this.ColumnNames.ProductId);
-                Product productEnt = this.databaseCommands.GetProductEntityById(id);
-                int numberOfCopies = element.Field<int>(this.ColumnNames.NumberOfCopies);
-                for (int i=1; i<=numberOfCopies; i++)
-                {
-                    localList.Add(productEnt);
-                }
-
-            }
-
-            return localList;
-
-        }
         private void UpdateControl(ref TextBox dummyForControl)
         {
             //this.Select();
@@ -507,73 +485,8 @@ namespace NaturalnieApp.Forms
         {
             DataRow[] rowsToPrint = this.DataSoruce.Select(this.DataSoruce.DefaultView.RowFilter);
 
-            if (rowsToPrint.Length == 0)
-            {
-                MessageBox.Show("Brak wybranch elementów do druku!");
-            }
-            else
-            {
-                DialogResult decision = DialogResult.Yes;
-                if (Int32.Parse(this.tbNumberOfLabels.Text) > 100)
-                {
-                    decision = MessageBox.Show(string.Format("Uwaga! Wybrano {0} etykiet do druku. Czy na pewno chcesz kontynułować?",
-                        this.tbNumberOfLabels.Text)
-                        , "Duża liczba etykiet do druku.", MessageBoxButtons.YesNo);
-                }
-
-                if (decision == DialogResult.Yes)
-                {
-                    //Get printer device
-                    try
-                    {
-                        //Check if Dymo printer instance already created
-                        if (this.DymoPrinter == null)
-                        {
-                            //Printer instance
-                            this.DymoPrinter = new Printer(Program.GlobalVariables.LabelPath);
-                        }
-
-                        //Check if printer connected
-                        this.DymoPrinter.ChangePrinter(Program.GlobalVariables.DymoPrinterName);
-
-                        //Local variables
-                        List<Product> localList = new List<Product>();
-
-                        localList = GetListOfTheProductToPrintFromDataTable(rowsToPrint);
-
-                        List<Product> printingList = new List<Product>();
-
-                        int i = 0;
-
-                        //Split it into 5
-                        foreach (Product element in localList)
-                        {
-
-                            printingList.Add(element);
-
-                            if ((printingList.Count == 2) || (i == localList.Count - 1))
-                            {
-                                //Print lables
-                                this.DymoPrinter.PrintPriceCardsFromProductList(printingList);
-                                printingList.Clear();
-                            }
-
-                            i++;
-
-                        }
-
-                    }
-                    catch (NoPrinterToSelect)
-                    {
-                        MessageBox.Show("Nie można odnaleźć drukarki firmy Dymo. Podłącz drukarkę i spróbuj ponownie!");
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
-                else MessageBox.Show("Anulowano!");
-            }
+            PrinterRelated.PrintFromRowsByProductId(this.DymoPrinter, rowsToPrint, this.DataSoruce.Columns[ColumnNames.ProductId].Ordinal,
+                this.DataSoruce.Columns[ColumnNames.NumberOfCopies].Ordinal, this.databaseCommands);
 
             this.DymoPrinter = null;
 

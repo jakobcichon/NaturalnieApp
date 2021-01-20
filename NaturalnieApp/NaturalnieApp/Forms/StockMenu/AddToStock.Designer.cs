@@ -34,10 +34,11 @@ namespace NaturalnieApp.Forms
             this.panel1 = new System.Windows.Forms.Panel();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
+            this.bPrint = new System.Windows.Forms.Button();
             this.tbQuantityOnList = new System.Windows.Forms.TextBox();
             this.lQuantityOnList = new System.Windows.Forms.Label();
             this.bUpdate = new System.Windows.Forms.Button();
-            this.bPrint = new System.Windows.Forms.Button();
+            this.bSave = new System.Windows.Forms.Button();
             this.bClose = new System.Windows.Forms.Button();
             this.gbProductSelection = new System.Windows.Forms.GroupBox();
             this.bAdd = new System.Windows.Forms.Button();
@@ -139,21 +140,36 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView1.Size = new System.Drawing.Size(618, 470);
             this.advancedDataGridView1.TabIndex = 2;
+            this.advancedDataGridView1.SortStringChanged += new System.EventHandler<Zuby.ADGV.AdvancedDataGridView.SortEventArgs>(this.AdvancedDataGridView1_SortStringChanged);
             this.advancedDataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValueChanged);
             this.advancedDataGridView1.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.advancedDataGridView1_UserDeletedRow);
             // 
             // pButtonsPanel
             // 
+            this.pButtonsPanel.Controls.Add(this.bPrint);
             this.pButtonsPanel.Controls.Add(this.tbQuantityOnList);
             this.pButtonsPanel.Controls.Add(this.lQuantityOnList);
             this.pButtonsPanel.Controls.Add(this.bUpdate);
-            this.pButtonsPanel.Controls.Add(this.bPrint);
+            this.pButtonsPanel.Controls.Add(this.bSave);
             this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pButtonsPanel.Location = new System.Drawing.Point(0, 620);
             this.pButtonsPanel.Name = "pButtonsPanel";
             this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
             this.pButtonsPanel.TabIndex = 4;
+            // 
+            // bPrint
+            // 
+            this.bPrint.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bPrint.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bPrint.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bPrint.Location = new System.Drawing.Point(490, 10);
+            this.bPrint.Name = "bPrint";
+            this.bPrint.Size = new System.Drawing.Size(100, 50);
+            this.bPrint.TabIndex = 33;
+            this.bPrint.Text = "Drukuj etykiety";
+            this.bPrint.UseVisualStyleBackColor = false;
+            this.bPrint.Click += new System.EventHandler(this.bPrint_Click);
             // 
             // tbQuantityOnList
             // 
@@ -190,18 +206,18 @@ namespace NaturalnieApp.Forms
             this.bUpdate.UseVisualStyleBackColor = false;
             this.bUpdate.Click += new System.EventHandler(this.bUpdate_Click);
             // 
-            // bPrint
+            // bSave
             // 
-            this.bPrint.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bPrint.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bPrint.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bPrint.Location = new System.Drawing.Point(702, 10);
-            this.bPrint.Name = "bPrint";
-            this.bPrint.Size = new System.Drawing.Size(100, 50);
-            this.bPrint.TabIndex = 26;
-            this.bPrint.Text = "Zapisz";
-            this.bPrint.UseVisualStyleBackColor = false;
-            this.bPrint.Click += new System.EventHandler(this.bSave_Click);
+            this.bSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bSave.Location = new System.Drawing.Point(702, 10);
+            this.bSave.Name = "bSave";
+            this.bSave.Size = new System.Drawing.Size(100, 50);
+            this.bSave.TabIndex = 26;
+            this.bSave.Text = "Zapisz";
+            this.bSave.UseVisualStyleBackColor = false;
+            this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
             // bClose
             // 
@@ -346,7 +362,7 @@ namespace NaturalnieApp.Forms
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 384F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 388F));
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -883,7 +899,7 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.DateTimePicker dtpExpirationDate;
         private System.Windows.Forms.Label lExpirationDate;
         private System.Windows.Forms.Panel pSpare4;
-        private System.Windows.Forms.Button bPrint;
+        private System.Windows.Forms.Button bSave;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TextBox tbFinalPrice;
         private System.Windows.Forms.TextBox tbActualQuantity;
@@ -903,5 +919,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TextBox tbQuantity;
         private System.Windows.Forms.TextBox tbQuantityOnList;
         private System.Windows.Forms.Label lQuantityOnList;
+        private System.Windows.Forms.Button bPrint;
     }
 }

@@ -209,7 +209,7 @@ namespace NaturalnieApp.Forms
 
         private void tbElzabPath_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Path.GetInvalidPathChars()
+
         }
 
         private void rtbDatabaseName_Validating(object sender, System.ComponentModel.CancelEventArgs e)

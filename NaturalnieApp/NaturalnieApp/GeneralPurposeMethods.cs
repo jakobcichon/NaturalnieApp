@@ -12,6 +12,7 @@ using System.Data.OleDb;
 using System.Printing;
 using NaturalnieApp.Database;
 using ElzabDriver;
+using NaturalnieApp.Dymo_Printer;
 
 namespace NaturalnieApp
 {
@@ -722,6 +723,204 @@ namespace NaturalnieApp
                 sResult= "";
             }
             return sResult;
+        }
+    }
+
+    static public class PrinterRelated
+    {
+        static public void PrintFromRowsByProductName(Printer printerInstance, DataRow[] rowsToPrint, int productNameColumnNumber,
+        int numberOfCopiesColumnName, DatabaseCommands databaseCommands)
+        {
+            if (rowsToPrint.Length == 0)
+            {
+                MessageBox.Show("Brak wybranch elementów do druku!");
+            }
+            else
+            {
+                //Get printer device
+                try
+                {
+                    //Check if Dymo printer instance already created
+                    if (printerInstance == null)
+                    {
+                        //Printer instance
+                        printerInstance = new Printer(Program.GlobalVariables.LabelPath);
+                    }
+
+                    //Check if printer connected
+                    printerInstance.ChangePrinter(Program.GlobalVariables.DymoPrinterName);
+
+                    //Local variables
+                    List<Product> localList = new List<Product>();
+
+                    localList = GetListOfTheProductToPrintFromDataRowsByProductName(rowsToPrint, productNameColumnNumber, numberOfCopiesColumnName, databaseCommands);
+
+                    List<Product> printingList = new List<Product>();
+
+                    DialogResult decision = DialogResult.Yes;
+                    if (localList.Count() > 100)
+                    {
+                        decision = MessageBox.Show(string.Format("Uwaga! Wybrano {0} etykiet do druku. Czy na pewno chcesz kontynułować?",
+                            localList.Count())
+                            , "Duża liczba etykiet do druku.", MessageBoxButtons.YesNo);
+                    }
+
+                    if (decision == DialogResult.Yes)
+                    {
+                        int i = 0;
+
+                        //Split it into 5
+                        foreach (Product element in localList)
+                        {
+
+                            printingList.Add(element);
+
+                            if ((printingList.Count == 2) || (i == localList.Count - 1))
+                            {
+                                //Print lables
+                                printerInstance.PrintPriceCardsFromProductList(printingList);
+                                printingList.Clear();
+                            }
+
+                            i++;
+
+                        }
+                    }
+                    else MessageBox.Show("Anulowano!");
+
+                }
+                catch (NoPrinterToSelect)
+                {
+                    MessageBox.Show("Nie można odnaleźć drukarki firmy Dymo. Podłącz drukarkę i spróbuj ponownie!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
+
+            printerInstance = null;
+        }
+
+        static public void PrintFromRowsByProductId(Printer printerInstance, DataRow[] rowsToPrint, int productIdColumnNumber,
+        int numberOfCopiesColumnName, DatabaseCommands databaseCommands)
+        {
+
+            if (rowsToPrint.Length == 0)
+            {
+                MessageBox.Show("Brak wybranch elementów do druku!");
+            }
+            else
+            {
+                //Get printer device
+                try
+                {
+                    //Check if Dymo printer instance already created
+                    if (printerInstance == null)
+                    {
+                        //Printer instance
+                        printerInstance = new Printer(Program.GlobalVariables.LabelPath);
+                    }
+
+                    //Check if printer connected
+                    printerInstance.ChangePrinter(Program.GlobalVariables.DymoPrinterName);
+
+                    //Local variables
+                    List<Product> localList = new List<Product>();
+
+                    localList = GetListOfTheProductToPrintFromDataRows(rowsToPrint, productIdColumnNumber, numberOfCopiesColumnName, databaseCommands);
+
+                    List<Product> printingList = new List<Product>();
+
+                    DialogResult decision = DialogResult.Yes;
+                    if (localList.Count() > 100)
+                    {
+                        decision = MessageBox.Show(string.Format("Uwaga! Wybrano {0} etykiet do druku. Czy na pewno chcesz kontynułować?",
+                            localList.Count())
+                            , "Duża liczba etykiet do druku.", MessageBoxButtons.YesNo);
+                    }
+
+                    if (decision == DialogResult.Yes)
+                    {
+                        int i = 0;
+
+                        //Split it into 5
+                        foreach (Product element in localList)
+                        {
+
+                            printingList.Add(element);
+
+                            if ((printingList.Count == 2) || (i == localList.Count - 1))
+                            {
+                                //Print lables
+                                printerInstance.PrintPriceCardsFromProductList(printingList);
+                                printingList.Clear();
+                            }
+
+                            i++;
+
+                        }
+                    }
+                    else MessageBox.Show("Anulowano!");
+
+                }
+                catch (NoPrinterToSelect)
+                {
+                    MessageBox.Show("Nie można odnaleźć drukarki firmy Dymo. Podłącz drukarkę i spróbuj ponownie!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
+
+            printerInstance = null;
+        }
+
+        private static List<Product> GetListOfTheProductToPrintFromDataRows(DataRow[] data, int productNameColumnNumber,
+            int numberOfCopiesColumnName, DatabaseCommands databaseCommands)
+        {
+            //Local variables
+            List<Product> localList = new List<Product>();
+
+            foreach (DataRow element in data)
+            {
+                //Get product entity
+                Product productEnt = databaseCommands.GetProductEntityByProductName(element.Field<string>(productNameColumnNumber));
+                int numberOfCopies = element.Field<int>(numberOfCopiesColumnName);
+                for (int i = 1; i <= numberOfCopies; i++)
+                {
+                    localList.Add(productEnt);
+                }
+
+            }
+
+            return localList;
+
+        }
+
+        private static List<Product> GetListOfTheProductToPrintFromDataRowsByProductName(DataRow[] data, int productIdColumnNumber,
+            int numberOfCopiesColumnName, DatabaseCommands databaseCommands)
+        {
+            //Local variables
+            List<Product> localList = new List<Product>();
+
+            foreach (DataRow element in data)
+            {
+                //Get product entity
+                Product productEnt = databaseCommands.GetProductEntityById(productIdColumnNumber);
+                int numberOfCopies = element.Field<int>(numberOfCopiesColumnName);
+                for (int i = 1; i <= numberOfCopies; i++)
+                {
+                    localList.Add(productEnt);
+                }
+
+            }
+
+            return localList;
+
         }
     }
 
