@@ -55,7 +55,7 @@ namespace NaturalnieApp.Forms.Common
             this.gbProductSelection.Location = new System.Drawing.Point(0, 0);
             this.gbProductSelection.Margin = new System.Windows.Forms.Padding(5);
             this.gbProductSelection.Name = "gbProductSelection";
-            this.gbProductSelection.Size = new System.Drawing.Size(1094, 106);
+            this.gbProductSelection.Size = new System.Drawing.Size(920, 106);
             this.gbProductSelection.TabIndex = 2;
             this.gbProductSelection.TabStop = false;
             this.gbProductSelection.Text = "Wybór produktu";
@@ -114,7 +114,7 @@ namespace NaturalnieApp.Forms.Common
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 632F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 633F));
             this.pProductName.Controls.Add(this.cbProductList, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -162,7 +162,7 @@ namespace NaturalnieApp.Forms.Common
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 422F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 423F));
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.Controls.Add(this.cbManufacturer, 0, 1);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -211,9 +211,9 @@ namespace NaturalnieApp.Forms.Common
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.Controls.Add(this.gbProductSelection);
-            this.MinimumSize = new System.Drawing.Size(1094, 106);
+            this.MinimumSize = new System.Drawing.Size(920, 106);
             this.Name = "SearchBarTemplate";
-            this.Size = new System.Drawing.Size(1094, 106);
+            this.Size = new System.Drawing.Size(920, 106);
             this.gbProductSelection.ResumeLayout(false);
             this.pBarCode.ResumeLayout(false);
             this.pProductName.ResumeLayout(false);
