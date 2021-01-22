@@ -9,20 +9,33 @@ using NaturalnieApp.Database;
 using NaturalnieApp.Forms.TestForm;
 using NaturalnieApp.Initialization;
 using static NaturalnieApp.Program;
+using NaturalnieApp.Forms.Common;
 
 namespace NaturalnieApp.Forms
 {
     public partial class ElzabSettings : UserControl
     {
         private ConfigFileObject ConfigFileObjInst;
+        private SearchBarTemplate SearchBar { get; set; }
+        DatabaseCommands databaseCommands;
 
 
-        public ElzabSettings(ConfigFileObject conFileObj)
+        public ElzabSettings(ConfigFileObject conFileObj,ref DatabaseCommands database)
         {
             this.ConfigFileObjInst = conFileObj;
             InitializeComponent();
             UpdateView(conFileObj);
+            InitializeSearchBar(ref database);
 
+        }
+
+        private void InitializeSearchBar(ref DatabaseCommands database)
+        {
+            this.pSearchBar.AutoSize = true;
+            this.SearchBar = new SearchBarTemplate(ref database);
+            this.pSearchBar.Controls.Add(this.SearchBar);
+
+            ;
         }
 
         public void UpdateView(ConfigFileObject conFileObj)

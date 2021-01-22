@@ -63,6 +63,7 @@ namespace NaturalnieApp.Forms
             this.lCOMPortNr = new System.Windows.Forms.Label();
             this.cCOMPorts = new System.Windows.Forms.ComboBox();
             this.bApply = new System.Windows.Forms.Button();
+            this.pSearchBar = new System.Windows.Forms.Panel();
             this.pSettingNr1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.gpConnectionSettings.SuspendLayout();
@@ -331,12 +332,20 @@ namespace NaturalnieApp.Forms
             this.bApply.UseVisualStyleBackColor = false;
             this.bApply.Click += new System.EventHandler(this.bApply_Click);
             // 
+            // pSearchBar
+            // 
+            this.pSearchBar.Location = new System.Drawing.Point(0, 291);
+            this.pSearchBar.Name = "pSearchBar";
+            this.pSearchBar.Size = new System.Drawing.Size(917, 120);
+            this.pSearchBar.TabIndex = 15;
+            // 
             // ElzabSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.Controls.Add(this.pSearchBar);
             this.Controls.Add(this.bApply);
             this.Controls.Add(this.gpConnectionSettings);
             this.Controls.Add(this.panel2);
@@ -382,5 +391,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lCOMPortNr;
         private System.Windows.Forms.ComboBox cCOMPorts;
         private System.Windows.Forms.Button bApply;
+        private System.Windows.Forms.Panel pSearchBar;
     }
 }

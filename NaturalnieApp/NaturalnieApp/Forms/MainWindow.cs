@@ -66,7 +66,7 @@ namespace NaturalnieApp.Forms
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.dymoSettings = new DymoSettings();
-            this.cashRegisterSettings = new ElzabSettings(this.ConfigFileOjbInst);
+            this.cashRegisterSettings = new ElzabSettings(this.ConfigFileOjbInst, ref this.databaseCommands);
             this.cashRegisterCommands = new ElzabSynchronization(ref this.databaseCommands);
         }
 
@@ -252,7 +252,7 @@ namespace NaturalnieApp.Forms
             }
             catch (ObjectDisposedException)
             {
-                this.cashRegisterSettings = new ElzabSettings(this.ConfigFileOjbInst);
+                this.cashRegisterSettings = new ElzabSettings(this.ConfigFileOjbInst, ref this.databaseCommands);
                 this.pContainer.Controls.Add(this.cashRegisterSettings);
                 this.cashRegisterSettings.Select();
                 this.cashRegisterSettings.BringToFront();
