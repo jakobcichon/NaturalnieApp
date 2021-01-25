@@ -2,7 +2,7 @@
 
 namespace NaturalnieApp.Forms
 {
-    partial class ElzabSettings
+    partial class GeneralSettings
     {
         /// <summary>
         /// Required designer variable.
@@ -43,16 +43,18 @@ namespace NaturalnieApp.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.bBrowsePath = new System.Windows.Forms.Button();
             this.pHeader = new System.Windows.Forms.Panel();
             this.bSave = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
             this.cBaudRate = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.bDefaults = new System.Windows.Forms.Button();
-            this.bTest = new System.Windows.Forms.Button();
             this.rtbDatabaseName = new System.Windows.Forms.RichTextBox();
             this.gpConnectionSettings = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.bBrowsePath = new System.Windows.Forms.Button();
+            this.tbElzabPath = new System.Windows.Forms.RichTextBox();
+            this.lELzabCommandPath = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tpPortNumber = new System.Windows.Forms.TableLayoutPanel();
             this.lCOMPortNr = new System.Windows.Forms.Label();
@@ -60,30 +62,23 @@ namespace NaturalnieApp.Forms
             this.bApply = new System.Windows.Forms.Button();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
             this.bClose = new System.Windows.Forms.Button();
-            this.lELzabCommandPath = new System.Windows.Forms.Label();
-            this.tbElzabPath = new System.Windows.Forms.RichTextBox();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.lDatabaseName = new System.Windows.Forms.Label();
+            this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
+            this.pHeader.SuspendLayout();
             this.gpConnectionSettings.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tpPortNumber.SuspendLayout();
             this.pButtonsPanel.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // bBrowsePath
-            // 
-            this.bBrowsePath.BackColor = System.Drawing.Color.White;
-            this.bBrowsePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bBrowsePath.Location = new System.Drawing.Point(415, 6);
-            this.bBrowsePath.Name = "bBrowsePath";
-            this.bBrowsePath.Size = new System.Drawing.Size(30, 30);
-            this.bBrowsePath.TabIndex = 2;
-            this.bBrowsePath.Text = "...";
-            this.bBrowsePath.UseVisualStyleBackColor = false;
-            this.bBrowsePath.Click += new System.EventHandler(this.bBrowsePath_Click);
             // 
             // pHeader
             // 
+            this.pHeader.Controls.Add(this.tbDummyForCtrl);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
@@ -122,13 +117,14 @@ namespace NaturalnieApp.Forms
             this.cBaudRate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.cBaudRate.FormattingEnabled = true;
             this.cBaudRate.Items.AddRange(new object[] {
-            "9600",
+            "115200",
             "19200",
             "57600",
-            "115200"});
+            "9600"});
             this.cBaudRate.Location = new System.Drawing.Point(217, 6);
             this.cBaudRate.Name = "cBaudRate";
             this.cBaudRate.Size = new System.Drawing.Size(227, 28);
+            this.cBaudRate.Sorted = true;
             this.cBaudRate.TabIndex = 9;
             this.cBaudRate.Validating += new System.ComponentModel.CancelEventHandler(this.cBaudRate_Validating);
             // 
@@ -159,22 +155,16 @@ namespace NaturalnieApp.Forms
             this.bDefaults.UseVisualStyleBackColor = false;
             this.bDefaults.Click += new System.EventHandler(this.bDefaults_Click);
             // 
-            // bTest
-            // 
-            this.bTest.Location = new System.Drawing.Point(0, 0);
-            this.bTest.Name = "bTest";
-            this.bTest.Size = new System.Drawing.Size(75, 23);
-            this.bTest.TabIndex = 12;
-            // 
             // rtbDatabaseName
             // 
+            this.rtbDatabaseName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbDatabaseName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.rtbDatabaseName.Location = new System.Drawing.Point(334, 407);
+            this.rtbDatabaseName.Location = new System.Drawing.Point(217, 6);
             this.rtbDatabaseName.Multiline = false;
             this.rtbDatabaseName.Name = "rtbDatabaseName";
             this.rtbDatabaseName.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
             this.rtbDatabaseName.ShowSelectionMargin = true;
-            this.rtbDatabaseName.Size = new System.Drawing.Size(281, 40);
+            this.rtbDatabaseName.Size = new System.Drawing.Size(227, 28);
             this.rtbDatabaseName.TabIndex = 8;
             this.rtbDatabaseName.Text = "";
             this.rtbDatabaseName.Validating += new System.ComponentModel.CancelEventHandler(this.rtbDatabaseName_Validating);
@@ -192,6 +182,62 @@ namespace NaturalnieApp.Forms
             this.gpConnectionSettings.TabIndex = 13;
             this.gpConnectionSettings.TabStop = false;
             this.gpConnectionSettings.Text = "Ustawienie połączenia";
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 170F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 240F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.Controls.Add(this.bBrowsePath, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.tbElzabPath, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lELzabCommandPath, 0, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(464, 35);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.Padding = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(450, 40);
+            this.tableLayoutPanel2.TabIndex = 21;
+            // 
+            // bBrowsePath
+            // 
+            this.bBrowsePath.BackColor = System.Drawing.Color.White;
+            this.bBrowsePath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bBrowsePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bBrowsePath.Location = new System.Drawing.Point(418, 6);
+            this.bBrowsePath.Name = "bBrowsePath";
+            this.bBrowsePath.Size = new System.Drawing.Size(30, 30);
+            this.bBrowsePath.TabIndex = 3;
+            this.bBrowsePath.Text = "...";
+            this.bBrowsePath.UseVisualStyleBackColor = false;
+            // 
+            // tbElzabPath
+            // 
+            this.tbElzabPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbElzabPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbElzabPath.Location = new System.Drawing.Point(177, 6);
+            this.tbElzabPath.Name = "tbElzabPath";
+            this.tbElzabPath.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.tbElzabPath.Size = new System.Drawing.Size(234, 30);
+            this.tbElzabPath.TabIndex = 18;
+            this.tbElzabPath.Text = "";
+            this.tbElzabPath.TextChanged += new System.EventHandler(this.tbElzabPath_TextChanged_1);
+            // 
+            // lELzabCommandPath
+            // 
+            this.lELzabCommandPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lELzabCommandPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lELzabCommandPath.Location = new System.Drawing.Point(8, 8);
+            this.lELzabCommandPath.Margin = new System.Windows.Forms.Padding(5);
+            this.lELzabCommandPath.Name = "lELzabCommandPath";
+            this.lELzabCommandPath.Size = new System.Drawing.Size(160, 26);
+            this.lELzabCommandPath.TabIndex = 0;
+            this.lELzabCommandPath.Text = "Ścieżka plików Elzab";
+            this.lELzabCommandPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lELzabCommandPath.Click += new System.EventHandler(this.lELzabCommandPath_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -252,6 +298,7 @@ namespace NaturalnieApp.Forms
             this.cCOMPorts.Location = new System.Drawing.Point(217, 6);
             this.cCOMPorts.Name = "cCOMPorts";
             this.cCOMPorts.Size = new System.Drawing.Size(227, 28);
+            this.cCOMPorts.Sorted = true;
             this.cCOMPorts.TabIndex = 9;
             this.cCOMPorts.Validating += new System.ComponentModel.CancelEventHandler(this.cCOMPorts_Validating);
             // 
@@ -300,83 +347,93 @@ namespace NaturalnieApp.Forms
             this.bClose.UseMnemonic = false;
             this.bClose.UseVisualStyleBackColor = false;
             // 
-            // lELzabCommandPath
+            // groupBox1
             // 
-            this.lELzabCommandPath.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lELzabCommandPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lELzabCommandPath.Location = new System.Drawing.Point(8, 8);
-            this.lELzabCommandPath.Margin = new System.Windows.Forms.Padding(5);
-            this.lELzabCommandPath.Name = "lELzabCommandPath";
-            this.lELzabCommandPath.Size = new System.Drawing.Size(163, 30);
-            this.lELzabCommandPath.TabIndex = 0;
-            this.lELzabCommandPath.Text = "Ścieżka plików Elzab";
-            this.lELzabCommandPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lELzabCommandPath.Click += new System.EventHandler(this.lELzabCommandPath_Click);
+            this.groupBox1.Controls.Add(this.tableLayoutPanel3);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.groupBox1.Location = new System.Drawing.Point(0, 176);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(920, 80);
+            this.groupBox1.TabIndex = 16;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Ustawienia bazy danych";
             // 
-            // tbElzabPath
+            // tableLayoutPanel3
             // 
-            this.tbElzabPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbElzabPath.Location = new System.Drawing.Point(180, 6);
-            this.tbElzabPath.Name = "tbElzabPath";
-            this.tbElzabPath.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.tbElzabPath.Size = new System.Drawing.Size(228, 26);
-            this.tbElzabPath.TabIndex = 18;
-            this.tbElzabPath.Text = "";
-            this.tbElzabPath.TextChanged += new System.EventHandler(this.tbElzabPath_TextChanged_1);
+            this.tableLayoutPanel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tableLayoutPanel3.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 210F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel3.Controls.Add(this.lDatabaseName, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.rtbDatabaseName, 1, 0);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(8, 25);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.Padding = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(450, 40);
+            this.tableLayoutPanel3.TabIndex = 20;
             // 
-            // tableLayoutPanel2
+            // lDatabaseName
             // 
-            this.tableLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
-            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 173F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 500F));
-            this.tableLayoutPanel2.Controls.Add(this.lELzabCommandPath, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.tbElzabPath, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.bBrowsePath, 2, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(464, 35);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.Padding = new System.Windows.Forms.Padding(2);
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(450, 40);
-            this.tableLayoutPanel2.TabIndex = 21;
+            this.lDatabaseName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.lDatabaseName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lDatabaseName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lDatabaseName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lDatabaseName.Location = new System.Drawing.Point(6, 3);
+            this.lDatabaseName.Name = "lDatabaseName";
+            this.lDatabaseName.Size = new System.Drawing.Size(204, 34);
+            this.lDatabaseName.TabIndex = 8;
+            this.lDatabaseName.Text = "Nazwa bazy danych";
+            this.lDatabaseName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // ElzabSettings
+            // tbDummyForCtrl
+            // 
+            this.tbDummyForCtrl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tbDummyForCtrl.Location = new System.Drawing.Point(0, 0);
+            this.tbDummyForCtrl.Name = "tbDummyForCtrl";
+            this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
+            this.tbDummyForCtrl.TabIndex = 22;
+            this.tbDummyForCtrl.Visible = false;
+            // 
+            // GeneralSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.Controls.Add(this.rtbDatabaseName);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pButtonsPanel);
             this.Controls.Add(this.gpConnectionSettings);
-            this.Controls.Add(this.bTest);
             this.Controls.Add(this.pHeader);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.ForeColor = System.Drawing.Color.Black;
-            this.Name = "ElzabSettings";
+            this.Name = "GeneralSettings";
             this.Size = new System.Drawing.Size(920, 690);
             this.Load += new System.EventHandler(this.ElzabSettings_Load);
+            this.pHeader.ResumeLayout(false);
+            this.pHeader.PerformLayout();
             this.gpConnectionSettings.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tpPortNumber.ResumeLayout(false);
             this.pButtonsPanel.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.Button bBrowsePath;
         private System.Windows.Forms.Panel pHeader;
         private System.Windows.Forms.Button bSave;
         private System.Windows.Forms.Button bUpdate;
         private System.Windows.Forms.ComboBox cBaudRate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button bDefaults;
-        private System.Windows.Forms.Button bTest;
         private System.Windows.Forms.RichTextBox rtbDatabaseName;
         private System.Windows.Forms.GroupBox gpConnectionSettings;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
@@ -389,5 +446,10 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.RichTextBox tbElzabPath;
         private System.Windows.Forms.Label lELzabCommandPath;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Button bBrowsePath;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Label lDatabaseName;
+        private System.Windows.Forms.TextBox tbDummyForCtrl;
     }
 }

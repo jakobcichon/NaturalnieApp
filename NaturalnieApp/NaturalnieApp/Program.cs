@@ -42,38 +42,11 @@ namespace NaturalnieApp
             try
             {
 
-                //AssemblyResolver.Hook(@"C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
-                AssemblyResolver.Hook(@"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
+                AssemblyResolver.Hook(@"C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
+                //AssemblyResolver.Hook(@"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
 
-                //Read data from config file 
-                ConfigFileObject ConfigFileInst = new ConfigFileObject();
-
-                string path = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
-                GlobalVariables.ElzabCommandPath = path;
-                GlobalVariables.ElzabCashRegisterId = 1;
-                GlobalVariables.ElzabBaudRate = Int32.Parse(ConfigFileInst.GetValueByVariableName("ElzabBaudRate"));
-
-                //Check available com ports
-                GlobalVariables.ElzabPortCom = Int32.Parse(ConfigFileInst.GetValueByVariableName("ElzabCOMPort"));
-                string[] ports = SerialPort.GetPortNames();
-                bool result = false;
-                foreach (string port in ports)
-                {
-                    int portInt = ElzabRelated.ComPortNumberFromName(port);
-                    if (GlobalVariables.ElzabPortCom == portInt) result = true;
-                }
-                if (!result && ports.Count() > 0) GlobalVariables.ElzabPortCom = Int32.Parse(ports[0].Replace("COM", ""));
-
-                GlobalVariables.LabelPath = ConfigFileInst.GetValueByVariableName("LabelPath");
-                GlobalVariables.SqlServerName = ConfigFileInst.GetValueByVariableName("DatabaseName");
-                GlobalVariables.ConnectionString = string.Format("server = {0}; port = 3306; database = shop;" +
-                    "uid = admin; password = admin; Connection Timeout = 60", GlobalVariables.SqlServerName);
-                GlobalVariables.LibraryPath = ConfigFileInst.GetValueByVariableName("LibraryPath");
-
-                //Pronter selection
-                List<string> printersNames = PrinterMethods.GetPrintersNameList();
-                if (printersNames.Count > 0) GlobalVariables.DymoPrinterName = printersNames[0];
-
+                //Initialize global variables
+                ConfigFileObject ConfigFileInst = InitGlobalVariables();
 
                 Application.EnableVisualStyles();
                 Application.Run(new MainWindow(ConfigFileInst));
@@ -87,7 +60,35 @@ namespace NaturalnieApp
 
         }
 
+        //Initialization of global variables
+        public static ConfigFileObject InitGlobalVariables()
+        {
+            //Read data from config file 
+            ConfigFileObject ConfigFileInst = new ConfigFileObject();
 
+            string path = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
+            GlobalVariables.ElzabCommandPath = path;
+            GlobalVariables.ElzabCashRegisterId = 1;
+            GlobalVariables.ElzabBaudRate = Int32.Parse(ConfigFileInst.GetValueByVariableName("ElzabBaudRate"));
+
+            //Check available com ports
+            GlobalVariables.ElzabPortCom = Int32.Parse(ConfigFileInst.GetValueByVariableName("ElzabCOMPort"));
+
+            GlobalVariables.LabelPath = ConfigFileInst.GetValueByVariableName("LabelPath");
+            GlobalVariables.SqlServerName = ConfigFileInst.GetValueByVariableName("DatabaseName");
+            GlobalVariables.ConnectionString = string.Format("server = {0}; port = 3306; database = shop;" +
+                "uid = admin; password = admin; Connection Timeout = 60", GlobalVariables.SqlServerName);
+            GlobalVariables.LibraryPath = ConfigFileInst.GetValueByVariableName("LibraryPath");
+
+            //Pronter selection
+            List<string> printersNames = PrinterMethods.GetPrintersNameList();
+            if (printersNames.Count > 0) GlobalVariables.DymoPrinterName = printersNames[0];
+
+            return ConfigFileInst;
+
+        }
+
+        //Assembly resolver
         public static class AssemblyResolver
         {
             internal static void Hook(params string[] folders)

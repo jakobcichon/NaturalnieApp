@@ -13,14 +13,12 @@ using NaturalnieApp.Forms.Common;
 
 namespace NaturalnieApp.Forms
 {
-    public partial class ElzabSettings : UserControl
+    public partial class GeneralSettings : UserControl
     {
         private ConfigFileObject ConfigFileObjInst;
         private SearchBarTemplate SearchBar { get; set; }
         DatabaseCommands databaseCommands;
-
-
-        public ElzabSettings(ConfigFileObject conFileObj,ref DatabaseCommands database)
+        public GeneralSettings(ConfigFileObject conFileObj)
         {
             this.ConfigFileObjInst = conFileObj;
             InitializeComponent();
@@ -28,6 +26,12 @@ namespace NaturalnieApp.Forms
 
         }
 
+        private void UpdateControl(ref TextBox dummyForControl)
+        {
+            //this.Select();
+            this.Focus();
+            dummyForControl.Select();
+        }
 
         public void UpdateView(ConfigFileObject conFileObj)
         {
@@ -54,18 +58,49 @@ namespace NaturalnieApp.Forms
 
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+
+            if ((keyData == Keys.Enter))
+            {
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
+
+            }
+            else if (keyData == Keys.Escape)
+            {
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         //Method used to handle formatting of COM ports ComboBox
         public void COMPortsFormat(ConfigFileObject conFileObj)
         {
             //COM Port - settings for com port ComboBox
             string[] ports = SerialPort.GetPortNames();
+            string comPortFromFile = "COM" + conFileObj.GetValueByVariableName("ElzabCOMPort");
             cCOMPorts.Items.Clear();
+            bool result = false;
             foreach (string element in ports)
             {
                 cCOMPorts.Items.Add(element);
+                if (comPortFromFile == element)
+                {
+                    cCOMPorts.SelectedItem = comPortFromFile;
+                    result = true;
+                    break;
+                }
             }
-            
-            if(cCOMPorts.Items.Count > 0) cCOMPorts.SelectedItem = cCOMPorts.Items[0];
+            if (!result)
+            {
+                string comPortNewName = comPortFromFile + " (domyślny, nieaktywny)";
+                cCOMPorts.Items.Add(comPortNewName);
+                cCOMPorts.SelectedItem = comPortNewName;
+            }
+
         }
 
         //Method used to handle formatting of textBox
@@ -115,30 +150,54 @@ namespace NaturalnieApp.Forms
         {
             try
             {
-                if (AllObjectSelected())
+                //Check result
+                bool result = AllObjectSelected();
+                if (!result)
                 {
-                    //Update value of COM port
-                    string comPort = cCOMPorts.SelectedItem.ToString().Replace("COM", "");
-                    ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", comPort);
-                    GlobalVariables.ElzabPortCom = Int32.Parse(comPort);
+                    DialogResult decision = MessageBox.Show("Nie wszystkie wymagane pola zostały uzupełnione. " +
+                        "Czy chcesz kontunuować i dla nie uzupełnionych danych przywrócić wartości domyślne?", 
+                        "Brakujące dane do zapisu", MessageBoxButtons.YesNo);
 
-                    //Update value of Baud rate
-                    ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", cBaudRate.SelectedItem.ToString());
-                    GlobalVariables.ElzabPortCom = Int32.Parse(cBaudRate.SelectedItem.ToString());
+                    if (decision == DialogResult.Yes)
+                    {
+                        if( cCOMPorts.SelectedIndex == -1)
+                        {
+                            int index = cCOMPorts.Items.IndexOf(this.ConfigFileObjInst.ElzabCOMPortDefaultValue);
+                            if (index == -1)
+                            {
+                                cCOMPorts.Items.Add("COM" + this.ConfigFileObjInst.ElzabCOMPortDefaultValue);
+                                index = cCOMPorts.Items.IndexOf(this.ConfigFileObjInst.ElzabCOMPortDefaultValue);
+                            }
+                            cCOMPorts.SelectedIndex = index;
+                        }
+                        if (cBaudRate.SelectedIndex == -1)
+                        {
+                            int index = cBaudRate.Items.IndexOf(this.ConfigFileObjInst.ElzabBaudRateDefaultValue);
+                            if (index == -1)
+                            {
+                                cBaudRate.Items.Add(this.ConfigFileObjInst.ElzabCOMPortDefaultValue);
+                                index = cBaudRate.Items.IndexOf(this.ConfigFileObjInst.ElzabCOMPortDefaultValue);
+                            }
+                            cBaudRate.SelectedIndex = index;
+                        }
+                        if (tbElzabPath.Text == "")
+                        {
+                            tbElzabPath.Text = this.ConfigFileObjInst.ElzabCommandPathDefaultValue;
+                        }
+                        if (rtbDatabaseName.Text == "")
+                        {
+                            rtbDatabaseName.Text = this.ConfigFileObjInst.DatabaseNameDefaultValue;
+                        }
 
-                    //Update value of path
-                    ConfigFileObjInst.ChangeVariableValue("ElzabCommandPath", tbElzabPath.Text.ToString());
-                    GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();
+                        SaveData();
+                    }
 
-                    //Update database name
-                    ConfigFileObjInst.ChangeVariableValue("DatabaseName", rtbDatabaseName.Text.ToString());
-                    GlobalVariables.SqlServerName = rtbDatabaseName.Text.ToString();
-
-                    ConfigFileObjInst.SaveData();
-
-                    MessageBox.Show("Zapisano zmiany!");
                 }
-                
+                else
+                {
+
+                    SaveData();
+                }
 
             }
             catch (Exception ex)
@@ -146,6 +205,30 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show(ex.Message);
             }
 
+        }
+
+        private void SaveData()
+        {
+            //Update value of COM port
+
+            ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", ElzabRelated.ComPortNumberFromName(cCOMPorts.SelectedItem.ToString()).ToString());
+            GlobalVariables.ElzabPortCom = ElzabRelated.ComPortNumberFromName(cCOMPorts.SelectedItem.ToString());
+
+            //Update value of Baud rate
+            ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", cBaudRate.SelectedItem.ToString());
+            GlobalVariables.ElzabPortCom = Int32.Parse(cBaudRate.SelectedItem.ToString());
+
+            //Update value of path
+            ConfigFileObjInst.ChangeVariableValue("ElzabCommandPath", tbElzabPath.Text.ToString());
+            GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();
+
+            //Update database name
+            ConfigFileObjInst.ChangeVariableValue("DatabaseName", rtbDatabaseName.Text.ToString());
+            GlobalVariables.SqlServerName = rtbDatabaseName.Text.ToString();
+
+            ConfigFileObjInst.SaveData();
+
+            MessageBox.Show("Zapisano zmiany!");
         }
 
         private bool AllObjectSelected()
@@ -187,11 +270,10 @@ namespace NaturalnieApp.Forms
                 if (AllObjectSelected())
                 {
                     //Update value of COM port
-                    string comPort = cCOMPorts.SelectedItem.ToString().Replace("COM", "");
-                    GlobalVariables.ElzabPortCom = Int32.Parse(comPort);
+                    GlobalVariables.ElzabPortCom = ElzabRelated.ComPortNumberFromName(cCOMPorts.SelectedItem.ToString());
 
                     //Update value of Baud rate
-                    GlobalVariables.ElzabPortCom = Int32.Parse(cBaudRate.SelectedItem.ToString());
+                    GlobalVariables.ElzabBaudRate= Int32.Parse(cBaudRate.SelectedItem.ToString());
 
                     //Update value of path
                     GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();

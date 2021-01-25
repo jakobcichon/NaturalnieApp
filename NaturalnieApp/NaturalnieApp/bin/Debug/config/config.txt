@@ -3,7 +3,7 @@
 
 
 \\Elzab default COM port
-#ElzabCOMPort = 3
+#ElzabCOMPort = 1
 
 
 \\Elzab default baud rate
@@ -11,7 +11,7 @@
 
 
 \\Test database name
-#DatabaseName = DESKTOP-L2L4V68
+#DatabaseName = localhost
 
 
 \\Path to the label file

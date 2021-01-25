@@ -99,6 +99,9 @@ namespace NaturalnieApp.Forms
             this.bUpdate = new System.Windows.Forms.Button();
             this.bSave = new System.Windows.Forms.Button();
             this.bClose = new System.Windows.Forms.Button();
+            this.tpPriceWithTax = new System.Windows.Forms.TableLayoutPanel();
+            this.tbPriceWithTax = new System.Windows.Forms.TextBox();
+            this.lPriceWithTax = new System.Windows.Forms.Label();
             this.pHeader.SuspendLayout();
             this.pManufacturer.SuspendLayout();
             this.gbProductSelection.SuspendLayout();
@@ -123,6 +126,7 @@ namespace NaturalnieApp.Forms
             this.tpTax.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
+            this.tpPriceWithTax.SuspendLayout();
             this.SuspendLayout();
             // 
             // pHeader
@@ -353,6 +357,7 @@ namespace NaturalnieApp.Forms
             // 
             // gbProductInfo
             // 
+            this.gbProductInfo.Controls.Add(this.tpPriceWithTax);
             this.gbProductInfo.Controls.Add(this.tpDeactivateBarcodeSearching);
             this.gbProductInfo.Controls.Add(this.tpElzabProductNumber);
             this.gbProductInfo.Controls.Add(this.tpProductNameToEdit);
@@ -511,7 +516,7 @@ namespace NaturalnieApp.Forms
             // lProductNameToEdit
             // 
             this.lProductNameToEdit.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lProductNameToEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lProductNameToEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lProductNameToEdit.Location = new System.Drawing.Point(6, 6);
             this.lProductNameToEdit.Margin = new System.Windows.Forms.Padding(5);
             this.lProductNameToEdit.Name = "lProductNameToEdit";
@@ -529,7 +534,7 @@ namespace NaturalnieApp.Forms
             this.tpBarcodeToEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpBarcodeToEdit.Controls.Add(this.tbBarcodeToEdit, 1, 0);
             this.tpBarcodeToEdit.Controls.Add(this.lBarcodeToEdit, 0, 0);
-            this.tpBarcodeToEdit.Location = new System.Drawing.Point(10, 118);
+            this.tpBarcodeToEdit.Location = new System.Drawing.Point(10, 117);
             this.tpBarcodeToEdit.Name = "tpBarcodeToEdit";
             this.tpBarcodeToEdit.RowCount = 1;
             this.tpBarcodeToEdit.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -548,13 +553,13 @@ namespace NaturalnieApp.Forms
             // 
             // lBarcodeToEdit
             // 
-            this.lBarcodeToEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lBarcodeToEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lBarcodeToEdit.Location = new System.Drawing.Point(6, 6);
             this.lBarcodeToEdit.Margin = new System.Windows.Forms.Padding(5);
             this.lBarcodeToEdit.Name = "lBarcodeToEdit";
             this.lBarcodeToEdit.Size = new System.Drawing.Size(200, 30);
             this.lBarcodeToEdit.TabIndex = 1;
-            this.lBarcodeToEdit.Text = "Kod kreskowy";
+            this.lBarcodeToEdit.Text = "Kod kreskowy główny";
             this.lBarcodeToEdit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tpManufacturerToEdit
@@ -609,7 +614,7 @@ namespace NaturalnieApp.Forms
             this.tpNetPriceWithDiscount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpNetPriceWithDiscount.Controls.Add(this.tbPriceNetWithDiscount, 1, 0);
             this.tpNetPriceWithDiscount.Controls.Add(this.lNetPRiceWithDiscount, 0, 0);
-            this.tpNetPriceWithDiscount.Location = new System.Drawing.Point(10, 252);
+            this.tpNetPriceWithDiscount.Location = new System.Drawing.Point(10, 249);
             this.tpNetPriceWithDiscount.Name = "tpNetPriceWithDiscount";
             this.tpNetPriceWithDiscount.RowCount = 1;
             this.tpNetPriceWithDiscount.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -647,7 +652,7 @@ namespace NaturalnieApp.Forms
             this.tpDiscount.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpDiscount.Controls.Add(this.lDiscount, 0, 0);
             this.tpDiscount.Controls.Add(this.tbDiscount, 1, 0);
-            this.tpDiscount.Location = new System.Drawing.Point(10, 208);
+            this.tpDiscount.Location = new System.Drawing.Point(10, 205);
             this.tpDiscount.Name = "tpDiscount";
             this.tpDiscount.RowCount = 1;
             this.tpDiscount.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -749,7 +754,7 @@ namespace NaturalnieApp.Forms
             this.lShortBarcode.Name = "lShortBarcode";
             this.lShortBarcode.Size = new System.Drawing.Size(200, 30);
             this.lShortBarcode.TabIndex = 1;
-            this.lShortBarcode.Text = "Kod kreskowy EAN8";
+            this.lShortBarcode.Text = "Kod kreskowy dodatkowy";
             this.lShortBarcode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tpFinalPrice
@@ -761,7 +766,7 @@ namespace NaturalnieApp.Forms
             this.tpFinalPrice.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpFinalPrice.Controls.Add(this.tbFinalPrice, 1, 0);
             this.tpFinalPrice.Controls.Add(this.lFinalPrice, 0, 0);
-            this.tpFinalPrice.Location = new System.Drawing.Point(10, 387);
+            this.tpFinalPrice.Location = new System.Drawing.Point(10, 425);
             this.tpFinalPrice.Name = "tpFinalPrice";
             this.tpFinalPrice.RowCount = 1;
             this.tpFinalPrice.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -921,7 +926,7 @@ namespace NaturalnieApp.Forms
             this.tPMarigin.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tPMarigin.Controls.Add(this.tbMarigin, 1, 0);
             this.tPMarigin.Controls.Add(this.lMarigin, 0, 0);
-            this.tPMarigin.Location = new System.Drawing.Point(10, 342);
+            this.tPMarigin.Location = new System.Drawing.Point(10, 381);
             this.tPMarigin.Name = "tPMarigin";
             this.tPMarigin.RowCount = 1;
             this.tPMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -948,7 +953,7 @@ namespace NaturalnieApp.Forms
             this.tpPrice.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpPrice.Controls.Add(this.lPrice, 0, 0);
             this.tpPrice.Controls.Add(this.tbPrice, 1, 0);
-            this.tpPrice.Location = new System.Drawing.Point(10, 163);
+            this.tpPrice.Location = new System.Drawing.Point(10, 161);
             this.tpPrice.Name = "tpPrice";
             this.tpPrice.RowCount = 1;
             this.tpPrice.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -977,7 +982,7 @@ namespace NaturalnieApp.Forms
             this.tpTax.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpTax.Controls.Add(this.lTax, 0, 0);
             this.tpTax.Controls.Add(this.cbTax, 1, 0);
-            this.tpTax.Location = new System.Drawing.Point(10, 297);
+            this.tpTax.Location = new System.Drawing.Point(10, 293);
             this.tpTax.Name = "tpTax";
             this.tpTax.RowCount = 2;
             this.tpTax.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -1056,6 +1061,42 @@ namespace NaturalnieApp.Forms
             this.bClose.UseVisualStyleBackColor = false;
             this.bClose.Click += new System.EventHandler(this.bClose_Click);
             // 
+            // tpPriceWithTax
+            // 
+            this.tpPriceWithTax.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpPriceWithTax.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tpPriceWithTax.ColumnCount = 2;
+            this.tpPriceWithTax.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 210F));
+            this.tpPriceWithTax.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpPriceWithTax.Controls.Add(this.tbPriceWithTax, 1, 0);
+            this.tpPriceWithTax.Controls.Add(this.lPriceWithTax, 0, 0);
+            this.tpPriceWithTax.Location = new System.Drawing.Point(10, 337);
+            this.tpPriceWithTax.Name = "tpPriceWithTax";
+            this.tpPriceWithTax.RowCount = 1;
+            this.tpPriceWithTax.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tpPriceWithTax.Size = new System.Drawing.Size(450, 40);
+            this.tpPriceWithTax.TabIndex = 36;
+            // 
+            // tbPriceWithTax
+            // 
+            this.tbPriceWithTax.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbPriceWithTax.Location = new System.Drawing.Point(217, 6);
+            this.tbPriceWithTax.Margin = new System.Windows.Forms.Padding(5);
+            this.tbPriceWithTax.Name = "tbPriceWithTax";
+            this.tbPriceWithTax.Size = new System.Drawing.Size(214, 26);
+            this.tbPriceWithTax.TabIndex = 0;
+            // 
+            // lPriceWithTax
+            // 
+            this.lPriceWithTax.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lPriceWithTax.Location = new System.Drawing.Point(6, 6);
+            this.lPriceWithTax.Margin = new System.Windows.Forms.Padding(5);
+            this.lPriceWithTax.Name = "lPriceWithTax";
+            this.lPriceWithTax.Size = new System.Drawing.Size(200, 30);
+            this.lPriceWithTax.TabIndex = 0;
+            this.lPriceWithTax.Text = "Cena brutto";
+            this.lPriceWithTax.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // ShowProductInfo
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -1108,6 +1149,8 @@ namespace NaturalnieApp.Forms
             this.tpTax.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.pButtonsPanel.ResumeLayout(false);
+            this.tpPriceWithTax.ResumeLayout(false);
+            this.tpPriceWithTax.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1182,5 +1225,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TableLayoutPanel tpDeactivateBarcodeSearching;
         private System.Windows.Forms.Label lDeactivateBarcodeSearching;
         private System.Windows.Forms.CheckBox cbDeactivateBarcodeSearching;
+        private System.Windows.Forms.TableLayoutPanel tpPriceWithTax;
+        private System.Windows.Forms.TextBox tbPriceWithTax;
+        private System.Windows.Forms.Label lPriceWithTax;
     }
 }

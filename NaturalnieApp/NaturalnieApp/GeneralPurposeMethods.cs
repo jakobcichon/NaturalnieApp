@@ -678,8 +678,43 @@ namespace NaturalnieApp
         //Method used to convert from name (ex.COM1) to com port number (ex. 1) 
         static public int ComPortNumberFromName(string comPortName)
         {
-            int comPortNumber = Int32.Parse(comPortName.Replace("COM", ""));
-            return comPortNumber;
+            //Local variables
+            Regex reg = new Regex(@"^\d+$");
+            int retVal = -1;
+            string tempString = "";
+            string searchingValue = "COM";
+
+            try
+            {
+                //Check if only digits
+                bool matchOnlyDigits = reg.IsMatch(comPortName);
+                if (matchOnlyDigits) retVal = Int32.Parse(comPortName);
+                else
+                {
+                    //Check if "COM" word exist in given string
+                    Match comNameExist = Regex.Match(comPortName, searchingValue);
+                    
+                    if (comNameExist.Success)
+                    {
+                        //Get index of searching word
+                        for (int i = comNameExist.Index + searchingValue.Length; i < comPortName.Length; i++)
+                        {
+                            //Check every digit starting from COM word and add int to temporary string
+                            if (Regex.IsMatch(comPortName[i].ToString(), @"^\d$")) tempString += comPortName[i].ToString();
+                            else break;
+                        }
+                    }
+                    if (tempString.Length > 0) retVal = Int32.Parse(tempString);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+
+            return retVal;
         }
     }
 

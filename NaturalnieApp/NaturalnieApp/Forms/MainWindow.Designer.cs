@@ -45,11 +45,11 @@ namespace NaturalnieApp.Forms
             this.bShowProductInfo = new System.Windows.Forms.Button();
             this.bProductMenu = new System.Windows.Forms.Button();
             this.pCashRegisterSubMenu = new System.Windows.Forms.Panel();
-            this.bCashRegisterSettings = new System.Windows.Forms.Button();
             this.bCashRegisterInfo = new System.Windows.Forms.Button();
             this.bCashRegister = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.pMainMenuSubMenu = new System.Windows.Forms.Panel();
             this.bDymoSettings = new System.Windows.Forms.Button();
+            this.bGeneralSettings = new System.Windows.Forms.Button();
             this.bMainMenu = new System.Windows.Forms.Button();
             this.pLogo = new System.Windows.Forms.Panel();
             this.pHeader = new System.Windows.Forms.Panel();
@@ -64,7 +64,7 @@ namespace NaturalnieApp.Forms
             this.pStockSubMenu.SuspendLayout();
             this.pProductSubMenu.SuspendLayout();
             this.pCashRegisterSubMenu.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.pMainMenuSubMenu.SuspendLayout();
             this.pHeader.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,7 +80,7 @@ namespace NaturalnieApp.Forms
             this.pMenu.Controls.Add(this.bProductMenu);
             this.pMenu.Controls.Add(this.pCashRegisterSubMenu);
             this.pMenu.Controls.Add(this.bCashRegister);
-            this.pMenu.Controls.Add(this.panel2);
+            this.pMenu.Controls.Add(this.pMainMenuSubMenu);
             this.pMenu.Controls.Add(this.bMainMenu);
             this.pMenu.Controls.Add(this.pLogo);
             this.pMenu.Dock = System.Windows.Forms.DockStyle.Left;
@@ -302,32 +302,15 @@ namespace NaturalnieApp.Forms
             // 
             // pCashRegisterSubMenu
             // 
+            this.pCashRegisterSubMenu.AutoSize = true;
             this.pCashRegisterSubMenu.BackColor = System.Drawing.Color.DimGray;
-            this.pCashRegisterSubMenu.Controls.Add(this.bCashRegisterSettings);
             this.pCashRegisterSubMenu.Controls.Add(this.bCashRegisterInfo);
             this.pCashRegisterSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pCashRegisterSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pCashRegisterSubMenu.Location = new System.Drawing.Point(0, 244);
+            this.pCashRegisterSubMenu.Location = new System.Drawing.Point(0, 274);
             this.pCashRegisterSubMenu.Name = "pCashRegisterSubMenu";
-            this.pCashRegisterSubMenu.Size = new System.Drawing.Size(300, 60);
+            this.pCashRegisterSubMenu.Size = new System.Drawing.Size(300, 30);
             this.pCashRegisterSubMenu.TabIndex = 3;
-            // 
-            // bCashRegisterSettings
-            // 
-            this.bCashRegisterSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bCashRegisterSettings.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bCashRegisterSettings.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.bCashRegisterSettings.FlatAppearance.BorderSize = 0;
-            this.bCashRegisterSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bCashRegisterSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bCashRegisterSettings.ForeColor = System.Drawing.Color.White;
-            this.bCashRegisterSettings.Location = new System.Drawing.Point(0, 30);
-            this.bCashRegisterSettings.Name = "bCashRegisterSettings";
-            this.bCashRegisterSettings.Size = new System.Drawing.Size(300, 30);
-            this.bCashRegisterSettings.TabIndex = 5;
-            this.bCashRegisterSettings.Text = "Ustawienia";
-            this.bCashRegisterSettings.UseVisualStyleBackColor = false;
-            this.bCashRegisterSettings.Click += new System.EventHandler(this.bCashRegisterSettings_Click);
             // 
             // bCashRegisterInfo
             // 
@@ -356,7 +339,7 @@ namespace NaturalnieApp.Forms
             this.bCashRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bCashRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bCashRegister.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.bCashRegister.Location = new System.Drawing.Point(0, 194);
+            this.bCashRegister.Location = new System.Drawing.Point(0, 224);
             this.bCashRegister.Name = "bCashRegister";
             this.bCashRegister.Size = new System.Drawing.Size(300, 50);
             this.bCashRegister.TabIndex = 2;
@@ -364,17 +347,18 @@ namespace NaturalnieApp.Forms
             this.bCashRegister.UseVisualStyleBackColor = false;
             this.bCashRegister.Click += new System.EventHandler(this.bCashRegister_Click);
             // 
-            // panel2
+            // pMainMenuSubMenu
             // 
-            this.panel2.AutoSize = true;
-            this.panel2.BackColor = System.Drawing.Color.DimGray;
-            this.panel2.Controls.Add(this.bDymoSettings);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.panel2.Location = new System.Drawing.Point(0, 164);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(300, 30);
-            this.panel2.TabIndex = 9;
+            this.pMainMenuSubMenu.AutoSize = true;
+            this.pMainMenuSubMenu.BackColor = System.Drawing.Color.DimGray;
+            this.pMainMenuSubMenu.Controls.Add(this.bDymoSettings);
+            this.pMainMenuSubMenu.Controls.Add(this.bGeneralSettings);
+            this.pMainMenuSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pMainMenuSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pMainMenuSubMenu.Location = new System.Drawing.Point(0, 164);
+            this.pMainMenuSubMenu.Name = "pMainMenuSubMenu";
+            this.pMainMenuSubMenu.Size = new System.Drawing.Size(300, 60);
+            this.pMainMenuSubMenu.TabIndex = 9;
             // 
             // bDymoSettings
             // 
@@ -385,13 +369,30 @@ namespace NaturalnieApp.Forms
             this.bDymoSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bDymoSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bDymoSettings.ForeColor = System.Drawing.Color.White;
-            this.bDymoSettings.Location = new System.Drawing.Point(0, 0);
+            this.bDymoSettings.Location = new System.Drawing.Point(0, 30);
             this.bDymoSettings.Name = "bDymoSettings";
             this.bDymoSettings.Size = new System.Drawing.Size(300, 30);
             this.bDymoSettings.TabIndex = 5;
             this.bDymoSettings.Text = "Ustawienia drukarki Dymo";
             this.bDymoSettings.UseVisualStyleBackColor = false;
             this.bDymoSettings.Click += new System.EventHandler(this.bDymoSettings_Click);
+            // 
+            // bGeneralSettings
+            // 
+            this.bGeneralSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bGeneralSettings.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bGeneralSettings.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bGeneralSettings.FlatAppearance.BorderSize = 0;
+            this.bGeneralSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bGeneralSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bGeneralSettings.ForeColor = System.Drawing.Color.White;
+            this.bGeneralSettings.Location = new System.Drawing.Point(0, 0);
+            this.bGeneralSettings.Name = "bGeneralSettings";
+            this.bGeneralSettings.Size = new System.Drawing.Size(300, 30);
+            this.bGeneralSettings.TabIndex = 6;
+            this.bGeneralSettings.Text = "Ustawienia";
+            this.bGeneralSettings.UseVisualStyleBackColor = false;
+            this.bGeneralSettings.Click += new System.EventHandler(this.bGeneralSettings_Click);
             // 
             // bMainMenu
             // 
@@ -409,6 +410,7 @@ namespace NaturalnieApp.Forms
             this.bMainMenu.TabIndex = 1;
             this.bMainMenu.Text = "Menu główne";
             this.bMainMenu.UseVisualStyleBackColor = false;
+            this.bMainMenu.Click += new System.EventHandler(this.bMainMenu_Click);
             // 
             // pLogo
             // 
@@ -555,7 +557,7 @@ namespace NaturalnieApp.Forms
             this.pStockSubMenu.ResumeLayout(false);
             this.pProductSubMenu.ResumeLayout(false);
             this.pCashRegisterSubMenu.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
+            this.pMainMenuSubMenu.ResumeLayout(false);
             this.pHeader.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -568,7 +570,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Panel pLogo;
         private System.Windows.Forms.Button bMainMenu;
         private System.Windows.Forms.Panel pCashRegisterSubMenu;
-        private System.Windows.Forms.Button bCashRegisterSettings;
         private System.Windows.Forms.Button bCashRegisterInfo;
         private System.Windows.Forms.Button bCashRegister;
         private System.Windows.Forms.Panel pHeader;
@@ -592,7 +593,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bMinimize;
         private System.Windows.Forms.Button bMaximize;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel pMainMenuSubMenu;
         private System.Windows.Forms.Button bDymoSettings;
+        private System.Windows.Forms.Button bGeneralSettings;
     }
 }

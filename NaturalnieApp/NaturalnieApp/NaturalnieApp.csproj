@@ -248,16 +248,16 @@
     <Compile Include="Forms\Common\SearchBarTemplate.Designer.cs">
       <DependentUpon>SearchBarTemplate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ElzabSetting.cs">
+    <Compile Include="Forms\MainMenu\GeneralSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\ElzabSetting.Designer.cs">
-      <DependentUpon>ElzabSetting.cs</DependentUpon>
+    <Compile Include="Forms\MainMenu\GeneralSettings.Designer.cs">
+      <DependentUpon>GeneralSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ElzabSynchronization.cs">
+    <Compile Include="Forms\Elzab\ElzabSynchronization.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\ElzabSynchronization.Designer.cs">
+    <Compile Include="Forms\Elzab\ElzabSynchronization.Designer.cs">
       <DependentUpon>ElzabSynchronization.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainMenu\DymoSettings.cs">
@@ -271,12 +271,6 @@
     </Compile>
     <Compile Include="Forms\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\PathsWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\PathsWindow.Designer.cs">
-      <DependentUpon>PathsWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ProductMenu\AddManufacturer.cs">
       <SubType>Form</SubType>
@@ -343,10 +337,10 @@
     <EmbeddedResource Include="Forms\Common\SearchBarTemplate.resx">
       <DependentUpon>SearchBarTemplate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ElzabSetting.resx">
-      <DependentUpon>ElzabSetting.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\MainMenu\GeneralSettings.resx">
+      <DependentUpon>GeneralSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ElzabSynchronization.resx">
+    <EmbeddedResource Include="Forms\Elzab\ElzabSynchronization.resx">
       <DependentUpon>ElzabSynchronization.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainMenu\DymoSettings.resx">
@@ -354,9 +348,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PathsWindow.resx">
-      <DependentUpon>PathsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProductMenu\AddManufacturer.resx">
       <DependentUpon>AddManufacturer.cs</DependentUpon>

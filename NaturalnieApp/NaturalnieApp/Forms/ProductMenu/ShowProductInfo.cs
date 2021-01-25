@@ -637,7 +637,7 @@ namespace NaturalnieApp.Forms
         #endregion
         //====================================================================================================
         //Manufacturer events
-        #region Manifacturer events
+        #region Manufacturer events
         private void cbManufacturer_SelectionChangeCommitted(object sender, EventArgs e)
         {
             //Cast the sender for an object
@@ -701,7 +701,7 @@ namespace NaturalnieApp.Forms
         #endregion
         //====================================================================================================
         //ManufacturerToEdit events
-        #region Manifacturer to edit events
+        #region Manufacturer to edit events
         private void cbManufacturerToEdit_Validating(object sender, EventArgs e)
         {
             //Cast the sender for an object
@@ -1185,5 +1185,10 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
+
+        private void tbMarigin_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
     }
 }

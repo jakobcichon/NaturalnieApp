@@ -36,7 +36,7 @@ namespace NaturalnieApp.Forms
         public PrintFromStock printFromStock { get; set; }
         public ShowStock showStock { get; set; }
         public DymoSettings dymoSettings { get; set; }
-        public ElzabSettings cashRegisterSettings { get; set; }
+        public GeneralSettings generalSettings { get; set; }
         public ElzabSynchronization cashRegisterCommands { get; set; }
 
 
@@ -66,7 +66,7 @@ namespace NaturalnieApp.Forms
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.dymoSettings = new DymoSettings();
-            this.cashRegisterSettings = new ElzabSettings(this.ConfigFileOjbInst, ref this.databaseCommands);
+            this.generalSettings = new GeneralSettings(this.ConfigFileOjbInst);
             this.cashRegisterCommands = new ElzabSynchronization(ref this.databaseCommands);
         }
 
@@ -128,6 +128,7 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
+
         #region Movable window
         private void pHeader_MouseDown(object sender, MouseEventArgs e)
         {
@@ -136,12 +137,10 @@ namespace NaturalnieApp.Forms
             xOffset = Cursor.Position.X - this.Location.X;
             yOffset = Cursor.Position.Y - this.Location.Y;
         }
-
         private void pHeader_MouseUp(object sender, MouseEventArgs e)
         {
             dragging = false;
         }
-
         private void pHeader_MouseMove(object sender, MouseEventArgs e)
         {
             if (dragging)
@@ -156,6 +155,7 @@ namespace NaturalnieApp.Forms
         //Method used to customize initialize menu
         private void customizeDesign()
         {
+            pMainMenuSubMenu.Visible = false;
             pCashRegisterSubMenu.Visible = false;
             pProductSubMenu.Visible = false;
             pStockSubMenu.Visible = false;
@@ -164,7 +164,6 @@ namespace NaturalnieApp.Forms
         {
             Application.Exit();
         }
-
         private void bMinimize_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
@@ -178,9 +177,32 @@ namespace NaturalnieApp.Forms
             }
             else if(this.WindowState == FormWindowState.Maximized) this.WindowState = FormWindowState.Normal;
         }
+        private void bGeneralSettings_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            try
+            {
+                this.pContainer.Controls.Add(this.generalSettings);
+                this.generalSettings.Select();
+                this.generalSettings.BringToFront();
+                this.generalSettings.Show();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.generalSettings = new GeneralSettings(this.ConfigFileOjbInst);
+                this.pContainer.Controls.Add(this.generalSettings);
+                this.generalSettings.Select();
+                this.generalSettings.BringToFront();
+                this.generalSettings.Show();
+            }
+        }
         #endregion
 
         #region Main menu subMenu
+        private void bMainMenu_Click(object sender, EventArgs e)
+        {
+            toggleSubMenu(pMainMenuSubMenu);
+        }
         private void bDymoSettings_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
@@ -208,7 +230,6 @@ namespace NaturalnieApp.Forms
             if (panel.Visible == true)
                 panel.Visible = false;
         }
-
         private void toggleSubMenu(Panel panel)
         {
             if (panel.Visible == true)
@@ -236,27 +257,6 @@ namespace NaturalnieApp.Forms
                 this.cashRegisterCommands.Select();
                 this.cashRegisterCommands.BringToFront();
                 this.cashRegisterCommands.Show();
-            }
-
-        }
-
-        private void bCashRegisterSettings_Click(object sender, EventArgs e)
-        {
-            this.pContainer.Controls.Clear();
-            try
-            {
-                this.pContainer.Controls.Add(this.cashRegisterSettings);
-                this.cashRegisterSettings.Select();
-                this.cashRegisterSettings.BringToFront();
-                this.cashRegisterSettings.Show();
-            }
-            catch (ObjectDisposedException)
-            {
-                this.cashRegisterSettings = new ElzabSettings(this.ConfigFileOjbInst, ref this.databaseCommands);
-                this.pContainer.Controls.Add(this.cashRegisterSettings);
-                this.cashRegisterSettings.Select();
-                this.cashRegisterSettings.BringToFront();
-                this.cashRegisterSettings.Show();
             }
 
         }
@@ -310,7 +310,6 @@ namespace NaturalnieApp.Forms
             }
 
         }
-    
         private void bShowProductInfo_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
@@ -330,7 +329,6 @@ namespace NaturalnieApp.Forms
                 this.showProductInfo.Show();
             }
         }
-
         private void bPrintBarcode_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
@@ -351,7 +349,6 @@ namespace NaturalnieApp.Forms
             }
 
         }
-
         private void bAddManufacturer_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();

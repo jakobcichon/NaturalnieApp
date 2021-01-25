@@ -10,14 +10,30 @@ namespace NaturalnieApp.Initialization
     {
         private ConfigFile ConfigFileInst { get; set; }
         public List<ConfigElement> ConfigFileElements { get; set; }
+        //Defaut values of config file
+        public string ElzabCommandPathDefaultValue { get; set; }
+        public string ElzabCOMPortDefaultValue { get; set; }
+        public string ElzabBaudRateDefaultValue { get; set; }
+        public string DatabaseNameDefaultValue { get; set; }
+        public string LabelPathDefaultValue { get; set; }
+        public string LibraryPathDefaultValue { get; set; }
 
 
         public ConfigFileObject()
         {
+            //Defaut values of config file
+            this.ElzabCommandPathDefaultValue = Directory.GetCurrentDirectory() + "\\Elzab commands\\";
+            this.ElzabCOMPortDefaultValue = "1";
+            this.ElzabBaudRateDefaultValue = "57600";
+            this.DatabaseNameDefaultValue = "localhost";
+            this.LabelPathDefaultValue = Directory.GetCurrentDirectory() + "\\Labels\\default label.label";
+            this.LibraryPathDefaultValue = Directory.GetCurrentDirectory() + "\\Libs\\";
 
             this.ConfigFileInst = new ConfigFile("\\config\\config.txt", "");
 
             this.ConfigFileElements = this.ConfigFileInst.ReadConfigFileElement();
+
+
         }
 
         //Method used to get variable value by variable name
@@ -92,8 +108,44 @@ namespace NaturalnieApp.Initialization
         public void ResetToDefault()
         {
             this.ConfigFileInst.RemoveFile();
-            this.ConfigFileInst.InitializeConfigFile();
+            this.ConfigFileInst.InitializeConfigFile(TemplateConfigFile());
             this.ConfigFileElements = this.ConfigFileInst.ReadConfigFileElement();
+        }
+
+        //==================================================================================
+        //Check if config directory exist. If path not specify, use current path.
+        List<ConfigElement> TemplateConfigFile()
+        {
+            //Create new list with ConfigElement type
+            List<ConfigElement> retList = new List<ConfigElement>();
+
+            //Template of config file
+
+            //Get current path of applciation and add "config" to it
+            //Add first element to list
+            retList.Add(new ConfigElement("ElzabCommandPath", this.ElzabCommandPathDefaultValue, "Elzab command path"));
+
+            //Add next element to list
+            retList.Add(new ConfigElement("ElzabCOMPort", this.ElzabCOMPortDefaultValue, "Elzab default COM port"));
+
+            //Add next element to list
+            retList.Add(new ConfigElement("ElzabBaudRate", this.ElzabBaudRateDefaultValue, "Elzab default baud rate"));
+
+            //Add next element to list
+            retList.Add(new ConfigElement("DatabaseName", this.DatabaseNameDefaultValue, "Test database name"));
+
+            //Add next element to list
+            retList.Add(new ConfigElement("LabelPath", this.LabelPathDefaultValue, "Path to the label file"));
+
+            //Add next element to list
+            retList.Add(new ConfigElement("LibraryPath", this.LibraryPathDefaultValue, "Path to the librarys files"));
+
+            //To Add next element to list, act as above
+            //Placeholder for next element
+
+            //Return value
+            return retList;
+
         }
 
     }
@@ -161,7 +213,7 @@ namespace NaturalnieApp.Initialization
 
         //==================================================================================
         //Metod use to create full config file information
-        public List<ConfigElement> InitializeConfigFile()
+        public List<ConfigElement> InitializeConfigFile(List<ConfigElement> template = null)
         {
             //Local variables
             List<ConfigElement> configFileElements;
@@ -171,7 +223,7 @@ namespace NaturalnieApp.Initialization
             VerifyAndCreateFullPath();
 
             //Check if file exist, if not create one
-            CreateConfigFile();
+            CreateConfigFile(Template: template);
 
             //Read data from file, and add it to and object
             configFileElements = ReadConfigFileElement();
@@ -319,44 +371,7 @@ namespace NaturalnieApp.Initialization
         }
 
         //==================================================================================
-        //Check if config directory exist. If path not specify, use current path.
-        List<ConfigElement> TemplateConfigFile()
-        {
-            //Create new list with ConfigElement type
-            List<ConfigElement> retList = new List<ConfigElement>();
-
-            //Template of config file
-
-            //Get current path of applciation and add "config" to it
-            string fullPath = Directory.GetCurrentDirectory() + "\\Elzab commands\\";
-            //Add first element to list
-            retList.Add(new ConfigElement("ElzabCommandPath", fullPath, "Elzab command path"));
-
-            //Add next element to list
-            retList.Add(new ConfigElement("ElzabCOMPort", "3", "Elzab default COM port"));
-
-            //Add next element to list
-            retList.Add(new ConfigElement("ElzabBaudRate", "57600", "Elzab default baud rate"));
-
-            //Add next element to list
-            retList.Add(new ConfigElement("DatabaseName", "localhost", "Test database name"));
-            
-            //Add next element to list
-            retList.Add(new ConfigElement("LabelPath", Directory.GetCurrentDirectory() + "\\Labels\\default label.label", "Path to the label file"));
-
-            //Add next element to list
-            retList.Add(new ConfigElement("LibraryPath", Directory.GetCurrentDirectory() + "\\Libs\\", "Path to the librarys files"));
-
-            //To Add next element to list, act as above
-            //Placeholder for next element
-
-            //Return value
-            return retList;
-
-        }
-
-        //==================================================================================
-        public void CreateConfigFile(List<ConfigElement> DataToWrite = null)
+        public void CreateConfigFile(List<ConfigElement> DataToWrite = null, List<ConfigElement> Template = null)
         {
 
             bool fCreated;
@@ -379,7 +394,7 @@ namespace NaturalnieApp.Initialization
             //If file created successfully, fill it with template
             if (fCreated)
             {
-                configDataToWrite = TemplateConfigFile();
+                configDataToWrite = Template;
 
                 try
                 {
