@@ -25,18 +25,9 @@ namespace NaturalnieApp.Forms
             this.ConfigFileObjInst = conFileObj;
             InitializeComponent();
             UpdateView(conFileObj);
-            InitializeSearchBar(ref database);
 
         }
 
-        private void InitializeSearchBar(ref DatabaseCommands database)
-        {
-            this.pSearchBar.AutoSize = true;
-            this.SearchBar = new SearchBarTemplate(ref database);
-            this.pSearchBar.Controls.Add(this.SearchBar);
-
-            ;
-        }
 
         public void UpdateView(ConfigFileObject conFileObj)
         {
@@ -236,6 +227,16 @@ namespace NaturalnieApp.Forms
         }
 
         private void cBaudRate_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+        private void tbElzabPath_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lELzabCommandPath_Click(object sender, EventArgs e)
         {
 
         }

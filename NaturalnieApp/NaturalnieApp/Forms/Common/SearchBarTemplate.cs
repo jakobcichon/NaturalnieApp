@@ -34,13 +34,14 @@ namespace NaturalnieApp.Forms.Common
         private Product ProductEntity { get; set; }
         private Tax TaxEntity { get; set; }
 
-        private Dictionary<string, int> FullManufacturersList { get; set; }
-        private Dictionary<string, int> FullProductsList { get; set; }
-        private Dictionary<string, int> FullBarcodesList { get; set; }
+        private Dictionary<string, int> FullManufacturersDict { get; set; }
+        private Dictionary<string, int> FullProductsDict { get; set; }
+        private Dictionary<string, int> FullBarcodesDict { get; set; }
 
         //Dictionary for product list <key = manufacturerId, value = product name>
-        Dictionary<string, int> FilteredProductsList { get; set; }
-        Dictionary<string, int> FilteredBarcodeList { get; set; }
+        private List<string> ManufacturersListToDisplay { get; set; }
+        private List<string> ProductsListToDisplay { get; set; }
+        private List<string> BarcodesListToDisplay { get; set; }
 
         //Database context
         DatabaseCommands DatabaseCommands;
@@ -59,10 +60,6 @@ namespace NaturalnieApp.Forms.Common
             //Initialize background worker
             InitializeBackgroundWorker();
 
-            //Initialize data binding source
-            this.cbManufacturer.DataSource = this.FullManufacturersList;
-            this.cbProductList.DataSource = this.FullProductsList;
-            this.cbBarcodes.DataSource = this.FullBarcodesList;
         }
 
         //=============================================================================
@@ -82,6 +79,7 @@ namespace NaturalnieApp.Forms.Common
         // This event handler is where the actual, potentially time-consuming work is done.
         void DbBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+
             try
             {
                 CompleteProductDataFromDatabase productData = new CompleteProductDataFromDatabase();
@@ -118,14 +116,20 @@ namespace NaturalnieApp.Forms.Common
         {
             try
             {
+                //Get all data from DB
                 CompleteProductDataFromDatabase localData = (CompleteProductDataFromDatabase)e.Result;
 
-                this.FullManufacturersList = localData.ManufacturersList;
-                this.FullManufacturersList.Add("Wszyscy",0);
+                //Initialize with fetched data
+                this.FullManufacturersDict = localData.ManufacturersList;
+                this.FullManufacturersDict.Add("Wszyscy",0);
 
-                this.FullProductsList = localData.ProductsList;
+                this.FullProductsDict = localData.ProductsList;
 
-                this.FullBarcodesList = localData.BarcodesList;
+                this.FullBarcodesDict = localData.BarcodesList;
+
+                //Update data sources
+                UpdateDataSources(this.FullManufacturersDict, this.FullProductsDict, this.FullBarcodesDict);
+
             }
             catch (Exception ex)
             {
@@ -133,6 +137,46 @@ namespace NaturalnieApp.Forms.Common
             }
 
 
+        }
+
+        //Method used to update comboboxes datasources 
+        private void UpdateDataSources(Dictionary<string, int> manufacturersData = null,
+            Dictionary<string, int> productsData = null,
+            Dictionary<string, int> barcodesData = null)
+        {
+            List<string> dataToList = new List<string>();
+
+            //Update manufacturers list
+            if (manufacturersData != null)
+            {
+                //Copy datasource to local variable first
+                this.cbManufacturers.DataSource = null;
+                dataToList = manufacturersData.Keys.ToList();
+                dataToList.Remove("Wszyscy");
+                dataToList.Sort();
+                dataToList.Insert(0, "Wszyscy");
+                this.cbManufacturers.DataSource = dataToList;
+            }
+
+            //Update products list
+            if (productsData != null)
+            {
+                //Copy datasource to local variable first
+                this.cbProducts.DataSource = null;
+                dataToList = productsData.Keys.ToList();
+                dataToList.Sort();
+                this.cbProducts.DataSource = dataToList;
+            }
+
+            //Update barcodes list
+            if (barcodesData != null)
+            {
+                //Copy datasource to local variable first
+                this.cbBarcodes.DataSource = null;
+                dataToList = barcodesData.Keys.ToList();
+                dataToList.Sort();
+                this.cbBarcodes.DataSource = dataToList;
+            }
         }
         //=============================================================================
         #endregion

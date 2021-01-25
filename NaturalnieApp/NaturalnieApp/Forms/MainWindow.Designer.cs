@@ -343,7 +343,7 @@ namespace NaturalnieApp.Forms
             this.bCashRegisterInfo.Name = "bCashRegisterInfo";
             this.bCashRegisterInfo.Size = new System.Drawing.Size(300, 30);
             this.bCashRegisterInfo.TabIndex = 4;
-            this.bCashRegisterInfo.Text = "Informacje";
+            this.bCashRegisterInfo.Text = "Synchronizacja z kasą";
             this.bCashRegisterInfo.UseVisualStyleBackColor = false;
             this.bCashRegisterInfo.Click += new System.EventHandler(this.bCashRegisterInfo_Click);
             // 
