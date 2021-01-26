@@ -440,6 +440,23 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB Tax entity by ID
+        //====================================================================================================
+        public Tax GetTaxEntityById(int Id)
+        {
+            Tax localTax = new Tax();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from t in contextDB.Tax
+                            where t.Id == Id
+                            select t;
+
+                localTax = query.SingleOrDefault();
+            }
+            return localTax;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB tax list
         //====================================================================================================
         public List<string> GetTaxList()

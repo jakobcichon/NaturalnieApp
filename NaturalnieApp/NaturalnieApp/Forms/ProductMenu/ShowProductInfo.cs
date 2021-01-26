@@ -269,6 +269,7 @@ namespace NaturalnieApp.Forms
             this.tbPriceNetWithDiscount.Text = string.Format("{0:0.00}", p.PriceNetWithDiscount.ToString());
             this.tbBarcodeToEdit.Text = p.BarCode;
             this.tbProductNameToEdit.Text = p.ProductName;
+            this.tbPriceWithTax.Text = Calculations.CalculatePriceWithTaxFromPriceNetAndTax(p.PriceNet, t.TaxValue).ToString();
         }
         private void FillWithInitialDataFromObject(List<string> productList, List<string> manufacturerList, List<string> barcodeList, List<string> supplierList, List<string> taxList)
         {
@@ -426,6 +427,7 @@ namespace NaturalnieApp.Forms
             this.tbPriceNetWithDiscount.Text = "";
             this.tbBarcodeToEdit.Text = "";
             this.tbProductNameToEdit.Text = "";
+            this.tbPriceWithTax.Text = "";
         }
         //Metchod use to find and select string in ComboBox
         private void FindTextInComboBoxAndSelect(ref ComboBox obj, string textToFind)
@@ -935,6 +937,10 @@ namespace NaturalnieApp.Forms
                 //Update Final price
                 UpdatePriceNetWithDiscount();
                 UpdateFinalPrice();
+
+                this.tbPriceWithTax.Text = Calculations.CalculatePriceWithTaxFromPriceNetAndTax(this.ProductEntity.PriceNet,
+                    this.TaxEntity.TaxValue).ToString();
+
                 errorProvider1.Clear();
                 localSender.Text = string.Format("{0:00}", localSender.Text);
             }
@@ -1030,6 +1036,10 @@ namespace NaturalnieApp.Forms
         private void cbTax_SelectionChangeCommitted(object sender, EventArgs e)
         {
             this.TaxEntity.TaxValue = int.Parse(this.cbTax.GetItemText(this.cbTax.SelectedItem).ToString().Replace("%", ""));
+
+            this.tbPriceWithTax.Text = Calculations.CalculatePriceWithTaxFromPriceNetAndTax(this.ProductEntity.PriceNet, 
+                this.TaxEntity.TaxValue).ToString();
+                
             //Update final price
             UpdatePriceNetWithDiscount();
             UpdateFinalPrice();
@@ -1185,10 +1195,45 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
-
-        private void tbMarigin_Validating(object sender, CancelEventArgs e)
+        //====================================================================================================
+        //Price with tax events
+        #region Price with tax events
+        private void tbPriceWithTax_Validating(object sender, CancelEventArgs e)
         {
+            //Cast the sender for an object
+            TextBox localSender = (TextBox)sender;
 
+            //Check if input match to define pattern
+            try
+            {
+                localSender.Text = localSender.Text.Replace(",", ".");
+                Validation.PriceNetValueValidation(localSender.Text);
+
+                if (this.cbTax.SelectedIndex != -1)
+                {
+                    this.ProductEntity.PriceNet = Calculations.CalculatePriceNetFromPriceNetWithDiscount(this.ProductEntity.PriceNetWithDiscount
+                        , this.ProductEntity.Discount);
+                    this.tbPrice.Text = this.ProductEntity.PriceNet.ToString();
+
+                    //Update Final price
+                    UpdatePriceNetWithDiscount();
+                    UpdateFinalPrice();
+
+                    localSender.Text = string.Format("{0:00}", localSender.Text);
+                }
+                errorProvider1.Clear();
+
+            }
+            catch (Validation.ValidatingFailed ex)
+            {
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
+        #endregion
     }
 }

@@ -62,7 +62,7 @@ namespace NaturalnieApp
             return float.Parse(priceNetWithDiscount.ToString());
         }
 
-        //Calculate PRiceNetWithDiscount from product entity
+        //Calculate PriceNetWithDiscount from product entity
         static public float CalculatePriceNetWithDiscount(float priceNet, int discount)
         {
             double priceNetWithDiscount;
@@ -75,6 +75,71 @@ namespace NaturalnieApp
             }
 
             return float.Parse(priceNetWithDiscount.ToString());
+        }
+
+        //Calculate PriceNetWithDiscount from product entity
+        static public float CalculatePriceNetFromPriceNetWithDiscount(float priceNetWithDiscount, int discount)
+        {
+            double priceNet;
+
+            if (discount == 0) return priceNetWithDiscount;
+            else
+            {
+                float discountFloat = (Single.Parse(discount.ToString()) / 100);
+                priceNet = priceNetWithDiscount / (1- discountFloat);
+                priceNet = Math.Round(priceNet, 2);
+            }
+
+            return float.Parse(priceNet.ToString());
+        }
+
+        //Calculate PriceWithTax from price net and tax
+        static public float CalculatePriceWithTaxFromPriceNetAndTax(float priceNet, int tax)
+        {
+            double priceWithTax;
+
+            if (tax == 0) return priceNet;
+            else
+            {
+                float taxFloat = (Single.Parse(tax.ToString()) / 100);
+                priceWithTax = priceNet * (1 + taxFloat);
+                priceWithTax = Math.Round(priceWithTax, 2);
+            }
+
+            return float.Parse(priceWithTax.ToString());
+        }
+
+        //Calculate Price net from price with tax and tax
+        static public float CalculatePriceNetFromPriceWithTaxAndTax(float priceWithTax, int tax)
+        {
+            double priceNet;
+
+            if (tax == 0) return priceWithTax;
+            else
+            {
+                float taxFloat = (Single.Parse(tax.ToString()) / 100);
+                priceNet = priceWithTax / (1 + taxFloat);
+                priceNet = Math.Round(priceNet, 2);
+            }
+
+            return float.Parse(priceNet.ToString());
+        }
+
+        //Calculate Price net from price with tax and tax and discount
+        static public float CalculatePriceNetWithDiscountFromPriceWithTaxAndTax(float priceWithTax, int tax, int discount)
+        {
+            double priceNet;
+
+            if (tax == 0) return priceWithTax;
+            else
+            {
+                float taxFloat = (Single.Parse(tax.ToString()) / 100);
+                priceNet = priceWithTax / (1 + taxFloat);
+                priceNet = Math.Round(priceNet, 2);
+                priceNet = CalculatePriceNetWithDiscount(Single.Parse(priceNet.ToString()), discount);
+            }
+
+            return float.Parse(priceNet.ToString());
         }
 
         //Calculate final price from price net, tax and marigin
