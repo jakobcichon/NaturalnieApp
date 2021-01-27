@@ -70,7 +70,6 @@ namespace NaturalnieApp.Forms
             this.tpProductNameToEdit = new System.Windows.Forms.TableLayoutPanel();
             this.tbProductNameToEdit = new System.Windows.Forms.TextBox();
             this.lProductNameToEdit = new System.Windows.Forms.Label();
-            this.bClose = new System.Windows.Forms.Button();
             this.tpElzabProductNumber = new System.Windows.Forms.TableLayoutPanel();
             this.lElzabProductNumber = new System.Windows.Forms.Label();
             this.lElzabProductNumberRange = new System.Windows.Forms.Label();
@@ -469,6 +468,7 @@ namespace NaturalnieApp.Forms
             this.cbManufacturerToEdit.Name = "cbManufacturerToEdit";
             this.cbManufacturerToEdit.Size = new System.Drawing.Size(214, 28);
             this.cbManufacturerToEdit.TabIndex = 0;
+            this.cbManufacturerToEdit.SelectionChangeCommitted += new System.EventHandler(this.cbManufacturer_SelectionChangeCommitted);
             this.cbManufacturerToEdit.MouseHover += new System.EventHandler(this.cbManufacturerToEdit_MouseHover);
             this.cbManufacturerToEdit.Validating += new System.ComponentModel.CancelEventHandler(this.cbManufacturerToEdit_Validating);
             // 
@@ -629,7 +629,6 @@ namespace NaturalnieApp.Forms
             this.tbProductNameToEdit.Size = new System.Drawing.Size(329, 70);
             this.tbProductNameToEdit.TabIndex = 0;
             this.tbProductNameToEdit.TextChanged += new System.EventHandler(this.tbProductNameToEdit_TextChanged);
-            this.tbProductNameToEdit.MouseHover += new System.EventHandler(this.tbProductNameToEdit_MouseHover);
             this.tbProductNameToEdit.Validating += new System.ComponentModel.CancelEventHandler(this.tbProductNameToEdit_Validating);
             // 
             // lProductNameToEdit
@@ -643,21 +642,6 @@ namespace NaturalnieApp.Forms
             this.lProductNameToEdit.TabIndex = 0;
             this.lProductNameToEdit.Text = "Nazwa produktu";
             this.lProductNameToEdit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // bClose
-            // 
-            this.bClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bClose.Location = new System.Drawing.Point(989, 10);
-            this.bClose.Name = "bClose";
-            this.bClose.Padding = new System.Windows.Forms.Padding(5);
-            this.bClose.Size = new System.Drawing.Size(100, 50);
-            this.bClose.TabIndex = 6;
-            this.bClose.Text = "Zamknij";
-            this.bClose.UseMnemonic = false;
-            this.bClose.UseVisualStyleBackColor = false;
-            this.bClose.Click += new System.EventHandler(this.bClose_Click);
             // 
             // tpElzabProductNumber
             // 
@@ -717,7 +701,8 @@ namespace NaturalnieApp.Forms
             this.bSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSave.Location = new System.Drawing.Point(809, 7);
+            this.bSave.Location = new System.Drawing.Point(813, 7);
+            this.bSave.Margin = new System.Windows.Forms.Padding(5);
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(100, 50);
             this.bSave.TabIndex = 1;
@@ -731,6 +716,7 @@ namespace NaturalnieApp.Forms
             this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bUpdate.Location = new System.Drawing.Point(703, 7);
+            this.bUpdate.Margin = new System.Windows.Forms.Padding(5);
             this.bUpdate.Name = "bUpdate";
             this.bUpdate.Size = new System.Drawing.Size(100, 50);
             this.bUpdate.TabIndex = 0;
@@ -744,7 +730,6 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pButtonsPanel.Controls.Add(this.bUpdate);
             this.pButtonsPanel.Controls.Add(this.bSave);
-            this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pButtonsPanel.Location = new System.Drawing.Point(0, 620);
             this.pButtonsPanel.Margin = new System.Windows.Forms.Padding(5);
@@ -1179,6 +1164,5 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Panel pButtonsPanel;
         private System.Windows.Forms.Button bUpdate;
         private System.Windows.Forms.Button bSave;
-        private System.Windows.Forms.Button bClose;
     }
 }

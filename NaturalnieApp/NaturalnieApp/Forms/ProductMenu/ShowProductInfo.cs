@@ -1296,69 +1296,6 @@ namespace NaturalnieApp.Forms
         }
         #endregion
 
-        private void tbShortBarcode_Validating(object sender, CancelEventArgs e)
-        {
 
-        }
-
-        private void tbSupplierCode_Validating(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void rtbProductInfo_Validating(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void tbDiscount_Validating(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void cbManufacturerToEdit_Validating(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void tbBarcodeToEdit_Validating(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void tbProductNameToEdit_Validating(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void tbElzabProductNumber_Validating(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void tbElzabProductName_Validating(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void cbManufacturer_Validating(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void cbTax_Validating(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void tbMarigin_Validating(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void tbPrice_Validating(object sender, CancelEventArgs e)
-        {
-
-        }
     }
 }
