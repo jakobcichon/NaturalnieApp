@@ -27,6 +27,7 @@ namespace NaturalnieApp.Forms
         private Supplier SupplierEntity { get; set; }
         private Manufacturer ManufacturerEntity { get; set; }
         private Tax TaxEntity { get; set; }
+        private float PriceWithTax { get; set; }
         private int SelectedProductId { get; set; }
 
         //Barcode reader
@@ -255,21 +256,27 @@ namespace NaturalnieApp.Forms
 
             //Elzab product number
             this.tbElzabProductNumber.Text = p.ElzabProductId.ToString();
-            this.tbPrice.Text = p.PriceNet.ToString();
+            this.tbPrice.Text = String.Format("{0:0.00}", p.PriceNet);
             FindTextInComboBoxAndSelect(ref this.cbTax, t.TaxValue.ToString());
             FindTextInComboBoxAndSelect(ref this.cbSupplierName, s.Name.ToString());
             this.tbMarigin.Text = p.Marigin.ToString();
             this.rtbProductInfo.Text = p.ProductInfo.ToString();
             this.cbManufacturer.SelectedIndex = this.cbManufacturer.Items.IndexOf(m.Name);
             this.tbElzabProductName.Text = p.ElzabProductName;
-            this.tbFinalPrice.Text = string.Format("{0:0.00}", p.FinalPrice.ToString());
+            this.tbFinalPrice.Text = String.Format("{0:0.00}", p.FinalPrice);
             this.tbShortBarcode.Text = p.BarCodeShort;
             this.tbSupplierCode.Text = p.SupplierCode;
             this.tbDiscount.Text = p.Discount.ToString();
-            this.tbPriceNetWithDiscount.Text = string.Format("{0:0.00}", p.PriceNetWithDiscount.ToString());
+            this.tbPriceNetWithDiscount.Text = String.Format("{0:0.00}", p.PriceNetWithDiscount);
             this.tbBarcodeToEdit.Text = p.BarCode;
             this.tbProductNameToEdit.Text = p.ProductName;
-            this.tbPriceWithTax.Text = Calculations.CalculatePriceWithTaxFromPriceNetAndTax(p.PriceNet, t.TaxValue).ToString();
+            this.lElzabProductNumberRange.Text = m.FirstNumberInCashRegister.ToString()
+                + "-" + (m.FirstNumberInCashRegister + m.MaxNumberOfProducts).ToString();
+            this.lElzabNameLength.Text = this.tbElzabProductName.Text.Length.ToString();
+
+            //Calculate price with tax
+            this.PriceWithTax = Calculations.CalculatePriceWithTaxFromPriceNetAndTax(p.PriceNetWithDiscount, t.TaxValue);
+            this.tbPriceWithTax.Text = String.Format("{0:0.00}", this.PriceWithTax);
         }
         private void FillWithInitialDataFromObject(List<string> productList, List<string> manufacturerList, List<string> barcodeList, List<string> supplierList, List<string> taxList)
         {
@@ -341,8 +348,6 @@ namespace NaturalnieApp.Forms
             sorted = this.TaxList.ToArray();
             Array.Sort(sorted);
             this.cbTax.Items.AddRange(sorted);
-
-
         }
         private bool ValidateAllInputFields()
         {
@@ -428,6 +433,8 @@ namespace NaturalnieApp.Forms
             this.tbBarcodeToEdit.Text = "";
             this.tbProductNameToEdit.Text = "";
             this.tbPriceWithTax.Text = "";
+            this.lElzabProductNumberRange.Text = "0-0";
+            this.lElzabNameLength.Text = "0";
         }
         //Metchod use to find and select string in ComboBox
         private void FindTextInComboBoxAndSelect(ref ComboBox obj, string textToFind)
@@ -462,21 +469,67 @@ namespace NaturalnieApp.Forms
                 Convert.ToInt32(this.cbTax.SelectedItem));
 
             //Show updated value
-            this.tbFinalPrice.Text = string.Format("{0:0.00}", this.ProductEntity.FinalPrice.ToString());
+            this.tbFinalPrice.Text = String.Format("{0:0.00}", this.ProductEntity.FinalPrice.ToString());
         }
         //Method used to update price net with discount
+        private void UpdatePriceWithTax()
+        {
+            //Update price with tax
+            this.PriceWithTax = Calculations.CalculatePriceWithTaxFromPriceNetAndTax(this.ProductEntity.PriceNetWithDiscount, this.TaxEntity.TaxValue);
+
+        }
+        //Method used to update price net with discount
+        private void UpdateNetPricesFromPriceWithTax()
+        {
+            //Update price net with discount
+            this.ProductEntity.PriceNetWithDiscount = Calculations.CalculatePriceNetFromPriceWithTaxAndTax(
+                this.PriceWithTax, this.TaxEntity.TaxValue);
+
+            //Update price net without discount
+            this.ProductEntity.PriceNet = Calculations.CalculatePriceNetFromPriceNetWithDiscount(
+                this.ProductEntity.PriceNetWithDiscount, this.ProductEntity.Discount);
+        }
+        //Method used to price net with discount and price net from price with tax
         private void UpdatePriceNetWithDiscount()
         {
             //Update Final price
             this.ProductEntity.PriceNetWithDiscount = Calculations.CalculatePriceNetWithDiscountFromProduct(this.ProductEntity);
 
             //Show updated value
-            this.tbPriceNetWithDiscount.Text = string.Format("{0:0.00}", this.ProductEntity.PriceNetWithDiscount.ToString());
+            this.tbPriceNetWithDiscount.Text = String.Format("{0:0.00}", this.ProductEntity.PriceNetWithDiscount.ToString());
+        }
+        //Method used to update and display all prices
+        private void UpdatePricesStartingFromPriceNet()
+        {
+            UpdatePriceNetWithDiscount();
+            UpdateFinalPrice();
+            UpdatePriceWithTax();
+            RefreshAllPricesRelatedFields();
+        }
+        //Method used to update and display all prices
+        private void UpdatePricesStartingFromPriceWithTax()
+        {
+            UpdateNetPricesFromPriceWithTax();
+            UpdateFinalPrice();
+            UpdatePriceWithTax();
+            RefreshAllPricesRelatedFields();
+        }
+        //Method used to refres data in field related to the price
+        private void RefreshAllPricesRelatedFields()
+        {
+            //Elzab product number
+            this.tbPrice.Text = String.Format("{0:0.00}", this.ProductEntity.PriceNet);
+            FindTextInComboBoxAndSelect(ref this.cbTax, this.TaxEntity.TaxValue.ToString());
+            this.tbMarigin.Text = this.ProductEntity.Marigin.ToString();
+            this.tbFinalPrice.Text = String.Format("{0:0.00}", this.ProductEntity.FinalPrice);
+            this.tbDiscount.Text = this.ProductEntity.Discount.ToString();
+            this.tbPriceNetWithDiscount.Text = String.Format("{0:0.00}", this.ProductEntity.PriceNetWithDiscount);
+            this.tbPriceWithTax.Text = String.Format("{0:0.00}", this.PriceWithTax);
         }
         private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
         {
 
-            if (e.Ready && e.Valid && !cbDeactivateBarcodeSearching.Checked)
+            if (e.Ready && e.Valid)
             {
                 string barcodeToSearch;
                 //If short barcode try to get full barcode
@@ -872,13 +925,20 @@ namespace NaturalnieApp.Forms
             //Check if input match to define pattern
             try
             {
-                Validation.GeneralNumberValidation(localSender.Text);
+                int productNumber = Convert.ToInt32(localSender.Text);
+                Validation.ElzabProductNumberValidation(productNumber,
+                    this.ManufacturerEntity.FirstNumberInCashRegister,
+                    this.ManufacturerEntity.LastNumberInCashRegister);
                 this.ProductEntity.ElzabProductId = Convert.ToInt32(localSender.Text);
                 errorProvider1.Clear();
+
+                //Generate EAN8
+                this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
+                    Convert.ToInt32(this.tbElzabProductNumber.Text));
+                this.ProductEntity.BarCodeShort = this.tbShortBarcode.Text;
             }
             catch (Validation.ValidatingFailed ex)
             {
-                localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
             }
             catch (Exception ex)
@@ -895,6 +955,8 @@ namespace NaturalnieApp.Forms
             //Cast the sender for an object
             TextBox localSender = (TextBox)sender;
 
+            localSender.Text = AdjustInputString(localSender.Text);
+
             //Check if input match to define pattern
             try
             {
@@ -904,14 +966,26 @@ namespace NaturalnieApp.Forms
             }
             catch (Validation.ValidatingFailed ex)
             {
-                localSender.Text = "";
                 errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+        private void tbElzabProductName_TextChanged(object sender, EventArgs e)
+        {
+            TextBox localSender = (TextBox)sender;
+
+            if (localSender.Text.Length > 34)
+            {
+                localSender.Text = localSender.Text.Substring(0, 34);
+                localSender.SelectionStart = 34;
+                localSender.SelectionLength = 0;
+            }
+
+            lElzabNameLength.Text = localSender.Text.Length.ToString();
+
         }
         private void tbElzabProductName_MouseHover(object sender, EventArgs e)
         {
@@ -934,12 +1008,9 @@ namespace NaturalnieApp.Forms
                 localSender.Text = localSender.Text.Replace(",", ".");
                 Validation.PriceNetValueValidation(localSender.Text);
                 this.ProductEntity.PriceNet = float.Parse(localSender.Text);
-                //Update Final price
-                UpdatePriceNetWithDiscount();
-                UpdateFinalPrice();
 
-                this.tbPriceWithTax.Text = Calculations.CalculatePriceWithTaxFromPriceNetAndTax(this.ProductEntity.PriceNet,
-                    this.TaxEntity.TaxValue).ToString();
+                //Update Final price
+                UpdatePricesStartingFromPriceNet();
 
                 errorProvider1.Clear();
                 localSender.Text = string.Format("{0:00}", localSender.Text);
@@ -973,9 +1044,10 @@ namespace NaturalnieApp.Forms
                 if (Int32.Parse(localSender.Text) > 100) localSender.Text = "100";
 
                 this.ProductEntity.Discount = Int32.Parse(localSender.Text);
-                //Update Final price
-                UpdatePriceNetWithDiscount();
-                UpdateFinalPrice();
+
+                //Update prices
+                UpdatePricesStartingFromPriceNet();
+
                 errorProvider1.Clear();
                 localSender.Text = string.Format("{0:00}", localSender.Text);
             }
@@ -994,14 +1066,6 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Marigin events
         #region Marigin events
-        private void tbMarigin_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                SelectNextControl((Control)sender, true, true, true, true);
-            }
-
-        }
         private void tbMarigin_Validating(object sender, EventArgs e)
         {
             //Cast the sender for an object
@@ -1012,9 +1076,10 @@ namespace NaturalnieApp.Forms
             {
                 Validation.MariginValueValidation(localSender.Text);
                 this.ProductEntity.Marigin = Int32.Parse(localSender.Text);
-                //Update final price
-                UpdatePriceNetWithDiscount();
-                UpdateFinalPrice();
+
+                //Update prices
+                UpdatePricesStartingFromPriceNet();
+
                 errorProvider1.Clear();
                 localSender.Text = string.Format("{0:00}", localSender.Text);
             }
@@ -1028,6 +1093,8 @@ namespace NaturalnieApp.Forms
             {
                 MessageBox.Show(ex.Message);
             }
+
+
         }
         #endregion
         //====================================================================================================
@@ -1037,12 +1104,8 @@ namespace NaturalnieApp.Forms
         {
             this.TaxEntity.TaxValue = int.Parse(this.cbTax.GetItemText(this.cbTax.SelectedItem).ToString().Replace("%", ""));
 
-            this.tbPriceWithTax.Text = Calculations.CalculatePriceWithTaxFromPriceNetAndTax(this.ProductEntity.PriceNet, 
-                this.TaxEntity.TaxValue).ToString();
-                
-            //Update final price
-            UpdatePriceNetWithDiscount();
-            UpdateFinalPrice();
+            //Update prices
+            UpdatePricesStartingFromPriceNet();
 
             //Update control
             UpdateControl(ref tbDummyForCtrl);
@@ -1211,13 +1274,10 @@ namespace NaturalnieApp.Forms
 
                 if (this.cbTax.SelectedIndex != -1)
                 {
-                    this.ProductEntity.PriceNet = Calculations.CalculatePriceNetFromPriceNetWithDiscount(this.ProductEntity.PriceNetWithDiscount
-                        , this.ProductEntity.Discount);
-                    this.tbPrice.Text = this.ProductEntity.PriceNet.ToString();
+                    this.PriceWithTax = Single.Parse(localSender.Text);
 
                     //Update Final price
-                    UpdatePriceNetWithDiscount();
-                    UpdateFinalPrice();
+                    UpdatePricesStartingFromPriceWithTax();
 
                     localSender.Text = string.Format("{0:00}", localSender.Text);
                 }
@@ -1235,5 +1295,70 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
+
+        private void tbShortBarcode_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void tbSupplierCode_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void rtbProductInfo_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void tbDiscount_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void cbManufacturerToEdit_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void tbBarcodeToEdit_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void tbProductNameToEdit_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void tbElzabProductNumber_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void tbElzabProductName_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void cbManufacturer_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void cbTax_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void tbMarigin_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void tbPrice_Validating(object sender, CancelEventArgs e)
+        {
+
+        }
     }
 }

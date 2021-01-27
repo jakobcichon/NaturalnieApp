@@ -137,7 +137,6 @@ namespace NaturalnieApp.Forms
                 this.StatusBox.Text = "1.Generowanie listy produktów";
                 //Generate all product numbers
                 List<int> productToReadList = GenerateProductNumbers(1, 4095);
-                int i = 0;
                 this.AllProductsReading.DataToElzab.Element.RemoveAllElements();
                 this.AllProductsReading.DataFromElzab.Element.RemoveAllElements();
                 this.AdditionBarcodesReading.DataFromElzab.Element.RemoveAllElements();

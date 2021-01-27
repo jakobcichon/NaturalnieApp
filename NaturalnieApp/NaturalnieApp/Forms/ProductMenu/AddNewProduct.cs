@@ -15,7 +15,7 @@ using NaturalnieApp.Forms;
 
 namespace NaturalnieApp.Forms
 {
-    public partial class AddNewProduct : Form
+    public partial class AddNewProduct : UserControl
     {
         //====================================================================================================
         //Class fields
@@ -180,7 +180,6 @@ namespace NaturalnieApp.Forms
                 if (this.databaseCommands.ConnectionStatus) this.Enabled = true;
 
                 this.Focus();
-                this.Activate();
             }
         }
         //=============================================================================
@@ -398,23 +397,25 @@ namespace NaturalnieApp.Forms
             //Update control
             UpdateControl(ref tbDummyForCtrl);
         }
-        private void AddNewProduct_KeyDown(object sender, KeyEventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-
             this.BarcodeValidEventGenerated = false;
-            this.BarcodeReader.CheckIfBarcodeFromReader(e.KeyCode);
+            this.BarcodeReader.CheckIfBarcodeFromReader(keyData);
 
-            if (e.KeyCode == Keys.Escape)
+            if ((keyData == Keys.Enter) && (!this.BarcodeValidEventGenerated))
             {
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
+
+            }
+            else if (keyData == Keys.Escape)
+            {
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
                 errorProvider1.Clear();
-                //Update control
-                UpdateControl(ref tbDummyForCtrl);
             }
-            else if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
-            {
-                //Update control
-                UpdateControl(ref tbDummyForCtrl);
-            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
         #endregion
         //====================================================================================================

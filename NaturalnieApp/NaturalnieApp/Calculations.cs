@@ -125,23 +125,6 @@ namespace NaturalnieApp
             return float.Parse(priceNet.ToString());
         }
 
-        //Calculate Price net from price with tax and tax and discount
-        static public float CalculatePriceNetWithDiscountFromPriceWithTaxAndTax(float priceWithTax, int tax, int discount)
-        {
-            double priceNet;
-
-            if (tax == 0) return priceWithTax;
-            else
-            {
-                float taxFloat = (Single.Parse(tax.ToString()) / 100);
-                priceNet = priceWithTax / (1 + taxFloat);
-                priceNet = Math.Round(priceNet, 2);
-                priceNet = CalculatePriceNetWithDiscount(Single.Parse(priceNet.ToString()), discount);
-            }
-
-            return float.Parse(priceNet.ToString());
-        }
-
         //Calculate final price from price net, tax and marigin
         static public double FinalPrice(double priceNet, int tax, double marigin)
         {

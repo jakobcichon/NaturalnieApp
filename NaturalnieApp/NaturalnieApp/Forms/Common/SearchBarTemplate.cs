@@ -13,11 +13,6 @@ namespace NaturalnieApp.Forms.Common
 {
     public partial class SearchBarTemplate : UserControl
     {
-        public struct Properties
-        {
-            bool FilterByManufacturer;
-        }
-
         //DB events Args
         public class CompleteProductDataFromDatabase
         {

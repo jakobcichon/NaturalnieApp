@@ -531,6 +531,7 @@ namespace NaturalnieApp.Forms
             this.pContainer.Margin = new System.Windows.Forms.Padding(0);
             this.pContainer.MinimumSize = new System.Drawing.Size(300, 300);
             this.pContainer.Name = "pContainer";
+            this.pContainer.Padding = new System.Windows.Forms.Padding(1);
             this.pContainer.Size = new System.Drawing.Size(936, 698);
             this.pContainer.TabIndex = 7;
             // 

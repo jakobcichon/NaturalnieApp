@@ -60,7 +60,7 @@ namespace NaturalnieApp.Forms
             this.addNewProductFromExcel = new AddNewProductFromExcel(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.printBarcode = new PrintBarcode(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) ;
-            this.addNewProduct = new AddNewProduct(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+            this.addNewProduct = new AddNewProduct(ref this.databaseCommands);
             this.addToStock = new AddToStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
@@ -284,7 +284,7 @@ namespace NaturalnieApp.Forms
             }
             catch (ObjectDisposedException)
             {
-                this.addNewProduct = new AddNewProduct(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+                this.addNewProduct = new AddNewProduct(ref this.databaseCommands);
                 this.pContainer.Controls.Add(this.addNewProduct);
                 this.addNewProduct.Select();
                 this.addNewProduct.BringToFront();
