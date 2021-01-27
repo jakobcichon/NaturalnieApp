@@ -36,23 +36,23 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.gbSynchronization = new System.Windows.Forms.GroupBox();
+            this.tpProgress = new System.Windows.Forms.TableLayoutPanel();
+            this.lElapsedTime = new System.Windows.Forms.Label();
+            this.tbElapsedTime = new System.Windows.Forms.TextBox();
+            this.pbProgress = new System.Windows.Forms.ProgressBar();
             this.tpProductNameToEdit = new System.Windows.Forms.TableLayoutPanel();
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.lStatus = new System.Windows.Forms.Label();
             this.bReadingFromCashRegister = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
-            this.tpProgress = new System.Windows.Forms.TableLayoutPanel();
-            this.lElapsedTime = new System.Windows.Forms.Label();
-            this.pbProgress = new System.Windows.Forms.ProgressBar();
-            this.tbElapsedTime = new System.Windows.Forms.TextBox();
             this.tProgressTime = new System.Windows.Forms.Timer(this.components);
             this.pButtonsPanel.SuspendLayout();
             this.pHeader.SuspendLayout();
             this.gbSynchronization.SuspendLayout();
+            this.tpProgress.SuspendLayout();
             this.tpProductNameToEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
-            this.tpProgress.SuspendLayout();
             this.SuspendLayout();
             // 
             // pButtonsPanel
@@ -135,6 +135,53 @@
             this.gbSynchronization.TabStop = false;
             this.gbSynchronization.Text = "Synchronizacja z kasą";
             // 
+            // tpProgress
+            // 
+            this.tpProgress.ColumnCount = 3;
+            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 165F));
+            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpProgress.Controls.Add(this.lElapsedTime, 0, 0);
+            this.tpProgress.Controls.Add(this.tbElapsedTime, 1, 0);
+            this.tpProgress.Controls.Add(this.pbProgress, 2, 0);
+            this.tpProgress.Location = new System.Drawing.Point(12, 85);
+            this.tpProgress.Name = "tpProgress";
+            this.tpProgress.RowCount = 1;
+            this.tpProgress.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tpProgress.Size = new System.Drawing.Size(898, 30);
+            this.tpProgress.TabIndex = 29;
+            // 
+            // lElapsedTime
+            // 
+            this.lElapsedTime.AutoSize = true;
+            this.lElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lElapsedTime.Location = new System.Drawing.Point(3, 0);
+            this.lElapsedTime.Name = "lElapsedTime";
+            this.lElapsedTime.Size = new System.Drawing.Size(159, 30);
+            this.lElapsedTime.TabIndex = 0;
+            this.lElapsedTime.Text = "Czas trwania";
+            this.lElapsedTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tbElapsedTime
+            // 
+            this.tbElapsedTime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.tbElapsedTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbElapsedTime.Location = new System.Drawing.Point(168, 5);
+            this.tbElapsedTime.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
+            this.tbElapsedTime.Name = "tbElapsedTime";
+            this.tbElapsedTime.Size = new System.Drawing.Size(94, 19);
+            this.tbElapsedTime.TabIndex = 1;
+            this.tbElapsedTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // pbProgress
+            // 
+            this.pbProgress.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbProgress.Location = new System.Drawing.Point(268, 3);
+            this.pbProgress.Name = "pbProgress";
+            this.pbProgress.Size = new System.Drawing.Size(627, 24);
+            this.pbProgress.TabIndex = 2;
+            // 
             // tpProductNameToEdit
             // 
             this.tpProductNameToEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
@@ -201,53 +248,6 @@
             this.advancedDataGridView1.Size = new System.Drawing.Size(920, 456);
             this.advancedDataGridView1.TabIndex = 9;
             // 
-            // tpProgress
-            // 
-            this.tpProgress.ColumnCount = 3;
-            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 165F));
-            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tpProgress.Controls.Add(this.lElapsedTime, 0, 0);
-            this.tpProgress.Controls.Add(this.tbElapsedTime, 1, 0);
-            this.tpProgress.Controls.Add(this.pbProgress, 2, 0);
-            this.tpProgress.Location = new System.Drawing.Point(12, 85);
-            this.tpProgress.Name = "tpProgress";
-            this.tpProgress.RowCount = 1;
-            this.tpProgress.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tpProgress.Size = new System.Drawing.Size(898, 30);
-            this.tpProgress.TabIndex = 29;
-            // 
-            // lElapsedTime
-            // 
-            this.lElapsedTime.AutoSize = true;
-            this.lElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lElapsedTime.Location = new System.Drawing.Point(3, 0);
-            this.lElapsedTime.Name = "lElapsedTime";
-            this.lElapsedTime.Size = new System.Drawing.Size(159, 30);
-            this.lElapsedTime.TabIndex = 0;
-            this.lElapsedTime.Text = "Czas trwania";
-            this.lElapsedTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pbProgress
-            // 
-            this.pbProgress.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbProgress.Location = new System.Drawing.Point(268, 3);
-            this.pbProgress.Name = "pbProgress";
-            this.pbProgress.Size = new System.Drawing.Size(627, 24);
-            this.pbProgress.TabIndex = 2;
-            // 
-            // tbElapsedTime
-            // 
-            this.tbElapsedTime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
-            this.tbElapsedTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbElapsedTime.Location = new System.Drawing.Point(168, 5);
-            this.tbElapsedTime.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
-            this.tbElapsedTime.Name = "tbElapsedTime";
-            this.tbElapsedTime.Size = new System.Drawing.Size(94, 19);
-            this.tbElapsedTime.TabIndex = 1;
-            this.tbElapsedTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // tProgressTime
             // 
             this.tProgressTime.Interval = 1000;
@@ -272,11 +272,11 @@
             this.pHeader.ResumeLayout(false);
             this.pHeader.PerformLayout();
             this.gbSynchronization.ResumeLayout(false);
+            this.tpProgress.ResumeLayout(false);
+            this.tpProgress.PerformLayout();
             this.tpProductNameToEdit.ResumeLayout(false);
             this.tpProductNameToEdit.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
-            this.tpProgress.ResumeLayout(false);
-            this.tpProgress.PerformLayout();
             this.ResumeLayout(false);
 
         }

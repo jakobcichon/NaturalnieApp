@@ -1,17 +1,26 @@
-﻿using System;
+﻿using NaturalnieApp.Database;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using NaturalnieApp.Database;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace NaturalnieApp.Forms.Common
 {
-    public partial class SearchBarTemplate : UserControl
+    /// <summary>
+    /// Interaction logic for SearchBarTemplate2.xaml
+    /// </summary>
+    public partial class SearchBarTemplate2 : UserControl
     {
         //DB events Args
         public class CompleteProductDataFromDatabase
@@ -49,9 +58,8 @@ namespace NaturalnieApp.Forms.Common
         //Backgound worker for connection to db
         BackgroundWorker DbBackgroundWorker;
 
-        public SearchBarTemplate()
+        public SearchBarTemplate2()
         {
-            //Initialize component
             InitializeComponent();
 
             //Initialize database commands
@@ -64,8 +72,8 @@ namespace NaturalnieApp.Forms.Common
             this.PreviouslySelectedManufacturer = "";
             this.PreviouslySelectedProduct = "";
             this.PreviouslySelectedBarcode = "";
-
         }
+
 
         //=============================================================================
         //                              Background worker
@@ -83,7 +91,7 @@ namespace NaturalnieApp.Forms.Common
         }
         // This event handler is where the actual, potentially time-consuming work is done.
         void DbBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
-        { 
+        {
 
             try
             {
@@ -111,7 +119,7 @@ namespace NaturalnieApp.Forms.Common
 
                 e.Result = productData;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -126,7 +134,7 @@ namespace NaturalnieApp.Forms.Common
 
                 //Initialize with fetched data
                 this.FullManufacturersDict = localData.ManufacturersDict;
-                this.FullManufacturersDict.Add("Wszyscy",0);
+                this.FullManufacturersDict.Add("Wszyscy", 0);
                 this.ManufacturersToDisplayDict = this.FullManufacturersDict;
 
                 this.FullProductsDict = localData.ProductsDict;
@@ -138,9 +146,6 @@ namespace NaturalnieApp.Forms.Common
                 //Update data sources
                 UpdateDataSources(this.ManufacturersToDisplayDict, this.ProductsToDisplayDict, this.BarcodesToDisplayDict);
 
-                //Hide loading bar
-                HideLoadingBar();
-
             }
             catch (Exception ex)
             {
@@ -148,33 +153,6 @@ namespace NaturalnieApp.Forms.Common
             }
 
 
-        }
-
-        //General methods
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-
-            if ((keyData == Keys.Enter))
-            {
-                //Update control
-                UpdateControl(ref tbDummyForCtrl);
-
-            }
-            else if (keyData == Keys.Escape)
-            {
-                //Update control
-                UpdateControl(ref tbDummyForCtrl);
-            }
-
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-        //Update control
-        private void UpdateControl(ref TextBox dummyForControl)
-        {
-            //this.Select();
-            this.Focus();
-            dummyForControl.Select();
         }
 
         //Method used to update comboboxes datasources 
@@ -188,32 +166,32 @@ namespace NaturalnieApp.Forms.Common
             if (manufacturersData != null)
             {
                 //Copy datasource to local variable first
-                this.cbManufacturers.DataSource = null;
+                this.cbManufacturers.ItemsSource = null;
                 dataToList = manufacturersData.Keys.ToList();
                 dataToList.Remove("Wszyscy");
                 dataToList.Sort();
                 dataToList.Insert(0, "Wszyscy");
-                this.cbManufacturers.DataSource = dataToList;
+                this.cbManufacturers.ItemsSource = dataToList;
             }
 
             //Update products list
             if (productsData != null)
             {
                 //Copy datasource to local variable first
-                this.cbProducts.DataSource = null;
+                this.cbProducts.ItemsSource = null;
                 dataToList = productsData.Keys.ToList();
                 dataToList.Sort();
-                this.cbProducts.DataSource = dataToList;
+                this.cbProducts.ItemsSource = dataToList;
             }
 
             //Update barcodes list
             if (barcodesData != null)
             {
                 //Copy datasource to local variable first
-                this.cbBarcodes.DataSource = null;
+                this.cbBarcodes.ItemsSource = null;
                 dataToList = barcodesData.Keys.ToList();
                 dataToList.Sort();
-                this.cbBarcodes.DataSource = dataToList;
+                this.cbBarcodes.ItemsSource = dataToList;
             }
         }
         //=============================================================================
@@ -223,8 +201,6 @@ namespace NaturalnieApp.Forms.Common
         //Public methods
         public void UpdateCurrentEntity()
         {
-            //Show loading bar
-            ShowLoadingBar();
             this.DbBackgroundWorker.RunWorkerAsync();
         }
 
@@ -247,25 +223,10 @@ namespace NaturalnieApp.Forms.Common
             ;
         }
 
-        private void ShowLoadingBar()
-        {
-            this.Enabled = false;
-            this.pbLoadingBar.BringToFront();
-            this.pLoadingBar.Show();
-        }
-
-        private void HideLoadingBar()
-        {
-            this.pLoadingBar.Hide();
-            this.Enabled = true;
-        }
         private void SearchBarTemplate_Load(object sender, EventArgs e)
         {
-            //Show loading bar
-            ShowLoadingBar();
-
             this.DbBackgroundWorker.RunWorkerAsync();
-
+            ;
         }
 
         private void cbManufacturers_SelectedIndexChanged(object sender, EventArgs e)
@@ -274,7 +235,7 @@ namespace NaturalnieApp.Forms.Common
             ComboBox localSender = (ComboBox)sender;
 
             //Check if data source exist
-            if (localSender.DataSource != null)
+            if (localSender.ItemsSource != null)
             {
                 string selectedItem = localSender.SelectedItem.ToString();
 
@@ -306,7 +267,7 @@ namespace NaturalnieApp.Forms.Common
                     this.PreviouslySelectedManufacturer = selectedItem;
                 }
             }
-           
+
         }
 
         private void cbProducts_SelectedIndexChanged(object sender, EventArgs e)
@@ -318,24 +279,5 @@ namespace NaturalnieApp.Forms.Common
         {
 
         }
-
-        private void cbProducts_Leave(object sender, EventArgs e)
-        {
-            //Cast sender
-            ComboBox localSender = (ComboBox)sender;
-
-            localSender.SelectionStart = 1;
-            localSender.SelectionLength = 0;
-            string temp = localSender.SelectedText;
-            ;
-        }
-
-        private void tbDummyForCtrl_Enter(object sender, EventArgs e)
-        {
-            this.cbProducts.SelectionStart = 1;
-            this.cbProducts.SelectionLength = 0;
-            this.cbProducts.Update();
-        }
     }
-
 }

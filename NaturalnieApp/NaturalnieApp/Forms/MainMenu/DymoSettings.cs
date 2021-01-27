@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using NaturalnieApp.Dymo_Printer;
-
+using NaturalnieApp.Forms.Common;
 
 namespace NaturalnieApp.Forms
 {
@@ -11,6 +11,7 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Class fields
         #region Class fields
+        Common.SearchBarTemplate TestSearchBar;
         #endregion
         //====================================================================================================
         //Class constructor
@@ -18,12 +19,17 @@ namespace NaturalnieApp.Forms
         public DymoSettings()
         {
             InitializeComponent();
+
+            this.TestSearchBar = new SearchBarTemplate();
+            pTest.Controls.Add(this.TestSearchBar);
+
+
         }
         #endregion
 
         private void bUpdate_Click(object sender, EventArgs e)
         {
-
+            this.TestSearchBar.UpdateCurrentEntity();
 
             List<string> printersNames = PrinterMethods.GetPrintersNameList();
             if (printersNames.Count != 0)

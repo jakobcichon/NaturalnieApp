@@ -41,6 +41,7 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel = new System.Windows.Forms.Panel();
             this.bUpdate = new System.Windows.Forms.Button();
             this.bSave = new System.Windows.Forms.Button();
+            this.pTest = new System.Windows.Forms.Panel();
             this.pHeader.SuspendLayout();
             this.gbPrinterSelection.SuspendLayout();
             this.tpSelectedPrinterName.SuspendLayout();
@@ -203,6 +204,14 @@ namespace NaturalnieApp.Forms
             this.bSave.UseVisualStyleBackColor = false;
             this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
+            // pTest
+            // 
+            this.pTest.AutoSize = true;
+            this.pTest.Location = new System.Drawing.Point(0, 195);
+            this.pTest.Name = "pTest";
+            this.pTest.Size = new System.Drawing.Size(200, 100);
+            this.pTest.TabIndex = 6;
+            // 
             // DymoSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -210,10 +219,12 @@ namespace NaturalnieApp.Forms
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.Controls.Add(this.pTest);
             this.Controls.Add(this.gbPrinterSelection);
             this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.DoubleBuffered = true;
             this.Name = "DymoSettings";
             this.Size = new System.Drawing.Size(920, 690);
             this.Load += new System.EventHandler(this.DymoSettings_Load);
@@ -226,6 +237,7 @@ namespace NaturalnieApp.Forms
             this.tpAvailablePrintersList.PerformLayout();
             this.pButtonsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -242,5 +254,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TableLayoutPanel tpSelectedPrinterName;
         private System.Windows.Forms.Label lSelectedPrinterName;
         private System.Windows.Forms.TextBox tbSelectedPrinterName;
+        private System.Windows.Forms.Panel pTest;
     }
 }
