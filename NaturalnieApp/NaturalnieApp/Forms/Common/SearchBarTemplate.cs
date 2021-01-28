@@ -13,6 +13,118 @@ namespace NaturalnieApp.Forms.Common
 {
     public partial class SearchBarTemplate : UserControl
     {
+        //Return type
+        public class SelectedEnt
+        {
+            public int ManufacturerId { get; set; }
+            public string ProductName { get; set; }
+            public string Barcode { get; set; }
+        }
+
+        #region EntsRelation class
+        private class EntsRelations
+        {
+            private int ManufacturerId { get; set; }
+            private string ProductName { get; set; }
+            private string Barcode { get; set; }
+            private List<SelectedEnt> EntsList {get; set;}
+
+            #region Class exceptions
+            public class ListsCountNotEqualEception : Exception
+            {
+                public ListsCountNotEqualEception()
+                {
+                }
+
+                public ListsCountNotEqualEception(string message)
+                    : base(message)
+                {
+                }
+
+                public ListsCountNotEqualEception(string message, Exception inner)
+                    : base(message, inner)
+                {
+                }
+            }
+            #endregion
+
+            public EntsRelations()
+            {
+                //Initialize ents list
+                this.EntsList = new List<SelectedEnt>();
+            }
+
+            /// <summary>
+            /// Use this constructor to initialize Ents list. 
+            /// Input list must have equal count number. Otherwise exception will be thrown.
+            /// </summary>
+            /// <param name="productsList">List of the product name</param>
+            /// <param name="manufacturersIdList">List of the manufacturers Ids</param>
+            /// <param name="barcodesList">List of the barcodes</param>
+            public EntsRelations(List<string> productsList, List<int> manufacturersIdList, List<string> barcodesList)
+            {
+                //Check if lists count is equal
+                int productsListCount = productsList.Count();
+                int manufacturerListCount = manufacturersIdList.Count();
+                int barcodesListCount = barcodesList.Count();
+                if((productsListCount == manufacturerListCount) && (productsListCount == barcodesListCount))
+                {
+                    //Increment value
+                    int i = 0;
+
+                    //Loop trought all elements to add it to the object
+                    foreach(string product in productsList)
+                    {
+                        SelectedEnt localEnt = new SelectedEnt();
+                        localEnt.ProductName = product;
+                        localEnt.ManufacturerId = manufacturersIdList[i];
+                        localEnt.Barcode = barcodesList[i];
+                        this.EntsList.Add(localEnt);
+                        i++;
+                    }
+
+                }
+                else
+                {
+                    if (productsListCount != manufacturerListCount) throw new ListsCountNotEqualEception(
+                        String.Format("Lista nazw produktów ({0}) i lista producentów ({1}) nie są równe!", productsListCount, manufacturerListCount));
+                    else if (productsListCount != barcodesListCount) throw new ListsCountNotEqualEception(
+                        String.Format("Lista nazw produktów ({0}) i lista kodów kreskowych ({1}) nie są równe!", productsListCount, barcodesListCount));
+
+                }
+
+            }
+
+            /// <summary>
+            /// Method used to add single end to ents list.
+            /// </summary>
+            /// <param name="productName">Product name</param>
+            /// <param name="manufacurerId">Manufacturer Id</param>
+            /// <param name="barcode">Barcode</param>
+            public void AddEntWithRelations(string productName, int manufacurerId, string barcode)
+            {
+                //Prepare object to add
+                SelectedEnt localEnt = new SelectedEnt();
+                localEnt.ProductName = productName;
+                localEnt.ManufacturerId = manufacurerId;
+                localEnt.Barcode = barcode;
+
+                //Add object
+                this.EntsList.Add(localEnt);
+            }
+
+            /// <summary>
+            /// Method use to get full ent by product name
+            /// </summary>
+            /// <param name="productName">Product name/param>
+            /// <returns></returns>
+            public SelectedEnt GetFullEnt(string productName)
+            {
+                return this.EntsList.Find(e => e.ProductName == productName);
+            }
+        }
+        #endregion
+
         //DB events Args
         public class CompleteProductDataFromDatabase
         {
@@ -22,12 +134,19 @@ namespace NaturalnieApp.Forms.Common
             public Dictionary<string, int> ManufacturersDict { get; set; }
             //Dictionary for barcodes list <key = manufacturerId, value = barcode>
             public Dictionary<string, int> BarcodesDict { get; set; }
+
+            //List of the tuples
+            public List<(string products, int manufacturersId, string barcodes)> EntsRelaction { get; set; }
+
+
         }
 
         //Private fields        
         private Manufacturer ManufacturerEntity { get; set; }
         private Product ProductEntity { get; set; }
         private Tax TaxEntity { get; set; }
+        private SelectedEnt ActualSelectedEnt { get; set; }
+        private EntsRelations AllEntsRelation { get; set; }
 
         private Dictionary<string, int> FullManufacturersDict { get; set; }
         private Dictionary<string, int> FullProductsDict { get; set; }
@@ -42,6 +161,9 @@ namespace NaturalnieApp.Forms.Common
         private string PreviouslySelectedManufacturer { get; set; }
         private string PreviouslySelectedProduct { get; set; }
         private string PreviouslySelectedBarcode { get; set; }
+
+        //Auiliary variables to  bypass calling selected index chnaged if entity was selected by program
+        private bool SelectedByProgram { get; set; }
 
         //Database context
         DatabaseCommands DatabaseCommands;
@@ -64,6 +186,9 @@ namespace NaturalnieApp.Forms.Common
             this.PreviouslySelectedManufacturer = "";
             this.PreviouslySelectedProduct = "";
             this.PreviouslySelectedBarcode = "";
+
+            //Initialize all ents relation class
+            this.AllEntsRelation = new EntsRelations();
 
         }
 
@@ -101,6 +226,8 @@ namespace NaturalnieApp.Forms.Common
                 {
                     productData.ProductsDict.Add(product.ProductName, product.ManufacturerId);
                     productData.BarcodesDict.Add(product.BarCode, product.ManufacturerId);
+
+                    this.AllEntsRelation.AddEntWithRelations(product.ProductName, product.ManufacturerId, product.BarCode);         
                 }
 
                 //Assigne manufacturer data from DB to dictionares
@@ -167,6 +294,31 @@ namespace NaturalnieApp.Forms.Common
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        //Method used to set current selected entity
+        private void SetCurrentSelectedEntity(string productName)
+        {
+            if(productName != "")
+            {
+                //Check if product entity exist in the list
+                this.FullProductsDict.TryGetValue(productName, out int manufacturerId);
+
+                if (manufacturerId > 0)
+                {
+                    this.ProductEntity = this.DatabaseCommands.GetProductEntityByProductName(productName);
+                    this.TaxEntity = this.DatabaseCommands.GetTaxEntityById(this.ProductEntity.TaxId);
+                    this.ManufacturerEntity = this.DatabaseCommands.GetManufacturerEntityById(this.ProductEntity.ManufacturerId);
+                }
+            }
+        }
+
+        //Method used to select entity
+        private void SelectEntity(string productName)
+        {
+
+
+            this.SelectedByProgram = true;
         }
 
         //Update control
@@ -249,7 +401,9 @@ namespace NaturalnieApp.Forms.Common
 
         private void ShowLoadingBar()
         {
-            this.Enabled = false;
+            this.cbManufacturers.Enabled = false;
+            this.cbProducts.Enabled = false;
+            this.cbBarcodes.Enabled = false;
             this.pbLoadingBar.BringToFront();
             this.pLoadingBar.Show();
         }
@@ -257,7 +411,9 @@ namespace NaturalnieApp.Forms.Common
         private void HideLoadingBar()
         {
             this.pLoadingBar.Hide();
-            this.Enabled = true;
+            this.cbManufacturers.Enabled = true;
+            this.cbProducts.Enabled = true;
+            this.cbBarcodes.Enabled = true;
         }
         private void SearchBarTemplate_Load(object sender, EventArgs e)
         {
@@ -311,6 +467,10 @@ namespace NaturalnieApp.Forms.Common
 
         private void cbProducts_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //Cast sender
+            ComboBox localSender = (ComboBox)sender;
+
+            this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(localSender.Text);
 
         }
 

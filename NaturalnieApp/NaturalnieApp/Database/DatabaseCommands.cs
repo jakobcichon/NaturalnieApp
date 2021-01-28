@@ -962,6 +962,23 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB Manufacturer entity by ID
+        //====================================================================================================
+        public Manufacturer GetManufacturerEntityById(int manufacturerId)
+        {
+            Manufacturer localManufacturer = new Manufacturer();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from m in contextDB.Manufacturers
+                            where m.Id == manufacturerId
+                            select m;
+
+                localManufacturer = query.SingleOrDefault();
+            }
+            return localManufacturer;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB Product entity
         //====================================================================================================
 
