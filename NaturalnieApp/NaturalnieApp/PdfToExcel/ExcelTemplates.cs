@@ -40,7 +40,8 @@ namespace NaturalnieApp.PdfToExcel
                 {ColumnsAttributes.SupplierCode, "Kod dostawcy"},
                 {ColumnsAttributes.PriceNet, "Cena netto"},
                 {ColumnsAttributes.Tax, "VAT"},
-                {ColumnsAttributes.Discount, "Rabat dostawcy"}
+                {ColumnsAttributes.Discount, "Rabat dostawcy"},
+                {ColumnsAttributes.Quantity, "Ilość"}
             };
 
             //Count number of columns
@@ -61,7 +62,8 @@ namespace NaturalnieApp.PdfToExcel
                 {ColumnsAttributes.Marigin, "Marża"},
                 {ColumnsAttributes.CheckBox, "Zaznacz"},
                 {ColumnsAttributes.Discount, "Rabat dostawcy"},
-                {ColumnsAttributes.PriceNetWithDiscount, "Cena netto ze zniżką"}
+                {ColumnsAttributes.PriceNetWithDiscount, "Cena netto ze zniżką"},
+                {ColumnsAttributes.Quantity, "Ilość"}
             };
 
         }

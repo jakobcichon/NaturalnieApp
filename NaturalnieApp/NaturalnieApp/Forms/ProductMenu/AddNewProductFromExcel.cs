@@ -37,6 +37,7 @@ namespace NaturalnieApp.Forms
         string SupplierCodeColumnName { get; set; }
         string DiscountColumnName { get; set; }
         string PriceNetWithDiscountColumnName { get; set; }
+        string QuantityColumnName { get; set; }
         string IndexColumnName { get; set; }
         DataTable DataFromExcel { get; set; }
         string LastExcelFilePath { get; set; }
@@ -74,6 +75,8 @@ namespace NaturalnieApp.Forms
                 e => e.Key == ColumnsAttributes.SupplierCode).Value;
             this.DiscountColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
                 e => e.Key == ColumnsAttributes.Discount).Value;
+            this.QuantityColumnName = this.SupplierInvoice.DataTableSchema_Excel.FirstOrDefault(
+                e => e.Key == ColumnsAttributes.Quantity).Value;
 
             //Get additiona data from Wiun Form schema
             this.FinalPriceColumnName = this.SupplierInvoice.DataTableSchema_WinForm.FirstOrDefault(
@@ -142,8 +145,8 @@ namespace NaturalnieApp.Forms
                         dataFromExcel.Rows[indexOfDesireRow].SetField(this.ElzabProductColumnName, rowValue);
                     }
 
-                    string discountStringValue = row.Field<string>(this.DiscountColumnName);
                     //If Discount empty or out of bordes, set to 0
+                    string discountStringValue = row.Field<string>(this.DiscountColumnName);
                     int discountValue = 0;
                     try
                     {
@@ -158,6 +161,20 @@ namespace NaturalnieApp.Forms
                     else if (discountValue > 100) discountValue = 100;
 
                     row.SetField<int>(this.DiscountColumnName, discountValue);
+
+                    //If quantity epmty or not digit, set to 0
+                    string quantityRawValue = row.Field<string>(this.QuantityColumnName);
+                    int quantityValidatedValue = 0;
+                    try
+                    {
+                        quantityValidatedValue = Int32.Parse(quantityRawValue);
+                    }
+                    catch (FormatException)
+                    {
+                        quantityValidatedValue = 0;
+                    }
+
+                    row.SetField<int>(this.QuantityColumnName, quantityValidatedValue);
 
                 }
 
@@ -449,6 +466,7 @@ namespace NaturalnieApp.Forms
             //Row collection
             List<DataGridViewRow> rowCollectionToAdd = new List<DataGridViewRow>();
             List<DataGridViewRow> rowCollectionToRemoveFromList = new List<DataGridViewRow>();
+            List<DataGridViewRow> rowCollectionToAddQuantityToStockList = new List<DataGridViewRow>();
 
             //Loop through all rows and add to the list only rows with check box set to true
             foreach (DataGridViewRow row in this.advancedDataGridView1.Rows)
@@ -618,6 +636,7 @@ namespace NaturalnieApp.Forms
                         string rowBarcodeValue = row.Cells[this.BarcodeColumnName].Value.ToString();
                         string rowSupplierCodeValue = row.Cells[this.SupplierCodeColumnName].Value.ToString();
                         int rowDiscountValue = Convert.ToInt32(row.Cells[this.DiscountColumnName].Value);
+                        int rowQuantityValue = Convert.ToInt32(row.Cells[this.QuantityColumnName].Value);
                         float rowPriceNetWithDiscount = Calculations.CalculatePriceNetWithDiscount(rowPriceNetValue, rowDiscountValue);
 
                         //If product name, barcode and supplier are unique, add it to DB
@@ -657,8 +676,11 @@ namespace NaturalnieApp.Forms
                                 //Add new object to the DB
                                 this.databaseCommands.AddNewProduct(product);
 
-                                //Add row to the collection of added rows, to remo it later
+                                //Add row to the collection of added rows, to remove it later
                                 rowCollectionToRemoveFromList.Add(row);
+
+                                //Add to the collection to add to stock
+                                if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
 
                                 //Set auxiliary bit
                                 if (savedSuccessfully == -1) savedSuccessfully = 1;
@@ -752,6 +774,24 @@ namespace NaturalnieApp.Forms
                     advancedDataGridView1.Rows.Remove(row);
                 }
                 advancedDataGridView1.Update();
+            }
+
+            //Add to stock from list
+            if (rowCollectionToAddQuantityToStockList.Count > 0)
+            {
+                foreach (DataGridViewRow element in rowCollectionToAddQuantityToStockList)
+                {
+
+                    Stock stockPiece = new Stock();
+                    //Add product to local stock variable
+                    stockPiece.ProductId = this.databaseCommands.GetProductIdByName(element.Cells[this.ProductColumnName].Value.ToString());
+                    stockPiece.ActualQuantity = Int32.Parse(element.Cells[this.QuantityColumnName].Value.ToString());
+                    stockPiece.LastQuantity = 0;
+                    stockPiece.ModificationDate = DateTime.Now;
+
+                    this.databaseCommands.AddToStock(stockPiece);
+                }
+
             }
 
         }

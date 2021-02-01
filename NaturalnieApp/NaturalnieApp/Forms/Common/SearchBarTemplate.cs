@@ -164,6 +164,7 @@ namespace NaturalnieApp.Forms.Common
 
         //Auiliary variables to  bypass calling selected index chnaged if entity was selected by program
         private bool SelectedByProgram { get; set; }
+        private bool UpdatingDataSources { get; set; }
 
         //Database context
         DatabaseCommands DatabaseCommands;
@@ -243,6 +244,7 @@ namespace NaturalnieApp.Forms.Common
                 MessageBox.Show(ex.Message);
             }
         }
+
         // This event handler is where the actual, potentially time-consuming work is done.
         private void DbBackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -273,8 +275,6 @@ namespace NaturalnieApp.Forms.Common
             {
                 MessageBox.Show(ex.Message);
             }
-
-
         }
 
         //General methods
@@ -296,29 +296,25 @@ namespace NaturalnieApp.Forms.Common
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        //Method used to set current selected entity
-        private void SetCurrentSelectedEntity(string productName)
-        {
-            if(productName != "")
-            {
-                //Check if product entity exist in the list
-                this.FullProductsDict.TryGetValue(productName, out int manufacturerId);
-
-                if (manufacturerId > 0)
-                {
-                    this.ProductEntity = this.DatabaseCommands.GetProductEntityByProductName(productName);
-                    this.TaxEntity = this.DatabaseCommands.GetTaxEntityById(this.ProductEntity.TaxId);
-                    this.ManufacturerEntity = this.DatabaseCommands.GetManufacturerEntityById(this.ProductEntity.ManufacturerId);
-                }
-            }
-        }
-
         //Method used to select entity
-        private void SelectEntity(string productName)
+        private void SelectEntity(SelectedEnt entityToSelect)
         {
+            if (entityToSelect != null)
+            {
+                //Get manufacturer name
+                string manufacturerName = this.FullManufacturersDict.Where(e => e.Value == entityToSelect.ManufacturerId)
+                    .Select(e => e.Key).FirstOrDefault();
 
+                if (manufacturerName != this.cbManufacturers.SelectedItem.ToString())
+                    this.cbManufacturers.SelectedItem = manufacturerName;
+                if (entityToSelect.ProductName != this.cbProducts.SelectedItem.ToString())
+                    this.cbProducts.SelectedItem = entityToSelect.ProductName;
+                if (entityToSelect.Barcode != this.cbBarcodes.SelectedItem.ToString())
+                    this.cbBarcodes.SelectedItem = entityToSelect.Barcode;
 
-            this.SelectedByProgram = true;
+                this.SelectedByProgram = true;
+            }
+
         }
 
         //Update control
@@ -472,11 +468,16 @@ namespace NaturalnieApp.Forms.Common
 
             this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(localSender.Text);
 
+            this.cbProducts.SelectedItem = this.ActualSelectedEnt.ProductName;
+
+            //Select entity on the other combo boxes
+            this.SelectEntity(this.ActualSelectedEnt);
+
         }
 
         private void cbBarcodes_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            ;
         }
 
         private void cbProducts_Leave(object sender, EventArgs e)

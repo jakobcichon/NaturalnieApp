@@ -45,7 +45,8 @@ namespace NaturalnieApp.PdfToExcel
         CheckBox,
         IndexColumnName,
         Discount,
-        PriceNetWithDiscount
+        PriceNetWithDiscount,
+        Quantity
     }
 
     public class Properties
