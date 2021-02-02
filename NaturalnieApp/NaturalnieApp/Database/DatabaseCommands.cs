@@ -1357,7 +1357,7 @@ namespace NaturalnieApp.Database
             //Local variable
             StockHistory stockHistory = new StockHistory();
             stockHistory.ProductId = stockPiece.ProductId;
-            stockHistory.Quantity = stockPiece.LastQuantity;
+            stockHistory.Quantity = stockPiece.ActualQuantity;
             stockHistory.DateAndTime = DateTime.Now;
 
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))

@@ -20,8 +20,8 @@ namespace NaturalnieApp.Forms
         {
             InitializeComponent();
 
-            this.TestSearchBar = new SearchBarTemplate();
-            pTest.Controls.Add(this.TestSearchBar);
+            //this.TestSearchBar = new SearchBarTemplate();
+            //pTest.Controls.Add(this.TestSearchBar);
 
 
         }

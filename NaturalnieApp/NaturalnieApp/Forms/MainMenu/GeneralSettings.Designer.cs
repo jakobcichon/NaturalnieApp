@@ -44,6 +44,7 @@ namespace NaturalnieApp.Forms
         private void InitializeComponent()
         {
             this.pHeader = new System.Windows.Forms.Panel();
+            this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.bSave = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
             this.cBaudRate = new System.Windows.Forms.ComboBox();
@@ -65,7 +66,6 @@ namespace NaturalnieApp.Forms
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lDatabaseName = new System.Windows.Forms.Label();
-            this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.pHeader.SuspendLayout();
             this.gpConnectionSettings.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -84,6 +84,15 @@ namespace NaturalnieApp.Forms
             this.pHeader.Name = "pHeader";
             this.pHeader.Size = new System.Drawing.Size(920, 30);
             this.pHeader.TabIndex = 1;
+            // 
+            // tbDummyForCtrl
+            // 
+            this.tbDummyForCtrl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tbDummyForCtrl.Location = new System.Drawing.Point(0, 0);
+            this.tbDummyForCtrl.Name = "tbDummyForCtrl";
+            this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
+            this.tbDummyForCtrl.TabIndex = 22;
+            this.tbDummyForCtrl.Visible = false;
             // 
             // bSave
             // 
@@ -389,15 +398,6 @@ namespace NaturalnieApp.Forms
             this.lDatabaseName.TabIndex = 8;
             this.lDatabaseName.Text = "Nazwa bazy danych";
             this.lDatabaseName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tbDummyForCtrl
-            // 
-            this.tbDummyForCtrl.Dock = System.Windows.Forms.DockStyle.Left;
-            this.tbDummyForCtrl.Location = new System.Drawing.Point(0, 0);
-            this.tbDummyForCtrl.Name = "tbDummyForCtrl";
-            this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
-            this.tbDummyForCtrl.TabIndex = 22;
-            this.tbDummyForCtrl.Visible = false;
             // 
             // GeneralSettings
             // 

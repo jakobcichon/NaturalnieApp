@@ -688,6 +688,11 @@ namespace NaturalnieApp.Forms
                             }
                             else if (productNameExist)
                             {
+
+                                //If qunatity value exist, add it to the stock
+                                //Add to the collection to add to stock
+                                if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
+
                                 if (rowCollectionToAdd.Count > 1)
                                 {
                                     DialogResult dialogResult = MessageBox.Show("Produkt o nazwie '" + rowProductNameValue +
@@ -700,6 +705,10 @@ namespace NaturalnieApp.Forms
                             }
                             else if (barcodeExist)
                             {
+                                //If qunatity value exist, add it to the stock
+                                //Add to the collection to add to stock
+                                if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
+
                                 if (rowCollectionToAdd.Count > 1)
                                 {
                                     DialogResult dialogResult = MessageBox.Show("Kod kreskowy : '" + rowBarcodeValue +
@@ -712,6 +721,10 @@ namespace NaturalnieApp.Forms
                             }
                             else if (supplierCodeExist)
                             {
+                                //If qunatity value exist, add it to the stock
+                                //Add to the collection to add to stock
+                                if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
+
                                 if (rowCollectionToAdd.Count > 1)
                                 {
                                     DialogResult dialogResult = MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue +
@@ -724,6 +737,10 @@ namespace NaturalnieApp.Forms
                             }
                             else if (elzabProductNameExist)
                             {
+                                //If qunatity value exist, add it to the stock
+                                //Add to the collection to add to stock
+                                if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
+
                                 if (rowCollectionToAdd.Count > 1)
                                 {
                                     DialogResult dialogResult = MessageBox.Show("Nazwa produktu '" + rowProductNameValue +
@@ -767,6 +784,48 @@ namespace NaturalnieApp.Forms
 
             }
 
+            //Add to stock from list
+            if (rowCollectionToAddQuantityToStockList.Count > 0)
+            {
+                try
+                {
+                    foreach (DataGridViewRow element in rowCollectionToAddQuantityToStockList)
+                    {
+
+                        Stock stockPiece = new Stock();
+                        //Add product to local stock variable
+                        string productName = element.Cells[this.ProductColumnName].Value.ToString();
+                        stockPiece.ProductId = this.databaseCommands.GetProductIdByName(productName);
+
+                        bool productalreadyExistInStock = this.databaseCommands.CheckIfProductExistInStock(stockPiece);
+                        if (productalreadyExistInStock)
+                        {
+                            Stock pieceFromStock = this.databaseCommands.GetStockEntityByUserStock(stockPiece);
+                            int quantityInStock = this.databaseCommands.GetStockQuantity(stockPiece.ProductId);
+                            pieceFromStock.ActualQuantity = quantityInStock + Int32.Parse(element.Cells[this.QuantityColumnName].Value.ToString());
+                            pieceFromStock.LastQuantity = quantityInStock;
+                            pieceFromStock.ModificationDate = DateTime.Now;
+                            this.databaseCommands.EditInStock(pieceFromStock);
+
+                        }
+                        else
+                        {
+                            stockPiece.ActualQuantity = Int32.Parse(element.Cells[this.QuantityColumnName].Value.ToString());
+                            stockPiece.LastQuantity = 0;
+                            stockPiece.ModificationDate = DateTime.Now;
+                            this.databaseCommands.AddToStock(stockPiece);
+                        }
+
+
+                    }
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+
+                }
+            }
+
             if (rowCollectionToRemoveFromList.Count > 0)
             {
                 foreach (DataGridViewRow row in rowCollectionToRemoveFromList)
@@ -774,24 +833,6 @@ namespace NaturalnieApp.Forms
                     advancedDataGridView1.Rows.Remove(row);
                 }
                 advancedDataGridView1.Update();
-            }
-
-            //Add to stock from list
-            if (rowCollectionToAddQuantityToStockList.Count > 0)
-            {
-                foreach (DataGridViewRow element in rowCollectionToAddQuantityToStockList)
-                {
-
-                    Stock stockPiece = new Stock();
-                    //Add product to local stock variable
-                    stockPiece.ProductId = this.databaseCommands.GetProductIdByName(element.Cells[this.ProductColumnName].Value.ToString());
-                    stockPiece.ActualQuantity = Int32.Parse(element.Cells[this.QuantityColumnName].Value.ToString());
-                    stockPiece.LastQuantity = 0;
-                    stockPiece.ModificationDate = DateTime.Now;
-
-                    this.databaseCommands.AddToStock(stockPiece);
-                }
-
             }
 
         }
