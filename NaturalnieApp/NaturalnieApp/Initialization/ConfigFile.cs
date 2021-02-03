@@ -14,9 +14,13 @@ namespace NaturalnieApp.Initialization
         public string ElzabCommandPathDefaultValue { get; set; }
         public string ElzabCOMPortDefaultValue { get; set; }
         public string ElzabBaudRateDefaultValue { get; set; }
-        public string DatabaseNameDefaultValue { get; set; }
+        public string SqlServerNameDefaultValue { get; set; }
         public string LabelPathDefaultValue { get; set; }
         public string LibraryPathDefaultValue { get; set; }
+        public string DbBackupPathDefaultValue { get; set; }
+        public string DatabaseNameDefaultValue { get; set; }
+
+
 
 
         public ConfigFileObject()
@@ -25,11 +29,14 @@ namespace NaturalnieApp.Initialization
             this.ElzabCommandPathDefaultValue = Directory.GetCurrentDirectory() + "\\Elzab commands\\";
             this.ElzabCOMPortDefaultValue = "1";
             this.ElzabBaudRateDefaultValue = "57600";
-            this.DatabaseNameDefaultValue = "localhost";
+            this.SqlServerNameDefaultValue = "localhost";
             this.LabelPathDefaultValue = Directory.GetCurrentDirectory() + "\\Labels\\default label.label";
             this.LibraryPathDefaultValue = Directory.GetCurrentDirectory() + "\\Libs\\";
+            this.DbBackupPathDefaultValue = Directory.GetCurrentDirectory() + "\\DB Backups\\";
+            this.DbBackupPathDefaultValue = Directory.GetCurrentDirectory() + "\\DB Backups\\";
+            this.DatabaseNameDefaultValue = "localdb";
 
-            this.ConfigFileInst = new ConfigFile("\\config\\config.txt", "");
+            this.ConfigFileInst = new ConfigFile("\\config\\config.txt", "", this.TemplateConfigFile());
 
             this.ConfigFileElements = this.ConfigFileInst.ReadConfigFileElement();
 
@@ -132,13 +139,19 @@ namespace NaturalnieApp.Initialization
             retList.Add(new ConfigElement("ElzabBaudRate", this.ElzabBaudRateDefaultValue, "Elzab default baud rate"));
 
             //Add next element to list
-            retList.Add(new ConfigElement("DatabaseName", this.DatabaseNameDefaultValue, "Test database name"));
+            retList.Add(new ConfigElement("SqlServerName", this.SqlServerNameDefaultValue, "SQL Server Name"));
+
+            //Add next element to list
+            retList.Add(new ConfigElement("DatabaseName", this.DatabaseNameDefaultValue, "Database name"));
 
             //Add next element to list
             retList.Add(new ConfigElement("LabelPath", this.LabelPathDefaultValue, "Path to the label file"));
 
             //Add next element to list
             retList.Add(new ConfigElement("LibraryPath", this.LibraryPathDefaultValue, "Path to the librarys files"));
+
+            //Add next element to list
+            retList.Add(new ConfigElement("DbBackupPath", this.DbBackupPathDefaultValue, "Path to the Database backups"));
 
             //To Add next element to list, act as above
             //Placeholder for next element
@@ -202,13 +215,13 @@ namespace NaturalnieApp.Initialization
         public string FullPath { get; set; }
 
         //Declare class constructor
-        public ConfigFile( string fileName, string filePath = "")
+        public ConfigFile( string fileName, string filePath = "", List<ConfigElement> template = null)
         {
             //Consolidate patch
             this.FullPath = ConsolidatePathAndFile(filePath, fileName);
 
             //Initialize config file
-            InitializeConfigFile();
+            InitializeConfigFile(template);
         }
 
         //==================================================================================
@@ -412,7 +425,7 @@ namespace NaturalnieApp.Initialization
                 }
                 catch(Exception e)
                 {
-                    MessageBox.Show(e.ToString());
+                    MessageBox.Show(e.Message);
                 }
 
             }

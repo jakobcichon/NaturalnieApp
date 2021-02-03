@@ -10,8 +10,12 @@
 #ElzabBaudRate = 57600
 
 
-\\Test database name
-#DatabaseName = DESKTOP-L2L4V68
+\\SQL Server Name
+#SqlServerName = localhost
+
+
+\\Database name
+#DatabaseName = localdb
 
 
 \\Path to the label file
@@ -20,5 +24,9 @@
 
 \\Path to the librarys files
 #LibraryPath = C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\Libs\
+
+
+\\Path to the Database backups
+#DbBackupPath = C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\DB Backups\
 
 

@@ -66,6 +66,7 @@ namespace NaturalnieApp.Forms
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lDatabaseName = new System.Windows.Forms.Label();
+            this.bDbBackup = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
             this.gpConnectionSettings.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -358,6 +359,7 @@ namespace NaturalnieApp.Forms
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.bDbBackup);
             this.groupBox1.Controls.Add(this.tableLayoutPanel3);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -398,6 +400,19 @@ namespace NaturalnieApp.Forms
             this.lDatabaseName.TabIndex = 8;
             this.lDatabaseName.Text = "Nazwa bazy danych";
             this.lDatabaseName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // bDbBackup
+            // 
+            this.bDbBackup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bDbBackup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bDbBackup.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bDbBackup.Location = new System.Drawing.Point(476, 20);
+            this.bDbBackup.Name = "bDbBackup";
+            this.bDbBackup.Size = new System.Drawing.Size(200, 50);
+            this.bDbBackup.TabIndex = 15;
+            this.bDbBackup.Text = "Kopia zapasowa bazy danych";
+            this.bDbBackup.UseVisualStyleBackColor = false;
+            this.bDbBackup.Click += new System.EventHandler(this.bDbBackup_Click);
             // 
             // GeneralSettings
             // 
@@ -451,5 +466,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label lDatabaseName;
         private System.Windows.Forms.TextBox tbDummyForCtrl;
+        private System.Windows.Forms.Button bDbBackup;
     }
 }

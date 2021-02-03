@@ -5,12 +5,154 @@ using System.Linq;
 using System;
 using System.Windows.Forms;
 using System.Data.Entity;
+using System.IO;
 using static NaturalnieApp.Program;
+using System.Diagnostics;
 
 namespace NaturalnieApp.Database
 {
-    public class DatabaseCommands
+
+    //====================================================================================================
+    //DB Backup class
+    //====================================================================================================
+    public static class DatabaseBackup
     {
+
+        //Mehtod used to make DB backup
+        static public bool MakeBackup(string userName, string password, string dbName, string schemaName, string pathForBackup)
+        {
+
+            try
+            {
+                string directoryForBackup = CreateBackupDirectory(pathForBackup);
+
+                //Generate subdirectory name and check if exist
+                string date = DateTime.Now.Date.ToString("MM/dd/yyyy");
+                string time = DateTime.Now.TimeOfDay.Hours.ToString("00") + "." +
+                    DateTime.Now.TimeOfDay.Minutes.ToString("00");
+
+                string fullPath = Path.Combine(directoryForBackup, schemaName + "_" + date + "_"  + time);
+
+                //Generate command called in Windows command prompt
+                string command = string.Format("mysqldump.exe -u{0} -p{1} --all-databases > " + fullPath + ".sql", userName, password);
+                var processStartInfo = new ProcessStartInfo();
+                processStartInfo.WorkingDirectory = pathForBackup;
+                processStartInfo.FileName = "cmd.exe";
+                processStartInfo.Arguments = "/K " + command;
+                Process proc = Process.Start(processStartInfo);
+                proc.WaitForExit();
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+
+
+
+        }
+
+        //Method used to create directory for db backup
+        //Created directory consist date and time
+        static private string CreateBackupDirectory(string pathToCreateIn)
+        {
+            //Local variable
+            string retVal = "";
+            bool subFolderCreated = false;
+            string subDirName = "";
+
+            try
+            {
+                //Check if file exist
+                bool exist = Directory.Exists(pathToCreateIn);
+
+                if (exist)
+                {
+                    //Generate subdirectory name and check if exist
+                    string date = DateTime.Now.Date.ToString("MM/dd/yyyy");
+                    string time = DateTime.Now.TimeOfDay.Hours.ToString("00") + "." +
+                        DateTime.Now.TimeOfDay.Minutes.ToString("00");
+                    subDirName = Path.Combine(pathToCreateIn, date + "_" + time);
+
+                    //Check if backup directory exist
+                    bool dirExist = File.Exists(subDirName);
+                    if (!dirExist)
+                    {
+                        subFolderCreated = Directory.CreateDirectory(subDirName).Exists;
+                    }
+                    else
+                    {
+                        //Try to create another name
+                        for (int i = 1; i <= 10; i++)
+                        {
+                            string candidateDirName = subDirName;
+                            candidateDirName += " (" + i + ")";
+                            dirExist = File.Exists(candidateDirName);
+                            if (!dirExist)
+                            {
+                                Directory.CreateDirectory(candidateDirName);
+                                subDirName = candidateDirName;
+                                subFolderCreated = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (subFolderCreated)
+                    {
+                        retVal = subDirName;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Nie udało się utworzyć podfolderu!");
+                        retVal = "";
+                    }
+                }
+                else retVal = subDirName;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                MessageBox.Show(string.Format("Kopia zapasowa pliku {0} nie została wykonana!", Path.GetFileName(subDirName)));
+                retVal = "";
+            }
+
+            return retVal;
+        }
+
+        //Method used to initialize mysqldump
+        static public void Initialize()
+        {
+            bool fileExist = CheckIfMySqlDumpExist(GlobalVariables.DbBackupPath);
+            if (!fileExist) MoveMySqlDump(GlobalVariables.LibraryPath, GlobalVariables.DbBackupPath);
+            
+        }
+
+
+        //Method used to move mysqldump exe file to given location from libs location
+        static private void MoveMySqlDump(string sourcePath, string destinationPath)
+        {
+            //Check if directory exist. If not create one
+            bool directoryExist = Directory.Exists(destinationPath);
+            if (!directoryExist) Directory.CreateDirectory(destinationPath);
+
+            //Copy mysqldump
+            string fullSourcePath = Path.Combine(sourcePath, "mysqldump.exe");
+            string fullDestinationPath = Path.Combine(destinationPath, "mysqldump.exe");
+            File.Copy(fullSourcePath, fullDestinationPath);
+        }
+
+        //Method used to check if mysqldump exe file exist under given path.
+        static private bool CheckIfMySqlDumpExist(string mySqlDumpPath)
+        {
+            string fullPath = Path.Combine(mySqlDumpPath, "mysqldump.exe");
+            return File.Exists(fullPath);
+        }
+    }
+
+    public class DatabaseCommands
+    { 
         //====================================================================================================
         //Class fields
         //====================================================================================================
