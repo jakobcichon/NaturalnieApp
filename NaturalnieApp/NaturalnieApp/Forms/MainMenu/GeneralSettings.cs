@@ -325,7 +325,10 @@ namespace NaturalnieApp.Forms
 
         private void bDbBackup_Click(object sender, EventArgs e)
         {
+            bool result = DatabaseBackup.MakeBackup("root", "admin", "shop", GlobalVariables.DbBackupPath);
 
+            if (result) MessageBox.Show("Udało się utworzyć kopię zapasową bazy danych!");
+            else MessageBox.Show("NIE udało się utworzyć kopię zapasową bazy danych!");
         }
 
 

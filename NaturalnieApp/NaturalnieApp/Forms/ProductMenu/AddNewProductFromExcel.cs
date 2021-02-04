@@ -1041,55 +1041,6 @@ namespace NaturalnieApp.Forms
             }
         }
 
-        /*
-        private void bChangeTaxAndPrice_Click(object sender, EventArgs e)
-        {
-            List<Product> listToEdit = new List<Product>();
-            List<string> productNameList = new List<string>();
-
-            try
-            {
-                foreach (DataRow row in this.DataFromExcel.Rows)
-                {
-                    Product tempProduct;
-                    string barcode = row.Field<string>(this.BarcodeColumnName);
-                    tempProduct = this.databaseCommands.GetProductEntityByBarcode(barcode);
-
-                    if (tempProduct != null)
-                    {
-                        Tax taxEntity = this.databaseCommands.GetTaxByProductName(tempProduct.ProductName);
-                        int taxValue = Int32.Parse(row.Field<string>(this.TaxColumnName));
-                        float priceNetValue = Single.Parse(row.Field<string>(this.PriceNetColumnName));
-
-                        if (taxEntity.TaxValue != taxValue || tempProduct.PriceNet != priceNetValue)
-                        {
-                            tempProduct.TaxId = this.databaseCommands.GetTaxIdByValue(taxValue);
-                            tempProduct.PriceNet = priceNetValue;
-                            tempProduct.Discount = 5;
-                            listToEdit.Add(tempProduct);
-                        }
-                    }
-
-
-                }
-
-                foreach (Product product in listToEdit)
-                {
-                    this.databaseCommands.EditProduct(product);
-                    productNameList.Add(product.ProductName);
-
-                }
-
-                this.databaseCommands.UpdateAllFinalPrices(productNameList);
-            }
-            catch
-            {
-                ;
-            }
-
-
-        }
-        */
         private void bChangeTaxAndPrice_Click(object sender, EventArgs e)
         {
             try

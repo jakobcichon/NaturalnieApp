@@ -38,6 +38,7 @@ namespace NaturalnieApp.Forms
         public DymoSettings dymoSettings { get; set; }
         public GeneralSettings generalSettings { get; set; }
         public ElzabSynchronization cashRegisterCommands { get; set; }
+        public PricesRelatedUpdate pricesRelatedUpdate { get; set; }
 
 
         //Creat EF databse connection object
@@ -68,6 +69,7 @@ namespace NaturalnieApp.Forms
             this.dymoSettings = new DymoSettings();
             this.generalSettings = new GeneralSettings(this.ConfigFileOjbInst);
             this.cashRegisterCommands = new ElzabSynchronization(ref this.databaseCommands);
+            this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
         }
 
         //====================================================================================================
@@ -368,6 +370,25 @@ namespace NaturalnieApp.Forms
                 this.addManufacturer.Show();
             }
         }
+        private void bPriceRelatedUpdate_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            try
+            {
+                this.pContainer.Controls.Add(this.pricesRelatedUpdate);
+                this.pricesRelatedUpdate.Select();
+                this.pricesRelatedUpdate.BringToFront();
+                this.pricesRelatedUpdate.Show();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
+                this.pContainer.Controls.Add(this.pricesRelatedUpdate);
+                this.pricesRelatedUpdate.Select();
+                this.pricesRelatedUpdate.BringToFront();
+                this.pricesRelatedUpdate.Show();
+            }
+        }
 
         #endregion
 
@@ -440,5 +461,7 @@ namespace NaturalnieApp.Forms
 
 
         #endregion
+
+
     }
 }

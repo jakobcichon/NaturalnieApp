@@ -52,7 +52,7 @@ namespace NaturalnieApp
 
                 //Initialize DB backups
                 DatabaseBackup.Initialize();
-                bool test = DatabaseBackup.MakeBackup("root", "admin", GlobalVariables.DatabaseName, "shop", GlobalVariables.DbBackupPath);
+                bool test = DatabaseBackup.MakeBackup("root", "admin", "shop", GlobalVariables.DbBackupPath);
 
                 Application.EnableVisualStyles();
                 Application.Run(new MainWindow(ConfigFileInst));

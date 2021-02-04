@@ -339,6 +339,20 @@ namespace NaturalnieApp
     public static class DataSourceRelated
     {
         /// <summary>
+        /// Structure used to describe column names for prices (price net, tax, etc.) update
+        /// </summary>
+        public struct PricesUpdateDataSourceColumnNames
+        {
+            public string No { get; set; }
+            public string ProductName { get; set; }
+            public string ProductBarcode { get; set; }
+            public string PriceNet { get; set; }
+            public string Tax { get; set; }
+            public string Discount { get; set; }
+
+        }
+
+        /// <summary>
         /// Structure used to describe column names for label data source
         /// </summary>
         public struct LabelDataSourceColumnNames

@@ -19,7 +19,7 @@ namespace NaturalnieApp.Database
     {
 
         //Mehtod used to make DB backup
-        static public bool MakeBackup(string userName, string password, string dbName, string schemaName, string pathForBackup)
+        static public bool MakeBackup(string userName, string password, string dbName, string pathForBackup)
         {
 
             try
@@ -31,18 +31,24 @@ namespace NaturalnieApp.Database
                 string time = DateTime.Now.TimeOfDay.Hours.ToString("00") + "." +
                     DateTime.Now.TimeOfDay.Minutes.ToString("00");
 
-                string fullPath = Path.Combine(directoryForBackup, schemaName + "_" + date + "_"  + time);
+                string fullPath = Path.Combine(directoryForBackup, dbName + "_" + date + "_"  + time);
+
+                string outFileFullPath = "\"" + fullPath + ".sql\"";
 
                 //Generate command called in Windows command prompt
-                string command = string.Format("mysqldump.exe -u{0} -p{1} --all-databases > " + fullPath + ".sql", userName, password);
+                string command = string.Format("mysqldump.exe -u{0} -p{1} {2} > " + outFileFullPath, userName, password, dbName);
                 var processStartInfo = new ProcessStartInfo();
                 processStartInfo.WorkingDirectory = pathForBackup;
+                processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 processStartInfo.FileName = "cmd.exe";
-                processStartInfo.Arguments = "/K " + command;
+                processStartInfo.Arguments = "/C " + command;
                 Process proc = Process.Start(processStartInfo);
                 proc.WaitForExit();
 
-                return true;
+                //Check if file exist
+                bool exist = File.Exists(fullPath + ".sql");
+                if (!exist) return false;
+                else return true;
             }
             catch(Exception ex)
             {
@@ -67,49 +73,48 @@ namespace NaturalnieApp.Database
             {
                 //Check if file exist
                 bool exist = Directory.Exists(pathToCreateIn);
+                if (!exist) Directory.CreateDirectory(pathToCreateIn);
 
-                if (exist)
+                //Generate subdirectory name and check if exist
+                string date = DateTime.Now.Date.ToString("MM/dd/yyyy");
+                string time = DateTime.Now.TimeOfDay.Hours.ToString("00") + "." +
+                    DateTime.Now.TimeOfDay.Minutes.ToString("00");
+                subDirName = Path.Combine(pathToCreateIn, date + "_" + time);
+
+                //Check if backup directory exist
+                bool dirExist = Directory.Exists(subDirName);
+                if (!dirExist)
                 {
-                    //Generate subdirectory name and check if exist
-                    string date = DateTime.Now.Date.ToString("MM/dd/yyyy");
-                    string time = DateTime.Now.TimeOfDay.Hours.ToString("00") + "." +
-                        DateTime.Now.TimeOfDay.Minutes.ToString("00");
-                    subDirName = Path.Combine(pathToCreateIn, date + "_" + time);
-
-                    //Check if backup directory exist
-                    bool dirExist = File.Exists(subDirName);
-                    if (!dirExist)
+                    subFolderCreated = Directory.CreateDirectory(subDirName).Exists;
+                }
+                else
+                {
+                    //Try to create another name
+                    for (int i = 1; i <= 10; i++)
                     {
-                        subFolderCreated = Directory.CreateDirectory(subDirName).Exists;
-                    }
-                    else
-                    {
-                        //Try to create another name
-                        for (int i = 1; i <= 10; i++)
+                        string candidateDirName = subDirName;
+                        candidateDirName += " (" + i + ")";
+                        dirExist = Directory.Exists(candidateDirName);
+                        if (!dirExist)
                         {
-                            string candidateDirName = subDirName;
-                            candidateDirName += " (" + i + ")";
-                            dirExist = File.Exists(candidateDirName);
-                            if (!dirExist)
-                            {
-                                Directory.CreateDirectory(candidateDirName);
-                                subDirName = candidateDirName;
-                                subFolderCreated = true;
-                                break;
-                            }
+                            Directory.CreateDirectory(candidateDirName);
+                            subDirName = candidateDirName;
+                            subFolderCreated = true;
+                            retVal = subDirName;
+                            break;
                         }
                     }
-                    if (subFolderCreated)
-                    {
-                        retVal = subDirName;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Nie udało się utworzyć podfolderu!");
-                        retVal = "";
-                    }
                 }
-                else retVal = subDirName;
+                if (subFolderCreated)
+                {
+                    retVal = subDirName;
+                }
+                else
+                {
+                    MessageBox.Show("Nie udało się utworzyć podfolderu!");
+                    retVal = "";
+                }
+
             }
             catch (Exception ex)
             {

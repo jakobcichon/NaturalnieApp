@@ -60,6 +60,7 @@ namespace NaturalnieApp.Forms
             this.bExit = new System.Windows.Forms.Button();
             this.pMenuDeliminer = new System.Windows.Forms.Panel();
             this.pContainer = new System.Windows.Forms.Panel();
+            this.bPriceRelatedUpdate = new System.Windows.Forms.Button();
             this.pMenu.SuspendLayout();
             this.pStockSubMenu.SuspendLayout();
             this.pProductSubMenu.SuspendLayout();
@@ -93,10 +94,10 @@ namespace NaturalnieApp.Forms
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 644);
+            this.panel1.Location = new System.Drawing.Point(0, 674);
             this.panel1.MinimumSize = new System.Drawing.Size(300, 10);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(300, 54);
+            this.panel1.Size = new System.Drawing.Size(300, 24);
             this.panel1.TabIndex = 8;
             // 
             // pStockSubMenu
@@ -108,7 +109,7 @@ namespace NaturalnieApp.Forms
             this.pStockSubMenu.Controls.Add(this.bAddToStock);
             this.pStockSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pStockSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pStockSubMenu.Location = new System.Drawing.Point(0, 554);
+            this.pStockSubMenu.Location = new System.Drawing.Point(0, 584);
             this.pStockSubMenu.Name = "pStockSubMenu";
             this.pStockSubMenu.Size = new System.Drawing.Size(300, 90);
             this.pStockSubMenu.TabIndex = 7;
@@ -173,7 +174,7 @@ namespace NaturalnieApp.Forms
             this.bStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bStock.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.bStock.Location = new System.Drawing.Point(0, 504);
+            this.bStock.Location = new System.Drawing.Point(0, 534);
             this.bStock.Name = "bStock";
             this.bStock.Size = new System.Drawing.Size(300, 50);
             this.bStock.TabIndex = 6;
@@ -185,6 +186,7 @@ namespace NaturalnieApp.Forms
             // 
             this.pProductSubMenu.AutoSize = true;
             this.pProductSubMenu.BackColor = System.Drawing.Color.DimGray;
+            this.pProductSubMenu.Controls.Add(this.bPriceRelatedUpdate);
             this.pProductSubMenu.Controls.Add(this.bAddManufacturer);
             this.pProductSubMenu.Controls.Add(this.bPrintBarcode);
             this.pProductSubMenu.Controls.Add(this.AddProductFromPdf);
@@ -194,7 +196,7 @@ namespace NaturalnieApp.Forms
             this.pProductSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pProductSubMenu.Location = new System.Drawing.Point(0, 354);
             this.pProductSubMenu.Name = "pProductSubMenu";
-            this.pProductSubMenu.Size = new System.Drawing.Size(300, 150);
+            this.pProductSubMenu.Size = new System.Drawing.Size(300, 180);
             this.pProductSubMenu.TabIndex = 5;
             // 
             // bAddManufacturer
@@ -535,6 +537,23 @@ namespace NaturalnieApp.Forms
             this.pContainer.Size = new System.Drawing.Size(936, 698);
             this.pContainer.TabIndex = 7;
             // 
+            // bPriceRelatedUpdate
+            // 
+            this.bPriceRelatedUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bPriceRelatedUpdate.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bPriceRelatedUpdate.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bPriceRelatedUpdate.FlatAppearance.BorderSize = 0;
+            this.bPriceRelatedUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bPriceRelatedUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bPriceRelatedUpdate.ForeColor = System.Drawing.Color.White;
+            this.bPriceRelatedUpdate.Location = new System.Drawing.Point(0, 150);
+            this.bPriceRelatedUpdate.Name = "bPriceRelatedUpdate";
+            this.bPriceRelatedUpdate.Size = new System.Drawing.Size(300, 30);
+            this.bPriceRelatedUpdate.TabIndex = 10;
+            this.bPriceRelatedUpdate.Text = "Aktualizacja (cen, podatku, itd.)";
+            this.bPriceRelatedUpdate.UseVisualStyleBackColor = false;
+            this.bPriceRelatedUpdate.Click += new System.EventHandler(this.bPriceRelatedUpdate_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -597,5 +616,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Panel pMainMenuSubMenu;
         private System.Windows.Forms.Button bDymoSettings;
         private System.Windows.Forms.Button bGeneralSettings;
+        private System.Windows.Forms.Button bPriceRelatedUpdate;
     }
 }

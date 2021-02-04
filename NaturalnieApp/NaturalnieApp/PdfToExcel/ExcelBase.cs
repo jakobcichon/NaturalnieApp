@@ -75,8 +75,9 @@ namespace NaturalnieApp.PdfToExcel
     public class ExcelBase
     {
 
-        //Create excel file from template
-        static public void CreateExcelFile(IExcel template, string filePath, string outFileName)
+
+        //Create excel file generic method
+        static public void CreateExcelFile(IExcel tmeplate, string filePath, string outFileName)
         {
             //Local variable
             string fullPath;
@@ -88,7 +89,27 @@ namespace NaturalnieApp.PdfToExcel
             string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + fullPath + "';Extended Properties=\"Excel 12.0;HDR=NO\"";
 
             //Create message box and show message box
-            if (CreateExcelFileFromTemplate(template, connectionString))
+            if (CreateExcelFileFromTemplate(tmeplate, connectionString))
+            {
+                MessageBox.Show(string.Format("Plik {0} został utworzony!", fullPath));
+            }
+
+        }
+
+        //Create excel file generic method
+        static public void CreateExcelFile(List<string> columnNamesList, string filePath, string outFileName)
+        {
+            //Local variable
+            string fullPath;
+
+            //Combine path and file name
+            fullPath = Path.Combine(filePath, outFileName + ".xlsb");
+
+            //Connection string
+            string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + fullPath + "';Extended Properties=\"Excel 12.0;HDR=NO\"";
+
+            //Create message box and show message box
+            if (CreateExcelFileFromList(columnNamesList, connectionString))
             {
                 MessageBox.Show(string.Format("Plik {0} został utworzony!", fullPath));
             }
@@ -151,6 +172,62 @@ namespace NaturalnieApp.PdfToExcel
             return returnData;
 
         }
+        static public DataTable ExtractEntities(DataTable dataTableToFillIn, List<DataTable> dataFromExcel)
+        {
+            //LocalVariables
+            DataTable returnData = dataTableToFillIn.Clone();
+            List<DataRow> dataRowsFromFile = new List<DataRow>();
+            bool comparationResult = false;
+
+            //Check if column count and names match
+            List<string> inputTableColumnNames = new List<string>();
+            foreach(DataColumn column in dataTableToFillIn.Columns)
+            {
+                inputTableColumnNames.Add(column.ColumnName);
+            }
+
+            foreach(DataTable excelTable in dataFromExcel)
+            {
+                List<string> excelTableColumnNames = new List<string>();
+                foreach (DataColumn column in excelTable.Columns)
+                {
+                    excelTableColumnNames.Add(column.ColumnName);
+                }
+
+                //Compare colum names and count
+                if (inputTableColumnNames.Count != excelTableColumnNames.Count) break;
+                else
+                {
+                    foreach(string columnName in inputTableColumnNames)
+                    {
+                        int columnIndex = inputTableColumnNames.IndexOf(columnName);
+                        if (columnName != excelTableColumnNames[columnIndex])
+                        {
+                            comparationResult = false;
+                            break;
+                        }
+                        else comparationResult = true;
+                    }
+                }
+            }
+
+            //If all column names are equal add data to return Table
+            if (comparationResult)
+            {
+                foreach (DataTable excelTable in dataFromExcel)
+                {
+                    foreach(DataRow row in excelTable.Rows)
+                    {
+                        returnData.ImportRow(row);
+                    }
+                }
+            }
+            else returnData = null;
+
+
+            return returnData;
+
+        }
 
         //Method used to clean data from excel
         private DataTable CleanDataFromExcel(List<DataRow> rows)
@@ -198,13 +275,6 @@ namespace NaturalnieApp.PdfToExcel
             }
 
             return returnData;
-        }
-
-        //Method used to add some additional columns to data table. 
-        //These columns are used to put calculated data 
-        private void AddAdditionalColumns(DataTable data)
-        {
-
         }
 
         private List<DataRow> ExtractDataFromExcel(IExcel template, DataTable table)
@@ -312,13 +382,37 @@ namespace NaturalnieApp.PdfToExcel
         //Method used to create excel file from template
         static private bool CreateExcelFileFromTemplate(IExcel template, string connectionString)
         {
+            //Local variable
+            List<string> columnNamesList = new List<string>();
 
+            //Get all column names from template
+            foreach (string columnName in template.DataTableSchema_Excel.Values)
+            {
+                columnNamesList.Add(columnName);
+            }
+
+            bool result = CreateExcelFileGeneric(columnNamesList, connectionString);
+
+            return result;
+        }
+
+        //Method used to create excel file from column name list
+        static private bool CreateExcelFileFromList(List<string> columnNamesList, string connectionString)
+        {
+            bool result = CreateExcelFileGeneric(columnNamesList, connectionString);
+
+            return result;
+        }
+
+        //Generic method to create excel file from column name list
+        static private bool CreateExcelFileGeneric(List<string> columnNamesList, string connectionString)
+        {
             //Local variable
             bool retValue = false;
-            
+
             //Create connection
             OleDbConnection connection = new OleDbConnection();
-            
+
             try
             {
                 //Connection string
@@ -328,7 +422,7 @@ namespace NaturalnieApp.PdfToExcel
 
                 //Create command for create columns
                 string columnNames = "";
-                foreach (string element in template.DataTableSchema_Excel.Values)
+                foreach (string element in columnNamesList)
                 {
                     columnNames += "[" + element + "]" + " string, ";
                 }
@@ -337,14 +431,14 @@ namespace NaturalnieApp.PdfToExcel
                 columnNames = columnNames.Remove(columnNames.Length - 2, 2);
 
                 //Create command string
-                cmd.CommandText = string.Format("CREATE TABLE [Sheet1] ({0})", columnNames); 
+                cmd.CommandText = string.Format("CREATE TABLE [Sheet1] ({0})", columnNames);
 
                 //Execute query
                 cmd.ExecuteNonQuery();
 
                 //Set return value
                 retValue = true;
-                
+
             }
             catch (OleDbException oleDbEx)
             {
@@ -461,10 +555,10 @@ namespace NaturalnieApp.PdfToExcel
         }
 
         //Get all data from excel sheet. Each excel sheet would be separated list element
-        public static List<DataTable> GetAllDataFromExcel(string excelPath)
+        public static List<DataTable> GetAllDataFromExcel(string excelPath,bool firstRowColumnNames = false)
         {
             //Get connection string
-            string connectionString = GetConnectionString(excelPath, false);
+            string connectionString = GetConnectionString(excelPath, false, firstRowColumnNames);
 
             //Get excel sheet names from specified excel
             List<string> sheetNames = GetExcelSheetNames(connectionString);
@@ -547,11 +641,14 @@ namespace NaturalnieApp.PdfToExcel
         }
 
         //Method used to make connection string
-        static private string GetConnectionString(string filePath, bool write)
+        static private string GetConnectionString(string filePath, bool write, bool firstRowColumnNames = false)
         {
             //Local variables
             string connectionString = "";
             string fileExtension = "";
+            string hdr;
+            if (firstRowColumnNames) hdr = "HDR=YES";
+            else hdr = "HDR=NO";
 
             //Get file extension
             fileExtension = Path.GetExtension(filePath);
@@ -559,12 +656,12 @@ namespace NaturalnieApp.PdfToExcel
             if (fileExtension == ".xls")
             {
                 //Set connection string for .xls files
-                connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0; Data Source = '" + filePath + "';Extended Properties=\"Excel 8.0;HDR=NO; IMEX=1\"";
+                connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0; Data Source = '" + filePath + "';Extended Properties=\"Excel 8.0;"+ hdr +"; IMEX=1\"";
             }
             else if (((fileExtension == ".xlsx") || (fileExtension == ".xlsb")) && !write)
             {
                 //Set connection string for .xlsx files
-                connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0 Xml;HDR=NO; IMEX=1\"";
+                connectionString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source='" + filePath + "';Extended Properties=\"Excel 12.0 Xml;" + hdr + "; IMEX=1\"";
             }
             else if (((fileExtension == ".xlsx") || (fileExtension == ".xlsb")) && write)
             {
