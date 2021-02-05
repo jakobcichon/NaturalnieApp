@@ -344,6 +344,8 @@ namespace NaturalnieApp
         public struct PricesUpdateDataSourceColumnNames
         {
             public string No { get; set; }
+
+            public string ManufacturerName { get; set; }
             public string ProductName { get; set; }
             public string ProductBarcode { get; set; }
             public string PriceNet { get; set; }

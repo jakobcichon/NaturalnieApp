@@ -186,7 +186,7 @@ namespace NaturalnieApp.Forms
                         }
                         if (rtbDatabaseName.Text == "")
                         {
-                            rtbDatabaseName.Text = this.ConfigFileObjInst.DatabaseNameDefaultValue;
+                            rtbDatabaseName.Text = this.ConfigFileObjInst.SqlServerNameDefaultValue;
                         }
 
                         SaveData();

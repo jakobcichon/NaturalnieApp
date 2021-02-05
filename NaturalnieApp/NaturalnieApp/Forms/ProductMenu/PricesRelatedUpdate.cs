@@ -42,6 +42,7 @@ namespace NaturalnieApp.Forms
 
             //Initialize daa grid view
             this.ColumnNames.No = "Lp";
+            this.ColumnNames.ManufacturerName = "Producent";
             this.ColumnNames.ProductName = "Nazwa produktu";
             this.ColumnNames.ProductBarcode = "Kod kreskowy";
             this.ColumnNames.PriceNet = "Cena netto";
@@ -69,10 +70,16 @@ namespace NaturalnieApp.Forms
             column.Dispose();
 
             column = new DataColumn();
+            column.ColumnName = this.ColumnNames.ManufacturerName;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            this.DataSource.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
             column.ColumnName = this.ColumnNames.ProductName;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
-            column.Unique = true;
             this.DataSource.Columns.Add(column);
             column.Dispose();
 
@@ -80,7 +87,6 @@ namespace NaturalnieApp.Forms
             column.ColumnName = this.ColumnNames.ProductBarcode;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
-            column.Unique = true;
             this.DataSource.Columns.Add(column);
             column.Dispose();
 
@@ -159,6 +165,8 @@ namespace NaturalnieApp.Forms
             {
                 //Get excel data
                 List<DataTable> excelData = ExcelBase.GetAllDataFromExcel(filePath, true);
+                int previousMaufacturerId = 0;
+                Manufacturer currentManufacturer = new Manufacturer();
                 
 
                 //Get proper template and get ents                
@@ -170,7 +178,12 @@ namespace NaturalnieApp.Forms
                     (listOfTheProductBeforehanges, listOfTheProductAfterChanges) = FindProductsWithChanges(dataFromExcel);
                     foreach(Product product in listOfTheProductBeforehanges)
                     {
+                        //Get manufacturer name
+                        if (previousMaufacturerId != product.ManufacturerId)
+                            currentManufacturer = this.databaseCommands.GetManufacturerByProductName(product.ProductName);
+
                         DataRow newRow = this.DataSource.NewRow();
+                        newRow.SetField<string>(this.ColumnNames.ManufacturerName, currentManufacturer.Name);
                         newRow.SetField<string>(this.ColumnNames.ProductName, product.ProductName);
                         newRow.SetField<string>(this.ColumnNames.ProductBarcode, product.BarCode);
                         newRow.SetField<string>(this.ColumnNames.PriceNet, product.PriceNet.ToString());
@@ -193,10 +206,12 @@ namespace NaturalnieApp.Forms
                         this.DataSourceAfterChanges.Rows.Add(newRow);
 
                     }
+
+                    if (this.DataSource.Rows.Count == 0) MessageBox.Show("Nie znaleziono różnic!");
                 }
                 else MessageBox.Show("Nie udało się pobrać danych z pliku!");
 
-
+                
 
             }
             catch (Exception ex)
@@ -210,12 +225,15 @@ namespace NaturalnieApp.Forms
             //Local variables
             List<Product> productAfterChanges = new List<Product>();
             List<Product> productBeforeChanges = new List<Product>();
+            int manufacturerId = 0;
 
             foreach (DataRow row in inputTable.Rows)
             {
-                Product currentProduct = new Product(); ;
+                Product currentProduct = new Product();
+                manufacturerId = this.databaseCommands.GetManufacturerIdByName(row.Field<string>(this.ColumnNames.ManufacturerName));
+
                 //Try to get product entity by name or by barcode
-                currentProduct = this.databaseCommands.GetProductEntityByProductName(row.Field<string>(this.ColumnNames.ProductName));
+                currentProduct = this.databaseCommands.GetProductEntityByProductNameAndManufacturer(row.Field<string>(this.ColumnNames.ProductName), manufacturerId);
                 if(currentProduct == null) currentProduct = this.databaseCommands.GetProductEntityByBarcode(row.Field<string>(this.ColumnNames.ProductBarcode));
 
                 if (currentProduct != null)
@@ -280,7 +298,25 @@ namespace NaturalnieApp.Forms
         #endregion
 
         #region Data Grid View
+        private void advancedDataGridView1_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (advancedDataGridView1.FirstDisplayedScrollingColumnIndex >= 0)
+            {
+                advancedDataGridView2.FirstDisplayedScrollingColumnIndex = advancedDataGridView1.FirstDisplayedScrollingColumnIndex;
+            }
 
+            if (advancedDataGridView1.FirstDisplayedScrollingRowIndex >= 0)
+            {
+                advancedDataGridView2.FirstDisplayedScrollingRowIndex = advancedDataGridView1.FirstDisplayedScrollingRowIndex;
+            }
+
+        }
+        private void advancedDataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            //Get data grid view row
+
+            advancedDataGridView2.Rows.Remove(advancedDataGridView2.Rows[e.RowIndex]);
+        }
         #endregion
 
         #region Buttons events
@@ -331,17 +367,57 @@ namespace NaturalnieApp.Forms
             UpdateControl(ref tbDummyForCtrl);
 
         }
-
-        private void advancedDataGridView1_Scroll(object sender, ScrollEventArgs e)
+        private void bSave_Click(object sender, EventArgs e)
         {
-            if(advancedDataGridView2.FirstDisplayedScrollingColumnIndex >= 0)
-            {
-                advancedDataGridView2.FirstDisplayedScrollingColumnIndex = advancedDataGridView1.FirstDisplayedScrollingColumnIndex;
-            }
+            DialogResult result = MessageBox.Show("Czy na pewno chcesz zapisać zmiany w bazie danych?", 
+                "Zmiana danych produktów", MessageBoxButtons.YesNo);
 
-            if (advancedDataGridView2.FirstDisplayedScrollingRowIndex >= 0)
+            if (result == DialogResult.Yes)
             {
-                advancedDataGridView2.FirstDisplayedScrollingRowIndex = advancedDataGridView1.FirstDisplayedScrollingRowIndex;
+                int numberModifiedEntities = 0;
+
+                try
+                {
+                    //Save changes in database
+                    foreach (DataRow row in this.DataSource.Rows)
+                    {
+                        //Get row from second datasource
+                        int rowIndex = this.DataSource.Rows.IndexOf(row);
+                        DataRow rowAfterChanges = this.DataSourceAfterChanges.Rows[rowIndex];
+
+                        //Get product name
+                        string productName = row.Field<string>(this.ColumnNames.ProductName);
+                        Product productEnity = this.databaseCommands.GetProductEntityByProductName(productName);
+
+                        productEnity.PriceNet = Single.Parse(rowAfterChanges.Field<string>(this.ColumnNames.PriceNet));
+                        int taxValue = Int32.Parse(rowAfterChanges.Field<string>(this.ColumnNames.Tax));
+                        int taxId = this.databaseCommands.GetTaxIdByValue(taxValue);
+                        productEnity.TaxId = taxId;
+                        productEnity.Discount = Int32.Parse(rowAfterChanges.Field<string>(this.ColumnNames.Discount));
+
+                        productEnity.PriceNetWithDiscount = Calculations.CalculatePriceNetWithDiscount(productEnity.PriceNet, productEnity.Discount);
+                        productEnity.FinalPrice = Calculations.CalculateFinalPriceFromProduct(productEnity, taxValue);
+
+                        this.databaseCommands.EditProduct(productEnity);
+
+                        numberModifiedEntities++;
+
+                    }
+
+                    MessageBox.Show(string.Format("Pomyślnie zapisano wszystkie dane (zmieniono {0} pozycji)", numberModifiedEntities));
+
+                    this.DataSource.Rows.Clear();
+                    this.DataSourceAfterChanges.Rows.Clear();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Anulowano!");
             }
 
         }

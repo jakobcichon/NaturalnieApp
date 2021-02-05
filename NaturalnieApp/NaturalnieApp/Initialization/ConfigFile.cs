@@ -18,7 +18,6 @@ namespace NaturalnieApp.Initialization
         public string LabelPathDefaultValue { get; set; }
         public string LibraryPathDefaultValue { get; set; }
         public string DbBackupPathDefaultValue { get; set; }
-        public string DatabaseNameDefaultValue { get; set; }
 
 
 
@@ -34,7 +33,6 @@ namespace NaturalnieApp.Initialization
             this.LibraryPathDefaultValue = Directory.GetCurrentDirectory() + "\\Libs\\";
             this.DbBackupPathDefaultValue = Directory.GetCurrentDirectory() + "\\DB Backups\\";
             this.DbBackupPathDefaultValue = Directory.GetCurrentDirectory() + "\\DB Backups\\";
-            this.DatabaseNameDefaultValue = "localdb";
 
             this.ConfigFileInst = new ConfigFile("\\config\\config.txt", "", this.TemplateConfigFile());
 
@@ -140,9 +138,6 @@ namespace NaturalnieApp.Initialization
 
             //Add next element to list
             retList.Add(new ConfigElement("SqlServerName", this.SqlServerNameDefaultValue, "SQL Server Name"));
-
-            //Add next element to list
-            retList.Add(new ConfigElement("DatabaseName", this.DatabaseNameDefaultValue, "Database name"));
 
             //Add next element to list
             retList.Add(new ConfigElement("LabelPath", this.LabelPathDefaultValue, "Path to the label file"));

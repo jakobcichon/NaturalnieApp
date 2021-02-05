@@ -87,8 +87,9 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView1.ShowEditingIcon = false;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(547, 544);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(620, 544);
             this.advancedDataGridView1.TabIndex = 0;
+            this.advancedDataGridView1.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.advancedDataGridView1_RowsRemoved);
             this.advancedDataGridView1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.advancedDataGridView1_Scroll);
             // 
             // pButtonsPanel
@@ -160,6 +161,7 @@ namespace NaturalnieApp.Forms
             this.bSave.TabIndex = 1;
             this.bSave.Text = "Zapisz";
             this.bSave.UseVisualStyleBackColor = false;
+            this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -184,13 +186,13 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView2.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView2.FilterAndSortEnabled = true;
             this.advancedDataGridView2.GridColor = System.Drawing.Color.Black;
-            this.advancedDataGridView2.Location = new System.Drawing.Point(547, 76);
+            this.advancedDataGridView2.Location = new System.Drawing.Point(620, 76);
             this.advancedDataGridView2.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.advancedDataGridView2.Name = "advancedDataGridView2";
             this.advancedDataGridView2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView2.RowHeadersVisible = false;
             this.advancedDataGridView2.ShowEditingIcon = false;
-            this.advancedDataGridView2.Size = new System.Drawing.Size(373, 544);
+            this.advancedDataGridView2.Size = new System.Drawing.Size(300, 544);
             this.advancedDataGridView2.TabIndex = 9;
             // 
             // PricesRelatedUpdate

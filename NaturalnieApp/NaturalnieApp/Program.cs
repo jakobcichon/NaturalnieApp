@@ -27,7 +27,6 @@ namespace NaturalnieApp
             static public int ElzabPortCom { get; set; }
             static public int ElzabBaudRate { get; set; }
             static public string SqlServerName { get; set; }
-            static public string DatabaseName { get; set; }
             static public string ConnectionString { get; set; }
             static public string DymoPrinterName { get; set; }
             static public string LibraryPath { get; set; }
@@ -44,15 +43,22 @@ namespace NaturalnieApp
             try
             {
 
-               //AssemblyResolver.Hook(@"C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
-               AssemblyResolver.Hook(@"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
+               AssemblyResolver.Hook(@"C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
+               //AssemblyResolver.Hook(@"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
 
                 //Initialize global variables
                 ConfigFileObject ConfigFileInst = InitGlobalVariables();
 
                 //Initialize DB backups
-                //DatabaseBackup.Initialize();
-                //bool test = DatabaseBackup.MakeBackup("root", "admin", "shop", GlobalVariables.DbBackupPath);
+                try
+                {
+                    DatabaseBackup.Initialize();
+                    bool test = DatabaseBackup.MakeBackup("root", "admin", "shop", GlobalVariables.DbBackupPath);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Nie udało się wykonać kopii zapasowej bazy danych. Wyjątek: " + ex.Message);
+                }
 
                 Application.EnableVisualStyles();
                 Application.Run(new MainWindow(ConfigFileInst));
@@ -86,7 +92,6 @@ namespace NaturalnieApp
                 "uid = admin; password = admin; Connection Timeout = 60", GlobalVariables.SqlServerName);
             GlobalVariables.LibraryPath = ConfigFileInst.GetValueByVariableName("LibraryPath");
             GlobalVariables.DbBackupPath = ConfigFileInst.GetValueByVariableName("DbBackupPath");
-            GlobalVariables.DatabaseName = ConfigFileInst.GetValueByVariableName("DatabaseName");
 
             //Pronter selection
             List<string> printersNames = PrinterMethods.GetPrintersNameList();
