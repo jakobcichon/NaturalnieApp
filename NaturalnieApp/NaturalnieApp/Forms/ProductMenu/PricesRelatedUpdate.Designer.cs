@@ -76,17 +76,20 @@ namespace NaturalnieApp.Forms
             // advancedDataGridView1
             // 
             this.advancedDataGridView1.AllowUserToAddRows = false;
+            this.advancedDataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.advancedDataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView1.FilterAndSortEnabled = true;
             this.advancedDataGridView1.GridColor = System.Drawing.Color.Black;
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 76);
+            this.advancedDataGridView1.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView1.ShowEditingIcon = false;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(460, 544);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(547, 544);
             this.advancedDataGridView1.TabIndex = 0;
+            this.advancedDataGridView1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.advancedDataGridView1_Scroll);
             // 
             // pButtonsPanel
             // 
@@ -168,24 +171,26 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(920, 40);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
             // advancedDataGridView2
             // 
             this.advancedDataGridView2.AllowUserToAddRows = false;
-            this.advancedDataGridView2.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+            this.advancedDataGridView2.BackgroundColor = System.Drawing.Color.Gray;
             this.advancedDataGridView2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.advancedDataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.advancedDataGridView2.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView2.FilterAndSortEnabled = true;
             this.advancedDataGridView2.GridColor = System.Drawing.Color.Black;
-            this.advancedDataGridView2.Location = new System.Drawing.Point(460, 76);
+            this.advancedDataGridView2.Location = new System.Drawing.Point(547, 76);
+            this.advancedDataGridView2.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.advancedDataGridView2.Name = "advancedDataGridView2";
             this.advancedDataGridView2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.advancedDataGridView2.RowHeadersVisible = false;
             this.advancedDataGridView2.ShowEditingIcon = false;
-            this.advancedDataGridView2.Size = new System.Drawing.Size(460, 544);
+            this.advancedDataGridView2.Size = new System.Drawing.Size(373, 544);
             this.advancedDataGridView2.TabIndex = 9;
             // 
             // PricesRelatedUpdate

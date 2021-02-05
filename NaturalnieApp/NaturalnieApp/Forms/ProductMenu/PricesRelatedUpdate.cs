@@ -108,7 +108,28 @@ namespace NaturalnieApp.Forms
             advancedDataGridView1.DataSource = this.DataSource;
             advancedDataGridView1.AutoResizeColumns();
 
-            this.DataSourceAfterChanges = this.DataSource.Copy();
+            //Data grid view 2
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.PriceNet;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            this.DataSourceAfterChanges.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.Tax;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            this.DataSourceAfterChanges.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.Discount;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            this.DataSourceAfterChanges.Columns.Add(column);
+            column.Dispose();
+
             advancedDataGridView2.DataSource = this.DataSourceAfterChanges;
             advancedDataGridView2.AutoResizeColumns();
 
@@ -164,8 +185,6 @@ namespace NaturalnieApp.Forms
                     foreach (Product product in listOfTheProductAfterChanges)
                     {
                         DataRow newRow = this.DataSourceAfterChanges.NewRow();
-                        newRow.SetField<string>(this.ColumnNames.ProductName, product.ProductName);
-                        newRow.SetField<string>(this.ColumnNames.ProductBarcode, product.BarCode);
                         newRow.SetField<string>(this.ColumnNames.PriceNet, product.PriceNet.ToString());
                         string taxValueString = this.databaseCommands.GetTaxEntityById(product.TaxId).TaxValue.ToString();
                         newRow.SetField<string>(this.ColumnNames.Tax, taxValueString);
@@ -237,7 +256,8 @@ namespace NaturalnieApp.Forms
                         || currentProduct.Discount != discountValueFromFile)
                     {
                         //Add to the list before changes
-                        productBeforeChanges.Add(currentProduct);
+                        Product oldProductr = currentProduct.DeepCopy();
+                        productBeforeChanges.Add(oldProductr);
 
                         //Change product accordingly data from file
                         currentProduct.PriceNet = priceNetFromFile;
@@ -257,6 +277,10 @@ namespace NaturalnieApp.Forms
 
             return (productBeforeChanges, productAfterChanges);
         }
+        #endregion
+
+        #region Data Grid View
+
         #endregion
 
         #region Buttons events
@@ -305,6 +329,20 @@ namespace NaturalnieApp.Forms
 
             //Update control
             UpdateControl(ref tbDummyForCtrl);
+
+        }
+
+        private void advancedDataGridView1_Scroll(object sender, ScrollEventArgs e)
+        {
+            if(advancedDataGridView2.FirstDisplayedScrollingColumnIndex >= 0)
+            {
+                advancedDataGridView2.FirstDisplayedScrollingColumnIndex = advancedDataGridView1.FirstDisplayedScrollingColumnIndex;
+            }
+
+            if (advancedDataGridView2.FirstDisplayedScrollingRowIndex >= 0)
+            {
+                advancedDataGridView2.FirstDisplayedScrollingRowIndex = advancedDataGridView1.FirstDisplayedScrollingRowIndex;
+            }
 
         }
         #endregion

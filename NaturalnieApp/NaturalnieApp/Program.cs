@@ -44,15 +44,15 @@ namespace NaturalnieApp
             try
             {
 
-                AssemblyResolver.Hook(@"C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
-                //AssemblyResolver.Hook(@"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
+               //AssemblyResolver.Hook(@"C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
+               AssemblyResolver.Hook(@"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs");
 
                 //Initialize global variables
                 ConfigFileObject ConfigFileInst = InitGlobalVariables();
 
                 //Initialize DB backups
-                DatabaseBackup.Initialize();
-                bool test = DatabaseBackup.MakeBackup("root", "admin", "shop", GlobalVariables.DbBackupPath);
+                //DatabaseBackup.Initialize();
+                //bool test = DatabaseBackup.MakeBackup("root", "admin", "shop", GlobalVariables.DbBackupPath);
 
                 Application.EnableVisualStyles();
                 Application.Run(new MainWindow(ConfigFileInst));

@@ -32,6 +32,28 @@ namespace NaturalnieApp.Database
         public string BarCodeShort { get; set; }
         public string SupplierCode { get; set; }
         public string ProductInfo { get; set; }
+
+        public Product DeepCopy()
+        {
+            Product product = (Product)this.MemberwiseClone();
+            product.Id = this.Id;
+            product.SupplierId = this.SupplierId;
+            product.ElzabProductId = this.ElzabProductId;
+            product.ManufacturerId = this.ManufacturerId;
+            product.ProductName = this.ProductName;
+            product.ElzabProductName = this.ElzabProductName;
+            product.PriceNet = this.PriceNet;
+            product.Discount = this.Discount;
+            product.PriceNetWithDiscount = this.PriceNetWithDiscount;
+            product.TaxId = this.TaxId;
+            product.Marigin = this.Marigin;
+            product.FinalPrice = this.FinalPrice;
+            product.BarCode = this.BarCode;
+            product.BarCodeShort = this.BarCodeShort;
+            product.SupplierCode = this.SupplierCode;
+            product.ProductInfo = this.ProductInfo;
+            return product;
+        }
     }
 
     [Table("product_changelog")]
