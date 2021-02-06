@@ -249,6 +249,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5C6F278F075749D5A5F43C7A792E2AF5"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5E86EEBF611FAF7BB861A2DB9E3F4AC4"
         "OwnerKey" = "8:_918980FC8A6184226A17F19B30C77F79"
         "MsmSig" = "8:_UNDEFINED"
@@ -263,6 +269,12 @@
         {
         "MsmKey" = "8:_621CAA507CA364DF7B9E5F39D1678C6A"
         "OwnerKey" = "8:_C3062B90E5FE4389922B8B7AF6F80198"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_63696DBF1E53421398AFA5F22A1F4B93"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1644,6 +1656,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5C6F278F075749D5A5F43C7A792E2AF5"
+            {
+            "SourcePath" = "8:..\\..\\..\\Libs\\libcrypto-1_1-x64.dll"
+            "TargetName" = "8:libcrypto-1_1-x64.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_E24759E323734665A46817CB542439EE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5E86EEBF611FAF7BB861A2DB9E3F4AC4"
             {
             "AssemblyRegister" = "3:1"
@@ -1704,6 +1736,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_63696DBF1E53421398AFA5F22A1F4B93"
+            {
+            "SourcePath" = "8:..\\..\\..\\Libs\\libssl-1_1-x64.dll"
+            "TargetName" = "8:libssl-1_1-x64.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_E24759E323734665A46817CB542439EE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_685249D566533D8E07247A39F48C3CFE"
@@ -2876,15 +2928,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:NaturalnieApp"
-        "ProductCode" = "8:{231A0E15-404E-4FDD-99EE-19F2DE76D811}"
-        "PackageCode" = "8:{C88D5D97-758B-4910-A54C-4B05BE281BBA}"
+        "ProductCode" = "8:{DBDA4595-E75A-445A-A922-A31D3074C207}"
+        "PackageCode" = "8:{0F4D65E2-9847-4E21-990E-390CAC5CCF88}"
         "UpgradeCode" = "8:{D7D2EBC5-3115-42C4-AB2D-6DDD92027690}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.23"
+        "ProductVersion" = "8:1.0.25"
         "Manufacturer" = "8:Naturalnie"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -3426,7 +3478,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C3062B90E5FE4389922B8B7AF6F80198"
             {
-            "SourcePath" = "8:..\\..\\NaturalnieApp\\obj\\Debug\\NaturalnieApp.exe"
+            "SourcePath" = "8:..\\..\\NaturalnieApp\\obj\\Release\\NaturalnieApp.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5F662A595D04A2593D09418C621B2E2"

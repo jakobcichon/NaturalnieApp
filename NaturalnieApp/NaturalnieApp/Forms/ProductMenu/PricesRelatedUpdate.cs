@@ -65,7 +65,6 @@ namespace NaturalnieApp.Forms
             column.ReadOnly = true;
             column.AutoIncrement = true;
             column.AutoIncrementSeed = 1;
-            column.Unique = true;
             this.DataSource.Columns.Add(column);
             column.Dispose();
 
@@ -230,7 +229,10 @@ namespace NaturalnieApp.Forms
             foreach (DataRow row in inputTable.Rows)
             {
                 Product currentProduct = new Product();
-                manufacturerId = this.databaseCommands.GetManufacturerIdByName(row.Field<string>(this.ColumnNames.ManufacturerName));
+
+                string manufacturerName = row.Field<string>(this.ColumnNames.ManufacturerName);
+
+                manufacturerId = this.databaseCommands.GetManufacturerIdByName(manufacturerName);
 
                 //Try to get product entity by name or by barcode
                 currentProduct = this.databaseCommands.GetProductEntityByProductNameAndManufacturer(row.Field<string>(this.ColumnNames.ProductName), manufacturerId);
@@ -242,7 +244,7 @@ namespace NaturalnieApp.Forms
                     //Get price net
                     float priceNetFromFile;
                     string priceNetFromFileRaw = row.Field<string>(this.ColumnNames.PriceNet);
-                    if (priceNetFromFileRaw != "")
+                    if (priceNetFromFileRaw != "" && priceNetFromFileRaw != null)
                     {
                         double priceNetFromFileRawConv = Math.Round(Double.Parse(priceNetFromFileRaw), 2);
                         priceNetFromFile = Single.Parse(priceNetFromFileRawConv.ToString());
@@ -252,13 +254,13 @@ namespace NaturalnieApp.Forms
                     //Get tax value
                     int taxValueFromFile;
                     string taxFromFileRaw = row.Field<string>(this.ColumnNames.Tax);
-                    if (taxFromFileRaw != "") taxValueFromFile = Int32.Parse(taxFromFileRaw);
+                    if (taxFromFileRaw != "" && taxFromFileRaw != null) taxValueFromFile = Int32.Parse(taxFromFileRaw);
                     else taxValueFromFile = this.databaseCommands.GetTaxByProductName(currentProduct.ProductName).TaxValue;
 
                     //Get discount value
                     int discountValueFromFile;
                     string discountFromFileRaw = row.Field<string>(this.ColumnNames.Discount);
-                    if (discountFromFileRaw != "") discountValueFromFile = Int32.Parse(discountFromFileRaw);
+                    if (discountFromFileRaw != "" && discountFromFileRaw != null) discountValueFromFile = Int32.Parse(discountFromFileRaw);
                     else discountValueFromFile = currentProduct.Discount;
 
                     //Validate before comaparsion
@@ -353,6 +355,9 @@ namespace NaturalnieApp.Forms
                 string fileExtension = Path.GetExtension(inputFileDialog.FileName);
                 if ((fileExtension == ".xls") || (fileExtension == ".xlsx") || (fileExtension == ".xlsb"))
                 {
+                    this.DataSource.Rows.Clear();
+                    this.DataSourceAfterChanges.Rows.Clear();
+
                     this.LastExcelFilePath = inputFileDialog.FileName;
                     ReadExcel(inputFileDialog.FileName);
                 }

@@ -39,11 +39,14 @@ namespace NaturalnieApp.Forms
             this.bGenerateTemplate = new System.Windows.Forms.Button();
             this.bClose = new System.Windows.Forms.Button();
             this.bSave = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tpHeaders = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lActualInDB = new System.Windows.Forms.Label();
             this.advancedDataGridView2 = new Zuby.ADGV.AdvancedDataGridView();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
+            this.tpHeaders.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,6 +67,7 @@ namespace NaturalnieApp.Forms
             this.tbDummyForCtrl.Name = "tbDummyForCtrl";
             this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
             this.tbDummyForCtrl.TabIndex = 7;
+            this.tbDummyForCtrl.Visible = false;
             this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
             // 
             // panel1
@@ -82,12 +86,12 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView1.FilterAndSortEnabled = true;
             this.advancedDataGridView1.GridColor = System.Drawing.Color.Black;
-            this.advancedDataGridView1.Location = new System.Drawing.Point(0, 76);
+            this.advancedDataGridView1.Location = new System.Drawing.Point(0, 63);
             this.advancedDataGridView1.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView1.ShowEditingIcon = false;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(620, 544);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(600, 557);
             this.advancedDataGridView1.TabIndex = 0;
             this.advancedDataGridView1.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.advancedDataGridView1_RowsRemoved);
             this.advancedDataGridView1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.advancedDataGridView1_Scroll);
@@ -117,7 +121,7 @@ namespace NaturalnieApp.Forms
             this.bAddFromFile.Name = "bAddFromFile";
             this.bAddFromFile.Size = new System.Drawing.Size(100, 50);
             this.bAddFromFile.TabIndex = 9;
-            this.bAddFromFile.Text = "Dodaj plik";
+            this.bAddFromFile.Text = "Dodaj z plik";
             this.bAddFromFile.UseVisualStyleBackColor = false;
             this.bAddFromFile.Click += new System.EventHandler(this.bAddFromFile_Click);
             // 
@@ -163,19 +167,45 @@ namespace NaturalnieApp.Forms
             this.bSave.UseVisualStyleBackColor = false;
             this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
-            // tableLayoutPanel1
+            // tpHeaders
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 30);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(920, 40);
-            this.tableLayoutPanel1.TabIndex = 8;
+            this.tpHeaders.ColumnCount = 2;
+            this.tpHeaders.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 600F));
+            this.tpHeaders.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpHeaders.Controls.Add(this.label1, 1, 0);
+            this.tpHeaders.Controls.Add(this.lActualInDB, 0, 0);
+            this.tpHeaders.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tpHeaders.Location = new System.Drawing.Point(0, 30);
+            this.tpHeaders.Margin = new System.Windows.Forms.Padding(0);
+            this.tpHeaders.Name = "tpHeaders";
+            this.tpHeaders.RowCount = 1;
+            this.tpHeaders.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tpHeaders.Size = new System.Drawing.Size(920, 30);
+            this.tpHeaders.TabIndex = 8;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label1.Location = new System.Drawing.Point(603, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(314, 30);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Dane z pliku";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lActualInDB
+            // 
+            this.lActualInDB.AutoSize = true;
+            this.lActualInDB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lActualInDB.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lActualInDB.Location = new System.Drawing.Point(3, 0);
+            this.lActualInDB.Name = "lActualInDB";
+            this.lActualInDB.Size = new System.Drawing.Size(594, 30);
+            this.lActualInDB.TabIndex = 0;
+            this.lActualInDB.Text = "Aktualnie w bazie danych";
+            this.lActualInDB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // advancedDataGridView2
             // 
@@ -186,13 +216,13 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView2.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView2.FilterAndSortEnabled = true;
             this.advancedDataGridView2.GridColor = System.Drawing.Color.Black;
-            this.advancedDataGridView2.Location = new System.Drawing.Point(620, 76);
+            this.advancedDataGridView2.Location = new System.Drawing.Point(600, 63);
             this.advancedDataGridView2.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.advancedDataGridView2.Name = "advancedDataGridView2";
             this.advancedDataGridView2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView2.RowHeadersVisible = false;
             this.advancedDataGridView2.ShowEditingIcon = false;
-            this.advancedDataGridView2.Size = new System.Drawing.Size(300, 544);
+            this.advancedDataGridView2.Size = new System.Drawing.Size(320, 557);
             this.advancedDataGridView2.TabIndex = 9;
             // 
             // PricesRelatedUpdate
@@ -202,7 +232,7 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Controls.Add(this.advancedDataGridView2);
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.tpHeaders);
             this.Controls.Add(this.advancedDataGridView1);
             this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
@@ -214,6 +244,8 @@ namespace NaturalnieApp.Forms
             this.pHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.pButtonsPanel.ResumeLayout(false);
+            this.tpHeaders.ResumeLayout(false);
+            this.tpHeaders.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView2)).EndInit();
             this.ResumeLayout(false);
 
@@ -230,7 +262,9 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bSave;
         private System.Windows.Forms.Button bAddFromFile;
         private System.Windows.Forms.Button bGenerateTemplate;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tpHeaders;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lActualInDB;
     }
 }
