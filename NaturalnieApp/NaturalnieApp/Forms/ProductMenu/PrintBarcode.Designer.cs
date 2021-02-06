@@ -308,12 +308,14 @@ namespace NaturalnieApp.Forms
             // 
             // advancedDataGridView1
             // 
+            this.advancedDataGridView1.AllowUserToAddRows = false;
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.advancedDataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView1.FilterAndSortEnabled = true;
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 0);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
+            this.advancedDataGridView1.ReadOnly = true;
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView1.Size = new System.Drawing.Size(920, 362);
             this.advancedDataGridView1.TabIndex = 5;

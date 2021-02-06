@@ -89,11 +89,11 @@ namespace NaturalnieApp
             GlobalVariables.LabelPath = ConfigFileInst.GetValueByVariableName("LabelPath");
             GlobalVariables.SqlServerName = ConfigFileInst.GetValueByVariableName("SqlServerName");
             GlobalVariables.ConnectionString = string.Format("server = {0}; port = 3306; database = shop;" +
-                "uid = admin; password = admin; Connection Timeout = 60", GlobalVariables.SqlServerName);
+                "uid = admin; password = admin; Connection Timeout = 2", GlobalVariables.SqlServerName);
             GlobalVariables.LibraryPath = ConfigFileInst.GetValueByVariableName("LibraryPath");
             GlobalVariables.DbBackupPath = ConfigFileInst.GetValueByVariableName("DbBackupPath");
 
-            //Pronter selection
+            //Printer selection
             List<string> printersNames = PrinterMethods.GetPrintersNameList();
             if (printersNames.Count > 0) GlobalVariables.DymoPrinterName = printersNames[0];
 

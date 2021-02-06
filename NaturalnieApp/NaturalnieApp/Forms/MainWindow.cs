@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using NaturalnieApp.Initialization;
 using NaturalnieApp.Database;
-using System.Threading;
-using System.Runtime.InteropServices;
-
-
 
 namespace NaturalnieApp.Forms
 {
@@ -40,9 +30,14 @@ namespace NaturalnieApp.Forms
         public ElzabSynchronization cashRegisterCommands { get; set; }
         public PricesRelatedUpdate pricesRelatedUpdate { get; set; }
 
-
         //Creat EF databse connection object
         DatabaseCommands databaseCommands;
+
+        //Cyclic db check
+        DatabaseCommands databaseCommandsCyclic;
+
+        //Backgorund worker
+        BackgroundWorker backgroundWorker1;
 
         public MainWindow(ConfigFileObject conFileObj)
         {
@@ -55,8 +50,13 @@ namespace NaturalnieApp.Forms
 
             //Initialize EF databse connection object
             this.databaseCommands = new DatabaseCommands();
-            //check if Database reachable 
-            this.databaseCommands.CheckConnection(true);
+            this.databaseCommandsCyclic = new DatabaseCommands();
+
+            //Background worker
+            InitializeBackgroundWorker();
+
+            //Start the timer
+            this.timer1sTick.Start();
 
             this.addNewProductFromExcel = new AddNewProductFromExcel(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.printBarcode = new PrintBarcode(ref this.databaseCommands) { TopLevel = false, TopMost = true };
@@ -66,11 +66,45 @@ namespace NaturalnieApp.Forms
             this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
-            this.dymoSettings = new DymoSettings();
+            //this.dymoSettings = new DymoSettings();
             this.generalSettings = new GeneralSettings(this.ConfigFileOjbInst);
             this.cashRegisterCommands = new ElzabSynchronization(ref this.databaseCommands);
             this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
         }
+        //=============================================================================
+        //                              Background worker
+        //=============================================================================
+        // Set up the BackgroundWorker object by attaching event handlers. 
+        #region Backgroundworker
+        private void InitializeBackgroundWorker()
+        {
+            this.backgroundWorker1 = new BackgroundWorker();
+            // here you have also to implement the necessary events
+            // this event will define what the worker is actually supposed to do
+            this.backgroundWorker1.DoWork += backgroundWorker1_DoWork;
+            // this event will define what the worker will do when finished
+            this.backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+        }
+        // This event handler is where the actual, potentially time-consuming work is done.
+        void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            this.databaseCommandsCyclic.CheckConnection(false);
+            e.Result = this.databaseCommandsCyclic.ConnectionStatus;
+        }
+        // This event handler is where the actual, potentially time-consuming work is done.
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if((bool)e.Result == true)
+            {
+                this.pbDbStatus.Image = Properties.Resources.DbStatusOK;
+            }
+            else
+            {
+                this.pbDbStatus.Image = Properties.Resources.DbStatusNok;
+            }
+        }
+        //=============================================================================
+        #endregion
 
         //====================================================================================================
         //Resizable window
@@ -397,8 +431,6 @@ namespace NaturalnieApp.Forms
         {
             toggleSubMenu(pStockSubMenu);
         }
-
-
         private void bAddToStock_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
@@ -419,7 +451,6 @@ namespace NaturalnieApp.Forms
             }
 
         }
-
         private void bPrintFromStock_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
@@ -458,10 +489,13 @@ namespace NaturalnieApp.Forms
                 this.showStock.Show();
             }
         }
-
-
         #endregion
 
-
+        #region Timer event
+        private void timer5sTick_Tick(object sender, EventArgs e)
+        {
+            if(!this.backgroundWorker1.IsBusy) this.backgroundWorker1.RunWorkerAsync();
+        }
+        #endregion
     }
 }

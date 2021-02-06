@@ -29,6 +29,7 @@ namespace NaturalnieApp.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.pMenu = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -38,6 +39,7 @@ namespace NaturalnieApp.Forms
             this.bAddToStock = new System.Windows.Forms.Button();
             this.bStock = new System.Windows.Forms.Button();
             this.pProductSubMenu = new System.Windows.Forms.Panel();
+            this.bPriceRelatedUpdate = new System.Windows.Forms.Button();
             this.bAddManufacturer = new System.Windows.Forms.Button();
             this.bPrintBarcode = new System.Windows.Forms.Button();
             this.AddProductFromPdf = new System.Windows.Forms.Button();
@@ -51,22 +53,25 @@ namespace NaturalnieApp.Forms
             this.bDymoSettings = new System.Windows.Forms.Button();
             this.bGeneralSettings = new System.Windows.Forms.Button();
             this.bMainMenu = new System.Windows.Forms.Button();
-            this.pLogo = new System.Windows.Forms.Panel();
             this.pHeader = new System.Windows.Forms.Panel();
-            this.bMinimize = new System.Windows.Forms.Button();
-            this.bMaximize = new System.Windows.Forms.Button();
-            this.lDtabaseStatus = new System.Windows.Forms.Label();
-            this.lDatabaseConnState = new System.Windows.Forms.Label();
-            this.bExit = new System.Windows.Forms.Button();
             this.pMenuDeliminer = new System.Windows.Forms.Panel();
             this.pContainer = new System.Windows.Forms.Panel();
-            this.bPriceRelatedUpdate = new System.Windows.Forms.Button();
+            this.timer1sTick = new System.Windows.Forms.Timer(this.components);
+            this.tlpdbStatus = new System.Windows.Forms.TableLayoutPanel();
+            this.lDbStatus = new System.Windows.Forms.Label();
+            this.pLogo = new System.Windows.Forms.Panel();
+            this.pbDbStatus = new System.Windows.Forms.PictureBox();
+            this.bMinimize = new System.Windows.Forms.Button();
+            this.bMaximize = new System.Windows.Forms.Button();
+            this.bExit = new System.Windows.Forms.Button();
             this.pMenu.SuspendLayout();
             this.pStockSubMenu.SuspendLayout();
             this.pProductSubMenu.SuspendLayout();
             this.pCashRegisterSubMenu.SuspendLayout();
             this.pMainMenuSubMenu.SuspendLayout();
             this.pHeader.SuspendLayout();
+            this.tlpdbStatus.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDbStatus)).BeginInit();
             this.SuspendLayout();
             // 
             // pMenu
@@ -198,6 +203,23 @@ namespace NaturalnieApp.Forms
             this.pProductSubMenu.Name = "pProductSubMenu";
             this.pProductSubMenu.Size = new System.Drawing.Size(300, 180);
             this.pProductSubMenu.TabIndex = 5;
+            // 
+            // bPriceRelatedUpdate
+            // 
+            this.bPriceRelatedUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bPriceRelatedUpdate.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bPriceRelatedUpdate.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bPriceRelatedUpdate.FlatAppearance.BorderSize = 0;
+            this.bPriceRelatedUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bPriceRelatedUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bPriceRelatedUpdate.ForeColor = System.Drawing.Color.White;
+            this.bPriceRelatedUpdate.Location = new System.Drawing.Point(0, 150);
+            this.bPriceRelatedUpdate.Name = "bPriceRelatedUpdate";
+            this.bPriceRelatedUpdate.Size = new System.Drawing.Size(300, 30);
+            this.bPriceRelatedUpdate.TabIndex = 10;
+            this.bPriceRelatedUpdate.Text = "Aktualizacja (cen, podatku, itd.)";
+            this.bPriceRelatedUpdate.UseVisualStyleBackColor = false;
+            this.bPriceRelatedUpdate.Click += new System.EventHandler(this.bPriceRelatedUpdate_Click);
             // 
             // bAddManufacturer
             // 
@@ -377,6 +399,7 @@ namespace NaturalnieApp.Forms
             this.bDymoSettings.TabIndex = 5;
             this.bDymoSettings.Text = "Ustawienia drukarki Dymo";
             this.bDymoSettings.UseVisualStyleBackColor = false;
+            this.bDymoSettings.Visible = false;
             this.bDymoSettings.Click += new System.EventHandler(this.bDymoSettings_Click);
             // 
             // bGeneralSettings
@@ -414,25 +437,12 @@ namespace NaturalnieApp.Forms
             this.bMainMenu.UseVisualStyleBackColor = false;
             this.bMainMenu.Click += new System.EventHandler(this.bMainMenu_Click);
             // 
-            // pLogo
-            // 
-            this.pLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
-            this.pLogo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pLogo.BackgroundImage")));
-            this.pLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pLogo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pLogo.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.pLogo.Location = new System.Drawing.Point(0, 0);
-            this.pLogo.Name = "pLogo";
-            this.pLogo.Size = new System.Drawing.Size(300, 114);
-            this.pLogo.TabIndex = 0;
-            // 
             // pHeader
             // 
             this.pHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.pHeader.Controls.Add(this.tlpdbStatus);
             this.pHeader.Controls.Add(this.bMinimize);
             this.pHeader.Controls.Add(this.bMaximize);
-            this.pHeader.Controls.Add(this.lDtabaseStatus);
-            this.pHeader.Controls.Add(this.lDatabaseConnState);
             this.pHeader.Controls.Add(this.bExit);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(1, 1);
@@ -442,72 +452,6 @@ namespace NaturalnieApp.Forms
             this.pHeader.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseDown);
             this.pHeader.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseMove);
             this.pHeader.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseUp);
-            // 
-            // bMinimize
-            // 
-            this.bMinimize.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bMinimize.BackgroundImage")));
-            this.bMinimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.bMinimize.Dock = System.Windows.Forms.DockStyle.Right;
-            this.bMinimize.FlatAppearance.BorderSize = 0;
-            this.bMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bMinimize.Location = new System.Drawing.Point(1148, 0);
-            this.bMinimize.Name = "bMinimize";
-            this.bMinimize.Size = new System.Drawing.Size(30, 30);
-            this.bMinimize.TabIndex = 5;
-            this.bMinimize.UseVisualStyleBackColor = true;
-            this.bMinimize.Click += new System.EventHandler(this.bMinimize_Click);
-            // 
-            // bMaximize
-            // 
-            this.bMaximize.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bMaximize.BackgroundImage")));
-            this.bMaximize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.bMaximize.Dock = System.Windows.Forms.DockStyle.Right;
-            this.bMaximize.FlatAppearance.BorderSize = 0;
-            this.bMaximize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bMaximize.Location = new System.Drawing.Point(1178, 0);
-            this.bMaximize.Name = "bMaximize";
-            this.bMaximize.Size = new System.Drawing.Size(30, 30);
-            this.bMaximize.TabIndex = 4;
-            this.bMaximize.UseVisualStyleBackColor = true;
-            this.bMaximize.Click += new System.EventHandler(this.bMaximize_Click);
-            // 
-            // lDtabaseStatus
-            // 
-            this.lDtabaseStatus.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lDtabaseStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lDtabaseStatus.Location = new System.Drawing.Point(271, 0);
-            this.lDtabaseStatus.Margin = new System.Windows.Forms.Padding(5);
-            this.lDtabaseStatus.Name = "lDtabaseStatus";
-            this.lDtabaseStatus.Size = new System.Drawing.Size(259, 30);
-            this.lDtabaseStatus.TabIndex = 2;
-            this.lDtabaseStatus.Text = "Brak informacji";
-            this.lDtabaseStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lDatabaseConnState
-            // 
-            this.lDatabaseConnState.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lDatabaseConnState.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lDatabaseConnState.Location = new System.Drawing.Point(0, 0);
-            this.lDatabaseConnState.Margin = new System.Windows.Forms.Padding(5);
-            this.lDatabaseConnState.Name = "lDatabaseConnState";
-            this.lDatabaseConnState.Size = new System.Drawing.Size(271, 30);
-            this.lDatabaseConnState.TabIndex = 1;
-            this.lDatabaseConnState.Text = "Status połączenia do bazy danych:";
-            this.lDatabaseConnState.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // bExit
-            // 
-            this.bExit.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bExit.BackgroundImage")));
-            this.bExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.bExit.Dock = System.Windows.Forms.DockStyle.Right;
-            this.bExit.FlatAppearance.BorderSize = 0;
-            this.bExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bExit.Location = new System.Drawing.Point(1208, 0);
-            this.bExit.Name = "bExit";
-            this.bExit.Size = new System.Drawing.Size(30, 30);
-            this.bExit.TabIndex = 0;
-            this.bExit.UseVisualStyleBackColor = true;
-            this.bExit.Click += new System.EventHandler(this.bExit_Click);
             // 
             // pMenuDeliminer
             // 
@@ -537,22 +481,103 @@ namespace NaturalnieApp.Forms
             this.pContainer.Size = new System.Drawing.Size(936, 698);
             this.pContainer.TabIndex = 7;
             // 
-            // bPriceRelatedUpdate
+            // timer1sTick
             // 
-            this.bPriceRelatedUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bPriceRelatedUpdate.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bPriceRelatedUpdate.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.bPriceRelatedUpdate.FlatAppearance.BorderSize = 0;
-            this.bPriceRelatedUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bPriceRelatedUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bPriceRelatedUpdate.ForeColor = System.Drawing.Color.White;
-            this.bPriceRelatedUpdate.Location = new System.Drawing.Point(0, 150);
-            this.bPriceRelatedUpdate.Name = "bPriceRelatedUpdate";
-            this.bPriceRelatedUpdate.Size = new System.Drawing.Size(300, 30);
-            this.bPriceRelatedUpdate.TabIndex = 10;
-            this.bPriceRelatedUpdate.Text = "Aktualizacja (cen, podatku, itd.)";
-            this.bPriceRelatedUpdate.UseVisualStyleBackColor = false;
-            this.bPriceRelatedUpdate.Click += new System.EventHandler(this.bPriceRelatedUpdate_Click);
+            this.timer1sTick.Interval = 1000;
+            this.timer1sTick.Tick += new System.EventHandler(this.timer5sTick_Tick);
+            // 
+            // tlpdbStatus
+            // 
+            this.tlpdbStatus.ColumnCount = 2;
+            this.tlpdbStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tlpdbStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tlpdbStatus.Controls.Add(this.lDbStatus, 0, 0);
+            this.tlpdbStatus.Controls.Add(this.pbDbStatus, 1, 0);
+            this.tlpdbStatus.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tlpdbStatus.Location = new System.Drawing.Point(0, 0);
+            this.tlpdbStatus.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpdbStatus.Name = "tlpdbStatus";
+            this.tlpdbStatus.RowCount = 1;
+            this.tlpdbStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpdbStatus.Size = new System.Drawing.Size(150, 30);
+            this.tlpdbStatus.TabIndex = 6;
+            // 
+            // lDbStatus
+            // 
+            this.lDbStatus.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lDbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lDbStatus.Location = new System.Drawing.Point(0, 0);
+            this.lDbStatus.Margin = new System.Windows.Forms.Padding(0);
+            this.lDbStatus.Name = "lDbStatus";
+            this.lDbStatus.Size = new System.Drawing.Size(120, 30);
+            this.lDbStatus.TabIndex = 2;
+            this.lDbStatus.Text = "Baza danych";
+            this.lDbStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // pLogo
+            // 
+            this.pLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.pLogo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pLogo.BackgroundImage")));
+            this.pLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pLogo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pLogo.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.pLogo.Location = new System.Drawing.Point(0, 0);
+            this.pLogo.Name = "pLogo";
+            this.pLogo.Size = new System.Drawing.Size(300, 114);
+            this.pLogo.TabIndex = 0;
+            // 
+            // pbDbStatus
+            // 
+            this.pbDbStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbDbStatus.Image = global::NaturalnieApp.Properties.Resources.DbStatusNok;
+            this.pbDbStatus.Location = new System.Drawing.Point(120, 0);
+            this.pbDbStatus.Margin = new System.Windows.Forms.Padding(0);
+            this.pbDbStatus.Name = "pbDbStatus";
+            this.pbDbStatus.Size = new System.Drawing.Size(30, 30);
+            this.pbDbStatus.TabIndex = 3;
+            this.pbDbStatus.TabStop = false;
+            // 
+            // bMinimize
+            // 
+            this.bMinimize.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bMinimize.BackgroundImage")));
+            this.bMinimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.bMinimize.Dock = System.Windows.Forms.DockStyle.Right;
+            this.bMinimize.FlatAppearance.BorderSize = 0;
+            this.bMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bMinimize.Location = new System.Drawing.Point(1148, 0);
+            this.bMinimize.Name = "bMinimize";
+            this.bMinimize.Size = new System.Drawing.Size(30, 30);
+            this.bMinimize.TabIndex = 5;
+            this.bMinimize.UseVisualStyleBackColor = true;
+            this.bMinimize.Click += new System.EventHandler(this.bMinimize_Click);
+            // 
+            // bMaximize
+            // 
+            this.bMaximize.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bMaximize.BackgroundImage")));
+            this.bMaximize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.bMaximize.Dock = System.Windows.Forms.DockStyle.Right;
+            this.bMaximize.FlatAppearance.BorderSize = 0;
+            this.bMaximize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bMaximize.Location = new System.Drawing.Point(1178, 0);
+            this.bMaximize.Name = "bMaximize";
+            this.bMaximize.Size = new System.Drawing.Size(30, 30);
+            this.bMaximize.TabIndex = 4;
+            this.bMaximize.UseVisualStyleBackColor = true;
+            this.bMaximize.Click += new System.EventHandler(this.bMaximize_Click);
+            // 
+            // bExit
+            // 
+            this.bExit.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bExit.BackgroundImage")));
+            this.bExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.bExit.Dock = System.Windows.Forms.DockStyle.Right;
+            this.bExit.FlatAppearance.BorderSize = 0;
+            this.bExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bExit.Location = new System.Drawing.Point(1208, 0);
+            this.bExit.Name = "bExit";
+            this.bExit.Size = new System.Drawing.Size(30, 30);
+            this.bExit.TabIndex = 0;
+            this.bExit.UseVisualStyleBackColor = true;
+            this.bExit.Click += new System.EventHandler(this.bExit_Click);
             // 
             // MainWindow
             // 
@@ -579,6 +604,8 @@ namespace NaturalnieApp.Forms
             this.pCashRegisterSubMenu.ResumeLayout(false);
             this.pMainMenuSubMenu.ResumeLayout(false);
             this.pHeader.ResumeLayout(false);
+            this.tlpdbStatus.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbDbStatus)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -597,8 +624,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Panel pProductSubMenu;
         private System.Windows.Forms.Button bNewProduct;
         private System.Windows.Forms.Button bProductMenu;
-        private System.Windows.Forms.Label lDtabaseStatus;
-        private System.Windows.Forms.Label lDatabaseConnState;
         private System.Windows.Forms.Button bShowProductInfo;
         private System.Windows.Forms.Button AddProductFromPdf;
         private System.Windows.Forms.Button bPrintBarcode;
@@ -617,5 +642,9 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bDymoSettings;
         private System.Windows.Forms.Button bGeneralSettings;
         private System.Windows.Forms.Button bPriceRelatedUpdate;
+        private System.Windows.Forms.Timer timer1sTick;
+        private System.Windows.Forms.TableLayoutPanel tlpdbStatus;
+        private System.Windows.Forms.Label lDbStatus;
+        private System.Windows.Forms.PictureBox pbDbStatus;
     }
 }

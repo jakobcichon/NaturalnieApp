@@ -19,9 +19,6 @@ namespace NaturalnieApp.Initialization
         public string LibraryPathDefaultValue { get; set; }
         public string DbBackupPathDefaultValue { get; set; }
 
-
-
-
         public ConfigFileObject()
         {
             //Defaut values of config file

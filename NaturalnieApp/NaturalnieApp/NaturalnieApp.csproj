@@ -398,6 +398,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
@@ -434,6 +435,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="mainIcon.ico" />
+    <None Include="Resources\DbStatusNok.png" />
+    <None Include="Resources\DbStatusOK.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Forms\Common\SearchBarTemplate2.xaml">

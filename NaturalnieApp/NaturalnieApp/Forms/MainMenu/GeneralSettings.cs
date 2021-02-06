@@ -10,14 +10,25 @@ using NaturalnieApp.Forms.TestForm;
 using NaturalnieApp.Initialization;
 using static NaturalnieApp.Program;
 using NaturalnieApp.Forms.Common;
+using NaturalnieApp.Dymo_Printer;
 
 namespace NaturalnieApp.Forms
 {
     public partial class GeneralSettings : UserControl
     {
+        //============================================================================================
+        //Object fields
+
+        //Last valid text o rtb
+        string ElzabPathLastValidText {get; set;}
+        string LabelPathLastValidText { get; set; }
+        string DbBackupPathLastValidText { get; set; }
+        string LibraryPathLastValidText { get; set; }
+
         private ConfigFileObject ConfigFileObjInst;
-        private SearchBarTemplate SearchBar { get; set; }
-        DatabaseCommands databaseCommands;
+
+        //============================================================================================
+        //Constructor
         public GeneralSettings(ConfigFileObject conFileObj)
         {
             this.ConfigFileObjInst = conFileObj;
@@ -26,13 +37,13 @@ namespace NaturalnieApp.Forms
 
         }
 
+        #region General methods
         private void UpdateControl(ref TextBox dummyForControl)
         {
             //this.Select();
             this.Focus();
             dummyForControl.Select();
         }
-
         public void UpdateView(ConfigFileObject conFileObj)
         {
 
@@ -46,36 +57,27 @@ namespace NaturalnieApp.Forms
             //COM Ports - call method to choose proper COM port
             COMPortsFormat(conFileObj);
 
-            //Baud rate - setting for connection baud rate  ComboBox
-            
+            //Baud rate - setting for connection baud rate  ComboBox 
             int indexNumber = cBaudRate.Items.IndexOf(conFileObj.GetValueByVariableName("ElzabBaudRate"));
             if (indexNumber >= 0) cBaudRate.SelectedItem = cBaudRate.Items[indexNumber];
 
             //Database name
-            this.rtbDatabaseName.Text = conFileObj.GetValueByVariableName("DatabaseName");
+            this.rtbSqlServerName.Text = conFileObj.GetValueByVariableName("SqlServerName");
+            this.rtbDbBackupPath.Text = conFileObj.GetValueByVariableName("DbBackupPath");
 
-            ;
+            //Dymo printer
+            this.rtbLabelPath.Text = conFileObj.GetValueByVariableName("LabelPath");
+
+            //General settings
+            this.rtbLibraryPath.Text = conFileObj.GetValueByVariableName("LibraryPath");
+
+            //Intilialize las valid text for rtb
+            this.ElzabPathLastValidText = this.tbElzabPath.Text;
+            this.LabelPathLastValidText = this.rtbLabelPath.Text;
+            this.DbBackupPathLastValidText = this.rtbDbBackupPath.Text;
+            this.LibraryPathLastValidText = this.rtbLibraryPath.Text;
 
         }
-
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-
-            if ((keyData == Keys.Enter))
-            {
-                //Update control
-                UpdateControl(ref tbDummyForCtrl);
-
-            }
-            else if (keyData == Keys.Escape)
-            {
-                //Update control
-                UpdateControl(ref tbDummyForCtrl);
-            }
-
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
-
         //Method used to handle formatting of COM ports ComboBox
         public void COMPortsFormat(ConfigFileObject conFileObj)
         {
@@ -102,50 +104,112 @@ namespace NaturalnieApp.Forms
             }
 
         }
-
         //Method used to handle formatting of textBox
         public void TextBoxFormat(RichTextBox textBox)
         {
             //Elzab path - setting for text box
-            textBox.SelectionLength = 0;
-            textBox.SelectAll();
-            textBox.SelectionAlignment = HorizontalAlignment.Center;
+            textBox.DeselectAll();
+            textBox.SelectionAlignment = HorizontalAlignment.Left;
         }
+        //Method used to get printer list
+        private void GetPrinterList()
+        {
+            List<string> printersNames = PrinterMethods.GetPrintersNameList();
+            if (printersNames.Count != 0)
+            {
+                cbAvailablePrintersList.Items.Clear();
+                int i = 0;
+                foreach (string printerName in printersNames)
+                {
+                    cbAvailablePrintersList.Items.Add(i.ToString() + "." + printerName);
+                    i++;
+                }
+            }
+        }
+        private void SaveData()
+        {
+            //Update value of COM port
+
+            ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", ElzabRelated.ComPortNumberFromName(cCOMPorts.SelectedItem.ToString()).ToString());
+            GlobalVariables.ElzabPortCom = ElzabRelated.ComPortNumberFromName(cCOMPorts.SelectedItem.ToString());
+
+            //Update value of Baud rate
+            ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", cBaudRate.SelectedItem.ToString());
+            GlobalVariables.ElzabPortCom = Int32.Parse(cBaudRate.SelectedItem.ToString());
+
+            //Update value of path
+            ConfigFileObjInst.ChangeVariableValue("ElzabCommandPath", tbElzabPath.Text.ToString());
+            GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();
+
+            //Update database name
+            ConfigFileObjInst.ChangeVariableValue("SqlServerName", rtbSqlServerName.Text.ToString());
+            GlobalVariables.SqlServerName = rtbSqlServerName.Text.ToString();
+
+            //Update label path
+            ConfigFileObjInst.ChangeVariableValue("LabelPath", rtbLabelPath.Text.ToString());
+            GlobalVariables.LabelPath = rtbLabelPath.Text.ToString();
+
+            //Update library path
+            ConfigFileObjInst.ChangeVariableValue("LibraryPath", rtbLibraryPath.Text.ToString());
+            GlobalVariables.LibraryPath = rtbLibraryPath.Text.ToString();
+
+            //Update db backups path path
+            ConfigFileObjInst.ChangeVariableValue("DbBackupPath", rtbDbBackupPath.Text.ToString());
+            GlobalVariables.DbBackupPath = rtbDbBackupPath.Text.ToString();
+            GlobalVariables.ConnectionString = string.Format("server = {0}; port = 3306; database = shop;" +
+            "uid = admin; password = admin; Connection Timeout = 2", GlobalVariables.SqlServerName);
+
+            ConfigFileObjInst.SaveData();
+
+            MessageBox.Show("Zapisano zmiany!");
+        }
+        private bool AllObjectSelected()
+        {
+            bool retVal = false;
+            if (cCOMPorts.SelectedIndex != -1 && cBaudRate.SelectedIndex != -1 && tbElzabPath.Text != "" && rtbSqlServerName.Text != ""
+                && rtbLabelPath.Text != "" && rtbLibraryPath.Text != "" && rtbDbBackupPath.Text != "")
+            {
+                retVal = true;
+            }
+
+            return retVal;
+        }
+        #endregion
 
         //============================================================================================
         //Events
-        private void bBrowsePath_Click(object sender, EventArgs e)
+
+        #region User control events
+        private void GeneralSettings_Load(object sender, EventArgs e)
         {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            if (fbd.ShowDialog() == DialogResult.OK)
+            //Get printers list
+            GetPrinterList();
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+
+            if ((keyData == Keys.Enter))
             {
-                this.tbElzabPath.Text = fbd.SelectedPath;
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
+
             }
+            else if (keyData == Keys.Escape)
+            {
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
+        #endregion
 
-        private void ElzabSettings_Load(object sender, EventArgs e)
-        {
-
-        }
-
+        #region Buttons events
         private void bUpdate_Click(object sender, EventArgs e)
         {
             //Udpate view of all properties
             UpdateView(ConfigFileObjInst);
         }
-
-        private void cCOMPorts_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tbElzabPath_TextChanged(object sender, EventArgs e)
-        {
-            //Format text window
-            RichTextBox richTextBoxObject = (RichTextBox) sender;
-            TextBoxFormat(richTextBoxObject);
-        }
-
         private void bSave_Click(object sender, EventArgs e)
         {
             try
@@ -155,12 +219,12 @@ namespace NaturalnieApp.Forms
                 if (!result)
                 {
                     DialogResult decision = MessageBox.Show("Nie wszystkie wymagane pola zostały uzupełnione. " +
-                        "Czy chcesz kontunuować i dla nie uzupełnionych danych przywrócić wartości domyślne?", 
+                        "Czy chcesz kontunuować i dla nie uzupełnionych danych przywrócić wartości domyślne?",
                         "Brakujące dane do zapisu", MessageBoxButtons.YesNo);
 
                     if (decision == DialogResult.Yes)
                     {
-                        if( cCOMPorts.SelectedIndex == -1)
+                        if (cCOMPorts.SelectedIndex == -1)
                         {
                             int index = cCOMPorts.Items.IndexOf(this.ConfigFileObjInst.ElzabCOMPortDefaultValue);
                             if (index == -1)
@@ -184,10 +248,23 @@ namespace NaturalnieApp.Forms
                         {
                             tbElzabPath.Text = this.ConfigFileObjInst.ElzabCommandPathDefaultValue;
                         }
-                        if (rtbDatabaseName.Text == "")
+                        if (rtbSqlServerName.Text == "")
                         {
-                            rtbDatabaseName.Text = this.ConfigFileObjInst.SqlServerNameDefaultValue;
+                            rtbSqlServerName.Text = this.ConfigFileObjInst.SqlServerNameDefaultValue;
                         }
+                        if (rtbLabelPath.Text == "")
+                        {
+                            rtbLabelPath.Text = this.ConfigFileObjInst.LabelPathDefaultValue;
+                        }
+                        if (rtbLibraryPath.Text == "")
+                        {
+                            rtbLibraryPath.Text = this.ConfigFileObjInst.LibraryPathDefaultValue;
+                        }
+                        if (rtbDbBackupPath.Text == "")
+                        {
+                            rtbDbBackupPath.Text = this.ConfigFileObjInst.DbBackupPathDefaultValue;
+                        }
+
 
                         SaveData();
                     }
@@ -206,42 +283,6 @@ namespace NaturalnieApp.Forms
             }
 
         }
-
-        private void SaveData()
-        {
-            //Update value of COM port
-
-            ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", ElzabRelated.ComPortNumberFromName(cCOMPorts.SelectedItem.ToString()).ToString());
-            GlobalVariables.ElzabPortCom = ElzabRelated.ComPortNumberFromName(cCOMPorts.SelectedItem.ToString());
-
-            //Update value of Baud rate
-            ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", cBaudRate.SelectedItem.ToString());
-            GlobalVariables.ElzabPortCom = Int32.Parse(cBaudRate.SelectedItem.ToString());
-
-            //Update value of path
-            ConfigFileObjInst.ChangeVariableValue("ElzabCommandPath", tbElzabPath.Text.ToString());
-            GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();
-
-            //Update database name
-            ConfigFileObjInst.ChangeVariableValue("DatabaseName", rtbDatabaseName.Text.ToString());
-            GlobalVariables.SqlServerName = rtbDatabaseName.Text.ToString();
-
-            ConfigFileObjInst.SaveData();
-
-            MessageBox.Show("Zapisano zmiany!");
-        }
-
-        private bool AllObjectSelected()
-        {
-            bool retVal = false;
-            if (cCOMPorts.SelectedIndex != -1 && cBaudRate.SelectedIndex != -1 && tbElzabPath.Text != "" && rtbDatabaseName.Text != "")
-            {
-                retVal = true;
-            }
-
-            return retVal;
-        }
-
         private void bDefaults_Click(object sender, EventArgs e)
         {
             //String to show
@@ -262,7 +303,6 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show("Akcja zakończona sukcesem!");
             }
         }
-
         private void bApply_Click(object sender, EventArgs e)
         {
             try
@@ -273,13 +313,24 @@ namespace NaturalnieApp.Forms
                     GlobalVariables.ElzabPortCom = ElzabRelated.ComPortNumberFromName(cCOMPorts.SelectedItem.ToString());
 
                     //Update value of Baud rate
-                    GlobalVariables.ElzabBaudRate= Int32.Parse(cBaudRate.SelectedItem.ToString());
+                    GlobalVariables.ElzabBaudRate = Int32.Parse(cBaudRate.SelectedItem.ToString());
 
                     //Update value of path
                     GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();
 
                     //Update database name
-                    GlobalVariables.SqlServerName = rtbDatabaseName.Text.ToString();
+                    GlobalVariables.SqlServerName = rtbSqlServerName.Text.ToString();
+
+                    //Label path
+                    GlobalVariables.LabelPath = rtbLabelPath.Text.ToString();
+
+                    //Library path
+                    GlobalVariables.LibraryPath = rtbLibraryPath.Text.ToString();
+
+                    //Db backup path
+                    GlobalVariables.DbBackupPath = rtbDbBackupPath.Text.ToString();
+                    GlobalVariables.ConnectionString = string.Format("server = {0}; port = 3306; database = shop;" +
+                    "uid = admin; password = admin; Connection Timeout = 2", GlobalVariables.SqlServerName);
 
                     MessageBox.Show("Zastosowano zmiany!");
 
@@ -292,37 +343,121 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show(ex.Message);
             }
         }
+        #endregion
 
+        #region Elzab settings
+        private void tbElzabPath_TextChanged(object sender, EventArgs e)
+        {
+            //Format text window
+            RichTextBox richTextBoxObject = (RichTextBox)sender;
+            TextBoxFormat(richTextBoxObject);
+        }
+        private void bElzabPath_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                this.tbElzabPath.Focus();
+                this.tbElzabPath.Text = fbd.SelectedPath;
+
+                //Udpate view of all properties
+                UpdateControl(ref this.tbDummyForCtrl);
+            }
+        }
         private void tbElzabPath_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            RichTextBox localSender = (RichTextBox)sender;
+            bool exist = Directory.Exists(localSender.Text);
+            if (!exist)
+            {
+                localSender.Text = this.ElzabPathLastValidText;
+            }
+            else this.ElzabPathLastValidText = localSender.Text;
 
+            //Udpate view of all properties
+            UpdateControl(ref this.tbDummyForCtrl);
         }
+        #endregion
 
-        private void rtbDatabaseName_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        #region Dymo settings
+        private void rtbLabelPath_TextChanged(object sender, EventArgs e)
         {
-
+            //Format text window
+            RichTextBox richTextBoxObject = (RichTextBox)sender;
+            TextBoxFormat(richTextBoxObject);
         }
-
-        private void cCOMPorts_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void bLabelPath_Click(object sender, EventArgs e)
         {
+            OpenFileDialog ofd = new OpenFileDialog();
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                this.rtbLabelPath.Focus();
+                   this.rtbLabelPath.Text = ofd.FileName;
 
+                //Udpate view of all properties
+                UpdateControl(ref this.tbDummyForCtrl);
+            }
         }
-
-        private void cBaudRate_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void rtbLabelPath_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            RichTextBox localSender = (RichTextBox)sender;
+            bool exist = File.Exists(localSender.Text);
+            if (!exist)
+            {
+                localSender.Text = this.LabelPathLastValidText;
+            }
+            else
+            {
+                string extension = Path.GetExtension(localSender.Text);
+                if (extension != ".label")
+                {
+                    MessageBox.Show("Błąd! Plik musi posiadać rozserzenie \".label\".");
+                    localSender.Text = this.LabelPathLastValidText;
+                }
+                else this.LabelPathLastValidText = localSender.Text;
+            }
 
+            //Udpate view of all properties
+            UpdateControl(ref this.tbDummyForCtrl);
         }
-
-        private void tbElzabPath_TextChanged_1(object sender, EventArgs e)
+        private void cbAvailablePrintersList_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (cbAvailablePrintersList.SelectedIndex > -1) tbSelectedPrinterName.Text = cbAvailablePrintersList.SelectedItem.ToString();
         }
+        #endregion
 
-        private void lELzabCommandPath_Click(object sender, EventArgs e)
+        #region Db Backup path settings
+        private void rtbDbBackupPath_TextChanged(object sender, EventArgs e)
         {
-
+            //Format text window
+            RichTextBox richTextBoxObject = (RichTextBox)sender;
+            TextBoxFormat(richTextBoxObject);
         }
+        private void bDbBackupPath_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                this.rtbDbBackupPath.Focus();
+                this.rtbDbBackupPath.Text = fbd.SelectedPath;
 
+                //Udpate view of all properties
+                UpdateControl(ref this.tbDummyForCtrl);
+            }
+        }
+        private void rtbDbBackupPath_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            RichTextBox localSender = (RichTextBox)sender;
+            bool exist = Directory.Exists(localSender.Text);
+            if (!exist)
+            {
+                localSender.Text = this.DbBackupPathLastValidText;
+            }
+            else this.DbBackupPathLastValidText = localSender.Text;
+
+            //Udpate view of all properties
+            UpdateControl(ref this.tbDummyForCtrl);
+        }
         private void bDbBackup_Click(object sender, EventArgs e)
         {
             bool result = DatabaseBackup.MakeBackup("root", "admin", "shop", GlobalVariables.DbBackupPath);
@@ -330,7 +465,41 @@ namespace NaturalnieApp.Forms
             if (result) MessageBox.Show("Udało się utworzyć kopię zapasową bazy danych!");
             else MessageBox.Show("NIE udało się utworzyć kopię zapasową bazy danych!");
         }
+        #endregion
 
+        #region Library path settings
+        private void rtbLibraryPath_TextChanged(object sender, EventArgs e)
+        {
+            //Format text window
+            RichTextBox richTextBoxObject = (RichTextBox)sender;
+            TextBoxFormat(richTextBoxObject);
+        }
+        private void bLibraryPath_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                this.rtbLibraryPath.Focus();
+                this.rtbLibraryPath.Text = fbd.SelectedPath;
+
+                //Udpate view of all properties
+                UpdateControl(ref this.tbDummyForCtrl);
+            }
+        }
+        private void rtbLibraryPath_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            RichTextBox localSender = (RichTextBox)sender;
+            bool exist = Directory.Exists(localSender.Text);
+            if (!exist)
+            {
+                localSender.Text = this.LibraryPathLastValidText;
+            }
+            else this.LibraryPathLastValidText = localSender.Text;
+
+            //Udpate view of all properties
+            UpdateControl(ref this.tbDummyForCtrl);
+        }
+        #endregion
 
     }
 }

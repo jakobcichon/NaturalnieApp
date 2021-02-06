@@ -50,10 +50,9 @@ namespace NaturalnieApp.Forms
             this.cBaudRate = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.bDefaults = new System.Windows.Forms.Button();
-            this.rtbDatabaseName = new System.Windows.Forms.RichTextBox();
             this.gpConnectionSettings = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.bBrowsePath = new System.Windows.Forms.Button();
+            this.tpElzabPath = new System.Windows.Forms.TableLayoutPanel();
+            this.bElzabPath = new System.Windows.Forms.Button();
             this.tbElzabPath = new System.Windows.Forms.RichTextBox();
             this.lELzabCommandPath = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -63,18 +62,46 @@ namespace NaturalnieApp.Forms
             this.bApply = new System.Windows.Forms.Button();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
             this.bClose = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gbPrinterSelection = new System.Windows.Forms.GroupBox();
+            this.tpLabelPath = new System.Windows.Forms.TableLayoutPanel();
+            this.bLabelPath = new System.Windows.Forms.Button();
+            this.rtbLabelPath = new System.Windows.Forms.RichTextBox();
+            this.lLabelPath = new System.Windows.Forms.Label();
+            this.tpSelectedPrinterName = new System.Windows.Forms.TableLayoutPanel();
+            this.lSelectedPrinterName = new System.Windows.Forms.Label();
+            this.tbSelectedPrinterName = new System.Windows.Forms.TextBox();
+            this.tpAvailablePrintersList = new System.Windows.Forms.TableLayoutPanel();
+            this.lAvailablePrintersList = new System.Windows.Forms.Label();
+            this.cbAvailablePrintersList = new System.Windows.Forms.ComboBox();
+            this.gbDatabaseSettings = new System.Windows.Forms.GroupBox();
+            this.tpDbBackupPath = new System.Windows.Forms.TableLayoutPanel();
+            this.bDbBackupPath = new System.Windows.Forms.Button();
+            this.rtbDbBackupPath = new System.Windows.Forms.RichTextBox();
+            this.lDbBackupPath = new System.Windows.Forms.Label();
             this.bDbBackup = new System.Windows.Forms.Button();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.lDatabaseName = new System.Windows.Forms.Label();
+            this.lSqlServerName = new System.Windows.Forms.Label();
+            this.rtbSqlServerName = new System.Windows.Forms.RichTextBox();
+            this.gpGeneralSettings = new System.Windows.Forms.GroupBox();
+            this.tpLibraryPath = new System.Windows.Forms.TableLayoutPanel();
+            this.bLibraryPath = new System.Windows.Forms.Button();
+            this.rtbLibraryPath = new System.Windows.Forms.RichTextBox();
+            this.lLibraryPath = new System.Windows.Forms.Label();
             this.pHeader.SuspendLayout();
             this.gpConnectionSettings.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            this.tpElzabPath.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tpPortNumber.SuspendLayout();
             this.pButtonsPanel.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.gbPrinterSelection.SuspendLayout();
+            this.tpLabelPath.SuspendLayout();
+            this.tpSelectedPrinterName.SuspendLayout();
+            this.tpAvailablePrintersList.SuspendLayout();
+            this.gbDatabaseSettings.SuspendLayout();
+            this.tpDbBackupPath.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.gpGeneralSettings.SuspendLayout();
+            this.tpLibraryPath.SuspendLayout();
             this.SuspendLayout();
             // 
             // pHeader
@@ -136,7 +163,6 @@ namespace NaturalnieApp.Forms
             this.cBaudRate.Size = new System.Drawing.Size(227, 28);
             this.cBaudRate.Sorted = true;
             this.cBaudRate.TabIndex = 9;
-            this.cBaudRate.Validating += new System.ComponentModel.CancelEventHandler(this.cBaudRate_Validating);
             // 
             // label1
             // 
@@ -165,76 +191,65 @@ namespace NaturalnieApp.Forms
             this.bDefaults.UseVisualStyleBackColor = false;
             this.bDefaults.Click += new System.EventHandler(this.bDefaults_Click);
             // 
-            // rtbDatabaseName
-            // 
-            this.rtbDatabaseName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbDatabaseName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.rtbDatabaseName.Location = new System.Drawing.Point(217, 6);
-            this.rtbDatabaseName.Multiline = false;
-            this.rtbDatabaseName.Name = "rtbDatabaseName";
-            this.rtbDatabaseName.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.rtbDatabaseName.ShowSelectionMargin = true;
-            this.rtbDatabaseName.Size = new System.Drawing.Size(227, 28);
-            this.rtbDatabaseName.TabIndex = 8;
-            this.rtbDatabaseName.Text = "";
-            this.rtbDatabaseName.Validating += new System.ComponentModel.CancelEventHandler(this.rtbDatabaseName_Validating);
-            // 
             // gpConnectionSettings
             // 
-            this.gpConnectionSettings.Controls.Add(this.tableLayoutPanel2);
+            this.gpConnectionSettings.Controls.Add(this.tpElzabPath);
             this.gpConnectionSettings.Controls.Add(this.tableLayoutPanel1);
             this.gpConnectionSettings.Controls.Add(this.tpPortNumber);
             this.gpConnectionSettings.Dock = System.Windows.Forms.DockStyle.Top;
             this.gpConnectionSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.gpConnectionSettings.Location = new System.Drawing.Point(0, 30);
             this.gpConnectionSettings.Name = "gpConnectionSettings";
-            this.gpConnectionSettings.Size = new System.Drawing.Size(920, 146);
+            this.gpConnectionSettings.Size = new System.Drawing.Size(920, 130);
             this.gpConnectionSettings.TabIndex = 13;
             this.gpConnectionSettings.TabStop = false;
-            this.gpConnectionSettings.Text = "Ustawienie połączenia";
+            this.gpConnectionSettings.Text = "Ustawienie połączenia kasy fiskalnej";
             // 
-            // tableLayoutPanel2
+            // tpElzabPath
             // 
-            this.tableLayoutPanel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
-            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 170F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 240F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.Controls.Add(this.bBrowsePath, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.tbElzabPath, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lELzabCommandPath, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(464, 35);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.Padding = new System.Windows.Forms.Padding(2);
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(450, 40);
-            this.tableLayoutPanel2.TabIndex = 21;
+            this.tpElzabPath.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpElzabPath.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tpElzabPath.ColumnCount = 3;
+            this.tpElzabPath.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 170F));
+            this.tpElzabPath.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 690F));
+            this.tpElzabPath.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpElzabPath.Controls.Add(this.bElzabPath, 2, 0);
+            this.tpElzabPath.Controls.Add(this.tbElzabPath, 1, 0);
+            this.tpElzabPath.Controls.Add(this.lELzabCommandPath, 0, 0);
+            this.tpElzabPath.Location = new System.Drawing.Point(8, 81);
+            this.tpElzabPath.Name = "tpElzabPath";
+            this.tpElzabPath.Padding = new System.Windows.Forms.Padding(2);
+            this.tpElzabPath.RowCount = 1;
+            this.tpElzabPath.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tpElzabPath.Size = new System.Drawing.Size(909, 40);
+            this.tpElzabPath.TabIndex = 21;
             // 
-            // bBrowsePath
+            // bElzabPath
             // 
-            this.bBrowsePath.BackColor = System.Drawing.Color.White;
-            this.bBrowsePath.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bBrowsePath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bBrowsePath.Location = new System.Drawing.Point(418, 6);
-            this.bBrowsePath.Name = "bBrowsePath";
-            this.bBrowsePath.Size = new System.Drawing.Size(30, 30);
-            this.bBrowsePath.TabIndex = 3;
-            this.bBrowsePath.Text = "...";
-            this.bBrowsePath.UseVisualStyleBackColor = false;
+            this.bElzabPath.BackColor = System.Drawing.Color.White;
+            this.bElzabPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bElzabPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bElzabPath.Location = new System.Drawing.Point(868, 6);
+            this.bElzabPath.Name = "bElzabPath";
+            this.bElzabPath.Size = new System.Drawing.Size(35, 30);
+            this.bElzabPath.TabIndex = 3;
+            this.bElzabPath.Text = "...";
+            this.bElzabPath.UseVisualStyleBackColor = false;
+            this.bElzabPath.Click += new System.EventHandler(this.bElzabPath_Click);
             // 
             // tbElzabPath
             // 
             this.tbElzabPath.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbElzabPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbElzabPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.tbElzabPath.Location = new System.Drawing.Point(177, 6);
+            this.tbElzabPath.Multiline = false;
             this.tbElzabPath.Name = "tbElzabPath";
             this.tbElzabPath.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.tbElzabPath.Size = new System.Drawing.Size(234, 30);
+            this.tbElzabPath.Size = new System.Drawing.Size(684, 30);
             this.tbElzabPath.TabIndex = 18;
             this.tbElzabPath.Text = "";
-            this.tbElzabPath.TextChanged += new System.EventHandler(this.tbElzabPath_TextChanged_1);
+            this.tbElzabPath.WordWrap = false;
+            this.tbElzabPath.Validating += new System.ComponentModel.CancelEventHandler(this.tbElzabPath_Validating);
             // 
             // lELzabCommandPath
             // 
@@ -247,7 +262,6 @@ namespace NaturalnieApp.Forms
             this.lELzabCommandPath.TabIndex = 0;
             this.lELzabCommandPath.Text = "Ścieżka plików Elzab";
             this.lELzabCommandPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lELzabCommandPath.Click += new System.EventHandler(this.lELzabCommandPath_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -258,7 +272,7 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.cBaudRate, 1, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(8, 81);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(467, 35);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.RowCount = 1;
@@ -310,7 +324,6 @@ namespace NaturalnieApp.Forms
             this.cCOMPorts.Size = new System.Drawing.Size(227, 28);
             this.cCOMPorts.Sorted = true;
             this.cCOMPorts.TabIndex = 9;
-            this.cCOMPorts.Validating += new System.ComponentModel.CancelEventHandler(this.cCOMPorts_Validating);
             // 
             // bApply
             // 
@@ -357,27 +370,246 @@ namespace NaturalnieApp.Forms
             this.bClose.UseMnemonic = false;
             this.bClose.UseVisualStyleBackColor = false;
             // 
-            // groupBox1
+            // gbPrinterSelection
             // 
-            this.groupBox1.Controls.Add(this.bDbBackup);
-            this.groupBox1.Controls.Add(this.tableLayoutPanel3);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox1.Location = new System.Drawing.Point(0, 176);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(920, 80);
-            this.groupBox1.TabIndex = 16;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Ustawienia bazy danych";
+            this.gbPrinterSelection.Controls.Add(this.tpLabelPath);
+            this.gbPrinterSelection.Controls.Add(this.tpSelectedPrinterName);
+            this.gbPrinterSelection.Controls.Add(this.tpAvailablePrintersList);
+            this.gbPrinterSelection.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gbPrinterSelection.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.gbPrinterSelection.Location = new System.Drawing.Point(0, 160);
+            this.gbPrinterSelection.Margin = new System.Windows.Forms.Padding(5);
+            this.gbPrinterSelection.Name = "gbPrinterSelection";
+            this.gbPrinterSelection.Padding = new System.Windows.Forms.Padding(5);
+            this.gbPrinterSelection.Size = new System.Drawing.Size(920, 130);
+            this.gbPrinterSelection.TabIndex = 17;
+            this.gbPrinterSelection.TabStop = false;
+            this.gbPrinterSelection.Text = "Ustawienia drukarki Dymo";
+            // 
+            // tpLabelPath
+            // 
+            this.tpLabelPath.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpLabelPath.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tpLabelPath.ColumnCount = 3;
+            this.tpLabelPath.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tpLabelPath.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 660F));
+            this.tpLabelPath.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpLabelPath.Controls.Add(this.bLabelPath, 2, 0);
+            this.tpLabelPath.Controls.Add(this.rtbLabelPath, 1, 0);
+            this.tpLabelPath.Controls.Add(this.lLabelPath, 0, 0);
+            this.tpLabelPath.Location = new System.Drawing.Point(11, 77);
+            this.tpLabelPath.Name = "tpLabelPath";
+            this.tpLabelPath.Padding = new System.Windows.Forms.Padding(2);
+            this.tpLabelPath.RowCount = 1;
+            this.tpLabelPath.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tpLabelPath.Size = new System.Drawing.Size(906, 40);
+            this.tpLabelPath.TabIndex = 22;
+            // 
+            // bLabelPath
+            // 
+            this.bLabelPath.BackColor = System.Drawing.Color.White;
+            this.bLabelPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bLabelPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bLabelPath.Location = new System.Drawing.Point(868, 6);
+            this.bLabelPath.Name = "bLabelPath";
+            this.bLabelPath.Size = new System.Drawing.Size(35, 30);
+            this.bLabelPath.TabIndex = 3;
+            this.bLabelPath.Text = "...";
+            this.bLabelPath.UseVisualStyleBackColor = false;
+            this.bLabelPath.Click += new System.EventHandler(this.bLabelPath_Click);
+            // 
+            // rtbLabelPath
+            // 
+            this.rtbLabelPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbLabelPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.rtbLabelPath.Location = new System.Drawing.Point(207, 6);
+            this.rtbLabelPath.Multiline = false;
+            this.rtbLabelPath.Name = "rtbLabelPath";
+            this.rtbLabelPath.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.rtbLabelPath.Size = new System.Drawing.Size(654, 30);
+            this.rtbLabelPath.TabIndex = 18;
+            this.rtbLabelPath.Text = "";
+            this.rtbLabelPath.TextChanged += new System.EventHandler(this.rtbLabelPath_TextChanged);
+            this.rtbLabelPath.Validating += new System.ComponentModel.CancelEventHandler(this.rtbLabelPath_Validating);
+            // 
+            // lLabelPath
+            // 
+            this.lLabelPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lLabelPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lLabelPath.Location = new System.Drawing.Point(8, 8);
+            this.lLabelPath.Margin = new System.Windows.Forms.Padding(5);
+            this.lLabelPath.Name = "lLabelPath";
+            this.lLabelPath.Size = new System.Drawing.Size(190, 26);
+            this.lLabelPath.TabIndex = 0;
+            this.lLabelPath.Text = "Ścieżka etykiety Dymo";
+            this.lLabelPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tpSelectedPrinterName
+            // 
+            this.tpSelectedPrinterName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpSelectedPrinterName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tpSelectedPrinterName.ColumnCount = 2;
+            this.tpSelectedPrinterName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpSelectedPrinterName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpSelectedPrinterName.Controls.Add(this.lSelectedPrinterName, 0, 0);
+            this.tpSelectedPrinterName.Controls.Add(this.tbSelectedPrinterName, 1, 0);
+            this.tpSelectedPrinterName.ForeColor = System.Drawing.Color.Black;
+            this.tpSelectedPrinterName.Location = new System.Drawing.Point(467, 29);
+            this.tpSelectedPrinterName.Margin = new System.Windows.Forms.Padding(5);
+            this.tpSelectedPrinterName.Name = "tpSelectedPrinterName";
+            this.tpSelectedPrinterName.Padding = new System.Windows.Forms.Padding(2);
+            this.tpSelectedPrinterName.RowCount = 1;
+            this.tpSelectedPrinterName.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tpSelectedPrinterName.Size = new System.Drawing.Size(450, 40);
+            this.tpSelectedPrinterName.TabIndex = 1;
+            // 
+            // lSelectedPrinterName
+            // 
+            this.lSelectedPrinterName.AutoSize = true;
+            this.lSelectedPrinterName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lSelectedPrinterName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lSelectedPrinterName.Location = new System.Drawing.Point(8, 8);
+            this.lSelectedPrinterName.Margin = new System.Windows.Forms.Padding(5);
+            this.lSelectedPrinterName.Name = "lSelectedPrinterName";
+            this.lSelectedPrinterName.Size = new System.Drawing.Size(204, 26);
+            this.lSelectedPrinterName.TabIndex = 0;
+            this.lSelectedPrinterName.Text = "Aktualnie wybrana drukarka";
+            this.lSelectedPrinterName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tbSelectedPrinterName
+            // 
+            this.tbSelectedPrinterName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbSelectedPrinterName.Location = new System.Drawing.Point(223, 8);
+            this.tbSelectedPrinterName.Margin = new System.Windows.Forms.Padding(5);
+            this.tbSelectedPrinterName.Name = "tbSelectedPrinterName";
+            this.tbSelectedPrinterName.ReadOnly = true;
+            this.tbSelectedPrinterName.Size = new System.Drawing.Size(219, 26);
+            this.tbSelectedPrinterName.TabIndex = 1;
+            // 
+            // tpAvailablePrintersList
+            // 
+            this.tpAvailablePrintersList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpAvailablePrintersList.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tpAvailablePrintersList.ColumnCount = 2;
+            this.tpAvailablePrintersList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 210F));
+            this.tpAvailablePrintersList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpAvailablePrintersList.Controls.Add(this.lAvailablePrintersList, 0, 0);
+            this.tpAvailablePrintersList.Controls.Add(this.cbAvailablePrintersList, 1, 0);
+            this.tpAvailablePrintersList.ForeColor = System.Drawing.Color.Black;
+            this.tpAvailablePrintersList.Location = new System.Drawing.Point(10, 29);
+            this.tpAvailablePrintersList.Margin = new System.Windows.Forms.Padding(5);
+            this.tpAvailablePrintersList.Name = "tpAvailablePrintersList";
+            this.tpAvailablePrintersList.Padding = new System.Windows.Forms.Padding(2);
+            this.tpAvailablePrintersList.RowCount = 1;
+            this.tpAvailablePrintersList.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tpAvailablePrintersList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tpAvailablePrintersList.Size = new System.Drawing.Size(450, 40);
+            this.tpAvailablePrintersList.TabIndex = 0;
+            // 
+            // lAvailablePrintersList
+            // 
+            this.lAvailablePrintersList.AutoSize = true;
+            this.lAvailablePrintersList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lAvailablePrintersList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lAvailablePrintersList.Location = new System.Drawing.Point(8, 8);
+            this.lAvailablePrintersList.Margin = new System.Windows.Forms.Padding(5);
+            this.lAvailablePrintersList.Name = "lAvailablePrintersList";
+            this.lAvailablePrintersList.Size = new System.Drawing.Size(200, 24);
+            this.lAvailablePrintersList.TabIndex = 0;
+            this.lAvailablePrintersList.Text = "Lista dostępnych drukarek";
+            this.lAvailablePrintersList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cbAvailablePrintersList
+            // 
+            this.cbAvailablePrintersList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbAvailablePrintersList.FormattingEnabled = true;
+            this.cbAvailablePrintersList.Location = new System.Drawing.Point(217, 6);
+            this.cbAvailablePrintersList.Name = "cbAvailablePrintersList";
+            this.cbAvailablePrintersList.Size = new System.Drawing.Size(227, 28);
+            this.cbAvailablePrintersList.TabIndex = 1;
+            this.cbAvailablePrintersList.SelectedIndexChanged += new System.EventHandler(this.cbAvailablePrintersList_SelectedIndexChanged);
+            // 
+            // gbDatabaseSettings
+            // 
+            this.gbDatabaseSettings.Controls.Add(this.tpDbBackupPath);
+            this.gbDatabaseSettings.Controls.Add(this.bDbBackup);
+            this.gbDatabaseSettings.Controls.Add(this.tableLayoutPanel3);
+            this.gbDatabaseSettings.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gbDatabaseSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.gbDatabaseSettings.Location = new System.Drawing.Point(0, 290);
+            this.gbDatabaseSettings.Name = "gbDatabaseSettings";
+            this.gbDatabaseSettings.Size = new System.Drawing.Size(920, 130);
+            this.gbDatabaseSettings.TabIndex = 18;
+            this.gbDatabaseSettings.TabStop = false;
+            this.gbDatabaseSettings.Text = "Ustawienia bazy danych";
+            // 
+            // tpDbBackupPath
+            // 
+            this.tpDbBackupPath.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpDbBackupPath.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tpDbBackupPath.ColumnCount = 3;
+            this.tpDbBackupPath.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
+            this.tpDbBackupPath.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 560F));
+            this.tpDbBackupPath.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpDbBackupPath.Controls.Add(this.bDbBackupPath, 2, 0);
+            this.tpDbBackupPath.Controls.Add(this.rtbDbBackupPath, 1, 0);
+            this.tpDbBackupPath.Controls.Add(this.lDbBackupPath, 0, 0);
+            this.tpDbBackupPath.Location = new System.Drawing.Point(8, 71);
+            this.tpDbBackupPath.Name = "tpDbBackupPath";
+            this.tpDbBackupPath.Padding = new System.Windows.Forms.Padding(2);
+            this.tpDbBackupPath.RowCount = 1;
+            this.tpDbBackupPath.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tpDbBackupPath.Size = new System.Drawing.Size(909, 40);
+            this.tpDbBackupPath.TabIndex = 23;
+            // 
+            // bDbBackupPath
+            // 
+            this.bDbBackupPath.BackColor = System.Drawing.Color.White;
+            this.bDbBackupPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bDbBackupPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bDbBackupPath.Location = new System.Drawing.Point(868, 6);
+            this.bDbBackupPath.Name = "bDbBackupPath";
+            this.bDbBackupPath.Size = new System.Drawing.Size(35, 30);
+            this.bDbBackupPath.TabIndex = 3;
+            this.bDbBackupPath.Text = "...";
+            this.bDbBackupPath.UseVisualStyleBackColor = false;
+            this.bDbBackupPath.Click += new System.EventHandler(this.bDbBackupPath_Click);
+            // 
+            // rtbDbBackupPath
+            // 
+            this.rtbDbBackupPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbDbBackupPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.rtbDbBackupPath.Location = new System.Drawing.Point(307, 6);
+            this.rtbDbBackupPath.Multiline = false;
+            this.rtbDbBackupPath.Name = "rtbDbBackupPath";
+            this.rtbDbBackupPath.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.rtbDbBackupPath.Size = new System.Drawing.Size(554, 30);
+            this.rtbDbBackupPath.TabIndex = 18;
+            this.rtbDbBackupPath.Text = "";
+            this.rtbDbBackupPath.TextChanged += new System.EventHandler(this.rtbDbBackupPath_TextChanged);
+            this.rtbDbBackupPath.Validating += new System.ComponentModel.CancelEventHandler(this.rtbDbBackupPath_Validating);
+            // 
+            // lDbBackupPath
+            // 
+            this.lDbBackupPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lDbBackupPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lDbBackupPath.Location = new System.Drawing.Point(8, 8);
+            this.lDbBackupPath.Margin = new System.Windows.Forms.Padding(5);
+            this.lDbBackupPath.Name = "lDbBackupPath";
+            this.lDbBackupPath.Size = new System.Drawing.Size(290, 26);
+            this.lDbBackupPath.TabIndex = 0;
+            this.lDbBackupPath.Text = "Ścieżka kopii zapasowej bazy danych";
+            this.lDbBackupPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // bDbBackup
             // 
             this.bDbBackup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bDbBackup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bDbBackup.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bDbBackup.Location = new System.Drawing.Point(476, 20);
+            this.bDbBackup.Location = new System.Drawing.Point(467, 25);
+            this.bDbBackup.Margin = new System.Windows.Forms.Padding(5);
             this.bDbBackup.Name = "bDbBackup";
-            this.bDbBackup.Size = new System.Drawing.Size(200, 50);
+            this.bDbBackup.Size = new System.Drawing.Size(450, 40);
             this.bDbBackup.TabIndex = 15;
             this.bDbBackup.Text = "Kopia zapasowa bazy danych";
             this.bDbBackup.UseVisualStyleBackColor = false;
@@ -390,8 +622,8 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 210F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel3.Controls.Add(this.lDatabaseName, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.rtbDatabaseName, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.lSqlServerName, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.rtbSqlServerName, 1, 0);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(8, 25);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.Padding = new System.Windows.Forms.Padding(2);
@@ -401,18 +633,101 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel3.Size = new System.Drawing.Size(450, 40);
             this.tableLayoutPanel3.TabIndex = 20;
             // 
-            // lDatabaseName
+            // lSqlServerName
             // 
-            this.lDatabaseName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
-            this.lDatabaseName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lDatabaseName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lDatabaseName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lDatabaseName.Location = new System.Drawing.Point(6, 3);
-            this.lDatabaseName.Name = "lDatabaseName";
-            this.lDatabaseName.Size = new System.Drawing.Size(204, 34);
-            this.lDatabaseName.TabIndex = 8;
-            this.lDatabaseName.Text = "Nazwa bazy danych";
-            this.lDatabaseName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lSqlServerName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.lSqlServerName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lSqlServerName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lSqlServerName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lSqlServerName.Location = new System.Drawing.Point(6, 3);
+            this.lSqlServerName.Name = "lSqlServerName";
+            this.lSqlServerName.Size = new System.Drawing.Size(204, 34);
+            this.lSqlServerName.TabIndex = 8;
+            this.lSqlServerName.Text = "Nazwa serwera bazy";
+            this.lSqlServerName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // rtbSqlServerName
+            // 
+            this.rtbSqlServerName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbSqlServerName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.rtbSqlServerName.Location = new System.Drawing.Point(217, 6);
+            this.rtbSqlServerName.Multiline = false;
+            this.rtbSqlServerName.Name = "rtbSqlServerName";
+            this.rtbSqlServerName.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.rtbSqlServerName.ShowSelectionMargin = true;
+            this.rtbSqlServerName.Size = new System.Drawing.Size(227, 28);
+            this.rtbSqlServerName.TabIndex = 8;
+            this.rtbSqlServerName.Text = "";
+            // 
+            // gpGeneralSettings
+            // 
+            this.gpGeneralSettings.Controls.Add(this.tpLibraryPath);
+            this.gpGeneralSettings.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gpGeneralSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.gpGeneralSettings.Location = new System.Drawing.Point(0, 420);
+            this.gpGeneralSettings.Name = "gpGeneralSettings";
+            this.gpGeneralSettings.Size = new System.Drawing.Size(920, 79);
+            this.gpGeneralSettings.TabIndex = 19;
+            this.gpGeneralSettings.TabStop = false;
+            this.gpGeneralSettings.Text = "Ustawienia ogólne";
+            // 
+            // tpLibraryPath
+            // 
+            this.tpLibraryPath.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.tpLibraryPath.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tpLibraryPath.ColumnCount = 3;
+            this.tpLibraryPath.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250F));
+            this.tpLibraryPath.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 610F));
+            this.tpLibraryPath.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpLibraryPath.Controls.Add(this.bLibraryPath, 2, 0);
+            this.tpLibraryPath.Controls.Add(this.rtbLibraryPath, 1, 0);
+            this.tpLibraryPath.Controls.Add(this.lLibraryPath, 0, 0);
+            this.tpLibraryPath.Location = new System.Drawing.Point(8, 25);
+            this.tpLibraryPath.Name = "tpLibraryPath";
+            this.tpLibraryPath.Padding = new System.Windows.Forms.Padding(2);
+            this.tpLibraryPath.RowCount = 1;
+            this.tpLibraryPath.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tpLibraryPath.Size = new System.Drawing.Size(909, 40);
+            this.tpLibraryPath.TabIndex = 23;
+            // 
+            // bLibraryPath
+            // 
+            this.bLibraryPath.BackColor = System.Drawing.Color.White;
+            this.bLibraryPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bLibraryPath.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bLibraryPath.Location = new System.Drawing.Point(868, 6);
+            this.bLibraryPath.Name = "bLibraryPath";
+            this.bLibraryPath.Size = new System.Drawing.Size(35, 30);
+            this.bLibraryPath.TabIndex = 3;
+            this.bLibraryPath.Text = "...";
+            this.bLibraryPath.UseVisualStyleBackColor = false;
+            this.bLibraryPath.Click += new System.EventHandler(this.bLibraryPath_Click);
+            // 
+            // rtbLibraryPath
+            // 
+            this.rtbLibraryPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbLibraryPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.rtbLibraryPath.Location = new System.Drawing.Point(257, 6);
+            this.rtbLibraryPath.Multiline = false;
+            this.rtbLibraryPath.Name = "rtbLibraryPath";
+            this.rtbLibraryPath.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.rtbLibraryPath.Size = new System.Drawing.Size(604, 30);
+            this.rtbLibraryPath.TabIndex = 18;
+            this.rtbLibraryPath.Text = "";
+            this.rtbLibraryPath.TextChanged += new System.EventHandler(this.rtbLibraryPath_TextChanged);
+            this.rtbLibraryPath.Validating += new System.ComponentModel.CancelEventHandler(this.rtbLibraryPath_Validating);
+            // 
+            // lLibraryPath
+            // 
+            this.lLibraryPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lLibraryPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lLibraryPath.Location = new System.Drawing.Point(8, 8);
+            this.lLibraryPath.Margin = new System.Windows.Forms.Padding(5);
+            this.lLibraryPath.Name = "lLibraryPath";
+            this.lLibraryPath.Size = new System.Drawing.Size(240, 26);
+            this.lLibraryPath.TabIndex = 0;
+            this.lLibraryPath.Text = "Ścieżka bibliotek programu";
+            this.lLibraryPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // GeneralSettings
             // 
@@ -420,7 +735,9 @@ namespace NaturalnieApp.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.gpGeneralSettings);
+            this.Controls.Add(this.gbDatabaseSettings);
+            this.Controls.Add(this.gbPrinterSelection);
             this.Controls.Add(this.pButtonsPanel);
             this.Controls.Add(this.gpConnectionSettings);
             this.Controls.Add(this.pHeader);
@@ -428,16 +745,25 @@ namespace NaturalnieApp.Forms
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "GeneralSettings";
             this.Size = new System.Drawing.Size(920, 690);
-            this.Load += new System.EventHandler(this.ElzabSettings_Load);
+            this.Load += new System.EventHandler(this.GeneralSettings_Load);
             this.pHeader.ResumeLayout(false);
             this.pHeader.PerformLayout();
             this.gpConnectionSettings.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tpElzabPath.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tpPortNumber.ResumeLayout(false);
             this.pButtonsPanel.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
+            this.gbPrinterSelection.ResumeLayout(false);
+            this.tpLabelPath.ResumeLayout(false);
+            this.tpSelectedPrinterName.ResumeLayout(false);
+            this.tpSelectedPrinterName.PerformLayout();
+            this.tpAvailablePrintersList.ResumeLayout(false);
+            this.tpAvailablePrintersList.PerformLayout();
+            this.gbDatabaseSettings.ResumeLayout(false);
+            this.tpDbBackupPath.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
+            this.gpGeneralSettings.ResumeLayout(false);
+            this.tpLibraryPath.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -449,7 +775,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.ComboBox cBaudRate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button bDefaults;
-        private System.Windows.Forms.RichTextBox rtbDatabaseName;
         private System.Windows.Forms.GroupBox gpConnectionSettings;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tpPortNumber;
@@ -460,12 +785,33 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bClose;
         private System.Windows.Forms.RichTextBox tbElzabPath;
         private System.Windows.Forms.Label lELzabCommandPath;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Button bBrowsePath;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Label lDatabaseName;
+        private System.Windows.Forms.TableLayoutPanel tpElzabPath;
+        private System.Windows.Forms.Button bElzabPath;
         private System.Windows.Forms.TextBox tbDummyForCtrl;
+        private System.Windows.Forms.GroupBox gbPrinterSelection;
+        private System.Windows.Forms.TableLayoutPanel tpLabelPath;
+        private System.Windows.Forms.Button bLabelPath;
+        private System.Windows.Forms.RichTextBox rtbLabelPath;
+        private System.Windows.Forms.Label lLabelPath;
+        private System.Windows.Forms.TableLayoutPanel tpSelectedPrinterName;
+        private System.Windows.Forms.Label lSelectedPrinterName;
+        private System.Windows.Forms.TextBox tbSelectedPrinterName;
+        private System.Windows.Forms.TableLayoutPanel tpAvailablePrintersList;
+        private System.Windows.Forms.Label lAvailablePrintersList;
+        private System.Windows.Forms.ComboBox cbAvailablePrintersList;
+        private System.Windows.Forms.GroupBox gbDatabaseSettings;
         private System.Windows.Forms.Button bDbBackup;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Label lSqlServerName;
+        private System.Windows.Forms.RichTextBox rtbSqlServerName;
+        private System.Windows.Forms.TableLayoutPanel tpDbBackupPath;
+        private System.Windows.Forms.Button bDbBackupPath;
+        private System.Windows.Forms.RichTextBox rtbDbBackupPath;
+        private System.Windows.Forms.Label lDbBackupPath;
+        private System.Windows.Forms.GroupBox gpGeneralSettings;
+        private System.Windows.Forms.TableLayoutPanel tpLibraryPath;
+        private System.Windows.Forms.Button bLibraryPath;
+        private System.Windows.Forms.RichTextBox rtbLibraryPath;
+        private System.Windows.Forms.Label lLibraryPath;
     }
 }
