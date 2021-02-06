@@ -66,10 +66,11 @@ namespace NaturalnieApp.Forms
             this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
-            //this.dymoSettings = new DymoSettings();
+            this.dymoSettings = new DymoSettings();
             this.generalSettings = new GeneralSettings(this.ConfigFileOjbInst);
             this.cashRegisterCommands = new ElzabSynchronization(ref this.databaseCommands);
             this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
+            
         }
         //=============================================================================
         //                              Background worker

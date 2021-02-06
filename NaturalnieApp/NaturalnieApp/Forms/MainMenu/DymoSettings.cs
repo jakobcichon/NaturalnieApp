@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using NaturalnieApp.Database;
 using NaturalnieApp.Dymo_Printer;
 using NaturalnieApp.Forms.Common;
 
@@ -20,11 +21,25 @@ namespace NaturalnieApp.Forms
         {
             InitializeComponent();
 
-            //this.TestSearchBar = new SearchBarTemplate();
-            //pTest.Controls.Add(this.TestSearchBar);
-
-
+            this.TestSearchBar = new SearchBarTemplate();
+            pTest.Controls.Add(this.TestSearchBar);
+            this.TestSearchBar.NewEntSelected += TestSearchBar_NewEntSelected;
         }
+
+        //General methods
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+
+            this.TestSearchBar.Select();
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void TestSearchBar_NewEntSelected(object sender, SearchBarTemplate.NewEntSelectedEventArgs e)
+        {
+            Product product = e.SelectedProduct;
+        }
+
         #endregion
 
         private void bUpdate_Click(object sender, EventArgs e)
@@ -94,6 +109,12 @@ namespace NaturalnieApp.Forms
             {
                 MessageBox.Show("Nie znaleziono drukarki dymo");
             }
+        }
+
+        private void bTestButton_Click(object sender, EventArgs e)
+        {
+            bool temp = this.TestSearchBar.SelectBarcode("6802752safet901");
+            ;
         }
     }
 }

@@ -31,7 +31,6 @@ namespace NaturalnieApp.Forms
         {
             this.pHeader = new System.Windows.Forms.Panel();
             this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
-            this.bDummyForControl = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.bSave = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
@@ -43,18 +42,21 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.bClose = new System.Windows.Forms.Button();
             this.tpMarigin = new System.Windows.Forms.TableLayoutPanel();
-            this.tbMarigin = new System.Windows.Forms.TextBox();
             this.lMarigin = new System.Windows.Forms.Label();
-            this.bChangeTaxAndPrice = new System.Windows.Forms.Button();
+            this.pButtonsPanel = new System.Windows.Forms.Panel();
+            this.tbMarigin = new System.Windows.Forms.TextBox();
+            this.pAllowOverrideProduct = new System.Windows.Forms.Panel();
+            this.cbAllowOverrideProduct = new System.Windows.Forms.CheckBox();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.tpMarigin.SuspendLayout();
+            this.pButtonsPanel.SuspendLayout();
+            this.pAllowOverrideProduct.SuspendLayout();
             this.SuspendLayout();
             // 
             // pHeader
             // 
             this.pHeader.Controls.Add(this.tbDummyForCtrl);
-            this.pHeader.Controls.Add(this.bDummyForControl);
             this.pHeader.Controls.Add(this.panel1);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
@@ -69,25 +71,8 @@ namespace NaturalnieApp.Forms
             this.tbDummyForCtrl.Name = "tbDummyForCtrl";
             this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
             this.tbDummyForCtrl.TabIndex = 7;
+            this.tbDummyForCtrl.Visible = false;
             this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
-            // 
-            // bDummyForControl
-            // 
-            this.bDummyForControl.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.bDummyForControl.BackColor = System.Drawing.Color.Transparent;
-            this.bDummyForControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bDummyForControl.CausesValidation = false;
-            this.bDummyForControl.Cursor = System.Windows.Forms.Cursors.No;
-            this.bDummyForControl.Enabled = false;
-            this.bDummyForControl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bDummyForControl.ForeColor = System.Drawing.Color.Transparent;
-            this.bDummyForControl.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.bDummyForControl.Location = new System.Drawing.Point(496, 11);
-            this.bDummyForControl.Name = "bDummyForControl";
-            this.bDummyForControl.Size = new System.Drawing.Size(8, 8);
-            this.bDummyForControl.TabIndex = 0;
-            this.bDummyForControl.UseVisualStyleBackColor = false;
-            this.bDummyForControl.Visible = false;
             // 
             // panel1
             // 
@@ -101,7 +86,7 @@ namespace NaturalnieApp.Forms
             this.bSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSave.Location = new System.Drawing.Point(652, 510);
+            this.bSave.Location = new System.Drawing.Point(654, 7);
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(150, 50);
             this.bSave.TabIndex = 8;
@@ -114,7 +99,7 @@ namespace NaturalnieApp.Forms
             this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bUpdate.Location = new System.Drawing.Point(546, 510);
+            this.bUpdate.Location = new System.Drawing.Point(548, 7);
             this.bUpdate.Name = "bUpdate";
             this.bUpdate.Size = new System.Drawing.Size(100, 50);
             this.bUpdate.TabIndex = 7;
@@ -128,7 +113,7 @@ namespace NaturalnieApp.Forms
             this.bGenerateTemplate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bGenerateTemplate.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.bGenerateTemplate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bGenerateTemplate.Location = new System.Drawing.Point(4, 510);
+            this.bGenerateTemplate.Location = new System.Drawing.Point(6, 7);
             this.bGenerateTemplate.Name = "bGenerateTemplate";
             this.bGenerateTemplate.Size = new System.Drawing.Size(100, 50);
             this.bGenerateTemplate.TabIndex = 3;
@@ -142,7 +127,7 @@ namespace NaturalnieApp.Forms
             this.bAddFromFile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bAddFromFile.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.bAddFromFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bAddFromFile.Location = new System.Drawing.Point(110, 510);
+            this.bAddFromFile.Location = new System.Drawing.Point(112, 7);
             this.bAddFromFile.Name = "bAddFromFile";
             this.bAddFromFile.Size = new System.Drawing.Size(100, 50);
             this.bAddFromFile.TabIndex = 4;
@@ -156,7 +141,7 @@ namespace NaturalnieApp.Forms
             this.bDeselectAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bDeselectAll.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.bDeselectAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bDeselectAll.Location = new System.Drawing.Point(322, 510);
+            this.bDeselectAll.Location = new System.Drawing.Point(324, 7);
             this.bDeselectAll.Name = "bDeselectAll";
             this.bDeselectAll.Size = new System.Drawing.Size(100, 50);
             this.bDeselectAll.TabIndex = 6;
@@ -171,7 +156,7 @@ namespace NaturalnieApp.Forms
             this.bSelectAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bSelectAll.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.bSelectAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSelectAll.Location = new System.Drawing.Point(216, 510);
+            this.bSelectAll.Location = new System.Drawing.Point(218, 7);
             this.bSelectAll.Name = "bSelectAll";
             this.bSelectAll.Size = new System.Drawing.Size(100, 50);
             this.bSelectAll.TabIndex = 5;
@@ -182,6 +167,7 @@ namespace NaturalnieApp.Forms
             // 
             // advancedDataGridView1
             // 
+            this.advancedDataGridView1.AllowUserToAddRows = false;
             this.advancedDataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
@@ -190,7 +176,7 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 27);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(920, 420);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(920, 539);
             this.advancedDataGridView1.TabIndex = 0;
             this.advancedDataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellEndEdit);
             this.advancedDataGridView1.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValidated);
@@ -204,7 +190,7 @@ namespace NaturalnieApp.Forms
             this.bClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bClose.Location = new System.Drawing.Point(808, 510);
+            this.bClose.Location = new System.Drawing.Point(810, 7);
             this.bClose.Name = "bClose";
             this.bClose.Size = new System.Drawing.Size(100, 50);
             this.bClose.TabIndex = 9;
@@ -218,53 +204,80 @@ namespace NaturalnieApp.Forms
             this.tpMarigin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
             this.tpMarigin.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tpMarigin.ColumnCount = 2;
-            this.tpMarigin.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tpMarigin.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tpMarigin.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpMarigin.Controls.Add(this.tbMarigin, 0, 0);
             this.tpMarigin.Controls.Add(this.lMarigin, 0, 0);
-            this.tpMarigin.Location = new System.Drawing.Point(4, 453);
+            this.tpMarigin.Location = new System.Drawing.Point(0, 578);
             this.tpMarigin.Name = "tpMarigin";
             this.tpMarigin.RowCount = 1;
-            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tpMarigin.Size = new System.Drawing.Size(147, 40);
+            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tpMarigin.Size = new System.Drawing.Size(147, 30);
             this.tpMarigin.TabIndex = 2;
-            // 
-            // tbMarigin
-            // 
-            this.tbMarigin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbMarigin.Location = new System.Drawing.Point(83, 6);
-            this.tbMarigin.Margin = new System.Windows.Forms.Padding(5);
-            this.tbMarigin.Name = "tbMarigin";
-            this.tbMarigin.Size = new System.Drawing.Size(55, 26);
-            this.tbMarigin.TabIndex = 1;
-            this.tbMarigin.Text = "30";
-            this.tbMarigin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tbMarigin.Validating += new System.ComponentModel.CancelEventHandler(this.tbMarigin_Validating);
             // 
             // lMarigin
             // 
-            this.lMarigin.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lMarigin.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lMarigin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lMarigin.Location = new System.Drawing.Point(6, 6);
-            this.lMarigin.Margin = new System.Windows.Forms.Padding(5);
+            this.lMarigin.Location = new System.Drawing.Point(4, 4);
+            this.lMarigin.Margin = new System.Windows.Forms.Padding(3);
             this.lMarigin.Name = "lMarigin";
-            this.lMarigin.Size = new System.Drawing.Size(66, 30);
+            this.lMarigin.Size = new System.Drawing.Size(64, 24);
             this.lMarigin.TabIndex = 0;
             this.lMarigin.Text = "Marża";
             this.lMarigin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // bChangeTaxAndPrice
+            // pButtonsPanel
             // 
-            this.bChangeTaxAndPrice.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bChangeTaxAndPrice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bChangeTaxAndPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bChangeTaxAndPrice.Location = new System.Drawing.Point(428, 510);
-            this.bChangeTaxAndPrice.Name = "bChangeTaxAndPrice";
-            this.bChangeTaxAndPrice.Size = new System.Drawing.Size(100, 50);
-            this.bChangeTaxAndPrice.TabIndex = 10;
-            this.bChangeTaxAndPrice.Text = "zmień cenę i VAT";
-            this.bChangeTaxAndPrice.UseVisualStyleBackColor = false;
-            this.bChangeTaxAndPrice.Click += new System.EventHandler(this.bChangeTaxAndPrice_Click);
+            this.pButtonsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
+            this.pButtonsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pButtonsPanel.Controls.Add(this.bSave);
+            this.pButtonsPanel.Controls.Add(this.bUpdate);
+            this.pButtonsPanel.Controls.Add(this.bClose);
+            this.pButtonsPanel.Controls.Add(this.bGenerateTemplate);
+            this.pButtonsPanel.Controls.Add(this.bAddFromFile);
+            this.pButtonsPanel.Controls.Add(this.bSelectAll);
+            this.pButtonsPanel.Controls.Add(this.bDeselectAll);
+            this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pButtonsPanel.Location = new System.Drawing.Point(0, 620);
+            this.pButtonsPanel.Margin = new System.Windows.Forms.Padding(5);
+            this.pButtonsPanel.Name = "pButtonsPanel";
+            this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
+            this.pButtonsPanel.TabIndex = 11;
+            // 
+            // tbMarigin
+            // 
+            this.tbMarigin.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbMarigin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbMarigin.Location = new System.Drawing.Point(75, 4);
+            this.tbMarigin.Name = "tbMarigin";
+            this.tbMarigin.Size = new System.Drawing.Size(68, 22);
+            this.tbMarigin.TabIndex = 2;
+            this.tbMarigin.Text = "30";
+            this.tbMarigin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // pAllowOverrideProduct
+            // 
+            this.pAllowOverrideProduct.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.pAllowOverrideProduct.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pAllowOverrideProduct.Controls.Add(this.cbAllowOverrideProduct);
+            this.pAllowOverrideProduct.Location = new System.Drawing.Point(549, 578);
+            this.pAllowOverrideProduct.Name = "pAllowOverrideProduct";
+            this.pAllowOverrideProduct.Padding = new System.Windows.Forms.Padding(3);
+            this.pAllowOverrideProduct.Size = new System.Drawing.Size(371, 30);
+            this.pAllowOverrideProduct.TabIndex = 12;
+            // 
+            // cbAllowOverrideProduct
+            // 
+            this.cbAllowOverrideProduct.AutoSize = true;
+            this.cbAllowOverrideProduct.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbAllowOverrideProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.cbAllowOverrideProduct.Location = new System.Drawing.Point(3, 3);
+            this.cbAllowOverrideProduct.Name = "cbAllowOverrideProduct";
+            this.cbAllowOverrideProduct.Size = new System.Drawing.Size(363, 22);
+            this.cbAllowOverrideProduct.TabIndex = 0;
+            this.cbAllowOverrideProduct.Text = "Nadpisz produkt, jeśli isnieje w bazie danych ";
+            this.cbAllowOverrideProduct.UseVisualStyleBackColor = true;
             // 
             // AddNewProductFromExcel
             // 
@@ -273,16 +286,10 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(920, 690);
-            this.Controls.Add(this.bChangeTaxAndPrice);
+            this.Controls.Add(this.pAllowOverrideProduct);
+            this.Controls.Add(this.pButtonsPanel);
             this.Controls.Add(this.tpMarigin);
-            this.Controls.Add(this.bClose);
             this.Controls.Add(this.advancedDataGridView1);
-            this.Controls.Add(this.bSelectAll);
-            this.Controls.Add(this.bDeselectAll);
-            this.Controls.Add(this.bAddFromFile);
-            this.Controls.Add(this.bGenerateTemplate);
-            this.Controls.Add(this.bUpdate);
-            this.Controls.Add(this.bSave);
             this.Controls.Add(this.pHeader);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.ForeColor = System.Drawing.Color.Black;
@@ -296,6 +303,9 @@ namespace NaturalnieApp.Forms
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.tpMarigin.ResumeLayout(false);
             this.tpMarigin.PerformLayout();
+            this.pButtonsPanel.ResumeLayout(false);
+            this.pAllowOverrideProduct.ResumeLayout(false);
+            this.pAllowOverrideProduct.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -313,10 +323,11 @@ namespace NaturalnieApp.Forms
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
         private System.Windows.Forms.Button bClose;
         private System.Windows.Forms.TableLayoutPanel tpMarigin;
-        private System.Windows.Forms.TextBox tbMarigin;
         private System.Windows.Forms.Label lMarigin;
-        private System.Windows.Forms.Button bDummyForControl;
         private System.Windows.Forms.TextBox tbDummyForCtrl;
-        private System.Windows.Forms.Button bChangeTaxAndPrice;
+        private System.Windows.Forms.Panel pButtonsPanel;
+        private System.Windows.Forms.TextBox tbMarigin;
+        private System.Windows.Forms.Panel pAllowOverrideProduct;
+        private System.Windows.Forms.CheckBox cbAllowOverrideProduct;
     }
 }

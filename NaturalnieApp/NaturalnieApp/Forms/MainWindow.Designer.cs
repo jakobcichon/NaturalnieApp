@@ -53,17 +53,17 @@ namespace NaturalnieApp.Forms
             this.bDymoSettings = new System.Windows.Forms.Button();
             this.bGeneralSettings = new System.Windows.Forms.Button();
             this.bMainMenu = new System.Windows.Forms.Button();
+            this.pLogo = new System.Windows.Forms.Panel();
             this.pHeader = new System.Windows.Forms.Panel();
-            this.pMenuDeliminer = new System.Windows.Forms.Panel();
-            this.pContainer = new System.Windows.Forms.Panel();
-            this.timer1sTick = new System.Windows.Forms.Timer(this.components);
             this.tlpdbStatus = new System.Windows.Forms.TableLayoutPanel();
             this.lDbStatus = new System.Windows.Forms.Label();
-            this.pLogo = new System.Windows.Forms.Panel();
             this.pbDbStatus = new System.Windows.Forms.PictureBox();
             this.bMinimize = new System.Windows.Forms.Button();
             this.bMaximize = new System.Windows.Forms.Button();
             this.bExit = new System.Windows.Forms.Button();
+            this.pMenuDeliminer = new System.Windows.Forms.Panel();
+            this.pContainer = new System.Windows.Forms.Panel();
+            this.timer1sTick = new System.Windows.Forms.Timer(this.components);
             this.pMenu.SuspendLayout();
             this.pStockSubMenu.SuspendLayout();
             this.pProductSubMenu.SuspendLayout();
@@ -399,7 +399,6 @@ namespace NaturalnieApp.Forms
             this.bDymoSettings.TabIndex = 5;
             this.bDymoSettings.Text = "Ustawienia drukarki Dymo";
             this.bDymoSettings.UseVisualStyleBackColor = false;
-            this.bDymoSettings.Visible = false;
             this.bDymoSettings.Click += new System.EventHandler(this.bDymoSettings_Click);
             // 
             // bGeneralSettings
@@ -437,6 +436,18 @@ namespace NaturalnieApp.Forms
             this.bMainMenu.UseVisualStyleBackColor = false;
             this.bMainMenu.Click += new System.EventHandler(this.bMainMenu_Click);
             // 
+            // pLogo
+            // 
+            this.pLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.pLogo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pLogo.BackgroundImage")));
+            this.pLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pLogo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pLogo.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.pLogo.Location = new System.Drawing.Point(0, 0);
+            this.pLogo.Name = "pLogo";
+            this.pLogo.Size = new System.Drawing.Size(300, 114);
+            this.pLogo.TabIndex = 0;
+            // 
             // pHeader
             // 
             this.pHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
@@ -452,39 +463,6 @@ namespace NaturalnieApp.Forms
             this.pHeader.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseDown);
             this.pHeader.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseMove);
             this.pHeader.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseUp);
-            // 
-            // pMenuDeliminer
-            // 
-            this.pMenuDeliminer.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.pMenuDeliminer.BackColor = System.Drawing.Color.DimGray;
-            this.pMenuDeliminer.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pMenuDeliminer.Enabled = false;
-            this.pMenuDeliminer.Location = new System.Drawing.Point(301, 31);
-            this.pMenuDeliminer.Name = "pMenuDeliminer";
-            this.pMenuDeliminer.Size = new System.Drawing.Size(2, 698);
-            this.pMenuDeliminer.TabIndex = 6;
-            // 
-            // pContainer
-            // 
-            this.pContainer.AutoScroll = true;
-            this.pContainer.AutoScrollMargin = new System.Drawing.Size(2, 2);
-            this.pContainer.AutoScrollMinSize = new System.Drawing.Size(300, 300);
-            this.pContainer.AutoSize = true;
-            this.pContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
-            this.pContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pContainer.ForeColor = System.Drawing.Color.White;
-            this.pContainer.Location = new System.Drawing.Point(303, 31);
-            this.pContainer.Margin = new System.Windows.Forms.Padding(0);
-            this.pContainer.MinimumSize = new System.Drawing.Size(300, 300);
-            this.pContainer.Name = "pContainer";
-            this.pContainer.Padding = new System.Windows.Forms.Padding(1);
-            this.pContainer.Size = new System.Drawing.Size(936, 698);
-            this.pContainer.TabIndex = 7;
-            // 
-            // timer1sTick
-            // 
-            this.timer1sTick.Interval = 1000;
-            this.timer1sTick.Tick += new System.EventHandler(this.timer5sTick_Tick);
             // 
             // tlpdbStatus
             // 
@@ -513,18 +491,6 @@ namespace NaturalnieApp.Forms
             this.lDbStatus.TabIndex = 2;
             this.lDbStatus.Text = "Baza danych";
             this.lDbStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // pLogo
-            // 
-            this.pLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
-            this.pLogo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pLogo.BackgroundImage")));
-            this.pLogo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pLogo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pLogo.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.pLogo.Location = new System.Drawing.Point(0, 0);
-            this.pLogo.Name = "pLogo";
-            this.pLogo.Size = new System.Drawing.Size(300, 114);
-            this.pLogo.TabIndex = 0;
             // 
             // pbDbStatus
             // 
@@ -578,6 +544,39 @@ namespace NaturalnieApp.Forms
             this.bExit.TabIndex = 0;
             this.bExit.UseVisualStyleBackColor = true;
             this.bExit.Click += new System.EventHandler(this.bExit_Click);
+            // 
+            // pMenuDeliminer
+            // 
+            this.pMenuDeliminer.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.pMenuDeliminer.BackColor = System.Drawing.Color.DimGray;
+            this.pMenuDeliminer.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pMenuDeliminer.Enabled = false;
+            this.pMenuDeliminer.Location = new System.Drawing.Point(301, 31);
+            this.pMenuDeliminer.Name = "pMenuDeliminer";
+            this.pMenuDeliminer.Size = new System.Drawing.Size(2, 698);
+            this.pMenuDeliminer.TabIndex = 6;
+            // 
+            // pContainer
+            // 
+            this.pContainer.AutoScroll = true;
+            this.pContainer.AutoScrollMargin = new System.Drawing.Size(2, 2);
+            this.pContainer.AutoScrollMinSize = new System.Drawing.Size(300, 300);
+            this.pContainer.AutoSize = true;
+            this.pContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.pContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pContainer.ForeColor = System.Drawing.Color.White;
+            this.pContainer.Location = new System.Drawing.Point(303, 31);
+            this.pContainer.Margin = new System.Windows.Forms.Padding(0);
+            this.pContainer.MinimumSize = new System.Drawing.Size(300, 300);
+            this.pContainer.Name = "pContainer";
+            this.pContainer.Padding = new System.Windows.Forms.Padding(1);
+            this.pContainer.Size = new System.Drawing.Size(936, 698);
+            this.pContainer.TabIndex = 7;
+            // 
+            // timer1sTick
+            // 
+            this.timer1sTick.Interval = 1000;
+            this.timer1sTick.Tick += new System.EventHandler(this.timer5sTick_Tick);
             // 
             // MainWindow
             // 

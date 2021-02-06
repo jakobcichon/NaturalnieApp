@@ -42,6 +42,7 @@ namespace NaturalnieApp.Forms
             this.bUpdate = new System.Windows.Forms.Button();
             this.bSave = new System.Windows.Forms.Button();
             this.pTest = new System.Windows.Forms.Panel();
+            this.bTestButton = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
             this.gbPrinterSelection.SuspendLayout();
             this.tpSelectedPrinterName.SuspendLayout();
@@ -168,6 +169,7 @@ namespace NaturalnieApp.Forms
             // pButtonsPanel
             // 
             this.pButtonsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
+            this.pButtonsPanel.Controls.Add(this.bTestButton);
             this.pButtonsPanel.Controls.Add(this.bUpdate);
             this.pButtonsPanel.Controls.Add(this.bSave);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -212,6 +214,19 @@ namespace NaturalnieApp.Forms
             this.pTest.Size = new System.Drawing.Size(200, 100);
             this.pTest.TabIndex = 6;
             // 
+            // bTestButton
+            // 
+            this.bTestButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bTestButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bTestButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bTestButton.Location = new System.Drawing.Point(595, 7);
+            this.bTestButton.Name = "bTestButton";
+            this.bTestButton.Size = new System.Drawing.Size(100, 50);
+            this.bTestButton.TabIndex = 30;
+            this.bTestButton.Text = "Testowy";
+            this.bTestButton.UseVisualStyleBackColor = false;
+            this.bTestButton.Click += new System.EventHandler(this.bTestButton_Click);
+            // 
             // DymoSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -255,5 +270,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lSelectedPrinterName;
         private System.Windows.Forms.TextBox tbSelectedPrinterName;
         private System.Windows.Forms.Panel pTest;
+        private System.Windows.Forms.Button bTestButton;
     }
 }

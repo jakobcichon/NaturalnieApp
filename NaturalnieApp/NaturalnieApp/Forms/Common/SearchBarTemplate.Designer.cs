@@ -77,7 +77,7 @@ namespace NaturalnieApp.Forms.Common
             this.pLoadingBar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pLoadingBar.Controls.Add(this.lLoadingBar);
             this.pLoadingBar.Controls.Add(this.pbLoadingBar);
-            this.pLoadingBar.Location = new System.Drawing.Point(264, 22);
+            this.pLoadingBar.Location = new System.Drawing.Point(273, 27);
             this.pLoadingBar.Name = "pLoadingBar";
             this.pLoadingBar.Size = new System.Drawing.Size(456, 73);
             this.pLoadingBar.TabIndex = 3;
@@ -110,6 +110,7 @@ namespace NaturalnieApp.Forms.Common
             this.tbDummyForCtrl.Name = "tbDummyForCtrl";
             this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 26);
             this.tbDummyForCtrl.TabIndex = 9;
+            this.tbDummyForCtrl.Visible = false;
             this.tbDummyForCtrl.Enter += new System.EventHandler(this.tbDummyForCtrl_Enter);
             // 
             // pBarCode
@@ -167,7 +168,7 @@ namespace NaturalnieApp.Forms.Common
             this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 643F));
+            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 644F));
             this.pProductName.Controls.Add(this.cbProducts, 0, 1);
             this.pProductName.Controls.Add(this.lProductName, 0, 0);
             this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -227,12 +228,12 @@ namespace NaturalnieApp.Forms.Common
             this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
             this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 433F));
+            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 434F));
             this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
             this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
             this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.pManufacturer.Location = new System.Drawing.Point(10, 30);
-            this.pManufacturer.Margin = new System.Windows.Forms.Padding(0);
+            this.pManufacturer.Margin = new System.Windows.Forms.Padding(5);
             this.pManufacturer.Name = "pManufacturer";
             this.pManufacturer.RowCount = 2;
             this.pManufacturer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
