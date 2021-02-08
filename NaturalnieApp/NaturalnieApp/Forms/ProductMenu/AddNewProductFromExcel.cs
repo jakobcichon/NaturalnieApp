@@ -432,6 +432,24 @@ namespace NaturalnieApp.Forms
 
                     this.LastExcelFilePath = inputFileDialog.FileName;
                     ReadExcel(inputFileDialog.FileName);
+
+                    List<string> multipleEntriesList = GetListOfMultipleEntries(this.DataFromExcel);
+
+                    if(multipleEntriesList.Count > 0)
+                    {
+                        DialogResult result = MessageBox.Show(string.Format("Uwaga, znaleziono powielone elementy! Czy chcesz zobaczyć pełną listę ({0} wiersz/wierszy do wyświetlenia!", 
+                            multipleEntriesList.Count()), "Powielone wpisy w komórkach o wartościach unikatowych.", MessageBoxButtons.YesNo);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            string toDisplay = "";
+                            foreach(string element in multipleEntriesList)
+                            {
+                                toDisplay += element;
+                            }
+                            MessageBox.Show(toDisplay);
+                        }
+                    }
                 }
                 else
                 {
@@ -1149,6 +1167,73 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show(ex.Message);
             }
 
+        }
+
+        //Method used to check if in given data table rows with multiple entries exist
+        //It will return list of mulpiple entris contains Lp. Double entry Name
+        private List<string> GetListOfMultipleEntries(DataTable data)
+        {
+            List<string> retList = new List<string>();
+            List<string> listOfTheColumnsToCheckForMultipleEntries = new List<string> 
+            { this.ProductColumnName, this.ElzabProductColumnName, this.BarcodeColumnName };
+
+            List<DataRow> listOfDuplicates = new List<DataRow>();
+
+
+            try
+            {
+                //Loop throught all data rows and find multile entires.
+                foreach(string columName in listOfTheColumnsToCheckForMultipleEntries)
+                {
+                   foreach(DataRow row in data.Rows)
+                   {
+                        string currentValue = row.Field<string>(columName);
+                        for (int i = data.Rows.IndexOf(row) +1;i<data.Rows.Count; i++)
+                        {
+                            string orgValue = data.Rows[i].Field<string>(columName);
+                            
+                            if (currentValue == orgValue)
+                            {
+                                //Check if row already on the list
+                                if (!listOfDuplicates.Contains(row)) listOfDuplicates.Add(row);
+                                if (!listOfDuplicates.Contains(data.Rows[i])) listOfDuplicates.Add(data.Rows[i]);
+                            }
+                        }
+                    }
+
+                    string lpList = "";
+                    string cellValue = "";
+                    //Build string list to return
+                    foreach (DataRow row in listOfDuplicates)
+                    {
+                        List<DataRow> tempSameEntriesDataRows = listOfDuplicates.Where(e => e.Field<string>(columName) == row.Field<string>(columName)).ToList();
+
+                        if (cellValue == "") cellValue = row.Field<string>(columName);
+                        lpList += row.Field<string>(this.IndexColumnName).ToString() + ", ";
+
+                        //If last element fom multiple etris of one element list, add it to the main list
+                        if (row == tempSameEntriesDataRows.Last())
+                        {
+                            lpList = lpList.Remove(lpList.Length - 2, 2);
+
+                            string textToDisplay = string.Format("Kolumna \"{0}\". Wartość komórki: \"{1}\"; Lp: \"{2}\".\n",
+                                columName, cellValue, lpList);
+
+                            retList.Add(textToDisplay);
+                            lpList = "";
+                            cellValue = "";
+                        }
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            return retList;
         }
     }
 }

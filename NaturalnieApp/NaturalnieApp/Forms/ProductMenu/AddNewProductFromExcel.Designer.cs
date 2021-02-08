@@ -42,9 +42,9 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.bClose = new System.Windows.Forms.Button();
             this.tpMarigin = new System.Windows.Forms.TableLayoutPanel();
+            this.tbMarigin = new System.Windows.Forms.TextBox();
             this.lMarigin = new System.Windows.Forms.Label();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
-            this.tbMarigin = new System.Windows.Forms.TextBox();
             this.pAllowOverrideProduct = new System.Windows.Forms.Panel();
             this.cbAllowOverrideProduct = new System.Windows.Forms.CheckBox();
             this.pHeader.SuspendLayout();
@@ -211,9 +211,20 @@ namespace NaturalnieApp.Forms
             this.tpMarigin.Location = new System.Drawing.Point(0, 578);
             this.tpMarigin.Name = "tpMarigin";
             this.tpMarigin.RowCount = 1;
-            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
             this.tpMarigin.Size = new System.Drawing.Size(147, 30);
             this.tpMarigin.TabIndex = 2;
+            // 
+            // tbMarigin
+            // 
+            this.tbMarigin.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbMarigin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tbMarigin.Location = new System.Drawing.Point(75, 4);
+            this.tbMarigin.Name = "tbMarigin";
+            this.tbMarigin.Size = new System.Drawing.Size(68, 22);
+            this.tbMarigin.TabIndex = 2;
+            this.tbMarigin.Text = "30";
+            this.tbMarigin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // lMarigin
             // 
@@ -222,7 +233,7 @@ namespace NaturalnieApp.Forms
             this.lMarigin.Location = new System.Drawing.Point(4, 4);
             this.lMarigin.Margin = new System.Windows.Forms.Padding(3);
             this.lMarigin.Name = "lMarigin";
-            this.lMarigin.Size = new System.Drawing.Size(64, 24);
+            this.lMarigin.Size = new System.Drawing.Size(64, 25);
             this.lMarigin.TabIndex = 0;
             this.lMarigin.Text = "Marża";
             this.lMarigin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -244,17 +255,6 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.Name = "pButtonsPanel";
             this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
             this.pButtonsPanel.TabIndex = 11;
-            // 
-            // tbMarigin
-            // 
-            this.tbMarigin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbMarigin.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbMarigin.Location = new System.Drawing.Point(75, 4);
-            this.tbMarigin.Name = "tbMarigin";
-            this.tbMarigin.Size = new System.Drawing.Size(68, 22);
-            this.tbMarigin.TabIndex = 2;
-            this.tbMarigin.Text = "30";
-            this.tbMarigin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // pAllowOverrideProduct
             // 
