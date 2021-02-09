@@ -372,7 +372,7 @@ namespace NaturalnieApp.Database
                     int lastPossibleId = manufaturer.LastNumberInCashRegister;
 
                     var query2 = from p in contextDB.Products
-                                 where p.ElzabProductId >= firstElementId && p.ElzabProductId < lastPossibleId
+                                 where p.ElzabProductId >= firstElementId && p.ElzabProductId <= lastPossibleId
                                  select p.ElzabProductId;
 
                     elzabProductIdList = query2.ToList();
@@ -388,6 +388,10 @@ namespace NaturalnieApp.Database
                         {
                             retVal = elzabProductIdList.Last() + 1;
                             if (retVal > lastPossibleId) retVal = -1;
+                        }
+                        else if (elzabProductIdList.Count() == numberOfProductPerManufacturer)
+                        {
+                            retVal = -1;
                         }
                         else
                         {
@@ -1124,6 +1128,23 @@ namespace NaturalnieApp.Database
                 localManufacturer = query.SingleOrDefault();
             }
             return localManufacturer;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Supplier entity
+        //====================================================================================================
+        public Supplier GetSupplierEntityByName(string supplierName)
+        {
+            Supplier localSupplier = new Supplier();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from m in contextDB.Suppliers
+                            where m.Name == supplierName
+                            select m;
+
+                localSupplier = query.SingleOrDefault();
+            }
+            return localSupplier;
         }
 
         //====================================================================================================

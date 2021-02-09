@@ -468,7 +468,7 @@ namespace NaturalnieApp.Forms
             this.cbManufacturerToEdit.Name = "cbManufacturerToEdit";
             this.cbManufacturerToEdit.Size = new System.Drawing.Size(214, 28);
             this.cbManufacturerToEdit.TabIndex = 0;
-            this.cbManufacturerToEdit.SelectionChangeCommitted += new System.EventHandler(this.cbManufacturer_SelectionChangeCommitted);
+            this.cbManufacturerToEdit.SelectionChangeCommitted += new System.EventHandler(this.cbManufacturerToEdit_SelectionChangeCommitted);
             this.cbManufacturerToEdit.MouseHover += new System.EventHandler(this.cbManufacturerToEdit_MouseHover);
             this.cbManufacturerToEdit.Validating += new System.ComponentModel.CancelEventHandler(this.cbManufacturerToEdit_Validating);
             // 

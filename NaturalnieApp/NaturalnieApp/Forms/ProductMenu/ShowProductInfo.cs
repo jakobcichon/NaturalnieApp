@@ -759,24 +759,7 @@ namespace NaturalnieApp.Forms
         #region Manufacturer to edit events
         private void cbManufacturerToEdit_Validating(object sender, EventArgs e)
         {
-            //Cast the sender for an object
-            ComboBox localSender = (ComboBox)sender;
 
-            //Check if input match to define pattern
-            try
-            {
-                Validation.ManufacturerNameValidation(localSender.Text);
-                this.ManufacturerEntity.Name = localSender.Text;
-                errorProvider1.Clear();
-            }
-            catch (Validation.ValidatingFailed ex)
-            {
-                errorProvider1.SetError(localSender, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
         private void cbManufacturerToEdit_MouseHover(object sender, EventArgs e)
         {
@@ -795,6 +778,7 @@ namespace NaturalnieApp.Forms
                 {
                     //Get ManufacturerToEdit entity
                     this.ManufacturerEntity = this.databaseCommands.GetManufacturerEntityByName(localSender.SelectedItem.ToString());
+                    this.ProductEntity.ManufacturerId = this.ManufacturerEntity.Id;
 
                     //Enable text box
                     this.lElzabProductNumberRange.Text = this.ManufacturerEntity.FirstNumberInCashRegister.ToString() +
@@ -912,6 +896,26 @@ namespace NaturalnieApp.Forms
             ComboBox localSender = (ComboBox)sender;
             ToolTip toolTip = new ToolTip();
             toolTip.SetToolTip(localSender, localSender.Text);
+        }
+        private void cbSupplier_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            //Cast the sender for an object
+            ComboBox localSender = (ComboBox)sender;
+
+            if (localSender.SelectedIndex >= 0)
+            {
+                try
+                {
+                    //Get ManufacturerToEdit entity
+                    this.SupplierEntity = this.databaseCommands.GetSupplierEntityByName(localSender.SelectedItem.ToString());
+                    this.ProductEntity.SupplierId = this.SupplierEntity.Id;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
         }
         #endregion
         //====================================================================================================
