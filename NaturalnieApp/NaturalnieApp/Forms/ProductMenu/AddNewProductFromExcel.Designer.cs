@@ -160,7 +160,7 @@ namespace NaturalnieApp.Forms
             this.bSelectAll.Name = "bSelectAll";
             this.bSelectAll.Size = new System.Drawing.Size(100, 50);
             this.bSelectAll.TabIndex = 5;
-            this.bSelectAll.Text = "Zaznacz wszytsko";
+            this.bSelectAll.Text = "Zaznacz wszystko";
             this.bSelectAll.UseVisualStyleBackColor = false;
             this.bSelectAll.Visible = false;
             this.bSelectAll.Click += new System.EventHandler(this.bSelectAll_Click);
@@ -211,7 +211,7 @@ namespace NaturalnieApp.Forms
             this.tpMarigin.Location = new System.Drawing.Point(0, 578);
             this.tpMarigin.Name = "tpMarigin";
             this.tpMarigin.RowCount = 1;
-            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tpMarigin.Size = new System.Drawing.Size(147, 30);
             this.tpMarigin.TabIndex = 2;
             // 
@@ -233,7 +233,7 @@ namespace NaturalnieApp.Forms
             this.lMarigin.Location = new System.Drawing.Point(4, 4);
             this.lMarigin.Margin = new System.Windows.Forms.Padding(3);
             this.lMarigin.Name = "lMarigin";
-            this.lMarigin.Size = new System.Drawing.Size(64, 28);
+            this.lMarigin.Size = new System.Drawing.Size(64, 29);
             this.lMarigin.TabIndex = 0;
             this.lMarigin.Text = "Marża";
             this.lMarigin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
