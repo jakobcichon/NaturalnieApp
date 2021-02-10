@@ -684,6 +684,55 @@ namespace NaturalnieApp.Forms
             this.ActualTaskType = backgroundWorkerTasks.Update;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
         }
+        private void bDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Czy na pewno chcesz usunąć produkt z bazy danych?", "Usunięcie produktu"
+                , MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    //Check if any stock entry exist for given product
+                    bool exitInStock = this.databaseCommands.CheckIfAnyStockEntryForGivenProduct(this.ProductEntity);
+                    if(exitInStock)
+                    {
+                        result = MessageBox.Show(string.Format("Uwaga! Wybrany produkt ma przypisane stany magazynowe. " +
+                            "Czy chcesz kontynułować i usunąć również stany magazynowe dla {0}?", this.ProductEntity.ProductName)
+                            , "Produkt do usunięcia posiada stany magazynowe", MessageBoxButtons.YesNo);
+                        if(result == DialogResult.Yes)
+                        {
+                            bool deletedSuccessfully = this.databaseCommands.DeleteFromStock(this.ProductEntity);
+                            if(deletedSuccessfully)
+                            {
+                                this.databaseCommands.DeleteProduct(this.ProductEntity);
+                                this.SelectedProductId = -1;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Anulowano");
+                        }
+                    }
+                    else
+                    {
+                        this.databaseCommands.DeleteProduct(this.ProductEntity);
+                        this.SelectedProductId = -1;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Anulowano");
+            }
+
+            //Call update event
+            bUpdate_Click(sender, e);
+        }
+
         private void bClose_Click(object sender, EventArgs e)
         {
             this.Parent.Show();
@@ -1298,6 +1347,7 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show(ex.Message);
             }
         }
+
         #endregion
 
 

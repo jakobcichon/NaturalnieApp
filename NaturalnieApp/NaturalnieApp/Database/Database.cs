@@ -56,6 +56,19 @@ namespace NaturalnieApp.Database
         }
     }
 
+    public enum ProductOperationType
+    {
+        AddNew,
+        Update,
+        Delete
+    }
+    public enum StockOperationType
+    {
+        AddNew,
+        Update,
+        Delete
+    }
+
     [Table("product_changelog")]
     public class ProductChangelog
     {
@@ -77,6 +90,7 @@ namespace NaturalnieApp.Database
         public string SupplierCode { get; set; }
         public string ProductInfo { get; set; }
         public DateTime DateAndTime { get; set; }
+        public string  OperationType { get; set; }
     }
 
     [Table("stock")]
@@ -100,6 +114,7 @@ namespace NaturalnieApp.Database
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         public DateTime DateAndTime { get; set; }
+        public string OperationType { get; set; }
     }
 
 

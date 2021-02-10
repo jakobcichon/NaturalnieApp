@@ -17,7 +17,6 @@ namespace NaturalnieApp.Database
     //====================================================================================================
     public static class DatabaseBackup
     {
-
         //Mehtod used to make DB backup
         static public bool MakeBackup(string userName, string password, string dbName, string pathForBackup)
         {
@@ -133,7 +132,6 @@ namespace NaturalnieApp.Database
             if (!fileExist) MoveMySqlDump(GlobalVariables.LibraryPath, GlobalVariables.DbBackupPath);
             
         }
-
 
         //Method used to move mysqldump exe file to given location from libs location
         static private void MoveMySqlDump(string sourcePath, string destinationPath)
@@ -1305,17 +1303,17 @@ namespace NaturalnieApp.Database
                 int test = contextDB.SaveChanges();
             }
 
-            AddProductToChangelog(product);
+            AddProductToChangelog(product, ProductOperationType.AddNew);
         }
 
         //====================================================================================================
         //Method used to add new product
         //====================================================================================================
-        public void AddProductToChangelog(Product product)
+        public void AddProductToChangelog(Product product, ProductOperationType operationType)
         {
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
-                ProductChangelog productChangelog = FillProductChangelogFromProduct(product);
+                ProductChangelog productChangelog = FillProductChangelogFromProduct(product, operationType);
                 contextDB.ProductsChangelog.Add(productChangelog);
                 int test = contextDB.SaveChanges();
             }
@@ -1324,7 +1322,7 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         //Method used to fill product with changelog
         //====================================================================================================
-        public ProductChangelog FillProductChangelogFromProduct(Product product)
+        public ProductChangelog FillProductChangelogFromProduct(Product product, ProductOperationType operationType)
         {
             ProductChangelog productChangelog = new ProductChangelog();
 
@@ -1344,11 +1342,10 @@ namespace NaturalnieApp.Database
             productChangelog.SupplierCode = product.SupplierCode;
             productChangelog.ProductInfo = product.ProductInfo;
             productChangelog.DateAndTime = DateTime.Now;
+            productChangelog.OperationType = operationType.ToString();
 
             return productChangelog;
         }
-
-
 
         //====================================================================================================
         //Method used to add new supplier
@@ -1417,7 +1414,6 @@ namespace NaturalnieApp.Database
             }
             return quantity;
         }
-
 
         //====================================================================================================
         //Method used to get stock entity from with given manufacturer ID
@@ -1497,7 +1493,6 @@ namespace NaturalnieApp.Database
             return localStock;
         }
 
-
         //====================================================================================================
         //Method used to check if specified product already exist in stock
         //====================================================================================================
@@ -1521,6 +1516,26 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to check if specified product already exist in stock
+        //====================================================================================================
+        public bool CheckIfAnyStockEntryForGivenProduct(Product product)
+        {
+            bool result = false;
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from s in contextDB.Stock
+                            where s.ProductId == product.Id
+                            select s;
+
+                if (query.FirstOrDefault() != null) result = true;
+                else result = false;
+
+            }
+            return result;
+        }
+
+        //====================================================================================================
         //Method used to add to stock
         //====================================================================================================
         public void AddToStock(Stock stockPiece)
@@ -1532,19 +1547,20 @@ namespace NaturalnieApp.Database
             }
 
             //Add item to stock history
-            AddToStockHistory(stockPiece);
+            AddToStockHistory(stockPiece, StockOperationType.AddNew);
         }
 
         //====================================================================================================
         //Method used to add to stock
         //====================================================================================================
-        public void AddToStockHistory(Stock stockPiece)
+        public void AddToStockHistory(Stock stockPiece, StockOperationType operationType)
         {
             //Local variable
             StockHistory stockHistory = new StockHistory();
             stockHistory.ProductId = stockPiece.ProductId;
             stockHistory.Quantity = stockPiece.ActualQuantity;
             stockHistory.DateAndTime = DateTime.Now;
+            stockHistory.OperationType = operationType.ToString();
 
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
@@ -1568,7 +1584,50 @@ namespace NaturalnieApp.Database
             }
 
             //Add item to stock history
-            AddToStockHistory(stockPiece);
+            AddToStockHistory(stockPiece, StockOperationType.Update);
+        }
+
+        //====================================================================================================
+        //Method used to delete product in stock
+        //====================================================================================================
+        public bool DeleteFromStock(Product product)
+        {
+            bool retVal = false;
+            List<Stock> stockEntriesToDelete = new List<Stock>();
+            List<Stock> stockEntriesDeleted = new List<Stock>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                //Get Entries for given product ID
+                var query = from s in contextDB.Stock
+                            where s.ProductId == product.Id
+                            select s;
+                foreach(Stock stock in query)
+                {
+                    stockEntriesToDelete.Add(stock);
+                }
+            }
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                foreach (Stock stockPiece in stockEntriesToDelete)
+                {
+                    Stock stockToDelete = new Stock { Id = stockPiece.Id };
+                    contextDB.Entry(stockToDelete).State = EntityState.Deleted;
+                    int retValInt = contextDB.SaveChanges();
+                    if (retValInt > 0) retVal = true;
+                    stockEntriesDeleted.Add(stockPiece);
+                }
+            }
+
+            //Add item to stock history
+            foreach (Stock stockPiece in stockEntriesDeleted)
+            {
+                AddToStockHistory(stockPiece, StockOperationType.Delete);
+            }
+
+            return retVal;
+
         }
 
         //====================================================================================================
@@ -1583,7 +1642,26 @@ namespace NaturalnieApp.Database
                 int retVal = contextDB.SaveChanges();
             }
 
-            AddProductToChangelog(product);
+            AddProductToChangelog(product, ProductOperationType.Update);
+        }
+
+        //====================================================================================================
+        //Method used to delete product
+        //====================================================================================================
+        public bool DeleteProduct(Product product)
+        {
+            bool retVal = false;
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                Product productToDelete = new Product { Id = product.Id };
+                contextDB.Entry(productToDelete).State = EntityState.Deleted;
+                int retValInt = contextDB.SaveChanges();
+                if (retValInt > 0) retVal = true;
+            }
+
+            AddProductToChangelog(product, ProductOperationType.Delete);
+
+            return retVal;
         }
 
         //====================================================================================================
@@ -1648,9 +1726,5 @@ namespace NaturalnieApp.Database
             }
             this.ConnectionStatus = state;
         }
-
-
     }
-
-
 }

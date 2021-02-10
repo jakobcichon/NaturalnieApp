@@ -504,74 +504,80 @@ namespace NaturalnieApp.Forms
 
             }
 
-            //2. Validate all selected rows
-            foreach (DataGridViewRow row in rowCollectionToAdd)
+            if(rowCollectionToAdd.Count == 0)
             {
-                //Get only checked rows
-                DataGridViewCheckBoxCell chkChecking = row.Cells[this.CheckBoxColumnName] as DataGridViewCheckBoxCell;
-                bool chck = Convert.ToBoolean(chkChecking.Value);
-
-                //If row chcecked and not new row
-                if ((!row.IsNewRow) && (chck == true))
+                MessageBox.Show("Nie zaznaczo produktów do dodania. Zaznacz produkty i spróbuj ponownie!");
+            }
+            else
+            {
+                //2. Validate all selected rows
+                foreach (DataGridViewRow row in rowCollectionToAdd)
                 {
-                    //Try to validate all fields
-                    try
-                    {
-                        //Validate every entry 
-                        Validation.SupplierNameValidation(row.Cells[this.SupplierColumnName].Value.ToString());
-                        Validation.ManufacturerNameValidation(row.Cells[this.ManufacturerColumnName].Value.ToString());
+                    //Get only checked rows
+                    DataGridViewCheckBoxCell chkChecking = row.Cells[this.CheckBoxColumnName] as DataGridViewCheckBoxCell;
+                    bool chck = Convert.ToBoolean(chkChecking.Value);
 
-                        if (row.Cells[this.BarcodeColumnName].Value.ToString() != "")
+                    //If row chcecked and not new row
+                    if ((!row.IsNewRow) && (chck == true))
+                    {
+                        //Try to validate all fields
+                        try
                         {
+                            //Validate every entry 
+                            Validation.SupplierNameValidation(row.Cells[this.SupplierColumnName].Value.ToString());
+                            Validation.ManufacturerNameValidation(row.Cells[this.ManufacturerColumnName].Value.ToString());
 
-                            //Check if given code is full barcode or oly product code without manufacturer prefix
-                            barcodeCheckedVal = GetBarcodePrefixAndCreateFullBarcode(row.Cells[this.ManufacturerColumnName].Value.ToString(),
-                                row.Cells[this.BarcodeColumnName].Value.ToString());
-                            if (barcodeCheckedVal == "") barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
+                            if (row.Cells[this.BarcodeColumnName].Value.ToString() != "")
+                            {
+
+                                //Check if given code is full barcode or oly product code without manufacturer prefix
+                                barcodeCheckedVal = GetBarcodePrefixAndCreateFullBarcode(row.Cells[this.ManufacturerColumnName].Value.ToString(),
+                                    row.Cells[this.BarcodeColumnName].Value.ToString());
+                                if (barcodeCheckedVal == "") barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
+                            }
+                            else
+                            {
+                                barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
+                            }
+
+                            //Validate every entry 
+                            Validation.SupplierNameValidation(row.Cells[this.SupplierColumnName].Value.ToString());
+                            Validation.ManufacturerNameValidation(row.Cells[this.ManufacturerColumnName].Value.ToString());
+                            Validation.ProductNameValidation(row.Cells[this.ProductColumnName].Value.ToString());
+                            Validation.ElzabProductNameValidation(row.Cells[this.ElzabProductColumnName].Value.ToString());
+                            Validation.MariginValueValidation(row.Cells[this.MariginColumnName].Value.ToString());
+                            Validation.PriceNetValueValidation(row.Cells[this.PriceNetColumnName].Value.ToString());
+                            Validation.TaxValueValidation(row.Cells[this.TaxColumnName].Value.ToString());
+                            Validation.GeneralNumberValidation(row.Cells[this.DiscountColumnName].Value.ToString());
+
+                            //Action depending of barcode type
+                            if (barcodeCheckedVal != "" && barcodeCheckedVal.Length != 8 && barcodeCheckedVal.Length != 12) Validation.BarcodeEan13Validation(barcodeCheckedVal);
+                            if (barcodeCheckedVal.Length == 8) Validation.BarcodeEan8Validation(barcodeCheckedVal);
+                            if (barcodeCheckedVal.Length == 12) Validation.GeneralNumberValidation(barcodeCheckedVal);
+                            row.Cells[this.BarcodeColumnName].Value = barcodeCheckedVal;
+
+                            //Set validated bit
+                            validated = true;
                         }
-                        else
+                        catch (Validation.ValidatingFailed ex)
                         {
-                            barcodeCheckedVal = row.Cells[this.BarcodeColumnName].Value.ToString();
+                            //Show message and exit
+                            MessageBox.Show(ex.Message + " Numer Lp: " + row.Cells[this.IndexColumnName].Value.ToString());
+                            validated = false;
+                            break;
+                        }
+                        catch (Exception ex)
+                        {
+                            //Show message and exit
+                            MessageBox.Show(ex.Message);
+                            validated = false;
+                            break;
                         }
 
-                        //Validate every entry 
-                        Validation.SupplierNameValidation(row.Cells[this.SupplierColumnName].Value.ToString());
-                        Validation.ManufacturerNameValidation(row.Cells[this.ManufacturerColumnName].Value.ToString());
-                        Validation.ProductNameValidation(row.Cells[this.ProductColumnName].Value.ToString());
-                        Validation.ElzabProductNameValidation(row.Cells[this.ElzabProductColumnName].Value.ToString());
-                        Validation.MariginValueValidation(row.Cells[this.MariginColumnName].Value.ToString());
-                        Validation.PriceNetValueValidation(row.Cells[this.PriceNetColumnName].Value.ToString());
-                        Validation.TaxValueValidation(row.Cells[this.TaxColumnName].Value.ToString());
-                        Validation.GeneralNumberValidation(row.Cells[this.DiscountColumnName].Value.ToString());
-
-                        //Action depending of barcode type
-                        if (barcodeCheckedVal != "" && barcodeCheckedVal.Length != 8 && barcodeCheckedVal.Length != 12) Validation.BarcodeEan13Validation(barcodeCheckedVal);
-                        if (barcodeCheckedVal.Length == 8) Validation.BarcodeEan8Validation(barcodeCheckedVal);
-                        if (barcodeCheckedVal.Length == 12) Validation.GeneralNumberValidation(barcodeCheckedVal);
-                        row.Cells[this.BarcodeColumnName].Value = barcodeCheckedVal;
-
-                        //Set validated bit
-                        validated = true;
-                    }
-                    catch (Validation.ValidatingFailed ex)
-                    {
-                        //Show message and exit
-                        MessageBox.Show(ex.Message + " Numer Lp: " + row.Cells[this.IndexColumnName].Value.ToString());
-                        validated = false;
-                        break;
-                    }
-                    catch (Exception ex)
-                    {
-                        //Show message and exit
-                        MessageBox.Show(ex.Message);
-                        validated = false;
-                        break;
                     }
 
                 }
-
             }
-
             //If validated property, go to the next steps
             if (validated)
             {
@@ -678,9 +684,9 @@ namespace NaturalnieApp.Forms
                             int elzabProductFirstFreeId = this.databaseCommands.CalculateFreeElzabIdForGivenManufacturer(rowManufacturerNameValue);
                             bool productForManufacturerExhausted = manufacturersWithExNumberOfProduct.Any(m => m == rowManufacturerNameValue);
 
-                            if (elzabProductFirstFreeId >= 0)
+                            if (!productNameExist && !barcodeExist && !supplierCodeExist && !elzabProductNameExist)
                             {
-                                if (!productNameExist && !barcodeExist && !supplierCodeExist && !elzabProductNameExist && elzabProductFirstFreeId > 0)
+                                if (elzabProductFirstFreeId > 0)
                                 {
                                     //Write all data to the Product object
                                     Product product = new Product();
@@ -713,173 +719,173 @@ namespace NaturalnieApp.Forms
 
                                     //Set auxiliary bit
                                     if (savedSuccessfully == -1) savedSuccessfully = 1;
-
                                 }
-                                if (cbAllowOverrideProduct.Checked)
+                                else if (!productForManufacturerExhausted)
                                 {
-                                    if (productNameExist)
+                                    int numberOfProductPerManufacuturer = this.databaseCommands.GetManufacturerEntityByName(rowManufacturerNameValue)
+                                                                          .MaxNumberOfProducts;
+                                    DialogResult dialogResult = MessageBox.Show("Nie można określić numery produktu dla kasy Elzab! Dla producenta '"
+                                        + rowManufacturerNameValue
+                                        + "' zdefiniowano już " + numberOfProductPerManufacuturer + " produktów!"
+                                        , "Liczba dostępnych numerów produtków Elzab została osiągnięta!");
+                                    manufacturersWithExNumberOfProduct.Add(rowManufacturerNameValue);
+                                    savedSuccessfully = 0;
+                                }
+                            }
+                            else if (cbAllowOverrideProduct.Checked)
+                            {
+                                if (productNameExist)
+                                {
+                                    //Check if manufaturer match the one from file
+                                    Product product = new Product();
+                                    Manufacturer manufacturer = new Manufacturer();
+
+                                    product = this.databaseCommands.GetProductEntityByProductName(rowProductNameValue);
+                                    manufacturer = this.databaseCommands.GetManufacturerByProductName(product.ProductName);
+
+                                    if (manufacturer.Name != rowManufacturerNameValue)
                                     {
-                                        //Check if manufaturer match the one from file
-                                        Product product = new Product();
-                                        Manufacturer manufacturer = new Manufacturer();
-
-                                        product = this.databaseCommands.GetProductEntityByProductName(rowProductNameValue);
-                                        manufacturer = this.databaseCommands.GetManufacturerByProductName(product.ProductName);
-
-                                        if (manufacturer.Name != rowManufacturerNameValue)
-                                        {
-                                            MessageBox.Show(string.Format("Nie można nadpisać produktu \"{0}\" (Lp = {1}), gdyż nazwa producenta jest inna! " +
-                                                "Nazwa producenta z pliku: {2}; nazwa producenta w bazie danych: {3}", product.ProductName,
-                                                row.Cells[this.IndexColumnName].Value.ToString(), rowManufacturerNameValue, manufacturer.Name));
-                                        }
-                                        else
-                                        {
-                                            product.SupplierId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
-                                            product.ElzabProductName = rowElzabProductNameValue;
-                                            product.PriceNet = rowPriceNetValue;
-                                            product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
-                                            product.Marigin = rowMariginValue;
-                                            product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, product.ElzabProductId);
-                                            product.Discount = rowDiscountValue;
-                                            product.PriceNetWithDiscount = rowPriceNetWithDiscount;
-                                            if (rowBarcodeValue != "") product.BarCode = rowBarcodeValue;
-                                            product.FinalPrice = (float)Calculations.FinalPrice(Convert.ToDouble(rowPriceNetWithDiscount), rowTaxValue, Convert.ToDouble(rowMariginValue));
-                                            if (rowSupplierCodeValue != "") product.SupplierCode = rowSupplierCodeValue;
-
-                                            //Add new object to the DB
-                                            this.databaseCommands.EditProduct(product);
-
-                                            //Add row to the collection of added rows, to remove it later
-                                            rowCollectionToRemoveFromList.Add(row);
-
-                                            //Add to the collection to add to stock
-                                            if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
-
-                                            //Set auxiliary bit
-                                            if (savedSuccessfully == -1) savedSuccessfully = 1;
-                                        }
+                                        MessageBox.Show(string.Format("Nie można nadpisać produktu \"{0}\" (Lp = {1}), gdyż nazwa producenta jest inna! " +
+                                            "Nazwa producenta z pliku: {2}; nazwa producenta w bazie danych: {3}", product.ProductName,
+                                            row.Cells[this.IndexColumnName].Value.ToString(), rowManufacturerNameValue, manufacturer.Name));
                                     }
-                                    else if (barcodeExist)
+                                    else
                                     {
-                                        //Check if manufaturer match the one from file
-                                        Product product = new Product();
-                                        Manufacturer manufacturer = new Manufacturer();
+                                        product.SupplierId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
+                                        product.ElzabProductName = rowElzabProductNameValue;
+                                        product.PriceNet = rowPriceNetValue;
+                                        product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
+                                        product.Marigin = rowMariginValue;
+                                        product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, product.ElzabProductId);
+                                        product.Discount = rowDiscountValue;
+                                        product.PriceNetWithDiscount = rowPriceNetWithDiscount;
+                                        if (rowBarcodeValue != "") product.BarCode = rowBarcodeValue;
+                                        product.FinalPrice = (float)Calculations.FinalPrice(Convert.ToDouble(rowPriceNetWithDiscount), rowTaxValue, Convert.ToDouble(rowMariginValue));
+                                        if (rowSupplierCodeValue != "") product.SupplierCode = rowSupplierCodeValue;
 
-                                        product = this.databaseCommands.GetProductEntityByBarcode(rowBarcodeValue);
-                                        manufacturer = this.databaseCommands.GetManufacturerByProductName(product.ProductName);
+                                        //Add new object to the DB
+                                        this.databaseCommands.EditProduct(product);
 
-                                        if (manufacturer.Name != rowManufacturerNameValue)
-                                        {
-                                            MessageBox.Show(string.Format("Nie można nadpisać produktu o kodzie kreskowym \"{0}\" (Lp = {1}), gdyż nazwa producenta jest inna! " +
-                                                "Nazwa producenta z pliku: {2}; nazwa producenta w bazie danych: {3}", product.BarCode,
-                                                row.Cells[this.IndexColumnName].Value.ToString(), rowManufacturerNameValue, manufacturer.Name));
-                                        }
-                                        else
-                                        {
-                                            product.SupplierId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
-                                            product.ElzabProductName = rowElzabProductNameValue;
-                                            product.PriceNet = rowPriceNetValue;
-                                            product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
-                                            product.Marigin = rowMariginValue;
-                                            product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, product.ElzabProductId);
-                                            product.Discount = rowDiscountValue;
-                                            product.PriceNetWithDiscount = rowPriceNetWithDiscount;
-                                            product.ProductName = rowProductNameValue;
-                                            product.FinalPrice = (float)Calculations.FinalPrice(Convert.ToDouble(rowPriceNetWithDiscount), rowTaxValue, Convert.ToDouble(rowMariginValue));
-                                            if (rowSupplierCodeValue != "") product.SupplierCode = rowSupplierCodeValue;
+                                        //Add row to the collection of added rows, to remove it later
+                                        rowCollectionToRemoveFromList.Add(row);
 
-                                            //Add new object to the DB
-                                            this.databaseCommands.EditProduct(product);
+                                        //Add to the collection to add to stock
+                                        if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
 
-                                            //Add row to the collection of added rows, to remove it later
-                                            rowCollectionToRemoveFromList.Add(row);
-
-                                            //Add to the collection to add to stock
-                                            if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
-
-                                            //Set auxiliary bit
-                                            if (savedSuccessfully == -1) savedSuccessfully = 1;
-                                        }
+                                        //Set auxiliary bit
+                                        if (savedSuccessfully == -1) savedSuccessfully = 1;
                                     }
                                 }
-                                else
+                                else if (barcodeExist)
                                 {
-                                    if (productNameExist)
+                                    //Check if manufaturer match the one from file
+                                    Product product = new Product();
+                                    Manufacturer manufacturer = new Manufacturer();
+
+                                    product = this.databaseCommands.GetProductEntityByBarcode(rowBarcodeValue);
+                                    manufacturer = this.databaseCommands.GetManufacturerByProductName(product.ProductName);
+
+                                    if (manufacturer.Name != rowManufacturerNameValue)
                                     {
-
-                                        //If qunatity value exist, add it to the stock
-                                        //Add to the collection to add to stock
-                                        if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
-
-                                        if (rowCollectionToAdd.Count > 1)
-                                        {
-                                            DialogResult dialogResult = MessageBox.Show("Produkt o nazwie '" + rowProductNameValue +
-                                                "' już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
-                                                , "Pozycja istnieje w bazie danych!"
-                                                , MessageBoxButtons.YesNo);
-                                            if (dialogResult == DialogResult.Yes) break;
-                                        }
-                                        else MessageBox.Show("Produkt o nazwie '" + rowProductNameValue + "' już istnieje w bazie danych!");
+                                        MessageBox.Show(string.Format("Nie można nadpisać produktu o kodzie kreskowym \"{0}\" (Lp = {1}), gdyż nazwa producenta jest inna! " +
+                                            "Nazwa producenta z pliku: {2}; nazwa producenta w bazie danych: {3}", product.BarCode,
+                                            row.Cells[this.IndexColumnName].Value.ToString(), rowManufacturerNameValue, manufacturer.Name));
                                     }
-                                    else if (barcodeExist)
+                                    else
                                     {
-                                        //If qunatity value exist, add it to the stock
+                                        product.SupplierId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
+                                        product.ElzabProductName = rowElzabProductNameValue;
+                                        product.PriceNet = rowPriceNetValue;
+                                        product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
+                                        product.Marigin = rowMariginValue;
+                                        product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, product.ElzabProductId);
+                                        product.Discount = rowDiscountValue;
+                                        product.PriceNetWithDiscount = rowPriceNetWithDiscount;
+                                        product.ProductName = rowProductNameValue;
+                                        product.FinalPrice = (float)Calculations.FinalPrice(Convert.ToDouble(rowPriceNetWithDiscount), rowTaxValue, Convert.ToDouble(rowMariginValue));
+                                        if (rowSupplierCodeValue != "") product.SupplierCode = rowSupplierCodeValue;
+
+                                        //Add new object to the DB
+                                        this.databaseCommands.EditProduct(product);
+
+                                        //Add row to the collection of added rows, to remove it later
+                                        rowCollectionToRemoveFromList.Add(row);
+
                                         //Add to the collection to add to stock
                                         if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
 
-                                        if (rowCollectionToAdd.Count > 1)
-                                        {
-                                            DialogResult dialogResult = MessageBox.Show("Kod kreskowy : '" + rowBarcodeValue +
-                                                "' już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
-                                                , "Pozycja istnieje w bazie danych!"
-                                                , MessageBoxButtons.YesNo);
-                                            if (dialogResult == DialogResult.Yes) break;
-                                        }
-                                        else MessageBox.Show("Kod kreskowy : '" + rowBarcodeValue + "' już istnieje w bazie danych!");
-                                    }
-                                    else if (supplierCodeExist)
-                                    {
-                                        //If qunatity value exist, add it to the stock
-                                        //Add to the collection to add to stock
-                                        if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
-
-                                        if (rowCollectionToAdd.Count > 1)
-                                        {
-                                            DialogResult dialogResult = MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue +
-                                                "' już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
-                                                , "Pozycja istnieje w bazie danych!"
-                                                , MessageBoxButtons.YesNo);
-                                            if (dialogResult == DialogResult.Yes) break;
-                                        }
-                                        else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
-                                    }
-                                    else if (elzabProductNameExist)
-                                    {
-                                        //If qunatity value exist, add it to the stock
-                                        //Add to the collection to add to stock
-                                        if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
-
-                                        if (rowCollectionToAdd.Count > 1)
-                                        {
-                                            DialogResult dialogResult = MessageBox.Show("Nazwa produktu '" + rowProductNameValue +
-                                                "'dla kasy Elzab już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
-                                                , "Pozycja istnieje w bazie danych!"
-                                                , MessageBoxButtons.YesNo);
-                                            if (dialogResult == DialogResult.Yes) break;
-                                        }
-                                        else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
+                                        //Set auxiliary bit
+                                        if (savedSuccessfully == -1) savedSuccessfully = 1;
                                     }
                                 }
                             }
-                            else if (!productForManufacturerExhausted)
+                            else
                             {
-                                int numberOfProductPerManufacuturer = this.databaseCommands.GetManufacturerEntityByName(rowManufacturerNameValue)
-                                                                      .MaxNumberOfProducts;
-                                DialogResult dialogResult = MessageBox.Show("Nie można określić numery produktu dla kasy Elzab! Dla producenta '"
-                                    + rowManufacturerNameValue
-                                    + "' zdefiniowano już " + numberOfProductPerManufacuturer + " produktów!"
-                                    , "Liczba dostępnych numerów produtków Elzab została osiągnięta!");
-                                manufacturersWithExNumberOfProduct.Add(rowManufacturerNameValue);
+                                if (productNameExist)
+                                {
+
+                                    //If qunatity value exist, add it to the stock
+                                    //Add to the collection to add to stock
+                                    if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
+
+                                    if (rowCollectionToAdd.Count > 1)
+                                    {
+                                        DialogResult dialogResult = MessageBox.Show("Produkt o nazwie '" + rowProductNameValue +
+                                            "' już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
+                                            , "Pozycja istnieje w bazie danych!"
+                                            , MessageBoxButtons.YesNo);
+                                        if (dialogResult == DialogResult.Yes) break;
+                                    }
+                                    else MessageBox.Show("Produkt o nazwie '" + rowProductNameValue + "' już istnieje w bazie danych!");
+                                }
+                                else if (barcodeExist)
+                                {
+                                    //If qunatity value exist, add it to the stock
+                                    //Add to the collection to add to stock
+                                    if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
+
+                                    if (rowCollectionToAdd.Count > 1)
+                                    {
+                                        DialogResult dialogResult = MessageBox.Show("Kod kreskowy : '" + rowBarcodeValue +
+                                            "' już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
+                                            , "Pozycja istnieje w bazie danych!"
+                                            , MessageBoxButtons.YesNo);
+                                        if (dialogResult == DialogResult.Yes) break;
+                                    }
+                                    else MessageBox.Show("Kod kreskowy : '" + rowBarcodeValue + "' już istnieje w bazie danych!");
+                                }
+                                else if (supplierCodeExist)
+                                {
+                                    //If qunatity value exist, add it to the stock
+                                    //Add to the collection to add to stock
+                                    if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
+
+                                    if (rowCollectionToAdd.Count > 1)
+                                    {
+                                        DialogResult dialogResult = MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue +
+                                            "' już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
+                                            , "Pozycja istnieje w bazie danych!"
+                                            , MessageBoxButtons.YesNo);
+                                        if (dialogResult == DialogResult.Yes) break;
+                                    }
+                                    else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
+                                }
+                                else if (elzabProductNameExist)
+                                {
+                                    //If qunatity value exist, add it to the stock
+                                    //Add to the collection to add to stock
+                                    if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
+
+                                    if (rowCollectionToAdd.Count > 1)
+                                    {
+                                        DialogResult dialogResult = MessageBox.Show("Nazwa produktu '" + rowProductNameValue +
+                                            "'dla kasy Elzab już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
+                                            , "Pozycja istnieje w bazie danych!"
+                                            , MessageBoxButtons.YesNo);
+                                        if (dialogResult == DialogResult.Yes) break;
+                                    }
+                                    else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
+                                }
                             }
                         }
                         catch (Exception ex)
@@ -934,8 +940,6 @@ namespace NaturalnieApp.Forms
                             stockPiece.ModificationDate = DateTime.Now;
                             this.databaseCommands.AddToStock(stockPiece);
                         }
-
-
                     }
                 }
                 catch(Exception ex)

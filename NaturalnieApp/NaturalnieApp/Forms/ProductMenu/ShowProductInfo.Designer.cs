@@ -77,6 +77,7 @@ namespace NaturalnieApp.Forms
             this.bSave = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
+            this.bDelete = new System.Windows.Forms.Button();
             this.lPriceWithTax = new System.Windows.Forms.Label();
             this.tbPriceWithTax = new System.Windows.Forms.TextBox();
             this.tpPriceWithTax = new System.Windows.Forms.TableLayoutPanel();
@@ -728,6 +729,7 @@ namespace NaturalnieApp.Forms
             // 
             this.pButtonsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
             this.pButtonsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pButtonsPanel.Controls.Add(this.bDelete);
             this.pButtonsPanel.Controls.Add(this.bUpdate);
             this.pButtonsPanel.Controls.Add(this.bSave);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -736,6 +738,20 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.Name = "pButtonsPanel";
             this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
             this.pButtonsPanel.TabIndex = 5;
+            // 
+            // bDelete
+            // 
+            this.bDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bDelete.Location = new System.Drawing.Point(593, 7);
+            this.bDelete.Margin = new System.Windows.Forms.Padding(5);
+            this.bDelete.Name = "bDelete";
+            this.bDelete.Size = new System.Drawing.Size(100, 50);
+            this.bDelete.TabIndex = 2;
+            this.bDelete.Text = "Usuń";
+            this.bDelete.UseVisualStyleBackColor = false;
+            this.bDelete.Click += new System.EventHandler(this.bDelete_Click);
             // 
             // lPriceWithTax
             // 
@@ -1164,5 +1180,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Panel pButtonsPanel;
         private System.Windows.Forms.Button bUpdate;
         private System.Windows.Forms.Button bSave;
+        private System.Windows.Forms.Button bDelete;
     }
 }
