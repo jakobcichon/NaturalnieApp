@@ -35,6 +35,17 @@ namespace NaturalnieApp.Forms.Common
         public event NewEntSelectedEventHandler NewEntSelected;
         #endregion
 
+        //Properties class
+        public class PropertiesClass
+        {
+            public bool GenButtonExist { get; set; }
+
+            public PropertiesClass()
+            {
+                this.GenButtonExist = false;
+            }
+        }
+
 
         //Return type
         public class SelectedEnt
@@ -169,8 +180,6 @@ namespace NaturalnieApp.Forms.Common
 
             //List of the tuples
             public List<(string products, int manufacturersId, string barcodes)> EntsRelaction { get; set; }
-
-
         }
 
         //Private fields        
@@ -203,12 +212,36 @@ namespace NaturalnieApp.Forms.Common
         //Backgound worker for connection to db
         BackgroundWorker DbBackgroundWorker;
 
+        //Properties
+        public PropertiesClass Properties { get; set; }
+
         //Public fields
         //Show if search bar busy
         public bool IsBussy { get; set; }
         
-
         public SearchBarTemplate()
+        {
+            //Call setup method
+            Setup();
+
+            //Adjust appearance of search bar
+            AdjustSearchBarAppearance();
+        }
+
+        public SearchBarTemplate(bool genButtonExist)
+        {
+            //Call setup method
+            Setup();
+
+            //Initialize generic button
+            this.Properties.GenButtonExist = genButtonExist;
+
+            //Adjust appearance of search bar
+            AdjustSearchBarAppearance();
+        }
+
+        //Setup method
+        public void Setup()
         {
             //Initialize component
             InitializeComponent();
@@ -227,6 +260,35 @@ namespace NaturalnieApp.Forms.Common
             //Initialize all ents relation class
             this.AllEntsRelation = new EntsRelations();
 
+            //Initialize properties
+            this.Properties = new PropertiesClass();
+        }
+
+        //Mathod used to adjusted search bar appearance
+        public void AdjustSearchBarAppearance()
+        {
+            if(this.Properties.GenButtonExist)
+            {
+                this.bGenericButton.Visible = true;
+                this.pManufacturer.Size = new Size(220,this.pBarCode.Size.Height);
+                this.pBarCode.Size = new Size(175, this.pBarCode.Size.Height);
+
+                this.pProductName.Location = new Point(this.pManufacturer.Location.X + this.pManufacturer.Size.Width + 5
+                    , this.pProductName.Location.Y);
+                this.pBarCode.Location = new Point(this.pProductName.Location.X + this.pProductName.Size.Width + 5
+                    , this.pBarCode.Location.Y);
+            }
+            else
+            {
+                this.bGenericButton.Visible = false;
+                this.pManufacturer.Size = new Size(220 + 25, this.pBarCode.Size.Height);
+                this.pBarCode.Size = new Size(175 + 25, this.pBarCode.Size.Height);
+
+                this.pProductName.Location = new Point(this.pManufacturer.Location.X + this.pManufacturer.Size.Width + 5
+                    , this.pProductName.Location.Y);
+                this.pBarCode.Location = new Point(this.pProductName.Location.X + this.pProductName.Size.Width + 5
+                    , this.pBarCode.Location.Y);
+            }
         }
 
         //=============================================================================
@@ -462,12 +524,12 @@ namespace NaturalnieApp.Forms.Common
             this.cbProducts.Enabled = false;
             this.cbBarcodes.Enabled = false;
             this.pbLoadingBar.BringToFront();
-            this.pLoadingBar.Show();
+            this.tpLoadingBar.Show();
             this.IsBussy = true;
         }
         private void HideLoadingBar()
         {
-            this.pLoadingBar.Hide();
+            this.tpLoadingBar.Hide();
             this.cbManufacturers.Enabled = true;
             this.cbProducts.Enabled = true;
             this.cbBarcodes.Enabled = true;

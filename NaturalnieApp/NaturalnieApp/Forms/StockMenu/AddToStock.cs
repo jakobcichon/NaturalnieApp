@@ -71,7 +71,6 @@ namespace NaturalnieApp.Forms
             //Check current date
             this.dtpDateOfAccept.Value = DateTime.Now;
             this.dtpExpirationDate.Value = DateTime.Now.AddMonths(3);
-            this.pExpirationDate.Hide();
 
             //Number of products
             this.tbQuantity.Text = "1";
@@ -905,8 +904,8 @@ namespace NaturalnieApp.Forms
         private void chbExpDateReq_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox localSender = (CheckBox)sender;
-            if (localSender.Checked) this.pExpirationDate.Show();
-            else this.pExpirationDate.Hide();
+            //if (localSender.Checked) this.pExpirationDate.Show();
+            //else this.pExpirationDate.Hide();
 
             UpdateControl(ref tbDummyForCtrl);
         }
@@ -927,5 +926,9 @@ namespace NaturalnieApp.Forms
 
         #endregion
 
+        private void advancedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            ;
+        }
     }
 }

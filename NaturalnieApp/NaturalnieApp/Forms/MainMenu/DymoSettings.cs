@@ -21,7 +21,7 @@ namespace NaturalnieApp.Forms
         {
             InitializeComponent();
 
-            this.TestSearchBar = new SearchBarTemplate();
+            this.TestSearchBar = new SearchBarTemplate(true);
             pTest.Controls.Add(this.TestSearchBar);
             this.TestSearchBar.NewEntSelected += TestSearchBar_NewEntSelected;
         }

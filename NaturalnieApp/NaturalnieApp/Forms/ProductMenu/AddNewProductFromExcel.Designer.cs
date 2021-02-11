@@ -211,7 +211,7 @@ namespace NaturalnieApp.Forms
             this.tpMarigin.Location = new System.Drawing.Point(0, 578);
             this.tpMarigin.Name = "tpMarigin";
             this.tpMarigin.RowCount = 1;
-            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tpMarigin.Size = new System.Drawing.Size(147, 30);
             this.tpMarigin.TabIndex = 2;
             // 
@@ -233,7 +233,7 @@ namespace NaturalnieApp.Forms
             this.lMarigin.Location = new System.Drawing.Point(4, 4);
             this.lMarigin.Margin = new System.Windows.Forms.Padding(3);
             this.lMarigin.Name = "lMarigin";
-            this.lMarigin.Size = new System.Drawing.Size(64, 29);
+            this.lMarigin.Size = new System.Drawing.Size(64, 30);
             this.lMarigin.TabIndex = 0;
             this.lMarigin.Text = "Marża";
             this.lMarigin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
