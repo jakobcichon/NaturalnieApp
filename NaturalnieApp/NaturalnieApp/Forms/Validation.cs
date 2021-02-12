@@ -334,12 +334,28 @@ namespace NaturalnieApp.Forms
             return validatingResult;
         }
 
-        //Method used to validate final price
+        //Method used to validate product info
         static public bool ProductInfoValidation(string input)
         {
             //Local variables
             bool validatingResult;
             string text = "Informacje o produkcie może zawierać maksymalnie 1024 znaki!!";
+
+            //Check if input match to define pattern
+            if (input.Length <= 1024) validatingResult = true;
+            else validatingResult = false;
+
+            if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
+
+            return validatingResult;
+        }
+
+        //Method used to validate general info field
+        static public bool GeneralInfoValidation(string input)
+        {
+            //Local variables
+            bool validatingResult;
+            string text = "Informacja może zawierać maksymalnie 1024 znaki!!";
 
             //Check if input match to define pattern
             if (input.Length <= 1024) validatingResult = true;

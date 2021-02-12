@@ -32,9 +32,8 @@ namespace NaturalnieApp.Forms
             this.components = new System.ComponentModel.Container();
             this.pHeader = new System.Windows.Forms.Panel();
             this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
-            this.bSave = new System.Windows.Forms.Button();
-            this.bUpdate = new System.Windows.Forms.Button();
             this.gbManufacturerInfo = new System.Windows.Forms.GroupBox();
+            this.bSaveManufacturer = new System.Windows.Forms.Button();
             this.tpLastNumberInCashRegister = new System.Windows.Forms.TableLayoutPanel();
             this.tbLastNumberInCashRegister = new System.Windows.Forms.TextBox();
             this.lLastNumberInCashRegister = new System.Windows.Forms.Label();
@@ -57,15 +56,15 @@ namespace NaturalnieApp.Forms
             this.lMaxNumberOfProducts = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.bClose = new System.Windows.Forms.Button();
-            this.pButtonsPanel = new System.Windows.Forms.Panel();
             this.gbSupplierInfo = new System.Windows.Forms.GroupBox();
+            this.bSaveSupplier = new System.Windows.Forms.Button();
             this.tpSupplierName = new System.Windows.Forms.TableLayoutPanel();
             this.tbSupplierName = new System.Windows.Forms.TextBox();
             this.lSupplierName = new System.Windows.Forms.Label();
             this.tpSupplierInfo = new System.Windows.Forms.TableLayoutPanel();
             this.lSupplierInfo = new System.Windows.Forms.Label();
             this.rtbSupplierInfo = new System.Windows.Forms.RichTextBox();
+            this.pButtonsPanel = new System.Windows.Forms.Panel();
             this.pHeader.SuspendLayout();
             this.gbManufacturerInfo.SuspendLayout();
             this.tpLastNumberInCashRegister.SuspendLayout();
@@ -98,36 +97,9 @@ namespace NaturalnieApp.Forms
             this.tbDummyForCtrl.TabIndex = 7;
             this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
             // 
-            // bSave
-            // 
-            this.bSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSave.ForeColor = System.Drawing.Color.Black;
-            this.bSave.Location = new System.Drawing.Point(678, 508);
-            this.bSave.Name = "bSave";
-            this.bSave.Size = new System.Drawing.Size(100, 50);
-            this.bSave.TabIndex = 3;
-            this.bSave.Text = "Zapisz";
-            this.bSave.UseVisualStyleBackColor = false;
-            this.bSave.Click += new System.EventHandler(this.bSave_Click);
-            // 
-            // bUpdate
-            // 
-            this.bUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bUpdate.ForeColor = System.Drawing.Color.Black;
-            this.bUpdate.Location = new System.Drawing.Point(572, 508);
-            this.bUpdate.Name = "bUpdate";
-            this.bUpdate.Size = new System.Drawing.Size(100, 50);
-            this.bUpdate.TabIndex = 2;
-            this.bUpdate.Text = "Odśwież";
-            this.bUpdate.UseVisualStyleBackColor = false;
-            this.bUpdate.Click += new System.EventHandler(this.bUpdate_Click);
-            // 
             // gbManufacturerInfo
             // 
+            this.gbManufacturerInfo.Controls.Add(this.bSaveManufacturer);
             this.gbManufacturerInfo.Controls.Add(this.tpLastNumberInCashRegister);
             this.gbManufacturerInfo.Controls.Add(this.tpFirstNumberInCashRegister);
             this.gbManufacturerInfo.Controls.Add(this.tpManufacturer);
@@ -138,10 +110,24 @@ namespace NaturalnieApp.Forms
             this.gbManufacturerInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.gbManufacturerInfo.Location = new System.Drawing.Point(0, 30);
             this.gbManufacturerInfo.Name = "gbManufacturerInfo";
-            this.gbManufacturerInfo.Size = new System.Drawing.Size(920, 270);
+            this.gbManufacturerInfo.Size = new System.Drawing.Size(920, 327);
             this.gbManufacturerInfo.TabIndex = 1;
             this.gbManufacturerInfo.TabStop = false;
             this.gbManufacturerInfo.Text = "Dane producenta";
+            // 
+            // bSaveManufacturer
+            // 
+            this.bSaveManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bSaveManufacturer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bSaveManufacturer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bSaveManufacturer.Location = new System.Drawing.Point(812, 256);
+            this.bSaveManufacturer.Margin = new System.Windows.Forms.Padding(5);
+            this.bSaveManufacturer.Name = "bSaveManufacturer";
+            this.bSaveManufacturer.Size = new System.Drawing.Size(100, 50);
+            this.bSaveManufacturer.TabIndex = 15;
+            this.bSaveManufacturer.Text = "Zapisz";
+            this.bSaveManufacturer.UseVisualStyleBackColor = false;
+            this.bSaveManufacturer.Click += new System.EventHandler(this.bSaveManufacturer_Click);
             // 
             // tpLastNumberInCashRegister
             // 
@@ -149,7 +135,7 @@ namespace NaturalnieApp.Forms
             this.tpLastNumberInCashRegister.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tpLastNumberInCashRegister.ColumnCount = 2;
             this.tpLastNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
-            this.tpLastNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 247F));
+            this.tpLastNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 253F));
             this.tpLastNumberInCashRegister.Controls.Add(this.tbLastNumberInCashRegister, 0, 0);
             this.tpLastNumberInCashRegister.Controls.Add(this.lLastNumberInCashRegister, 0, 0);
             this.tpLastNumberInCashRegister.Controls.Add(this.label4, 0, 1);
@@ -168,6 +154,7 @@ namespace NaturalnieApp.Forms
             this.tbLastNumberInCashRegister.Location = new System.Drawing.Point(307, 6);
             this.tbLastNumberInCashRegister.Margin = new System.Windows.Forms.Padding(5);
             this.tbLastNumberInCashRegister.Name = "tbLastNumberInCashRegister";
+            this.tbLastNumberInCashRegister.ReadOnly = true;
             this.tbLastNumberInCashRegister.Size = new System.Drawing.Size(123, 26);
             this.tbLastNumberInCashRegister.TabIndex = 0;
             // 
@@ -198,7 +185,7 @@ namespace NaturalnieApp.Forms
             this.tpFirstNumberInCashRegister.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tpFirstNumberInCashRegister.ColumnCount = 2;
             this.tpFirstNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
-            this.tpFirstNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 247F));
+            this.tpFirstNumberInCashRegister.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 253F));
             this.tpFirstNumberInCashRegister.Controls.Add(this.tbFirstNumberInCashRegister, 0, 0);
             this.tpFirstNumberInCashRegister.Controls.Add(this.lFirstNumberInCashRegister, 0, 0);
             this.tpFirstNumberInCashRegister.Controls.Add(this.label3, 0, 1);
@@ -219,6 +206,8 @@ namespace NaturalnieApp.Forms
             this.tbFirstNumberInCashRegister.Name = "tbFirstNumberInCashRegister";
             this.tbFirstNumberInCashRegister.Size = new System.Drawing.Size(123, 26);
             this.tbFirstNumberInCashRegister.TabIndex = 0;
+            this.tbFirstNumberInCashRegister.MouseHover += new System.EventHandler(this.tbFirstNumberInCashRegister_MouseHover);
+            this.tbFirstNumberInCashRegister.Validating += new System.ComponentModel.CancelEventHandler(this.tbFirstNumberInCashRegister_Validating);
             // 
             // lFirstNumberInCashRegister
             // 
@@ -266,6 +255,8 @@ namespace NaturalnieApp.Forms
             this.tbManufacturerName.Name = "tbManufacturerName";
             this.tbManufacturerName.Size = new System.Drawing.Size(213, 26);
             this.tbManufacturerName.TabIndex = 1;
+            this.tbManufacturerName.MouseHover += new System.EventHandler(this.tbManufacturerName_MouseHover);
+            this.tbManufacturerName.Validating += new System.ComponentModel.CancelEventHandler(this.tbManufacturerName_Validating);
             // 
             // lManufacturer
             // 
@@ -304,6 +295,8 @@ namespace NaturalnieApp.Forms
             this.tbBarcodePrefix.Name = "tbBarcodePrefix";
             this.tbBarcodePrefix.Size = new System.Drawing.Size(213, 26);
             this.tbBarcodePrefix.TabIndex = 0;
+            this.tbBarcodePrefix.MouseHover += new System.EventHandler(this.tbBarcodePrefix_MouseHover);
+            this.tbBarcodePrefix.Validating += new System.ComponentModel.CancelEventHandler(this.tbBarcodePrefix_Validating);
             // 
             // lBarcodePrefix
             // 
@@ -358,6 +351,7 @@ namespace NaturalnieApp.Forms
             this.rtbManufacturerInfo.Size = new System.Drawing.Size(425, 144);
             this.rtbManufacturerInfo.TabIndex = 0;
             this.rtbManufacturerInfo.Text = "";
+            this.rtbManufacturerInfo.Validating += new System.ComponentModel.CancelEventHandler(this.rtbManufacturerInfo_Validating);
             // 
             // tpMaxNumberOfProducts
             // 
@@ -365,7 +359,7 @@ namespace NaturalnieApp.Forms
             this.tpMaxNumberOfProducts.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tpMaxNumberOfProducts.ColumnCount = 2;
             this.tpMaxNumberOfProducts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
-            this.tpMaxNumberOfProducts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 247F));
+            this.tpMaxNumberOfProducts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 253F));
             this.tpMaxNumberOfProducts.Controls.Add(this.tbMaxNumberOfProducts, 0, 0);
             this.tpMaxNumberOfProducts.Controls.Add(this.lMaxNumberOfProducts, 0, 0);
             this.tpMaxNumberOfProducts.Controls.Add(this.label1, 0, 1);
@@ -386,6 +380,8 @@ namespace NaturalnieApp.Forms
             this.tbMaxNumberOfProducts.Name = "tbMaxNumberOfProducts";
             this.tbMaxNumberOfProducts.Size = new System.Drawing.Size(123, 26);
             this.tbMaxNumberOfProducts.TabIndex = 0;
+            this.tbMaxNumberOfProducts.MouseHover += new System.EventHandler(this.tbMaxNumberOfProducts_MouseHover);
+            this.tbMaxNumberOfProducts.Validating += new System.ComponentModel.CancelEventHandler(this.tbMaxNumberOfProducts_Validating);
             // 
             // lMaxNumberOfProducts
             // 
@@ -412,41 +408,33 @@ namespace NaturalnieApp.Forms
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // bClose
-            // 
-            this.bClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bClose.ForeColor = System.Drawing.Color.Black;
-            this.bClose.Location = new System.Drawing.Point(784, 508);
-            this.bClose.Name = "bClose";
-            this.bClose.Size = new System.Drawing.Size(100, 50);
-            this.bClose.TabIndex = 4;
-            this.bClose.Text = "Zamknij";
-            this.bClose.UseMnemonic = false;
-            this.bClose.UseVisualStyleBackColor = false;
-            this.bClose.Click += new System.EventHandler(this.bClose_Click);
-            // 
-            // pButtonsPanel
-            // 
-            this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pButtonsPanel.Location = new System.Drawing.Point(0, 620);
-            this.pButtonsPanel.Name = "pButtonsPanel";
-            this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
-            this.pButtonsPanel.TabIndex = 5;
-            // 
             // gbSupplierInfo
             // 
+            this.gbSupplierInfo.Controls.Add(this.bSaveSupplier);
             this.gbSupplierInfo.Controls.Add(this.tpSupplierName);
             this.gbSupplierInfo.Controls.Add(this.tpSupplierInfo);
             this.gbSupplierInfo.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbSupplierInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.gbSupplierInfo.Location = new System.Drawing.Point(0, 300);
+            this.gbSupplierInfo.Location = new System.Drawing.Point(0, 357);
             this.gbSupplierInfo.Name = "gbSupplierInfo";
-            this.gbSupplierInfo.Size = new System.Drawing.Size(920, 202);
+            this.gbSupplierInfo.Size = new System.Drawing.Size(920, 263);
             this.gbSupplierInfo.TabIndex = 6;
             this.gbSupplierInfo.TabStop = false;
             this.gbSupplierInfo.Text = "Dane produktu";
+            // 
+            // bSaveSupplier
+            // 
+            this.bSaveSupplier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bSaveSupplier.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bSaveSupplier.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bSaveSupplier.Location = new System.Drawing.Point(812, 190);
+            this.bSaveSupplier.Margin = new System.Windows.Forms.Padding(5);
+            this.bSaveSupplier.Name = "bSaveSupplier";
+            this.bSaveSupplier.Size = new System.Drawing.Size(100, 50);
+            this.bSaveSupplier.TabIndex = 1;
+            this.bSaveSupplier.Text = "Zapisz";
+            this.bSaveSupplier.UseVisualStyleBackColor = false;
+            this.bSaveSupplier.Click += new System.EventHandler(this.bSaveSupplier_Click);
             // 
             // tpSupplierName
             // 
@@ -472,6 +460,8 @@ namespace NaturalnieApp.Forms
             this.tbSupplierName.Name = "tbSupplierName";
             this.tbSupplierName.Size = new System.Drawing.Size(213, 26);
             this.tbSupplierName.TabIndex = 1;
+            this.tbSupplierName.MouseHover += new System.EventHandler(this.tbSupplierName_MouseHover);
+            this.tbSupplierName.Validating += new System.ComponentModel.CancelEventHandler(this.tbSupplierName_Validating);
             // 
             // lSupplierName
             // 
@@ -526,6 +516,18 @@ namespace NaturalnieApp.Forms
             this.rtbSupplierInfo.Size = new System.Drawing.Size(425, 78);
             this.rtbSupplierInfo.TabIndex = 0;
             this.rtbSupplierInfo.Text = "";
+            this.rtbSupplierInfo.Validating += new System.ComponentModel.CancelEventHandler(this.rtbSupplierInfo_Validating);
+            // 
+            // pButtonsPanel
+            // 
+            this.pButtonsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
+            this.pButtonsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pButtonsPanel.Location = new System.Drawing.Point(0, 620);
+            this.pButtonsPanel.Margin = new System.Windows.Forms.Padding(5);
+            this.pButtonsPanel.Name = "pButtonsPanel";
+            this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
+            this.pButtonsPanel.TabIndex = 7;
             // 
             // AddManufacturer
             // 
@@ -534,22 +536,16 @@ namespace NaturalnieApp.Forms
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(920, 690);
-            this.Controls.Add(this.gbSupplierInfo);
-            this.Controls.Add(this.bClose);
-            this.Controls.Add(this.gbManufacturerInfo);
-            this.Controls.Add(this.bUpdate);
-            this.Controls.Add(this.bSave);
-            this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
+            this.Controls.Add(this.gbSupplierInfo);
+            this.Controls.Add(this.gbManufacturerInfo);
+            this.Controls.Add(this.pHeader);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Enabled = false;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.KeyPreview = true;
+            this.ForeColor = System.Drawing.Color.Black;
             this.Name = "AddManufacturer";
-            this.Text = "Submenu_ElzabInfo";
+            this.Size = new System.Drawing.Size(920, 690);
             this.Load += new System.EventHandler(this.AddManufacturer_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddManufacturer_KeyDown);
             this.pHeader.ResumeLayout(false);
             this.pHeader.PerformLayout();
             this.gbManufacturerInfo.ResumeLayout(false);
@@ -575,8 +571,6 @@ namespace NaturalnieApp.Forms
 
         #endregion
         private System.Windows.Forms.Panel pHeader;
-        private System.Windows.Forms.Button bSave;
-        private System.Windows.Forms.Button bUpdate;
         private System.Windows.Forms.GroupBox gbManufacturerInfo;
         private System.Windows.Forms.TableLayoutPanel pManufacturerInfo;
         private System.Windows.Forms.Label lManufacturerInfo;
@@ -588,10 +582,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TableLayoutPanel tpMaxNumberOfProducts;
         private System.Windows.Forms.TextBox tbMaxNumberOfProducts;
         private System.Windows.Forms.Label lMaxNumberOfProducts;
-        private System.Windows.Forms.Button bClose;
         private System.Windows.Forms.TableLayoutPanel tpManufacturer;
         private System.Windows.Forms.Label lManufacturer;
-        private System.Windows.Forms.Panel pButtonsPanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbManufacturerName;
         private System.Windows.Forms.TableLayoutPanel tpFirstNumberInCashRegister;
@@ -610,5 +602,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lSupplierInfo;
         private System.Windows.Forms.RichTextBox rtbSupplierInfo;
         private System.Windows.Forms.TextBox tbDummyForCtrl;
+        private System.Windows.Forms.Panel pButtonsPanel;
+        private System.Windows.Forms.Button bSaveSupplier;
+        private System.Windows.Forms.Button bSaveManufacturer;
     }
 }

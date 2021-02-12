@@ -15,7 +15,7 @@ using NaturalnieApp.Forms;
 
 namespace NaturalnieApp.Forms
 {
-    public partial class AddManufacturer : Form
+    public partial class AddManufacturer : UserControl
     {
         //====================================================================================================
         //Class fields
@@ -144,7 +144,6 @@ namespace NaturalnieApp.Forms
                 if (this.databaseCommands.ConnectionStatus) this.Enabled = true;
 
                 this.Focus();
-                this.Activate();
             }
         }
         //=============================================================================
@@ -152,33 +151,32 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //General methods
         #region General methods
-        private bool ValidateAllInputFields()
+        private bool ValidateAllManufacturerInputFields()
         {
             //Local variable
             bool validationSuccess;
             try
             {
-                //Set local variable to true
-                validationSuccess = true;
 
-                //Call eachh of validating method
-                tbManufacturerName_Validating(this.tbManufacturerName, EventArgs.Empty);
-                tbBarcodePrefix_Validating(this.tbBarcodePrefix, EventArgs.Empty);
-                tbMaxNumberOfProducts_Validating(this.tbMaxNumberOfProducts, EventArgs.Empty);
-                tbFirstNumberInCashRegister_Validating(this.tbFirstNumberInCashRegister, EventArgs.Empty);
-                /*
-                tbLastNumberInCashRegister_Validating(this.tbLastNumberInCashRegister, EventArgs.Empty);
-                rtbManufacturerInfo_Validating(this.rtbManufacturerInfo, EventArgs.Empty);
+                if (this.tbManufacturerName.Text != "" && this.tbBarcodePrefix.Text != "" && this.tbMaxNumberOfProducts.Text != ""
+                    && this.tbFirstNumberInCashRegister.Text != "" && this.tbLastNumberInCashRegister.Text != "")
+                {
 
-                tbSupplierName_Validating(this.tbSupplierName, EventArgs.Empty);
-                rtbSupplierInfo_Validating(this.rtbSupplierInfo, EventArgs.Empty);
-                */
+                    //Set local variable to true
+                    validationSuccess = true;
 
-            }
-            catch (Validation.ValidatingFailed)
-            {
-                //If any of exception, return validation failed
-                validationSuccess = false;
+                    Validation.ManufacturerNameValidation(this.tbManufacturerName.Text);
+                    Validation.GeneralNumberValidation(this.tbBarcodePrefix.Text);
+                    Validation.GeneralNumberValidation(this.tbMaxNumberOfProducts.Text);
+                    Validation.GeneralNumberValidation(this.tbFirstNumberInCashRegister.Text);
+                    Validation.GeneralNumberValidation(this.tbLastNumberInCashRegister.Text);
+                }
+                else
+                {
+                    validationSuccess = false;
+                    MessageBox.Show("Nie wszystkie wymagane pola zostały uzupełnione!");
+                }
+
             }
             catch (Exception ex)
             {
@@ -187,6 +185,39 @@ namespace NaturalnieApp.Forms
             }
 
             return validationSuccess;
+
+
+        }
+        private bool ValidateAllSupplierInputFields()
+        {
+            //Local variable
+            bool validationSuccess;
+            try
+            {
+
+                if (this.tbSupplierName.Text != "")
+                {
+
+                    //Set local variable to true
+                    validationSuccess = true;
+
+                    Validation.SupplierNameValidation(this.tbSupplierName.Text);
+                }
+                else
+                {
+                    validationSuccess = false;
+                    MessageBox.Show("Nie wszystkie wymagane pola zostały uzupełnione!");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                validationSuccess = false;
+                MessageBox.Show(ex.Message);
+            }
+
+            return validationSuccess;
+
 
         }
 
@@ -233,33 +264,35 @@ namespace NaturalnieApp.Forms
             //Update control
             UpdateControl(ref tbDummyForCtrl);
         }
-        private void AddManufacturer_KeyDown(object sender, KeyEventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            Control localControl = (Control)sender;
 
-            if (e.KeyCode == Keys.Escape)
+            if ((keyData == Keys.Enter))
             {
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
+
+            }
+            else if (keyData == Keys.Escape)
+            {
+                //Update control
+                UpdateControl(ref tbDummyForCtrl);
                 errorProvider1.Clear();
-                //Update control
-                UpdateControl(ref tbDummyForCtrl);
             }
-            else if (e.KeyCode == Keys.Enter)
-            {
-                //Update control
-                UpdateControl(ref tbDummyForCtrl);
-            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
         #endregion
         //====================================================================================================
         //Buttons events
         #region Buttons events
-        private void bSave_Click(object sender, EventArgs e)
+        private void bSaveManufacturer_Click(object sender, EventArgs e)
         {
             //Local variables
             bool validatingSuccess;
 
             //Validate all input before saving
-            validatingSuccess = ValidateAllInputFields();
+            validatingSuccess = ValidateAllManufacturerInputFields();
 
             if (validatingSuccess)
             {
@@ -275,6 +308,28 @@ namespace NaturalnieApp.Forms
                         MessageBox.Show("Producent '" + this.ManufacturerEntity.Name + "' został zapisany!");
                     }
 
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            //Call update event
+            bUpdate_Click(sender, e);
+        }
+        private void bSaveSupplier_Click(object sender, EventArgs e)
+        {
+            //Local variables
+            bool validatingSuccess;
+
+            //Validate all input before saving
+            validatingSuccess = ValidateAllSupplierInputFields();
+
+            if (validatingSuccess)
+            {
+                try
+                {
                     if (tbSupplierName.Text != "")
                     {
                         //Save current object to database
@@ -362,9 +417,17 @@ namespace NaturalnieApp.Forms
             //Check if input match to define pattern
             try
             {
-                Validation.GeneralNumberValidation(localSender.Text);
-                this.ManufacturerEntity.BarcodeEanPrefix = localSender.Text;
-                errorProvider1.Clear();
+                if(localSender.Text != "")
+                {
+                    Validation.GeneralNumberValidation(localSender.Text);
+                    this.ManufacturerEntity.BarcodeEanPrefix = localSender.Text;
+                    errorProvider1.Clear();
+                }
+                else
+                {
+                    this.ManufacturerEntity.BarcodeEanPrefix = "";
+                }
+
             }
             catch (Validation.ValidatingFailed ex)
             {
@@ -452,6 +515,100 @@ namespace NaturalnieApp.Forms
             TextBox localSender = (TextBox)sender;
             ToolTip toolTip = new ToolTip();
             toolTip.SetToolTip(localSender, localSender.Text);
+        }
+        #endregion
+        //====================================================================================================
+        //ProductInfo events
+        #region Manufacturer Info events
+        private void rtbManufacturerInfo_Validating(object sender, EventArgs e)
+        {
+            //Local variables
+            bool validatingResult = false;
+            string text = "Informacja o producencie może zawierać maksymalnie 1024 znaki!";
+
+            //Cast the sender for an object
+            RichTextBox localSender = (RichTextBox)sender;
+
+            //Check if input match to define pattern
+            if (localSender.Text.Length >= 0 && localSender.Text.Length <= 1024) validatingResult = true;
+
+            //Validaion of input text
+            if (!validatingResult)
+            {
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, text);
+                if (e == EventArgs.Empty) throw new Validation.ValidatingFailed("Błąd podczas weryfikacji " + localSender.Name + "!");
+            }
+            else
+            {
+                this.ManufacturerEntity.Info = localSender.Text;
+                errorProvider1.Clear();
+            }
+        }
+        #endregion
+        //====================================================================================================
+        //Manufacturer name events
+        #region Supplier name events
+        private void tbSupplierName_Validating(object sender, EventArgs e)
+        {
+            //Cast the sender for an object
+            TextBox localSender = (TextBox)sender;
+
+            //Check if input match to define pattern
+            try
+            {
+                Validation.SupplierNameValidation(localSender.Text);
+                this.SupplierEntity.Name = localSender.Text;
+                errorProvider1.Clear();
+
+
+            }
+            catch (Validation.ValidatingFailed ex)
+            {
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, ex.Message);
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void tbSupplierName_MouseHover(object sender, EventArgs e)
+        {
+            TextBox localSender = (TextBox)sender;
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(localSender, localSender.Text);
+        }
+        #endregion
+
+        //====================================================================================================
+        //ProductInfo events
+        #region Manufacturer Info events
+        private void rtbSupplierInfo_Validating(object sender, EventArgs e)
+        {
+            //Local variables
+            bool validatingResult = false;
+            string text = "Informacja o dostawcy może zawierać maksymalnie 1024 znaki!";
+
+            //Cast the sender for an object
+            RichTextBox localSender = (RichTextBox)sender;
+
+            //Check if input match to define pattern
+            if (localSender.Text.Length >= 0 && localSender.Text.Length <= 1024) validatingResult = true;
+
+            //Validaion of input text
+            if (!validatingResult)
+            {
+                localSender.Text = "";
+                errorProvider1.SetError(localSender, text);
+                if (e == EventArgs.Empty) throw new Validation.ValidatingFailed("Błąd podczas weryfikacji " + localSender.Name + "!");
+            }
+            else
+            {
+                this.SupplierEntity.Info = localSender.Text;
+                errorProvider1.Clear();
+            }
         }
         #endregion
     }

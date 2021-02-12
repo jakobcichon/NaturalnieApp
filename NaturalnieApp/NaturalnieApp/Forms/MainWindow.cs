@@ -63,7 +63,7 @@ namespace NaturalnieApp.Forms
             this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) ;
             this.addNewProduct = new AddNewProduct(ref this.databaseCommands);
             this.addToStock = new AddToStock(ref this.databaseCommands);
-            this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+            this.addManufacturer = new AddManufacturer(ref this.databaseCommands);
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.dymoSettings = new DymoSettings();
@@ -398,7 +398,7 @@ namespace NaturalnieApp.Forms
             }
             catch (ObjectDisposedException)
             {
-                this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+                this.addManufacturer = new AddManufacturer(ref this.databaseCommands);
                 this.pContainer.Controls.Add(this.addManufacturer);
                 this.addManufacturer.Select();
                 this.addManufacturer.BringToFront();
