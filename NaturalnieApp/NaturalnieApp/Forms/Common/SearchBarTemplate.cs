@@ -349,7 +349,7 @@ namespace NaturalnieApp.Forms.Common
             this.DbBackgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.DbBackgroundWorker_RunWorkerCompleted);
         }
         // This event handler is where the actual, potentially time-consuming work is done.
-        void DbBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void DbBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         { 
 
             try
@@ -407,6 +407,23 @@ namespace NaturalnieApp.Forms.Common
 
                 //Update data sources
                 UpdateDataSources(this.ManufacturersToDisplayDict, this.ProductsToDisplayDict, this.BarcodesToDisplayDict);
+
+                //Update current selected entity
+                if (this.PreviouslySelectedProduct == "")
+                {
+                    //Get actual entity
+                    this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(this.cbProducts.SelectedItem.ToString());
+                    this.PreviouslySelectedProduct = this.ActualSelectedEnt.ProductName;
+                }
+                else
+                {
+                    //Get actual entity
+                    this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(this.PreviouslySelectedProduct);
+
+                }
+
+                //Select entity on the other combo boxes
+                this.SelectEntity(this.ActualSelectedEnt);
 
                 //Hide loading bar
                 HideLoadingBar();
@@ -555,6 +572,26 @@ namespace NaturalnieApp.Forms.Common
         {
             //Get actual entity
             SelectedEnt entToSelect = this.AllEntsRelation.GetFullEntByBarcode(barcodeValue);
+
+            if (entToSelect != null)
+            {
+                //Reset dicts
+                this.UpdateDataSources(this.FullManufacturersDict, this.FullProductsDict, this.FullBarcodesDict);
+
+                //Set found entity as actual one
+                this.ActualSelectedEnt = entToSelect;
+
+                //Select entity on the other combo boxes
+                this.SelectEntity(this.ActualSelectedEnt);
+
+                return true;
+            }
+            else return false;
+        }
+        public bool SelectEntityByName(string entityName)
+        {
+            //Get actual entity
+            SelectedEnt entToSelect = this.AllEntsRelation.GetFullEnt(entityName);
 
             if (entToSelect != null)
             {

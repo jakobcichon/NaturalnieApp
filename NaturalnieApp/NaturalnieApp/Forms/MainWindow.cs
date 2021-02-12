@@ -62,7 +62,7 @@ namespace NaturalnieApp.Forms
             this.printBarcode = new PrintBarcode(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) ;
             this.addNewProduct = new AddNewProduct(ref this.databaseCommands);
-            this.addToStock = new AddToStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+            this.addToStock = new AddToStock(ref this.databaseCommands);
             this.addManufacturer = new AddManufacturer(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
@@ -424,7 +424,6 @@ namespace NaturalnieApp.Forms
                 this.pricesRelatedUpdate.Show();
             }
         }
-
         #endregion
 
         #region Stock submenu
@@ -444,7 +443,7 @@ namespace NaturalnieApp.Forms
             }
             catch (ObjectDisposedException)
             {
-                this.addToStock = new AddToStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
+                this.addToStock = new AddToStock(ref this.databaseCommands);
                 this.pContainer.Controls.Add(this.addToStock);
                 this.addToStock.Select();
                 this.addToStock.BringToFront();

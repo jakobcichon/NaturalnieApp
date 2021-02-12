@@ -6,24 +6,19 @@ using System;
 using System.Data;
 using NaturalnieApp.Dymo_Printer;
 using System.Diagnostics;
+using NaturalnieApp.Forms.Common;
+using System.Text.RegularExpressions;
 
 namespace NaturalnieApp.Forms
 {
 
-    public partial class AddToStock : Form
+    public partial class AddToStock : UserControl
     {
         #region Object fields
         //Set the instance fields
         private DatabaseCommands databaseCommands { get; set; }
 
-        //Backgroundworker
-        private BackgroundWorker backgroundWorker1 { get; set; }
-        private backgroundWorkerTasks ActualTaskType { get; set; }
-
         //Global variables
-        private List<string> ProductsList { get; set; }
-        private List<string> ManufacturersList { get; set; }
-        private List<string> BarcodesList { get; set; }
         private string SelectedProductName { get; set; }
 
         private Product ProductEntity { get; set; }
@@ -34,11 +29,6 @@ namespace NaturalnieApp.Forms
         private int LastValidValueOfMarigin { get; set; }
         private int MariginValueToChangeTo { get; set; }
 
-        //Auto complete string collections
-        private AutoCompleteStringCollection ProductListCollection { get; set; }
-        private AutoCompleteStringCollection ManufacturerListCollection { get; set; }
-        private AutoCompleteStringCollection BarcodeListCollection { get; set; }
-
         //Data source for advanced data grid view
         private DataTable DataSoruce { get; set; }
         private DataSourceRelated.AddToStockDataSourceColumnNames ColumnNames;
@@ -46,8 +36,13 @@ namespace NaturalnieApp.Forms
         //Barcode reader
         private BarcodeRelated.BarcodeReader BarcodeReader { get; set; }
         private bool BarcodeValidEventGenerated { get; set; }
+        private bool SelectedFromBarcode { get; set; }
+
         //Printer instance
         Printer DymoPrinter;
+
+        //Search bard
+        private SearchBarTemplate SearchBar { get; set; }
         #endregion
 
         #region Class constructor
@@ -56,21 +51,21 @@ namespace NaturalnieApp.Forms
             //Call init component
             InitializeComponent();
 
+            //Initialize search bard template
+            this.SearchBar = new SearchBarTemplate(true);
+            this.pSearchBar.Controls.Add(this.SearchBar);
+            this.SearchBar.GenericButtonClick += SearchBar_GenericButtonClick;
+            this.SearchBar.NewEntSelected += SearchBar_NewEntSelected;
+
             //Initialize database comands
             this.databaseCommands = commandsObj;
-
-            //Background worker
-            InitializeBackgroundWorker();
-            ActualTaskType = backgroundWorkerTasks.None;
-
-            //Initialize globar variables
-            this.ProductsList = new List<string>();
-            this.ManufacturersList = new List<string>();
-            this.BarcodesList = new List<string>();
 
             //Check current date
             this.dtpDateOfAccept.Value = DateTime.Now;
             this.dtpExpirationDate.Value = DateTime.Now.AddMonths(3);
+
+            //Initialize name of current user control
+            this.lName.Text = "Dodaj do magazynu";
 
             //Number of products
             this.tbQuantity.Text = "1";
@@ -92,167 +87,19 @@ namespace NaturalnieApp.Forms
             this.BarcodeReader = new BarcodeRelated.BarcodeReader(100);
             this.BarcodeReader.BarcodeValid += BarcodeValidAction;
             this.BarcodeValidEventGenerated = false;
+            this.SelectedFromBarcode = false;
 
             //Marigin modification
             this.LastValidValueOfMarigin = 30;
             this.MariginValueToChangeTo = this.LastValidValueOfMarigin;
             this.tbMarigin.Text = this.LastValidValueOfMarigin.ToString();
 
-            //Printing event delegate
 
         }
-        #endregion
-
-        //=============================================================================
-        //                              Background worker
-        //=============================================================================
-        // Set up the BackgroundWorker object by attaching event handlers. 
-        #region Backgroundworker
-        private void InitializeBackgroundWorker()
-        {
-            this.backgroundWorker1 = new BackgroundWorker();
-            // here you have also to implement the necessary events
-            // this event will define what the worker is actually supposed to do
-            this.backgroundWorker1.DoWork += backgroundWorker1_DoWork;
-            // this event will define what the worker will do when finished
-            this.backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
-        }
-
-        // This event handler is where the actual, potentially time-consuming work is done.
-        void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            //Local vaiable
-            backgroundWorkerTasks taskType;
-            taskType = this.ActualTaskType;
-            List<List<string>> returnList = new List<List<string>>();
-
-            //check if Database reachable 
-            this.databaseCommands.CheckConnection(true);
-
-            //Do action depending of task type
-            switch (taskType)
-            {
-                case backgroundWorkerTasks.Init:
-                    if (this.databaseCommands.ConnectionStatus)
-                    {
-                        List<string> productNameList = this.databaseCommands.GetProductsNameList();
-                        List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
-                        List<string> barcodeList = this.databaseCommands.GetBarcodeList();
-                        returnList.Add(productNameList);
-                        returnList.Add(productManufacturerList);
-                        returnList.Add(barcodeList);
-                        e.Result = returnList;
-                    }
-                    break;
-                case backgroundWorkerTasks.Update:
-                    if (this.databaseCommands.ConnectionStatus)
-                    {
-                        List<string> productNameList = this.databaseCommands.GetProductsNameList();
-                        List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
-                        List<string> barcodeList = this.databaseCommands.GetBarcodeList();
-                        returnList.Add(productNameList);
-                        returnList.Add(productManufacturerList);
-                        returnList.Add(barcodeList);
-                        e.Result = returnList;
-                    }
-                    break;
-            }
-        }
-
-        // This event handler is where the actual, potentially time-consuming work is done.
-        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            //Local vaiable
-            backgroundWorkerTasks taskType;
-            taskType = this.ActualTaskType;
-
-            if (e.Error != null)
-            {
-                MessageBox.Show(e.Error.Message);
-            }
-            else
-            {
-                //Do action depending of task type
-                switch (taskType)
-                {
-                    case backgroundWorkerTasks.Init:
-                        if (this.databaseCommands.ConnectionStatus)
-                        {
-                            //Get product name list and product suppliers
-                            //check if Database reachable 
-                            List<List<string>> returnList = new List<List<string>>();
-                            returnList = (List<List<string>>)e.Result;
-                            FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1], returnList[2]);
-                        }
-                        break;
-                    case backgroundWorkerTasks.Update:
-                        if (this.databaseCommands.ConnectionStatus)
-                        {
-                            //Get product name list and product suppliers
-                            //check if Database reachable 
-                            List<List<string>> returnList = new List<List<string>>();
-                            returnList = (List<List<string>>)e.Result;
-                            FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1], returnList[2]);
-                            if (this.SelectedProductName != null)
-                            {
-                                this.cbProductsList.SelectedItem = this.SelectedProductName;
-                            }
-                        }
-                        break;
-                }
-
-                //Enable panel after work done
-                if (this.databaseCommands.ConnectionStatus) this.Enabled = true;
-
-
-                this.Focus();
-                this.Activate();
-            }
-        }
-        //=============================================================================
         #endregion
         //====================================================================================================
         //General methods
         #region General methods
-        //Metchod use to find and select string in ComboBox
-        private void FindTextInComboBoxAndSelect(ref ComboBox obj, string textToFind)
-        {
-            //Find search tex index
-            int index = obj.FindStringExact(textToFind);
-            obj.SelectedIndex = index;
-            ;
-
-        }
-        private void FillWithInitialDataFromObject(List<string> productList, List<string> manufacturerList, List<string> barcodeList)
-        {
-            //Add fetched data to proper combo box
-            this.ProductListCollection = new AutoCompleteStringCollection();
-            this.ProductsList = this.databaseCommands.GetProductsNameList();
-            this.ProductListCollection.Clear();
-            this.ProductListCollection.AddRange(this.ProductsList.ToArray());
-            this.cbProductsList.AutoCompleteCustomSource = this.ProductListCollection;
-            this.cbProductsList.Items.Clear();
-            this.cbProductsList.Items.AddRange(this.ProductsList.ToArray());
-
-            //Add fetched data to proper combo box
-            this.ManufacturerListCollection = new AutoCompleteStringCollection();
-            this.ManufacturersList = this.databaseCommands.GetManufacturersNameList();
-            this.ManufacturerListCollection.Clear();
-            this.ManufacturerListCollection.AddRange(this.ManufacturersList.ToArray());
-            this.cbManufacturers.AutoCompleteCustomSource = this.ManufacturerListCollection;
-            this.cbManufacturers.Items.Clear();
-            this.cbManufacturers.Items.AddRange(this.ManufacturersList.ToArray());
-
-            //Add fetched data to proper combo box
-            this.BarcodeListCollection = new AutoCompleteStringCollection();
-            this.BarcodesList = this.databaseCommands.GetBarcodeList();
-            this.BarcodeListCollection.Clear();
-            this.BarcodeListCollection.AddRange(this.BarcodesList.ToArray());
-            this.cbBarcodes.AutoCompleteCustomSource = this.BarcodeListCollection;
-            this.cbBarcodes.Items.Clear();
-            this.cbBarcodes.Items.AddRange(this.BarcodesList.ToArray());
-
-        }
         //Methos used to update control
         private void UpdateControl(ref TextBox dummyForControl)
         {
@@ -272,24 +119,21 @@ namespace NaturalnieApp.Forms
         //Method used to clear all object (text box, combo box, etc.)  data
         private void ClearAllObjectsData()
         {
-            //Supplier name
-            this.cbManufacturers.Items.Clear();
-
-            //Elzab product number
-            this.cbProductsList.Items.Clear();
-            this.cbBarcodes.Items.Clear();
             this.tbFinalPrice.Text = "";
             this.tbMarigin.Text = "";
             this.tbActualQuantity.Text = "";
         }
         private void FillWithDataFromObject(Product p, Tax t)
         {
-            FindTextInComboBoxAndSelect(ref this.cbProductsList, p.ProductName);
-            FindTextInComboBoxAndSelect(ref this.cbBarcodes, p.BarCode);
-
             //Elzab product number
             this.tbMarigin.Text = p.Marigin.ToString();
             this.tbFinalPrice.Text = string.Format("{0:0.00}", p.FinalPrice.ToString());
+
+            //GEt actual guantity in stock
+            this.tbActualQuantity.Text = this.databaseCommands.GetStockQuantity(p.Id).ToString();
+
+            //Update quantity on list
+            UpdateQuantityOnList();
         }
 
         //Method used to update final price value
@@ -321,11 +165,58 @@ namespace NaturalnieApp.Forms
             this.tbQuantityOnList.Text = quantity.ToString();
         }
 
+        private void AddProductToTheList(Product product, Tax tax)
+        {
+            //Local variables
+            Product entity = product;
+            Tax taxEntity = tax;
+
+            //Index of existing row
+            int indexOfExistingRow = -1;
+            bool productAlreadyOnTheList = false;
+
+            //Check if product already exist on list
+            foreach (DataRow rowElement in this.DataSoruce.Rows)
+            {
+                string productName = rowElement.Field<string>(this.ColumnNames.ProductName);
+                if (productName.Contains(entity.ProductName))
+                {
+                    indexOfExistingRow = this.DataSoruce.Rows.IndexOf(rowElement);
+                    productAlreadyOnTheList = true;
+                    break;
+                }
+            }
+
+            //Increment number of copies if product already exist on the list
+            if (productAlreadyOnTheList)
+            {
+                this.DataSoruce.Rows[indexOfExistingRow].SetField(this.ColumnNames.NumberOfPieces,
+                    this.DataSoruce.Rows[indexOfExistingRow].Field<Int32>(this.ColumnNames.NumberOfPieces) + Int32.Parse(this.tbQuantity.Text));
+            }
+            else
+            {
+                //New data row type
+                DataRow row;
+                row = this.DataSoruce.NewRow();
+
+                //Set requred fields
+                row.SetField(this.ColumnNames.ProductName, entity.ProductName);
+                row.SetField(this.ColumnNames.PriceNet, entity.PriceNet);
+                row.SetField(this.ColumnNames.Tax, taxEntity.TaxValue);
+                row.SetField(this.ColumnNames.FinalPrice, entity.FinalPrice);
+                row.SetField(this.ColumnNames.AddDate, this.dtpDateOfAccept.Value.Date);
+                row.SetField(this.ColumnNames.NumberOfPieces, Convert.ToInt32(this.tbQuantity.Text));
+                if (this.chbExpDateReq.Checked) row.SetField(this.ColumnNames.ExpirenceDate, this.dtpExpirationDate.Value.Date);
+                else row.SetField(this.ColumnNames.ExpirenceDate, DateTime.MinValue);
+
+                //Assign values to the proper rows
+                this.DataSoruce.Rows.Add(row);
+            }
+        }
         #endregion
         //====================================================================================================
         //Advanced data gid view
         #region Advanced data gid view
-
         /// <summary>
         /// Method used to initialize advanced data grid view
         /// </summary>
@@ -335,8 +226,7 @@ namespace NaturalnieApp.Forms
             DataColumn column = new DataColumn();
 
             column.ColumnName = this.ColumnNames.No;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
+            column.DataType = Type.GetType("System.Int32");
             column.AutoIncrement = true;
             column.AutoIncrementSeed = 1;
             column.Unique = true;
@@ -416,11 +306,52 @@ namespace NaturalnieApp.Forms
             }
 
         }
-
         private void advancedDataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
             //Update quantity on list
             UpdateQuantityOnList();
+
+            //Renumber no column values if necessary
+            UpdateNoColumnValues(this.DataSoruce, this.ColumnNames.No);
+        }
+        private void advancedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //Local variables
+            string entityName = "";
+
+            //Get the name of current entity from data grid view
+            if (this.DataSoruce.Columns[e.ColumnIndex].ColumnName == this.ColumnNames.ProductName)
+            {
+                entityName = this.DataSoruce.Rows[e.RowIndex].Field<string>(e.ColumnIndex);
+                this.SearchBar.SelectEntityByName(entityName);
+            }
+
+
+        }
+        private void advancedDataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            //Select last cell from view
+            this.advancedDataGridView1.CurrentCell = this.advancedDataGridView1.Rows[e.RowIndex].Cells[this.ColumnNames.ProductName];
+
+            //Renumber no column values if necessary
+            UpdateNoColumnValues(this.DataSoruce, this.ColumnNames.No);
+        }
+        private void UpdateNoColumnValues(DataTable dataTable, string noColumnName)
+        {
+            //Get number of rows in data source
+            int numberOfRows = dataTable.Rows.Count;
+
+            //Get value of No column in last row
+            int noValueOfLastRow = dataTable.Rows[numberOfRows - 1].Field<int>(noColumnName);
+
+            //Check if equal. If not renumbere all
+            if(numberOfRows != noValueOfLastRow)
+            {
+                for(int i=1; i<=numberOfRows;i++)
+                {
+                    dataTable.Rows[i - 1].SetField<int>(noColumnName, i);
+                }
+            }
         }
         #endregion
         //====================================================================================================
@@ -428,12 +359,6 @@ namespace NaturalnieApp.Forms
         #region Current window events
         private void AddToStock_Load(object sender, EventArgs e)
         {
-            //Disable panel and wait until data from db will be fetched
-            this.Enabled = false;
-
-            //Call background worker
-            this.ActualTaskType = backgroundWorkerTasks.Init;
-            this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
 
             this.dtpDateOfAccept.Value = DateTime.Now;
             this.dtpExpirationDate.Value = DateTime.Now.AddMonths(3);
@@ -442,25 +367,24 @@ namespace NaturalnieApp.Forms
             UpdateControl(ref tbDummyForCtrl);
 
         }
-        private void AddToStock_KeyDown(object sender, KeyEventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            Control localControl = (Control)sender;
-
             this.BarcodeValidEventGenerated = false;
-            this.BarcodeReader.CheckIfBarcodeFromReader(e.KeyCode);
+            this.BarcodeReader.CheckIfBarcodeFromReader(keyData);
 
-            if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
+            if ((keyData == Keys.Enter) && (!this.BarcodeValidEventGenerated))
             {
                 //Update control
                 UpdateControl(ref tbDummyForCtrl);
 
             }
-            else if (e.KeyCode == Keys.Escape)
+            else if (keyData == Keys.Escape)
             {
                 //Update control
                 UpdateControl(ref tbDummyForCtrl);
             }
 
+            return base.ProcessCmdKey(ref msg, keyData);
         }
         /*
         private void AddToStock_Paint(object sender, PaintEventArgs e)
@@ -481,99 +405,24 @@ namespace NaturalnieApp.Forms
                 }
                 else barcodeToSearch = e.RecognizedBarcodeValue;
 
-                //Get index
-
-                int index = this.cbBarcodes.Items.IndexOf(barcodeToSearch);
-                if (index >= 0)
+                if (this.cbAddWithEveryScanCycle.Checked)
                 {
-                    if (this.cbBarcodes.SelectedIndex == index)
-                    {
-                        cbBarcodes_SelectedIndexChanged(cbBarcodes, EventArgs.Empty);
-                    }
-                    else
-                    {
-                        this.cbBarcodes.SelectedIndex = index;
-                    }
-
+                    this.SelectedFromBarcode = true;
                 }
-                else MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych", "Brak kodu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //Get index
+                if (!this.SearchBar.SelectBarcode(barcodeToSearch))
+                {
+                    MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych", "Brak kodu", 
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.SelectedFromBarcode = false;
+                }
             }
 
             //Set variable informing Bar code read corrected
             this.BarcodeValidEventGenerated = true;
         }
         #endregion
-        //====================================================================================================
-        //Manufacturer  events
-        #region Manufacturer  events
-        private void cbManufacturers_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (this.cbManufacturers.SelectedIndex != 0)
-                {
-
-                    //Fetch filtered information from database
-                    List<string> filteredProductNames = this.databaseCommands.GetProductsNameListByManufacturer(cbManufacturers.SelectedItem.ToString());
-                    cbProductsList.Items.Clear();
-                    cbProductsList.Items.AddRange(filteredProductNames.ToArray());
-                }
-                else
-                {
-                    //Fetch filtered information from database
-                    List<string> productNames = this.databaseCommands.GetProductsNameList();
-                    cbProductsList.Items.Clear();
-                    cbProductsList.Items.AddRange(productNames.ToArray());
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            UpdateControl(ref tbDummyForCtrl);
-        }
-        #endregion
-        //====================================================================================================
-        //Product List events
-        #region Product List events
-        private void cbProductsList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //Cast an object
-            ComboBox localSender = (ComboBox)sender;
-
-            //Local variables
-            string manufacturerName;
-            string barcode;
-
-
-            //Get selected entity
-            try
-            {
-                manufacturerName = this.databaseCommands.GetManufacturerByProductName(localSender.SelectedItem.ToString()).Name;
-                barcode = this.databaseCommands.GetProductEntityByProductName(localSender.SelectedItem.ToString()).BarCode;
-
-
-                this.ProductEntity = this.databaseCommands.GetProductEntityByProductName(this.cbProductsList.SelectedItem.ToString());
-                this.TaxEntity = this.databaseCommands.GetTaxByProductName(this.ProductEntity.ProductName);
-                this.FillWithDataFromObject(this.ProductEntity, this.TaxEntity);
-                UpdateFinalPrice();
-
-                tbFinalPrice.Text = this.ProductEntity.FinalPrice.ToString();
-                tbActualQuantity.Text = this.databaseCommands.GetStockQuantity(
-                        this.databaseCommands.GetProductIdByName(this.ProductEntity.ProductName)).ToString();
-
-                FindTextInComboBoxAndSelect(ref cbManufacturers, manufacturerName);
-                FindTextInComboBoxAndSelect(ref cbBarcodes, barcode);
-
-                //Update calss field
-                this.SelectedProductName = localSender.SelectedItem.ToString();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        #endregion
+        
         //====================================================================================================
         //MArigin events
         #region Marigin events
@@ -584,7 +433,7 @@ namespace NaturalnieApp.Forms
 
             try
             {
-                if (this.cbProductsList.SelectedItem != null)
+                if (this.ProductEntity != null)
                 {
                     int value;
                     //Try parse input value
@@ -617,10 +466,10 @@ namespace NaturalnieApp.Forms
 
             try
             {
-                if (this.cbProductsList.SelectedItem != null)
+                if (this.ProductEntity != null)
                 {
                     //Get current selected entity
-                    Product entity = this.databaseCommands.GetProductEntityByProductName(this.cbProductsList.SelectedItem.ToString());
+                    Product entity = this.databaseCommands.GetProductEntityByProductName(this.ProductEntity.ProductName);
 
                     //Check if marigin value has changed
                     if (entity.Marigin != this.MariginValueToChangeTo)
@@ -654,134 +503,32 @@ namespace NaturalnieApp.Forms
         }
         #endregion
         //====================================================================================================
-        //Product List events
-        #region Barcode events
-        private void cbBarcodes_SelectedIndexChanged(object sender, EventArgs e)
+        //Quantity events
+        #region Quantity events
+        private void tbQuantity_Validating(object sender, CancelEventArgs e)
         {
             //Cast an object
-            ComboBox localSender = (ComboBox)sender;
+            TextBox localSender = (TextBox)sender;
 
-            //Local variables
-            string manufacturerName;
-            string productName;
-
-            //Get selected entity
             try
             {
-                productName = this.databaseCommands.GetProductEntityByBarcode(localSender.SelectedItem.ToString()).ProductName;
-                manufacturerName = this.databaseCommands.GetManufacturerByProductName(productName).Name;
-                FindTextInComboBoxAndSelect(ref cbManufacturers, manufacturerName);
-                FindTextInComboBoxAndSelect(ref cbProductsList, productName);
-
-                this.ProductEntity = this.databaseCommands.GetProductEntityByProductName(this.cbProductsList.SelectedItem.ToString());
-                this.TaxEntity = this.databaseCommands.GetTaxByProductName(this.ProductEntity.ProductName);
-                this.FillWithDataFromObject(this.ProductEntity, this.TaxEntity);
-                UpdateFinalPrice();
-
-                tbFinalPrice.Text = this.ProductEntity.FinalPrice.ToString();
-                tbActualQuantity.Text = this.databaseCommands.GetStockQuantity(
-                        this.databaseCommands.GetProductIdByName(this.ProductEntity.ProductName)).ToString();
-
-                if (cbAddWithEveryScanCycle.Checked)
-                {
-                    bAdd_Click(sender, e);
-                }
+                int value = Int32.Parse(localSender.Text);
             }
-            catch (Exception ex)
+            catch (FormatException)
             {
-                MessageBox.Show(ex.Message);
+                localSender.Text = "1";
             }
-
-            UpdateControl(ref tbDummyForCtrl);
         }
         #endregion
         //====================================================================================================
         //Buttons events
         #region Buttons events
-        private void bAdd_Click(object sender, EventArgs e)
-        {
-            //Local variables
-            Product entity;
-            Tax taxEntity;
-
-            if (cbBarcodes.SelectedItem != null && cbProductsList.SelectedItem != null)
-            {
-                try
-                {
-                    //Get product entity from DB
-                    entity = this.databaseCommands.GetProductEntityByProductName(cbProductsList.SelectedItem.ToString());
-                    taxEntity = this.databaseCommands.GetTaxByProductName(entity.ProductName);
-
-                    //Index of existing row
-                    int indexOfExistingRow = -1;
-                    bool productAlreadyOnTheList = false;
-
-                    //Check if product already exist on list
-                    foreach (DataRow rowElement in this.DataSoruce.Rows)
-                    {
-                        string productName = rowElement.Field<string>(this.ColumnNames.ProductName);
-                        if (productName.Contains(entity.ProductName))
-                        {
-                            indexOfExistingRow = this.DataSoruce.Rows.IndexOf(rowElement);
-                            productAlreadyOnTheList = true;
-                            break;
-                        }
-                    }
-
-                    //Increment number of copies if product already exist on the list
-                    if (productAlreadyOnTheList)
-                    {
-                        this.DataSoruce.Rows[indexOfExistingRow].SetField(this.ColumnNames.NumberOfPieces,
-                            this.DataSoruce.Rows[indexOfExistingRow].Field<Int32>(this.ColumnNames.NumberOfPieces) + 1);
-                    }
-                    else
-                    {
-                        //New data row type
-                        DataRow row;
-                        row = this.DataSoruce.NewRow();
-
-                        //Set requred fields
-                        row.SetField(this.ColumnNames.ProductName, entity.ProductName);
-                        row.SetField(this.ColumnNames.PriceNet, entity.PriceNet);
-                        row.SetField(this.ColumnNames.Tax, taxEntity.TaxValue);
-                        row.SetField(this.ColumnNames.FinalPrice, entity.FinalPrice);
-                        row.SetField(this.ColumnNames.AddDate, this.dtpDateOfAccept.Value.Date);
-                        row.SetField(this.ColumnNames.NumberOfPieces, Convert.ToInt32(this.tbQuantity.Text));
-                        if (this.chbExpDateReq.Checked) row.SetField(this.ColumnNames.ExpirenceDate, this.dtpExpirationDate.Value.Date);
-                        else row.SetField(this.ColumnNames.ExpirenceDate, DateTime.MinValue);
-
-                        //Assign values to the proper rows
-                        this.DataSoruce.Rows.Add(row);
-
-                    }
-
-                    //AutoResize Columns
-                    advancedDataGridView1.AutoResizeColumns();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
-            }
-
-            //Update quantity on list
-            UpdateQuantityOnList();
-
-            //Select next control
-            UpdateControl(ref tbDummyForCtrl);
-        }
-
         private void bClose_Click(object sender, EventArgs e)
         {
 
             this.Parent.Show();
             this.Dispose();
         }
-
         private void bSave_Click(object sender, EventArgs e)
         {
             //Local variables
@@ -876,30 +623,13 @@ namespace NaturalnieApp.Forms
         }
         private void bUpdate_Click(object sender, EventArgs e)
         {
-            //Get current product name if was chosen
-            if (this.SelectedProductName != null)
-            {
-                if (this.cbProductsList.SelectedItem != null)
-                {
-                    this.SelectedProductName = this.cbProductsList.SelectedItem.ToString();
-                }
-                else
-                {
-                    this.SelectedProductName = null;
-                }
-            }
+            this.SearchBar.UpdateCurrentEntity();
 
             cbAddWithEveryScanCycle.Checked = false;
 
             //Clear all data from current form
             ClearAllObjectsData();
 
-            //Disable panel and wait until data from db will be fetched
-            this.Enabled = false;
-
-            //Call background worker
-            this.ActualTaskType = backgroundWorkerTasks.Update;
-            this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
         }
         private void chbExpDateReq_CheckedChanged(object sender, EventArgs e)
         {
@@ -909,8 +639,7 @@ namespace NaturalnieApp.Forms
 
             UpdateControl(ref tbDummyForCtrl);
         }
-
-                private void bPrint_Click(object sender, EventArgs e)
+        private void bPrint_Click(object sender, EventArgs e)
         {
             DataRow[] rowsToPrint = this.DataSoruce.Select(this.DataSoruce.DefaultView.RowFilter);
 
@@ -922,13 +651,64 @@ namespace NaturalnieApp.Forms
             //Update control
             UpdateControl(ref tbDummyForCtrl);
         }
-
-
         #endregion
 
-        private void advancedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        //====================================================================================================
+        //Search bar events
+        #region Search bar events
+        private void SearchBar_NewEntSelected(object sender, SearchBarTemplate.NewEntSelectedEventArgs e)
         {
-            ;
+            //Set local variables
+            this.ProductEntity = e.SelectedProduct;
+            this.TaxEntity = e.SelectedTax;
+
+            if(this.SelectedFromBarcode)
+            {
+                try
+                {
+                    //Add product to the list
+                    this.AddProductToTheList(this.ProductEntity, this.TaxEntity);
+
+                    //AutoResize Columns
+                    advancedDataGridView1.AutoResizeColumns();
+                }
+
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
+
+            //Fill with received data
+            FillWithDataFromObject(this.ProductEntity, this.TaxEntity);
+
+            this.SelectedFromBarcode = false;
+
         }
+        private void SearchBar_GenericButtonClick(object sender, SearchBarTemplate.GenericButtonClickEventArgs e)
+        {
+            try
+            {
+                //Add product to the list
+                this.AddProductToTheList(e.SelectedProduct, e.SelectedTax);
+
+                //AutoResize Columns
+                advancedDataGridView1.AutoResizeColumns();
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+
+            //Update quantity on list
+            UpdateQuantityOnList();
+
+            //Select next control
+            UpdateControl(ref tbDummyForCtrl);
+        }
+        #endregion
     }
 }
