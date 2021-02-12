@@ -32,6 +32,10 @@ namespace NaturalnieApp.Forms.Common
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchBarTemplate));
             this.gbProductSelection = new System.Windows.Forms.GroupBox();
+            this.bGenericButton = new System.Windows.Forms.Button();
+            this.tpLoadingBar = new System.Windows.Forms.TableLayoutPanel();
+            this.pbLoadingBar = new System.Windows.Forms.PictureBox();
+            this.lLoadingBar = new System.Windows.Forms.Label();
             this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.pBarCode = new System.Windows.Forms.TableLayoutPanel();
             this.cbBarcodes = new System.Windows.Forms.ComboBox();
@@ -43,16 +47,12 @@ namespace NaturalnieApp.Forms.Common
             this.pManufacturer = new System.Windows.Forms.TableLayoutPanel();
             this.lManufacturer = new System.Windows.Forms.Label();
             this.cbManufacturers = new System.Windows.Forms.ComboBox();
-            this.tpLoadingBar = new System.Windows.Forms.TableLayoutPanel();
-            this.pbLoadingBar = new System.Windows.Forms.PictureBox();
-            this.lLoadingBar = new System.Windows.Forms.Label();
-            this.bGenericButton = new System.Windows.Forms.Button();
             this.gbProductSelection.SuspendLayout();
+            this.tpLoadingBar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLoadingBar)).BeginInit();
             this.pBarCode.SuspendLayout();
             this.pProductName.SuspendLayout();
             this.pManufacturer.SuspendLayout();
-            this.tpLoadingBar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLoadingBar)).BeginInit();
             this.SuspendLayout();
             // 
             // gbProductSelection
@@ -72,6 +72,56 @@ namespace NaturalnieApp.Forms.Common
             this.gbProductSelection.TabIndex = 2;
             this.gbProductSelection.TabStop = false;
             this.gbProductSelection.Text = "Wybór produktu";
+            // 
+            // bGenericButton
+            // 
+            this.bGenericButton.Image = ((System.Drawing.Image)(resources.GetObject("bGenericButton.Image")));
+            this.bGenericButton.Location = new System.Drawing.Point(864, 36);
+            this.bGenericButton.Margin = new System.Windows.Forms.Padding(5);
+            this.bGenericButton.Name = "bGenericButton";
+            this.bGenericButton.Size = new System.Drawing.Size(51, 70);
+            this.bGenericButton.TabIndex = 11;
+            this.bGenericButton.UseVisualStyleBackColor = true;
+            this.bGenericButton.Click += new System.EventHandler(this.bGenericButton_Click);
+            // 
+            // tpLoadingBar
+            // 
+            this.tpLoadingBar.ColumnCount = 2;
+            this.tpLoadingBar.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tpLoadingBar.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tpLoadingBar.Controls.Add(this.pbLoadingBar, 1, 0);
+            this.tpLoadingBar.Controls.Add(this.lLoadingBar, 0, 0);
+            this.tpLoadingBar.Location = new System.Drawing.Point(318, 2);
+            this.tpLoadingBar.Margin = new System.Windows.Forms.Padding(2);
+            this.tpLoadingBar.Name = "tpLoadingBar";
+            this.tpLoadingBar.RowCount = 1;
+            this.tpLoadingBar.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tpLoadingBar.Size = new System.Drawing.Size(344, 30);
+            this.tpLoadingBar.TabIndex = 10;
+            // 
+            // pbLoadingBar
+            // 
+            this.pbLoadingBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.pbLoadingBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbLoadingBar.Image = ((System.Drawing.Image)(resources.GetObject("pbLoadingBar.Image")));
+            this.pbLoadingBar.Location = new System.Drawing.Point(314, 0);
+            this.pbLoadingBar.Margin = new System.Windows.Forms.Padding(0);
+            this.pbLoadingBar.Name = "pbLoadingBar";
+            this.pbLoadingBar.Size = new System.Drawing.Size(30, 30);
+            this.pbLoadingBar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbLoadingBar.TabIndex = 3;
+            this.pbLoadingBar.TabStop = false;
+            // 
+            // lLoadingBar
+            // 
+            this.lLoadingBar.AutoSize = true;
+            this.lLoadingBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lLoadingBar.Location = new System.Drawing.Point(3, 0);
+            this.lLoadingBar.Name = "lLoadingBar";
+            this.lLoadingBar.Size = new System.Drawing.Size(308, 30);
+            this.lLoadingBar.TabIndex = 4;
+            this.lLoadingBar.Text = "Pobieranie informacji z bazy danych";
+            this.lLoadingBar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tbDummyForCtrl
             // 
@@ -105,7 +155,6 @@ namespace NaturalnieApp.Forms.Common
             this.cbBarcodes.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.cbBarcodes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbBarcodes.DropDownHeight = 200;
-            this.cbBarcodes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbBarcodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.cbBarcodes.FormattingEnabled = true;
             this.cbBarcodes.ImeMode = System.Windows.Forms.ImeMode.Off;
@@ -117,6 +166,7 @@ namespace NaturalnieApp.Forms.Common
             this.cbBarcodes.Size = new System.Drawing.Size(163, 28);
             this.cbBarcodes.TabIndex = 1;
             this.cbBarcodes.SelectedIndexChanged += new System.EventHandler(this.cbBarcodes_SelectedIndexChanged);
+            this.cbBarcodes.TextChanged += new System.EventHandler(this.cbBarcodes_TextChanged);
             // 
             // label1
             // 
@@ -155,7 +205,6 @@ namespace NaturalnieApp.Forms.Common
             this.cbProducts.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.cbProducts.ContextMenuStrip = this.contextMenuStrip1;
             this.cbProducts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbProducts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbProducts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.cbProducts.FormattingEnabled = true;
             this.cbProducts.ImeMode = System.Windows.Forms.ImeMode.Off;
@@ -169,7 +218,7 @@ namespace NaturalnieApp.Forms.Common
             this.cbProducts.Size = new System.Drawing.Size(438, 28);
             this.cbProducts.TabIndex = 1;
             this.cbProducts.SelectedIndexChanged += new System.EventHandler(this.cbProducts_SelectedIndexChanged);
-            this.cbProducts.Leave += new System.EventHandler(this.cbProducts_Leave);
+            this.cbProducts.TextChanged += new System.EventHandler(this.cbProducts_TextChanged);
             // 
             // contextMenuStrip1
             // 
@@ -226,7 +275,6 @@ namespace NaturalnieApp.Forms.Common
             // cbManufacturers
             // 
             this.cbManufacturers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbManufacturers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbManufacturers.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.cbManufacturers.FormattingEnabled = true;
             this.cbManufacturers.IntegralHeight = false;
@@ -238,55 +286,7 @@ namespace NaturalnieApp.Forms.Common
             this.cbManufacturers.Size = new System.Drawing.Size(208, 28);
             this.cbManufacturers.TabIndex = 1;
             this.cbManufacturers.SelectedIndexChanged += new System.EventHandler(this.cbManufacturers_SelectedIndexChanged);
-            // 
-            // tpLoadingBar
-            // 
-            this.tpLoadingBar.ColumnCount = 2;
-            this.tpLoadingBar.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tpLoadingBar.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tpLoadingBar.Controls.Add(this.pbLoadingBar, 1, 0);
-            this.tpLoadingBar.Controls.Add(this.lLoadingBar, 0, 0);
-            this.tpLoadingBar.Location = new System.Drawing.Point(318, 2);
-            this.tpLoadingBar.Margin = new System.Windows.Forms.Padding(2);
-            this.tpLoadingBar.Name = "tpLoadingBar";
-            this.tpLoadingBar.RowCount = 1;
-            this.tpLoadingBar.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tpLoadingBar.Size = new System.Drawing.Size(344, 30);
-            this.tpLoadingBar.TabIndex = 10;
-            // 
-            // pbLoadingBar
-            // 
-            this.pbLoadingBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
-            this.pbLoadingBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbLoadingBar.Image = ((System.Drawing.Image)(resources.GetObject("pbLoadingBar.Image")));
-            this.pbLoadingBar.Location = new System.Drawing.Point(314, 0);
-            this.pbLoadingBar.Margin = new System.Windows.Forms.Padding(0);
-            this.pbLoadingBar.Name = "pbLoadingBar";
-            this.pbLoadingBar.Size = new System.Drawing.Size(30, 30);
-            this.pbLoadingBar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbLoadingBar.TabIndex = 3;
-            this.pbLoadingBar.TabStop = false;
-            // 
-            // lLoadingBar
-            // 
-            this.lLoadingBar.AutoSize = true;
-            this.lLoadingBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lLoadingBar.Location = new System.Drawing.Point(3, 0);
-            this.lLoadingBar.Name = "lLoadingBar";
-            this.lLoadingBar.Size = new System.Drawing.Size(308, 30);
-            this.lLoadingBar.TabIndex = 4;
-            this.lLoadingBar.Text = "Pobieranie informacji z bazy danych";
-            this.lLoadingBar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // bGenericButton
-            // 
-            this.bGenericButton.Image = ((System.Drawing.Image)(resources.GetObject("bGenericButton.Image")));
-            this.bGenericButton.Location = new System.Drawing.Point(864, 36);
-            this.bGenericButton.Margin = new System.Windows.Forms.Padding(5);
-            this.bGenericButton.Name = "bGenericButton";
-            this.bGenericButton.Size = new System.Drawing.Size(51, 70);
-            this.bGenericButton.TabIndex = 11;
-            this.bGenericButton.UseVisualStyleBackColor = true;
+            this.cbManufacturers.TextChanged += new System.EventHandler(this.cbManufacturers_TextChanged);
             // 
             // SearchBarTemplate
             // 
@@ -302,12 +302,12 @@ namespace NaturalnieApp.Forms.Common
             this.Load += new System.EventHandler(this.SearchBarTemplate_Load);
             this.gbProductSelection.ResumeLayout(false);
             this.gbProductSelection.PerformLayout();
-            this.pBarCode.ResumeLayout(false);
-            this.pProductName.ResumeLayout(false);
-            this.pManufacturer.ResumeLayout(false);
             this.tpLoadingBar.ResumeLayout(false);
             this.tpLoadingBar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoadingBar)).EndInit();
+            this.pBarCode.ResumeLayout(false);
+            this.pProductName.ResumeLayout(false);
+            this.pManufacturer.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

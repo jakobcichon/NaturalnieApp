@@ -14,6 +14,8 @@ namespace NaturalnieApp.Forms.Common
     public partial class SearchBarTemplate : UserControl
     {
         #region Event definition
+
+        //New Ent selected event
         public class NewEntSelectedEventArgs : EventArgs
         {
             public Product SelectedProduct { get; set; }
@@ -33,6 +35,27 @@ namespace NaturalnieApp.Forms.Common
         }
 
         public event NewEntSelectedEventHandler NewEntSelected;
+
+        //Generic button click event
+        public class GenericButtonClickEventArgs : EventArgs
+        {
+            public Product SelectedProduct { get; set; }
+            public Manufacturer SelectedManufacturer { get; set; }
+            public Tax SelectedTax { get; set; }
+        }
+
+        public delegate void GenericButtonClickEventHandler(Object sender, GenericButtonClickEventArgs e);
+
+        protected virtual void OnGenericButtonClick(GenericButtonClickEventArgs e)
+        {
+            GenericButtonClickEventHandler handler = GenericButtonClick;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        public event GenericButtonClickEventHandler GenericButtonClick;
         #endregion
 
         //Properties class
@@ -198,6 +221,11 @@ namespace NaturalnieApp.Forms.Common
         private Dictionary<string, int> ProductsToDisplayDict { get; set; }
         private Dictionary<string, int> BarcodesToDisplayDict { get; set; }
 
+        //Autocomplete list for particular combo box
+        private AutoCompleteStringCollection ManaufacturerAutocompleteList { get; set; }
+        private AutoCompleteStringCollection ProductAutocompleteList { get; set; }
+        private AutoCompleteStringCollection BarcodeAutocompleteList { get; set; }
+
         //Add auxiliary variables to check if selected new index of combo box
         private string PreviouslySelectedManufacturer { get; set; }
         private string PreviouslySelectedProduct { get; set; }
@@ -257,6 +285,19 @@ namespace NaturalnieApp.Forms.Common
             this.PreviouslySelectedProduct = "";
             this.PreviouslySelectedBarcode = "";
 
+            //Initialize autocomplete source
+            this.cbManufacturers.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cbManufacturers.AutoCompleteMode = AutoCompleteMode.Suggest;
+            this.cbProducts.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cbProducts.AutoCompleteMode = AutoCompleteMode.Suggest;
+            this.cbBarcodes.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cbBarcodes.AutoCompleteMode = AutoCompleteMode.Suggest;
+
+            //Initialize autocomplete list
+            this.ManaufacturerAutocompleteList = new AutoCompleteStringCollection();
+            this.ProductAutocompleteList = new AutoCompleteStringCollection();
+            this.BarcodeAutocompleteList = new AutoCompleteStringCollection();
+
             //Initialize all ents relation class
             this.AllEntsRelation = new EntsRelations();
 
@@ -270,6 +311,7 @@ namespace NaturalnieApp.Forms.Common
             if(this.Properties.GenButtonExist)
             {
                 this.bGenericButton.Visible = true;
+                this.bGenericButton.Enabled = true;
                 this.pManufacturer.Size = new Size(220,this.pBarCode.Size.Height);
                 this.pBarCode.Size = new Size(175, this.pBarCode.Size.Height);
 
@@ -281,6 +323,7 @@ namespace NaturalnieApp.Forms.Common
             else
             {
                 this.bGenericButton.Visible = false;
+                this.bGenericButton.Enabled = false;
                 this.pManufacturer.Size = new Size(220 + 25, this.pBarCode.Size.Height);
                 this.pBarCode.Size = new Size(175 + 25, this.pBarCode.Size.Height);
 
@@ -431,6 +474,9 @@ namespace NaturalnieApp.Forms.Common
                 OnNewEntSelected(args);
             }
 
+            //Update control
+            this.UpdateControl(ref this.tbDummyForCtrl);
+
         }
 
         //Update control
@@ -461,6 +507,8 @@ namespace NaturalnieApp.Forms.Common
                 dataToList.Sort();
                 dataToList.Insert(0, "Wszyscy");
                 this.cbManufacturers.DataSource = dataToList;
+                this.ManaufacturerAutocompleteList.AddRange(dataToList.ToArray());
+                this.cbManufacturers.AutoCompleteCustomSource = this.ManaufacturerAutocompleteList;
             }
 
             //Update products list
@@ -471,6 +519,8 @@ namespace NaturalnieApp.Forms.Common
                 dataToList = productsData.Keys.ToList();
                 dataToList.Sort();
                 this.cbProducts.DataSource = dataToList;
+                this.ProductAutocompleteList.AddRange(dataToList.ToArray());
+                this.cbProducts.AutoCompleteCustomSource = this.ProductAutocompleteList;
             }
 
             //Update barcodes list
@@ -481,10 +531,15 @@ namespace NaturalnieApp.Forms.Common
                 dataToList = barcodesData.Keys.ToList();
                 dataToList.Sort();
                 this.cbBarcodes.DataSource = dataToList;
+                this.BarcodeAutocompleteList.AddRange(dataToList.ToArray());
+                this.cbBarcodes.AutoCompleteCustomSource = this.BarcodeAutocompleteList;
             }
 
             //Reset flag to bypass events action
             this.UpdatingDataSources = false;
+
+            //Update control
+            this.UpdateControl(ref this.tbDummyForCtrl);
         }
         //=============================================================================
         #endregion
@@ -523,6 +578,7 @@ namespace NaturalnieApp.Forms.Common
             this.cbManufacturers.Enabled = false;
             this.cbProducts.Enabled = false;
             this.cbBarcodes.Enabled = false;
+            if (this.Properties.GenButtonExist) this.bGenericButton.Enabled = false;
             this.pbLoadingBar.BringToFront();
             this.tpLoadingBar.Show();
             this.IsBussy = true;
@@ -533,6 +589,7 @@ namespace NaturalnieApp.Forms.Common
             this.cbManufacturers.Enabled = true;
             this.cbProducts.Enabled = true;
             this.cbBarcodes.Enabled = true;
+            if (this.Properties.GenButtonExist) this.bGenericButton.Enabled = true;
             this.IsBussy = false;
         }
         private void SearchBarTemplate_Load(object sender, EventArgs e)
@@ -554,7 +611,7 @@ namespace NaturalnieApp.Forms.Common
                 string selectedItem = localSender.SelectedItem.ToString();
 
                 //Check auxiliary variables
-                if (this.PreviouslySelectedManufacturer != localSender.SelectedItem.ToString())
+                if (this.PreviouslySelectedManufacturer != selectedItem)
                 {
 
                     //If selected index has changed, filter barcodes and product names
@@ -583,6 +640,15 @@ namespace NaturalnieApp.Forms.Common
             }
            
         }
+        private void cbManufacturers_TextChanged(object sender, EventArgs e)
+        {
+            //Cast sender
+            ComboBox localSender = (ComboBox)sender;
+            if (localSender.DroppedDown)
+            {
+                localSender.DroppedDown = false;
+            }
+        }
         private void cbProducts_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Cast sender
@@ -590,11 +656,22 @@ namespace NaturalnieApp.Forms.Common
 
             if (!this.UpdatingDataSources)
             {
+                string selectedItem = localSender.SelectedItem.ToString();
+
                 //Get actual entity
-                this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(localSender.Text);
+                this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(selectedItem);
 
                 //Select entity on the other combo boxes
                 this.SelectEntity(this.ActualSelectedEnt);
+            }
+        }
+        private void cbProducts_TextChanged(object sender, EventArgs e)
+        {
+            //Cast sender
+            ComboBox localSender = (ComboBox)sender;
+            if (localSender.DroppedDown)
+            {
+                localSender.DroppedDown = false;
             }
         }
         private void cbBarcodes_SelectedIndexChanged(object sender, EventArgs e)
@@ -603,24 +680,24 @@ namespace NaturalnieApp.Forms.Common
             ComboBox localSender = (ComboBox)sender;
 
             if (!this.UpdatingDataSources)
-            { 
+            {
+                string selectedItem = localSender.SelectedItem.ToString();
 
                 //Get actual entity
-                this.ActualSelectedEnt = this.AllEntsRelation.GetFullEntByBarcode(localSender.Text);
+                this.ActualSelectedEnt = this.AllEntsRelation.GetFullEntByBarcode(selectedItem);
 
                 //Select entity on the other combo boxes
                 this.SelectEntity(this.ActualSelectedEnt);
             }
         }
-        private void cbProducts_Leave(object sender, EventArgs e)
+        private void cbBarcodes_TextChanged(object sender, EventArgs e)
         {
             //Cast sender
             ComboBox localSender = (ComboBox)sender;
-
-            localSender.SelectionStart = 1;
-            localSender.SelectionLength = 0;
-            string temp = localSender.SelectedText;
-            ;
+            if (localSender.DroppedDown)
+            {
+                localSender.DroppedDown = false;
+            }
         }
         private void tbDummyForCtrl_Enter(object sender, EventArgs e)
         {
@@ -628,6 +705,17 @@ namespace NaturalnieApp.Forms.Common
             this.cbProducts.SelectionLength = 0;
             this.cbProducts.Update();
         }
+        private void bGenericButton_Click(object sender, EventArgs e)
+        {
+            //Fire an event
+            GenericButtonClickEventArgs args = new GenericButtonClickEventArgs();
+            args.SelectedProduct = this.ProductEntity;
+            args.SelectedManufacturer = this.ManufacturerEntity;
+            args.SelectedTax = this.TaxEntity;
+            OnGenericButtonClick(args);
+        }
+
+
     }
 
 }

@@ -24,6 +24,12 @@ namespace NaturalnieApp.Forms
             this.TestSearchBar = new SearchBarTemplate(true);
             pTest.Controls.Add(this.TestSearchBar);
             this.TestSearchBar.NewEntSelected += TestSearchBar_NewEntSelected;
+            this.TestSearchBar.GenericButtonClick += TestSearchBar_GenericButtonClick;
+        }
+
+        private void TestSearchBar_GenericButtonClick(object sender, SearchBarTemplate.GenericButtonClickEventArgs e)
+        {
+            ;
         }
 
         //General methods
