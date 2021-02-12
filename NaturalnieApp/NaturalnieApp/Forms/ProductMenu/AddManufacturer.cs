@@ -17,6 +17,7 @@ namespace NaturalnieApp.Forms
 {
     public partial class AddManufacturer : UserControl
     {
+
         //====================================================================================================
         //Class fields
         #region Class fields
@@ -218,6 +219,10 @@ namespace NaturalnieApp.Forms
 
             return validationSuccess;
 
+
+        }
+        private void GetElzabProductNumberAligment()
+        {
 
         }
 
@@ -581,7 +586,6 @@ namespace NaturalnieApp.Forms
             toolTip.SetToolTip(localSender, localSender.Text);
         }
         #endregion
-
         //====================================================================================================
         //ProductInfo events
         #region Manufacturer Info events

@@ -624,23 +624,35 @@ namespace NaturalnieApp.Forms
             {
                 try
                 {
-                    //Get manufacturer entity
-                    this.ManufacturerEntity = this.databaseCommands.GetManufacturerEntityByName(localSender.SelectedItem.ToString());
-
-                    //Enable text box
-                    this.lElzabProductNumberRange.Text = this.ManufacturerEntity.FirstNumberInCashRegister.ToString() +
-                        " - " + this.ManufacturerEntity.LastNumberInCashRegister.ToString();
-                    this.tbElzabProductNumber.Enabled = true;
-
                     //If epmty assign first free value
-                    this.tbElzabProductNumber.Text =
-                        this.databaseCommands.CalculateFreeElzabIdForGivenManufacturer(this.ManufacturerEntity.Name).ToString();
-                    this.ProductEntity.ElzabProductId = Convert.ToInt32(this.tbElzabProductNumber.Text);
+                    int elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabIdForGivenManufacturer(this.ManufacturerEntity.Name);
+                    if (elzabFirstFreeId > 0)
+                    {
+                        //Get manufacturer entity
+                        this.ManufacturerEntity = this.databaseCommands.GetManufacturerEntityByName(localSender.SelectedItem.ToString());
 
-                    //Generate EAN8
-                    this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
-                        Convert.ToInt32(this.tbElzabProductNumber.Text));
-                    this.ProductEntity.BarCodeShort = this.tbShortBarcode.Text;
+                        //Enable text box
+                        int lastNumberForGivenManufacturer = this.ManufacturerEntity.LastNumberInCashRegister - 1;
+                        this.lElzabProductNumberRange.Text = this.ManufacturerEntity.FirstNumberInCashRegister.ToString() +
+                            " - " + lastNumberForGivenManufacturer.ToString();
+                        this.tbElzabProductNumber.Enabled = true;
+
+                        //Generate EAN8
+                        this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
+                            Convert.ToInt32(this.tbElzabProductNumber.Text));
+                        this.ProductEntity.BarCodeShort = this.tbShortBarcode.Text;
+
+                        this.tbElzabProductNumber.Text = elzabFirstFreeId.ToString();
+                        this.ProductEntity.ElzabProductId = elzabFirstFreeId;
+                    }
+                    else
+                    {
+                        MessageBox.Show(String.Format("Nie można dodać więcej produktów dla \"{0}\"! Zdefiniowany limit dla producenta został osiągnięty."
+                            , localSender.SelectedItem.ToString()));
+                        localSender.SelectedIndex = -1;
+                    }
+
+
 
                 }
                 catch (Exception ex)

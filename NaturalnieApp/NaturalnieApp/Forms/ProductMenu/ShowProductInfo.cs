@@ -271,7 +271,7 @@ namespace NaturalnieApp.Forms
             this.tbBarcodeToEdit.Text = p.BarCode;
             this.tbProductNameToEdit.Text = p.ProductName;
             this.lElzabProductNumberRange.Text = m.FirstNumberInCashRegister.ToString()
-                + "-" + (m.FirstNumberInCashRegister + m.MaxNumberOfProducts).ToString();
+                + "-" + (m.FirstNumberInCashRegister + m.MaxNumberOfProducts - 1).ToString();
             this.lElzabNameLength.Text = this.tbElzabProductName.Text.Length.ToString();
 
             //Calculate price with tax
@@ -978,17 +978,29 @@ namespace NaturalnieApp.Forms
             //Check if input match to define pattern
             try
             {
-                int productNumber = Convert.ToInt32(localSender.Text);
-                Validation.ElzabProductNumberValidation(productNumber,
-                    this.ManufacturerEntity.FirstNumberInCashRegister,
-                    this.ManufacturerEntity.LastNumberInCashRegister);
-                this.ProductEntity.ElzabProductId = Convert.ToInt32(localSender.Text);
-                errorProvider1.Clear();
+                //Get first free Id and check if given number match
+                int elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabIdForGivenManufacturer(this.ManufacturerEntity.Name);
+                if(elzabFirstFreeId > 0)
+                {
+                    int productNumber = Convert.ToInt32(localSender.Text);
+                    Validation.ElzabProductNumberValidation(productNumber,
+                        elzabFirstFreeId,
+                        this.ManufacturerEntity.LastNumberInCashRegister);
 
-                //Generate EAN8
-                this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
-                    Convert.ToInt32(this.tbElzabProductNumber.Text));
-                this.ProductEntity.BarCodeShort = this.tbShortBarcode.Text;
+                    this.ProductEntity.ElzabProductId = Convert.ToInt32(localSender.Text);
+                    errorProvider1.Clear();
+
+                    //Generate EAN8
+                    this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
+                        Convert.ToInt32(this.tbElzabProductNumber.Text));
+                    this.ProductEntity.BarCodeShort = this.tbShortBarcode.Text;
+                }
+                else
+                {
+                    MessageBox.Show(String.Format("Nie można dodać więcej produktów dla \"{0}\"! Zdefiniowany limit dla producenta został osiągnięty."
+                    , this.ManufacturerEntity.Name));
+                }
+
             }
             catch (Validation.ValidatingFailed ex)
             {

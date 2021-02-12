@@ -224,7 +224,7 @@ namespace NaturalnieApp.Forms
             this.tpElzabProductName.ColumnCount = 3;
             this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 94F));
+            this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 96F));
             this.tpElzabProductName.Controls.Add(this.lElzabProductName, 0, 0);
             this.tpElzabProductName.Controls.Add(this.tbElzabProductName, 1, 0);
             this.tpElzabProductName.Controls.Add(this.lElzabNameLength, 2, 0);
@@ -232,7 +232,7 @@ namespace NaturalnieApp.Forms
             this.tpElzabProductName.Location = new System.Drawing.Point(464, 161);
             this.tpElzabProductName.Name = "tpElzabProductName";
             this.tpElzabProductName.RowCount = 1;
-            this.tpElzabProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.tpElzabProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 92F));
             this.tpElzabProductName.Size = new System.Drawing.Size(450, 40);
             this.tpElzabProductName.TabIndex = 12;
             // 
@@ -320,7 +320,7 @@ namespace NaturalnieApp.Forms
             this.tpElzabProductNumber.Location = new System.Drawing.Point(464, 117);
             this.tpElzabProductNumber.Name = "tpElzabProductNumber";
             this.tpElzabProductNumber.RowCount = 1;
-            this.tpElzabProductNumber.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.tpElzabProductNumber.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 57F));
             this.tpElzabProductNumber.Size = new System.Drawing.Size(450, 40);
             this.tpElzabProductNumber.TabIndex = 11;
             // 
@@ -331,7 +331,7 @@ namespace NaturalnieApp.Forms
             this.lElzabProductNumber.Location = new System.Drawing.Point(6, 6);
             this.lElzabProductNumber.Margin = new System.Windows.Forms.Padding(5);
             this.lElzabProductNumber.Name = "lElzabProductNumber";
-            this.lElzabProductNumber.Size = new System.Drawing.Size(200, 45);
+            this.lElzabProductNumber.Size = new System.Drawing.Size(200, 47);
             this.lElzabProductNumber.TabIndex = 0;
             this.lElzabProductNumber.Text = "Nr produktu w kasie Elzab";
             this.lElzabProductNumber.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -343,7 +343,7 @@ namespace NaturalnieApp.Forms
             this.lElzabProductNumberRange.Location = new System.Drawing.Point(346, 4);
             this.lElzabProductNumberRange.Margin = new System.Windows.Forms.Padding(3);
             this.lElzabProductNumberRange.Name = "lElzabProductNumberRange";
-            this.lElzabProductNumberRange.Size = new System.Drawing.Size(100, 49);
+            this.lElzabProductNumberRange.Size = new System.Drawing.Size(100, 51);
             this.lElzabProductNumberRange.TabIndex = 2;
             this.lElzabProductNumberRange.Text = "0-0";
             this.lElzabProductNumberRange.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
