@@ -7,6 +7,17 @@ using System.Threading.Tasks;
 
 namespace NaturalnieApp.ElzabDriver
 {
+    public interface IElzabSaleBufforInterface
+    {
+        ElzabSaleBuffor DataFromElzab { get; set; }
+        ElzabFileObject DataToElzab { get; set; }
+        ElzabFileObject Report { get; set; }
+        CommandExecutionStatus ReportStatus { get; set; }
+        ElzabFileObject Config { get; set; }
+        CommandExecutionStatus ExecuteCommand();
+
+    }
+
     public interface IElzabCommandInterface
     {
         ElzabFileObject DataFromElzab { get; set; }

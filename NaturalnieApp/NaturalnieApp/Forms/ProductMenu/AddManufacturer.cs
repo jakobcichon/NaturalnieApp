@@ -25,6 +25,9 @@ namespace NaturalnieApp.Forms
         BackgroundWorker backgroundWorker1;
         backgroundWorkerTasks ActualTaskType;
 
+        static private int FIRST_ELZAB_NUMBER { get; set; }
+        static private int LAST_ELZAB_NUMBER { get; set; }
+
         private Supplier SupplierEntity { get; set; }
         private Manufacturer ManufacturerEntity { get; set; }
 
@@ -42,6 +45,10 @@ namespace NaturalnieApp.Forms
             //Initialize object fields
             this.SupplierEntity = new Supplier();
             this.ManufacturerEntity = new Manufacturer();
+
+            //Initialize static fields
+            FIRST_ELZAB_NUMBER = 1;
+            LAST_ELZAB_NUMBER = 4096;
 
         }
         #endregion
@@ -221,8 +228,10 @@ namespace NaturalnieApp.Forms
 
 
         }
-        private void GetElzabProductNumberAligment()
+        private void GetElzabProductNumbersAligment()
         {
+            List<Manufacturer> allManufacturrersEnts = new List<Manufacturer>();
+            allManufacturrersEnts = this.databaseCommands.GetAllManufacturersEnts();
 
         }
 

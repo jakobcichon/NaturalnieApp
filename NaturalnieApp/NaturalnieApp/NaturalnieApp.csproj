@@ -265,11 +265,11 @@
     <Compile Include="Forms\Elzab\ElzabSynchronization.Designer.cs">
       <DependentUpon>ElzabSynchronization.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\MainMenu\DymoSettings.cs">
+    <Compile Include="Forms\TestForm\Playground.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\MainMenu\DymoSettings.Designer.cs">
-      <DependentUpon>DymoSettings.cs</DependentUpon>
+    <Compile Include="Forms\TestForm\Playground.Designer.cs">
+      <DependentUpon>Playground.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainWindow.cs">
       <SubType>Form</SubType>
@@ -278,11 +278,12 @@
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ProductMenu\AddManufacturer.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\ProductMenu\AddManufacturer.Designer.cs">
       <DependentUpon>AddManufacturer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ProductMenu\Manufacturers.cs" />
     <Compile Include="Forms\ProductMenu\PricesRelatedUpdate.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -326,7 +327,7 @@
       <DependentUpon>PrintFromStock.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\StockMenu\AddToStock.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\StockMenu\AddToStock.Designer.cs">
       <DependentUpon>AddToStock.cs</DependentUpon>
@@ -354,8 +355,8 @@
     <EmbeddedResource Include="Forms\Elzab\ElzabSynchronization.resx">
       <DependentUpon>ElzabSynchronization.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MainMenu\DymoSettings.resx">
-      <DependentUpon>DymoSettings.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\TestForm\Playground.resx">
+      <DependentUpon>Playground.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>

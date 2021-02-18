@@ -25,7 +25,7 @@ namespace NaturalnieApp.Forms
         public AddManufacturer addManufacturer { get; set; }
         public PrintFromStock printFromStock { get; set; }
         public ShowStock showStock { get; set; }
-        public DymoSettings dymoSettings { get; set; }
+        public Playground playground { get; set; }
         public GeneralSettings generalSettings { get; set; }
         public ElzabSynchronization cashRegisterCommands { get; set; }
         public PricesRelatedUpdate pricesRelatedUpdate { get; set; }
@@ -66,7 +66,7 @@ namespace NaturalnieApp.Forms
             this.addManufacturer = new AddManufacturer(ref this.databaseCommands);
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
-            this.dymoSettings = new DymoSettings();
+            this.playground = new Playground();
             this.generalSettings = new GeneralSettings(this.ConfigFileOjbInst);
             this.cashRegisterCommands = new ElzabSynchronization(ref this.databaseCommands);
             this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
@@ -240,23 +240,23 @@ namespace NaturalnieApp.Forms
         {
             toggleSubMenu(pMainMenuSubMenu);
         }
-        private void bDymoSettings_Click(object sender, EventArgs e)
+        private void bPlayground_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
             try
             {
-                this.pContainer.Controls.Add(this.dymoSettings);
-                this.dymoSettings.Select();
-                this.dymoSettings.BringToFront();
-                this.dymoSettings.Show();
+                this.pContainer.Controls.Add(this.playground);
+                this.playground.Select();
+                this.playground.BringToFront();
+                this.playground.Show();
             }
             catch (ObjectDisposedException)
             {
-                this.dymoSettings = new DymoSettings();
-                this.pContainer.Controls.Add(this.dymoSettings);
-                this.dymoSettings.Select();
-                this.dymoSettings.BringToFront();
-                this.dymoSettings.Show();
+                this.playground = new Playground();
+                this.pContainer.Controls.Add(this.playground);
+                this.playground.Select();
+                this.playground.BringToFront();
+                this.playground.Show();
             }
         }
         #endregion

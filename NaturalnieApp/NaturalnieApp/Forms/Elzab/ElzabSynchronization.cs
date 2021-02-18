@@ -22,6 +22,7 @@ namespace NaturalnieApp.Forms
         ElzabCommand_ZTOWAR ProductWriting { get; set; }
         ElzabCommand_ODBARKOD AdditionBarcodesReading { get; set; }
         ElzabCommand_ZDBARKOD AdditionBarcodesWriting { get; set; }
+        ElzabCommand_OPSPROZ4 SaleBufforReading { get; set; }
 
         DatabaseCommands databaseCommands;
         TextBox StatusBox { get; set; }
@@ -45,6 +46,8 @@ namespace NaturalnieApp.Forms
             this.ProductWriting = new ElzabCommand_ZTOWAR(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId);
             //Initialization of Elzab commands instances
             this.AdditionBarcodesWriting = new ElzabCommand_ZDBARKOD(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId);
+            //Initialization of Elzab commands instances
+            this.SaleBufforReading= new ElzabCommand_OPSPROZ4(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId);
 
             //Status box
             this.StatusBox = this.tbStatus;

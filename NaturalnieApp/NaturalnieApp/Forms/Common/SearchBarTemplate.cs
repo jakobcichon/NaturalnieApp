@@ -752,7 +752,6 @@ namespace NaturalnieApp.Forms.Common
             OnGenericButtonClick(args);
         }
 
-
     }
 
 }

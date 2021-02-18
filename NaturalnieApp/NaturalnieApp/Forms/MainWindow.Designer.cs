@@ -50,7 +50,7 @@ namespace NaturalnieApp.Forms
             this.bCashRegisterInfo = new System.Windows.Forms.Button();
             this.bCashRegister = new System.Windows.Forms.Button();
             this.pMainMenuSubMenu = new System.Windows.Forms.Panel();
-            this.bDymoSettings = new System.Windows.Forms.Button();
+            this.bPlayground = new System.Windows.Forms.Button();
             this.bGeneralSettings = new System.Windows.Forms.Button();
             this.bMainMenu = new System.Windows.Forms.Button();
             this.pLogo = new System.Windows.Forms.Panel();
@@ -375,7 +375,7 @@ namespace NaturalnieApp.Forms
             // 
             this.pMainMenuSubMenu.AutoSize = true;
             this.pMainMenuSubMenu.BackColor = System.Drawing.Color.DimGray;
-            this.pMainMenuSubMenu.Controls.Add(this.bDymoSettings);
+            this.pMainMenuSubMenu.Controls.Add(this.bPlayground);
             this.pMainMenuSubMenu.Controls.Add(this.bGeneralSettings);
             this.pMainMenuSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pMainMenuSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -384,22 +384,22 @@ namespace NaturalnieApp.Forms
             this.pMainMenuSubMenu.Size = new System.Drawing.Size(300, 60);
             this.pMainMenuSubMenu.TabIndex = 9;
             // 
-            // bDymoSettings
+            // bPlayground
             // 
-            this.bDymoSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bDymoSettings.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bDymoSettings.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.bDymoSettings.FlatAppearance.BorderSize = 0;
-            this.bDymoSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bDymoSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bDymoSettings.ForeColor = System.Drawing.Color.White;
-            this.bDymoSettings.Location = new System.Drawing.Point(0, 30);
-            this.bDymoSettings.Name = "bDymoSettings";
-            this.bDymoSettings.Size = new System.Drawing.Size(300, 30);
-            this.bDymoSettings.TabIndex = 5;
-            this.bDymoSettings.Text = "Ustawienia drukarki Dymo";
-            this.bDymoSettings.UseVisualStyleBackColor = false;
-            this.bDymoSettings.Click += new System.EventHandler(this.bDymoSettings_Click);
+            this.bPlayground.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bPlayground.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bPlayground.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bPlayground.FlatAppearance.BorderSize = 0;
+            this.bPlayground.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bPlayground.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bPlayground.ForeColor = System.Drawing.Color.White;
+            this.bPlayground.Location = new System.Drawing.Point(0, 30);
+            this.bPlayground.Name = "bPlayground";
+            this.bPlayground.Size = new System.Drawing.Size(300, 30);
+            this.bPlayground.TabIndex = 5;
+            this.bPlayground.Text = "Plac zabaw kuby;)";
+            this.bPlayground.UseVisualStyleBackColor = false;
+            this.bPlayground.Click += new System.EventHandler(this.bPlayground_Click);
             // 
             // bGeneralSettings
             // 
@@ -638,7 +638,7 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bMaximize;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel pMainMenuSubMenu;
-        private System.Windows.Forms.Button bDymoSettings;
+        private System.Windows.Forms.Button bPlayground;
         private System.Windows.Forms.Button bGeneralSettings;
         private System.Windows.Forms.Button bPriceRelatedUpdate;
         private System.Windows.Forms.Timer timer1sTick;
