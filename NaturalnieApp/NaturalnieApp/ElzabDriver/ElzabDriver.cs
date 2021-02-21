@@ -51,6 +51,7 @@ namespace ElzabDriver
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
     //Sale buffor Class
+    /*
     public class ElzabSaleBuffor : ElzabFileObject
     {
 
@@ -62,20 +63,15 @@ namespace ElzabDriver
                                 string headerPatternLine1 = "< cash_register_number > < cash_register_comm_data > < comm_timeout > <execution_date >" +
                                 "< execution_time > < command_name > < version_number> < input_file_name > <output_file_name>",
                                 string headerPatternLine2 = " < error_number > < error_text > ", string headerPatternLine3 = " <cash_register_id > ",
-                                string elementAttributesPattern = " < empty_element>", string attributeNameAsID = "", int nrOfCharsInElementAttribute = 34)
+                                List<string> elementAttributesPattern = null, string attributeNameAsID = "", int nrOfCharsInElementAttribute = 34)
             : base(path, commandName, typeOfFile, cashRegisterID, headerPatternLine1 = "< cash_register_number > < cash_register_comm_data > < comm_timeout > <execution_date >" +
                                 "< execution_time > < command_name > < version_number> < input_file_name > <output_file_name>",
                                 headerPatternLine2 = " < error_number > < error_text > ", headerPatternLine3 = " <cash_register_id > ",
-                                elementAttributesPattern = " < empty_element>", attributeNameAsID = "", nrOfCharsInElementAttribute = 34)
+                                elementAttributesPattern = null, attributeNameAsID = "", nrOfCharsInElementAttribute = 34)
         {
             this.AttributesNames = new List<List<string>>();
 
 
-        }
-
-        private void AddAttributesNames(List<string> attributsNames)
-        {
-            this.AttributesNames.Add(attributsNames);
         }
 
         public new void GenerateObjectFromRawData()
@@ -153,7 +149,7 @@ namespace ElzabDriver
 
         
     }
-
+        */
     //-----------------------------------------------------------------------------------------------------------------------------------------
     public class ElzabFileObject : ElzabCommandFileHandling
     {
@@ -162,6 +158,7 @@ namespace ElzabDriver
         protected string HeaderSeparator { get; set; }
         protected string CommentMark { get; set; }
         protected string ElementMark { get; set; }
+        protected string ElementUniqueIdMark { get; set; }
         protected string AdditionMarkForConfigFile { get; set; }
         protected string Path { get; }
         protected string BackupPath { get; }
@@ -221,14 +218,24 @@ namespace ElzabDriver
                 }
             }
 
+            this.Element = new ElzabCommElementObject();
+
             foreach (string element in elementAttributesPattern)
             {
+
                 //Create instance of element object and initialize it
                 if (element != "")
                 {
-                    this.Element = new ElzabCommElementObject();
-                    //if (elementAttributesPattern == "") elementAttributesPattern = "< empty_element >";
-                    this.Element.AddAttributesFromList(ParsePattern(element));
+                    //Check if element identifier exist. If yes, add it to the element instance
+                    int elementTypeId = this.Element.SelectElementUniqueId(element, this.ElementUniqueIdMark);
+                    if (elementTypeId > 0)
+                    {
+                        this.Element.AddAttributesFromList(ParsePattern(element), elementTypeId);
+                    }
+                    else
+                    {
+                        this.Element.AddAttributesFromList(ParsePattern(element));
+                    }
 
                     //attributeNameAsID specify with attribute must be consider as ID number of element
                     //If attributeNameAsID was not secified, it will take attribute name from index 0
@@ -243,8 +250,6 @@ namespace ElzabDriver
                 }
             }
 
-
-
             //nrOfCharsInElementAttribute specify number of char of each element attribute
             //If given element attribute value is shorter then, nrOfCharsInElementAttribute it will be fill with 0x20 (space)
             this.NrOfCharsInElementAttribute = nrOfCharsInElementAttribute;
@@ -254,7 +259,7 @@ namespace ElzabDriver
         //Method used to set basic information about file
         public virtual void SetMarksAndSeparators(char attributeSeparator = '\t', char headerMark = '#',
                                         char headerSeparator = '\t', char commentMark = ';',
-                                        char elementMark = '$', char additionmarkforConfigFile = '\t')
+                                        char elementMark = '$', char additionmarkforConfigFile = '\t', char elementUniqueIdMark = '$')
         {
             //Set values to variables
             this.AttributesSeparator = attributeSeparator.ToString();
@@ -262,6 +267,7 @@ namespace ElzabDriver
             this.HeaderSeparator = headerSeparator.ToString();
             this.CommentMark = commentMark.ToString();
             this.ElementMark = elementMark.ToString();
+            this.ElementUniqueIdMark = elementUniqueIdMark.ToString();
             this.AdditionMarkForConfigFile = additionmarkforConfigFile.ToString();
         }
 
@@ -1205,6 +1211,18 @@ namespace ElzabDriver
 
         }
 
+        //Method used to get element type index
+        private int GetElementTypeIndex(int elementType)
+        {
+            int retVal = -1;
+            bool exist = false;
+
+            exist = this.ElementType.Any<int>(e => e.Equals(elementType));
+            if (exist && this.ElementType.Count > 0) retVal = this.ElementType.IndexOf(elementType);
+
+            return retVal;
+        }
+
         //Method used to add new attribute and its value to the element
         public void AddAttribute(int elementID, string attributeName, string attributeValue)
         {
@@ -1229,7 +1247,12 @@ namespace ElzabDriver
         }
         public void AddAttributeName(string attributeName, int elementType = 0)
         {
-            this.AttributesName[elementType].Add(attributeName);
+           InitializeElementType(elementType);
+
+            //Get element type index
+           int index =  GetElementTypeIndex(elementType);
+
+            this.AttributesName[index].Add(attributeName);
         }
 
         //Method used to add element to the object
@@ -1652,10 +1675,63 @@ namespace ElzabDriver
         //Method used to add attributes from list
         public void AddAttributesFromList(List<string> attributesNames)
         {
+
             foreach (string element in attributesNames)
             {
                 AddAttributeName(element);
             }
+        }
+        public void AddAttributesFromList(List<string> attributesNames, int elementType)
+        {
+
+            foreach (string element in attributesNames)
+            {
+                AddAttributeName(element, elementType);
+            }
+        }
+
+
+        //Method used to get identifier if exist
+        public int SelectElementUniqueId(string pattern, string idMark)
+        {
+            //Local variable
+            Regex regx = new Regex(" ");
+            List<string> retVal = new List<string>();
+            string[] dividedNames;
+            string elementMarkUniqueIdTemp = null;
+            int elementMarkUniqueId = 0;
+
+            //Clear input string
+            pattern = pattern.Replace("<", "").Replace(">", "");
+
+            //Split input string into string array
+            dividedNames = regx.Split(pattern);
+
+            //Check if element unique identifier exist
+            if(dividedNames.Any<string>(e => e.Contains(idMark)))
+            {
+                elementMarkUniqueIdTemp = dividedNames.Where<string>(e => e.Contains(idMark)).FirstOrDefault();
+                if(elementMarkUniqueIdTemp != null)
+                {
+                    elementMarkUniqueIdTemp.Trim();
+                    elementMarkUniqueIdTemp = elementMarkUniqueIdTemp.Replace(idMark, "");
+                    try
+                    {
+                        elementMarkUniqueId = Int32.Parse(elementMarkUniqueIdTemp);
+                    }
+                    catch (FormatException)
+                    {
+                        elementMarkUniqueId = 0;
+                    }
+
+                }
+            }
+            else
+            {
+                elementMarkUniqueId = 0;
+            }
+
+            return elementMarkUniqueId;
         }
 
     }

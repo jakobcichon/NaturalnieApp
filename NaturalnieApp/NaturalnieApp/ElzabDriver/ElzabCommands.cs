@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using ElzabDriver;
 using NaturalnieApp.ElzabDriver;
@@ -11,17 +12,36 @@ namespace ElzabCommands
     public class ElzabCommand_OPSPROZ4: InitStructure, IElzabSaleBufforInterface
     {
         //Local variable
-        public ElzabSaleBuffor DataFromElzab { get; set; }
+        public ElzabFileObject DataFromElzab { get; set; }
         public ElzabFileObject DataToElzab { get; set; }
         public ElzabFileObject Report { get; set; }
         public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "OPSPROZ4"; } }
-        private string ElementAttributesPatternOutFile
+        private List<string> ElementAttributesPatternOutFile
         {
             get
             {
-                return "nr_tow bkodd";
+                List<string> elementAttributesPatternOutFile = new List<string> 
+                {
+                    "$1 nr_rap nr_par nr_poz_par zwrot nr_tow il_sp wart_rabw data czas ST nr_kas wart_rabp wart_pr sprzed bkod rodz_rn",
+                    "$3 nr_rap nr_par pr_rab nap_kart",
+                    "$5 nr_kas nr_zmiany nr_plat nr_wal wpl wartosc_w_walucie data czas",
+                    "$6 nr_kas nr_zmiany nr_plat nr_wal 1 wartosc_w_walucie data czas data czas",
+                    "$7 nr_kas nr_zmiany data czas li_par sp li_kor kw_kor il_an_par kw_an_par li_szu",
+                    "$8 nr_kas nr_zmiany data czas rab_poz rab_cal narz_poz narz_par zwr_op sp_op",
+                    "$9 data czas nr_kas nr_kar nr_prez il_prez wart_prez il_poz_pun",
+                    "$10 nr_rap nr_par nr_poz_kor zwrot nr_tow il_sp wart_rabw data czas ST nr_kas wart_rabp wart_pr sprzed bkod rodz_rn",
+                    "$11 nr_rap nr_par_anul nr_poz_par zwrot nr_tow il_sp wart_rabw data czas ST nr_kas wart_rabp wart_pr sprzed bkod rodz_rn",
+                    "$12 nr_rap nr_par_anul nr_poz_kor zwrot nr_tow il_sp wart_rabw data czas ST nr_kas wart_rabp wart_pr sprzed bkod rodz_rn",
+                    "$13 nr_kas1 nr_zm data czas nr_kas2 bity_log czy_wyjdz ha_kas",
+                    "$14 nr_kas data czas sp_wylog",
+                    "$15 nr_kas data czas identw",
+                    "$16 nr_kas data czas nr_frag_wiad frag_wiad",
+                    "$17 nr_kas nr_zmiany data czas kw_anul_rab kw_anul_narz li_sp_czyt li_sp_klaw cashback"
+
+                };
+                return elementAttributesPatternOutFile;
             }
         }
         private string ElementAttributesPatternInFile
@@ -645,20 +665,26 @@ namespace ElzabCommands
         protected ElzabFileObject InitBaseStructuresConfig(string path, int cashRegisterID, string commandName,
         string elementAttributesPatternOutFile)
         {
+            //Local variables
+            List<string> localList = new List<string>();
+            localList.Add(elementAttributesPatternOutFile);
 
             //Initialize object containing information from ELZAB
             ElzabFileObject _dataReport = new ElzabFileObject(path, commandName, FileType.ConfigFile, cashRegisterID,
-                elementAttributesPattern: elementAttributesPatternOutFile);
+                elementAttributesPattern: localList);
 
             return _dataReport;
         }
         protected ElzabFileObject InitBaseStructuresReport(string path, int cashRegisterID, string commandName,
         string elementAttributesPatternOutFile)
         {
+            //Local variables
+            List<string> localList = new List<string>();
+            localList.Add(elementAttributesPatternOutFile);
 
             //Initialize object containing information from ELZAB
             ElzabFileObject _dataReport = new ElzabFileObject(path, commandName, FileType.ReportFile, cashRegisterID,
-                elementAttributesPattern: elementAttributesPatternOutFile);
+                elementAttributesPattern: localList);
 
             return _dataReport;
         }
@@ -666,20 +692,23 @@ namespace ElzabCommands
         protected ElzabFileObject InitBaseStructuresDataFromElzab(string path, int cashRegisterID, string commandName,
         string elementAttributesPatternOutFile)
         {
+            //Local variables
+            List<string> localList = new List<string>();
+            localList.Add(elementAttributesPatternOutFile);
 
             //Initialize object containing information from ELZAB
             ElzabFileObject _dataFromElzab = new ElzabFileObject(path, commandName, FileType.OutputFile, cashRegisterID,
-                elementAttributesPattern: elementAttributesPatternOutFile);
+                elementAttributesPattern: localList);
 
             return _dataFromElzab;
         }
 
-        protected ElzabSaleBuffor InitBaseStructuresDataFromElzabBuffor(string path, int cashRegisterID, string commandName,
-        string elementAttributesPatternOutFile)
+        protected ElzabFileObject InitBaseStructuresDataFromElzabBuffor(string path, int cashRegisterID, string commandName,
+        List<string> elementAttributesPatternOutFile)
         {
 
             //Initialize object containing information from ELZAB
-            ElzabSaleBuffor _dataFromElzab = new ElzabSaleBuffor(path, commandName, FileType.SaleBufforFile, cashRegisterID,
+            ElzabFileObject _dataFromElzab = new ElzabFileObject(path, commandName, FileType.SaleBufforFile, cashRegisterID,
                 elementAttributesPattern: elementAttributesPatternOutFile);
 
             return _dataFromElzab;
@@ -689,12 +718,16 @@ namespace ElzabCommands
             string elementAttributesPatternInFile)
         {
 
+            //Local variables
+            List<string> localList = new List<string>();
+            localList.Add(elementAttributesPatternInFile);
+
             //Initialize object containing information to ELZAB
             ElzabFileObject _dataToElzab = new ElzabFileObject(path, commandName, FileType.InputFile, cashRegisterID,
                 headerPatternLine1: "< device_number >",
                 headerPatternLine2: "< dummy >",
                 headerPatternLine3: "< dummy >",
-                elementAttributesPatternInFile);
+                localList);
 
             return _dataToElzab;
         }

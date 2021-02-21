@@ -9,7 +9,7 @@ namespace NaturalnieApp.ElzabDriver
 {
     public interface IElzabSaleBufforInterface
     {
-        ElzabSaleBuffor DataFromElzab { get; set; }
+        ElzabFileObject DataFromElzab { get; set; }
         ElzabFileObject DataToElzab { get; set; }
         ElzabFileObject Report { get; set; }
         CommandExecutionStatus ReportStatus { get; set; }
