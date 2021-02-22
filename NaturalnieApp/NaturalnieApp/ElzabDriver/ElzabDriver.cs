@@ -46,110 +46,8 @@ namespace ElzabDriver
     //-----------------------------------------------------------------------------------------------------------------------------------------
     public enum FileType
     {
-        InputFile, OutputFile, ConfigFile, ReportFile, SaleBufforFile
+        InputFile, OutputFile, ConfigFile, ReportFile
     }
-
-    //-----------------------------------------------------------------------------------------------------------------------------------------
-    //Sale buffor Class
-    /*
-    public class ElzabSaleBuffor : ElzabFileObject
-    {
-
-        //class fields
-        private string EntryTypeInSaleFile {get; set;}
-        private List<List<string>> AttributesNames { get; set; }
-
-        public ElzabSaleBuffor(string path, string commandName, FileType typeOfFile, int cashRegisterID,
-                                string headerPatternLine1 = "< cash_register_number > < cash_register_comm_data > < comm_timeout > <execution_date >" +
-                                "< execution_time > < command_name > < version_number> < input_file_name > <output_file_name>",
-                                string headerPatternLine2 = " < error_number > < error_text > ", string headerPatternLine3 = " <cash_register_id > ",
-                                List<string> elementAttributesPattern = null, string attributeNameAsID = "", int nrOfCharsInElementAttribute = 34)
-            : base(path, commandName, typeOfFile, cashRegisterID, headerPatternLine1 = "< cash_register_number > < cash_register_comm_data > < comm_timeout > <execution_date >" +
-                                "< execution_time > < command_name > < version_number> < input_file_name > <output_file_name>",
-                                headerPatternLine2 = " < error_number > < error_text > ", headerPatternLine3 = " <cash_register_id > ",
-                                elementAttributesPattern = null, attributeNameAsID = "", nrOfCharsInElementAttribute = 34)
-        {
-            this.AttributesNames = new List<List<string>>();
-
-
-        }
-
-        public new void GenerateObjectFromRawData()
-        {
-            //Define local variable
-            int i = 0;
-
-            //Read raw data from file
-            this.RawData = ReadDataFromFile(this.Path, this.CommandName, this.TypeOfFile);
-
-            //Clear old data
-            this.Header.HeaderLine1.RemoveAllElements();
-            this.Header.HeaderLine2.RemoveAllElements();
-            this.Header.HeaderLine3.RemoveAllElements();
-            if (this.Element != null) this.Element.RemoveAllElements();
-
-            //Parse data
-            //Define header pattern
-            Regex regPatternHeader = new Regex(@"^" + this.HeaderMark + ".*$");
-
-            //Define elements pattern
-            Regex regPatternElements = new Regex(@"^\" + this.ElementMark + ".*$");
-
-            foreach (string element in this.RawData)
-            {
-
-                //Parse header
-                //Check if current element match to the pattern
-                if (regPatternHeader.IsMatch(element))
-                {
-                    //Local variable
-                    string clearedElement;
-                    //Remove mark sign
-                    clearedElement = element.Replace(this.HeaderMark, "");
-
-                    //Switch to find proper header Line
-                    switch (i)
-                    {
-                        case 0:
-                            this.Header.HeaderLine1.AddElement();
-                            this.Header.HeaderLine1.StringListToAttributesValue(0, ParseStringToList(clearedElement, this.HeaderSeparator));
-                            break;
-                        case 1:
-                            this.Header.HeaderLine2.AddElement();
-                            this.Header.HeaderLine2.StringListToAttributesValue(0, ParseStringToList(clearedElement, this.HeaderSeparator));
-                            break;
-                        case 2:
-                            this.Header.HeaderLine3.AddElement();
-                            this.Header.HeaderLine3.StringListToAttributesValue(0, ParseStringToList(clearedElement, this.HeaderSeparator));
-                            break;
-                    }
-
-                    i++;
-                }
-
-                if (this.Element != null)
-                {
-                    //Parse elements
-                    if (regPatternElements.IsMatch(element))
-                    {
-                        //Local variable
-                        string clearedElement;
-
-                        //Remove mark sign
-                        clearedElement = element.Replace(this.ElementMark.Replace("\\", ""), "");
-
-                        //Read every element and add it to an object
-                        this.Element.AddElement();
-                        this.Element.StringListToAttributesValue(this.Element.GetLastElementID(), ParseStringToList(clearedElement, this.AttributesSeparator));
-                    }
-                }
-
-            }
-        }
-
-        
-    }
-        */
     //-----------------------------------------------------------------------------------------------------------------------------------------
     public class ElzabFileObject : ElzabCommandFileHandling
     {
@@ -219,22 +117,30 @@ namespace ElzabDriver
             }
 
             this.Element = new ElzabCommElementObject();
-
+            int i = 1;
             foreach (string element in elementAttributesPattern)
             {
 
                 //Create instance of element object and initialize it
                 if (element != "")
                 {
-                    //Check if element identifier exist. If yes, add it to the element instance
-                    int elementTypeId = this.Element.SelectElementUniqueId(element, this.ElementUniqueIdMark);
-                    if (elementTypeId > 0)
+                    if(this.TypeOfFile == FileType.ReportFile)
                     {
-                        this.Element.AddAttributesFromList(ParsePattern(element), elementTypeId);
+                        this.Element.AddAttributesFromList(ParsePattern(element), i);
+                        i++;
                     }
                     else
                     {
-                        this.Element.AddAttributesFromList(ParsePattern(element));
+                        //Check if element identifier exist. If yes, add it to the element instance
+                        int elementTypeId = this.Element.SelectElementUniqueId(element, this.ElementUniqueIdMark);
+                        if (elementTypeId > 0)
+                        {
+                            this.Element.AddAttributesFromList(ParsePattern(element), elementTypeId);
+                        }
+                        else
+                        {
+                            this.Element.AddAttributesFromList(ParsePattern(element));
+                        }
                     }
 
                     //attributeNameAsID specify with attribute must be consider as ID number of element
@@ -377,8 +283,25 @@ namespace ElzabDriver
                         clearedElement = element.Replace(this.ElementMark.Replace("\\", ""), "");
 
                         //Read every element and add it to an object
-                        this.Element.AddElement();
-                        this.Element.StringListToAttributesValue(this.Element.GetLastElementID(), ParseStringToList(clearedElement, this.AttributesSeparator));
+                        if(this.TypeOfFile == FileType.ReportFile) this.Element.AddElement(this.RawData.IndexOf(element) - 2);
+                        else
+                        {
+                            //Check if element identifier exist. If yes, add it to the element instance
+                            int elementTypeId = this.Element.SelectElementUniqueId(element, this.ElementUniqueIdMark);
+                            if (elementTypeId > 0)
+                            {
+                                this.Element.AddElement(elementTypeId);
+                                this.Element.StringListToAttributesValue(this.Element.GetLastElementID(), 
+                                    ParseStringToList(clearedElement, this.AttributesSeparator), elementTypeId);
+                            }
+                            else
+                            {
+                                this.Element.AddElement();
+                                this.Element.StringListToAttributesValue(this.Element.GetLastElementID(),
+                                    ParseStringToList(clearedElement, this.AttributesSeparator));
+                            }
+                        }
+                        
                     }
                 }
 
@@ -1261,7 +1184,8 @@ namespace ElzabDriver
             int elementType = 0;
 
             this.ElementsList.Add(new AttributeValueObject());
-            foreach (var element in this.AttributesName[elementType])
+            int index = this.ElementType.IndexOf(elementType);
+            foreach (var element in this.AttributesName[index])
             {
                 this.ElementsList.Last().AttributeValue.Add("1");
             }
@@ -1270,7 +1194,8 @@ namespace ElzabDriver
         {
 
             this.ElementsList.Add(new AttributeValueObject());
-            foreach (var element in this.AttributesName[elementType])
+            int index = this.ElementType.IndexOf(elementType);
+            foreach (var element in this.AttributesName[index])
             {
                 this.ElementsList.Last().AttributeValue.Add("1");
             }
@@ -1702,7 +1627,7 @@ namespace ElzabDriver
             int elementMarkUniqueId = 0;
 
             //Clear input string
-            pattern = pattern.Replace("<", "").Replace(">", "");
+            pattern = pattern.Replace("<", "").Replace(">", "").Replace("\t", " ");
 
             //Split input string into string array
             dividedNames = regx.Split(pattern);

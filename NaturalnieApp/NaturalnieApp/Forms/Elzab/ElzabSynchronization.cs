@@ -47,7 +47,7 @@ namespace NaturalnieApp.Forms
             //Initialization of Elzab commands instances
             this.AdditionBarcodesWriting = new ElzabCommand_ZDBARKOD(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId);
             //Initialization of Elzab commands instances
-            this.SaleBufforReading= new ElzabCommand_OPSPROZ4(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId);
+            this.SaleBufforReading = new ElzabCommand_OPSPROZ4(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId);
 
             //Status box
             this.StatusBox = this.tbStatus;
@@ -203,7 +203,7 @@ namespace NaturalnieApp.Forms
                             this.DataSoruce.Rows.Add(rowElement);
                         }
 
-                        if(diffProductList.Count == 0)
+                        if (diffProductList.Count == 0)
                         {
                             MessageBox.Show("Nie znaleziono żadnych różnic między bazą danych a kasą fiskalną:).");
                         }
@@ -227,12 +227,12 @@ namespace NaturalnieApp.Forms
                 }
                 else
                 {
-                    MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}", 
-                        status.ErrorNumber, status.ErrorText), 
+                    MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
+                        status.ErrorNumber, status.ErrorText),
                         "Błąd komunikacji z kasą Elzab!",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                
+
 
             }
             catch (Exception ex)
@@ -246,9 +246,9 @@ namespace NaturalnieApp.Forms
             if (this.DataSoruce.Rows.Count > 0)
             {
 
-                DialogResult result = MessageBox.Show("Czy na pewno chcesz nadpisać produkty w kasie Elzab?", 
+                DialogResult result = MessageBox.Show("Czy na pewno chcesz nadpisać produkty w kasie Elzab?",
                     "zmiana produtów", MessageBoxButtons.YesNo);
-                if(result == DialogResult.Yes)
+                if (result == DialogResult.Yes)
                 {
                     List<Product> productsToSave = new List<Product>();
                     foreach (DataRow element in this.DataSoruce.Rows)
@@ -258,7 +258,7 @@ namespace NaturalnieApp.Forms
 
                     this.ProductWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabProductData(this.databaseCommands, productsToSave, this.ProductWriting.DataToElzab);
                     this.AdditionBarcodesWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabAddBarcodes(this.databaseCommands, productsToSave, this.AdditionBarcodesWriting.DataToElzab);
-                    
+
                     CommandExecutionStatus status = this.ProductWriting.ExecuteCommand();
                     if (status.ErrorNumber == 0 && status.ErrorText != null)
                     {
@@ -363,5 +363,26 @@ namespace NaturalnieApp.Forms
             this.tbElapsedTime.Text = (this.ProgressTimerMinutes.ToString("00") + ":" + this.ProgressTimerSeconds.ToString("00"));
         }
         #endregion
+
+        private void bReadingFromSaleBuffor_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.DataSoruce.Clear();
+
+                this.SaleBufforReading.DataToElzab.Element.RemoveAllElements();
+                this.SaleBufforReading.DataFromElzab.Element.RemoveAllElements();
+
+                //ChangeStatus
+                this.StatusBox.Text = "1. Odczyt bufora sprzedaży z kasy";
+                this.StatusBox.Update();
+                CommandExecutionStatus status = this.SaleBufforReading.ExecuteCommand();
+                ;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

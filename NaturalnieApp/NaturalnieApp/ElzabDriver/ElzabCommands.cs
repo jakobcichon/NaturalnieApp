@@ -51,11 +51,23 @@ namespace ElzabCommands
                 return "";
             }
         }
-        private string ElementAttributesPatternReportFile
+        private List<string> ElementAttributesPatternReportFile
         {
             get
             {
-                return "";
+                List<string> elementAttributesPatternReportFile = new List<string>
+                {
+                    "licz_sekw",
+                    "licz_dan_wej",
+                    "licz_dan_wyj",
+                    "licz_lin_wej",
+                    "licz_lin_wyj",
+                    "nr_ost_tow nr_konf_tow",
+                    "nr_lin_plik nr_dan_plik lin_plik",
+                    "pusty"
+
+                };
+                return elementAttributesPatternReportFile;
             }
         }
         private string ElementAttributesPatternConfigFile
@@ -689,6 +701,17 @@ namespace ElzabCommands
             return _dataReport;
         }
 
+        protected ElzabFileObject InitBaseStructuresReport(string path, int cashRegisterID, string commandName,
+        List<string> elementAttributesPatternOutFile)
+        {
+
+            //Initialize object containing information from ELZAB
+            ElzabFileObject _dataReport = new ElzabFileObject(path, commandName, FileType.ReportFile, cashRegisterID,
+                elementAttributesPattern: elementAttributesPatternOutFile);
+
+            return _dataReport;
+        }
+
         protected ElzabFileObject InitBaseStructuresDataFromElzab(string path, int cashRegisterID, string commandName,
         string elementAttributesPatternOutFile)
         {
@@ -708,7 +731,7 @@ namespace ElzabCommands
         {
 
             //Initialize object containing information from ELZAB
-            ElzabFileObject _dataFromElzab = new ElzabFileObject(path, commandName, FileType.SaleBufforFile, cashRegisterID,
+            ElzabFileObject _dataFromElzab = new ElzabFileObject(path, commandName, FileType.OutputFile, cashRegisterID,
                 elementAttributesPattern: elementAttributesPatternOutFile);
 
             return _dataFromElzab;
@@ -817,7 +840,7 @@ namespace ElzabCommands
             if (result) result = commandInstance.DataToElzab.WriteDataToFile();
 
             //Execute command
-            if (result) result = commandInstance.DataToElzab.RunCommand();
+            //if (result) result = commandInstance.DataToElzab.RunCommand();
 
             if (result)
             {

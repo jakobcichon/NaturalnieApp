@@ -47,6 +47,7 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.tProgressTime = new System.Windows.Forms.Timer(this.components);
+            this.bReadingFromSaleBuffor = new System.Windows.Forms.Button();
             this.pButtonsPanel.SuspendLayout();
             this.pHeader.SuspendLayout();
             this.gbSynchronization.SuspendLayout();
@@ -59,6 +60,7 @@
             // 
             this.pButtonsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
             this.pButtonsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pButtonsPanel.Controls.Add(this.bReadingFromSaleBuffor);
             this.pButtonsPanel.Controls.Add(this.bSave);
             this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -253,6 +255,19 @@
             this.tProgressTime.Interval = 1000;
             this.tProgressTime.Tick += new System.EventHandler(this.tProgressTime_Tick);
             // 
+            // bReadingFromSaleBuffor
+            // 
+            this.bReadingFromSaleBuffor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bReadingFromSaleBuffor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bReadingFromSaleBuffor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bReadingFromSaleBuffor.Location = new System.Drawing.Point(18, 7);
+            this.bReadingFromSaleBuffor.Name = "bReadingFromSaleBuffor";
+            this.bReadingFromSaleBuffor.Size = new System.Drawing.Size(155, 50);
+            this.bReadingFromSaleBuffor.TabIndex = 27;
+            this.bReadingFromSaleBuffor.Text = "Odczyt bufora sprzedaży";
+            this.bReadingFromSaleBuffor.UseVisualStyleBackColor = false;
+            this.bReadingFromSaleBuffor.Click += new System.EventHandler(this.bReadingFromSaleBuffor_Click);
+            // 
             // ElzabSynchronization
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -301,5 +316,6 @@
         private System.Windows.Forms.ProgressBar pbProgress;
         private System.Windows.Forms.TextBox tbElapsedTime;
         private System.Windows.Forms.Timer tProgressTime;
+        private System.Windows.Forms.Button bReadingFromSaleBuffor;
     }
 }
