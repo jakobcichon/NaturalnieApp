@@ -451,21 +451,23 @@ namespace NaturalnieApp
         //Method used to parse from elzab data to database product object
         static public List<Product> ParseElzabProductDataToDbObject(DatabaseCommands db, ElzabFileObject dataFromElzab)
         {
+            int elementType = 0;
+
             //Return list
             List<Product> retList = new List<Product>();
-            foreach (AttributeValueObject element in dataFromElzab.Element.ElementsList)
+            foreach (AttributeValueObject element in dataFromElzab.Element.ElementsList[elementType])
             {
                 try
                 {
                     //Local product
                     Product product = new Product();
-                    product.ElzabProductName = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "naz_tow");
-                    product.ElzabProductId = Int32.Parse(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "nr_tow"));
-                    string price = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "cena");
+                    product.ElzabProductName = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList[elementType].IndexOf(element), "naz_tow");
+                    product.ElzabProductId = Int32.Parse(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList[elementType].IndexOf(element), "nr_tow"));
+                    string price = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList[elementType].IndexOf(element), "cena");
                     product.FinalPrice = ElzabRelated.ConvertFromElzabPriceToFloat(price);
-                    product.BarCode = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "bkod");
+                    product.BarCode = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList[elementType].IndexOf(element), "bkod");
                     string taxValue = ElzabRelated.TranslateCashRegisterGroupToTaxValue(
-                        Int32.Parse(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "ST")));
+                        Int32.Parse(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList[elementType].IndexOf(element), "ST")));
                     product.TaxId = db.GetTaxIdByValue(Int32.Parse(taxValue));
 
                     //AddProduct to the list
@@ -485,16 +487,18 @@ namespace NaturalnieApp
         //Method used to parse from elzab additiona barcodes to database product object
         static public List<Product> ParseElzabAddBarcodesToDbObject(DatabaseCommands db, ElzabFileObject dataFromElzab)
         {
+            int elementType = 0;
+
             //Return list
             List<Product> retList = new List<Product>();
-            foreach (AttributeValueObject element in dataFromElzab.Element.ElementsList)
+            foreach (AttributeValueObject element in dataFromElzab.Element.ElementsList[elementType])
             {
                 try
                 {
                     //Local product
                     Product product = new Product();
-                    product.ElzabProductId = Int32.Parse(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "nr_tow"));
-                    product.BarCodeShort = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList.IndexOf(element), "bkodd");
+                    product.ElzabProductId = Int32.Parse(dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList[elementType].IndexOf(element), "nr_tow"));
+                    product.BarCodeShort = dataFromElzab.Element.GetAttributeValue(dataFromElzab.Element.ElementsList[elementType].IndexOf(element), "bkodd");
                     
                     //AddProduct to the list
                     retList.Add(product);
