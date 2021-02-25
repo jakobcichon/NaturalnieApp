@@ -377,6 +377,8 @@ namespace NaturalnieApp.Forms
                 this.StatusBox.Text = "1. Odczyt bufora sprzedaży z kasy";
                 this.StatusBox.Update();
                 CommandExecutionStatus status = this.SaleBufforReading.ExecuteCommand();
+                string test = this.SaleBufforReading.DataFromElzab.Element.GetAttributeValue(0, "nr_rap", (int) ElzabRaportType.RegularBillOfSale);
+                List<Dictionary<string, string>> test2 = this.SaleBufforReading.DataFromElzab.Element.GetAllAttributeValueAsDict(0, (int)ElzabRaportType.RegularBillOfSale);
                 ;
             }
             catch (Exception ex)

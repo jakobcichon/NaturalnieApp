@@ -7,6 +7,24 @@ using static NaturalnieApp.Program;
 
 namespace ElzabCommands
 {
+    public enum ElzabRaportType
+    {
+        RegularBillOfSale = 1,
+        BillOfSaleWithDiscountFromDiscountCard = 3,
+        CashInOutRegisterMachine = 5,
+        EndOfDayWorkForCashier_PriceInfo = 6,
+        EndOfDayWorkForCashier_StatisticInfo1 = 7,
+        EndOfDayWorkForCashier_StatisticInfo2 = 8,
+        GiftForBonusCard = 9,
+        CorrectionOrReturn = 10,
+        RegularSaleOrReturnForCancelBillOfSale = 11,
+        CorrectionSaleOrReturnForCancelBillOfSale = 12,
+        CashierLogIn = 13,
+        CashierLogOut = 14,
+        MessageReviewedByCashier = 15,
+        MessageSendByCashier = 16,
+        EndOfDayWorkForCashier_StatisticInfo3 = 17,
+    }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
     public class ElzabCommand_OPSPROZ4: InitStructure, IElzabSaleBufforInterface
@@ -18,6 +36,7 @@ namespace ElzabCommands
         public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
         private string CommandName { get { return "OPSPROZ4"; } }
+
         private List<string> ElementAttributesPatternOutFile
         {
             get

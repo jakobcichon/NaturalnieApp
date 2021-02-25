@@ -65,7 +65,7 @@ namespace ElzabDriver
         public ElzabCommHeaderObject Header { get; set; }
         public ElzabCommElementObject Element { get; set; }
         protected List<string> RawData { get; set; }
-        protected string AttributeNameAsID { get; set; }
+        protected Dictionary<int, string> AttributeNameAsID { get; set; }
         protected int NrOfCharsInElementAttribute { get; set; }
         protected string FileNameWithExtension { get; set; }
 
@@ -93,6 +93,7 @@ namespace ElzabDriver
 
             //Create instance of Raw data object
             this.RawData = new List<string>();
+            this.AttributeNameAsID = new Dictionary<int, string>();
             
             //Call method used to set marks and separators
             SetMarksAndSeparators();
@@ -124,15 +125,20 @@ namespace ElzabDriver
                 //Create instance of element object and initialize it
                 if (element != "")
                 {
-                    if(this.TypeOfFile == FileType.ReportFile)
+                    int elementTypeId = this.Element.SelectElementUniqueId(element, this.ElementUniqueIdMark);
+
+                    if (this.TypeOfFile == FileType.ReportFile)
                     {
-                        this.Element.AddAttributesFromList(ParsePattern(element), i);
+                        List<string> elementPattern = ParsePattern(element);
+                        this.Element.AddAttributesFromList(elementPattern, i);
+                        InitializAttributeNameAsId(i, elementPattern[0]);
                         i++;
+                        continue;
                     }
                     else
                     {
                         //Check if element identifier exist. If yes, add it to the element instance
-                        int elementTypeId = this.Element.SelectElementUniqueId(element, this.ElementUniqueIdMark);
+                        
                         if (elementTypeId > 0)
                         {
                             this.Element.AddAttributesFromList(ParsePattern(element), elementTypeId);
@@ -141,18 +147,34 @@ namespace ElzabDriver
                         {
                             this.Element.AddAttributesFromList(ParsePattern(element));
                         }
+
+                        //attributeNameAsID specify with attribute must be consider as ID number of element
+                        //If attributeNameAsID was not secified, it will take attribute name from index 0
+                        if (attributeNameAsID == "")
+                        {
+                            if (elementTypeId > 0)
+                            {
+                                InitializAttributeNameAsId(elementTypeId, this.Element.GetAttributNameOfIndex(0, elementTypeId));
+                            }
+                            else
+                            {
+                                InitializAttributeNameAsId(0, this.Element.GetAttributNameOfIndex(0));
+                            }
+                        }
+                        else
+                        {
+                            if (elementTypeId > 0)
+                            {
+                                InitializAttributeNameAsId(elementTypeId, attributeNameAsID);
+                            }
+                            else
+                            {
+                                InitializAttributeNameAsId(0, attributeNameAsID);
+                            }
+                        }
                     }
 
-                    //attributeNameAsID specify with attribute must be consider as ID number of element
-                    //If attributeNameAsID was not secified, it will take attribute name from index 0
-                    if (attributeNameAsID == "")
-                    {
-                        this.AttributeNameAsID = this.Element.GetAttributNameOfIndex(0);
-                    }
-                    else
-                    {
-                        this.AttributeNameAsID = attributeNameAsID;
-                    }
+                   
                 }
             }
 
@@ -175,6 +197,24 @@ namespace ElzabDriver
             this.ElementMark = elementMark.ToString();
             this.ElementUniqueIdMark = elementUniqueIdMark.ToString();
             this.AdditionMarkForConfigFile = additionmarkforConfigFile.ToString();
+        }
+
+        //Method used to initialize attribute name as id list depending on element type
+        private void InitializAttributeNameAsId(int elementType, string attributeNamaeAsId)
+        {
+            if(!CheckIfAttributeNamesAsIdOfTypeExist(elementType))
+            {
+                this.AttributeNameAsID.Add(elementType, attributeNamaeAsId);
+            }
+
+        }
+        //Method used to check if element type header initialized
+        public bool CheckIfAttributeNamesAsIdOfTypeExist(int elementType)
+        {
+            bool retVal = false;
+            if (this.AttributeNameAsID.Count > 0) retVal = this.AttributeNameAsID.ContainsKey(elementType);
+
+            return retVal;
         }
 
         //Method used only for config file
@@ -283,7 +323,14 @@ namespace ElzabDriver
                         clearedElement = element.Replace(this.ElementMark.Replace("\\", ""), "");
 
                         //Read every element and add it to an object
-                        if(this.TypeOfFile == FileType.ReportFile) this.Element.AddElement(this.RawData.IndexOf(element) - 2);
+                        int index = this.RawData.IndexOf(element) - 2;
+                        if (this.TypeOfFile == FileType.ReportFile)
+                        {
+                            this.Element.AddElement(index);
+                            this.Element.StringListToAttributesValue(this.Element.GetLastElementID(index),
+                                ParseStringToList(clearedElement, this.AttributesSeparator), index);
+                            ;
+                        }
                         else
                         {
                             //Check if element identifier exist. If yes, add it to the element instance
@@ -291,13 +338,13 @@ namespace ElzabDriver
                             if (elementTypeId > 0)
                             {
                                 this.Element.AddElement(elementTypeId);
-                                this.Element.StringListToAttributesValue(this.Element.GetLastElementID(), 
+                                this.Element.StringListToAttributesValue(this.Element.GetLastElementID(elementTypeId),
                                     ParseStringToList(clearedElement, this.AttributesSeparator), elementTypeId);
                             }
                             else
                             {
                                 this.Element.AddElement();
-                                this.Element.StringListToAttributesValue(this.Element.GetLastElementID(),
+                                this.Element.StringListToAttributesValue(this.Element.GetLastElementID(elementTypeId),
                                     ParseStringToList(clearedElement, this.AttributesSeparator));
                             }
                         }
@@ -487,13 +534,29 @@ namespace ElzabDriver
         //Only first occurence of element will be changed.
         public void ChangeAttributeValue(int elementID, string attributeName, string newValue)
         {
-            this.Element.ChangeAttributeValue(elementID, attributeName, newValue);
+            int elementType = 0;
+
+            this.Element.ChangeAttributeValue(elementID, attributeName, newValue, elementType);
+
+        }
+        public void ChangeAttributeValue(int elementID, string attributeName, string newValue, int elementType = 0)
+        {
+
+            this.Element.ChangeAttributeValue(elementID, attributeName, newValue, elementType);
 
         }
 
         public void ChangeAllElementValues(string elementID, params string[] values)
         {
-            this.Element.ChangeAllElementsValue(this.AttributeNameAsID, elementID, values);
+            int elementType = 0;
+
+            this.Element.ChangeAllElementsValue(this.AttributeNameAsID[elementType], elementID, values);
+
+        }
+        public void ChangeAllElementValues(string elementID, int elementType = 0, params string[] values)
+        {
+
+            this.Element.ChangeAllElementsValue(this.AttributeNameAsID[elementType], elementID, values);
 
         }
         //Method used to add element to the object
@@ -505,7 +568,12 @@ namespace ElzabDriver
         //Method used to add element to the object
         public void AddElement(string attributeIDValue)
         {
-            this.Element.AddElement(this.AttributeNameAsID, attributeIDValue);
+            int elementType = 0;
+            this.Element.AddElement(this.AttributeNameAsID[elementType], attributeIDValue);
+        }
+        public void AddElement(string attributeIDValue, int elementType = 0)
+        {
+            this.Element.AddElement(this.AttributeNameAsID[elementType], attributeIDValue);
         }
 
         //Method used to get all elements values
@@ -1204,33 +1272,58 @@ namespace ElzabDriver
         public void AddElement()
         {
             int elementType = 0;
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
-            this.ElementsList[elementType].Add(new AttributeValueObject());
-            int index = this.ElementType.IndexOf(elementType);
-            foreach (var element in this.AttributesName[index])
+            this.ElementsList[elementTypeIndex].Add(new AttributeValueObject());
+            foreach (var element in this.AttributesName[elementTypeIndex])
             {
-                this.ElementsList[elementType].Last().AttributeValue.Add("1");
+                this.ElementsList[elementTypeIndex].Last().AttributeValue.Add("1");
             }
         }
         public void AddElement(int elementType = 0)
         {
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
-            this.ElementsList[elementType].Add(new AttributeValueObject());
-            int index = this.ElementType.IndexOf(elementType);
-            foreach (var element in this.AttributesName[index])
+            this.ElementsList[elementTypeIndex].Add(new AttributeValueObject());
+            foreach (var element in this.AttributesName[elementTypeIndex])
             {
-                this.ElementsList[elementType].Last().AttributeValue.Add("1");
+                this.ElementsList[elementTypeIndex].Last().AttributeValue.Add("1");
             }
         }
 
         //Method used to remove all elements
         public void RemoveAllElements()
         {
+            int elementType = 0;
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
-            int count = this.ElementsList.Count();
-            for (int i = count -1; i >= 0; i--)
+            if(elementTypeIndex > -1)
             {
-                this.ElementsList.RemoveAt(i);
+                if (this.ElementsList.Count() > 0 && this.ElementsList[elementTypeIndex] != null)
+                {
+                    int count = this.ElementsList[elementTypeIndex].Count();
+                    for (int i = count - 1; i >= 0; i--)
+                    {
+                        this.ElementsList[elementTypeIndex].RemoveAt(i);
+                    }
+                }
+            }
+
+        }
+        public void RemoveAllElements(int elementType = 0)
+        {
+            int elementTypeIndex = GetElementTypeIndex(elementType);
+
+            if (elementTypeIndex > -1)
+            {
+                if (this.ElementsList.Count() > 0 && this.ElementsList[elementTypeIndex] != null)
+                {
+                    int count = this.ElementsList[elementTypeIndex].Count();
+                    for (int i = count - 1; i >= 0; i--)
+                    {
+                        this.ElementsList[elementTypeIndex].RemoveAt(i);
+                    }
+                }
             }
 
         }
@@ -1239,38 +1332,49 @@ namespace ElzabDriver
         public void AddElement(string attributeName, string attributeIDValue)
         {
             int elementType = 0;
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
-            this.ElementsList[elementType].Add(new AttributeValueObject());
-            foreach (var element in this.AttributesName[elementType])
+            this.ElementsList[elementTypeIndex].Add(new AttributeValueObject());
+            foreach (var element in this.AttributesName[elementTypeIndex])
             {
-                this.ElementsList[elementType].Last().AttributeValue.Add("1");
+                this.ElementsList[elementTypeIndex].Last().AttributeValue.Add("1");
             }
 
             //Find ID of given attribute name
-            int attributeIndex = this.AttributesName[elementType].IndexOf(attributeName);
-            this.ElementsList[elementType].Last().AttributeValue[attributeIndex] = attributeIDValue;
+            int attributeIndex = this.AttributesName[elementTypeIndex].IndexOf(attributeName);
+            this.ElementsList[elementTypeIndex].Last().AttributeValue[attributeIndex] = attributeIDValue;
 
         }
         public void AddElement(string attributeName, string attributeIDValue, int elementType = 0)
         {
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
-            this.ElementsList[elementType].Add(new AttributeValueObject());
-            foreach (var element in this.AttributesName[elementType])
+            this.ElementsList[elementTypeIndex].Add(new AttributeValueObject());
+            foreach (var element in this.AttributesName[elementTypeIndex])
             {
-                this.ElementsList[elementType].Last().AttributeValue.Add("1");
+                this.ElementsList[elementTypeIndex].Last().AttributeValue.Add("1");
             }
 
             //Find ID of given attribute name
-            int attributeIndex = this.AttributesName[elementType].IndexOf(attributeName);
-            this.ElementsList[elementType].Last().AttributeValue[attributeIndex] = attributeIDValue;
+            int attributeIndex = this.AttributesName[elementTypeIndex].IndexOf(attributeName);
+            this.ElementsList[elementTypeIndex].Last().AttributeValue[attributeIndex] = attributeIDValue;
 
         }
 
         //Method used to get ID of last element of ElementList object
         public int GetLastElementID()
         {
+            int elementType = 0;
+            int elementTypeIndex = GetElementTypeIndex(elementType);
+
             //Return last element ID
-            return this.ElementsList.Count - 1;
+            return this.ElementsList[elementTypeIndex].Count - 1;
+        }
+        public int GetLastElementID(int elementType = 0)
+        {
+            int elementTypeIndex = GetElementTypeIndex(elementType);
+            //Return last element ID
+            return this.ElementsList[elementTypeIndex].Count - 1;
         }
 
         //Method used to find value of given element name. 
@@ -1279,16 +1383,17 @@ namespace ElzabDriver
         public string GetAttributeValue(int elementID, string attributeName)
         {
             int elementType = 0;
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
             //Local variables
             int index = 0;
             Boolean findingResult = false;
 
             //Loop through attribute name, to check if any of it element match given name
-            for(int i = 0; i < this.AttributesName[elementType].Count; i++)
+            for(int i = 0; i < this.AttributesName[elementTypeIndex].Count; i++)
             {
                 //If attribueName match, save index and break;
-                if (attributeName == this.AttributesName[elementType][i])
+                if (attributeName == this.AttributesName[elementTypeIndex][i])
                 {
                     index = i;
                     findingResult = true;
@@ -1299,7 +1404,7 @@ namespace ElzabDriver
             //Check if any of element match, if not return empty string
             if (findingResult)
             {
-                return this.ElementsList[elementType][elementID].AttributeValue[index];
+                return this.ElementsList[elementTypeIndex][elementID].AttributeValue[index];
             }
             else
             {
@@ -1314,11 +1419,13 @@ namespace ElzabDriver
             int index = 0;
             Boolean findingResult = false;
 
+            int elementTypeIndex = GetElementTypeIndex(elementType);
+
             //Loop through attribute name, to check if any of it element match given name
-            for (int i = 0; i < this.AttributesName[elementType].Count; i++)
+            for (int i = 0; i < this.AttributesName[elementTypeIndex].Count; i++)
             {
                 //If attribueName match, save index and break;
-                if (attributeName == this.AttributesName[elementType][i])
+                if (attributeName == this.AttributesName[elementTypeIndex][i])
                 {
                     index = i;
                     findingResult = true;
@@ -1329,7 +1436,7 @@ namespace ElzabDriver
             //Check if any of element match, if not return empty string
             if (findingResult)
             {
-                return this.ElementsList[elementType][elementID].AttributeValue[index];
+                return this.ElementsList[elementTypeIndex][elementID].AttributeValue[index];
             }
             else
             {
@@ -1342,12 +1449,13 @@ namespace ElzabDriver
         public List<string> GetAllAttributeValue(int elementID)
         {
             int elementType = 0;
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
             //Local variables
             List<string> retVal = new List<string>();
 
             //Collect all element values to the list
-            foreach (string element in this.ElementsList[elementType][elementID].AttributeValue)
+            foreach (string element in this.ElementsList[elementTypeIndex][elementID].AttributeValue)
             {
                 retVal.Add(element);
             }
@@ -1356,14 +1464,38 @@ namespace ElzabDriver
         }
         public List<string> GetAllAttributeValue(int elementID, int elementType)
         {
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
             //Local variables
             List<string> retVal = new List<string>();
 
             //Collect all element values to the list
-            foreach (string element in this.ElementsList[elementType][elementID].AttributeValue)
+            foreach (string element in this.ElementsList[elementTypeIndex][elementID].AttributeValue)
             {
                 retVal.Add(element);
+            }
+
+            return retVal;
+        }
+
+        //Method used to find all values of given element name nd return it as a dictionary where key = attribute name
+        public List<Dictionary<string, string>> GetAllAttributeValueAsDict(int elementID, int elementType)
+        {
+            int elementTypeIndex = GetElementTypeIndex(elementType);
+
+            //Local variables
+            List<Dictionary<string, string>> retVal = new List<Dictionary<string, string>>();
+            int i = 0;
+
+            //Collect all element values to the list
+            foreach (string element in this.ElementsList[elementTypeIndex][elementID].AttributeValue)
+            {
+                string attributeName = this.AttributesName[elementTypeIndex][i];
+                i++;
+
+                Dictionary<string, string> dict = new Dictionary<string, string>();
+                dict.Add(attributeName, element);
+                retVal.Add(dict);
             }
 
             return retVal;
@@ -1373,16 +1505,18 @@ namespace ElzabDriver
         public string GetAttributNameOfIndex(int index)
         {
             int elementType = 0;
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
             //Read attribut name from certain index
-            return this.AttributesName[elementType][index];
+            return this.AttributesName[elementTypeIndex][index];
 
         }
         public string GetAttributNameOfIndex(int index, int elementType = 0)
         {
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
             //Read attribut name from certain index
-            return this.AttributesName[elementType][index];
+            return this.AttributesName[elementTypeIndex][index];
 
         }
 
@@ -1392,24 +1526,26 @@ namespace ElzabDriver
         public void ChangeAttributeValue(int elementID, string attributeName, string newValue)
         {
             int elementType = 0;
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
             try
             {
                 //Check if element with given ID exist
-                if (elementID > this.ElementsList.Count - 1)
+                if (elementID > this.ElementsList[elementTypeIndex].Count - 1)
                 {
                     throw new System.ArgumentException($"Given element ID does not exist. Element ID: {elementID}. Attribute name: {attributeName}");
                 }
                 else
                 {
                     //Loop through attribute name, to check if any of it element match given name
-                    for (int i = 0; i < this.AttributesName[elementType].Count; i++)
+                    for (int i = 0; i < this.AttributesName[elementTypeIndex].Count; i++)
                     {
                         //If attribueName match, save index and break;
-                        if (attributeName == this.AttributesName[elementType].ElementAt(i))
+                        if (attributeName == this.AttributesName[elementTypeIndex].ElementAt(i))
                         {
                             //Override value
-                            this.ElementsList[elementType][elementID].AttributeValue[i] = newValue;
+                            this.ElementsList[elementTypeIndex][elementID].AttributeValue[i] = newValue;
+                            break;
                         }
                     }
                 }
@@ -1425,23 +1561,25 @@ namespace ElzabDriver
         }
         public void ChangeAttributeValue(int elementID, string attributeName, string newValue, int elementType = 0)
         {
+            int elementTypeIndex = GetElementTypeIndex(elementType);
+
             try
             {
                 //Check if element with given ID exist
-                if (elementID > this.ElementsList.Count - 1)
+                if (elementID > this.ElementsList[elementTypeIndex].Count - 1)
                 {
                     throw new System.ArgumentException($"Given element ID does not exist. Element ID: {elementID}. Attribute name: {attributeName}");
                 }
                 else
                 {
                     //Loop through attribute name, to check if any of it element match given name
-                    for (int i = 0; i < this.AttributesName[elementType].Count; i++)
+                    for (int i = 0; i < this.AttributesName[elementTypeIndex].Count; i++)
                     {
                         //If attribueName match, save index and break;
-                        if (attributeName == this.AttributesName[elementType].ElementAt(i))
+                        if (attributeName == this.AttributesName[elementTypeIndex].ElementAt(i))
                         {
                             //Override value
-                            this.ElementsList[elementType][elementID].AttributeValue[i] = newValue;
+                            this.ElementsList[elementTypeIndex][elementID].AttributeValue[i] = newValue;
                         }
                     }
                 }
@@ -1461,29 +1599,30 @@ namespace ElzabDriver
         public void ChangeAllElementsValue(string attributeName, string attributeID, params string[] values)
         {
             int elementType = 0;
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
             //Find index of attribute with given name
-            int attributeIndex = this.AttributesName[elementType].IndexOf(attributeName);
+            int attributeIndex = this.AttributesName[elementTypeIndex].IndexOf(attributeName);
 
             //Find element index using given attribute index
-            for (int i=0; i<this.ElementsList.Count(); i++)
+            for (int i=0; i<this.ElementsList[elementTypeIndex].Count(); i++)
             {
-                if (this.ElementsList[elementType][i].AttributeValue[attributeIndex] == attributeID)
+                if (this.ElementsList[elementTypeIndex][i].AttributeValue[attributeIndex] == attributeID)
                 {
 
                     //Change attribute value
                     for (int j = 0; j < values.Length; j++)
                     {
                         //Change everything except attribute with is taken as ID
-                        if (this.AttributesName[elementType][j] != attributeName)
+                        if (this.AttributesName[elementTypeIndex][j] != attributeName)
                         {
-                            this.ElementsList[elementType][i].AttributeValue[j] = values[j];
+                            this.ElementsList[elementTypeIndex][i].AttributeValue[j] = values[j];
                         }
                         
                     }
                     break;
                 }
-                else if(i == this.ElementsList.Count() - 1)
+                else if(i == this.ElementsList[elementTypeIndex].Count() - 1)
                 {
                     MessageBox.Show("Element with given ID was not found!");
                 }
@@ -1492,29 +1631,30 @@ namespace ElzabDriver
         }
         public void ChangeAllElementsValue(string attributeName, string attributeID, int elementType = 0, params string[] values)
         {
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
             //Find index of attribute with given name
-            int attributeIndex = this.AttributesName[elementType].IndexOf(attributeName);
+            int attributeIndex = this.AttributesName[elementTypeIndex].IndexOf(attributeName);
 
             //Find element index using given attribute index
-            for (int i = 0; i < this.ElementsList.Count(); i++)
+            for (int i = 0; i < this.ElementsList[elementTypeIndex].Count(); i++)
             {
-                if (this.ElementsList[elementType][i].AttributeValue[attributeIndex] == attributeID)
+                if (this.ElementsList[elementTypeIndex][i].AttributeValue[attributeIndex] == attributeID)
                 {
 
                     //Change attribute value
                     for (int j = 0; j < values.Length; j++)
                     {
                         //Change everything except attribute with is taken as ID
-                        if (this.AttributesName[elementType][j] != attributeName)
+                        if (this.AttributesName[elementTypeIndex][j] != attributeName)
                         {
-                            this.ElementsList[elementType][i].AttributeValue[j] = values[j];
+                            this.ElementsList[elementTypeIndex][i].AttributeValue[j] = values[j];
                         }
 
                     }
                     break;
                 }
-                else if (i == this.ElementsList.Count() - 1)
+                else if (i == this.ElementsList[elementTypeIndex].Count() - 1)
                 {
                     MessageBox.Show("Element with given ID was not found!");
                 }
@@ -1527,20 +1667,21 @@ namespace ElzabDriver
         public void ChangeAllElementsAttribute(string attributeName, params string[] values)
         {
             int elementType = 0;
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
             //Find index of attribute with given name
-            int attributeIndex = this.AttributesName[elementType].IndexOf(attributeName);
+            int attributeIndex = this.AttributesName[elementTypeIndex].IndexOf(attributeName);
 
             //Find element index using given attribute index
-            for (int i = 0; i < this.ElementsList.Count(); i++)
+            for (int i = 0; i < this.ElementsList[elementTypeIndex].Count(); i++)
             {
                 //Change attribute value
                 for (int j = 0; j < values.Length; j++)
                 {
                     //Change everything except attribute with is taken as ID
-                    if (this.AttributesName[elementType][j] != attributeName)
+                    if (this.AttributesName[elementTypeIndex][j] != attributeName)
                     {
-                        this.ElementsList[elementType][i].AttributeValue[j] = values[j];
+                        this.ElementsList[elementTypeIndex][i].AttributeValue[j] = values[j];
                     }
 
                 }
@@ -1549,19 +1690,21 @@ namespace ElzabDriver
         }
         public void ChangeAllElementsAttribute(string attributeName, int elementType = 0, params string[] values)
         {
+            int elementTypeIndex = GetElementTypeIndex(elementType);
+
             //Find index of attribute with given name
-            int attributeIndex = this.AttributesName[elementType].IndexOf(attributeName);
+            int attributeIndex = this.AttributesName[elementTypeIndex].IndexOf(attributeName);
 
             //Find element index using given attribute index
-            for (int i = 0; i < this.ElementsList.Count(); i++)
+            for (int i = 0; i < this.ElementsList[elementTypeIndex].Count(); i++)
             {
                 //Change attribute value
                 for (int j = 0; j < values.Length; j++)
                 {
                     //Change everything except attribute with is taken as ID
-                    if (this.AttributesName[elementType][j] != attributeName)
+                    if (this.AttributesName[elementTypeIndex][j] != attributeName)
                     {
-                        this.ElementsList[elementType][i].AttributeValue[j] = values[j];
+                        this.ElementsList[elementTypeIndex][i].AttributeValue[j] = values[j];
                     }
 
                 }
@@ -1574,15 +1717,18 @@ namespace ElzabDriver
         public void DeleteAttribute(string attributeName)
         {
             int elementType = 0;
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
             //Remove attribut and its value
-            this.AttributesName[elementType].Remove(attributeName);
+            this.AttributesName[elementTypeIndex].Remove(attributeName);
 
         }
         public void DeleteAttribute(string attributeName, int elementType = 0)
         {
+            int elementTypeIndex = GetElementTypeIndex(elementType);
+
             //Remove attribut and its value
-            this.AttributesName[elementType].Remove(attributeName);
+            this.AttributesName[elementTypeIndex].Remove(attributeName);
 
         }
 
@@ -1591,15 +1737,16 @@ namespace ElzabDriver
         public void StringListToAttributesValue(int elementID, List<string> inputStringList)
         {
             int elementType = 0;
+            int elementTypeIndex = GetElementTypeIndex(elementType);
 
             //Check input string array lenght
             int arrayLenght = inputStringList.Count, i = 0;
 
             //Check number of attributes
-            int attributsNumber = this.AttributesName[elementType].Count;
+            int attributsNumber = this.AttributesName[elementTypeIndex].Count;
 
             //Change attribute value by Name
-            foreach (string attribute  in this.AttributesName[elementType])
+            foreach (string attribute  in this.AttributesName[elementTypeIndex])
             {
                 if (i <= arrayLenght - 1)
                 {
@@ -1614,18 +1761,20 @@ namespace ElzabDriver
         }
         public void StringListToAttributesValue(int elementID, List<string> inputStringList, int elementType = 0)
         {
+            int elementTypeIndex = GetElementTypeIndex(elementType);
+
             //Check input string array lenght
             int arrayLenght = inputStringList.Count, i = 0;
 
             //Check number of attributes
-            int attributsNumber = this.AttributesName[elementType].Count;
+            int attributsNumber = this.AttributesName[elementTypeIndex].Count;
 
             //Change attribute value by Name
-            foreach (string attribute in this.AttributesName[elementType])
+            foreach (string attribute in this.AttributesName[elementTypeIndex])
             {
                 if (i <= arrayLenght - 1)
                 {
-                    ChangeAttributeValue(elementID, attribute, inputStringList.ElementAt(i));
+                    ChangeAttributeValue(elementID, attribute, inputStringList.ElementAt(i), elementType);
                 }
                 else
                 {
