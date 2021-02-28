@@ -1551,6 +1551,37 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to add to sales table
+        //====================================================================================================
+        public void AddToSales(Sales salePiece)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                contextDB.Sales.Add(salePiece);
+                int retVal = contextDB.SaveChanges();
+            }
+
+        }
+
+        //====================================================================================================
+        //Method used to add to sales table from list
+        //====================================================================================================
+        public void AddToSales(List<Sales> salePieceList)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                foreach(Sales salePiece in salePieceList)
+                {
+                    contextDB.Sales.Add(salePiece);
+                }
+
+                int retVal = contextDB.SaveChanges();
+            }
+
+        }
+
+
+        //====================================================================================================
         //Method used to add to stock
         //====================================================================================================
         public void AddToStockHistory(Stock stockPiece, StockOperationType operationType)

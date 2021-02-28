@@ -377,8 +377,55 @@ namespace NaturalnieApp.Forms
                 this.StatusBox.Text = "1. Odczyt bufora sprzedaży z kasy";
                 this.StatusBox.Update();
                 CommandExecutionStatus status = this.SaleBufforReading.ExecuteCommand();
-                string test = this.SaleBufforReading.DataFromElzab.Element.GetAttributeValue(0, "nr_rap", (int) ElzabRaportType.RegularBillOfSale);
-                List<Dictionary<string, string>> test2 = this.SaleBufforReading.DataFromElzab.Element.GetAllAttributeValueAsDict(0, (int)ElzabRaportType.RegularBillOfSale);
+                
+                //Get list of element type
+                List<int> elementsTypeList = this.SaleBufforReading.DataFromElzab.GetListOfElementTypes();
+                List<Sales> listOfElementsToAdd = new List<Sales>();
+                foreach (int type in elementsTypeList)
+                {
+                    //Get list of all elements of given type
+                    List<AttributeValueObject> elementsList = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
+
+                    if(elementsList.Count > 0)
+                    {
+                        foreach (AttributeValueObject element in elementsList)
+                        {
+                            if (element.AttributeValue.Count > 0 )
+                            {
+                                int attribute = 0;
+                                Sales salePeiece = new Sales();
+                                foreach (System.Reflection.PropertyInfo prop in typeof(Sales).GetProperties())
+                                {
+                                    if (prop.Name == "Id") continue;
+                                    else if (prop.PropertyType == Type.GetType("System.Int32"))
+                                    {
+                                        int value = Int32.Parse(element.AttributeValue[attribute]);
+                                        prop.SetValue(salePeiece, value);
+                                    }
+                                    else if (prop.PropertyType == Type.GetType("System.DateTime"))
+                                    {
+                                        DateTime value = DateTime.Now;
+                                        prop.SetValue(salePeiece, value);
+                                    }
+                                    else
+                                    {
+                                        prop.SetValue(salePeiece, element.AttributeValue[attribute]);
+                                    }
+
+                                    attribute++;
+                                    if (attribute >= element.AttributeValue.Count()) break;
+                                }
+
+                                //Add to the list
+                                listOfElementsToAdd.Add(salePeiece);
+                            }
+
+                        }
+
+
+                    }
+                }
+                this.databaseCommands.AddToSales(listOfElementsToAdd);
                 ;
             }
             catch (Exception ex)

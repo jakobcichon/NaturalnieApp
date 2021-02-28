@@ -208,6 +208,7 @@ namespace ElzabDriver
             }
 
         }
+
         //Method used to check if element type header initialized
         public bool CheckIfAttributeNamesAsIdOfTypeExist(int elementType)
         {
@@ -353,6 +354,34 @@ namespace ElzabDriver
                 }
 
             }
+        }
+
+        public List<int> GetListOfElementTypes()
+        {
+            //Local variables
+            List<int> retList = new List<int>();
+
+            retList = this.Element.ElementType;
+
+            return retList;
+        }
+
+        public List<AttributeValueObject> GetElementsOfTypeAllValues(int type)
+        {
+            //Local variable
+            List<AttributeValueObject> retList = new List<AttributeValueObject>();
+
+            bool typeExist = this.Element.CheckIfHeaderOfTypeExist(type);
+            if (typeExist)
+            {
+                int indexOfType = this.Element.GetElementTypeIndex(type);
+                foreach (AttributeValueObject element in this.Element.ElementsList[indexOfType])
+                {
+                    retList.Add(element);
+                }
+            }
+
+            return retList;
         }
 
         //Method used to prepare data from object, save it to file and run command
@@ -722,6 +751,7 @@ namespace ElzabDriver
             return commandStatus;
 
         }
+
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -1204,7 +1234,7 @@ namespace ElzabDriver
         }
 
         //Method used to check if element type header initialized
-        public bool CheckIfHeaderOfTypeExist(int elementType)
+        internal bool CheckIfHeaderOfTypeExist(int elementType)
         {
             bool retVal = false;
             if (this.ElementType.Count > 0) retVal = this.ElementType.Any<int>(e => e.Equals(elementType));
@@ -1225,7 +1255,7 @@ namespace ElzabDriver
         }
 
         //Method used to get element type index
-        private int GetElementTypeIndex(int elementType)
+        internal int GetElementTypeIndex(int elementType)
         {
             int retVal = -1;
             bool exist = false;
