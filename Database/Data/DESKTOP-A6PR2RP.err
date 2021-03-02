@@ -111,3 +111,7 @@
 2021-02-21T19:30:59.242545Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
 2021-02-21T19:30:59.244627Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
 2021-02-21T19:30:59.422852Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2021-03-02T16:18:09.969227Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2021-03-02T16:18:11.999201Z 0 [Warning] [MY-010909] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Forcing close of thread 59  user: 'root'.
+2021-03-02T16:18:12.004833Z 0 [Warning] [MY-010909] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Forcing close of thread 60  user: 'root'.
+2021-03-02T16:18:13.527519Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
