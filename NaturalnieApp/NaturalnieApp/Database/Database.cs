@@ -143,9 +143,6 @@ namespace NaturalnieApp.Database
         public string Attribute16 { get; set; }
         public string Attribute17 { get; set; }
 
-        //Class methods
-        
-
     }
 
     [Table("supplier")]

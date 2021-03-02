@@ -58,7 +58,8 @@ namespace ElzabDriver
         protected string ElementMark { get; set; }
         protected string ElementUniqueIdMark { get; set; }
         protected string AdditionMarkForConfigFile { get; set; }
-        protected string Path { get; }
+        protected string Path { get; set; }
+        protected string DefaultPath { get; }
         protected string BackupPath { get; }
         protected string CommandName { get; }
         protected FileType TypeOfFile { get; }
@@ -85,6 +86,7 @@ namespace ElzabDriver
 
             //Initialize object variables
             this.Path = System.IO.Path.Combine(path, commandName);
+            this.DefaultPath = this.Path;
             this.BackupPath = System.IO.Path.Combine(this.Path, "Backup");
             this.CommandName = commandName;
             this.TypeOfFile = typeOfFile;
@@ -382,6 +384,25 @@ namespace ElzabDriver
             }
 
             return retList;
+        }
+
+        //Method used to set new path to the file
+        public bool SetNewPath(string path)
+        {
+            //Local variables
+            bool retVal = false;
+
+            retVal = System.IO.Directory.Exists(path);
+
+            if (retVal) this.Path = System.IO.Path.Combine(path, this.CommandName);
+
+            return retVal;
+        }
+
+        //Method used to resotre default path
+        public void RestoreDefaultPath()
+        {
+            this.Path = this.DefaultPath;
         }
 
         //Method used to prepare data from object, save it to file and run command

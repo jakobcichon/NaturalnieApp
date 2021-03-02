@@ -513,6 +513,53 @@ namespace NaturalnieApp
             return retList;
         }
 
+
+        //Method used to parse from Elzab buffer to Db object
+        static public List<Sales> ParseElzabBufferToDbObject(List<AttributeValueObject> elementsList)
+        {
+            //Local variables 
+            List<Sales> listOfElementsToAdd = new List<Sales>();
+
+            if (elementsList.Count > 0)
+            {
+                foreach (AttributeValueObject element in elementsList)
+                {
+                    if (element.AttributeValue.Count > 0)
+                    {
+                        int attribute = 0;
+                        Sales salePeiece = new Sales();
+                        foreach (System.Reflection.PropertyInfo prop in typeof(Sales).GetProperties())
+                        {
+                            if (prop.Name == "Id") continue;
+                            else if (prop.PropertyType == Type.GetType("System.Int32"))
+                            {
+                                int value = Int32.Parse(element.AttributeValue[attribute]);
+                                prop.SetValue(salePeiece, value);
+                            }
+                            else if (prop.PropertyType == Type.GetType("System.DateTime"))
+                            {
+                                DateTime value = DateTime.Now;
+                                prop.SetValue(salePeiece, value);
+                            }
+                            else
+                            {
+                                prop.SetValue(salePeiece, element.AttributeValue[attribute]);
+                            }
+
+                            attribute++;
+                            if (attribute >= element.AttributeValue.Count()) break;
+                        }
+
+                        //Add to the list
+                        listOfElementsToAdd.Add(salePeiece);
+                    }
+
+                }
+            }
+
+            return listOfElementsToAdd;
+        }
+
         //Method used to parse from database product object to elzab data
         static public ElzabFileObject ParseDbObjectToElzabProductData(DatabaseCommands db, List<Product> dataToElzab, ElzabFileObject elzabTemplate)
         {
@@ -592,6 +639,7 @@ namespace NaturalnieApp
 
             return retData;
         }
+
 
         //Method used to compare product data from DB with data from elzab
         static public List<Product> ComapreDbProductDataWithElzab(List<Product> dataFromElzab, List<Product> dataFromDb)

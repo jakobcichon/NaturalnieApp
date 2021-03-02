@@ -27,7 +27,8 @@ namespace NaturalnieApp.Forms
         public ShowStock showStock { get; set; }
         public Playground playground { get; set; }
         public GeneralSettings generalSettings { get; set; }
-        public ElzabSynchronization cashRegisterCommands { get; set; }
+        public ElzabSynchronization elzabSynchronization { get; set; }
+        public SalesBufferReading salesBufferReading { get; set; }
         public PricesRelatedUpdate pricesRelatedUpdate { get; set; }
 
         //Creat EF databse connection object
@@ -68,7 +69,8 @@ namespace NaturalnieApp.Forms
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.playground = new Playground();
             this.generalSettings = new GeneralSettings(this.ConfigFileOjbInst);
-            this.cashRegisterCommands = new ElzabSynchronization(ref this.databaseCommands);
+            this.elzabSynchronization = new ElzabSynchronization(ref this.databaseCommands);
+            this.salesBufferReading = new SalesBufferReading(ref this.databaseCommands);
             this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
             
         }
@@ -277,23 +279,44 @@ namespace NaturalnieApp.Forms
 
         #region Cash register submenu
 
-        private void bCashRegisterInfo_Click(object sender, EventArgs e)
+        private void bElzabSynchronization_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
             try
             {
-                this.pContainer.Controls.Add(this.cashRegisterCommands);
-                this.cashRegisterCommands.Select();
-                this.cashRegisterCommands.BringToFront();
-                this.cashRegisterCommands.Show();
+                this.pContainer.Controls.Add(this.elzabSynchronization);
+                this.elzabSynchronization.Select();
+                this.elzabSynchronization.BringToFront();
+                this.elzabSynchronization.Show();
             }
             catch (ObjectDisposedException)
             {
-                this.cashRegisterCommands = new ElzabSynchronization(ref this.databaseCommands);
-                this.pContainer.Controls.Add(this.cashRegisterCommands);
-                this.cashRegisterCommands.Select();
-                this.cashRegisterCommands.BringToFront();
-                this.cashRegisterCommands.Show();
+                this.elzabSynchronization = new ElzabSynchronization(ref this.databaseCommands);
+                this.pContainer.Controls.Add(this.elzabSynchronization);
+                this.elzabSynchronization.Select();
+                this.elzabSynchronization.BringToFront();
+                this.elzabSynchronization.Show();
+            }
+
+        }
+
+        private void bSalesBufferReading_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            try
+            {
+                this.pContainer.Controls.Add(this.salesBufferReading);
+                this.salesBufferReading.Select();
+                this.salesBufferReading.BringToFront();
+                this.salesBufferReading.Show();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.salesBufferReading = new SalesBufferReading(ref this.databaseCommands);
+                this.pContainer.Controls.Add(this.salesBufferReading);
+                this.salesBufferReading.Select();
+                this.salesBufferReading.BringToFront();
+                this.salesBufferReading.Show();
             }
 
         }

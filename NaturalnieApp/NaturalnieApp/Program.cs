@@ -45,10 +45,12 @@ namespace NaturalnieApp
 
             try
             {
-                string path1 = @"C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs";
-                string path2 = @"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs";
-                if(Directory.Exists(path1)) AssemblyResolver.Hook(path1);
-                else if(Directory.Exists(path2)) AssemblyResolver.Hook(path2);
+                #if DEBUG
+                    string path1 = @"C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs";
+                    string path2 = @"D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\Libs";
+                    if(Directory.Exists(path1)) AssemblyResolver.Hook(path1);
+                    else if(Directory.Exists(path2)) AssemblyResolver.Hook(path2);
+                #endif
 
                 //Initialize global variables
                 ConfigFileObject ConfigFileInst = InitGlobalVariables();

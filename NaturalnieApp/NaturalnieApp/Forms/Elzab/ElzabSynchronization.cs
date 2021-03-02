@@ -385,43 +385,7 @@ namespace NaturalnieApp.Forms
                 {
                     //Get list of all elements of given type
                     List<AttributeValueObject> elementsList = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
-
-                    if(elementsList.Count > 0)
-                    {
-                        foreach (AttributeValueObject element in elementsList)
-                        {
-                            if (element.AttributeValue.Count > 0 )
-                            {
-                                int attribute = 0;
-                                Sales salePeiece = new Sales();
-                                foreach (System.Reflection.PropertyInfo prop in typeof(Sales).GetProperties())
-                                {
-                                    if (prop.Name == "Id") continue;
-                                    else if (prop.PropertyType == Type.GetType("System.Int32"))
-                                    {
-                                        int value = Int32.Parse(element.AttributeValue[attribute]);
-                                        prop.SetValue(salePeiece, value);
-                                    }
-                                    else if (prop.PropertyType == Type.GetType("System.DateTime"))
-                                    {
-                                        DateTime value = DateTime.Now;
-                                        prop.SetValue(salePeiece, value);
-                                    }
-                                    else
-                                    {
-                                        prop.SetValue(salePeiece, element.AttributeValue[attribute]);
-                                    }
-
-                                    attribute++;
-                                    if (attribute >= element.AttributeValue.Count()) break;
-                                }
-
-                                //Add to the list
-                                listOfElementsToAdd.Add(salePeiece);
-                            }
-
-                        }
-                    }
+                    listOfElementsToAdd.AddRange(ElzabRelated.ParseElzabBufferToDbObject(elementsList));
                 }
                 this.databaseCommands.AddToSales(listOfElementsToAdd);
                 ;
