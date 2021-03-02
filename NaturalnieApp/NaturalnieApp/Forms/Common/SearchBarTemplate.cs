@@ -274,6 +274,10 @@ namespace NaturalnieApp.Forms.Common
             //Initialize component
             InitializeComponent();
 
+            //Set double buffering
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+            this.DoubleBuffered = true;
+
             //Initialize database commands
             this.DatabaseCommands = new DatabaseCommands();
 
@@ -524,6 +528,7 @@ namespace NaturalnieApp.Forms.Common
                 dataToList.Sort();
                 dataToList.Insert(0, "Wszyscy");
                 this.cbManufacturers.DataSource = dataToList;
+                this.ManaufacturerAutocompleteList.Clear();
                 this.ManaufacturerAutocompleteList.AddRange(dataToList.ToArray());
                 this.cbManufacturers.AutoCompleteCustomSource = this.ManaufacturerAutocompleteList;
             }
@@ -536,6 +541,8 @@ namespace NaturalnieApp.Forms.Common
                 dataToList = productsData.Keys.ToList();
                 dataToList.Sort();
                 this.cbProducts.DataSource = dataToList;
+                this.cbProducts.AutoCompleteCustomSource = null;
+                this.ProductAutocompleteList.Clear();
                 this.ProductAutocompleteList.AddRange(dataToList.ToArray());
                 this.cbProducts.AutoCompleteCustomSource = this.ProductAutocompleteList;
             }
@@ -548,6 +555,7 @@ namespace NaturalnieApp.Forms.Common
                 dataToList = barcodesData.Keys.ToList();
                 dataToList.Sort();
                 this.cbBarcodes.DataSource = dataToList;
+                this.BarcodeAutocompleteList.Clear();
                 this.BarcodeAutocompleteList.AddRange(dataToList.ToArray());
                 this.cbBarcodes.AutoCompleteCustomSource = this.BarcodeAutocompleteList;
             }
@@ -566,6 +574,12 @@ namespace NaturalnieApp.Forms.Common
         {
             //Show loading bar
             ShowLoadingBar();
+
+            //Write down currently selected enityt
+            this.PreviouslySelectedProduct = this.ActualSelectedEnt.ProductName;
+            this.PreviouslySelectedBarcode = this.ActualSelectedEnt.Barcode;
+
+            //Update
             this.DbBackgroundWorker.RunWorkerAsync();
         }
         public bool SelectBarcode(string barcodeValue)
@@ -673,6 +687,10 @@ namespace NaturalnieApp.Forms.Common
 
                     //Assgine new value to the auxiliary variable
                     this.PreviouslySelectedManufacturer = selectedItem;
+
+                    //Get actual entity
+                    this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(this.cbProducts.SelectedItem.ToString());
+                    this.SelectEntity(this.ActualSelectedEnt);
                 }
             }
            

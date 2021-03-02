@@ -35,7 +35,6 @@ namespace NaturalnieApp.Forms
             this.bSave = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
             this.bGenerateTemplate = new System.Windows.Forms.Button();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.bAddFromFile = new System.Windows.Forms.Button();
             this.bDeselectAll = new System.Windows.Forms.Button();
             this.bSelectAll = new System.Windows.Forms.Button();
@@ -47,6 +46,7 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel = new System.Windows.Forms.Panel();
             this.pAllowOverrideProduct = new System.Windows.Forms.Panel();
             this.cbAllowOverrideProduct = new System.Windows.Forms.CheckBox();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.tpMarigin.SuspendLayout();
@@ -211,7 +211,7 @@ namespace NaturalnieApp.Forms
             this.tpMarigin.Location = new System.Drawing.Point(0, 578);
             this.tpMarigin.Name = "tpMarigin";
             this.tpMarigin.RowCount = 1;
-            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
             this.tpMarigin.Size = new System.Drawing.Size(147, 30);
             this.tpMarigin.TabIndex = 2;
             // 
@@ -233,7 +233,7 @@ namespace NaturalnieApp.Forms
             this.lMarigin.Location = new System.Drawing.Point(4, 4);
             this.lMarigin.Margin = new System.Windows.Forms.Padding(3);
             this.lMarigin.Name = "lMarigin";
-            this.lMarigin.Size = new System.Drawing.Size(64, 30);
+            this.lMarigin.Size = new System.Drawing.Size(64, 32);
             this.lMarigin.TabIndex = 0;
             this.lMarigin.Text = "Marża";
             this.lMarigin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -316,7 +316,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bUpdate;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button bGenerateTemplate;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button bAddFromFile;
         private System.Windows.Forms.Button bDeselectAll;
         private System.Windows.Forms.Button bSelectAll;
@@ -329,5 +328,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TextBox tbMarigin;
         private System.Windows.Forms.Panel pAllowOverrideProduct;
         private System.Windows.Forms.CheckBox cbAllowOverrideProduct;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }

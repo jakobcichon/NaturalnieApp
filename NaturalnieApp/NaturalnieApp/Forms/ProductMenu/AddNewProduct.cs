@@ -61,6 +61,9 @@ namespace NaturalnieApp.Forms
             //Disable Elzab product number. Manifacturer must be selected first
             tbElzabProductNumber.Enabled = false;
 
+            this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
+                Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
+
         }
         #endregion
         //=============================================================================
@@ -236,8 +239,8 @@ namespace NaturalnieApp.Forms
 
                     int productNumber = Convert.ToInt32(this.tbElzabProductNumber.Text);
                     Validation.ElzabProductNumberValidation(productNumber,
-                        this.ManufacturerEntity.FirstNumberInCashRegister,
-                        this.ManufacturerEntity.LastNumberInCashRegister);
+                        Program.GlobalVariables.CashRegisterFirstPossibleId,
+                        Program.GlobalVariables.CashRegisterLastPossibleId);
 
                     Validation.ElzabProductNameValidation(this.tbElzabProductName.Text);
                     Validation.PriceNetValueValidation(this.tbPrice.Text);
@@ -293,7 +296,7 @@ namespace NaturalnieApp.Forms
             this.tbDiscount.Text = "";
             this.tbPriceNetWithDiscount.Text = "";
             this.tbPriceWithTax.Text = "";
-            this.lElzabProductNumberRange.Text = "0-0";
+            this.lElzabProductNumberRange.Text = "Wolne: ";
             this.lElzabNameLength.Text = "0";
         }
         //Metchod use to find and select string in ComboBox
@@ -625,16 +628,16 @@ namespace NaturalnieApp.Forms
                 try
                 {
                     //If epmty assign first free value
-                    int elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabIdForGivenManufacturer(this.ManufacturerEntity.Name);
+                    int elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
                     if (elzabFirstFreeId > 0)
                     {
                         //Get manufacturer entity
                         this.ManufacturerEntity = this.databaseCommands.GetManufacturerEntityByName(localSender.SelectedItem.ToString());
+                        this.tbElzabProductNumber.Text = elzabFirstFreeId.ToString();
 
                         //Enable text box
-                        int lastNumberForGivenManufacturer = this.ManufacturerEntity.LastNumberInCashRegister - 1;
-                        this.lElzabProductNumberRange.Text = this.ManufacturerEntity.FirstNumberInCashRegister.ToString() +
-                            " - " + lastNumberForGivenManufacturer.ToString();
+                        this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId - 
+                            Program.GlobalVariables.CashRegisterFirstPossibleId  - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
                         this.tbElzabProductNumber.Enabled = true;
 
                         //Generate EAN8

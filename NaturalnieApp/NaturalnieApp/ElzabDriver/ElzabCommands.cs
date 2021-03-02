@@ -805,7 +805,7 @@ namespace ElzabCommands
             if (result) result = commandInstance.DataToElzab.WriteDataToFile();
 
             //Execute command
-            //if (result) result = commandInstance.DataToElzab.RunCommand();
+            if (result) result = commandInstance.DataToElzab.RunCommand();
             
             if (result)
             {
@@ -859,7 +859,7 @@ namespace ElzabCommands
             if (result) result = commandInstance.DataToElzab.WriteDataToFile();
 
             //Execute command
-            //if (result) result = commandInstance.DataToElzab.RunCommand();
+            if (result) result = commandInstance.DataToElzab.RunCommand();
 
             if (result)
             {

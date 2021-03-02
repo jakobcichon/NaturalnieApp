@@ -683,7 +683,7 @@ namespace NaturalnieApp.Forms
             this.lElzabProductNumberRange.Name = "lElzabProductNumberRange";
             this.lElzabProductNumberRange.Size = new System.Drawing.Size(100, 34);
             this.lElzabProductNumberRange.TabIndex = 2;
-            this.lElzabProductNumberRange.Text = "0-0";
+            this.lElzabProductNumberRange.Text = "Wolne: ??";
             this.lElzabProductNumberRange.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tbElzabProductNumber

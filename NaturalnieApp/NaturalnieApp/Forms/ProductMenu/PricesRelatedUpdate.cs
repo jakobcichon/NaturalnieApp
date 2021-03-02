@@ -329,9 +329,16 @@ namespace NaturalnieApp.Forms
         }
         private void bGenerateTemplate_Click(object sender, EventArgs e)
         {
+            saveFileDialog1.Title = "Wybierz miejsce docelowe formatki";
+            saveFileDialog1.DefaultExt = ".xlsb";
+            saveFileDialog1.FileName = "aktualizacja_template_" + DateTime.Now.ToString("MM/dd/yyyy HH/mm");
+
             //Open folder dialog browser
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                string fileDirectory = Path.GetDirectoryName(saveFileDialog1.FileName);
+                string fileName = Path.GetFileNameWithoutExtension(saveFileDialog1.FileName);
+
                 List<string> columnNamesList = new List<string>();
                 //Get columns name list
                 foreach(DataColumn column in this.DataSource.Columns)
@@ -340,7 +347,7 @@ namespace NaturalnieApp.Forms
                 }
 
                 //Get proper template
-                ExcelBase.CreateExcelFile(columnNamesList, folderBrowserDialog1.SelectedPath, "template");
+                ExcelBase.CreateExcelFile(columnNamesList, fileDirectory, fileName);
             }
 
             //Update control

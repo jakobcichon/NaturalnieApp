@@ -32,7 +32,6 @@ namespace NaturalnieApp.Forms
             this.pHeader = new System.Windows.Forms.Panel();
             this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
             this.bAddFromFile = new System.Windows.Forms.Button();
@@ -43,6 +42,7 @@ namespace NaturalnieApp.Forms
             this.label1 = new System.Windows.Forms.Label();
             this.lActualInDB = new System.Windows.Forms.Label();
             this.advancedDataGridView2 = new Zuby.ADGV.AdvancedDataGridView();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.pButtonsPanel.SuspendLayout();
@@ -254,7 +254,6 @@ namespace NaturalnieApp.Forms
         #endregion
         private System.Windows.Forms.Panel pHeader;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
         private System.Windows.Forms.TextBox tbDummyForCtrl;
         private System.Windows.Forms.Panel pButtonsPanel;
@@ -266,5 +265,6 @@ namespace NaturalnieApp.Forms
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lActualInDB;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }

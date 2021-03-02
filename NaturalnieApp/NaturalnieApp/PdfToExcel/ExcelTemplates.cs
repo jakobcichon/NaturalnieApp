@@ -38,7 +38,7 @@ namespace NaturalnieApp.PdfToExcel
                 {ColumnsAttributes.ElzabProductName, "Nazwa towaru Elzab"},
                 {ColumnsAttributes.Barcode_EAN13, "Kod kreskowy"},
                 {ColumnsAttributes.SupplierCode, "Kod dostawcy"},
-                {ColumnsAttributes.PriceNet, "Cena netto"},
+                {ColumnsAttributes.PriceNet, "Cena netto (bez rabatu)"},
                 {ColumnsAttributes.Tax, "VAT"},
                 {ColumnsAttributes.Discount, "Rabat dostawcy"},
                 {ColumnsAttributes.Quantity, "Ilość"}

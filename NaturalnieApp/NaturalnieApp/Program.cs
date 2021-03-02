@@ -31,6 +31,9 @@ namespace NaturalnieApp
             static public string DymoPrinterName { get; set; }
             static public string LibraryPath { get; set; }
             static public string DbBackupPath { get; set; }
+            static public int CashRegisterFirstPossibleId { get { return 280; } }
+            static public int CashRegisterLastPossibleId {  get {  return 4095; } }
+
         }
         /// <summary>
         /// Główny punkt wejścia dla aplikacji.

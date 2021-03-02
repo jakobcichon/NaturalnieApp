@@ -375,12 +375,20 @@ namespace NaturalnieApp.Forms
         //Event for generate template button
         private void bGenerateTemplate_Click(object sender, EventArgs e)
         {
+            saveFileDialog1.Title = "Wybierz miejsce docelowe formatki";
+            saveFileDialog1.DefaultExt = ".xlsb";
+            saveFileDialog1.FileName = "template_" + DateTime.Now.ToString("MM/dd/yyyy HH/mm");
+
             //Open folder dialog browser
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                string fileDirectory = Path.GetDirectoryName(saveFileDialog1.FileName);
+                string fileName = Path.GetFileNameWithoutExtension(saveFileDialog1.FileName);
+
+
                 //Get proper template
                 AddProduct_General supplierInvoice = new AddProduct_General();
-                ExcelBase.CreateExcelFile(supplierInvoice, folderBrowserDialog1.SelectedPath, "template");
+                ExcelBase.CreateExcelFile(supplierInvoice, fileDirectory, fileName);
             }
 
             //Update control
@@ -587,6 +595,12 @@ namespace NaturalnieApp.Forms
                 //Declare list contains names of manufacturer for which maximum number of products was already achieved
                 List<string> manufacturersWithExNumberOfProduct = new List<string>();
 
+                //Set variables for user interaction
+                bool continueWithoutAskingProductNameExist = false;
+                bool continueWithoutAskingSupplierCodeExist = false;
+                bool continueWithoutAskingElzabProductNameExist = false;
+                bool continueWithoutAskingBarcodeExist = false;
+
                 //Loop through all rows and add it to DB if possible
                 foreach (DataGridViewRow row in rowCollectionToAdd)
                 {
@@ -681,7 +695,7 @@ namespace NaturalnieApp.Forms
                             if (rowBarcodeValue == "") barcodeExist = false;
                             else barcodeExist = this.databaseCommands.CheckIfBarcodeExist(rowBarcodeValue);
                             bool supplierCodeExist = this.databaseCommands.CheckIfSupplierNameExist(rowSupplierCodeValue);
-                            int elzabProductFirstFreeId = this.databaseCommands.CalculateFreeElzabIdForGivenManufacturer(rowManufacturerNameValue);
+                            int elzabProductFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
                             bool productForManufacturerExhausted = manufacturersWithExNumberOfProduct.Any(m => m == rowManufacturerNameValue);
 
                             if (!productNameExist && !barcodeExist && !supplierCodeExist && !elzabProductNameExist)
@@ -828,15 +842,16 @@ namespace NaturalnieApp.Forms
                                     //Add to the collection to add to stock
                                     if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
 
-                                    if (rowCollectionToAdd.Count > 1)
+                                    if (rowCollectionToAdd.Count > 1 && !continueWithoutAskingProductNameExist)
                                     {
                                         DialogResult dialogResult = MessageBox.Show("Produkt o nazwie '" + rowProductNameValue +
                                             "' już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
                                             , "Pozycja istnieje w bazie danych!"
-                                            , MessageBoxButtons.YesNo);
+                                            , MessageBoxButtons.YesNoCancel);
                                         if (dialogResult == DialogResult.Yes) break;
+                                        else if (dialogResult == DialogResult.Cancel) continueWithoutAskingProductNameExist = true;
                                     }
-                                    else MessageBox.Show("Produkt o nazwie '" + rowProductNameValue + "' już istnieje w bazie danych!");
+                                    //else MessageBox.Show("Produkt o nazwie '" + rowProductNameValue + "' już istnieje w bazie danych!");
                                 }
                                 else if (barcodeExist)
                                 {
@@ -844,15 +859,16 @@ namespace NaturalnieApp.Forms
                                     //Add to the collection to add to stock
                                     if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
 
-                                    if (rowCollectionToAdd.Count > 1)
+                                    if (rowCollectionToAdd.Count > 1 && !continueWithoutAskingBarcodeExist)
                                     {
                                         DialogResult dialogResult = MessageBox.Show("Kod kreskowy : '" + rowBarcodeValue +
                                             "' już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
                                             , "Pozycja istnieje w bazie danych!"
-                                            , MessageBoxButtons.YesNo);
+                                            , MessageBoxButtons.YesNoCancel);
                                         if (dialogResult == DialogResult.Yes) break;
+                                        else if (dialogResult == DialogResult.Cancel) continueWithoutAskingBarcodeExist = true;
                                     }
-                                    else MessageBox.Show("Kod kreskowy : '" + rowBarcodeValue + "' już istnieje w bazie danych!");
+                                    //else MessageBox.Show("Kod kreskowy : '" + rowBarcodeValue + "' już istnieje w bazie danych!");
                                 }
                                 else if (supplierCodeExist)
                                 {
@@ -860,15 +876,16 @@ namespace NaturalnieApp.Forms
                                     //Add to the collection to add to stock
                                     if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
 
-                                    if (rowCollectionToAdd.Count > 1)
+                                    if (rowCollectionToAdd.Count > 1 && !continueWithoutAskingSupplierCodeExist)
                                     {
                                         DialogResult dialogResult = MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue +
                                             "' już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
                                             , "Pozycja istnieje w bazie danych!"
-                                            , MessageBoxButtons.YesNo);
+                                            , MessageBoxButtons.YesNoCancel);
                                         if (dialogResult == DialogResult.Yes) break;
+                                        else if (dialogResult == DialogResult.Cancel) continueWithoutAskingSupplierCodeExist = true;
                                     }
-                                    else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
+                                    //else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
                                 }
                                 else if (elzabProductNameExist)
                                 {
@@ -876,15 +893,16 @@ namespace NaturalnieApp.Forms
                                     //Add to the collection to add to stock
                                     if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
 
-                                    if (rowCollectionToAdd.Count > 1)
+                                    if (rowCollectionToAdd.Count > 1 && !continueWithoutAskingElzabProductNameExist)
                                     {
                                         DialogResult dialogResult = MessageBox.Show("Nazwa produktu '" + rowProductNameValue +
                                             "'dla kasy Elzab już istnieje w bazie danych. Czy chesz przerwać dodawanie kolejnych produktów?"
                                             , "Pozycja istnieje w bazie danych!"
-                                            , MessageBoxButtons.YesNo);
+                                            , MessageBoxButtons.YesNoCancel);
                                         if (dialogResult == DialogResult.Yes) break;
+                                        else if (dialogResult == DialogResult.Cancel) continueWithoutAskingElzabProductNameExist = true;
                                     }
-                                    else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
+                                    //else MessageBox.Show("Numer dostawy : '" + rowSupplierCodeValue + "' już istnieje w bazie danych!");
                                 }
                             }
                         }
@@ -920,26 +938,42 @@ namespace NaturalnieApp.Forms
                         Stock stockPiece = new Stock();
                         //Add product to local stock variable
                         string productName = element.Cells[this.ProductColumnName].Value.ToString();
+                        string productBarcode = element.Cells[this.BarcodeColumnName].Value.ToString();
                         stockPiece.ProductId = this.databaseCommands.GetProductIdByName(productName);
 
-                        bool productalreadyExistInStock = this.databaseCommands.CheckIfProductExistInStock(stockPiece);
-                        if (productalreadyExistInStock)
+                        //If did not found product by name, try by barcode
+                        if (stockPiece.ProductId == 0 && productBarcode != "")
                         {
-                            Stock pieceFromStock = this.databaseCommands.GetStockEntityByUserStock(stockPiece);
-                            int quantityInStock = this.databaseCommands.GetStockQuantity(stockPiece.ProductId);
-                            pieceFromStock.ActualQuantity = quantityInStock + Int32.Parse(element.Cells[this.QuantityColumnName].Value.ToString());
-                            pieceFromStock.LastQuantity = quantityInStock;
-                            pieceFromStock.ModificationDate = DateTime.Now;
-                            this.databaseCommands.EditInStock(pieceFromStock);
+                            stockPiece.ProductId = this.databaseCommands.GetProductIdByBarcode(productBarcode);
+                        }
 
+                        if(stockPiece.ProductId != 0)
+                        {
+                            bool productalreadyExistInStock = this.databaseCommands.CheckIfProductExistInStock(stockPiece);
+                            if (productalreadyExistInStock)
+                            {
+                                Stock pieceFromStock = this.databaseCommands.GetStockEntityByUserStock(stockPiece);
+                                int quantityInStock = this.databaseCommands.GetStockQuantity(stockPiece.ProductId);
+                                pieceFromStock.ActualQuantity = quantityInStock + Int32.Parse(element.Cells[this.QuantityColumnName].Value.ToString());
+                                pieceFromStock.LastQuantity = quantityInStock;
+                                pieceFromStock.ModificationDate = DateTime.Now;
+                                this.databaseCommands.EditInStock(pieceFromStock);
+
+                            }
+                            else
+                            {
+                                stockPiece.ActualQuantity = Int32.Parse(element.Cells[this.QuantityColumnName].Value.ToString());
+                                stockPiece.LastQuantity = 0;
+                                stockPiece.ModificationDate = DateTime.Now;
+                                this.databaseCommands.AddToStock(stockPiece);
+                            }
                         }
                         else
                         {
-                            stockPiece.ActualQuantity = Int32.Parse(element.Cells[this.QuantityColumnName].Value.ToString());
-                            stockPiece.LastQuantity = 0;
-                            stockPiece.ModificationDate = DateTime.Now;
-                            this.databaseCommands.AddToStock(stockPiece);
+                            MessageBox.Show(string.Format("Nie można dodać do magazynu produktu o nazwia {0} i kodzie kreskowym {1}, " +
+                                "gdyż nie znaleziono takiego produktu w bacie danych!", productName, productBarcode));
                         }
+
                     }
                 }
                 catch(Exception ex)

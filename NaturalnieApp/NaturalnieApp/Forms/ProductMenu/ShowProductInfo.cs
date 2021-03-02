@@ -68,6 +68,10 @@ namespace NaturalnieApp.Forms
             this.SupplierEntity = new Supplier();
             this.ManufacturerEntity = new Manufacturer();
 
+            //Enable text box
+            this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
+                Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
+
         }
         #endregion
         //=============================================================================
@@ -270,8 +274,8 @@ namespace NaturalnieApp.Forms
             this.tbPriceNetWithDiscount.Text = String.Format("{0:0.00}", p.PriceNetWithDiscount);
             this.tbBarcodeToEdit.Text = p.BarCode;
             this.tbProductNameToEdit.Text = p.ProductName;
-            this.lElzabProductNumberRange.Text = m.FirstNumberInCashRegister.ToString()
-                + "-" + (m.FirstNumberInCashRegister + m.MaxNumberOfProducts - 1).ToString();
+            this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
+                Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
             this.lElzabNameLength.Text = this.tbElzabProductName.Text.Length.ToString();
 
             //Calculate price with tax
@@ -379,8 +383,8 @@ namespace NaturalnieApp.Forms
 
                     int productNumber = Convert.ToInt32(this.tbElzabProductNumber.Text);
                     Validation.ElzabProductNumberValidation(productNumber,
-                        this.ManufacturerEntity.FirstNumberInCashRegister,
-                        this.ManufacturerEntity.LastNumberInCashRegister);
+                        Program.GlobalVariables.CashRegisterFirstPossibleId,
+                        Program.GlobalVariables.CashRegisterLastPossibleId);
 
                     Validation.ElzabProductNameValidation(this.tbElzabProductName.Text);
                     Validation.PriceNetValueValidation(this.tbPrice.Text);
@@ -433,7 +437,7 @@ namespace NaturalnieApp.Forms
             this.tbBarcodeToEdit.Text = "";
             this.tbProductNameToEdit.Text = "";
             this.tbPriceWithTax.Text = "";
-            this.lElzabProductNumberRange.Text = "0-0";
+            this.lElzabProductNumberRange.Text = "Wolne: ";
             this.lElzabNameLength.Text = "0";
         }
         //Metchod use to find and select string in ComboBox
@@ -830,13 +834,13 @@ namespace NaturalnieApp.Forms
                     this.ProductEntity.ManufacturerId = this.ManufacturerEntity.Id;
 
                     //Enable text box
-                    this.lElzabProductNumberRange.Text = this.ManufacturerEntity.FirstNumberInCashRegister.ToString() +
-                        " - " + this.ManufacturerEntity.LastNumberInCashRegister.ToString();
+                    this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
+                        Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
                     this.tbElzabProductNumber.Enabled = true;
 
                     //If epmty assign first free value
                     this.tbElzabProductNumber.Text =
-                        this.databaseCommands.CalculateFreeElzabIdForGivenManufacturer(this.ManufacturerEntity.Name).ToString();
+                        this.databaseCommands.CalculateFreeElzabId().ToString();
                     this.ProductEntity.ElzabProductId = Convert.ToInt32(this.tbElzabProductNumber.Text);
 
                     //Generate EAN8
@@ -979,7 +983,7 @@ namespace NaturalnieApp.Forms
             try
             {
                 //Get first free Id and check if given number match
-                int elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabIdForGivenManufacturer(this.ManufacturerEntity.Name);
+                int elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
                 if(elzabFirstFreeId > 0)
                 {
                     int productNumber = Convert.ToInt32(localSender.Text);

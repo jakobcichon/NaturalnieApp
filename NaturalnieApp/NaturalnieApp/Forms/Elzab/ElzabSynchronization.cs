@@ -421,8 +421,6 @@ namespace NaturalnieApp.Forms
                             }
 
                         }
-
-
                     }
                 }
                 this.databaseCommands.AddToSales(listOfElementsToAdd);
