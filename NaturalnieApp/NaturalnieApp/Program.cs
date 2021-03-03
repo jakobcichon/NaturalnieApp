@@ -42,7 +42,6 @@ namespace NaturalnieApp
         [STAThread]
         static void Main()
         { 
-
             try
             {
                 #if DEBUG

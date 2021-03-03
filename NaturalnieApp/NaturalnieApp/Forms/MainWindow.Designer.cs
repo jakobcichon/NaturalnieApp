@@ -65,6 +65,9 @@ namespace NaturalnieApp.Forms
             this.pMenuDeliminer = new System.Windows.Forms.Panel();
             this.pContainer = new System.Windows.Forms.Panel();
             this.timer1sTick = new System.Windows.Forms.Timer(this.components);
+            this.pBottomLine = new System.Windows.Forms.Panel();
+            this.pVersion = new System.Windows.Forms.Panel();
+            this.lVersion = new System.Windows.Forms.Label();
             this.pMenu.SuspendLayout();
             this.pStockSubMenu.SuspendLayout();
             this.pProductSubMenu.SuspendLayout();
@@ -73,6 +76,9 @@ namespace NaturalnieApp.Forms
             this.pHeader.SuspendLayout();
             this.tlpdbStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDbStatus)).BeginInit();
+            this.pContainer.SuspendLayout();
+            this.pBottomLine.SuspendLayout();
+            this.pVersion.SuspendLayout();
             this.SuspendLayout();
             // 
             // pMenu
@@ -467,6 +473,7 @@ namespace NaturalnieApp.Forms
             this.pLogo.Name = "pLogo";
             this.pLogo.Size = new System.Drawing.Size(283, 114);
             this.pLogo.TabIndex = 0;
+            this.pLogo.Click += new System.EventHandler(this.pLogo_Click);
             // 
             // pHeader
             // 
@@ -583,6 +590,7 @@ namespace NaturalnieApp.Forms
             this.pContainer.AutoScrollMinSize = new System.Drawing.Size(300, 300);
             this.pContainer.AutoSize = true;
             this.pContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.pContainer.Controls.Add(this.pBottomLine);
             this.pContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pContainer.ForeColor = System.Drawing.Color.White;
             this.pContainer.Location = new System.Drawing.Point(303, 31);
@@ -597,6 +605,40 @@ namespace NaturalnieApp.Forms
             // 
             this.timer1sTick.Interval = 1000;
             this.timer1sTick.Tick += new System.EventHandler(this.timer5sTick_Tick);
+            // 
+            // pBottomLine
+            // 
+            this.pBottomLine.Controls.Add(this.pVersion);
+            this.pBottomLine.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pBottomLine.Location = new System.Drawing.Point(1, 667);
+            this.pBottomLine.Name = "pBottomLine";
+            this.pBottomLine.Size = new System.Drawing.Size(934, 30);
+            this.pBottomLine.TabIndex = 1;
+            // 
+            // pVersion
+            // 
+            this.pVersion.Controls.Add(this.lVersion);
+            this.pVersion.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pVersion.Location = new System.Drawing.Point(0, 0);
+            this.pVersion.Margin = new System.Windows.Forms.Padding(0);
+            this.pVersion.Name = "pVersion";
+            this.pVersion.Padding = new System.Windows.Forms.Padding(1);
+            this.pVersion.Size = new System.Drawing.Size(80, 30);
+            this.pVersion.TabIndex = 0;
+            // 
+            // lVersion
+            // 
+            this.lVersion.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lVersion.Font = new System.Drawing.Font("Alegreya Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lVersion.ForeColor = System.Drawing.Color.Gray;
+            this.lVersion.Location = new System.Drawing.Point(1, 1);
+            this.lVersion.Margin = new System.Windows.Forms.Padding(1);
+            this.lVersion.Name = "lVersion";
+            this.lVersion.Padding = new System.Windows.Forms.Padding(1);
+            this.lVersion.Size = new System.Drawing.Size(78, 28);
+            this.lVersion.TabIndex = 2;
+            this.lVersion.Text = "1.0.0.0";
+            this.lVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainWindow
             // 
@@ -625,6 +667,9 @@ namespace NaturalnieApp.Forms
             this.pHeader.ResumeLayout(false);
             this.tlpdbStatus.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbDbStatus)).EndInit();
+            this.pContainer.ResumeLayout(false);
+            this.pBottomLine.ResumeLayout(false);
+            this.pVersion.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -666,5 +711,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lDbStatus;
         private System.Windows.Forms.PictureBox pbDbStatus;
         private System.Windows.Forms.Button bSalesBufforReading;
+        private System.Windows.Forms.Panel pBottomLine;
+        private System.Windows.Forms.Panel pVersion;
+        private System.Windows.Forms.Label lVersion;
     }
 }

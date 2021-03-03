@@ -189,7 +189,7 @@ namespace ElzabDriver
         //Method used to set basic information about file
         public virtual void SetMarksAndSeparators(char attributeSeparator = '\t', char headerMark = '#',
                                         char headerSeparator = '\t', char commentMark = ';',
-                                        char elementMark = '$', char additionmarkforConfigFile = '\t', char elementUniqueIdMark = '$')
+                                        char elementMark = '$', char additionmarkforConfigFile = '\t', char elementUniqueIdMark = ' ')
         {
             //Set values to variables
             this.AttributesSeparator = attributeSeparator.ToString();
@@ -337,7 +337,9 @@ namespace ElzabDriver
                         else
                         {
                             //Check if element identifier exist. If yes, add it to the element instance
-                            int elementTypeId = this.Element.SelectElementUniqueId(element, this.ElementUniqueIdMark);
+                            int elementTypeId;
+                            if (this.ElementUniqueIdMark == ' '.ToString()) elementTypeId = 0;
+                            else elementTypeId = this.Element.SelectElementUniqueId(element, this.ElementUniqueIdMark);
                             if (elementTypeId > 0)
                             {
                                 this.Element.AddElement(elementTypeId);
@@ -1333,6 +1335,8 @@ namespace ElzabDriver
         }
         public void AddElement(int elementType = 0)
         {
+            InitializeElementType(elementType);
+
             int elementTypeIndex = GetElementTypeIndex(elementType);
 
             this.ElementsList[elementTypeIndex].Add(new AttributeValueObject());

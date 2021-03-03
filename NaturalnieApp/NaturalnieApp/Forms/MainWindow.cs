@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using NaturalnieApp.Initialization;
 using NaturalnieApp.Database;
+using System.Reflection;
 
 namespace NaturalnieApp.Forms
 {
@@ -72,6 +73,9 @@ namespace NaturalnieApp.Forms
             this.elzabSynchronization = new ElzabSynchronization(ref this.databaseCommands);
             this.salesBufferReading = new SalesBufferReading(ref this.databaseCommands);
             this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
+
+            //Set version
+            lVersion.Text = typeof(Program).Assembly.GetName().Version.ToString();
             
         }
         //=============================================================================
@@ -201,7 +205,8 @@ namespace NaturalnieApp.Forms
         }
         private void bExit_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            DialogResult result = MessageBox.Show("Czy na pewno chcesz zamknąć program?", "Zamknięcie programu", MessageBoxButtons.YesNo);
+            if(result == DialogResult.Yes) Application.Exit();
         }
         private void bMinimize_Click(object sender, EventArgs e)
         {
@@ -520,5 +525,16 @@ namespace NaturalnieApp.Forms
             if(!this.backgroundWorker1.IsBusy) this.backgroundWorker1.RunWorkerAsync();
         }
         #endregion
+
+        private void pLogo_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+
+
+            this.Select();
+            this.BringToFront();
+            this.Show();
+
+        }
     }
 }

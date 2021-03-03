@@ -752,6 +752,7 @@ namespace ElzabCommands
             //Initialize object containing information from ELZAB
             ElzabFileObject _dataFromElzab = new ElzabFileObject(path, commandName, FileType.OutputFile, cashRegisterID,
                 elementAttributesPattern: elementAttributesPatternOutFile);
+            _dataFromElzab.SetMarksAndSeparators(elementUniqueIdMark: '$');
 
             return _dataFromElzab;
         }

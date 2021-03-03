@@ -1699,7 +1699,7 @@ namespace NaturalnieApp.Database
             //Local variable
             StockHistory stockHistory = new StockHistory();
             stockHistory.ProductId = stockPiece.ProductId;
-            stockHistory.Quantity = stockPiece.ActualQuantity;
+            stockHistory.Quantity = stockPiece.ActualQuantity - stockPiece.LastQuantity;
             stockHistory.DateAndTime = DateTime.Now;
             stockHistory.OperationType = operationType.ToString();
 
