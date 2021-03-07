@@ -64,10 +64,10 @@ namespace NaturalnieApp.Forms
             this.bExit = new System.Windows.Forms.Button();
             this.pMenuDeliminer = new System.Windows.Forms.Panel();
             this.pContainer = new System.Windows.Forms.Panel();
-            this.timer1sTick = new System.Windows.Forms.Timer(this.components);
             this.pBottomLine = new System.Windows.Forms.Panel();
             this.pVersion = new System.Windows.Forms.Panel();
             this.lVersion = new System.Windows.Forms.Label();
+            this.timer1sTick = new System.Windows.Forms.Timer(this.components);
             this.pMenu.SuspendLayout();
             this.pStockSubMenu.SuspendLayout();
             this.pProductSubMenu.SuspendLayout();
@@ -601,11 +601,6 @@ namespace NaturalnieApp.Forms
             this.pContainer.Size = new System.Drawing.Size(936, 698);
             this.pContainer.TabIndex = 7;
             // 
-            // timer1sTick
-            // 
-            this.timer1sTick.Interval = 1000;
-            this.timer1sTick.Tick += new System.EventHandler(this.timer5sTick_Tick);
-            // 
             // pBottomLine
             // 
             this.pBottomLine.Controls.Add(this.pVersion);
@@ -639,6 +634,11 @@ namespace NaturalnieApp.Forms
             this.lVersion.TabIndex = 2;
             this.lVersion.Text = "1.0.0.0";
             this.lVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // timer1sTick
+            // 
+            this.timer1sTick.Interval = 1000;
+            this.timer1sTick.Tick += new System.EventHandler(this.timer5sTick_Tick);
             // 
             // MainWindow
             // 

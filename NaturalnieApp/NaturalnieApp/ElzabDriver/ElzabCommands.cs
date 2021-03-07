@@ -27,7 +27,7 @@ namespace ElzabCommands
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
-    public class ElzabCommand_OPSPROZ4: InitStructure, IElzabSaleBufforInterface
+    public class ElzabCommand_OPSPROZ4 : InitStructure, IElzabSaleBufforInterface
     {
         //Local variable
         public ElzabFileObject DataFromElzab { get; set; }
@@ -41,7 +41,7 @@ namespace ElzabCommands
         {
             get
             {
-                List<string> elementAttributesPatternOutFile = new List<string> 
+                List<string> elementAttributesPatternOutFile = new List<string>
                 {
                     "$1 nr_rap nr_par nr_poz_par zwrot nr_tow il_sp wart_rabw data czas ST nr_kas wart_rabp wart_pr sprzed bkod rodz_rn",
                     "$3 nr_rap nr_par pr_rab nap_kart",
@@ -97,11 +97,24 @@ namespace ElzabCommands
             }
         }
 
+        private Dictionary<int, List<int>> ElementAttributesUniqueIdentifierIndexes
+        {
+            get
+            {
+                Dictionary<int, List<int>> elementAttributesUniqueIdentifierIndexes = new Dictionary<int, List<int>>
+                {
+                    { 1, new List<int> {1,2,3,4,9} }
+                };
+                return elementAttributesUniqueIdentifierIndexes;
+            }
+        }
+
         //Class constructor
         public ElzabCommand_OPSPROZ4(string path, int cashRegisterID)
         {
             //Call method used to initialize base structure for data from Elzab
-            this.DataFromElzab = InitBaseStructuresDataFromElzabBuffor(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
+            this.DataFromElzab = InitBaseStructuresDataFromElzabBuffor(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile
+                , ElementAttributesUniqueIdentifierIndexes);
 
             //Call method used to initialize base structure for data to Elzab
             this.DataToElzab = InitBaseStructuresDataToElzab(path, cashRegisterID, CommandName, ElementAttributesPatternInFile);
@@ -746,13 +759,13 @@ namespace ElzabCommands
         }
 
         protected ElzabFileObject InitBaseStructuresDataFromElzabBuffor(string path, int cashRegisterID, string commandName,
-        List<string> elementAttributesPatternOutFile)
+        List<string> elementAttributesPatternOutFile, Dictionary<int, List<int>> uniqueElementIdentifierForAttributesPattern = null)
         {
 
             //Initialize object containing information from ELZAB
             ElzabFileObject _dataFromElzab = new ElzabFileObject(path, commandName, FileType.OutputFile, cashRegisterID,
-                elementAttributesPattern: elementAttributesPatternOutFile);
-            _dataFromElzab.SetMarksAndSeparators(elementUniqueIdMark: '$');
+                elementAttributesPattern: elementAttributesPatternOutFile, 
+                uniqueElementIdentifierForAttributesPattern: uniqueElementIdentifierForAttributesPattern, elementUniqueIdMark: '$');
 
             return _dataFromElzab;
         }
@@ -806,7 +819,7 @@ namespace ElzabCommands
             if (result) result = commandInstance.DataToElzab.WriteDataToFile();
 
             //Execute command
-            if (result) result = commandInstance.DataToElzab.RunCommand();
+            //if (result) result = commandInstance.DataToElzab.RunCommand();
             
             if (result)
             {

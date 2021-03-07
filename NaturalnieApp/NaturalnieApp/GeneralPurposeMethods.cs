@@ -541,6 +541,10 @@ namespace NaturalnieApp
                                 DateTime value = DateTime.Now;
                                 prop.SetValue(salePeiece, value);
                             }
+                            else if (prop.Name == "EntryUniqueIdentifier")
+                            {
+                                prop.SetValue(salePeiece, element.UniqueIdentifier);
+                            }
                             else
                             {
                                 prop.SetValue(salePeiece, element.AttributeValue[attribute]);

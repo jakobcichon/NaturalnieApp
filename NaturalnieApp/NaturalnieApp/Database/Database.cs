@@ -125,6 +125,7 @@ namespace NaturalnieApp.Database
         public int Id { get; set; }
         public int ElementType { get; set; }
         public DateTime TimeOfAdded { get; set; }
+        public string EntryUniqueIdentifier {get; set;}
         public string Attribute1 { get; set; }
         public string Attribute2 { get; set; }
         public string Attribute3 { get; set; }
