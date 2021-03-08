@@ -1680,12 +1680,26 @@ namespace NaturalnieApp.Database
         {
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
-                foreach(Sales salePiece in salePieceList)
-                {
-                    contextDB.Sales.Add(salePiece);
-                }
 
+                contextDB.Sales.AddRange(salePieceList);
                 int retVal = contextDB.SaveChanges();
+            }
+
+        }
+
+        //====================================================================================================
+        //Method used to check if unique identifier already exist in DB
+        //====================================================================================================
+        public bool CheckIfUniqueIdExist(string uniqueId)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from s in contextDB.Sales
+                            where s.EntryUniqueIdentifier == uniqueId
+                            select s;
+
+                if (query.Count() > 0) return false;
+                else return true;
             }
 
         }

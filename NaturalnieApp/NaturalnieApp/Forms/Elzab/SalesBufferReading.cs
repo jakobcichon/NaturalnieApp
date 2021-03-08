@@ -239,15 +239,14 @@ namespace NaturalnieApp.Forms
                         List<AttributeValueObject> elementsList = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
                         listOfElementsToAdd.AddRange(ElzabRelated.ParseElzabBufferToDbObject(elementsList));
                     }
+
                     this.databaseCommands.AddToSales(listOfElementsToAdd);
                 }
-
-                
-                ;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                
             }
         }
     }

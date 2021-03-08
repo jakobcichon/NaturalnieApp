@@ -97,13 +97,28 @@ namespace ElzabCommands
             }
         }
 
+        //Distionary were <Key = ElementType, Values = Attributes index starting from 1>
         private Dictionary<int, List<int>> ElementAttributesUniqueIdentifierIndexes
         {
             get
             {
                 Dictionary<int, List<int>> elementAttributesUniqueIdentifierIndexes = new Dictionary<int, List<int>>
                 {
-                    { 1, new List<int> {1,2,3,4,9} }
+                    { 1, new List<int> {1,2,3,4,9} },
+                    { 3, new List<int> {1,2,3} },
+                    { 5, new List<int> {1,2,3,4,5} },
+                    { 6, new List<int> {1,2,3,4,5} },
+                    { 7, new List<int> {1,2,3,4,5} },
+                    { 8, new List<int> {1,2,3,4,5} },
+                    { 9, new List<int> {1,2,3,4,5,6} },
+                    { 10, new List<int> {1,2,3,4,6} },
+                    { 11, new List<int> {1,2,3,4,6} },
+                    { 12, new List<int> {1,2,3,4,6} },
+                    { 13, new List<int> {1,2,3,4,5,6} },
+                    { 14, new List<int> {1,2,3,4} },
+                    { 15, new List<int> {1,2,3,4} },
+                    { 16, new List<int> {1,2,3,4,5} },
+                    { 17, new List<int> {1,2,3,4,5} }
                 };
                 return elementAttributesUniqueIdentifierIndexes;
             }

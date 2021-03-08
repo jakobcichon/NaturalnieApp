@@ -531,19 +531,22 @@ namespace NaturalnieApp
                         foreach (System.Reflection.PropertyInfo prop in typeof(Sales).GetProperties())
                         {
                             if (prop.Name == "Id") continue;
-                            else if (prop.PropertyType == Type.GetType("System.Int32"))
+                            else if (prop.Name == "ElementType")
                             {
-                                int value = Int32.Parse(element.AttributeValue[attribute]);
+                                int value = Int32.Parse(element.AttributeValue[0]);
                                 prop.SetValue(salePeiece, value);
+                                continue;
                             }
-                            else if (prop.PropertyType == Type.GetType("System.DateTime"))
+                            else if (prop.Name == "TimeOfAdded")
                             {
                                 DateTime value = DateTime.Now;
                                 prop.SetValue(salePeiece, value);
+                                continue;
                             }
                             else if (prop.Name == "EntryUniqueIdentifier")
                             {
                                 prop.SetValue(salePeiece, element.UniqueIdentifier);
+                                continue;
                             }
                             else
                             {

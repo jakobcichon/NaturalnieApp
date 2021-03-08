@@ -1388,11 +1388,11 @@ namespace ElzabDriver
         //Method used to remove all elements
         internal void RemoveAllElements()
         {
-            int elementType = 0;
-            int elementTypeIndex = GetElementTypeIndex(elementType);
 
-            if(elementTypeIndex > -1)
+            foreach(int elementType in this.ElementType)
             {
+                int elementTypeIndex = GetElementTypeIndex(elementType);
+
                 if (this.ElementsList.Count() > 0 && this.ElementsList[elementTypeIndex] != null)
                 {
                     int count = this.ElementsList[elementTypeIndex].Count();
