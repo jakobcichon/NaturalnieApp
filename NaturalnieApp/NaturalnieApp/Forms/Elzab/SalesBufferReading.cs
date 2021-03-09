@@ -52,7 +52,7 @@ namespace NaturalnieApp.Forms
             this.ColumnNames.AdditionaBarcode = "Dodatkowy kod kreskowy";
             this.DataSoruce = new DataTable();
 
-            InitializeAdvancedDataGridView();
+            //InitializeAdvancedDataGridView();
 
             StartTimer();
         }
@@ -240,7 +240,33 @@ namespace NaturalnieApp.Forms
                         listOfElementsToAdd.AddRange(ElzabRelated.ParseElzabBufferToDbObject(elementsList));
                     }
 
-                    this.databaseCommands.AddToSales(listOfElementsToAdd);
+                    //Get attributes names for given type
+                    List<string> test = this.SaleBufforReading.DataFromElzab.GetAttributesNamesOfType(elementsTypeList[0]);
+                    List<string> columNames = new List<string>();
+                    foreach (string attibuteName in test)
+                    {
+                        columNames.Add(this.SaleBufforReading.GetTranslationForGivenAttributeName(attibuteName));
+                    }
+
+                    foreach(string name in columNames)
+                    {
+                        //Create data source columns
+                        DataColumn column = new DataColumn();
+
+                        column.ColumnName = name;
+                        column.DataType = Type.GetType("System.String");
+                        column.ReadOnly = true;
+                        this.DataSoruce.Columns.Add(column);
+                        column.Dispose();
+                    }
+
+                    this.DataSoruce.DefaultView.Sort = this.DataSoruce.Columns[0].ColumnName + " asc";
+                    advancedDataGridView1.DataSource = this.DataSoruce;
+
+                    advancedDataGridView1.AutoResizeColumns();
+
+                    ;
+                    //this.databaseCommands.AddToSales(listOfElementsToAdd);
                 }
             }
             catch (Exception ex)

@@ -97,7 +97,7 @@ namespace ElzabCommands
             }
         }
 
-        //Distionary were <Key = ElementType, Values = Attributes index starting from 1>
+        //Dictionary were <Key = ElementType, Values = Attributes index starting from 1>
         private Dictionary<int, List<int>> ElementAttributesUniqueIdentifierIndexes
         {
             get
@@ -124,6 +124,80 @@ namespace ElzabCommands
             }
         }
 
+        //Translation dictionary
+        private Dictionary<string, string>  AttributesToColumnNames
+        {
+            get
+            {
+                Dictionary<string, string> attributesToColumnNames = new Dictionary<string, string>
+                {
+                    { "nr_rap" , "Numer raportu"},
+                    { "nr_par" , "Numer paragonu"},
+                    { "nr_poz_par" , "Numer pozycji paragonu"},
+                    { "zwrot" , "Zwrot"},
+                    { "nr_tow" , "Numer towaru"},
+                    { "il_sp" , "Ilość sprzedaży"},
+                    { "wart_rabw" , "Wartość po wszystkich rabatach"},
+                    { "data" , "Data sprzedaży"},
+                    { "czas" , "Czas sprzedaży"},
+                    { "ST" , "Stawka VAT"},
+                    { "nr_kas" , "Numer kasjera"},
+                    { "wart_rabp", "Wartość rabatu" },
+                    { "wart_pr", "Wartość przed rabatem" },
+                    { "sprzed", "Numer sprzedawcy" },
+                    { "bkod", "Kod kreskowy" },
+                    { "rodz_rn", "Rodzaj rabatów/narzutów" },
+                    { "pr_rab", "Rabat w procentach" },
+                    { "nap_kart", "Napis z karty rabatowej" },
+                    { "nr_zmiany", "Numer zmiany kasjera" },
+                    { "nr_plat", "Numer płatności" },
+                    { "nr_wal", "Numer waluty" },
+                    { "wpl", "Wpłaty/wypłaty/wpłaty" },
+                    { "wartosc_w_walucie", "Wartość w danej płatności i danej walucie" },
+                    { "1", "Rezerwa" },
+                    { "li_par", "Ilość paragonów sprzedaży (z wyłączeniem paragonów anulowanych)" },
+                    { "sp", "Kwota sprzedaży (sprzedaży i skupu opakowań)" },
+                    { "li_kor", "Ilość pozycji anulowanych" },
+                    { "kw_kor", "Wartość anulowanych pozycji paragonowych" },
+                    { "il_an_par", "Ilość anulowanych w całości paragonów" },
+                    { "kw_an_par", "Wartość anulowanych paragonów" },
+                    { "li_szu", "Ilość otwarć szuflady poza paragonem" },
+                    { "rab_poz", "Wartość rabatów (udzielonych na pozycje sprzedaży)" },
+                    { "rab_cal", "Wartość rabatu udzielonego na całe paragony" },
+                    { "narz_poz", "Wartość narzutu (udzielonego na pozycje sprzedaży)" },
+                    { "narz_par", "Wartość narzutu (udzielonego na całe paragony)" },
+                    { "zwr_op", "Wartość skupionych (przyjętych) opakowań zwrotnych" },
+                    { "sp_op", "Wartość sprzedanych opakowań zwrotnych" },
+                    { "nr_kar", "Numer karty" },
+                    { "nr_prez", "Numer prezentu" },
+                    { "il_prez", "Ilość prezentów" },
+                    { "wart_prez", "Wartość prezentów" },
+                    { "il_poz_pun", "Ilość pozostałych punktów" },
+                    { "nr_poz_kor", "Numer pozycji korekcyjnej" },
+                    { "nr_par_anul", "Numer paragonu anulowanego" },
+                    { "nr_kas1", "Numer kasjera przed operacją" },
+                    { "nr_zm", "Numer zmiany kasjera po operacji" },
+                    { "nr_kas2", "Numer kasjera po operacji" },
+                    { "bity_log", "Bity opisujące logowanie" },
+                    { "czy_wyjdz", "Czy wprowadzanie hasła przerwano klawiszem WYJDŹ" },
+                    { "ha_kas", "Hasło kasjera" },
+                    { "sp_wylog", "Sposób wylogowania kasjera" },
+                    { "identw", "Identyfikator wiadomości" },
+                    { "nr_frag_wiad", "Numer fragmentu wiadomości wysłanej przez kasjera" },
+                    { "frag_wiad", "Fragment wiadomości wysłanej przez kasjera" },
+                    { "kw_anul_rab", "Kwota anulowanych rabatów" },
+                    { "kw_anul_narz", "Kwota anulowanych narzutów" },
+                    { "li_sp_czyt", "Liczba operacji sprzedaży towarów z czytnika kodów kreskowych" },
+                    { "li_sp_klaw", "Liczba operacji sprzedaży towarów z klawiatury" },
+                    { "cashback", "Kwota gotówki wypłaconej za pomocą terminala kart płatniczych (cashback)" },
+
+                };
+                return attributesToColumnNames;
+
+            }
+        }
+
+
         //Class constructor
         public ElzabCommand_OPSPROZ4(string path, int cashRegisterID)
         {
@@ -148,6 +222,17 @@ namespace ElzabCommands
             return status;
         }
 
+
+        public string GetTranslationForGivenAttributeName(string attributeName)
+        {
+            //Local variables
+            string retVal = "";
+
+            //Try get translation
+            this.AttributesToColumnNames.TryGetValue(attributeName, out retVal);
+
+            return retVal;
+        }
 
 
     }

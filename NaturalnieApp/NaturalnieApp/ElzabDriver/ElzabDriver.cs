@@ -394,6 +394,11 @@ namespace ElzabDriver
             return retList;
         }
 
+        public List<string> GetAttributesNamesOfType(int elementType = 0)
+        {
+            return this.Element.GetAllAttributesNames(elementType);
+        }
+
         public List<AttributeValueObject> GetElementsOfTypeAllValues(int type)
         {
             //Local variable
@@ -1594,6 +1599,19 @@ namespace ElzabDriver
             {
                 retVal.Add(element);
             }
+
+            return retVal;
+        }
+
+        //Method used to get attributes names for given type
+        internal List<string> GetAllAttributesNames(int elementType)
+        {
+            int elementTypeIndex = GetElementTypeIndex(elementType);
+
+            //Local variables
+            List<string> retVal = new List<string>();
+
+            retVal = this.AttributesName[elementTypeIndex];
 
             return retVal;
         }

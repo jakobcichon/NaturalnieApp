@@ -273,6 +273,12 @@
     <Compile Include="Forms\Common\SearchBarTemplate2.xaml.cs">
       <DependentUpon>SearchBarTemplate2.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Common\Tab.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Common\Tab.Designer.cs">
+      <DependentUpon>Tab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Elzab\SalesBufferReading.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -374,6 +380,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Common\SearchBarTemplate.resx">
       <DependentUpon>SearchBarTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Common\Tab.resx">
+      <DependentUpon>Tab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Elzab\SalesBufferReading.resx">
       <DependentUpon>SalesBufferReading.cs</DependentUpon>
