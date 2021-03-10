@@ -1185,6 +1185,23 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB Product entity by supplier code
+        //====================================================================================================
+        public Product GetProductEntityBySupplierCode(string supplierCode)
+        {
+            Product localProduct = new Product();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            where p.SupplierCode == supplierCode
+                            select p;
+
+                localProduct = query.SingleOrDefault();
+            }
+            return localProduct;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB eAN13 barcode from internal EAN8 code
         //====================================================================================================
         public string GetEAN13FromShortBarcode(string shortBarcode)

@@ -124,6 +124,33 @@ namespace ElzabCommands
             }
         }
 
+        //Dictionary were <Key = ElementType, Values = Type name>
+        private Dictionary<int, string> ElementTypeName
+        {
+            get
+            {
+                Dictionary<int, string> elementTypeName = new Dictionary<int, string>
+                {
+                    { 1, "1. Normalna sprzedaż lub zwrotu"},
+                    { 3, "3. Dla rabatu na paragonie"},
+                    { 5, "4. Wpłata do kasy"},
+                    { 6, "6. Koniec zmiany kasjera - informacje kwotowe"},
+                    { 7, "7. Koniec zmiany kasjera - informacje statystyczne"},
+                    { 8, "8. Koniec zmiany kasjera - informacje statystyczne 2"},
+                    { 9, "9. Wydanie prezentu dla karty Bonus"},
+                    { 10, "10. Korekcja sprzedaży lub zwrot"},
+                    { 11, "11. Anulowane paragony - normalna sprzedaż"},
+                    { 12, "11. Anulowane paragony - korekcja"},
+                    { 13, "13. Logowanie kasjera"},
+                    { 14, "14. Wylogowanie kasjera"},
+                    { 15, "15. Potwierdzenie przeczytania wiadomości kasjera"},
+                    { 16, "16. Wiadomość wysłana przez kasjera"},
+                    { 17, "17. Koniec zmiany kasjera - informacje statystyczne 3"}
+                };
+                return elementTypeName;
+            }
+        }
+
         //Translation dictionary
         private Dictionary<string, string>  AttributesToColumnNames
         {
@@ -146,13 +173,13 @@ namespace ElzabCommands
                     { "wart_pr", "Wartość przed rabatem" },
                     { "sprzed", "Numer sprzedawcy" },
                     { "bkod", "Kod kreskowy" },
-                    { "rodz_rn", "Rodzaj rabatów/narzutów" },
+                    { "rodz_rn", "Rodzaj rabatów narzutów" },
                     { "pr_rab", "Rabat w procentach" },
                     { "nap_kart", "Napis z karty rabatowej" },
                     { "nr_zmiany", "Numer zmiany kasjera" },
                     { "nr_plat", "Numer płatności" },
                     { "nr_wal", "Numer waluty" },
-                    { "wpl", "Wpłaty/wypłaty/wpłaty" },
+                    { "wpl", "Wpłaty wypłaty wpłaty" },
                     { "wartosc_w_walucie", "Wartość w danej płatności i danej walucie" },
                     { "1", "Rezerwa" },
                     { "li_par", "Ilość paragonów sprzedaży (z wyłączeniem paragonów anulowanych)" },
@@ -190,6 +217,7 @@ namespace ElzabCommands
                     { "li_sp_czyt", "Liczba operacji sprzedaży towarów z czytnika kodów kreskowych" },
                     { "li_sp_klaw", "Liczba operacji sprzedaży towarów z klawiatury" },
                     { "cashback", "Kwota gotówki wypłaconej za pomocą terminala kart płatniczych (cashback)" },
+                    { "nr_typ", "Numer typu elementu" },
 
                 };
                 return attributesToColumnNames;
@@ -230,6 +258,17 @@ namespace ElzabCommands
 
             //Try get translation
             this.AttributesToColumnNames.TryGetValue(attributeName, out retVal);
+
+            return retVal;
+        }
+
+        public string GetTheNameOfGivenElementType(int type)
+        {
+            //Local variables
+            string retVal = "";
+
+            //Try get translation
+            this.ElementTypeName.TryGetValue(type, out retVal);
 
             return retVal;
         }

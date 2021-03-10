@@ -28,8 +28,10 @@ namespace NaturalnieApp.Forms
         int ProgressTimerMinutes { get; set; }
 
         //Data source for advanced data grid view
-        private DataTable DataSoruce { get; set; }
+        private List<DataTable> DataSoruce { get; set; }
         private DataSourceRelated.CashRegisterProductColumnNames ColumnNames;
+
+        private List<Zuby.ADGV.AdvancedDataGridView> DataGridViewsList {get; set;}
 
         public SalesBufferReading(ref DatabaseCommands commandsObj)
         {
@@ -50,75 +52,14 @@ namespace NaturalnieApp.Forms
             this.ColumnNames.FinalPrice = "Cena";
             this.ColumnNames.Barcode = "Kod kreskowy";
             this.ColumnNames.AdditionaBarcode = "Dodatkowy kod kreskowy";
-            this.DataSoruce = new DataTable();
+            this.DataSoruce = new List<DataTable>();
 
-            //InitializeAdvancedDataGridView();
+            //Grid view
+            this.DataGridViewsList = new List<Zuby.ADGV.AdvancedDataGridView>();
 
             StartTimer();
         }
-        //====================================================================================================
-        //Advanced data gid view
-        #region Advanced data gid view
-
-        /// <summary>
-        /// Method used to initialize advanced data grid view
-        /// </summary>
-        private void InitializeAdvancedDataGridView()
-        {
-            //Create data source columns
-            DataColumn column = new DataColumn();
-
-            column.ColumnName = this.ColumnNames.ProductNumber;
-            column.DataType = Type.GetType("System.Int32");
-            column.ReadOnly = true;
-            column.Unique = true;
-            this.DataSoruce.Columns.Add(column);
-            column.Dispose();
-
-            column = new DataColumn();
-            column.ColumnName = this.ColumnNames.ProductName;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
-            column.Unique = true;
-            this.DataSoruce.Columns.Add(column);
-            column.Dispose();
-
-            column = new DataColumn();
-            column.ColumnName = this.ColumnNames.Tax;
-            column.DataType = Type.GetType("System.Int32");
-            column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
-            column.Dispose();
-
-            column = new DataColumn();
-            column.ColumnName = this.ColumnNames.FinalPrice;
-            column.DataType = Type.GetType("System.Single");
-            column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
-            column.Dispose();
-
-            column = new DataColumn();
-            column.ColumnName = this.ColumnNames.Barcode;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
-            column.Dispose();
-
-            column = new DataColumn();
-            column.ColumnName = this.ColumnNames.AdditionaBarcode;
-            column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
-            column.Dispose();
-
-            this.DataSoruce.DefaultView.Sort = this.ColumnNames.ProductNumber + " asc";
-            advancedDataGridView1.DataSource = this.DataSoruce;
-
-            advancedDataGridView1.AutoResizeColumns();
-        }
-
-        #endregion
-
+    
         private void bReadingFromCashRegister_Click(object sender, EventArgs e)
         {
             /*
@@ -214,6 +155,11 @@ namespace NaturalnieApp.Forms
                 
                 if(openFileDialog1.ShowDialog() == DialogResult.OK)
                 {
+                    //Clear pages
+                    this.tcDataFromFile.TabPages.Clear();
+                    this.DataGridViewsList.Clear();
+                    this.DataSoruce.Clear();
+
                     //File information
                     string directoryName = Path.GetDirectoryName(openFileDialog1.FileName);
                     string fileName = Path.GetFileName(openFileDialog1.FileName);
@@ -240,39 +186,84 @@ namespace NaturalnieApp.Forms
                         listOfElementsToAdd.AddRange(ElzabRelated.ParseElzabBufferToDbObject(elementsList));
                     }
 
-                    //Get attributes names for given type
-                    List<string> test = this.SaleBufforReading.DataFromElzab.GetAttributesNamesOfType(elementsTypeList[0]);
-                    List<string> columNames = new List<string>();
-                    foreach (string attibuteName in test)
+                    //Create pages
+                    foreach (int type in elementsTypeList)
                     {
-                        columNames.Add(this.SaleBufforReading.GetTranslationForGivenAttributeName(attibuteName));
+                        //Get attributes names for given type
+                        List<string> attributesNamesOfType = this.SaleBufforReading.DataFromElzab.GetAttributesNamesOfType(type);
+                        List<string> columNames = new List<string>();
+                        foreach (string attibuteName in attributesNamesOfType)
+                        {
+                            columNames.Add(this.SaleBufforReading.GetTranslationForGivenAttributeName(attibuteName));
+                        }
+
+                        //Variables for page creation
+                        string pageName = this.SaleBufforReading.GetTheNameOfGivenElementType(type);
+                        int pageIndex = -1;
+                        
+                        //Add page
+                        this.tcDataFromFile.TabPages.Add(pageName);
+                        pageIndex = this.tcDataFromFile.TabPages.Count - 1;
+
+                        AddDataGridToTabPage(this.tcDataFromFile.TabPages[pageIndex], columNames);
                     }
-
-                    foreach(string name in columNames)
-                    {
-                        //Create data source columns
-                        DataColumn column = new DataColumn();
-
-                        column.ColumnName = name;
-                        column.DataType = Type.GetType("System.String");
-                        column.ReadOnly = true;
-                        this.DataSoruce.Columns.Add(column);
-                        column.Dispose();
-                    }
-
-                    this.DataSoruce.DefaultView.Sort = this.DataSoruce.Columns[0].ColumnName + " asc";
-                    advancedDataGridView1.DataSource = this.DataSoruce;
-
-                    advancedDataGridView1.AutoResizeColumns();
-
-                    ;
-                    //this.databaseCommands.AddToSales(listOfElementsToAdd);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
                 
+            }
+        }
+
+        private void AddDataGridToTabPage(TabPage page, List<string> columnNames)
+        {
+            //Local variables
+            bool gridViewAlreadyExist = false;
+
+            //Prevent to add grid view to the tab if already exist
+            foreach (Control control in page.Controls)
+            {
+                if (control.GetType() == typeof(Zuby.ADGV.AdvancedDataGridView)) gridViewAlreadyExist = true;
+
+            }
+
+            if(!gridViewAlreadyExist)
+            {
+                //Add data table to the source first
+                this.DataSoruce.Add(new DataTable());
+
+                foreach (string name in columnNames)
+                {
+                    //Skip if first attribute name
+                    if (columnNames.IndexOf(name) == 0) continue;
+
+                    //Create data source columns
+                    DataColumn column = new DataColumn();
+
+                    column.ColumnName = name;
+                    column.DataType = Type.GetType("System.String");
+                    column.ReadOnly = true;
+                    this.DataSoruce.Last().Columns.Add(column);
+                    column.Dispose();
+                }
+
+                //Sort
+                this.DataSoruce.Last().DefaultView.Sort = this.DataSoruce.Last().Columns[0].ColumnName + " asc";
+
+                //Add new data grid to the collection
+                this.DataGridViewsList.Add(new Zuby.ADGV.AdvancedDataGridView());
+
+                //Add grid view to the tab page
+                page.Controls.Add(this.DataGridViewsList.Last());
+
+                //Attach data source
+                this.DataGridViewsList.Last().AutoGenerateColumns = true;
+                this.DataGridViewsList.Last().DataSource = this.DataSoruce.Last();
+
+                //Make it look nice
+                this.DataGridViewsList.Last().Dock = DockStyle.Fill;
+                this.DataGridViewsList.Last().AutoResizeColumns();
             }
         }
     }

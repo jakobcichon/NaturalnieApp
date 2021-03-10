@@ -154,7 +154,7 @@ namespace ElzabDriver
                         
                         if (elementTypeId > 0)
                         {
-                            this.Element.AddAttributesFromList(ParsePattern(element), elementTypeId);
+                            this.Element.AddAttributesFromList(ParsePattern(element, true, "nr_typ"), elementTypeId);
                         }
                         else
                         {
@@ -389,7 +389,15 @@ namespace ElzabDriver
             //Local variables
             List<int> retList = new List<int>();
 
-            retList = this.Element.ElementType;
+            foreach (List<AttributeValueObject> element in this.Element.ElementsList)
+            {
+                if(element.Count > 0)
+                {
+                    int index = this.Element.ElementsList.IndexOf(element);
+                    retList.Add(this.Element.ElementType[index]);
+                }
+
+            }
 
             return retList;
         }
@@ -718,7 +726,7 @@ namespace ElzabDriver
         }
 
         //Method used to prepare raw data from Elzab documentation
-        private List<string> ParsePattern(string pattern)
+        private List<string> ParsePattern(string pattern, bool replaceFirstElement = false, string nameToReplace = "")
         {
             //Local variable
             Regex regx = new Regex(" ");
@@ -745,6 +753,8 @@ namespace ElzabDriver
                 }
 
             }
+
+            if (replaceFirstElement) retVal[0] = nameToReplace;
 
             //Return value
             return retVal;

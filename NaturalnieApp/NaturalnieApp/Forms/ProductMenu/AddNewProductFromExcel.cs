@@ -832,6 +832,48 @@ namespace NaturalnieApp.Forms
                                         if (savedSuccessfully == -1) savedSuccessfully = 1;
                                     }
                                 }
+                                else if (supplierCodeExist)
+                                {
+                                    //Check if manufaturer match the one from file
+                                    Product product = new Product();
+                                    Manufacturer manufacturer = new Manufacturer();
+
+                                    product = this.databaseCommands.GetProductEntityBySupplierCode(rowSupplierCodeValue);
+                                    manufacturer = this.databaseCommands.GetManufacturerByProductName(product.ProductName);
+
+                                    if (manufacturer.Name != rowManufacturerNameValue)
+                                    {
+                                        MessageBox.Show(string.Format("Nie można nadpisać produktu o kodzie producenta \"{0}\" (Lp = {1}), gdyż nazwa producenta jest inna! " +
+                                            "Nazwa producenta z pliku: {2}; nazwa producenta w bazie danych: {3}", product.SupplierCode,
+                                            row.Cells[this.IndexColumnName].Value.ToString(), rowManufacturerNameValue, manufacturer.Name));
+                                    }
+                                    else
+                                    {
+                                        product.SupplierId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
+                                        product.ElzabProductName = rowElzabProductNameValue;
+                                        product.PriceNet = rowPriceNetValue;
+                                        product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
+                                        product.Marigin = rowMariginValue;
+                                        product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, product.ElzabProductId);
+                                        product.Discount = rowDiscountValue;
+                                        product.PriceNetWithDiscount = rowPriceNetWithDiscount;
+                                        product.ProductName = rowProductNameValue;
+                                        product.FinalPrice = (float)Calculations.FinalPrice(Convert.ToDouble(rowPriceNetWithDiscount), rowTaxValue, Convert.ToDouble(rowMariginValue));
+                                        if (rowSupplierCodeValue != "") product.SupplierCode = rowSupplierCodeValue;
+
+                                        //Add new object to the DB
+                                        this.databaseCommands.EditProduct(product);
+
+                                        //Add row to the collection of added rows, to remove it later
+                                        rowCollectionToRemoveFromList.Add(row);
+
+                                        //Add to the collection to add to stock
+                                        if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
+
+                                        //Set auxiliary bit
+                                        if (savedSuccessfully == -1) savedSuccessfully = 1;
+                                    }
+                                }
                             }
                             else
                             {
@@ -1221,7 +1263,6 @@ namespace NaturalnieApp.Forms
             { this.ProductColumnName, this.ElzabProductColumnName, this.BarcodeColumnName };
 
             List<DataRow> listOfDuplicates = new List<DataRow>();
-
 
             try
             {
