@@ -74,6 +74,7 @@ namespace NaturalnieApp.Database
     {
         [Key]
         public int Id { get; set; }
+        public int ProductId { get; set; }
         public int SupplierId { get; set; }
         public int ElzabProductId { get; set; }
         public int ManufacturerId { get; set; }

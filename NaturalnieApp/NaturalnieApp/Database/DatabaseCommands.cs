@@ -513,12 +513,12 @@ namespace NaturalnieApp.Database
             }
 
             return retVal;
-        } 
+        }
 
-            //====================================================================================================
-            //Method used to retrieve from DB product name list
-            //====================================================================================================
-            public List<string> GetProductsNameList()
+        //====================================================================================================
+        //Method used to retrieve from DB product name list
+        //====================================================================================================
+        public List<string> GetProductsNameList()
         {
             List<string> productList = new List<string>();
 
@@ -1424,13 +1424,19 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         public void AddNewProduct(Product product)
         {
+            //Local variables
+            Product localProduct;
+
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 contextDB.Products.Add(product);
                 int test = contextDB.SaveChanges();
+
+                localProduct = this.GetProductEntityByBarcode(product.BarCode);
             }
 
-            AddProductToChangelog(product, ProductOperationType.AddNew);
+            if(localProduct == null) AddProductToChangelog(product, ProductOperationType.AddNew);
+            else AddProductToChangelog(localProduct, ProductOperationType.AddNew);
         }
 
         //====================================================================================================
@@ -1453,6 +1459,7 @@ namespace NaturalnieApp.Database
         {
             ProductChangelog productChangelog = new ProductChangelog();
 
+            productChangelog.ProductId = product.Id;
             productChangelog.SupplierId = product.SupplierId;
             productChangelog.ElzabProductId = product.ElzabProductId;
             productChangelog.ManufacturerId = product.ManufacturerId;
@@ -1807,14 +1814,20 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         public void EditProduct(Product product)
         {
+            //Local variables
+            Product localProduct;
+
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 contextDB.Products.Add(product);
                 contextDB.Entry(product).State = EntityState.Modified;
                 int retVal = contextDB.SaveChanges();
+
+                localProduct = this.GetProductEntityByBarcode(product.BarCode);
             }
 
-            AddProductToChangelog(product, ProductOperationType.Update);
+            if (localProduct == null) AddProductToChangelog(product, ProductOperationType.Update);
+            else AddProductToChangelog(localProduct, ProductOperationType.Update);
         }
 
         //====================================================================================================
@@ -1822,16 +1835,22 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         public bool DeleteProduct(Product product)
         {
+            //Local variables
+            Product localProduct;
+
             bool retVal = false;
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
+                localProduct = this.GetProductEntityByBarcode(product.BarCode);
+
                 Product productToDelete = new Product { Id = product.Id };
                 contextDB.Entry(productToDelete).State = EntityState.Deleted;
                 int retValInt = contextDB.SaveChanges();
                 if (retValInt > 0) retVal = true;
             }
 
-            AddProductToChangelog(product, ProductOperationType.Delete);
+            if (localProduct == null) AddProductToChangelog(product, ProductOperationType.Delete);
+            else AddProductToChangelog(localProduct, ProductOperationType.Delete);
 
             return retVal;
         }

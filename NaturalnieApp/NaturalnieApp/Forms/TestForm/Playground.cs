@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using NaturalnieApp.Database;
 using NaturalnieApp.Dymo_Printer;
@@ -25,6 +26,13 @@ namespace NaturalnieApp.Forms
             pTest.Controls.Add(this.TestSearchBar);
             this.TestSearchBar.NewEntSelected += TestSearchBar_NewEntSelected;
             this.TestSearchBar.GenericButtonClick += TestSearchBar_GenericButtonClick;
+            Tab test123 = new Tab();
+            pTest.Controls.Add(test123);
+            Point point = new Point(300, 15);
+            test123.Location = point;
+
+            test123.BringToFront();
+            test123.Show();
         }
 
         private void TestSearchBar_GenericButtonClick(object sender, SearchBarTemplate.GenericButtonClickEventArgs e)
@@ -44,6 +52,7 @@ namespace NaturalnieApp.Forms
         private void TestSearchBar_NewEntSelected(object sender, SearchBarTemplate.NewEntSelectedEventArgs e)
         {
             Product product = e.SelectedProduct;
+            pTest.Controls.RemoveAt(0);
         }
 
         #endregion
