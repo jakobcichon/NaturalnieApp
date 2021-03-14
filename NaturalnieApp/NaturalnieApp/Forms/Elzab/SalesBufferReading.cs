@@ -69,10 +69,10 @@ namespace NaturalnieApp.Forms
     
         private void bReadingFromCashRegister_Click(object sender, EventArgs e)
         {
-            /*
+
             try
             {
-                this.DataSource.Clear();
+
 
                 this.SaleBufforReading.DataToElzab.Element.RemoveAllElements();
                 this.SaleBufforReading.DataFromElzab.Element.RemoveAllElements();
@@ -82,23 +82,19 @@ namespace NaturalnieApp.Forms
                 this.StatusBox.Update();
                 CommandExecutionStatus status = this.SaleBufforReading.ExecuteCommand();
 
-                //Get list of element type
-                List<int> elementsTypeList = this.SaleBufforReading.DataFromElzab.GetListOfElementTypes();
-                List<Sales> listOfElementsToAdd = new List<Sales>();
-                foreach (int type in elementsTypeList)
+                if ((status.ErrorNumber != 0) || (status.ErrorText == null))
                 {
-                    //Get list of all elements of given type
-                    List<AttributeValueObject> elementsList = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
-                    listOfElementsToAdd.AddRange(ElzabRelated.ParseElzabBufferToDbObject(elementsList));
+                    MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
+                        status.ErrorNumber, status.ErrorText),
+                        "Błąd komunikacji z kasą Elzab!",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                this.databaseCommands.AddToSales(listOfElementsToAdd);
-                ;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            */
+
         }
 
         private void bSave_Click(object sender, EventArgs e)
