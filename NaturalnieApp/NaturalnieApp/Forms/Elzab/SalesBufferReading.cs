@@ -197,7 +197,28 @@ namespace NaturalnieApp.Forms
                     }
 
                     //ChangeStatus
-                    this.StatusBox.Text = "3. Tworzenie widoku";
+                    this.StatusBox.Text = "3. Dodawanie do bazy danych";
+                    this.StatusBox.Update();
+
+                    //List of unique idetifiers
+                    List<string> uniqueIdetifiers = listOfElementsToAdd.Select(u => u.EntryUniqueIdentifier).ToList();
+
+                    //Check what exist in DB
+                    List<string> uniqueIdetifiersNotInDb = this.databaseCommands.CheckIfUniqueIdExist(uniqueIdetifiers);
+
+                    //Get only those object that are not exist in db
+                    List<Sales> modifiedListOfElementsToAdd = new List<Sales>();
+                    foreach(string element in uniqueIdetifiersNotInDb)
+                    {
+                        modifiedListOfElementsToAdd.Add(listOfElementsToAdd.Where(w => w.EntryUniqueIdentifier == element).
+                            Select(l => l).FirstOrDefault());
+                    }
+
+                    //Add to DB
+                    this.databaseCommands.AddToSales(modifiedListOfElementsToAdd);
+
+                    //ChangeStatus
+                    this.StatusBox.Text = "4. Tworzenie widoku";
                     this.StatusBox.Update();
 
                     //!!!!!!!!!!!!!!!!!!!!!injected
@@ -231,7 +252,7 @@ namespace NaturalnieApp.Forms
                     }
 
                     //ChangeStatus
-                    this.StatusBox.Text = "4. Ładowanie danych";
+                    this.StatusBox.Text = "5. Ładowanie danych";
                     this.StatusBox.Update();
 
                     foreach (int type in elementsTypeList)
@@ -242,7 +263,7 @@ namespace NaturalnieApp.Forms
                     }
 
                     //ChangeStatus
-                    this.StatusBox.Text = "5. Zakończono!:)";
+                    this.StatusBox.Text = "6. Zakończono!:)";
                     this.StatusBox.Update();
 
                     this.tcDataFromFile.Enabled = true;
@@ -356,15 +377,14 @@ namespace NaturalnieApp.Forms
                     List<ProductChangelog> productChangelog = this.databaseCommands.GetProductChangelogByElzabProductId(cashRegisterProductNumber);
                     ;
                     //If changed, check if product was deleted
+
+                    ElzabCommunication test = this.databaseCommands.GetLastSuccessCommunicationForGivenCommandName("ztowar");
                 }
                 else
                 {
                     //!!!!!!!!! To do!!!!!! Decide what to do here!!!!!!!!!!!!1
                 }
             }
-
-
-
         }
     }
 }

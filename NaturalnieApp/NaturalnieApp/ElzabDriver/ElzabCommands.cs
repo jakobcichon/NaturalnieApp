@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using ElzabDriver;
+using NaturalnieApp.Database;
 using NaturalnieApp.ElzabDriver;
 using static NaturalnieApp.Program;
 
@@ -958,8 +960,8 @@ namespace ElzabCommands
             if (result) result = commandInstance.DataToElzab.WriteDataToFile();
 
             //Execute command
-            //if (result) result = commandInstance.DataToElzab.RunCommand();
-            
+            if (result) result = commandInstance.DataToElzab.RunCommand();
+
             if (result)
             {
 
@@ -967,8 +969,21 @@ namespace ElzabCommands
                 commandInstance.Report.GenerateObjectFromRawData();
                 reportStatus = commandInstance.Report.ParseReportFileToObject();
 
+                //Report status to DB
+                ElzabCommunication elzabCommunicationEnt = new ElzabCommunication();
+                elzabCommunicationEnt.DateOfCommunication = DateTime.Now;
+
+                if (reportStatus.ErrorNumber == 0) elzabCommunicationEnt.StatusOfCommunication = ElzabCommunication.CommunicationStatus.FinishSuccess;
+                else elzabCommunicationEnt.StatusOfCommunication = ElzabCommunication.CommunicationStatus.FinishFailed;
+
+                elzabCommunicationEnt.ElzabCommandReportStatusCode = reportStatus.ErrorNumber;
+                elzabCommunicationEnt.ElzabCommandReportStatusText = reportStatus.ErrorText;
+
+                elzabCommunicationEnt.ElzabCommandName = commandInstance.DataToElzab.CommandName;
+                commandInstance.DataToElzab.DatabaseCommands.AddToElzabCommunication(elzabCommunicationEnt);
+
                 //Read data from object
-                if(reportStatus.ErrorNumber == 0)
+                if (reportStatus.ErrorNumber == 0)
                 {
                     //Read data from files
                     if (commandInstance.DataFromElzab != null)
@@ -1020,6 +1035,19 @@ namespace ElzabCommands
                 //Read report data
                 commandInstance.Report.GenerateObjectFromRawData();
                 reportStatus = commandInstance.Report.ParseReportFileToObject();
+
+                //Report status to DB
+                ElzabCommunication elzabCommunicationEnt = new ElzabCommunication();
+                elzabCommunicationEnt.DateOfCommunication = DateTime.Now;
+
+                if(reportStatus.ErrorNumber == 0) elzabCommunicationEnt.StatusOfCommunication = ElzabCommunication.CommunicationStatus.FinishSuccess;
+                else elzabCommunicationEnt.StatusOfCommunication = ElzabCommunication.CommunicationStatus.FinishFailed;
+
+                elzabCommunicationEnt.ElzabCommandReportStatusCode = reportStatus.ErrorNumber;
+                elzabCommunicationEnt.ElzabCommandReportStatusText = reportStatus.ErrorText;
+
+                elzabCommunicationEnt.ElzabCommandName = commandInstance.DataToElzab.CommandName;
+                commandInstance.DataToElzab.DatabaseCommands.AddToElzabCommunication(elzabCommunicationEnt);
 
                 //Read data from object
                 if (reportStatus.ErrorNumber == 0)

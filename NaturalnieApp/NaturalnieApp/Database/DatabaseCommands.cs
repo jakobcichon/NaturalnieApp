@@ -1879,6 +1879,50 @@ namespace NaturalnieApp.Database
             }
 
         }
+        /// <summary>
+        /// Method used to check if unique identifier already exist in DB. It will return elements fro given
+        /// list which not exist in DB
+        /// </summary>
+        /// <param name="uniqueId"></param>
+        /// <returns>List of elements which not exist in DB</returns>
+        public List<string> CheckIfUniqueIdExist(List<string> uniqueId)
+        {
+            List<string> listOfElementsNtExistingInDb = new List<string>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                foreach (string element in uniqueId)
+                {
+                    var query = from s in contextDB.Sales
+                                where s.EntryUniqueIdentifier == element
+                                select s.EntryUniqueIdentifier;
+
+                    string dbRetVal = query.FirstOrDefault();
+                    if (dbRetVal == null) listOfElementsNtExistingInDb.Add(element);
+                }
+
+
+                return listOfElementsNtExistingInDb;
+            }
+
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Sales entity by Id
+        //====================================================================================================
+        public Sales GetSalesEntityById(int salesId)
+        {
+            Sales localSale = new Sales();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from s in contextDB.Sales
+                            where s.Id == salesId
+                            select s;
+
+                localSale = query.SingleOrDefault();
+            }
+            return localSale;
+        }
         #endregion
 
 
@@ -1940,7 +1984,7 @@ namespace NaturalnieApp.Database
                             where pc.ElzabProductId == elzabProductId
                             select pc;
 
-                localProductChangelog.AddRange(query);
+                localProductChangelog.AddRange(query.Take(query.Count()));
             }
             return localProductChangelog;
         }
@@ -1961,6 +2005,93 @@ namespace NaturalnieApp.Database
                 localProductChangelog.AddRange(query);
             }
             return localProductChangelog;
+        }
+
+        public class ProductChangelogInfo
+        {
+            public bool ElzabNumberHasChanged { get; set; }
+            public int NewElzabNumber { get; set; }
+            public int ProductId { get; set; }
+        }
+        //====================================================================================================
+        //Method used to search in changelog if Elzab Product Number has changed.
+        //If Yes it will return new values of Elzab Product Id.
+        //====================================================================================================
+
+        public List<int> SearchInChangelogElzabProductIdChanges(int elzabProductId, DateTime saleDataAndTime)
+        {
+            List<int> el = new List<ProductChangelog>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                //Get Elzab product Id
+                var query = from pc in contextDB.ProductsChangelog
+                            where pc.ElzabProductId == elzabProductId
+                            select pc;
+
+                localProductChangelog.AddRange(query);
+            }
+
+            //Determine last success synchronization Elzab <> DB
+            GetLastSuccessCommunicationForGivenCommandName("ztowar");
+            return localProductChangelog;
+
+            /*
+             * 1. Get last Elzab ztowar communication sucess date
+             * 2. If saleDateAndTime grater than last synchronization -> OK product number still valid. break;
+             * 3. If not previous, get changelog for given ElzabProductNumber
+             * 4. If all ElzabPRoductNumbers has same PRoductID -> OK product number still valid. break;
+             * 5. If not previous, check if no of changelog product number has "Deleted" statu. If Yes -> NOK - product no longer available in stock
+             * 6. Else  
+             * 
+             * 
+             * 
+             */
+
+
+        }
+
+        #endregion
+
+
+        // **********************************************************************************************************
+        #region Elzab_Communication table related
+        /// <summary>
+        /// Method used to add ElzabCommunication table element
+        /// </summary>
+        /// <param name="elzabCommunicationEntity">Elzab communication entity</param>
+        public void AddToElzabCommunication(ElzabCommunication elzabCommunicationEntity)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                contextDB.ElzabCommunication.Add(elzabCommunicationEntity);
+                int test = contextDB.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Method used to get last Elzab success ended communication, for given command name (e.g. OTOWAR).
+        /// It's internally sort list of all entrys and return newest
+        /// </summary>
+        /// <param name="commandName">Elzab command name (e.g. OTOWAR)</param>
+        /// <returns>ElzabCommunication table entity</returns>
+        public ElzabCommunication GetLastSuccessCommunicationForGivenCommandName(string commandName)
+        {
+            //Local variable
+            ElzabCommunication localElzabCommunication = new ElzabCommunication();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from ec in contextDB.ElzabCommunication
+                            where ec.ElzabCommandName == commandName &&
+                            ec.StatusOfCommunication == ElzabCommunication.CommunicationStatus.FinishSuccess
+                            orderby ec.DateOfCommunication descending
+                            select ec;
+
+                localElzabCommunication = query.FirstOrDefault();
+            }
+
+            return localElzabCommunication;
         }
         #endregion
     }

@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Text;
 using static NaturalnieApp.Program;
 using NaturalnieApp;
+using NaturalnieApp.Database;
 
 namespace ElzabDriver
 {
@@ -61,7 +62,7 @@ namespace ElzabDriver
         protected string Path { get; set; }
         protected string DefaultPath { get; }
         protected string BackupPath { get; }
-        protected string CommandName { get; }
+        public string CommandName { get; }
         protected FileType TypeOfFile { get; }
         public ElzabCommHeaderObject Header { get; set; }
         public ElzabCommElementObject Element { get; set; }
@@ -69,6 +70,9 @@ namespace ElzabDriver
         protected Dictionary<int, string> AttributeNameAsID { get; set; }
         protected int NrOfCharsInElementAttribute { get; set; }
         protected string FileNameWithExtension { get; set; }
+
+        //Database commands
+        public DatabaseCommands DatabaseCommands {get; set;}
 
         //Contains information with attributes create unique element identifier (example raport_number + date will create unique idenifier)
         //User must type column number starting from 1 (element type identifier is also count here). If user type 0, no identier consider for given type
@@ -103,6 +107,9 @@ namespace ElzabDriver
             this.TypeOfFile = typeOfFile;
             this.FileNameWithExtension = FileNameDependingOfType(this.CommandName, this.TypeOfFile);
             base.SetEncoding();
+
+            //Initialize DB commands
+            this.DatabaseCommands = new DatabaseCommands();
 
             //Create instance of Raw data object
             this.RawData = new List<string>();
@@ -196,6 +203,8 @@ namespace ElzabDriver
             this.NrOfCharsInElementAttribute = nrOfCharsInElementAttribute;
 
         }
+
+
 
         //Method used to get unique element identifier
         public List<int> GetUniqueIdentifierAttributesIndexes(int elementType)
@@ -487,6 +496,15 @@ namespace ElzabDriver
                     processStartInfo.WorkingDirectory = this.Path;
                     processStartInfo.FileName = "cmd.exe";
                     processStartInfo.Arguments = "/C " + command;
+
+                    //Send report to DB before start
+                    ElzabCommunication elzabCommunicationEnt = new ElzabCommunication();
+                    elzabCommunicationEnt.DateOfCommunication = DateTime.Now;
+                    elzabCommunicationEnt.StatusOfCommunication = ElzabCommunication.CommunicationStatus.Started;
+                    elzabCommunicationEnt.ElzabCommandName = this.CommandName;
+                    this.DatabaseCommands.AddToElzabCommunication(elzabCommunicationEnt);
+
+                    //Start process
                     Process proc = Process.Start(processStartInfo);
                     proc.WaitForExit();
                     retVal = true;
