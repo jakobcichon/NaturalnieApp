@@ -1440,48 +1440,6 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
-        //Method used to add new product
-        //====================================================================================================
-        public void AddProductToChangelog(Product product, ProductOperationType operationType)
-        {
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                ProductChangelog productChangelog = FillProductChangelogFromProduct(product, operationType);
-                contextDB.ProductsChangelog.Add(productChangelog);
-                int test = contextDB.SaveChanges();
-            }
-        }
-
-        //====================================================================================================
-        //Method used to fill product with changelog
-        //====================================================================================================
-        public ProductChangelog FillProductChangelogFromProduct(Product product, ProductOperationType operationType)
-        {
-            ProductChangelog productChangelog = new ProductChangelog();
-
-            productChangelog.ProductId = product.Id;
-            productChangelog.SupplierId = product.SupplierId;
-            productChangelog.ElzabProductId = product.ElzabProductId;
-            productChangelog.ManufacturerId = product.ManufacturerId;
-            productChangelog.ProductName = product.ProductName;
-            productChangelog.ElzabProductName = product.ElzabProductName;
-            productChangelog.PriceNet = product.PriceNet;
-            productChangelog.Discount = product.Discount;
-            productChangelog.PriceNetWithDiscount = product.PriceNetWithDiscount;
-            productChangelog.TaxId = product.TaxId;
-            productChangelog.Marigin = product.Marigin;
-            productChangelog.FinalPrice = product.FinalPrice;
-            productChangelog.BarCode = product.BarCode;
-            productChangelog.BarCodeShort = product.BarCodeShort;
-            productChangelog.SupplierCode = product.SupplierCode;
-            productChangelog.ProductInfo = product.ProductInfo;
-            productChangelog.DateAndTime = DateTime.Now;
-            productChangelog.OperationType = operationType.ToString();
-
-            return productChangelog;
-        }
-
-        //====================================================================================================
         //Method used to add new supplier
         //====================================================================================================
         public void AddSupplier(Supplier supplier)
@@ -1684,50 +1642,6 @@ namespace NaturalnieApp.Database
             AddToStockHistory(stockPiece, StockOperationType.AddNew);
         }
 
-        //====================================================================================================
-        //Method used to add to sales table
-        //====================================================================================================
-        public void AddToSales(Sales salePiece)
-        {
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                contextDB.Sales.Add(salePiece);
-                int retVal = contextDB.SaveChanges();
-            }
-
-        }
-
-        //====================================================================================================
-        //Method used to add to sales table from list
-        //====================================================================================================
-        public void AddToSales(List<Sales> salePieceList)
-        {
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-
-                contextDB.Sales.AddRange(salePieceList);
-                int retVal = contextDB.SaveChanges();
-            }
-
-        }
-
-        //====================================================================================================
-        //Method used to check if unique identifier already exist in DB
-        //====================================================================================================
-        public bool CheckIfUniqueIdExist(string uniqueId)
-        {
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                var query = from s in contextDB.Sales
-                            where s.EntryUniqueIdentifier == uniqueId
-                            select s;
-
-                if (query.Count() > 0) return false;
-                else return true;
-            }
-
-        }
-
 
         //====================================================================================================
         //Method used to add to stock
@@ -1917,5 +1831,137 @@ namespace NaturalnieApp.Database
             }
             this.ConnectionStatus = state;
         }
+
+
+
+        // **********************************************************************************************************
+        #region Sale table related
+        //====================================================================================================
+        //Method used to add to sales table
+        //====================================================================================================
+        public void AddToSales(Sales salePiece)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                contextDB.Sales.Add(salePiece);
+                int retVal = contextDB.SaveChanges();
+            }
+
+        }
+
+        //====================================================================================================
+        //Method used to add to sales table from list
+        //====================================================================================================
+        public void AddToSales(List<Sales> salePieceList)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+
+                contextDB.Sales.AddRange(salePieceList);
+                int retVal = contextDB.SaveChanges();
+            }
+
+        }
+
+        //====================================================================================================
+        //Method used to check if unique identifier already exist in DB
+        //====================================================================================================
+        public bool CheckIfUniqueIdExist(string uniqueId)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from s in contextDB.Sales
+                            where s.EntryUniqueIdentifier == uniqueId
+                            select s;
+
+                if (query.Count() == 1) return true;
+                else return false;
+            }
+
+        }
+        #endregion
+
+
+
+        // **********************************************************************************************************
+        #region Product_Changelog table related
+        //====================================================================================================
+        //Method used to add new product
+        //====================================================================================================
+        public void AddProductToChangelog(Product product, ProductOperationType operationType)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                ProductChangelog productChangelog = FillProductChangelogFromProduct(product, operationType);
+                contextDB.ProductsChangelog.Add(productChangelog);
+                int test = contextDB.SaveChanges();
+            }
+        }
+
+        //====================================================================================================
+        //Method used to fill product with changelog
+        //====================================================================================================
+        public ProductChangelog FillProductChangelogFromProduct(Product product, ProductOperationType operationType)
+        {
+            ProductChangelog productChangelog = new ProductChangelog();
+
+            productChangelog.ProductId = product.Id;
+            productChangelog.SupplierId = product.SupplierId;
+            productChangelog.ElzabProductId = product.ElzabProductId;
+            productChangelog.ManufacturerId = product.ManufacturerId;
+            productChangelog.ProductName = product.ProductName;
+            productChangelog.ElzabProductName = product.ElzabProductName;
+            productChangelog.PriceNet = product.PriceNet;
+            productChangelog.Discount = product.Discount;
+            productChangelog.PriceNetWithDiscount = product.PriceNetWithDiscount;
+            productChangelog.TaxId = product.TaxId;
+            productChangelog.Marigin = product.Marigin;
+            productChangelog.FinalPrice = product.FinalPrice;
+            productChangelog.BarCode = product.BarCode;
+            productChangelog.BarCodeShort = product.BarCodeShort;
+            productChangelog.SupplierCode = product.SupplierCode;
+            productChangelog.ProductInfo = product.ProductInfo;
+            productChangelog.DateAndTime = DateTime.Now;
+            productChangelog.OperationType = operationType.ToString();
+
+            return productChangelog;
+        }
+
+        //====================================================================================================
+        //Method used to get ents from product changelog table by ElzabProductId
+        //====================================================================================================
+        public List<ProductChangelog> GetProductChangelogByElzabProductId(int elzabProductId)
+        {
+            List<ProductChangelog> localProductChangelog = new List<ProductChangelog>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from pc in contextDB.ProductsChangelog
+                            where pc.ElzabProductId == elzabProductId
+                            select pc;
+
+                localProductChangelog.AddRange(query);
+            }
+            return localProductChangelog;
+        }
+
+        //====================================================================================================
+        //Method used to get ents from product changelog table by ProductId
+        //====================================================================================================
+        public List<ProductChangelog> GetProductChangelogByProductId(int productId)
+        {
+            List<ProductChangelog> localProductChangelog = new List<ProductChangelog>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from pc in contextDB.ProductsChangelog
+                            where pc.ProductId == productId
+                            select pc;
+
+                localProductChangelog.AddRange(query);
+            }
+            return localProductChangelog;
+        }
+        #endregion
     }
 }

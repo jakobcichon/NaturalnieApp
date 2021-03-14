@@ -835,6 +835,12 @@ namespace ElzabDriver
 
         }
 
+        //Method used to get element type index
+        public int GetElementTypeIndex(int elementType)
+        {
+            return this.Element.GetElementTypeIndex(elementType);
+        }
+
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -1317,6 +1323,7 @@ namespace ElzabDriver
             this.ElementsList = new List<List<AttributeValueObject>>();
             this.ElementType = new List<int>();
         }
+
 
         /// <summary>
         /// Method used to create unique identifier from given value

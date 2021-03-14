@@ -213,18 +213,27 @@ namespace NaturalnieApp.Forms
                     //Set amrigin to the default value
                     this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = this.tbMarigin.Text;
 
-                    //Calculate Final price with discount
-                    float priceNet = Convert.ToSingle(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetColumn].Value);
-                    int discount = Convert.ToInt32(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfDiscountColumn].Value);
-                    this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetWithDiscountColumn].Value = Calculations.CalculatePriceNetWithDiscount(priceNet, discount);
+                    try
+                    {
+                        //Calculate Final price with discount
+                        float priceNet = Convert.ToSingle(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetColumn].Value);
+                        int discount = Convert.ToInt32(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfDiscountColumn].Value);
+                        this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetWithDiscountColumn].Value = Calculations.CalculatePriceNetWithDiscount(priceNet, discount);
 
-                    //Calculate final price
-                    double price = Convert.ToDouble(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetWithDiscountColumn].Value);
-                    int tax = Convert.ToInt32(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfTaxColumn].Value);
-                    int marigin = Convert.ToInt32(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value);
-                    double finalPrice = Calculations.FinalPrice(price, tax, marigin);
+                        //Calculate final price
+                        double price = Convert.ToDouble(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfPriceNetWithDiscountColumn].Value);
+                        int tax = Convert.ToInt32(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfTaxColumn].Value);
+                        int marigin = Convert.ToInt32(this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value);
+                        double finalPrice = Calculations.FinalPrice(price, tax, marigin);
 
-                    this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfFinalPriceColumn].Value = finalPrice.ToString();
+                        this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfFinalPriceColumn].Value = finalPrice.ToString();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(string.Format("Nie udało się wyliczyć cen dla wiersza nr {0}! Brak wystarczających informacji",
+                            indexOfCurrentRow));
+                    }
+
                 }
 
                 //Add checkbox to data grid

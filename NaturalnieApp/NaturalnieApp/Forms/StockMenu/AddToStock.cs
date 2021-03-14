@@ -569,9 +569,9 @@ namespace NaturalnieApp.Forms
                         if (checkResult)
                         {
                             Stock localStock = this.databaseCommands.GetStockEntityByUserStock(stockPiece);
-                            int localQuantity = stockPiece.ActualQuantity;
-                            localStock.LastQuantity = stockPiece.ActualQuantity;
-                            localStock.ActualQuantity += localQuantity;
+                            int localQuantity = localStock.ActualQuantity;
+                            localStock.LastQuantity = localStock.ActualQuantity;
+                            localStock.ActualQuantity += stockPiece.ActualQuantity;
                             this.databaseCommands.EditInStock(localStock);
                         }
                         else

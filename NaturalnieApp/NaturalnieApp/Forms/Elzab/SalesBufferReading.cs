@@ -34,6 +34,9 @@ namespace NaturalnieApp.Forms
 
         private List<Zuby.ADGV.AdvancedDataGridView> DataGridViewsList {get; set;}
 
+        //Static variables
+        static int NORMAL_SALE_INDEX = 1;
+
         public SalesBufferReading(ref DatabaseCommands commandsObj)
         {
             InitializeComponent();
@@ -201,6 +204,11 @@ namespace NaturalnieApp.Forms
                     this.StatusBox.Text = "3. Tworzenie widoku";
                     this.StatusBox.Update();
 
+                    //!!!!!!!!!!!!!!!!!!!!!injected
+                    UpdateSalesInDB(this.SaleBufforReading.DataFromElzab, NORMAL_SALE_INDEX);
+                    ;
+                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
                     //Create pages
                     foreach (int type in elementsTypeList)
                     {
@@ -331,14 +339,35 @@ namespace NaturalnieApp.Forms
             
         }
 
-        public void UpdateSalesInDB(List<AttributeValueObject> dataToAdd)
+        public void UpdateSalesInDB(ElzabFileObject dataFromElzab, int elementType)
         {
-            //Loop through all elements
+            //Get index of normal sale element type
+            int elementTypeIndex = dataFromElzab.GetElementTypeIndex(elementType);
 
-            //Check if product exist
+            //Loop through all elements and check if unique Id exist in DB
+            foreach (AttributeValueObject element in dataFromElzab.Element.ElementsList[elementTypeIndex])
+            {
+                //Check if product exist
+                bool idExist = this.databaseCommands.CheckIfUniqueIdExist(element.UniqueIdentifier);
 
-            //Check product changelog to see if Ezlab product number has chnage
-                //If changed, check if product was deleted
+                if(idExist)
+                {
+                    //Get product id from cash register
+                    int currentElementIndex = dataFromElzab.Element.ElementsList[elementTypeIndex].IndexOf(element);
+                    int cashRegisterProductNumber = Convert.ToInt32(dataFromElzab.Element.GetAttributeValue(currentElementIndex, "nr_tow", elementType));
+
+                    //Check product changelog to see if Ezlab product number has been change
+                    List<ProductChangelog> productChangelog = this.databaseCommands.GetProductChangelogByElzabProductId(cashRegisterProductNumber);
+                    ;
+                    //If changed, check if product was deleted
+                }
+                else
+                {
+                    //!!!!!!!!! To do!!!!!! Decide what to do here!!!!!!!!!!!!1
+                }
+            }
+
+
 
         }
     }
