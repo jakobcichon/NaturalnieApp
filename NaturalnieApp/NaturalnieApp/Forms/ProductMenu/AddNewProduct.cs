@@ -57,13 +57,6 @@ namespace NaturalnieApp.Forms
             this.TaxEntity = new Tax();
             ClearProductEntity();
             ClearTaxEntity();
-
-            //Disable Elzab product number. Manifacturer must be selected first
-            tbElzabProductNumber.Enabled = false;
-
-            this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
-                Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
-
         }
         #endregion
         //=============================================================================
@@ -460,6 +453,12 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
+
+            //Disable Elzab product number. Manifacturer must be selected first
+            tbElzabProductNumber.Enabled = false;
+
+            this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
+                Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
 
             //Update control
             UpdateControl(ref tbDummyForCtrl);

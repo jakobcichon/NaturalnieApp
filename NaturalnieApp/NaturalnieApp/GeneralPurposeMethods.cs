@@ -513,7 +513,6 @@ namespace NaturalnieApp
             return retList;
         }
 
-
         //Method used to parse from Elzab buffer to Db object
         static public List<Sales> ParseElzabBufferToDbObject(List<AttributeValueObject> elementsList)
         {
@@ -647,7 +646,6 @@ namespace NaturalnieApp
             return retData;
         }
 
-
         //Method used to compare product data from DB with data from elzab
         static public List<Product> ComapreDbProductDataWithElzab(List<Product> dataFromElzab, List<Product> dataFromDb)
         {
@@ -695,6 +693,7 @@ namespace NaturalnieApp
 
             return retList;
         }
+
         //Method used to convert from elzab price reprezentation to floating one
         public static float ConvertFromElzabPriceToFloat(string elzabPrice)
         {
@@ -718,6 +717,7 @@ namespace NaturalnieApp
             return retVal;
 
         }
+
         //Method used to convert from float to elzab price representation
         public static string ConvertFromFloatToElzabPrice(float price)
         {
@@ -790,6 +790,41 @@ namespace NaturalnieApp
 
 
             return retVal;
+        }
+
+        /// <summary>
+        /// Method used to determine if product number read from cash register has changed in DB.
+        /// This situation can happend if someone manipulate with product in DB and sychronized with cash register later,
+        /// but in mean time sales was executed.
+        /// </summary>
+        /// <param name="currentProductNumberInElzab">Product number read from Cash register</param>
+        /// <param name="dateOfSales">Last recorded product number in DB. Returning "-1" means product was deleted.</param>
+        /// <returns></returns>
+        static public int CheckIfProductNumberHasChanged(ref DatabaseCommands databaseCommands, int currentProductNumberInElzab, DateTime dateOfSales)
+        {
+            //Get last succeed synchronization with cash register
+            ElzabCommunication lastElzabSucceededSynchronization = databaseCommands.GetLastSuccessCommunicationForGivenCommandName("ztowar");
+
+            //If date of sale older than synchronization data, product number is up to date
+            int dateComparasionResult = DateTime.Compare(dateOfSales, lastElzabSucceededSynchronization.DateOfCommunication);
+            if (dateComparasionResult < 0)
+            {
+                List<ProductChangelog> productChangelog = databaseCommands.GetProductChangelogByElzabProductId(currentProductNumberInElzab);
+                ;
+                return currentProductNumberInElzab;
+                     /*
+                     * 1. Get last Elzab ztowar communication sucess date
+                     * 2. If saleDateAndTime grater than last synchronization -> OK product number still valid. break;
+                     * 3. If not previous, get changelog for given ElzabProductNumber
+                     * 4. If all ElzabPRoductNumbers has same PRoductID -> OK product number still valid. break;
+                     * 5. If not previous, check if no of changelog product number has "Deleted" statu. If Yes -> NOK - product no longer available in stock
+                     * 6. Else  
+                     * 
+                     * 
+                     * 
+                     */
+            }
+            else return currentProductNumberInElzab;
         }
     }
 

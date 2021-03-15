@@ -68,10 +68,6 @@ namespace NaturalnieApp.Forms
             this.SupplierEntity = new Supplier();
             this.ManufacturerEntity = new Manufacturer();
 
-            //Enable text box
-            this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
-                Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
-
         }
         #endregion
         //=============================================================================
@@ -599,6 +595,10 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
+
+            //Enable text box
+            this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
+                Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
 
             //Update control
             UpdateControl(ref tbDummyForCtrl);

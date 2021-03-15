@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -223,7 +224,7 @@ namespace NaturalnieApp.Forms
 
                     //!!!!!!!!!!!!!!!!!!!!!injected
                     UpdateSalesInDB(this.SaleBufforReading.DataFromElzab, NORMAL_SALE_INDEX);
-                    ;
+
                     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                     //Create pages
@@ -373,12 +374,19 @@ namespace NaturalnieApp.Forms
                     int currentElementIndex = dataFromElzab.Element.ElementsList[elementTypeIndex].IndexOf(element);
                     int cashRegisterProductNumber = Convert.ToInt32(dataFromElzab.Element.GetAttributeValue(currentElementIndex, "nr_tow", elementType));
 
+                    //Get date and time of sale
+                    string saleDate = dataFromElzab.Element.GetAttributeValue(currentElementIndex, "data", elementType);
+                    string saleTime = dataFromElzab.Element.GetAttributeValue(currentElementIndex, "czas", elementType);
+                    string saleDateAndTime = saleDate + " " + saleTime;
+                    DateTime test = DateTime.ParseExact(saleDateAndTime, "yy.MM.dd HH:mm", CultureInfo.InvariantCulture);
+                    ;
+
                     //Check product changelog to see if Ezlab product number has been change
-                    List<ProductChangelog> productChangelog = this.databaseCommands.GetProductChangelogByElzabProductId(cashRegisterProductNumber);
+                    //ElzabRelated.CheckIfProductNumberHasChanged(this.databaseCommands, cashRegisterProductNumber, )
                     ;
                     //If changed, check if product was deleted
 
-                    ElzabCommunication test = this.databaseCommands.GetLastSuccessCommunicationForGivenCommandName("ztowar");
+                    //ElzabCommunication test = this.databaseCommands.GetLastSuccessCommunicationForGivenCommandName("ztowar");
                 }
                 else
                 {

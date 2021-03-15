@@ -1971,9 +1971,11 @@ namespace NaturalnieApp.Database
             return productChangelog;
         }
 
-        //====================================================================================================
-        //Method used to get ents from product changelog table by ElzabProductId
-        //====================================================================================================
+        /// <summary>
+        /// Method used to get ents from product changelog table by ElzabProductId
+        /// </summary>
+        /// <param name="elzabProductId">Elzab product Id</param>
+        /// <returns>List of the product changelog ordered descending by date (0 - newest, n - oldest)</returns>
         public List<ProductChangelog> GetProductChangelogByElzabProductId(int elzabProductId)
         {
             List<ProductChangelog> localProductChangelog = new List<ProductChangelog>();
@@ -1982,6 +1984,7 @@ namespace NaturalnieApp.Database
             {
                 var query = from pc in contextDB.ProductsChangelog
                             where pc.ElzabProductId == elzabProductId
+                            orderby pc.DateAndTime descending
                             select pc;
 
                 localProductChangelog.AddRange(query.Take(query.Count()));
@@ -2013,44 +2016,6 @@ namespace NaturalnieApp.Database
             public int NewElzabNumber { get; set; }
             public int ProductId { get; set; }
         }
-        //====================================================================================================
-        //Method used to search in changelog if Elzab Product Number has changed.
-        //If Yes it will return new values of Elzab Product Id.
-        //====================================================================================================
-
-        public List<int> SearchInChangelogElzabProductIdChanges(int elzabProductId, DateTime saleDataAndTime)
-        {
-            List<int> el = new List<ProductChangelog>();
-
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                //Get Elzab product Id
-                var query = from pc in contextDB.ProductsChangelog
-                            where pc.ElzabProductId == elzabProductId
-                            select pc;
-
-                localProductChangelog.AddRange(query);
-            }
-
-            //Determine last success synchronization Elzab <> DB
-            GetLastSuccessCommunicationForGivenCommandName("ztowar");
-            return localProductChangelog;
-
-            /*
-             * 1. Get last Elzab ztowar communication sucess date
-             * 2. If saleDateAndTime grater than last synchronization -> OK product number still valid. break;
-             * 3. If not previous, get changelog for given ElzabProductNumber
-             * 4. If all ElzabPRoductNumbers has same PRoductID -> OK product number still valid. break;
-             * 5. If not previous, check if no of changelog product number has "Deleted" statu. If Yes -> NOK - product no longer available in stock
-             * 6. Else  
-             * 
-             * 
-             * 
-             */
-
-
-        }
-
         #endregion
 
 
