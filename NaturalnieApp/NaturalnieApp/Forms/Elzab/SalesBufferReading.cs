@@ -377,12 +377,12 @@ namespace NaturalnieApp.Forms
                     //Get date and time of sale
                     string saleDate = dataFromElzab.Element.GetAttributeValue(currentElementIndex, "data", elementType);
                     string saleTime = dataFromElzab.Element.GetAttributeValue(currentElementIndex, "czas", elementType);
+                    string barcode = dataFromElzab.Element.GetAttributeValue(currentElementIndex, "bkod", elementType);
                     string saleDateAndTime = saleDate + " " + saleTime;
-                    DateTime test = DateTime.ParseExact(saleDateAndTime, "yy.MM.dd HH:mm", CultureInfo.InvariantCulture);
-                    ;
+                    DateTime saleDateAndTimeConverted = DateTime.ParseExact(saleDateAndTime, "yy.MM.dd HH:mm", CultureInfo.InvariantCulture);
 
                     //Check product changelog to see if Ezlab product number has been change
-                    //ElzabRelated.CheckIfProductNumberHasChanged(this.databaseCommands, cashRegisterProductNumber, )
+                    ElzabRelated.CheckIfProductNumberHasChanged(ref this.databaseCommands, cashRegisterProductNumber, barcode, saleDateAndTimeConverted);
                     ;
                     //If changed, check if product was deleted
 

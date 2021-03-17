@@ -1976,18 +1976,18 @@ namespace NaturalnieApp.Database
         /// </summary>
         /// <param name="elzabProductId">Elzab product Id</param>
         /// <returns>List of the product changelog ordered descending by date (0 - newest, n - oldest)</returns>
-        public List<ProductChangelog> GetProductChangelogByElzabProductId(int elzabProductId)
+        public ProductChangelog GetLastChangelogValueForGivenElzabProductId(int elzabProductId, DateTime salesDate)
         {
-            List<ProductChangelog> localProductChangelog = new List<ProductChangelog>();
+            ProductChangelog localProductChangelog = new ProductChangelog();
 
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from pc in contextDB.ProductsChangelog
-                            where pc.ElzabProductId == elzabProductId
+                            where pc.ElzabProductId == elzabProductId && pc.DateAndTime <= salesDate
                             orderby pc.DateAndTime descending
                             select pc;
 
-                localProductChangelog.AddRange(query.Take(query.Count()));
+                localProductChangelog = query.FirstOrDefault();
             }
             return localProductChangelog;
         }
@@ -2003,6 +2003,7 @@ namespace NaturalnieApp.Database
             {
                 var query = from pc in contextDB.ProductsChangelog
                             where pc.ProductId == productId
+                            orderby pc.DateAndTime descending
                             select pc;
 
                 localProductChangelog.AddRange(query);

@@ -798,35 +798,90 @@ namespace NaturalnieApp
         /// but in mean time sales was executed.
         /// </summary>
         /// <param name="currentProductNumberInElzab">Product number read from Cash register</param>
-        /// <param name="dateOfSales">Last recorded product number in DB. Returning "-1" means product was deleted.</param>
-        /// <returns></returns>
-        static public int CheckIfProductNumberHasChanged(ref DatabaseCommands databaseCommands, int currentProductNumberInElzab, DateTime dateOfSales)
+        /// <param name="dateOfSales">Last recorded product number in DB.</param>
+        /// <returns> Returning "-1" means product was deleted.
+        /// Returning -2 can't get last synchronization</returns>
+        static public int CheckIfProductNumberHasChanged(ref DatabaseCommands databaseCommands, int currentProductNumberInElzab, string barcode, DateTime dateOfSales)
         {
+            //Local variables
+            DateTime initSynchronization = DateTime.MinValue;
+
             //Get last succeed synchronization with cash register
             ElzabCommunication lastElzabSucceededSynchronization = databaseCommands.GetLastSuccessCommunicationForGivenCommandName("ztowar");
 
-            //If date of sale older than synchronization data, product number is up to date
-            int dateComparasionResult = DateTime.Compare(dateOfSales, lastElzabSucceededSynchronization.DateOfCommunication);
-            if (dateComparasionResult < 0)
+            //Get product entity by Elzab Id
+            Product lastProductEntityFromDb = databaseCommands.GetProductEntityByElzabId(currentProductNumberInElzab);
+
+            //Clear barcode from Elzab
+            barcode = CleanBarcodeFromElzab(barcode);
+
+            //If barcodes match for actual product in DB, Elzab number still valid
+            if (lastProductEntityFromDb.BarCode == barcode || lastProductEntityFromDb.BarCodeShort == barcode) return currentProductNumberInElzab;
+            else if (lastElzabSucceededSynchronization.DateOfCommunication != initSynchronization)
             {
-                List<ProductChangelog> productChangelog = databaseCommands.GetProductChangelogByElzabProductId(currentProductNumberInElzab);
-                ;
-                return currentProductNumberInElzab;
-                     /*
-                     * 1. Get last Elzab ztowar communication sucess date
-                     * 2. If saleDateAndTime grater than last synchronization -> OK product number still valid. break;
-                     * 3. If not previous, get changelog for given ElzabProductNumber
-                     * 4. If all ElzabPRoductNumbers has same PRoductID -> OK product number still valid. break;
-                     * 5. If not previous, check if no of changelog product number has "Deleted" statu. If Yes -> NOK - product no longer available in stock
-                     * 6. Else  
-                     * 
-                     * 
-                     * 
-                     */
+                //If date of sale older than synchronization data, product number is up to date
+                int dateComparasionResult = DateTime.Compare(dateOfSales, lastElzabSucceededSynchronization.DateOfCommunication);
+
+                if (dateComparasionResult < 0)
+                {
+
+                    return currentProductNumberInElzab;
+                    /*
+                    * 1. Get last Elzab ztowar communication sucess date
+                    * 2. If saleDateAndTime grater than last synchronization -> OK product number still valid. break;
+                    * 3. If not previous, get changelog for given ElzabProductNumber
+                    * 4. If all ElzabPRoductNumbers has same PRoductID -> OK product number still valid. break;
+                    * 5. If not previous, check if no of changelog product number has "Deleted" statu. If Yes -> NOK - product no longer available in stock
+                    * 6. Else  
+                    * 
+                    * 
+                    */
+
+                }
+                else return -3;
             }
-            else return currentProductNumberInElzab;
+            //If last valid synchronization == init synchronization, check whole change log, to see if any Elzab number changes
+            else
+            {
+                //Get last changelog value for given Elzab Id
+                ProductChangelog lastChangelogForGivenElzabId = databaseCommands.GetLastChangelogValueForGivenElzabProductId
+                    (currentProductNumberInElzab);
+
+                //Check if product not deleted
+                if (lastChangelogForGivenElzabId.OperationType == StockOperationType.Delete.ToString()) return -1;
+                else
+
+            }
+
+        }
+
+        /// <summary>
+        /// Method used to clean barcode value from Elzab, by removing leading zeros.
+        /// </summary>
+        /// <param name="barcode">Barcode from Elzab</param>
+        /// <returns>Clean barcode</returns>
+        public static string CleanBarcodeFromElzab(string barcode)
+        {
+            //Local variables
+            string retVal = "";
+            char[] tempVal = barcode.ToCharArray();
+
+            for(int i =0; i < barcode.Length; i++)
+            {
+                if (tempVal[i] == '0') tempVal[i] = ' ';
+                else break;
+            }
+
+            foreach(char element in tempVal)
+            {
+                if (element != ' ' ) retVal += element.ToString();
+            }
+
+            return retVal;
+
         }
     }
+
 
     public class WinFormRelated
     {
