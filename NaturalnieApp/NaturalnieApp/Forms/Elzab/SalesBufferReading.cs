@@ -361,6 +361,7 @@ namespace NaturalnieApp.Forms
         {
             //Get index of normal sale element type
             int elementTypeIndex = dataFromElzab.GetElementTypeIndex(elementType);
+            List<string> listOfElementNotDetermined = new List<string>();
 
             //Loop through all elements and check if unique Id exist in DB
             foreach (AttributeValueObject element in dataFromElzab.Element.ElementsList[elementTypeIndex])
@@ -382,17 +383,33 @@ namespace NaturalnieApp.Forms
                     DateTime saleDateAndTimeConverted = DateTime.ParseExact(saleDateAndTime, "yy.MM.dd HH:mm", CultureInfo.InvariantCulture);
 
                     //Check product changelog to see if Ezlab product number has been change
-                    ElzabRelated.CheckIfProductNumberHasChanged(ref this.databaseCommands, cashRegisterProductNumber, barcode, saleDateAndTimeConverted);
-                    ;
-                    //If changed, check if product was deleted
+                    int productNumber = ElzabRelated.CheckIfProductNumberHasChanged(ref this.databaseCommands, cashRegisterProductNumber, barcode, saleDateAndTimeConverted);
 
-                    //ElzabCommunication test = this.databaseCommands.GetLastSuccessCommunicationForGivenCommandName("ztowar");
+                    //If could not determine add to the list
+                    if (productNumber <= 0) listOfElementNotDetermined.Add(element.ConvertValuesToString());
                 }
                 else
                 {
                     //!!!!!!!!! To do!!!!!! Decide what to do here!!!!!!!!!!!!1
                 }
             }
+            ;
+            if(listOfElementNotDetermined.Count > 0)
+            {
+                DialogResult result = MessageBox.Show("Istnieją pozycje, których nie można dodać do magazynu. Czy chcesz zapisać do pliku?",
+                    "Pozycje bez referencji w bazie danych", MessageBoxButtons.YesNo);
+                if(result == DialogResult.Yes)
+                {
+                    FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+                    if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string fullPath = folderBrowserDialog.SelectedPath + @"\dump.txt";
+
+                        FileWriteRelated.WriteToTextFile(fullPath, listOfElementNotDetermined);
+                    }
+                }
+            }
+
         }
     }
 }

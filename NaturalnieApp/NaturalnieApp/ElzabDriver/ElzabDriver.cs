@@ -1303,6 +1303,11 @@ namespace ElzabDriver
             this.UniqueIdentifier = "";
         }
 
+        public string ConvertValuesToString()
+        {
+            return string.Join(";", this.AttributeValue.ToArray());
+        }
+
     }
     public class ElzabCommElementObject : IEnumerable<AttributeValueObject>
     {

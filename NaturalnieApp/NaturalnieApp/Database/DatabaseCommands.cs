@@ -1976,20 +1976,58 @@ namespace NaturalnieApp.Database
         /// </summary>
         /// <param name="elzabProductId">Elzab product Id</param>
         /// <returns>List of the product changelog ordered descending by date (0 - newest, n - oldest)</returns>
-        public ProductChangelog GetLastChangelogValueForGivenElzabProductId(int elzabProductId, DateTime salesDate)
+        public ProductChangelog GetLastChangelogValueForGivenElzabProductIdLimitedByDate(int elzabProductId, DateTime olderDate,
+            DateTime newerDate, bool ascendingOrder = true)
         {
             ProductChangelog localProductChangelog = new ProductChangelog();
 
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
-                var query = from pc in contextDB.ProductsChangelog
-                            where pc.ElzabProductId == elzabProductId && pc.DateAndTime <= salesDate
-                            orderby pc.DateAndTime descending
-                            select pc;
+                if (ascendingOrder)
+                {
+                    var query = from pc in contextDB.ProductsChangelog
+                                where pc.ElzabProductId == elzabProductId
+                                && pc.DateAndTime >= olderDate
+                                && pc.DateAndTime <= newerDate
+                                orderby pc.DateAndTime ascending
+                                select pc;
 
-                localProductChangelog = query.FirstOrDefault();
+                    localProductChangelog = query.FirstOrDefault();
+                }
+                else
+                {
+                    var query = from pc in contextDB.ProductsChangelog
+                                where pc.ElzabProductId == elzabProductId
+                                && pc.DateAndTime >= olderDate
+                                && pc.DateAndTime <= newerDate
+                                orderby pc.DateAndTime descending
+                                select pc;
+
+                    localProductChangelog = query.FirstOrDefault();
+                }
+
             }
             return localProductChangelog;
+        }
+
+        /// <summary>
+        /// Method used to check if product with given number was deleted
+        /// </summary>
+        /// <param name="dbProductId"></param>
+        /// <returns></returns>
+        public bool CheckIfProductWasDeleted(int dbProductId)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+
+                var query = from pc in contextDB.ProductsChangelog
+                            where pc.ProductId == dbProductId
+                            && pc.OperationType == Database.ProductOperationType.Delete.ToString()
+                            select pc;
+
+                if (query.FirstOrDefault() != null) return true;
+                else return false;
+            }
         }
 
         //====================================================================================================

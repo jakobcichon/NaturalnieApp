@@ -801,13 +801,9 @@ namespace NaturalnieApp
         /// <param name="dateOfSales">Last recorded product number in DB.</param>
         /// <returns> Returning "-1" means product was deleted.
         /// Returning -2 can't get last synchronization</returns>
-        static public int CheckIfProductNumberHasChanged(ref DatabaseCommands databaseCommands, int currentProductNumberInElzab, string barcode, DateTime dateOfSales)
+        static public int CheckIfProductNumberHasChanged(ref DatabaseCommands databaseCommands, int currentProductNumberInElzab, 
+            string barcode, DateTime dateOfSales)
         {
-            //Local variables
-            DateTime initSynchronization = DateTime.MinValue;
-
-            //Get last succeed synchronization with cash register
-            ElzabCommunication lastElzabSucceededSynchronization = databaseCommands.GetLastSuccessCommunicationForGivenCommandName("ztowar");
 
             //Get product entity by Elzab Id
             Product lastProductEntityFromDb = databaseCommands.GetProductEntityByElzabId(currentProductNumberInElzab);
@@ -816,43 +812,75 @@ namespace NaturalnieApp
             barcode = CleanBarcodeFromElzab(barcode);
 
             //If barcodes match for actual product in DB, Elzab number still valid
-            if (lastProductEntityFromDb.BarCode == barcode || lastProductEntityFromDb.BarCodeShort == barcode) return currentProductNumberInElzab;
-            else if (lastElzabSucceededSynchronization.DateOfCommunication != initSynchronization)
+            if (lastProductEntityFromDb != null)
             {
-                //If date of sale older than synchronization data, product number is up to date
-                int dateComparasionResult = DateTime.Compare(dateOfSales, lastElzabSucceededSynchronization.DateOfCommunication);
-
-                if (dateComparasionResult < 0)
+                if (lastProductEntityFromDb.BarCode == barcode || lastProductEntityFromDb.BarCodeShort == barcode)
                 {
-
                     return currentProductNumberInElzab;
-                    /*
-                    * 1. Get last Elzab ztowar communication sucess date
-                    * 2. If saleDateAndTime grater than last synchronization -> OK product number still valid. break;
-                    * 3. If not previous, get changelog for given ElzabProductNumber
-                    * 4. If all ElzabPRoductNumbers has same PRoductID -> OK product number still valid. break;
-                    * 5. If not previous, check if no of changelog product number has "Deleted" statu. If Yes -> NOK - product no longer available in stock
-                    * 6. Else  
-                    * 
-                    * 
-                    */
-
                 }
-                else return -3;
             }
-            //If last valid synchronization == init synchronization, check whole change log, to see if any Elzab number changes
+
+            //Get from changelog last closest Db Product Id
+            int lastCertainDbProductNumber = GetLastCertainDbProductNumber(ref databaseCommands, currentProductNumberInElzab, dateOfSales);
+
+            //If last CertainDbProduct number - because of late intorduction ProductId column to the changelog table, could not determine
+            if (lastCertainDbProductNumber <= 0) return -1;
             else
             {
-                //Get last changelog value for given Elzab Id
-                ProductChangelog lastChangelogForGivenElzabId = databaseCommands.GetLastChangelogValueForGivenElzabProductId
-                    (currentProductNumberInElzab);
-
-                //Check if product not deleted
-                if (lastChangelogForGivenElzabId.OperationType == StockOperationType.Delete.ToString()) return -1;
+                //Check if element with Db product id was deleted
+                if (databaseCommands.CheckIfProductWasDeleted(lastCertainDbProductNumber)) return -2;
                 else
+                {
+                    lastProductEntityFromDb = databaseCommands.GetProductEntityById(lastCertainDbProductNumber);
+                    return lastProductEntityFromDb.ElzabProductId;
+                }
 
             }
 
+        }
+
+        /// <summary>
+        /// Method used to determine last known DB PRoduct ID.
+        /// </summary>
+        /// <param name="databaseCommands"></param>
+        /// <param name="ElzabProductId"></param>
+        /// <param name="dateOfSales"></param>
+        /// <returns></returns>
+        public static int GetLastCertainDbProductNumber(ref DatabaseCommands databaseCommands, int ElzabProductId, DateTime dateOfSales)
+        {
+            //Local variables
+            ProductChangelog lastChangelog;
+            int productId;
+
+            //Get last succeed synchronization with cash register
+            ElzabCommunication lastElzabSucceededSynchronization = databaseCommands.GetLastSuccessCommunicationForGivenCommandName("ztowar");
+
+            //Get product entity by Elzab Id
+            Product lastProductEntityFromDb = databaseCommands.GetProductEntityByElzabId(ElzabProductId);
+
+            //Get changelog for the given Elzab Id from last synchronization till sale date
+            lastChangelog = databaseCommands.GetLastChangelogValueForGivenElzabProductIdLimitedByDate(ElzabProductId,
+                lastElzabSucceededSynchronization.DateOfCommunication, dateOfSales, true);
+
+            //If no changes in this time, check first change from sale till now
+            if (lastChangelog == null)
+            {
+                //Get changelog for the given Elzab Id from last synchronization till sale date
+                lastChangelog = databaseCommands.GetLastChangelogValueForGivenElzabProductIdLimitedByDate(ElzabProductId,
+                    dateOfSales, DateTime.Now, false);
+
+                //If no changes till now, get current product ID
+                if (lastChangelog == null)
+                {
+                    if (lastProductEntityFromDb != null) productId = lastProductEntityFromDb.Id;
+                    else productId = -1;
+                }
+                else productId = lastChangelog.ProductId;
+
+            }
+            else productId = lastChangelog.ProductId;
+
+            return productId;
         }
 
         /// <summary>
@@ -866,7 +894,7 @@ namespace NaturalnieApp
             string retVal = "";
             char[] tempVal = barcode.ToCharArray();
 
-            for(int i =0; i < barcode.Length; i++)
+            for(int i = 0; i < barcode.Length - 8; i++)
             {
                 if (tempVal[i] == '0') tempVal[i] = ' ';
                 else break;
@@ -1121,6 +1149,20 @@ namespace NaturalnieApp
 
             return localList;
 
+        }
+    }
+
+    static public class FileWriteRelated
+    {
+        public static void WriteToTextFile(string fullPath, List<string> data)
+        {
+            using (StreamWriter file = new StreamWriter(fullPath))
+            {
+                foreach(string element in data)
+                {
+                    file.WriteLine(element);
+                }
+            }
         }
     }
 
