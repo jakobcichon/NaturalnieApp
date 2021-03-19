@@ -66,7 +66,9 @@ namespace NaturalnieApp.Database
     {
         AddNew,
         Update,
-        Delete
+        Delete,
+        AutomaticUpdate,
+        AutomaticAddedNew
     }
 
     [Table("product_changelog")]
@@ -116,6 +118,7 @@ namespace NaturalnieApp.Database
         public int Quantity { get; set; }
         public DateTime DateAndTime { get; set; }
         public string OperationType { get; set; }
+        public string SalesIdForAutomaticUpdate { get; set; }
     }
 
 

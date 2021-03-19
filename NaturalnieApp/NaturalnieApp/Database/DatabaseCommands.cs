@@ -937,6 +937,25 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB Product Id value using Elzab product number
+        //====================================================================================================
+        public int GetProductIdByElzabProductNumber(int elzabProductNumber)
+        {
+            int productId = -1;
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            where p.ElzabProductId == elzabProductNumber
+                            select p.Id;
+
+                productId = query.SingleOrDefault();
+            }
+
+            return productId;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB Product Name using product Id
         //====================================================================================================
         public string GetProductNameById(int id)
@@ -1394,30 +1413,6 @@ namespace NaturalnieApp.Database
             return localSupplier;
         }
 
-        //====================================================================================================
-        //Method used to retrieve from DB quantity of given product in stock
-        //====================================================================================================
-        public int GetProductQuantityInStock(string productName)
-        {
-            int localQuantity = 0;
-
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                var query = from s in contextDB.Stock
-                            join p in contextDB.Products
-                            on s.ProductId equals p.Id
-                            where p.ProductName == productName
-                            select new
-                            {
-                                s
-                            };
-                foreach (var element in query)
-                {
-                    localQuantity += element.s.ActualQuantity;
-                }
-            }
-            return localQuantity;
-        }
 
         //====================================================================================================
         //Method used to add new product
@@ -1465,6 +1460,142 @@ namespace NaturalnieApp.Database
             }
         }
 
+        //====================================================================================================
+        //Method used to edit product
+        //====================================================================================================
+        public void EditProduct(Product product)
+        {
+            //Local variables
+            Product localProduct;
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                contextDB.Products.Add(product);
+                contextDB.Entry(product).State = EntityState.Modified;
+                int retVal = contextDB.SaveChanges();
+
+                localProduct = this.GetProductEntityByBarcode(product.BarCode);
+            }
+
+            if (localProduct == null) AddProductToChangelog(product, ProductOperationType.Update);
+            else AddProductToChangelog(localProduct, ProductOperationType.Update);
+        }
+
+        //====================================================================================================
+        //Method used to delete product
+        //====================================================================================================
+        public bool DeleteProduct(Product product)
+        {
+            //Local variables
+            Product localProduct;
+
+            bool retVal = false;
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                localProduct = this.GetProductEntityByBarcode(product.BarCode);
+
+                Product productToDelete = new Product { Id = product.Id };
+                contextDB.Entry(productToDelete).State = EntityState.Deleted;
+                int retValInt = contextDB.SaveChanges();
+                if (retValInt > 0) retVal = true;
+            }
+
+            if (localProduct == null) AddProductToChangelog(product, ProductOperationType.Delete);
+            else AddProductToChangelog(localProduct, ProductOperationType.Delete);
+
+            return retVal;
+        }
+
+        //====================================================================================================
+        //Method used to edit product
+        //====================================================================================================
+        public void EditSupplier(Supplier supplier)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                contextDB.Suppliers.Add(supplier);
+                contextDB.Entry(supplier).State = EntityState.Modified;
+                int retVal = contextDB.SaveChanges();
+            }
+        }
+        //====================================================================================================
+        //Method used to edit table
+        //====================================================================================================
+
+        public void EditManufacturer(Manufacturer manufacturer)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                contextDB.Manufacturers.Add(manufacturer);
+                contextDB.Entry(manufacturer).State = EntityState.Modified;
+                int retVal = contextDB.SaveChanges();
+            }
+        }
+        //====================================================================================================
+        //Method used to edit table
+        //====================================================================================================
+
+        public void EditTax(Tax Tax)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                contextDB.Tax.Add(Tax);
+                contextDB.Entry(Tax).State = EntityState.Modified;
+                int retVal = contextDB.SaveChanges();
+            }
+        }
+        //====================================================================================================
+        //Method used to check if database connnection exist.
+        //====================================================================================================
+        public void CheckConnection(bool showMessage)
+        {
+
+            bool state = false;
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                try
+                {
+                    contextDB.Database.Connection.Open();
+                    contextDB.Database.Connection.Close();
+                    state = true;
+                }
+                catch (Exception ex)
+                {
+                    if (showMessage) MessageBox.Show(ex.Message);
+                    state = false;
+                }
+            }
+            this.ConnectionStatus = state;
+        }
+
+
+        // **********************************************************************************************************
+        #region Stock table related
+        //====================================================================================================
+        //Method used to retrieve from DB quantity of given product in stock
+        //====================================================================================================
+        public int GetProductQuantityInStock(string productName)
+        {
+            int localQuantity = 0;
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from s in contextDB.Stock
+                            join p in contextDB.Products
+                            on s.ProductId equals p.Id
+                            where p.ProductName == productName
+                            select new
+                            {
+                                s
+                            };
+                foreach (var element in query)
+                {
+                    localQuantity += element.s.ActualQuantity;
+                }
+            }
+            return localQuantity;
+        }
         //====================================================================================================
         //Method used to get stock entity from user prepared stock entity
         //====================================================================================================
@@ -1630,7 +1761,7 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         //Method used to add to stock
         //====================================================================================================
-        public void AddToStock(Stock stockPiece)
+        public void AddToStock(Stock stockPiece, StockOperationType operationType = StockOperationType.AddNew, string salesUniqueIdForAutomaticUpdate = null)
         {
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
@@ -1639,14 +1770,13 @@ namespace NaturalnieApp.Database
             }
 
             //Add item to stock history
-            AddToStockHistory(stockPiece, StockOperationType.AddNew);
+            AddToStockHistory(stockPiece, operationType, salesUniqueIdForAutomaticUpdate);
         }
-
 
         //====================================================================================================
         //Method used to add to stock
         //====================================================================================================
-        public void AddToStockHistory(Stock stockPiece, StockOperationType operationType)
+        public void AddToStockHistory(Stock stockPiece, StockOperationType operationType, string salesUniqueIdForAutomaticUpdate = null)
         {
             //Local variable
             StockHistory stockHistory = new StockHistory();
@@ -1654,6 +1784,7 @@ namespace NaturalnieApp.Database
             stockHistory.Quantity = stockPiece.ActualQuantity - stockPiece.LastQuantity;
             stockHistory.DateAndTime = DateTime.Now;
             stockHistory.OperationType = operationType.ToString();
+            stockHistory.SalesIdForAutomaticUpdate = salesUniqueIdForAutomaticUpdate;
 
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
@@ -1666,7 +1797,8 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         //Method used to edit product product in stock
         //====================================================================================================
-        public void EditInStock(Stock stockPiece)
+        public void EditInStock(Stock stockPiece, StockOperationType stockOperationType = StockOperationType.Update, 
+            string salesUniqueIdForAutomaticUpdate = null)
         {
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
@@ -1677,7 +1809,7 @@ namespace NaturalnieApp.Database
             }
 
             //Add item to stock history
-            AddToStockHistory(stockPiece, StockOperationType.Update);
+            AddToStockHistory(stockPiece, stockOperationType, salesUniqueIdForAutomaticUpdate);
         }
 
         //====================================================================================================
@@ -1695,7 +1827,7 @@ namespace NaturalnieApp.Database
                 var query = from s in contextDB.Stock
                             where s.ProductId == product.Id
                             select s;
-                foreach(Stock stock in query)
+                foreach (Stock stock in query)
                 {
                     stockEntriesToDelete.Add(stock);
                 }
@@ -1724,113 +1856,70 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
-        //Method used to edit product
+        //Method used to check if quantity was already updated by specified sales unique id
         //====================================================================================================
-        public void EditProduct(Product product)
+        public bool CheckIfSalesUniqueIdExistInStockHistory(string salesUniqueId)
         {
-            //Local variables
-            Product localProduct;
+            bool result = false;
 
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
-                contextDB.Products.Add(product);
-                contextDB.Entry(product).State = EntityState.Modified;
-                int retVal = contextDB.SaveChanges();
+                var query = from sh in contextDB.StockHistory
+                            where sh.SalesIdForAutomaticUpdate == salesUniqueId
+                            select sh;
 
-                localProduct = this.GetProductEntityByBarcode(product.BarCode);
+                if (query.FirstOrDefault() != null) result = true;
+                else result = false;
+
             }
-
-            if (localProduct == null) AddProductToChangelog(product, ProductOperationType.Update);
-            else AddProductToChangelog(localProduct, ProductOperationType.Update);
+            return result;
         }
 
         //====================================================================================================
-        //Method used to delete product
+        //Method used to update quantity in stock for given product ID
         //====================================================================================================
-        public bool DeleteProduct(Product product)
+        public bool UpdateProductQuantityInStock(int quantityToUpdate, int productId, string salesUniqueIdForAutomaticUpdate = null,
+            DateTime? expirationDate = null, StockOperationType stockOperationType = StockOperationType.Update)
         {
-            //Local variables
-            Product localProduct;
-
-            bool retVal = false;
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                localProduct = this.GetProductEntityByBarcode(product.BarCode);
-
-                Product productToDelete = new Product { Id = product.Id };
-                contextDB.Entry(productToDelete).State = EntityState.Deleted;
-                int retValInt = contextDB.SaveChanges();
-                if (retValInt > 0) retVal = true;
-            }
-
-            if (localProduct == null) AddProductToChangelog(product, ProductOperationType.Delete);
-            else AddProductToChangelog(localProduct, ProductOperationType.Delete);
-
-            return retVal;
-        }
-
-        //====================================================================================================
-        //Method used to edit product
-        //====================================================================================================
-        public void EditSupplier(Supplier supplier)
-        {
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                contextDB.Suppliers.Add(supplier);
-                contextDB.Entry(supplier).State = EntityState.Modified;
-                int retVal = contextDB.SaveChanges();
-            }
-        }
-        //====================================================================================================
-        //Method used to edit table
-        //====================================================================================================
-
-        public void EditManufacturer(Manufacturer manufacturer)
-        {
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                contextDB.Manufacturers.Add(manufacturer);
-                contextDB.Entry(manufacturer).State = EntityState.Modified;
-                int retVal = contextDB.SaveChanges();
-            }
-        }
-        //====================================================================================================
-        //Method used to edit table
-        //====================================================================================================
-
-        public void EditTax(Tax Tax)
-        {
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                contextDB.Tax.Add(Tax);
-                contextDB.Entry(Tax).State = EntityState.Modified;
-                int retVal = contextDB.SaveChanges();
-            }
-        }
-        //====================================================================================================
-        //Method used to check if database connnection exist.
-        //====================================================================================================
-        public void CheckConnection(bool showMessage)
-        {
-
-            bool state = false;
+            bool result = false;
+            if (expirationDate == null) expirationDate = DateTime.MinValue;
+            Stock localStock;
 
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
-                try
-                {
-                    contextDB.Database.Connection.Open();
-                    contextDB.Database.Connection.Close();
-                    state = true;
-                }
-                catch (Exception ex)
-                {
-                    if (showMessage) MessageBox.Show(ex.Message);
-                    state = false;
-                }
+                var query = from s in contextDB.Stock
+                            where s.ProductId == productId && s.ExpirationDate == expirationDate
+                            select s;
+
+                localStock = query.FirstOrDefault();
             }
-            this.ConnectionStatus = state;
+
+
+            if (localStock != null)
+            {
+                localStock.LastQuantity = localStock.ActualQuantity;
+                localStock.ActualQuantity += quantityToUpdate;
+                //Check if product exist in stock
+                this.EditInStock(localStock, stockOperationType, salesUniqueIdForAutomaticUpdate);
+                result = true;
+            }
+            else
+            {
+                localStock = new Stock();
+                localStock.ProductId = productId;
+                localStock.ActualQuantity = quantityToUpdate;
+                localStock.LastQuantity = 0;
+                localStock.ModificationDate = DateTime.Now;
+                localStock.ExpirationDate = (DateTime) expirationDate;
+                localStock.BarcodeWithDate = null;
+                this.AddToStock(localStock, StockOperationType.AutomaticAddedNew, salesUniqueIdForAutomaticUpdate);
+                result = true;
+            }
+
+            return result;
         }
+        #endregion
+
 
 
 

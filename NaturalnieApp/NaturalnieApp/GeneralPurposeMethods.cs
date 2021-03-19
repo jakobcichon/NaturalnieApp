@@ -799,8 +799,8 @@ namespace NaturalnieApp
         /// </summary>
         /// <param name="currentProductNumberInElzab">Product number read from Cash register</param>
         /// <param name="dateOfSales">Last recorded product number in DB.</param>
-        /// <returns> Returning "-1" means product was deleted.
-        /// Returning -2 can't get last synchronization</returns>
+        /// <returns> Returning "-1" means product number could not been determined.
+        /// Returning -2 means product was deleted</returns>
         static public int CheckIfProductNumberHasChanged(ref DatabaseCommands databaseCommands, int currentProductNumberInElzab, 
             string barcode, DateTime dateOfSales)
         {
@@ -845,7 +845,7 @@ namespace NaturalnieApp
         /// <param name="databaseCommands"></param>
         /// <param name="ElzabProductId"></param>
         /// <param name="dateOfSales"></param>
-        /// <returns></returns>
+        /// <returns>Value '-1' - when could not determine product number. Value > 0 - valid product number.</returns>
         public static int GetLastCertainDbProductNumber(ref DatabaseCommands databaseCommands, int ElzabProductId, DateTime dateOfSales)
         {
             //Local variables
@@ -1154,9 +1154,9 @@ namespace NaturalnieApp
 
     static public class FileWriteRelated
     {
-        public static void WriteToTextFile(string fullPath, List<string> data)
+        public static void WriteToTextFile(string fullPath, List<string> data, bool append = false)
         {
-            using (StreamWriter file = new StreamWriter(fullPath))
+            using (StreamWriter file = new StreamWriter(fullPath, append))
             {
                 foreach(string element in data)
                 {

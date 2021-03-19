@@ -223,7 +223,7 @@ namespace NaturalnieApp.Forms
                     this.StatusBox.Update();
 
                     //!!!!!!!!!!!!!!!!!!!!!injected
-                    UpdateSalesInDB(this.SaleBufforReading.DataFromElzab, NORMAL_SALE_INDEX);
+                    UpdateSalesQuantityInStock(this.SaleBufforReading.DataFromElzab, NORMAL_SALE_INDEX);
 
                     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -357,11 +357,21 @@ namespace NaturalnieApp.Forms
             
         }
 
-        public void UpdateSalesInDB(ElzabFileObject dataFromElzab, int elementType)
+
+        /// <summary>
+        /// Method used to Update Sales quantity in Stock table.
+        /// It will update only entrys which alredy were added to the Sales table in DB
+        /// </summary>
+        /// <param name="dataFromElzab">Data from Elzab</param>
+        /// <param name="elementType">Element type</param>
+        public void UpdateSalesQuantityInStock(ElzabFileObject dataFromElzab, int elementType)
         {
             //Get index of normal sale element type
             int elementTypeIndex = dataFromElzab.GetElementTypeIndex(elementType);
             List<string> listOfElementNotDetermined = new List<string>();
+            List<string> listOfElementDeleted = new List<string>();
+            List<string> listOfElementAdded = new List<string>();
+            List<string> listOfElementAlreadyUpdatedInDb= new List<string>();
 
             //Loop through all elements and check if unique Id exist in DB
             foreach (AttributeValueObject element in dataFromElzab.Element.ElementsList[elementTypeIndex])
@@ -386,7 +396,32 @@ namespace NaturalnieApp.Forms
                     int productNumber = ElzabRelated.CheckIfProductNumberHasChanged(ref this.databaseCommands, cashRegisterProductNumber, barcode, saleDateAndTimeConverted);
 
                     //If could not determine add to the list
-                    if (productNumber <= 0) listOfElementNotDetermined.Add(element.ConvertValuesToString());
+                    if (productNumber == -1) listOfElementNotDetermined.Add(element.ConvertValuesToString());
+                    else if (productNumber == -2) listOfElementDeleted.Add(element.ConvertValuesToString());
+                    else
+                    {
+                        //Check if sales was not updated with given sales unique ID
+                        if (!this.databaseCommands.CheckIfSalesUniqueIdExistInStockHistory(element.UniqueIdentifier))
+                        {
+                            //Get quantity
+                            string stringQuantity = dataFromElzab.Element.GetAttributeValue(currentElementIndex, "il_sp", elementType);
+                            int quantity = -1 * Convert.ToInt32(Single.Parse(stringQuantity));
+
+                            //Get DB productID
+                            int dbProductId = this.databaseCommands.GetProductIdByElzabProductNumber(productNumber);
+
+                            //Udpate stock value in DB
+                            this.databaseCommands.UpdateProductQuantityInStock(quantity, dbProductId,
+                                stockOperationType: StockOperationType.AutomaticUpdate, salesUniqueIdForAutomaticUpdate: element.UniqueIdentifier);
+
+                            //Add to the report list
+                            listOfElementAdded.Add(element.ConvertValuesToString());
+
+                        }
+                        else listOfElementAlreadyUpdatedInDb.Add(element.ConvertValuesToString());
+                        
+                    }
+                        
                 }
                 else
                 {
@@ -394,21 +429,53 @@ namespace NaturalnieApp.Forms
                 }
             }
             ;
-            if(listOfElementNotDetermined.Count > 0)
-            {
-                DialogResult result = MessageBox.Show("Istnieją pozycje, których nie można dodać do magazynu. Czy chcesz zapisać do pliku?",
-                    "Pozycje bez referencji w bazie danych", MessageBoxButtons.YesNo);
-                if(result == DialogResult.Yes)
-                {
-                    FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-                    if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        string fullPath = folderBrowserDialog.SelectedPath + @"\dump.txt";
 
-                        FileWriteRelated.WriteToTextFile(fullPath, listOfElementNotDetermined);
-                    }
+            DialogResult result = MessageBox.Show(string.Format("Raport dodania pozycji sprzedaży do bazy danych:" +
+                "\n Liczba produktów których nie można było odnaleźć w bazie danych: {0}" +
+                "\n Liczba produktów których nie odaleziono w bazie danych z uwagi na usunięty produkt: {1}" +
+                "\n Liczba produktów, których stany magazynowe zostały zaktualizowane: {2}" +
+                "\n Liczba produktów pominięty (produkt o identycznym numerze Id został już użyty do aktualizacji stanów):{3}" +
+                "\n Czy chcesz zapisać raport szczegółowy?",
+                listOfElementNotDetermined.Count(), listOfElementDeleted.Count(), listOfElementAdded.Count(),
+                listOfElementAlreadyUpdatedInDb.Count()),
+                "Raport", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string fullPath = folderBrowserDialog.SelectedPath + @"\dump.txt";
+                    string deliminer = "\n";
+                    for (int i = 0; i < 30; i++) deliminer += "*";
+                    deliminer += "\n";
+
+
+                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: false);
+                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> 
+                    { "Liczba produktów których nie można było odnaleźć w bazie danych" }, append: true);
+                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                    FileWriteRelated.WriteToTextFile(fullPath, listOfElementNotDetermined, append: true);
+
+                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> 
+                    { "Liczba produktów których nie odaleziono w bazie danych z uwagi na usunięty produkt" }, append: true);
+                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                    FileWriteRelated.WriteToTextFile(fullPath, listOfElementDeleted, append: true);
+
+                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                    FileWriteRelated.WriteToTextFile(fullPath, new List<string>
+                    { "Liczba produktów, których stany magazynowe zostały zaktualizowane" }, append: true);
+                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                    FileWriteRelated.WriteToTextFile(fullPath, listOfElementAdded, append: true);
+
+                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                    FileWriteRelated.WriteToTextFile(fullPath, new List<string>
+                    { "Liczba produktów pominięty (produkt o identycznym numerze Id został już użyty do aktualizacji stanów)" }, append: true);
+                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                    FileWriteRelated.WriteToTextFile(fullPath, listOfElementAlreadyUpdatedInDb, append: true);
                 }
             }
+
 
         }
     }
