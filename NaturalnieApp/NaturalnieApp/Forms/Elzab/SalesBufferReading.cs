@@ -33,14 +33,54 @@ namespace NaturalnieApp.Forms
         private List<DataTable> DataSource { get; set; }
         private DataSourceRelated.CashRegisterProductColumnNames ColumnNames;
 
+        //Data Grid View List
         private List<Zuby.ADGV.AdvancedDataGridView> DataGridViewsList {get; set;}
+
+        //Backgound worker for connection to db
+        BackgroundWorker ProgressBarBackgroundWorker;
 
         //Static variables
         static int NORMAL_SALE_INDEX = 1;
 
+        //Advanced data grid view events
+        private void AdvancedDataGridView1_FilterStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.FilterEventArgs e)
+        {
+            Zuby.ADGV.AdvancedDataGridView fdgv = (Zuby.ADGV.AdvancedDataGridView)sender;
+            DataTable dataTable = (DataTable)fdgv.DataSource;
+
+            if (fdgv.FilterString.Length > 0)
+            {
+                dataTable.DefaultView.RowFilter = fdgv.FilterString;
+            }
+            //Clear Filter
+            else
+            {
+                dataTable.DefaultView.RowFilter = "";
+            }
+        }
+        private void AdvancedDataGridView1_SortStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.SortEventArgs e)
+        {
+            Zuby.ADGV.AdvancedDataGridView fdgv = (Zuby.ADGV.AdvancedDataGridView)sender;
+            DataTable dataTable = (DataTable)fdgv.DataSource;
+
+            if (fdgv.SortString.Length > 0)
+            {
+                dataTable.DefaultView.Sort = fdgv.SortString;
+            }
+            //Clear Filter
+            else
+            {
+                dataTable.DefaultView.Sort = dataTable.Columns[0].ColumnName + " asc";
+            }
+
+        }
+
         public SalesBufferReading(ref DatabaseCommands commandsObj)
         {
             InitializeComponent();
+
+            //Initialize backround worker
+            InitializeBackgroundWorker();
 
             //Initialization of Elzab commands instances
             this.SaleBufforReading = new ElzabCommand_OPSPROZ4(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId);
@@ -65,15 +105,61 @@ namespace NaturalnieApp.Forms
             //Tab control
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
-            StartTimer();
+            StopTimer();
         }
-    
-        private void bReadingFromCashRegister_Click(object sender, EventArgs e)
+
+        //=============================================================================
+        //                              Background worker
+        //=============================================================================
+        // Set up the BackgroundWorker object by attaching event handlers. 
+        #region Backgroundworker
+        private void InitializeBackgroundWorker()
+        {
+            this.ProgressBarBackgroundWorker = new BackgroundWorker();
+            // here you have also to implement the necessary events
+            // this event will define what the worker is actually supposed to do
+            this.ProgressBarBackgroundWorker.DoWork += DbBackgroundWorker_DoWork;
+            // this event will define what the worker will do when finished
+            this.ProgressBarBackgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.DbBackgroundWorker_RunWorkerCompleted);
+        }
+        // This event handler is where the actual, potentially time-consuming work is done.
+        private void DbBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
 
             try
             {
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
+        // This event handler is where the actual, potentially time-consuming work is done.
+        private void DbBackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            try { 
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        #endregion
+
+        private void bReadingFromCashRegister_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Clear pages
+                this.tcDataFromFile.TabPages.Clear();
+                this.DataGridViewsList.Clear();
+                this.DataSource.Clear();
+
+                //Disable page control
+                this.tcDataFromFile.Enabled = false;
 
                 this.SaleBufforReading.DataToElzab.Element.RemoveAllElements();
                 this.SaleBufforReading.DataFromElzab.Element.RemoveAllElements();
@@ -85,15 +171,119 @@ namespace NaturalnieApp.Forms
 
                 if ((status.ErrorNumber != 0) || (status.ErrorText == null))
                 {
+
+                    //ChangeStatus
+                    this.StatusBox.Text = "0. Błąd:(";
+                    this.StatusBox.Update();
+
                     MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
                         status.ErrorNumber, status.ErrorText),
                         "Błąd komunikacji z kasą Elzab!",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                else
+                {
+                    //ChangeStatus
+                    this.StatusBox.Text = "2. Odczytywanie typów sprzedaży";
+                    this.StatusBox.Update();
+
+                    //Get list of element type
+                    List<int> elementsTypeList = this.SaleBufforReading.DataFromElzab.GetListOfElementTypes();
+                    List<Sales> listOfElementsToAdd = new List<Sales>();
+                    foreach (int type in elementsTypeList)
+                    {
+                        //Get list of all elements of given type
+                        List<AttributeValueObject> elementsList = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
+                        listOfElementsToAdd.AddRange(ElzabRelated.ParseElzabBufferToDbObject(elementsList));
+                    }
+
+                    //ChangeStatus
+                    this.StatusBox.Text = "3. Sprawdzanie unikalności elementów sprzedaży";
+                    this.StatusBox.Update();
+
+                    //List of unique idetifiers
+                    List<string> uniqueIdetifiers = listOfElementsToAdd.Select(u => u.EntryUniqueIdentifier).ToList();
+
+                    //Check what exist in DB
+                    List<string> uniqueIdetifiersNotInDb = this.databaseCommands.CheckIfUniqueIdExist(uniqueIdetifiers);
+
+                    //Get only those object that are not exist in db
+                    List<Sales> modifiedListOfElementsToAdd = new List<Sales>();
+                    foreach (string element in uniqueIdetifiersNotInDb)
+                    {
+                        modifiedListOfElementsToAdd.Add(listOfElementsToAdd.Where(w => w.EntryUniqueIdentifier == element).
+                            Select(l => l).FirstOrDefault());
+                    }
+
+
+                    //ChangeStatus
+                    this.StatusBox.Text = string.Format("5. Dodawanie do bazy danych unikalnych elementów sprzedaży ({0} pozycji)"
+                        , modifiedListOfElementsToAdd.Count());
+                    this.StatusBox.Update();
+
+                    //Add to DB
+                    this.databaseCommands.AddToSales(modifiedListOfElementsToAdd);
+
+                    //Create pages
+                    foreach (int type in elementsTypeList)
+                    {
+                        //Get attributes names for given type
+                        List<string> attributesNamesOfType = this.SaleBufforReading.DataFromElzab.GetAttributesNamesOfType(type);
+                        List<string> columNames = new List<string>();
+                        foreach (string attibuteName in attributesNamesOfType)
+                        {
+                            columNames.Add(this.SaleBufforReading.GetTranslationForGivenAttributeName(attibuteName));
+                        }
+
+                        //Variables for page creation
+                        string pageName = this.SaleBufforReading.GetTheNameOfGivenElementType(type);
+                        int pageIndex = -1;
+
+                        //Add page
+                        this.tcDataFromFile.TabPages.Add(pageName);
+
+                        pageIndex = this.tcDataFromFile.TabPages.Count - 1;
+
+                        AddDataGridToTabPage(this.tcDataFromFile.TabPages[pageIndex], columNames);
+
+                    }
+
+                    this.tcDataFromFile.Update();
+
+                    //ChangeStatus
+                    this.StatusBox.Text = "5. Ładowanie danych";
+                    this.StatusBox.Update();
+
+                    foreach (int type in elementsTypeList)
+                    {
+                        //Add data to data source
+                        List<AttributeValueObject> dataToAdd = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
+                        AddDataFromElzabToDataSource(dataToAdd, elementsTypeList.IndexOf(type));
+                    }
+
+
+                    //ChangeStatus
+                    this.StatusBox.Text = "6. Aktualizacja stanów magazynowych";
+                    this.StatusBox.Update();
+
+                    //Update sales table
+                    UpdateSalesQuantityInStock(this.SaleBufforReading.DataFromElzab, NORMAL_SALE_INDEX);
+
+
+                    //ChangeStatus
+                    this.StatusBox.Text = "6. Zakończono!:)";
+                    this.StatusBox.Update();
+
+                    this.tcDataFromFile.Enabled = true;
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+
+                //ChangeStatus
+                this.StatusBox.Text = "0. Błąd:(";
+                this.StatusBox.Update();
             }
 
         }
@@ -336,6 +526,10 @@ namespace NaturalnieApp.Forms
                 this.DataGridViewsList.Last().AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
                 this.DataGridViewsList.Last().AutoResizeColumns();
+
+                //Add events
+                this.DataGridViewsList.Last().FilterStringChanged += AdvancedDataGridView1_FilterStringChanged;
+                this.DataGridViewsList.Last().SortStringChanged += AdvancedDataGridView1_SortStringChanged;
 
                 //Add grid view to the tab page
                 page.Controls.Add(this.DataGridViewsList.Last());

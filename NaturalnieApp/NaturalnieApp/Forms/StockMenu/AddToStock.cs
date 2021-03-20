@@ -525,9 +525,12 @@ namespace NaturalnieApp.Forms
         #region Buttons events
         private void bClose_Click(object sender, EventArgs e)
         {
-
-            this.Parent.Show();
-            this.Dispose();
+            DialogResult result = MessageBox.Show("Czy na pewno chcesz zamknąć okno?", "Zamknięcie okna programu", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                this.Parent.Show();
+                this.Dispose();
+            }
         }
         private void bSave_Click(object sender, EventArgs e)
         {

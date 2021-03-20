@@ -193,7 +193,7 @@ namespace NaturalnieApp.Forms
             this.cbAddWithEveryScanCycle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbAddWithEveryScanCycle.Location = new System.Drawing.Point(584, 4);
             this.cbAddWithEveryScanCycle.Name = "cbAddWithEveryScanCycle";
-            this.cbAddWithEveryScanCycle.Size = new System.Drawing.Size(173, 24);
+            this.cbAddWithEveryScanCycle.Size = new System.Drawing.Size(171, 24);
             this.cbAddWithEveryScanCycle.TabIndex = 3;
             this.cbAddWithEveryScanCycle.Text = "Dodaj przy odczycie";
             this.cbAddWithEveryScanCycle.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -438,7 +438,7 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 124F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 65F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 92F));
             this.tableLayoutPanel4.Controls.Add(this.chbExpDateReq, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.dtpExpirationDate, 3, 0);
             this.tableLayoutPanel4.Controls.Add(this.lDateOfAccept, 0, 0);
@@ -520,7 +520,7 @@ namespace NaturalnieApp.Forms
             this.lQuantity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
             this.lQuantity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lQuantity.Location = new System.Drawing.Point(763, 3);
+            this.lQuantity.Location = new System.Drawing.Point(761, 3);
             this.lQuantity.Margin = new System.Windows.Forms.Padding(2);
             this.lQuantity.Name = "lQuantity";
             this.lQuantity.Size = new System.Drawing.Size(61, 26);
@@ -532,10 +532,10 @@ namespace NaturalnieApp.Forms
             // 
             this.tbQuantity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbQuantity.Location = new System.Drawing.Point(829, 3);
+            this.tbQuantity.Location = new System.Drawing.Point(827, 3);
             this.tbQuantity.Margin = new System.Windows.Forms.Padding(2);
             this.tbQuantity.Name = "tbQuantity";
-            this.tbQuantity.Size = new System.Drawing.Size(86, 26);
+            this.tbQuantity.Size = new System.Drawing.Size(88, 26);
             this.tbQuantity.TabIndex = 2;
             this.tbQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbQuantity.Validating += new System.ComponentModel.CancelEventHandler(this.tbQuantity_Validating);

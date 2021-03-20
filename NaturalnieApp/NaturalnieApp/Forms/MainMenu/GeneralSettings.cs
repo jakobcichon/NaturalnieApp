@@ -71,7 +71,7 @@ namespace NaturalnieApp.Forms
             //General settings
             this.rtbLibraryPath.Text = conFileObj.GetValueByVariableName("LibraryPath");
 
-            //Intilialize las valid text for rtb
+            //Intilialize last valid text for rtb
             this.ElzabPathLastValidText = this.tbElzabPath.Text;
             this.LabelPathLastValidText = this.rtbLabelPath.Text;
             this.DbBackupPathLastValidText = this.rtbDbBackupPath.Text;
