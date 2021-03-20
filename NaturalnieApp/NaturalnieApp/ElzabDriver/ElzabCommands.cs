@@ -142,7 +142,7 @@ namespace ElzabCommands
                     { 9, "9. Wydanie prezentu dla karty Bonus"},
                     { 10, "10. Korekcja sprzedaży lub zwrot"},
                     { 11, "11. Anulowane paragony - normalna sprzedaż"},
-                    { 12, "11. Anulowane paragony - korekcja"},
+                    { 12, "12. Anulowane paragony - korekcja"},
                     { 13, "13. Logowanie kasjera"},
                     { 14, "14. Wylogowanie kasjera"},
                     { 15, "15. Potwierdzenie przeczytania wiadomości kasjera"},

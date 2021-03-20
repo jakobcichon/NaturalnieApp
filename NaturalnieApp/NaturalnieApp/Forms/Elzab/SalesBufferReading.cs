@@ -198,7 +198,7 @@ namespace NaturalnieApp.Forms
                     }
 
                     //ChangeStatus
-                    this.StatusBox.Text = "3. Dodawanie do bazy danych";
+                    this.StatusBox.Text = "3. Sprawdzanie unikalności elementów sprzedaży";
                     this.StatusBox.Update();
 
                     //List of unique idetifiers
@@ -215,17 +215,14 @@ namespace NaturalnieApp.Forms
                             Select(l => l).FirstOrDefault());
                     }
 
-                    //Add to DB
-                    this.databaseCommands.AddToSales(modifiedListOfElementsToAdd);
 
                     //ChangeStatus
-                    this.StatusBox.Text = "4. Tworzenie widoku";
+                    this.StatusBox.Text = string.Format("5. Dodawanie do bazy danych unikalnych elementów sprzedaży ({0} pozycji)"
+                        , modifiedListOfElementsToAdd.Count());
                     this.StatusBox.Update();
 
-                    //!!!!!!!!!!!!!!!!!!!!!injected
-                    UpdateSalesQuantityInStock(this.SaleBufforReading.DataFromElzab, NORMAL_SALE_INDEX);
-
-                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    //Add to DB
+                    this.databaseCommands.AddToSales(modifiedListOfElementsToAdd);
 
                     //Create pages
                     foreach (int type in elementsTypeList)
@@ -249,8 +246,9 @@ namespace NaturalnieApp.Forms
 
                         AddDataGridToTabPage(this.tcDataFromFile.TabPages[pageIndex], columNames);
 
-
                     }
+
+                    this.tcDataFromFile.Update();
 
                     //ChangeStatus
                     this.StatusBox.Text = "5. Ładowanie danych";
@@ -262,6 +260,15 @@ namespace NaturalnieApp.Forms
                         List<AttributeValueObject> dataToAdd = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
                         AddDataFromElzabToDataSource(dataToAdd, elementsTypeList.IndexOf(type));
                     }
+
+
+                    //ChangeStatus
+                    this.StatusBox.Text = "6. Aktualizacja stanów magazynowych";
+                    this.StatusBox.Update();
+
+                    //Update sales table
+                    UpdateSalesQuantityInStock(this.SaleBufforReading.DataFromElzab, NORMAL_SALE_INDEX);
+
 
                     //ChangeStatus
                     this.StatusBox.Text = "6. Zakończono!:)";
@@ -278,7 +285,6 @@ namespace NaturalnieApp.Forms
 
                 MessageBox.Show(ex.Message);
 
-                
             }
         }
 
@@ -423,12 +429,7 @@ namespace NaturalnieApp.Forms
                     }
                         
                 }
-                else
-                {
-                    //!!!!!!!!! To do!!!!!! Decide what to do here!!!!!!!!!!!!1
-                }
             }
-            ;
 
             DialogResult result = MessageBox.Show(string.Format("Raport dodania pozycji sprzedaży do bazy danych:" +
                 "\n Liczba produktów których nie można było odnaleźć w bazie danych: {0}" +

@@ -1899,6 +1899,7 @@ namespace NaturalnieApp.Database
             {
                 localStock.LastQuantity = localStock.ActualQuantity;
                 localStock.ActualQuantity += quantityToUpdate;
+                localStock.ModificationDate = DateTime.Now;
                 //Check if product exist in stock
                 this.EditInStock(localStock, stockOperationType, salesUniqueIdForAutomaticUpdate);
                 result = true;
