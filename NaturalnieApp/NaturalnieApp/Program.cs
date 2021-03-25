@@ -21,11 +21,48 @@ namespace NaturalnieApp
     {
         public static class GlobalVariables
         {
+            //Thread-Safe
+            static private object sync_ElzabPortCom = new object();
+            static private SerialPort _elzabPortCom;
+            static public SerialPort ElzabPortCom
+            {
+                get
+                {
+                    lock (sync_ElzabPortCom)
+                    {
+                        return _elzabPortCom;
+                    }
+                }
+                set
+                {
+                    lock (sync_ElzabPortCom)
+                    {
+                        _elzabPortCom = value;
+                    }
+                }
+            }
+            static private bool _elzabConnectionTested;
+            static public bool ElzabConnectionTested
+            {
+                get 
+                {
+                    lock(sync_ElzabPortCom)
+                    {
+                        return _elzabConnectionTested;
+                    }
+                }
+                set
+                {
+                    lock (sync_ElzabPortCom)
+                    {
+                        _elzabConnectionTested = value;
+                    }
+                }
+            }
+
             static public string LabelPath { get; set; }
             static public string ElzabCommandPath { get; set; }
             static public int ElzabCashRegisterId { get; set; }
-            static public int ElzabPortCom { get; set; }
-            static public int ElzabBaudRate { get; set; }
             static public string SqlServerName { get; set; }
             static public string ConnectionString { get; set; }
             static public string DymoPrinterName { get; set; }
@@ -86,10 +123,11 @@ namespace NaturalnieApp
             string path = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
             GlobalVariables.ElzabCommandPath = path;
             GlobalVariables.ElzabCashRegisterId = 1;
-            GlobalVariables.ElzabBaudRate = Int32.Parse(ConfigFileInst.GetValueByVariableName("ElzabBaudRate"));
 
-            //Check available com ports
-            GlobalVariables.ElzabPortCom = Int32.Parse(ConfigFileInst.GetValueByVariableName("ElzabCOMPort"));
+            int baudRate = Int32.Parse(ConfigFileInst.GetValueByVariableName("ElzabBaudRate"));
+            string comName = ConfigFileInst.GetValueByVariableName("ElzabCOMPort");
+            GlobalVariables.ElzabPortCom = new SerialPort(comName, baudRate);
+            GlobalVariables.ElzabConnectionTested = false;
 
             GlobalVariables.LabelPath = ConfigFileInst.GetValueByVariableName("LabelPath");
             GlobalVariables.SqlServerName = ConfigFileInst.GetValueByVariableName("SqlServerName");

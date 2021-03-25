@@ -29,6 +29,72 @@ namespace ElzabCommands
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
+    public class ElzabCommand_ONRUNIK : InitStructure, IElzabCommandInterface
+    {
+        //Local variable
+        public ElzabFileObject DataFromElzab { get; set; }
+        public ElzabFileObject DataToElzab { get; set; }
+        public ElzabFileObject Report { get; set; }
+        public CommandExecutionStatus ReportStatus { get; set; }
+        public ElzabFileObject Config { get; set; }
+        private string CommandName { get { return "ONRUNIK"; } }
+        private string ElementAttributesPatternOutFile
+        {
+            get
+            {
+                return "nr_unik";
+            }
+        }
+        private string ElementAttributesPatternInFile
+        {
+            get
+            {
+                return "";
+            }
+        }
+        private string ElementAttributesPatternReportFile
+        {
+            get
+            {
+                return "";
+            }
+        }
+        private string ElementAttributesPatternConfigFile
+        {
+            get
+            {
+                return " device_number, connection_data, time_out";
+            }
+        }
+
+        //Class constructor
+        public ElzabCommand_ONRUNIK(string path, int cashRegisterID)
+        {
+            //Call method used to initialize base structure for data from Elzab
+            this.DataFromElzab = InitBaseStructuresDataFromElzab(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
+
+            //Call method used to initialize base structure for data to Elzab
+            this.DataToElzab = InitBaseStructuresDataToElzab(path, cashRegisterID, CommandName, ElementAttributesPatternInFile);
+
+            //Call method used to initialize base structure for Report data
+            this.Report = InitBaseStructuresReport(path, cashRegisterID, CommandName, ElementAttributesPatternReportFile);
+
+            //Call method used to initialize base structure for Config data
+            this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+        }
+
+        //Execute command
+        public CommandExecutionStatus ExecuteCommand(bool executeBackup = true)
+        {
+            CommandExecutionStatus status = base.ExecuteCommand(this, executeBackup: true);
+            return status;
+        }
+
+
+
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------
     public class ElzabCommand_OPSPROZ4 : InitStructure, IElzabSaleBufforInterface
     {
         //Local variable
@@ -334,7 +400,7 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public CommandExecutionStatus ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand(bool executeBackup = true)
         {
             CommandExecutionStatus status = base.ExecuteCommand(this);
             return status;
@@ -400,7 +466,7 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public CommandExecutionStatus ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand(bool executeBackup = true)
         {
             CommandExecutionStatus status = base.ExecuteCommand(this);
             return status;
@@ -466,7 +532,7 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public CommandExecutionStatus ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand(bool executeBackup = true)
         {
             CommandExecutionStatus status = base.ExecuteCommand(this);
             return status;
@@ -530,7 +596,7 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public CommandExecutionStatus ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand(bool executeBackup = true)
         {
             CommandExecutionStatus status = base.ExecuteCommand(this);
             return status;
@@ -593,7 +659,7 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public CommandExecutionStatus ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand(bool executeBackup = true)
         {
             CommandExecutionStatus status = base.ExecuteCommand(this);
             return status;
@@ -656,7 +722,7 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public CommandExecutionStatus ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand(bool executeBackup = true)
         {
             CommandExecutionStatus status = base.ExecuteCommand(this);
             return status;
@@ -720,7 +786,7 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public CommandExecutionStatus ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand(bool executeBackup = true)
         {
             CommandExecutionStatus status = base.ExecuteCommand(this);
             return status;
@@ -773,7 +839,7 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public CommandExecutionStatus ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand(bool executeBackup = true)
         {
             CommandExecutionStatus status = base.ExecuteCommand(this);
             return status;
@@ -838,7 +904,7 @@ namespace ElzabCommands
         }
 
         //Execute command
-        public CommandExecutionStatus ExecuteCommand()
+        public CommandExecutionStatus ExecuteCommand(bool executeBackup = true)
         {
             CommandExecutionStatus status = base.ExecuteCommand(this);
             return status;
@@ -929,14 +995,15 @@ namespace ElzabCommands
             return _dataToElzab;
         }
 
-        protected CommandExecutionStatus ExecuteCommand(IElzabCommandInterface commandInstance)
+        protected CommandExecutionStatus ExecuteCommand(IElzabCommandInterface commandInstance, bool executeBackup = true)
         {
             //Local variables
             CommandExecutionStatus reportStatus = new CommandExecutionStatus();
 
             //Override config file elements
             commandInstance.Config.AddElement();
-            string connData = commandInstance.Config.GenerateConnectionData(GlobalVariables.ElzabPortCom, GlobalVariables.ElzabBaudRate);
+            string connData = commandInstance.Config.GenerateConnectionData(GlobalVariables.ElzabPortCom.PortName, 
+                GlobalVariables.ElzabPortCom.BaudRate);
             commandInstance.Config.ChangeAllElementValues("1", "1", connData, "3");
             commandInstance.Config.GenerateRawDataFromObject();
             commandInstance.Config.WriteDataToFile();
@@ -947,11 +1014,11 @@ namespace ElzabCommands
             if (commandInstance.DataFromElzab != null)
             {
                 //Check if out file exits. If yes, copy it to backup and remove orginal one.
-                result = commandInstance.DataFromElzab.BackupFileAndRemove();
+                result = commandInstance.DataFromElzab.BackupFileAndRemove(executeBackup);
             }
 
             //Check if report file exist.If yes, copy it to backup and remove orginal one.
-            if (result) result = commandInstance.Report.BackupFileAndRemove();
+            if (result) result = commandInstance.Report.BackupFileAndRemove(executeBackup);
 
             //Generate raw data from object. This data will be used to write to file
             if (result) result = commandInstance.DataToElzab.GenerateRawDataFromObject();
@@ -1003,7 +1070,8 @@ namespace ElzabCommands
 
             //Override config file elements
             commandInstance.Config.AddElement();
-            string connData = commandInstance.Config.GenerateConnectionData(GlobalVariables.ElzabPortCom, GlobalVariables.ElzabBaudRate);
+            string connData = commandInstance.Config.GenerateConnectionData(GlobalVariables.ElzabPortCom.PortName, 
+                GlobalVariables.ElzabPortCom.BaudRate);
             commandInstance.Config.ChangeAllElementValues("1", "1", connData, "3");
             commandInstance.Config.GenerateRawDataFromObject();
             commandInstance.Config.WriteDataToFile();

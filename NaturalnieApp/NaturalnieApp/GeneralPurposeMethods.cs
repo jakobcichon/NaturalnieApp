@@ -420,6 +420,7 @@ namespace NaturalnieApp
 
     static public class ElzabRelated
     {
+
         /// <summary>
         /// Method used convert numeric tax value cash register group
         /// </summary>
@@ -744,10 +745,13 @@ namespace NaturalnieApp
         }
 
         //Method used to convert from com port number (ex. 1) to name (ex.COM1)
-        static public string ComPortNameFromNumber(int comPortNumber)
+        static public string CleanComPortName(string rawComPortName)
         {
-            string comPortName = "COM" + comPortNumber.ToString();
-            return comPortName;
+            Regex reg = new Regex(@"^COM\d+");
+            if (!reg.IsMatch(rawComPortName)) throw new ArgumentOutOfRangeException(string.Format("Błąd! Nazwa portu COM nie może zostać rozpoznana!" +
+                 " Podana wartość: '{0}'.", rawComPortName));
+
+            return reg.Match(rawComPortName).Value;
         }
 
         //Method used to convert from name (ex.COM1) to com port number (ex. 1) 

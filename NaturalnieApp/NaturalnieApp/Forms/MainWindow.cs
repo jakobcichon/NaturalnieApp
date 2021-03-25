@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using NaturalnieApp.Initialization;
 using NaturalnieApp.Database;
 using System.Reflection;
+using System.IO.Ports;
+using System.Collections.Generic;
 
 namespace NaturalnieApp.Forms
 {
@@ -38,8 +40,9 @@ namespace NaturalnieApp.Forms
         //Cyclic db check
         DatabaseCommands databaseCommandsCyclic;
 
-        //Backgorund worker
-        BackgroundWorker backgroundWorker1;
+        //Backgorund workers
+        BackgroundWorker bwCheckDbConnection;
+        BackgroundWorker bwMonitorComPortChange;
 
         public MainWindow(ConfigFileObject conFileObj)
         {
@@ -54,7 +57,7 @@ namespace NaturalnieApp.Forms
             this.databaseCommands = new DatabaseCommands();
             this.databaseCommandsCyclic = new DatabaseCommands();
 
-            //Background worker
+            //Background workers
             InitializeBackgroundWorker();
 
             //Start the timer
@@ -83,23 +86,27 @@ namespace NaturalnieApp.Forms
         //=============================================================================
         // Set up the BackgroundWorker object by attaching event handlers. 
         #region Backgroundworker
+        //Method used to initialize backgroundworkers
         private void InitializeBackgroundWorker()
         {
-            this.backgroundWorker1 = new BackgroundWorker();
-            // here you have also to implement the necessary events
-            // this event will define what the worker is actually supposed to do
-            this.backgroundWorker1.DoWork += backgroundWorker1_DoWork;
-            // this event will define what the worker will do when finished
-            this.backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            //Check DB connection background worker
+            this.bwCheckDbConnection = new BackgroundWorker();
+            this.bwCheckDbConnection.DoWork += bwCheckDbConnection_DoWork;
+            this.bwCheckDbConnection.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.bwCheckDbConnection_RunWorkerCompleted);
+
+            //Monitor COM port change background worker
+            this.bwMonitorComPortChange = new BackgroundWorker();
+            this.bwMonitorComPortChange.DoWork += bwMonitorComPortChange_DoWork;
+            this.bwMonitorComPortChange.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.bwMonitorComPortChange_RunWorkerCompleted);
         }
-        // This event handler is where the actual, potentially time-consuming work is done.
-        void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+
+        //Check DB connection background worker
+        void bwCheckDbConnection_DoWork(object sender, DoWorkEventArgs e)
         {
             this.databaseCommandsCyclic.CheckConnection(false);
             e.Result = this.databaseCommandsCyclic.ConnectionStatus;
         }
-        // This event handler is where the actual, potentially time-consuming work is done.
-        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void bwCheckDbConnection_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if((bool)e.Result == true)
             {
@@ -110,6 +117,30 @@ namespace NaturalnieApp.Forms
                 this.pbDbStatus.Image = Properties.Resources.DbStatusNok;
             }
         }
+
+        //Monitor COM port change background worker
+        void bwMonitorComPortChange_DoWork(object sender, DoWorkEventArgs e)
+        {
+            //Get list of the available COM ports
+            List<string> listOfTheAvailablePortComs = new List<string>();
+            listOfTheAvailablePortComs.AddRange(SerialPort.GetPortNames());
+
+            //Check if previous selected port is still available
+            bool portExist = listOfTheAvailablePortComs.Exists(el => el.Equals(Program.GlobalVariables.ElzabPortCom.PortName));
+
+            //If port exist, check if connection to Elzab was tested
+            if(portExist)
+            {
+                if(!Program.GlobalVariables.ElzabConnectionTested)
+                {
+
+                }
+            }
+        }
+        private void bwMonitorComPortChange_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+        }
         //=============================================================================
         #endregion
 
@@ -118,46 +149,17 @@ namespace NaturalnieApp.Forms
         #region Resizable window
         protected override void WndProc(ref Message m)
         {
-            const int RESIZE_HANDLE_SIZE = 10;
+
             switch (m.Msg)
             {
                 case 0x0084/*NCHITTEST*/ :
                     base.WndProc(ref m);
-
-                    if ((int)m.Result == 0x01/*HTCLIENT*/)
-                    {
-                        Point screenPoint = new Point(m.LParam.ToInt32());
-                        Point clientPoint = this.PointToClient(screenPoint);
-                        if ((clientPoint.Y <= RESIZE_HANDLE_SIZE))
-                        {
-                            if (clientPoint.X <= RESIZE_HANDLE_SIZE)
-                                m.Result = (IntPtr)13/*HTTOPLEFT*/ ;
-                            else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
-                                m.Result = (IntPtr)12/*HTTOP*/ ;
-                            else
-                                m.Result = (IntPtr)14/*HTTOPRIGHT*/ ;
-                        }
-                        else if ((clientPoint.Y <= (Size.Height - RESIZE_HANDLE_SIZE)) )
-                        {
-                            if (clientPoint.X <= RESIZE_HANDLE_SIZE)
-                                m.Result = (IntPtr)10/*HTLEFT*/ ;
-                            else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
-                                m.Result = (IntPtr)2/*HTCAPTION*/ ;
-                            else
-                                m.Result = (IntPtr)11/*HTRIGHT*/ ;
-                        }
-                        else
-                        {
-                            if ((clientPoint.X <= RESIZE_HANDLE_SIZE))
-                                m.Result = (IntPtr)16/*HTBOTTOMLEFT*/ ;
-                            else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
-                                m.Result = (IntPtr)15/*HTBOTTOM*/ ;
-                            else
-                                m.Result = (IntPtr)17/*HTBOTTOMRIGHT*/ ;
-                        }
-
-                    }
+                    ResizeWindow(ref m);
                     return;
+                case 537: //WM_DEVICECHANGE
+                    if (m.WParam == (IntPtr)0x0007/*DBT_DEVNODES_CHANGED*/) HardwareHasHanged();
+                    return;
+
             }
             base.WndProc(ref m);
         }
@@ -169,6 +171,47 @@ namespace NaturalnieApp.Forms
                 cp.Style |= 0x20000; // <--- use 0x20000
                 return cp;
             }
+        }
+        private void ResizeWindow(ref Message m)
+        {
+            const int RESIZE_HANDLE_SIZE = 20;
+            if ((int)m.Result == 0x01/*HTCLIENT*/)
+            {
+                Point screenPoint = new Point(m.LParam.ToInt32());
+                Point clientPoint = this.PointToClient(screenPoint);
+                if ((clientPoint.Y <= RESIZE_HANDLE_SIZE))
+                {
+                    if (clientPoint.X <= RESIZE_HANDLE_SIZE)
+                        m.Result = (IntPtr)13/*HTTOPLEFT*/ ;
+                    else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
+                        m.Result = (IntPtr)12/*HTTOP*/ ;
+                    else
+                        m.Result = (IntPtr)14/*HTTOPRIGHT*/ ;
+                }
+                else if ((clientPoint.Y <= (Size.Height - RESIZE_HANDLE_SIZE)))
+                {
+                    if (clientPoint.X <= RESIZE_HANDLE_SIZE)
+                        m.Result = (IntPtr)10/*HTLEFT*/ ;
+                    else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
+                        m.Result = (IntPtr)2/*HTCAPTION*/ ;
+                    else
+                        m.Result = (IntPtr)11/*HTRIGHT*/ ;
+                }
+                else
+                {
+                    if ((clientPoint.X <= RESIZE_HANDLE_SIZE))
+                        m.Result = (IntPtr)16/*HTBOTTOMLEFT*/ ;
+                    else if (clientPoint.X < (Size.Width - RESIZE_HANDLE_SIZE))
+                        m.Result = (IntPtr)15/*HTBOTTOM*/ ;
+                    else
+                        m.Result = (IntPtr)17/*HTBOTTOMRIGHT*/ ;
+                }
+
+            }
+        }
+        private void HardwareHasHanged()
+        {
+            bwMonitorComPortChange.RunWorkerAsync();
         }
         #endregion
 
@@ -522,7 +565,7 @@ namespace NaturalnieApp.Forms
         #region Timer event
         private void timer5sTick_Tick(object sender, EventArgs e)
         {
-            if(!this.backgroundWorker1.IsBusy) this.backgroundWorker1.RunWorkerAsync();
+            if(!this.bwCheckDbConnection.IsBusy) this.bwCheckDbConnection.RunWorkerAsync();
         }
         #endregion
 

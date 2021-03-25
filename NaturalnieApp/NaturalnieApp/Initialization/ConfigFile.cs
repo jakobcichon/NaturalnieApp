@@ -23,7 +23,7 @@ namespace NaturalnieApp.Initialization
         {
             //Defaut values of config file
             this.ElzabCommandPathDefaultValue = Directory.GetCurrentDirectory() + "\\Elzab commands\\";
-            this.ElzabCOMPortDefaultValue = "1";
+            this.ElzabCOMPortDefaultValue = "COM1";
             this.ElzabBaudRateDefaultValue = "57600";
             this.SqlServerNameDefaultValue = "localhost";
             this.LabelPathDefaultValue = Directory.GetCurrentDirectory() + "\\Labels\\default label.label";

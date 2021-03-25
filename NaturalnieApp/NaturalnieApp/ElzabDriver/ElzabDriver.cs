@@ -70,6 +70,14 @@ namespace ElzabDriver
         protected Dictionary<int, string> AttributeNameAsID { get; set; }
         protected int NrOfCharsInElementAttribute { get; set; }
         protected string FileNameWithExtension { get; set; }
+        private static int[] BaudRatesList
+        {
+            get
+            {
+                int[] baudRatesList = new int[] { 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 230400, 460800 };
+                return baudRatesList;
+            }
+        }
 
         //Database commands
         public DatabaseCommands DatabaseCommands {get; set;}
@@ -255,21 +263,28 @@ namespace ElzabDriver
         }
 
         //Method used only for config file
-        public string GenerateConnectionData(int comPortNumber, int baudRate)
+        public string GenerateConnectionData(string comPortName, int baudRate)
         {
             //Local variable
             string retVal = "";
 
+            //Check if given com port match pattern
+            Regex reg = new Regex(@"^COM\d+$");
+            bool checkComPortName = reg.IsMatch(comPortName);
+
             bool checkBaudRate = CheckBaudRateValue(baudRate);
 
-            if (comPortNumber > - 1 && checkBaudRate)
+            if (checkComPortName && checkBaudRate)
             {
-                string connectionData = "COM" + comPortNumber + ":" + baudRate + ":" + "MUX0:1";
+                string connectionData = comPortName + ":" + baudRate + ":" + "MUX0:1";
                 retVal = connectionData;
             }
             else
             {
-                MessageBox.Show("Baud rate lub numer portu COM ma niewłaściwą wartość! " + baudRate + " " + comPortNumber);
+                if (!checkComPortName) throw new ArgumentOutOfRangeException(string.Format("Podana nazwa portu COM nie jest prawidłowa (podana wartość: '{0}')! " +
+                     "Nazwa portu musi mieć postać 'COMxxx', gdzie 'x' to numer portu.", comPortName));
+                else throw new ArgumentOutOfRangeException(string.Format("Podana wartość Baud Rate nie jest prawidłowa (podana wartość: '{0}')! " +
+                     "Dopuszczalne wartości: '{1}'", baudRate, string.Join(",", BaudRatesList)));
             }
 
             return retVal;
@@ -282,7 +297,7 @@ namespace ElzabDriver
             bool retVal = false;
 
             //List of allowed baudrates
-            int[] baudRatesList = { 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 38400, 57600, 115200, 230400, 460800 };
+            int[] baudRatesList = BaudRatesList;
             foreach (int element in baudRatesList)
             {
                 if (element == baudRate)
@@ -806,10 +821,10 @@ namespace ElzabDriver
         }
 
         //Method used to check if file exist. If yes, it will move it to backup folder and remove orginal one.
-        internal bool BackupFileAndRemove()
+        internal bool BackupFileAndRemove(bool executeBackup = true)
         {
 
-            bool result = base.BackupFileAndRemove(this.FileNameWithExtension, this.Path, this.BackupPath);
+            bool result = base.BackupFileAndRemove(this.FileNameWithExtension, this.Path, this.BackupPath, executeBackup);
             ;
             return result;
         }
@@ -1064,7 +1079,7 @@ namespace ElzabDriver
             return retVal;
         }
 
-        protected bool BackupFileAndRemove(string fileName, string fullPath, string backupPath)
+        protected bool BackupFileAndRemove(string fileName, string fullPath, string backupPath, bool executeBackup = true)
         {
             //Local variable
             bool retVal = false;
@@ -1073,10 +1088,11 @@ namespace ElzabDriver
             string fullFilePath = Path.Combine(fullPath, fileName);
 
             //If file exist, make backup
-            bool backupDone = MakeFileBackup(fullFilePath, backupPath);
+            bool backupDone = false;
+            if (executeBackup) backupDone = MakeFileBackup(fullFilePath, backupPath);
 
             //Remove orginal file
-            if (backupDone)
+            if (backupDone || !executeBackup)
             {
                 if (DeleteFile(fullFilePath)) retVal = true;
 

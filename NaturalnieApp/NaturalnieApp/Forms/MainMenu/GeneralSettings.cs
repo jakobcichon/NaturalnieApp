@@ -83,7 +83,7 @@ namespace NaturalnieApp.Forms
         {
             //COM Port - settings for com port ComboBox
             string[] ports = SerialPort.GetPortNames();
-            string comPortFromFile = "COM" + conFileObj.GetValueByVariableName("ElzabCOMPort");
+            string comPortFromFile = conFileObj.GetValueByVariableName("ElzabCOMPort");
             cCOMPorts.Items.Clear();
             bool result = false;
             foreach (string element in ports)
@@ -128,40 +128,42 @@ namespace NaturalnieApp.Forms
         }
         private void SaveData()
         {
-            //Update value of COM port
+            if (AllObjectSelected())
+            {
+                //Update value of COM port
+                ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", ElzabRelated.CleanComPortName(cCOMPorts.SelectedItem.ToString()));
+                GlobalVariables.ElzabPortCom.PortName = ElzabRelated.CleanComPortName(cCOMPorts.SelectedItem.ToString());
 
-            ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", ElzabRelated.ComPortNumberFromName(cCOMPorts.SelectedItem.ToString()).ToString());
-            GlobalVariables.ElzabPortCom = ElzabRelated.ComPortNumberFromName(cCOMPorts.SelectedItem.ToString());
+                //Update value of Baud rate
+                ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", cBaudRate.SelectedItem.ToString());
+                GlobalVariables.ElzabPortCom.BaudRate = Int32.Parse(cBaudRate.SelectedItem.ToString());
 
-            //Update value of Baud rate
-            ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", cBaudRate.SelectedItem.ToString());
-            GlobalVariables.ElzabPortCom = Int32.Parse(cBaudRate.SelectedItem.ToString());
+                //Update value of path
+                ConfigFileObjInst.ChangeVariableValue("ElzabCommandPath", tbElzabPath.Text.ToString());
+                GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();
 
-            //Update value of path
-            ConfigFileObjInst.ChangeVariableValue("ElzabCommandPath", tbElzabPath.Text.ToString());
-            GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();
+                //Update database name
+                ConfigFileObjInst.ChangeVariableValue("SqlServerName", rtbSqlServerName.Text.ToString());
+                GlobalVariables.SqlServerName = rtbSqlServerName.Text.ToString();
 
-            //Update database name
-            ConfigFileObjInst.ChangeVariableValue("SqlServerName", rtbSqlServerName.Text.ToString());
-            GlobalVariables.SqlServerName = rtbSqlServerName.Text.ToString();
+                //Update label path
+                ConfigFileObjInst.ChangeVariableValue("LabelPath", rtbLabelPath.Text.ToString());
+                GlobalVariables.LabelPath = rtbLabelPath.Text.ToString();
 
-            //Update label path
-            ConfigFileObjInst.ChangeVariableValue("LabelPath", rtbLabelPath.Text.ToString());
-            GlobalVariables.LabelPath = rtbLabelPath.Text.ToString();
+                //Update library path
+                ConfigFileObjInst.ChangeVariableValue("LibraryPath", rtbLibraryPath.Text.ToString());
+                GlobalVariables.LibraryPath = rtbLibraryPath.Text.ToString();
 
-            //Update library path
-            ConfigFileObjInst.ChangeVariableValue("LibraryPath", rtbLibraryPath.Text.ToString());
-            GlobalVariables.LibraryPath = rtbLibraryPath.Text.ToString();
+                //Update db backups path path
+                ConfigFileObjInst.ChangeVariableValue("DbBackupPath", rtbDbBackupPath.Text.ToString());
+                GlobalVariables.DbBackupPath = rtbDbBackupPath.Text.ToString();
+                GlobalVariables.ConnectionString = string.Format("server = {0}; port = 3306; database = shop;" +
+                "uid = admin; password = admin; Connection Timeout = 2", GlobalVariables.SqlServerName);
 
-            //Update db backups path path
-            ConfigFileObjInst.ChangeVariableValue("DbBackupPath", rtbDbBackupPath.Text.ToString());
-            GlobalVariables.DbBackupPath = rtbDbBackupPath.Text.ToString();
-            GlobalVariables.ConnectionString = string.Format("server = {0}; port = 3306; database = shop;" +
-            "uid = admin; password = admin; Connection Timeout = 2", GlobalVariables.SqlServerName);
+                ConfigFileObjInst.SaveData();
 
-            ConfigFileObjInst.SaveData();
-
-            MessageBox.Show("Zapisano zmiany!");
+                MessageBox.Show("Zapisano zmiany!");
+            }
         }
         private bool AllObjectSelected()
         {
@@ -310,10 +312,10 @@ namespace NaturalnieApp.Forms
                 if (AllObjectSelected())
                 {
                     //Update value of COM port
-                    GlobalVariables.ElzabPortCom = ElzabRelated.ComPortNumberFromName(cCOMPorts.SelectedItem.ToString());
+                    GlobalVariables.ElzabPortCom.PortName = ElzabRelated.CleanComPortName(cCOMPorts.SelectedItem.ToString());
 
                     //Update value of Baud rate
-                    GlobalVariables.ElzabBaudRate = Int32.Parse(cBaudRate.SelectedItem.ToString());
+                    GlobalVariables.ElzabPortCom.BaudRate = Int32.Parse(cBaudRate.SelectedItem.ToString());
 
                     //Update value of path
                     GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();
