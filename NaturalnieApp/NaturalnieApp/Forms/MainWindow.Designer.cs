@@ -624,7 +624,7 @@ namespace NaturalnieApp.Forms
             // lVersion
             // 
             this.lVersion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lVersion.Font = new System.Drawing.Font("Alegreya Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lVersion.ForeColor = System.Drawing.Color.Gray;
             this.lVersion.Location = new System.Drawing.Point(1, 1);
             this.lVersion.Margin = new System.Windows.Forms.Padding(1);

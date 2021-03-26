@@ -21,11 +21,32 @@ namespace NaturalnieApp
     {
         public static class GlobalVariables
         {
+            static private object elzabPortComLock = new object();
+            static private int _elzabPortCom;
+
+            static public int ElzabBaudRate
+            {
+                get
+                {
+                    lock(elzabPortComLock)
+                    {
+                        return _elzabPortCom;
+                    }
+                }
+
+                set
+                {
+                    lock(elzabPortComLock)
+                    {
+                        _elzabPortCom = value;
+                    }
+                }
+            }
+
             static public string LabelPath { get; set; }
             static public string ElzabCommandPath { get; set; }
             static public int ElzabCashRegisterId { get; set; }
             static public int ElzabPortCom { get; set; }
-            static public int ElzabBaudRate { get; set; }
             static public string SqlServerName { get; set; }
             static public string ConnectionString { get; set; }
             static public string DymoPrinterName { get; set; }

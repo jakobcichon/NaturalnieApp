@@ -255,7 +255,7 @@ namespace ElzabDriver
         }
 
         //Method used only for config file
-        public string GenerateConnectionData(int comPortNumber, int baudRate)
+        public string GenerateConnectionData(string comPortName, int baudRate)
         {
             //Local variable
             string retVal = "";

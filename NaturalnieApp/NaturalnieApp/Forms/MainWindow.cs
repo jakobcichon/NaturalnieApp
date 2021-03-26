@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using NaturalnieApp.Initialization;
 using NaturalnieApp.Database;
 using System.Reflection;
+using System.IO.Ports;
+using System.Collections.Generic;
 
 namespace NaturalnieApp.Forms
 {
@@ -40,6 +42,8 @@ namespace NaturalnieApp.Forms
 
         //Backgorund worker
         BackgroundWorker backgroundWorker1;
+        //Backgorund worker
+        BackgroundWorker backgroundWorker2;
 
         public MainWindow(ConfigFileObject conFileObj)
         {
@@ -76,7 +80,7 @@ namespace NaturalnieApp.Forms
 
             //Set version
             lVersion.Text = typeof(Program).Assembly.GetName().Version.ToString();
-            
+
         }
         //=============================================================================
         //                              Background worker
@@ -91,6 +95,11 @@ namespace NaturalnieApp.Forms
             this.backgroundWorker1.DoWork += backgroundWorker1_DoWork;
             // this event will define what the worker will do when finished
             this.backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+
+            this.backgroundWorker2 = new BackgroundWorker();
+            this.backgroundWorker2.DoWork += backgroundWorker2_DoWork;
+            this.backgroundWorker2.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
+
         }
         // This event handler is where the actual, potentially time-consuming work is done.
         void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -110,6 +119,21 @@ namespace NaturalnieApp.Forms
                 this.pbDbStatus.Image = Properties.Resources.DbStatusNok;
             }
         }
+
+        void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
+        {
+            List<string> comPorts = new List<string>();
+            comPorts.AddRange(SerialPort.GetPortNames());
+
+            SerialPort tesPort = new SerialPort(comPorts[0]);
+            Program.GlobalVariables.ElzabPortCom = tesPort.PortName;
+            ;
+        }
+        private void backgroundWorker2_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            ;
+        }
+
         //=============================================================================
         #endregion
 
@@ -157,6 +181,10 @@ namespace NaturalnieApp.Forms
                         }
 
                     }
+                    return;
+
+                case 537:
+                    backgroundWorker2.RunWorkerAsync();
                     return;
             }
             base.WndProc(ref m);
