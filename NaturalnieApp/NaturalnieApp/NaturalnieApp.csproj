@@ -474,6 +474,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="mainIcon.ico" />
+    <None Include="Resources\CashRegisterOnline.png" />
+    <None Include="Resources\cashRegisterOffline.png" />
+    <None Include="Resources\cashRegisterExchange.gif" />
     <None Include="Resources\DbStatusNok.png" />
     <None Include="Resources\DbStatusOK.png" />
   </ItemGroup>

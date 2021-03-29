@@ -7,6 +7,7 @@ using NaturalnieApp.Database;
 using System.Reflection;
 using System.IO.Ports;
 using System.Collections.Generic;
+using ElzabDriver;
 
 namespace NaturalnieApp.Forms
 {
@@ -33,6 +34,7 @@ namespace NaturalnieApp.Forms
         public ElzabSynchronization elzabSynchronization { get; set; }
         public SalesBufferReading salesBufferReading { get; set; }
         public PricesRelatedUpdate pricesRelatedUpdate { get; set; }
+        private ElzabCommands.ElzabCommand_ONRUNIK cashRegisterNumber { get; set; }
 
         //Creat EF databse connection object
         DatabaseCommands databaseCommands;
@@ -76,6 +78,10 @@ namespace NaturalnieApp.Forms
             this.elzabSynchronization = new ElzabSynchronization(ref this.databaseCommands);
             this.salesBufferReading = new SalesBufferReading(ref this.databaseCommands);
             this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
+
+            //Cash register number read
+            this.cashRegisterNumber = new ElzabCommands.ElzabCommand_ONRUNIK(Program.GlobalVariables.ElzabCommandPath, 1,
+                Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
 
             //Set version
             lVersion.Text = typeof(Program).Assembly.GetName().Version.ToString();
@@ -121,6 +127,10 @@ namespace NaturalnieApp.Forms
         //Monitor COM port change background worker
         void bwMonitorComPortChange_DoWork(object sender, DoWorkEventArgs e)
         {
+            //Local variables
+            bool elzabConnectionTested = Program.GlobalVariables.ElzabConnectionTested;
+            SerialPort serialPortToWrite = null;
+
             //Get list of the available COM ports
             List<string> listOfTheAvailablePortComs = new List<string>();
             listOfTheAvailablePortComs.AddRange(SerialPort.GetPortNames());
@@ -131,11 +141,71 @@ namespace NaturalnieApp.Forms
             //If port exist, check if connection to Elzab was tested
             if(portExist)
             {
-                if(!Program.GlobalVariables.ElzabConnectionTested)
+                if(!elzabConnectionTested)
                 {
+                    //Set image
+                    this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterExchange;
 
+                    //Check if serial port not opened
+                    SerialPort dummyPort = new SerialPort(Program.GlobalVariables.ElzabPortCom.PortName);
+
+                    if(!dummyPort.IsOpen)
+                    {
+                        //Data exchange
+                        CommandExecutionStatus status = this.cashRegisterNumber.ExecuteCommand(false);
+                        if (status.ErrorNumber == 0) elzabConnectionTested = true;
+                        else elzabConnectionTested = false;
+                    }
+                    else elzabConnectionTested = false;
                 }
             }
+
+            if(elzabConnectionTested == false || !portExist)
+            {
+                if (!portExist) elzabConnectionTested = false;
+
+                //Loop through all available com ports and find cash register
+                foreach (string comPortName in listOfTheAvailablePortComs)
+                {
+                    //Check if serial port not opened
+                    SerialPort dummyPort = new SerialPort(Program.GlobalVariables.ElzabPortCom.PortName);
+
+                    if (!dummyPort.IsOpen)
+                    {
+
+                        //Set image
+                        this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterExchange;
+
+                        //Execute command to check if cash register exist at the end of the wire
+                        int lastBaudRate = Program.GlobalVariables.ElzabPortCom.BaudRate;
+                        this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(comPortName, lastBaudRate, timeout: 1);
+                        CommandExecutionStatus status = this.cashRegisterNumber.ExecuteCommand();
+
+                        if (status.ErrorNumber == 0)
+                        {
+                            SerialPort portToWrite = Program.GlobalVariables.ElzabPortCom;
+                            portToWrite.PortName = comPortName;
+                            serialPortToWrite = portToWrite;
+                            elzabConnectionTested = true;
+                            break;
+                        }
+
+                        //Set image
+                        this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterOffline;
+
+                    }
+                }
+            }
+
+            //Write data to the global variables
+            if(serialPortToWrite != null) Program.GlobalVariables.ElzabPortCom = serialPortToWrite;
+            Program.GlobalVariables.ElzabConnectionTested = elzabConnectionTested;
+
+
+            //Set proper Image
+            if (elzabConnectionTested == false) 
+                this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterOffline;
+            else this.pbCashRegisterCommunication.Image = Properties.Resources.CashRegisterOnline;
         }
         private void bwMonitorComPortChange_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -211,7 +281,7 @@ namespace NaturalnieApp.Forms
         }
         private void HardwareHasHanged()
         {
-            bwMonitorComPortChange.RunWorkerAsync();
+            if(!bwMonitorComPortChange.IsBusy) bwMonitorComPortChange.RunWorkerAsync();
         }
         #endregion
 

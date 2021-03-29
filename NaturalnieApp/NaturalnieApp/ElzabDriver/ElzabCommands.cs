@@ -67,8 +67,11 @@ namespace ElzabCommands
             }
         }
 
+        //Task synchronisation mechanism
+        private object Sync_Mechanism = new object();
+
         //Class constructor
-        public ElzabCommand_ONRUNIK(string path, int cashRegisterID)
+        public ElzabCommand_ONRUNIK(string path, int cashRegisterID, string comPortName, int baudRate)
         {
             //Call method used to initialize base structure for data from Elzab
             this.DataFromElzab = InitBaseStructuresDataFromElzab(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
@@ -81,13 +84,19 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Config data
             this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+            this.Config.ChangeCashRegisterConnectionData(comPortName, baudRate);
         }
 
         //Execute command
         public CommandExecutionStatus ExecuteCommand(bool executeBackup = true)
         {
-            CommandExecutionStatus status = base.ExecuteCommand(this, executeBackup: true);
-            return status;
+
+            lock(Sync_Mechanism)
+            {
+                CommandExecutionStatus status = base.ExecuteCommand(this, executeBackup: true);
+                return status;
+            }
+
         }
 
 
@@ -295,7 +304,7 @@ namespace ElzabCommands
 
 
         //Class constructor
-        public ElzabCommand_OPSPROZ4(string path, int cashRegisterID)
+        public ElzabCommand_OPSPROZ4(string path, int cashRegisterID, string comPortName, int baudRate)
         {
             //Call method used to initialize base structure for data from Elzab
             this.DataFromElzab = InitBaseStructuresDataFromElzabBuffor(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile
@@ -309,6 +318,7 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Config data
             this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+            this.Config.ChangeCashRegisterConnectionData(comPortName, baudRate);
         }
 
         //Execute command
@@ -384,7 +394,7 @@ namespace ElzabCommands
         }
 
         //Class constructor
-        public ElzabCommand_ODBARKOD(string path, int cashRegisterID)
+        public ElzabCommand_ODBARKOD(string path, int cashRegisterID, string comPortName, int baudRate)
         {
             //Call method used to initialize base structure for data from Elzab
             this.DataFromElzab = InitBaseStructuresDataFromElzab(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
@@ -397,6 +407,7 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Config data
             this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+            this.Config.ChangeCashRegisterConnectionData(comPortName, baudRate);
         }
 
         //Execute command
@@ -450,7 +461,7 @@ namespace ElzabCommands
         }
 
         //Class constructor
-        public ElzabCommand_ZDBARKOD(string path, int cashRegisterID)
+        public ElzabCommand_ZDBARKOD(string path, int cashRegisterID, string comPortName, int baudRate)
         {
             //Call method used to initialize base structure for data from Elzab
             this.DataFromElzab = InitBaseStructuresDataFromElzab(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
@@ -463,6 +474,7 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Config data
             this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+            this.Config.ChangeCashRegisterConnectionData(comPortName, baudRate);
         }
 
         //Execute command
@@ -516,7 +528,7 @@ namespace ElzabCommands
 
 
         //Class constructor
-        public ElzabCommand_OPSPRZED(string path, int cashRegisterID)
+        public ElzabCommand_OPSPRZED(string path, int cashRegisterID, string comPortName, int baudRate)
         {
             //Call method used to initialize base structure for data from Elzab
             this.DataFromElzab = InitBaseStructuresDataFromElzab(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
@@ -529,6 +541,7 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Config data
             this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+            this.Config.ChangeCashRegisterConnectionData(comPortName, baudRate);
         }
 
         //Execute command
@@ -580,7 +593,7 @@ namespace ElzabCommands
         }
 
         //Class constructor
-        public ElzabCommand_KGRUPA(string path, int cashRegisterID)
+        public ElzabCommand_KGRUPA(string path, int cashRegisterID, string comPortName, int baudRate)
         {
             //Call method used to initialize base structure for data from Elzab
             this.DataFromElzab = InitBaseStructuresDataFromElzab(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
@@ -593,6 +606,7 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Config data
             this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+            this.Config.ChangeCashRegisterConnectionData(comPortName, baudRate);
         }
 
         //Execute command
@@ -643,7 +657,7 @@ namespace ElzabCommands
         }
 
         //Class constructor
-        public ElzabCommand_ZGRUPA(string path, int cashRegisterID)
+        public ElzabCommand_ZGRUPA(string path, int cashRegisterID, string comPortName, int baudRate)
         {
             //Call method used to initialize base structure for data from Elzab
             this.DataFromElzab = InitBaseStructuresDataFromElzab(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
@@ -656,6 +670,7 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Config data
             this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+            this.Config.ChangeCashRegisterConnectionData(comPortName, baudRate);
         }
 
         //Execute command
@@ -706,7 +721,7 @@ namespace ElzabCommands
         }
 
         //Class constructor
-        public ElzabCommand_OGRUPA(string path, int cashRegisterID)
+        public ElzabCommand_OGRUPA(string path, int cashRegisterID, string comPortName, int baudRate)
         {
             //Call method used to initialize base structure for data from Elzab
             this.DataFromElzab = InitBaseStructuresDataFromElzab(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
@@ -719,6 +734,7 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Config data
             this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+            this.Config.ChangeCashRegisterConnectionData(comPortName, baudRate);
         }
 
         //Execute command
@@ -770,7 +786,7 @@ namespace ElzabCommands
         }
 
         //Class constructor
-        public ElzabCommand_OBAJTY(string path, int cashRegisterID)
+        public ElzabCommand_OBAJTY(string path, int cashRegisterID, string comPortName, int baudRate)
         {
             //Call method used to initialize base structure for data from Elzab
             this.DataFromElzab = InitBaseStructuresDataFromElzab(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
@@ -783,6 +799,7 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Config data
             this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+            this.Config.ChangeCashRegisterConnectionData(comPortName, baudRate);
         }
 
         //Execute command
@@ -826,7 +843,7 @@ namespace ElzabCommands
         }
 
         //Class constructor
-        public ElzabCommand_ZTOWAR(string path, int cashRegisterID)
+        public ElzabCommand_ZTOWAR(string path, int cashRegisterID, string comPortName, int baudRate)
         {
             //Call method used to initialize base structure for data to Elzab
             this.DataToElzab = InitBaseStructuresDataToElzab(path, cashRegisterID, CommandName, ElementAttributesPatternInFile);
@@ -836,6 +853,7 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Config data
             this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+            this.Config.ChangeCashRegisterConnectionData(comPortName, baudRate);
         }
 
         //Execute command
@@ -887,7 +905,7 @@ namespace ElzabCommands
         }
 
         //Class constructor
-        public ElzabCommand_OTOWAR(string path, int cashRegisterID)
+        public ElzabCommand_OTOWAR(string path, int cashRegisterID, string comPortName, int baudRate)
         {
             //Call method used to initialize base structure for data from Elzab
             this.DataFromElzab = InitBaseStructuresDataFromElzab(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
@@ -900,6 +918,7 @@ namespace ElzabCommands
 
             //Call method used to initialize base structure for Config data
             this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+            this.Config.ChangeCashRegisterConnectionData(comPortName, baudRate);
 
         }
 
@@ -1000,15 +1019,11 @@ namespace ElzabCommands
             //Local variables
             CommandExecutionStatus reportStatus = new CommandExecutionStatus();
 
-            //Override config file elements
-            commandInstance.Config.AddElement();
-            string connData = commandInstance.Config.GenerateConnectionData(GlobalVariables.ElzabPortCom.PortName, 
-                GlobalVariables.ElzabPortCom.BaudRate);
-            commandInstance.Config.ChangeAllElementValues("1", "1", connData, "3");
-            commandInstance.Config.GenerateRawDataFromObject();
-            commandInstance.Config.WriteDataToFile();
-
             bool result = true;
+
+            //Override config file
+            result = commandInstance.Config.GenerateRawDataFromObject();
+            if(result) result = commandInstance.Config.WriteDataToFile();
 
             //If data from elzab are used, execute method
             if (commandInstance.DataFromElzab != null)
@@ -1068,11 +1083,7 @@ namespace ElzabCommands
             //Local variables
             CommandExecutionStatus reportStatus = new CommandExecutionStatus();
 
-            //Override config file elements
-            commandInstance.Config.AddElement();
-            string connData = commandInstance.Config.GenerateConnectionData(GlobalVariables.ElzabPortCom.PortName, 
-                GlobalVariables.ElzabPortCom.BaudRate);
-            commandInstance.Config.ChangeAllElementValues("1", "1", connData, "3");
+            //Override config file
             commandInstance.Config.GenerateRawDataFromObject();
             commandInstance.Config.WriteDataToFile();
 

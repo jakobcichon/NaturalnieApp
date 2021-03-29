@@ -658,8 +658,10 @@ namespace NaturalnieApp.Forms
                     productsList.Add(this.databaseCommands.GetProductEntityByProductName(productName));
                 }
 
-                ElzabCommand_ZTOWAR ZapisTowaru = new ElzabCommand_ZTOWAR(GlobalVariables.ElzabCommandPath, 1);
-                ElzabCommand_ZDBARKOD ZapisDodatkowychBcod = new ElzabCommand_ZDBARKOD(GlobalVariables.ElzabCommandPath, 1);
+                ElzabCommand_ZTOWAR ZapisTowaru = new ElzabCommand_ZTOWAR(GlobalVariables.ElzabCommandPath, 1,
+                Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
+                ElzabCommand_ZDBARKOD ZapisDodatkowychBcod = new ElzabCommand_ZDBARKOD(GlobalVariables.ElzabCommandPath, 1,
+                Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
 
                 foreach (Product product in productsList)
                 {

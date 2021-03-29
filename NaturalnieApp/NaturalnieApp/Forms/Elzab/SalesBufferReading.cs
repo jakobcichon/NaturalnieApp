@@ -83,7 +83,8 @@ namespace NaturalnieApp.Forms
             InitializeBackgroundWorker();
 
             //Initialization of Elzab commands instances
-            this.SaleBufforReading = new ElzabCommand_OPSPROZ4(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId);
+            this.SaleBufforReading = new ElzabCommand_OPSPROZ4(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId,
+                Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
 
             //Status box
             this.StatusBox = this.tbStatus;
@@ -157,6 +158,9 @@ namespace NaturalnieApp.Forms
                 this.tcDataFromFile.TabPages.Clear();
                 this.DataGridViewsList.Clear();
                 this.DataSource.Clear();
+
+                //Reset to default path
+                this.SaleBufforReading.DataFromElzab.RestoreDefaultPath();
 
                 //Disable page control
                 this.tcDataFromFile.Enabled = false;

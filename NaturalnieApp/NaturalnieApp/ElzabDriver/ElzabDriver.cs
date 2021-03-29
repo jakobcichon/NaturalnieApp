@@ -262,8 +262,29 @@ namespace ElzabDriver
             return retVal;
         }
 
+        public bool ChangeCashRegisterConnectionData(string comPortName, int baudRate, int timeout = 3)
+        {
+            //Local variable
+            bool retVal = false;
+
+            if(this.TypeOfFile == FileType.ConfigFile)
+            {
+                //Generate conenction data
+                string connData = this.GenerateConnectionData(comPortName, baudRate);
+
+                if(connData != "")
+                {
+                    if(this.Element.ElementsList.First().Count == 0) this.AddElement();
+                    this.ChangeAllElementValues("1", "1", connData, timeout.ToString());
+                    retVal = true;
+                }
+            }
+
+            return retVal;
+        }
+
         //Method used only for config file
-        public string GenerateConnectionData(string comPortName, int baudRate)
+        private string GenerateConnectionData(string comPortName, int baudRate)
         {
             //Local variable
             string retVal = "";
@@ -511,6 +532,8 @@ namespace ElzabDriver
                     processStartInfo.WorkingDirectory = this.Path;
                     processStartInfo.FileName = "cmd.exe";
                     processStartInfo.Arguments = "/C " + command;
+                    processStartInfo.UseShellExecute = false;
+                    processStartInfo.CreateNoWindow = true;
 
                     //Send report to DB before start
                     ElzabCommunication elzabCommunicationEnt = new ElzabCommunication();

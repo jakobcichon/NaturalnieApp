@@ -63,6 +63,36 @@ namespace NaturalnieApp.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cashRegisterExchange {
+            get {
+                object obj = ResourceManager.GetObject("cashRegisterExchange", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cashRegisterOffline {
+            get {
+                object obj = ResourceManager.GetObject("cashRegisterOffline", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CashRegisterOnline {
+            get {
+                object obj = ResourceManager.GetObject("CashRegisterOnline", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap DbStatusNok {
             get {
                 object obj = ResourceManager.GetObject("DbStatusNok", resourceCulture);
