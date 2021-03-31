@@ -34,6 +34,7 @@ namespace NaturalnieApp.Forms
         public ElzabSynchronization elzabSynchronization { get; set; }
         public SalesBufferReading salesBufferReading { get; set; }
         public PricesRelatedUpdate pricesRelatedUpdate { get; set; }
+        public Common.StatusBar statusBar { get; set; }
         private ElzabCommands.ElzabCommand_ONRUNIK cashRegisterNumber { get; set; }
 
         //Creat EF databse connection object
@@ -79,6 +80,13 @@ namespace NaturalnieApp.Forms
             this.salesBufferReading = new SalesBufferReading(ref this.databaseCommands);
             this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
 
+            //Add status bar
+            this.statusBar = new Common.StatusBar();
+            this.pStatusBar.Controls.Add(this.statusBar);
+            this.statusBar.Dock = DockStyle.Left;
+            this.statusBar.BringToFront();
+            this.pStatusBar.Update();
+
             //Cash register number read
             this.cashRegisterNumber = new ElzabCommands.ElzabCommand_ONRUNIK(Program.GlobalVariables.ElzabCommandPath, 1,
                 Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
@@ -116,11 +124,11 @@ namespace NaturalnieApp.Forms
         {
             if((bool)e.Result == true)
             {
-                this.pbDbStatus.Image = Properties.Resources.DbStatusOK;
+                this.statusBar.UpdateStatusFrom_Db(Common.GeneralStatus.Online);
             }
             else
             {
-                this.pbDbStatus.Image = Properties.Resources.DbStatusNok;
+                this.statusBar.UpdateStatusFrom_Db(Common.GeneralStatus.Offline);
             }
         }
 
@@ -144,7 +152,7 @@ namespace NaturalnieApp.Forms
                 if(!elzabConnectionTested)
                 {
                     //Set image
-                    this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterExchange;
+                    this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Transfering);
 
                     //Check if serial port not opened
                     SerialPort dummyPort = new SerialPort(Program.GlobalVariables.ElzabPortCom.PortName);
@@ -174,7 +182,7 @@ namespace NaturalnieApp.Forms
                     {
 
                         //Set image
-                        this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterExchange;
+                        this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Transfering);
 
                         //Execute command to check if cash register exist at the end of the wire
                         int lastBaudRate = Program.GlobalVariables.ElzabPortCom.BaudRate;
@@ -191,7 +199,7 @@ namespace NaturalnieApp.Forms
                         }
 
                         //Set image
-                        this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterOffline;
+                        this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Offline);
 
                     }
                 }
@@ -203,9 +211,9 @@ namespace NaturalnieApp.Forms
 
 
             //Set proper Image
-            if (elzabConnectionTested == false) 
-                this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterOffline;
-            else this.pbCashRegisterCommunication.Image = Properties.Resources.CashRegisterOnline;
+            if (elzabConnectionTested == false)
+                this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Offline);
+            else this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Online); ;
         }
         private void bwMonitorComPortChange_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {

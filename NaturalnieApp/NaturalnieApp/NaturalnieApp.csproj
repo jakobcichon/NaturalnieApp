@@ -264,6 +264,7 @@
     <Compile Include="ElzabDriver\ElzabDriver.cs" />
     <Compile Include="ElzabDriver\ElzabCommands.cs" />
     <Compile Include="ElzabDriver\IElzabCommandInterface.cs" />
+    <Compile Include="Forms\Common\IStatusBar.cs" />
     <Compile Include="Forms\Common\SearchBarTemplate.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -272,6 +273,12 @@
     </Compile>
     <Compile Include="Forms\Common\SearchBarTemplate2.xaml.cs">
       <DependentUpon>SearchBarTemplate2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Common\StatusBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Common\StatusBar.Designer.cs">
+      <DependentUpon>StatusBar.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Common\Tab.cs">
       <SubType>UserControl</SubType>
@@ -380,6 +387,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Common\SearchBarTemplate.resx">
       <DependentUpon>SearchBarTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Common\StatusBar.resx">
+      <DependentUpon>StatusBar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Common\Tab.resx">
       <DependentUpon>Tab.cs</DependentUpon>
