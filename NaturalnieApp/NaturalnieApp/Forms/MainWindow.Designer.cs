@@ -494,6 +494,9 @@ namespace NaturalnieApp.Forms
             this.pStatusBar.Name = "pStatusBar";
             this.pStatusBar.Size = new System.Drawing.Size(1148, 30);
             this.pStatusBar.TabIndex = 9;
+            this.pStatusBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseDown);
+            this.pStatusBar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseMove);
+            this.pStatusBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseUp);
             // 
             // pWindowButtons
             // 
@@ -519,6 +522,9 @@ namespace NaturalnieApp.Forms
             this.bMinimize.TabIndex = 6;
             this.bMinimize.UseVisualStyleBackColor = true;
             this.bMinimize.Click += new System.EventHandler(this.bMinimize_Click);
+            this.bMinimize.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseDown);
+            this.bMinimize.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseMove);
+            this.bMinimize.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseUp);
             // 
             // bMaximize
             // 
@@ -533,6 +539,9 @@ namespace NaturalnieApp.Forms
             this.bMaximize.TabIndex = 5;
             this.bMaximize.UseVisualStyleBackColor = true;
             this.bMaximize.Click += new System.EventHandler(this.bMaximize_Click);
+            this.bMaximize.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseDown);
+            this.bMaximize.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseMove);
+            this.bMaximize.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseUp);
             // 
             // bExit
             // 
@@ -547,6 +556,9 @@ namespace NaturalnieApp.Forms
             this.bExit.TabIndex = 1;
             this.bExit.UseVisualStyleBackColor = true;
             this.bExit.Click += new System.EventHandler(this.bExit_Click);
+            this.bExit.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseDown);
+            this.bExit.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseMove);
+            this.bExit.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseUp);
             // 
             // pMenuDeliminer
             // 
@@ -576,6 +588,9 @@ namespace NaturalnieApp.Forms
             this.pContainer.Padding = new System.Windows.Forms.Padding(1);
             this.pContainer.Size = new System.Drawing.Size(936, 698);
             this.pContainer.TabIndex = 7;
+            this.pContainer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseDown);
+            this.pContainer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseMove);
+            this.pContainer.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pHeader_MouseUp);
             // 
             // pBottomLine
             // 
@@ -600,7 +615,7 @@ namespace NaturalnieApp.Forms
             // lVersion
             // 
             this.lVersion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lVersion.Font = new System.Drawing.Font("Alegreya Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lVersion.ForeColor = System.Drawing.Color.Gray;
             this.lVersion.Location = new System.Drawing.Point(1, 1);
             this.lVersion.Margin = new System.Windows.Forms.Padding(1);

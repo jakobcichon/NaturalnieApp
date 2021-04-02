@@ -20,6 +20,7 @@ namespace NaturalnieApp.Forms.Common
         public StatusBar()
         {
             InitializeComponent();
+
         }
 
         /// <summary>
@@ -58,18 +59,30 @@ namespace NaturalnieApp.Forms.Common
             //Lock the object
             lock (this.dbLocker)
             {
-                //Switch the case
-                switch (statusToSet)
+                try
                 {
-                    case GeneralStatus.Offline:
-                        this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterOffline;
-                        return true;
-                    case GeneralStatus.Online:
-                        this.pbCashRegisterCommunication.Image = Properties.Resources.CashRegisterOnline;
-                        return true;
-                    case GeneralStatus.Transfering:
-                        this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterExchange;
-                        return true;
+                    //Switch the case
+                    switch (statusToSet)
+                    {
+                        case GeneralStatus.Offline:
+                            this.pbCashRegisterCommunication.Size = new Size(30, 30);
+                            this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterOffline;
+                            return true;
+                        case GeneralStatus.Online:
+                            this.pbCashRegisterCommunication.Size = new Size(30, 30);
+                            this.pbCashRegisterCommunication.Image = Properties.Resources.CashRegisterOnline;
+                            return true;
+                        case GeneralStatus.Transfering:
+                            this.pbCashRegisterCommunication.Size = new Size(60, 30);
+                            this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterExchange;
+                            return true;
+                    }
+
+                }
+                catch
+                {
+                    ;
+
                 }
             }
             return false;
@@ -79,6 +92,22 @@ namespace NaturalnieApp.Forms.Common
         {
             //Get background colour from parent form
             this.BackColor = this.Controls.Owner.BackColor;
+        }
+
+        private void GeneralEvent_MouseDown(object sender, MouseEventArgs e)
+        {
+            this.OnMouseDown(e);
+        }
+
+
+        private void GeneralEvent_MouseUp(object sender, MouseEventArgs e)
+        {
+           this.OnMouseUp(e);
+        }
+
+        private void GeneralEvent_MouseMove(object sender, MouseEventArgs e)
+        {
+            this.OnMouseMove(e);
         }
     }
 

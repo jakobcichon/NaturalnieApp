@@ -87,6 +87,12 @@ namespace NaturalnieApp.Forms
             this.statusBar.BringToFront();
             this.pStatusBar.Update();
 
+
+            //Add status bar events
+            this.statusBar.MouseDown += new MouseEventHandler(this.pHeader_MouseDown);
+            this.statusBar.MouseUp += new MouseEventHandler(this.pHeader_MouseUp);
+            this.statusBar.MouseMove += new MouseEventHandler(this.pHeader_MouseMove);
+
             //Cash register number read
             this.cashRegisterNumber = new ElzabCommands.ElzabCommand_ONRUNIK(Program.GlobalVariables.ElzabCommandPath, 1,
                 Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
@@ -147,7 +153,7 @@ namespace NaturalnieApp.Forms
             bool portExist = listOfTheAvailablePortComs.Exists(el => el.Equals(Program.GlobalVariables.ElzabPortCom.PortName));
 
             //If port exist, check if connection to Elzab was tested
-            if(portExist)
+            if (portExist)
             {
                 if(!elzabConnectionTested)
                 {
@@ -213,7 +219,9 @@ namespace NaturalnieApp.Forms
             //Set proper Image
             if (elzabConnectionTested == false)
                 this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Offline);
-            else this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Online); ;
+            else this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Online);
+            this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Transfering);
+
         }
         private void bwMonitorComPortChange_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -657,5 +665,6 @@ namespace NaturalnieApp.Forms
             this.Show();
 
         }
+
     }
 }

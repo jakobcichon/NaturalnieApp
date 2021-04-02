@@ -41,22 +41,30 @@ namespace NaturalnieApp.Forms.Common
             this.pbCashRegisterCommunication.Image = global::NaturalnieApp.Properties.Resources.cashRegisterOffline;
             this.pbCashRegisterCommunication.Location = new System.Drawing.Point(0, 0);
             this.pbCashRegisterCommunication.Margin = new System.Windows.Forms.Padding(0);
+            this.pbCashRegisterCommunication.MaximumSize = new System.Drawing.Size(60, 30);
+            this.pbCashRegisterCommunication.MinimumSize = new System.Drawing.Size(30, 30);
             this.pbCashRegisterCommunication.Name = "pbCashRegisterCommunication";
             this.pbCashRegisterCommunication.Size = new System.Drawing.Size(30, 30);
             this.pbCashRegisterCommunication.TabIndex = 8;
             this.pbCashRegisterCommunication.TabStop = false;
+            this.pbCashRegisterCommunication.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GeneralEvent_MouseDown);
+            this.pbCashRegisterCommunication.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GeneralEvent_MouseMove);
+            this.pbCashRegisterCommunication.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GeneralEvent_MouseUp);
             // 
             // pbDbStatus
             // 
-            this.pbDbStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbDbStatus.Dock = System.Windows.Forms.DockStyle.Left;
             this.pbDbStatus.Image = global::NaturalnieApp.Properties.Resources.DbStatusNok;
             this.pbDbStatus.Location = new System.Drawing.Point(30, 0);
             this.pbDbStatus.Margin = new System.Windows.Forms.Padding(0);
             this.pbDbStatus.Name = "pbDbStatus";
-            this.pbDbStatus.Size = new System.Drawing.Size(120, 30);
+            this.pbDbStatus.Size = new System.Drawing.Size(30, 30);
             this.pbDbStatus.TabIndex = 9;
             this.pbDbStatus.TabStop = false;
             this.pbDbStatus.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.pbDbStatus_ControlAdded);
+            this.pbDbStatus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GeneralEvent_MouseDown);
+            this.pbDbStatus.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GeneralEvent_MouseMove);
+            this.pbDbStatus.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GeneralEvent_MouseUp);
             // 
             // StatusBar
             // 
