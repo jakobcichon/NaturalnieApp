@@ -47,6 +47,12 @@ namespace NaturalnieApp.Forms
         BackgroundWorker bwCheckDbConnection;
         BackgroundWorker bwMonitorComPortChange;
 
+        //Monitor com port change return class
+        private class MonitorComPortChangeRetunrValues
+        {
+            public Common.GeneralStatus CashRegisterStatus { get; set; }
+        }
+
         public MainWindow(ConfigFileObject conFileObj)
         {
             this.SetStyle(ControlStyles.ResizeRedraw, true);
@@ -118,6 +124,8 @@ namespace NaturalnieApp.Forms
             this.bwMonitorComPortChange = new BackgroundWorker();
             this.bwMonitorComPortChange.DoWork += bwMonitorComPortChange_DoWork;
             this.bwMonitorComPortChange.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.bwMonitorComPortChange_RunWorkerCompleted);
+            this.bwMonitorComPortChange.ProgressChanged += new ProgressChangedEventHandler( BwMonitorComPortChange_ProgressChanged);
+            this.bwMonitorComPortChange.WorkerReportsProgress = true;
         }
 
         //Check DB connection background worker
@@ -141,6 +149,9 @@ namespace NaturalnieApp.Forms
         //Monitor COM port change background worker
         void bwMonitorComPortChange_DoWork(object sender, DoWorkEventArgs e)
         {
+            //Object to return
+            MonitorComPortChangeRetunrValues retVal = new MonitorComPortChangeRetunrValues();
+
             //Local variables
             bool elzabConnectionTested = Program.GlobalVariables.ElzabConnectionTested;
             SerialPort serialPortToWrite = null;
@@ -158,7 +169,8 @@ namespace NaturalnieApp.Forms
                 if(!elzabConnectionTested)
                 {
                     //Set image
-                    this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Transfering);
+                    retVal.CashRegisterStatus = Common.GeneralStatus.Transfering;
+                    (sender as BackgroundWorker).ReportProgress(0, retVal);
 
                     //Check if serial port not opened
                     SerialPort dummyPort = new SerialPort(Program.GlobalVariables.ElzabPortCom.PortName);
@@ -167,7 +179,7 @@ namespace NaturalnieApp.Forms
                     {
                         //Data exchange
                         CommandExecutionStatus status = this.cashRegisterNumber.ExecuteCommand(false);
-                        if (status.ErrorNumber == 0) elzabConnectionTested = true;
+                        if (status.ErrorNumber == 0 && status.CommandName != null) elzabConnectionTested = true;
                         else elzabConnectionTested = false;
                     }
                     else elzabConnectionTested = false;
@@ -188,14 +200,16 @@ namespace NaturalnieApp.Forms
                     {
 
                         //Set image
-                        this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Transfering);
+                        retVal.CashRegisterStatus = Common.GeneralStatus.Transfering;
+                        (sender as BackgroundWorker).ReportProgress(0, retVal);
+                        elzabConnectionTested = false;
 
                         //Execute command to check if cash register exist at the end of the wire
                         int lastBaudRate = Program.GlobalVariables.ElzabPortCom.BaudRate;
                         this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(comPortName, lastBaudRate, timeout: 1);
                         CommandExecutionStatus status = this.cashRegisterNumber.ExecuteCommand();
 
-                        if (status.ErrorNumber == 0)
+                        if (status.ErrorNumber == 0 && status.CommandName != null)
                         {
                             SerialPort portToWrite = Program.GlobalVariables.ElzabPortCom;
                             portToWrite.PortName = comPortName;
@@ -203,9 +217,8 @@ namespace NaturalnieApp.Forms
                             elzabConnectionTested = true;
                             break;
                         }
-
                         //Set image
-                        this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Offline);
+                        retVal.CashRegisterStatus = Common.GeneralStatus.Offline;
 
                     }
                 }
@@ -218,14 +231,25 @@ namespace NaturalnieApp.Forms
 
             //Set proper Image
             if (elzabConnectionTested == false)
-                this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Offline);
-            else this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Online);
-            this.statusBar.UpdateStatus_CashRegister(Common.GeneralStatus.Transfering);
+                retVal.CashRegisterStatus = Common.GeneralStatus.Offline;
+            else retVal.CashRegisterStatus = Common.GeneralStatus.Online;
+
+            e.Result = retVal;
 
         }
+
+        private void BwMonitorComPortChange_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            MonitorComPortChangeRetunrValues retVal = (MonitorComPortChangeRetunrValues)e.UserState;
+
+            if (retVal != null) this.statusBar.UpdateStatus_CashRegister(retVal.CashRegisterStatus);
+        }
+
         private void bwMonitorComPortChange_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            MonitorComPortChangeRetunrValues retVal = (MonitorComPortChangeRetunrValues)e.Result;
 
+            if(retVal != null) this.statusBar.UpdateStatus_CashRegister(retVal.CashRegisterStatus);
         }
         //=============================================================================
         #endregion
