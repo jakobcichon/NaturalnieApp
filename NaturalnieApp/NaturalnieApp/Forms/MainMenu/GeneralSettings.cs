@@ -55,7 +55,7 @@ namespace NaturalnieApp.Forms
             TextBoxFormat(this.tbElzabPath);
 
             //COM Ports - call method to choose proper COM port
-            COMPortsFormat(conFileObj);
+            COMPortsFormat(conFileObj, false);
 
             //Baud rate - setting for connection baud rate  ComboBox 
             int indexNumber = cBaudRate.Items.IndexOf(conFileObj.GetValueByVariableName("ElzabBaudRate"));
@@ -79,17 +79,20 @@ namespace NaturalnieApp.Forms
 
         }
         //Method used to handle formatting of COM ports ComboBox
-        public void COMPortsFormat(ConfigFileObject conFileObj)
+        public void COMPortsFormat(ConfigFileObject conFileObj, bool fromConfigFile = true)
         {
             //COM Port - settings for com port ComboBox
             string[] ports = SerialPort.GetPortNames();
-            string comPortFromFile = conFileObj.GetValueByVariableName("ElzabCOMPort");
+            string comPortFromFile;
+            if (fromConfigFile) comPortFromFile = conFileObj.GetValueByVariableName("ElzabCOMPort");
+            else comPortFromFile = GlobalVariables.ElzabPortCom.PortName;
+
             cCOMPorts.Items.Clear();
             bool result = false;
             foreach (string element in ports)
             {
                 cCOMPorts.Items.Add(element);
-                if (comPortFromFile == element)
+                if (comPortFromFile == element && GlobalVariables.ElzabConnectionTested)
                 {
                     cCOMPorts.SelectedItem = comPortFromFile;
                     result = true;
@@ -178,6 +181,14 @@ namespace NaturalnieApp.Forms
         }
         #endregion
 
+        public void UpdateComPort()
+        {
+
+            //Update com ports
+            COMPortsFormat(this.ConfigFileObjInst, false);
+            this.cCOMPorts.Update();
+        }
+
         //============================================================================================
         //Events
 
@@ -186,6 +197,9 @@ namespace NaturalnieApp.Forms
         {
             //Get printers list
             GetPrinterList();
+
+            //Update com ports
+            COMPortsFormat(this.ConfigFileObjInst, false);
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {

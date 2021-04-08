@@ -10,12 +10,19 @@ using System.Windows.Forms;
 
 namespace NaturalnieApp.Forms.Common
 {
+    //Enums
+    public enum GeneralStatus
+    {
+        Offline,
+        Online,
+        Transfering,
+    }
 
     public partial class StatusBar : UserControl, IStatusBar
     {
+
         //Thread lockers
         private object dbLocker = new object();
-        private object cashRegisterLocker = new object();
 
         public StatusBar()
         {
@@ -59,31 +66,24 @@ namespace NaturalnieApp.Forms.Common
             //Lock the object
             lock (this.dbLocker)
             {
-                try
-                {
-                    //Switch the case
-                    switch (statusToSet)
-                    {
-                        case GeneralStatus.Offline:
-                            this.pbCashRegisterCommunication.Size = new Size(30, 30);
-                            this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterOffline;
-                            return true;
-                        case GeneralStatus.Online:
-                            this.pbCashRegisterCommunication.Size = new Size(30, 30);
-                            this.pbCashRegisterCommunication.Image = Properties.Resources.CashRegisterOnline;
-                            return true;
-                        case GeneralStatus.Transfering:
-                            this.pbCashRegisterCommunication.Size = new Size(60, 30);
-                            this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterExchange;
-                            return true;
-                    }
 
-                }
-                catch
+                //Switch the case
+                switch (statusToSet)
                 {
-                    ;
-
+                    case GeneralStatus.Offline:
+                        this.pbCashRegisterCommunication.Size = new Size(30, 30);
+                        this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterOffline;
+                        return true;
+                    case GeneralStatus.Online:
+                        this.pbCashRegisterCommunication.Size = new Size(30, 30);
+                        this.pbCashRegisterCommunication.Image = Properties.Resources.CashRegisterOnline;
+                        return true;
+                    case GeneralStatus.Transfering:
+                        this.pbCashRegisterCommunication.Size = new Size(60, 30);
+                        this.pbCashRegisterCommunication.Image = Properties.Resources.cashRegisterExchange;
+                        return true;
                 }
+
             }
             return false;
         }
@@ -111,11 +111,4 @@ namespace NaturalnieApp.Forms.Common
         }
     }
 
-    //Enums
-    public enum GeneralStatus
-    {
-        Offline,
-        Online,
-        Transfering,
-    }
 }
