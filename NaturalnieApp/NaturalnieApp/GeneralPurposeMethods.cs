@@ -16,6 +16,7 @@ using NaturalnieApp.Dymo_Printer;
 using System.IO.Ports;
 using System.ComponentModel;
 using System.Threading;
+using System.Diagnostics;
 
 namespace NaturalnieApp
 {
@@ -954,7 +955,6 @@ namespace NaturalnieApp
             private ElzabCommands.ElzabCommand_ONRUNIK cashRegisterNumber { get; set; }
             private static List<object> Instances = new List<object>();
             private static readonly object instancesLock = new object();
-            private Thread _backgroundWorkerThread;
 
             //Backgorund workers
             BackgroundWorker bwMonitorComPortChange { get; set; }
@@ -974,8 +974,8 @@ namespace NaturalnieApp
 
             private void AbortBackgroundWorker()
             {
-                if (_backgroundWorkerThread != null)
-                    _backgroundWorkerThread.Abort();
+                this.cashRegisterNumber.CancelCommandExecution();
+                this.bwMonitorComPortChange.CancelAsync();
             }
 
             /// <summary>
@@ -992,7 +992,7 @@ namespace NaturalnieApp
             /// </summary>
             public void Cancel()
             {
-                //AbortBackgroundWorker();
+                AbortBackgroundWorker();
             }
 
             /// <summary>
@@ -1045,7 +1045,8 @@ namespace NaturalnieApp
             //Monitor COM port change background worker
             void bwMonitorComPortChange_DoWork(object sender, DoWorkEventArgs e)
             {
-                _backgroundWorkerThread = Thread.CurrentThread;
+                //Local variables
+                List<string> verifiedComPorts = new List<string>();
 
                 //Object to return
                 MonitorComPortChangeRetunrValues retVal = new MonitorComPortChangeRetunrValues();
@@ -1073,16 +1074,17 @@ namespace NaturalnieApp
                         //Check if serial port not opened
                         SerialPort dummyPort = new SerialPort(Program.GlobalVariables.ElzabPortCom.PortName);
 
-                        if (!dummyPort.IsOpen)
+                        if (!dummyPort.IsOpen && !(sender as BackgroundWorker).CancellationPending)
                         {
                             //Data exchange
                             this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(dummyPort.PortName, dummyPort.BaudRate, timeout: 1);
                             CommandExecutionStatus status = this.cashRegisterNumber.ExecuteCommand(false);
-#if DEBUG
-                            if (dummyPort.PortName =="COM3") elzabConnectionTested = true;
-#else
-                            if (status.ErrorNumber == 0 && status.CommandName != null) elzabConnectionTested = true;
-#endif
+
+                            if (status.ErrorNumber == 0 && status.CommandName != null)
+                            {
+                                elzabConnectionTested = true;
+                                verifiedComPorts.Add(dummyPort.PortName);
+                            }
                             else
                             {
                                 //Remove previous port from list, to not check it twice
@@ -1094,7 +1096,7 @@ namespace NaturalnieApp
                     }
                 }
 
-                if (elzabConnectionTested == false || !portExist)
+                if ((elzabConnectionTested == false || !portExist) && !(sender as BackgroundWorker).CancellationPending)
                 {
                     if (!portExist) elzabConnectionTested = false;
 
@@ -1104,7 +1106,7 @@ namespace NaturalnieApp
                         //Check if serial port not opened
                         SerialPort dummyPort = new SerialPort(Program.GlobalVariables.ElzabPortCom.PortName);
 
-                        if (!dummyPort.IsOpen)
+                        if (!dummyPort.IsOpen && !(sender as BackgroundWorker).CancellationPending)
                         {
 
                             //Set image
@@ -1114,33 +1116,9 @@ namespace NaturalnieApp
 
                             //Execute command to check if cash register exist at the end of the wire
                             int lastBaudRate = Program.GlobalVariables.ElzabPortCom.BaudRate;
-                            this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(comPortName, lastBaudRate, timeout: 1);
-                            CommandExecutionStatus status = this.cashRegisterNumber.ExecuteCommand();
+                            this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(comPortName, lastBaudRate, timeout: 3);
+                            CommandExecutionStatus status = this.cashRegisterNumber.ExecuteCommand(false);
 
-#if DEBUG
-                            if(comPortName == "COM3")
-                            {
-                                SerialPort portToWrite = Program.GlobalVariables.ElzabPortCom;
-                                portToWrite.PortName = comPortName;
-                                serialPortToWrite = portToWrite;
-                                elzabConnectionTested = true;
-                                break;
-                            }
-                            else
-                            {
-                                if (status.ErrorNumber == 0 && status.CommandName != null)
-                                {
-                                    SerialPort portToWrite = Program.GlobalVariables.ElzabPortCom;
-                                    portToWrite.PortName = comPortName;
-                                    serialPortToWrite = portToWrite;
-                                    elzabConnectionTested = true;
-                                    break;
-                                }
-                            }
-
-                            //Set image
-                            retVal.CashRegisterStatus = GeneralStatus.Offline;
-#else
                             if (status.ErrorNumber == 0 && status.CommandName != null)
                             {
                                 SerialPort portToWrite = Program.GlobalVariables.ElzabPortCom;
@@ -1151,7 +1129,7 @@ namespace NaturalnieApp
                             }
                             //Set image
                             retVal.CashRegisterStatus = GeneralStatus.Offline;
-#endif
+
                         }
                     }
                 }
@@ -1160,13 +1138,13 @@ namespace NaturalnieApp
                 if (serialPortToWrite != null) Program.GlobalVariables.ElzabPortCom = serialPortToWrite;
                 Program.GlobalVariables.ElzabConnectionTested = elzabConnectionTested;
 
-
                 //Set proper Image
                 if (elzabConnectionTested == false)
                     retVal.CashRegisterStatus = GeneralStatus.Offline;
                 else retVal.CashRegisterStatus = GeneralStatus.Online;
 
                 e.Result = retVal;
+                if ((sender as BackgroundWorker).CancellationPending ) e.Cancel = true;
 
             }
 

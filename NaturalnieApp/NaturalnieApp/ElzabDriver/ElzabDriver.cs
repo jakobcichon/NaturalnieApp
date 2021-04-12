@@ -40,7 +40,6 @@ namespace ElzabDriver
         public string OutFileName { get; set; }
         public int ErrorNumber { get; set; }
         public string ErrorText { get; set; }
-
     }
 
 
@@ -66,6 +65,7 @@ namespace ElzabDriver
         protected FileType TypeOfFile { get; }
         public ElzabCommHeaderObject Header { get; set; }
         public ElzabCommElementObject Element { get; set; }
+        public Process BackgroundProcess { get; set; }
         protected List<string> RawData { get; set; }
         protected Dictionary<int, string> AttributeNameAsID { get; set; }
         protected int NrOfCharsInElementAttribute { get; set; }
@@ -490,6 +490,22 @@ namespace ElzabDriver
             this.Path = this.DefaultPath;
         }
 
+        public void CancelCommand()
+        {
+            Process tempProcess = null;
+            Process[] processes = Process.GetProcesses();
+            foreach (Process process in processes)
+            {
+                if (process.ProcessName.Contains(this.CommandName))
+                {
+                    tempProcess = process;
+                    break;
+                }
+            }
+            if(tempProcess != null) if(!tempProcess.HasExited) tempProcess.Kill();
+            if (this.BackgroundProcess != null) if (!this.BackgroundProcess.HasExited) this.BackgroundProcess.Kill();
+        }
+
         //Method used to prepare data from object, save it to file and run command
         public bool RunCommand()
         {
@@ -544,8 +560,10 @@ namespace ElzabDriver
 
                     //Start process
                     Process proc = Process.Start(processStartInfo);
+                    this.BackgroundProcess = proc;
                     proc.WaitForExit();
-                    retVal = true;
+                    if (proc.ExitCode >= 0 )retVal = true;
+                    else retVal = false;
                 }
                 else
                 {
@@ -770,15 +788,15 @@ namespace ElzabDriver
             return retList;
         }
 
-        private void WriteRawDataToFile(string path, string commandName, FileType typeOfFile, List<string> dataToWrite)
+        private void WriteRawDataToFile(string path, string commandName, FileType typeOfFile, List<string> dataToWrite, bool executeBackup = true)
         {
-            this.WriteDataToFile(path, this.BackupPath, commandName, typeOfFile, dataToWrite);
+            this.WriteDataToFile(path, this.BackupPath, commandName, typeOfFile, dataToWrite, executeBackup);
         }
 
         //Method used to write data to file
-        public bool WriteDataToFile()
+        public bool WriteDataToFile(bool executeBackup = true)
         {
-            return this.WriteDataToFile(this.Path, this.BackupPath, this.CommandName, this.TypeOfFile, this.RawData);
+            return this.WriteDataToFile(this.Path, this.BackupPath, this.CommandName, this.TypeOfFile, this.RawData, executeBackup);
         }
 
         //Method used to prepare raw data from Elzab documentation
@@ -1059,14 +1077,15 @@ namespace ElzabDriver
         }
 
         //Method use to make file backup and remove it. It has user control build in.
-        private bool DeleteFile(string fullPath, string backupPath)
+        private bool DeleteFile(string fullPath, string backupPath, bool executeBackup = true)
         {
             bool retVal = false;
             try
             {
                 string fileName = Path.GetFileName(fullPath);
-                bool backupDone = MakeFileBackup(fullPath, backupPath);
-                if (backupDone)
+                bool backupDone = false;
+                if (executeBackup) backupDone = MakeFileBackup(fullPath, backupPath);
+                if (backupDone || !executeBackup)
                 {
                     File.Delete(fullPath);
                     retVal = true;
@@ -1265,7 +1284,8 @@ namespace ElzabDriver
         }
 
         //Method used to write data to specified file
-        public bool WriteDataToFile(string path, string backupPath, string commandName, FileType typeOfFile, List<string> dataToWrite)
+        public bool WriteDataToFile(string path, string backupPath, string commandName, FileType typeOfFile, List<string> dataToWrite, 
+            bool executeBackup = true)
         {
             //Local variables
             string fullPath = "";
@@ -1291,7 +1311,7 @@ namespace ElzabDriver
             {
 
                 //Remove old file first
-                retVal = DeleteFile(fullPath, backupPath);
+                retVal = DeleteFile(fullPath, backupPath, executeBackup);
 
                 //Call method to write data to file
                 if(retVal) retVal = SaveDataToFile(fullPath, dataToWrite);

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using ElzabDriver;
 using NaturalnieApp.Database;
@@ -68,7 +70,8 @@ namespace ElzabCommands
         }
 
         //Task synchronisation mechanism
-        private object Sync_Mechanism = new object();
+        private object Sync_MechanismExecuteCommand = new object();
+        private object Sync_MechanismCancelCommandExecution = new object();
 
         //Class constructor
         public ElzabCommand_ONRUNIK(string path, int cashRegisterID, string comPortName, int baudRate)
@@ -91,15 +94,23 @@ namespace ElzabCommands
         public CommandExecutionStatus ExecuteCommand(bool executeBackup = true)
         {
 
-            lock(Sync_Mechanism)
+            lock(Sync_MechanismExecuteCommand)
             {
-                CommandExecutionStatus status = base.ExecuteCommand(this, executeBackup: true);
+                CommandExecutionStatus status = base.ExecuteCommand(this, executeBackup: executeBackup);
                 return status;
             }
 
         }
 
+        //Cancel command execution
+        public void CancelCommandExecution()
+        {
+            lock (Sync_MechanismCancelCommandExecution)
+            {
+                base.CancelCommandExecution(this);
+            }
 
+        }
 
     }
 
@@ -327,7 +338,6 @@ namespace ElzabCommands
             CommandExecutionStatus status = base.ExecuteCommandForSaleBuffor(this);
             return status;
         }
-
 
         public string GetTranslationForGivenAttributeName(string attributeName)
         {
@@ -1014,6 +1024,11 @@ namespace ElzabCommands
             return _dataToElzab;
         }
 
+        protected void CancelCommandExecution(IElzabCommandInterface commandInstance)
+        {
+            commandInstance.DataToElzab.CancelCommand();
+        }
+
         protected CommandExecutionStatus ExecuteCommand(IElzabCommandInterface commandInstance, bool executeBackup = true)
         {
             //Local variables
@@ -1023,7 +1038,7 @@ namespace ElzabCommands
 
             //Override config file
             result = commandInstance.Config.GenerateRawDataFromObject();
-            if(result) result = commandInstance.Config.WriteDataToFile();
+            if(result) result = commandInstance.Config.WriteDataToFile(executeBackup);
 
             //If data from elzab are used, execute method
             if (commandInstance.DataFromElzab != null)
@@ -1039,7 +1054,7 @@ namespace ElzabCommands
             if (result) result = commandInstance.DataToElzab.GenerateRawDataFromObject();
 
             //Write raw data to the file
-            if (result) result = commandInstance.DataToElzab.WriteDataToFile();
+            if (result) result = commandInstance.DataToElzab.WriteDataToFile(executeBackup);
 
             //Execute command
             if (result) result = commandInstance.DataToElzab.RunCommand();

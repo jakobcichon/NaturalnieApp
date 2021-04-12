@@ -8,6 +8,9 @@ using System.Reflection;
 using System.IO.Ports;
 using System.Collections.Generic;
 using ElzabDriver;
+using System.Management;
+using System.Linq;
+using Microsoft.Win32;
 
 namespace NaturalnieApp.Forms
 {
@@ -144,7 +147,6 @@ namespace NaturalnieApp.Forms
 
             //Update general settings window
             this.generalSettings.UpdateComPort();
-            ;
         }
 
         private void CashRegisterSerialPort_ProgressChanged(object sender, ElzabRelated.CashRegisterSerialPort.StatusUpdateEventArgs e)
@@ -247,7 +249,7 @@ namespace NaturalnieApp.Forms
         #region Hardware monitor
         private void HardwareHasHanged()
         {
-            if(!this.cashRegisterSerialPort.IsBusy()) this.cashRegisterSerialPort.Execute();
+            if (!this.cashRegisterSerialPort.IsBusy()) this.cashRegisterSerialPort.Execute();
             else
             {
                 this.cashRegisterSerialPort.Cancel();
