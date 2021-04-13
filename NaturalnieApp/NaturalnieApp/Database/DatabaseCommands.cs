@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.IO;
 using static NaturalnieApp.Program;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace NaturalnieApp.Database
 {
@@ -154,12 +155,30 @@ namespace NaturalnieApp.Database
         }
     }
 
+    public class FullProductInfo
+    {
+        public Product ProductEnt { get; set; }
+        public Manufacturer ManufacturerEnt { get; set; }
+        public Tax TaxEnt { get; set; }
+
+        public FullProductInfo()
+        {
+            this.ProductEnt = new Product();
+            this.ManufacturerEnt = new Manufacturer();
+            this.TaxEnt = new Tax();
+        }
+
+    }
+
     public class DatabaseCommands
     {
         //====================================================================================================
         //Class fields
         //====================================================================================================
         public bool ConnectionStatus { get; set; }
+
+
+
 
         //====================================================================================================
         //Class constructor
@@ -1216,6 +1235,34 @@ namespace NaturalnieApp.Database
                             select p;
 
                 localProduct = query.SingleOrDefault();
+            }
+            return localProduct;
+        }
+
+        //====================================================================================================
+        //Method used to get full product info (including Tax, Manufacturer and Product table data)
+        //====================================================================================================
+        public FullProductInfo GetFullProductInfoByName(string productName)
+        {
+            FullProductInfo localProduct = new FullProductInfo();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                //Create query to database
+                var query = from p in contextDB.Products
+                            join m in contextDB.Manufacturers on p.ManufacturerId equals m.Id
+                            join t in contextDB.Tax on p.TaxId equals t.Id
+                            where p.ProductName == productName
+                            select new
+                            {
+                                p,
+                                m,
+                                t
+                            };
+
+                localProduct.ProductEnt = query.FirstOrDefault().p;
+                localProduct.ManufacturerEnt = query.FirstOrDefault().m;
+                localProduct.TaxEnt = query.FirstOrDefault().t;
+
             }
             return localProduct;
         }

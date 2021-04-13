@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -69,21 +70,18 @@ namespace NaturalnieApp.Forms.Common
             }
         }
 
-
         //Return type
         public class SelectedEnt
         {
             public int ManufacturerId { get; set; }
             public string ProductName { get; set; }
             public string Barcode { get; set; }
+            public string AdditionalBarcode { get; set; }
         }
 
         #region EntsRelation class
         private class EntsRelations
         {
-            private int ManufacturerId { get; set; }
-            private string ProductName { get; set; }
-            private string Barcode { get; set; }
             private List<SelectedEnt> EntsList {get; set;}
 
             #region Class exceptions
@@ -158,13 +156,14 @@ namespace NaturalnieApp.Forms.Common
             /// <param name="productName">Product name</param>
             /// <param name="manufacurerId">Manufacturer Id</param>
             /// <param name="barcode">Barcode</param>
-            public void AddEntWithRelations(string productName, int manufacurerId, string barcode)
+            public void AddEntWithRelations(string productName, int manufacurerId, string barcode, string additionalBarcode)
             {
                 //Prepare object to add
                 SelectedEnt localEnt = new SelectedEnt();
                 localEnt.ProductName = productName;
                 localEnt.ManufacturerId = manufacurerId;
                 localEnt.Barcode = barcode;
+                localEnt.AdditionalBarcode = additionalBarcode;
 
                 //Add object
                 this.EntsList.Add(localEnt);
@@ -186,7 +185,9 @@ namespace NaturalnieApp.Forms.Common
             /// <returns></returns>
             public SelectedEnt GetFullEntByBarcode(string barcodeValue)
             {
-                return this.EntsList.Find(e => e.Barcode == barcodeValue);
+                SelectedEnt retVal = this.EntsList.Find(e => e.Barcode == barcodeValue);
+                if(retVal == null) retVal = this.EntsList.Find(e => e.AdditionalBarcode == barcodeValue);
+                return retVal;
             }
         }
         #endregion
@@ -221,15 +222,9 @@ namespace NaturalnieApp.Forms.Common
         private Dictionary<string, int> ProductsToDisplayDict { get; set; }
         private Dictionary<string, int> BarcodesToDisplayDict { get; set; }
 
-        //Autocomplete list for particular combo box
-        private AutoCompleteStringCollection ManaufacturerAutocompleteList { get; set; }
-        private AutoCompleteStringCollection ProductAutocompleteList { get; set; }
-        private AutoCompleteStringCollection BarcodeAutocompleteList { get; set; }
-
         //Add auxiliary variables to check if selected new index of combo box
         private string PreviouslySelectedManufacturer { get; set; }
         private string PreviouslySelectedProduct { get; set; }
-        private string PreviouslySelectedBarcode { get; set; }
 
         //Auiliary variables to  bypass calling selected index chnaged if entity was selected by program
         private bool UpdatingDataSources { get; set; }
@@ -275,8 +270,14 @@ namespace NaturalnieApp.Forms.Common
             InitializeComponent();
 
             //Set double buffering
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
             this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.UserPaint |
+                          ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.ResizeRedraw |
+                          ControlStyles.ContainerControl |
+                          ControlStyles.OptimizedDoubleBuffer |
+                          ControlStyles.SupportsTransparentBackColor
+                          , true);
 
             //Initialize database commands
             this.DatabaseCommands = new DatabaseCommands();
@@ -287,20 +288,19 @@ namespace NaturalnieApp.Forms.Common
             //Initialize auxiliary variables
             this.PreviouslySelectedManufacturer = "";
             this.PreviouslySelectedProduct = "";
-            this.PreviouslySelectedBarcode = "";
 
             //Initialize autocomplete source
-            this.cbManufacturers.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cbManufacturers.AutoCompleteSource = AutoCompleteSource.ListItems;
             this.cbManufacturers.AutoCompleteMode = AutoCompleteMode.Suggest;
-            this.cbProducts.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cbProducts.AutoCompleteSource = AutoCompleteSource.ListItems;
             this.cbProducts.AutoCompleteMode = AutoCompleteMode.Suggest;
-            this.cbBarcodes.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            this.cbBarcodes.AutoCompleteSource = AutoCompleteSource.ListItems;
             this.cbBarcodes.AutoCompleteMode = AutoCompleteMode.Suggest;
 
-            //Initialize autocomplete list
-            this.ManaufacturerAutocompleteList = new AutoCompleteStringCollection();
-            this.ProductAutocompleteList = new AutoCompleteStringCollection();
-            this.BarcodeAutocompleteList = new AutoCompleteStringCollection();
+            //Prevent Comboboxes flickering
+            DoDoubleBuffered(cbManufacturers.Parent, true);
+            DoDoubleBuffered(cbProducts.Parent, true);
+            DoDoubleBuffered(cbBarcodes.Parent, true);
 
             //Initialize all ents relation class
             this.AllEntsRelation = new EntsRelations();
@@ -373,7 +373,7 @@ namespace NaturalnieApp.Forms.Common
                     productData.ProductsDict.Add(product.ProductName, product.ManufacturerId);
                     productData.BarcodesDict.Add(product.BarCode, product.ManufacturerId);
 
-                    this.AllEntsRelation.AddEntWithRelations(product.ProductName, product.ManufacturerId, product.BarCode);         
+                    this.AllEntsRelation.AddEntWithRelations(product.ProductName, product.ManufacturerId, product.BarCode, product.BarCodeShort);         
                 }
 
                 //Assigne manufacturer data from DB to dictionares
@@ -442,6 +442,12 @@ namespace NaturalnieApp.Forms.Common
 
         #region General methods
         //General methods
+        public static void DoDoubleBuffered(Control formControl, bool setting)
+        {
+            Type conType = formControl.GetType();
+            PropertyInfo pi = conType.GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+            pi.SetValue(formControl, setting, null);
+        }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
 
@@ -463,6 +469,7 @@ namespace NaturalnieApp.Forms.Common
         //Method used to select entity
         private void SelectEntity(SelectedEnt entityToSelect)
         {
+
             if (entityToSelect != null)
             {
                 //Get manufacturer name
@@ -472,17 +479,18 @@ namespace NaturalnieApp.Forms.Common
                 //Set flag to bypass events action
                 this.UpdatingDataSources = true;
 
-                if (manufacturerName != this.cbManufacturers.SelectedItem.ToString())
+                if (this.cbManufacturers.SelectedItem == null || manufacturerName != this.cbManufacturers.SelectedItem.ToString())
                     this.cbManufacturers.SelectedItem = manufacturerName;
-                if (entityToSelect.ProductName != this.cbProducts.SelectedItem.ToString())
+                if (this.cbProducts.SelectedItem == null || entityToSelect.ProductName != this.cbProducts.SelectedItem.ToString())
                     this.cbProducts.SelectedItem = entityToSelect.ProductName;
-                if (entityToSelect.Barcode != this.cbBarcodes.SelectedItem.ToString())
+                if (this.cbBarcodes.SelectedItem == null || entityToSelect.Barcode != this.cbBarcodes.SelectedItem.ToString())
                     this.cbBarcodes.SelectedItem = entityToSelect.Barcode;
 
                 //Select entity
-                this.ProductEntity = this.DatabaseCommands.GetProductEntityByProductName(entityToSelect.ProductName);
-                this.ManufacturerEntity = this.DatabaseCommands.GetManufacturerEntityById(entityToSelect.ManufacturerId);
-                this.TaxEntity = this.DatabaseCommands.GetTaxByProductName(this.ProductEntity.ProductName);
+                FullProductInfo fullProductInfo = this.DatabaseCommands.GetFullProductInfoByName(entityToSelect.ProductName);
+                this.ProductEntity = fullProductInfo.ProductEnt;
+                this.ManufacturerEntity = fullProductInfo.ManufacturerEnt;
+                this.TaxEntity = fullProductInfo.TaxEnt;
 
                 //Reset flag to bypass events action
                 this.UpdatingDataSources = false;
@@ -494,6 +502,22 @@ namespace NaturalnieApp.Forms.Common
                 args.SelectedTax = this.TaxEntity;
                 OnNewEntSelected(args);
             }
+            else
+            {
+
+                //Set flag to bypass events action
+                this.UpdatingDataSources = true;
+
+                this.cbProducts.SelectedItem = null;
+                this.cbBarcodes.SelectedItem = null;
+
+                this.ManufacturerEntity = null;
+                this.ProductEntity = null;
+                this.TaxEntity = null;
+
+                //Reset flag to bypass events action
+                this.UpdatingDataSources = false;
+            }
 
             //Update control
             this.UpdateControl(ref this.tbDummyForCtrl);
@@ -503,7 +527,6 @@ namespace NaturalnieApp.Forms.Common
         //Update control
         private void UpdateControl(ref TextBox dummyForControl)
         {
-            //this.Select();
             this.Focus();
             dummyForControl.Select();
         }
@@ -528,9 +551,7 @@ namespace NaturalnieApp.Forms.Common
                 dataToList.Sort();
                 dataToList.Insert(0, "Wszyscy");
                 this.cbManufacturers.DataSource = dataToList;
-                this.ManaufacturerAutocompleteList.Clear();
-                this.ManaufacturerAutocompleteList.AddRange(dataToList.ToArray());
-                this.cbManufacturers.AutoCompleteCustomSource = this.ManaufacturerAutocompleteList;
+
             }
 
             //Update products list
@@ -541,10 +562,6 @@ namespace NaturalnieApp.Forms.Common
                 dataToList = productsData.Keys.ToList();
                 dataToList.Sort();
                 this.cbProducts.DataSource = dataToList;
-                this.cbProducts.AutoCompleteCustomSource = null;
-                this.ProductAutocompleteList.Clear();
-                this.ProductAutocompleteList.AddRange(dataToList.ToArray());
-                this.cbProducts.AutoCompleteCustomSource = this.ProductAutocompleteList;
             }
 
             //Update barcodes list
@@ -555,9 +572,6 @@ namespace NaturalnieApp.Forms.Common
                 dataToList = barcodesData.Keys.ToList();
                 dataToList.Sort();
                 this.cbBarcodes.DataSource = dataToList;
-                this.BarcodeAutocompleteList.Clear();
-                this.BarcodeAutocompleteList.AddRange(dataToList.ToArray());
-                this.cbBarcodes.AutoCompleteCustomSource = this.BarcodeAutocompleteList;
             }
 
             //Reset flag to bypass events action
@@ -577,7 +591,6 @@ namespace NaturalnieApp.Forms.Common
 
             //Write down currently selected enityt
             this.PreviouslySelectedProduct = this.ActualSelectedEnt.ProductName;
-            this.PreviouslySelectedBarcode = this.ActualSelectedEnt.Barcode;
 
             //Update
             this.DbBackgroundWorker.RunWorkerAsync();
@@ -589,14 +602,21 @@ namespace NaturalnieApp.Forms.Common
 
             if (entToSelect != null)
             {
-                //Reset dicts
-                this.UpdateDataSources(this.FullManufacturersDict, this.FullProductsDict, this.FullBarcodesDict);
-
                 //Set found entity as actual one
                 this.ActualSelectedEnt = entToSelect;
 
                 //Select entity on the other combo boxes
                 this.SelectEntity(this.ActualSelectedEnt);
+
+                //Get manufacturer id
+                int manufacturerId = entToSelect.ManufacturerId;
+
+                //Filter dictionaries
+                this.ProductsToDisplayDict = this.FullProductsDict.Where(el => el.Value == manufacturerId).ToDictionary(i => i.Key, i => i.Value);
+                this.BarcodesToDisplayDict = this.FullBarcodesDict.Where(el => el.Value == manufacturerId).ToDictionary(i => i.Key, i => i.Value);
+
+                //Reset dicts
+                this.UpdateDataSources(productsData: this.ProductsToDisplayDict, barcodesData: this.BarcodesToDisplayDict);
 
                 return true;
             }
@@ -609,14 +629,21 @@ namespace NaturalnieApp.Forms.Common
 
             if (entToSelect != null)
             {
-                //Reset dicts
-                this.UpdateDataSources(this.FullManufacturersDict, this.FullProductsDict, this.FullBarcodesDict);
-
                 //Set found entity as actual one
                 this.ActualSelectedEnt = entToSelect;
 
                 //Select entity on the other combo boxes
                 this.SelectEntity(this.ActualSelectedEnt);
+
+                //Get manufacturer id
+                int manufacturerId = entToSelect.ManufacturerId;
+
+                //Filter dictionaries
+                this.ProductsToDisplayDict = this.FullProductsDict.Where(el => el.Value == manufacturerId).ToDictionary(i => i.Key, i => i.Value);
+                this.BarcodesToDisplayDict = this.FullBarcodesDict.Where(el => el.Value == manufacturerId).ToDictionary(i => i.Key, i => i.Value);
+
+                //Reset dicts
+                this.UpdateDataSources(productsData: this.ProductsToDisplayDict, barcodesData: this.BarcodesToDisplayDict);
 
                 return true;
             }
@@ -648,6 +675,7 @@ namespace NaturalnieApp.Forms.Common
             //Show loading bar
             ShowLoadingBar();
 
+            //Run backgorundworker
             this.DbBackgroundWorker.RunWorkerAsync();
 
         }
@@ -690,7 +718,7 @@ namespace NaturalnieApp.Forms.Common
 
                     //Get actual entity
                     this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(this.cbProducts.SelectedItem.ToString());
-                    this.SelectEntity(this.ActualSelectedEnt);
+                    this.SelectEntity(null);
                 }
             }
            
@@ -762,14 +790,18 @@ namespace NaturalnieApp.Forms.Common
         }
         private void bGenericButton_Click(object sender, EventArgs e)
         {
-            //Fire an event
-            GenericButtonClickEventArgs args = new GenericButtonClickEventArgs();
-            args.SelectedProduct = this.ProductEntity;
-            args.SelectedManufacturer = this.ManufacturerEntity;
-            args.SelectedTax = this.TaxEntity;
-            OnGenericButtonClick(args);
+            if(this.ProductEntity != null && this.ManufacturerEntity != null && this.TaxEntity != null)
+            {
+                //Fire an event
+                GenericButtonClickEventArgs args = new GenericButtonClickEventArgs();
+                args.SelectedProduct = this.ProductEntity;
+                args.SelectedManufacturer = this.ManufacturerEntity;
+                args.SelectedTax = this.TaxEntity;
+                OnGenericButtonClick(args);
+            }
         }
 
     }
+
 
 }

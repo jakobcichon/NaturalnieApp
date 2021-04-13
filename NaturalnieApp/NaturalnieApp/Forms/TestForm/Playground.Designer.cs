@@ -29,6 +29,7 @@ namespace NaturalnieApp.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pHeader = new System.Windows.Forms.Panel();
             this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
@@ -36,6 +37,9 @@ namespace NaturalnieApp.Forms
             this.bUpdate = new System.Windows.Forms.Button();
             this.bSave = new System.Windows.Forms.Button();
             this.pTest = new System.Windows.Forms.Panel();
+            this.cbTest = new System.Windows.Forms.ComboBox();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.pHeader.SuspendLayout();
             this.pButtonsPanel.SuspendLayout();
             this.SuspendLayout();
@@ -117,6 +121,35 @@ namespace NaturalnieApp.Forms
             this.pTest.Size = new System.Drawing.Size(200, 100);
             this.pTest.TabIndex = 6;
             // 
+            // cbTest
+            // 
+            this.cbTest.FormattingEnabled = true;
+            this.cbTest.ItemHeight = 13;
+            this.cbTest.Items.AddRange(new object[] {
+            "5903111747039",
+            "5900168907263",
+            "5900168907263",
+            "06012755",
+            "5711914159801",
+            "18029192"});
+            this.cbTest.Location = new System.Drawing.Point(60, 369);
+            this.cbTest.Name = "cbTest";
+            this.cbTest.Size = new System.Drawing.Size(566, 21);
+            this.cbTest.TabIndex = 7;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(107, 448);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 8;
+            // 
             // Playground
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -124,6 +157,8 @@ namespace NaturalnieApp.Forms
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.cbTest);
             this.Controls.Add(this.pTest);
             this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
@@ -148,5 +183,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bSave;
         private System.Windows.Forms.Panel pTest;
         private System.Windows.Forms.Button bTestButton;
+        private System.Windows.Forms.ComboBox cbTest;
+        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

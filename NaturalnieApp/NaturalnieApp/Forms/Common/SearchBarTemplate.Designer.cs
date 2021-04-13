@@ -294,6 +294,7 @@ namespace NaturalnieApp.Forms.Common
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.Controls.Add(this.gbProductSelection);
+            this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.Black;
             this.MinimumSize = new System.Drawing.Size(920, 106);
             this.Name = "SearchBarTemplate";

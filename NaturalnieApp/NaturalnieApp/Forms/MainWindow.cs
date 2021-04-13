@@ -62,6 +62,16 @@ namespace NaturalnieApp.Forms
             this.databaseCommands = new DatabaseCommands();
             this.databaseCommandsCyclic = new DatabaseCommands();
 
+            //Set double buffering
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.UserPaint |
+                          ControlStyles.AllPaintingInWmPaint |
+                          ControlStyles.ResizeRedraw |
+                          ControlStyles.ContainerControl |
+                          ControlStyles.OptimizedDoubleBuffer |
+                          ControlStyles.SupportsTransparentBackColor
+                          , true);
+
             //Background workers
             InitializeBackgroundWorker();
 
@@ -105,7 +115,7 @@ namespace NaturalnieApp.Forms
             //Check cash register serial ports for the first time
             if (!this.cashRegisterSerialPort.IsBusy()) this.cashRegisterSerialPort.Execute();
 
-        }
+    }
 
         //=============================================================================
         //                              Background worker
