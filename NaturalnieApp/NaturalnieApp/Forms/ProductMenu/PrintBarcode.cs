@@ -38,6 +38,7 @@ namespace NaturalnieApp.Forms
 
             //Initialize daa grid view
             this.ColumnNames.No = "Lp.";
+            this.ColumnNames.ProductName = "Nazwa produktu";
             this.ColumnNames.LabelBarcode = "Kod kreskowy";
             this.ColumnNames.LabelFinalPrice = "Cena klienta";
             this.ColumnNames.LabelText = "Tekst etykiety";
@@ -52,6 +53,9 @@ namespace NaturalnieApp.Forms
             this.BarcodeReader = new BarcodeRelated.BarcodeReader(100);
             this.BarcodeReader.BarcodeValid += BarcodeValidAction;
             this.BarcodeValidEventGenerated = false;
+
+
+            //Search bar events
         }
         #endregion
 
@@ -97,6 +101,14 @@ namespace NaturalnieApp.Forms
             column.Dispose();
 
             column = new DataColumn();
+            column.ColumnName = this.ColumnNames.ProductName;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            column.Unique = true;
+            this.DataSoruce.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
             column.ColumnName = this.ColumnNames.LabelBarcode;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
@@ -126,14 +138,13 @@ namespace NaturalnieApp.Forms
             this.DataSoruce.Columns.Add(column);
             column.Dispose();
 
-            advancedDataGridView1.DataSource = this.DataSoruce;
+            this.advancedDataGridView1.DataSource = this.DataSoruce;
 
-            advancedDataGridView1.AutoResizeColumns();
+            this.advancedDataGridView1.AutoResizeColumns();
         }
         private void AdvancedDataGridView1_UserDeletingRow(object sender, System.Windows.Forms.DataGridViewRowCancelEventArgs e)
         {
             this.ListOfTheProductToPrint.RemoveAt(e.Row.Index);
-            ;
         }
         #endregion
         //====================================================================================================
@@ -143,6 +154,7 @@ namespace NaturalnieApp.Forms
         {
             //Update control
             UpdateControl(ref tbDummyForCtrl);
+
         }
         private void PrintBarcode_KeyDown(object sender, KeyEventArgs e)
         {
@@ -151,7 +163,6 @@ namespace NaturalnieApp.Forms
 
             if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
             {
-
                 //Update control
                 UpdateControl(ref tbDummyForCtrl);
 
@@ -163,7 +174,7 @@ namespace NaturalnieApp.Forms
                 UpdateControl(ref tbDummyForCtrl);
             }
         }
-        private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
+        public void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
         {
 
             if (e.Ready && e.Valid)
@@ -248,8 +259,99 @@ namespace NaturalnieApp.Forms
                 this.Dispose();
             }
         }
+        #endregion
+
+        //====================================================================================================
+        //Buttons events
+        #region Buttons events
+        private void SearchBar_GenericButtonClick(object sender, Common.SearchBarTemplate.GenericButtonClickEventArgs e)
+        {
+            if(e.SelectedProduct != null)
+            {
+                AddToDataGrid(e.SelectedProduct, e.SelectedManufacturer, e.SelectedTax);
+            }
+        }
+
+        private void SearchBar_NewEntSelected(object sender, Common.SearchBarTemplate.NewEntSelectedEventArgs e)
+        {
+
+        }
+
+
+        private void AddToDataGrid(Product product, Manufacturer manufaturer, Tax tax)
+        {
+            if (product != null && manufaturer != null && tax != null)
+            {
+                try
+                {
+                    //Index of existing row
+                    int indexOfExistingRow = -1;
+                    bool productAlreadyOnTheList = false;
+
+                    //Check if product already exist on list
+                    foreach (DataRow rowElement in this.DataSoruce.Rows)
+                    {
+                        if (rowElement.Field<string>(this.ColumnNames.LabelText).Contains(product.ElzabProductName))
+                        {
+                            indexOfExistingRow = this.DataSoruce.Rows.IndexOf(rowElement);
+                            productAlreadyOnTheList = true;
+                            break;
+                        }
+                    }
+
+                    //Increment number of copies if product already exist on the list
+                    if (productAlreadyOnTheList)
+                    {
+                        this.DataSoruce.Rows[indexOfExistingRow].SetField(this.ColumnNames.NumberOfCopies,
+                            this.DataSoruce.Rows[indexOfExistingRow].Field<Int32>(this.ColumnNames.NumberOfCopies) + 1);
+                    }
+                    else
+                    {
+                        //New data row type
+                        DataRow row;
+                        row = this.DataSoruce.NewRow();
+
+                        //Set requred fields
+                        row.SetField(this.ColumnNames.No, this.DataSoruce.Rows.Count + 1);
+                        row.SetField(this.ColumnNames.ProductName, product.ProductName);
+                        row.SetField(this.ColumnNames.LabelBarcode, product.BarCodeShort);
+                        row.SetField(this.ColumnNames.LabelText, product.ElzabProductName);
+                        row.SetField(this.ColumnNames.LabelFinalPrice, string.Format("{0:0.00}", product.FinalPrice));
+                        row.SetField(this.ColumnNames.NumberOfCopies, 1.ToString());
+
+                        //Assign values to the proper rows
+                        this.DataSoruce.Rows.Add(row);
+
+                        //Add entity to the list
+                        this.ListOfTheProductToPrint.Add(product);
+                    }
+
+                    //AutoResize Columns
+                    advancedDataGridView1.AutoResizeColumns();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + ex.InnerException);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
+            }
+        }
+
 
         #endregion
+
+        private void bTestButton_Click(object sender, EventArgs e)
+        {
+            BarcodeRelated.BarcodeReader.BarcodeValidEventArgs test = new BarcodeRelated.BarcodeReader.BarcodeValidEventArgs();
+            test.Ready = true;
+            test.Valid = true;
+            test.RecognizedBarcodeValue = "5900168907348";
+
+            this.BarcodeValidAction(sender, test);
+        }
 
 
     }

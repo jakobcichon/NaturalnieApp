@@ -1,5 +1,5 @@
 \\Elzab command path
-#ElzabCommandPath = D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\Elzab commands\
+#ElzabCommandPath = C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\Elzab commands\
 
 
 \\Elzab default COM port
@@ -11,18 +11,18 @@
 
 
 \\SQL Server Name
-#SqlServerName = DESKTOP-L2L4V68
+#SqlServerName = localhost
 
 
 \\Path to the label file
-#LabelPath = D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\Labels\default label.label
+#LabelPath = C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\Labels\default label.label
 
 
 \\Path to the librarys files
-#LibraryPath = D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\Libs\
+#LibraryPath = C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\Libs\
 
 
 \\Path to the Database backups
-#DbBackupPath = D:\PrivateRepo\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\DB Backups\
+#DbBackupPath = C:\NaturalnieApp\NaturalnieApp\NaturalnieApp\NaturalnieApp\bin\Debug\DB Backups\
 
 

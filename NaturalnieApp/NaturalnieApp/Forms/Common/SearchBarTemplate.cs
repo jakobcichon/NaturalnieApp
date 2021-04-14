@@ -247,11 +247,14 @@ namespace NaturalnieApp.Forms.Common
             //Call setup method
             Setup();
 
+            //Initialize generic button
+            this.Properties.GenButtonExist = true;
+
             //Adjust appearance of search bar
             AdjustSearchBarAppearance();
         }
 
-        public SearchBarTemplate(bool genButtonExist)
+        public SearchBarTemplate(bool genButtonExist = true)
         {
             //Call setup method
             Setup();
@@ -288,6 +291,7 @@ namespace NaturalnieApp.Forms.Common
             //Initialize auxiliary variables
             this.PreviouslySelectedManufacturer = "";
             this.PreviouslySelectedProduct = "";
+            this.ActualSelectedEnt = new SelectedEnt();
 
             //Initialize autocomplete source
             this.cbManufacturers.AutoCompleteSource = AutoCompleteSource.ListItems;
@@ -348,9 +352,9 @@ namespace NaturalnieApp.Forms.Common
             this.DbBackgroundWorker = new BackgroundWorker();
             // here you have also to implement the necessary events
             // this event will define what the worker is actually supposed to do
-            this.DbBackgroundWorker.DoWork += DbBackgroundWorker_DoWork;
+            this.DbBackgroundWorker.DoWork += this.DbBackgroundWorker_DoWork;
             // this event will define what the worker will do when finished
-            this.DbBackgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.DbBackgroundWorker_RunWorkerCompleted);
+            this.DbBackgroundWorker.RunWorkerCompleted += this.DbBackgroundWorker_RunWorkerCompleted;
         }
         // This event handler is where the actual, potentially time-consuming work is done.
         private void DbBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -593,7 +597,7 @@ namespace NaturalnieApp.Forms.Common
             this.PreviouslySelectedProduct = this.ActualSelectedEnt.ProductName;
 
             //Update
-            this.DbBackgroundWorker.RunWorkerAsync();
+            if(!this.DbBackgroundWorker.IsBusy) this.DbBackgroundWorker.RunWorkerAsync();
         }
         public bool SelectBarcode(string barcodeValue)
         {
@@ -672,12 +676,14 @@ namespace NaturalnieApp.Forms.Common
         }
         private void SearchBarTemplate_Load(object sender, EventArgs e)
         {
-            //Show loading bar
-            ShowLoadingBar();
+            if(!this.DesignMode)
+            {
+                //Show loading bar
+                ShowLoadingBar();
 
-            //Run backgorundworker
-            this.DbBackgroundWorker.RunWorkerAsync();
-
+                //Run backgorundworker
+                if(!this.DbBackgroundWorker.IsBusy) this.DbBackgroundWorker.RunWorkerAsync();
+            }
         }
         private void cbManufacturers_SelectedIndexChanged(object sender, EventArgs e)
         {

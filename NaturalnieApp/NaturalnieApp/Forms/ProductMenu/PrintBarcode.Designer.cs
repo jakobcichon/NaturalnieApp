@@ -35,9 +35,10 @@ namespace NaturalnieApp.Forms
             this.bPrint = new System.Windows.Forms.Button();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
             this.bClose = new System.Windows.Forms.Button();
-            this.SearchBar = new NaturalnieApp.Forms.Common.SearchBarTemplate();
             this.panel2 = new System.Windows.Forms.Panel();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
+            this.bTestButton = new System.Windows.Forms.Button();
+            this.SearchBar = new NaturalnieApp.Forms.Common.SearchBarTemplate();
             this.pHeader.SuspendLayout();
             this.pButtonsPanel.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -60,6 +61,7 @@ namespace NaturalnieApp.Forms
             this.tbDummyForCtrl.Name = "tbDummyForCtrl";
             this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
             this.tbDummyForCtrl.TabIndex = 7;
+            this.tbDummyForCtrl.Visible = false;
             this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
             // 
             // bPrint
@@ -78,6 +80,7 @@ namespace NaturalnieApp.Forms
             // pButtonsPanel
             // 
             this.pButtonsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
+            this.pButtonsPanel.Controls.Add(this.bTestButton);
             this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Controls.Add(this.bPrint);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -100,21 +103,6 @@ namespace NaturalnieApp.Forms
             this.bClose.UseVisualStyleBackColor = false;
             this.bClose.Click += new System.EventHandler(this.bClose_Click);
             // 
-            // SearchBar
-            // 
-            this.SearchBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
-            this.SearchBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.SearchBar.ForeColor = System.Drawing.Color.Black;
-            this.SearchBar.IsBussy = true;
-            this.SearchBar.Location = new System.Drawing.Point(0, 30);
-            this.SearchBar.MinimumSize = new System.Drawing.Size(920, 106);
-            this.SearchBar.Name = "SearchBar";
-            this.SearchBar.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-            propertiesClass1.GenButtonExist = false;
-            this.SearchBar.Properties = propertiesClass1;
-            this.SearchBar.Size = new System.Drawing.Size(920, 106);
-            this.SearchBar.TabIndex = 6;
-            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.advancedDataGridView1);
@@ -130,14 +118,42 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.AllowUserToAddRows = false;
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.advancedDataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView1.FilterAndSortEnabled = true;
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 5);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
-            this.advancedDataGridView1.ReadOnly = true;
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView1.Size = new System.Drawing.Size(920, 479);
             this.advancedDataGridView1.TabIndex = 5;
+            // 
+            // bTestButton
+            // 
+            this.bTestButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bTestButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bTestButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bTestButton.Location = new System.Drawing.Point(410, 10);
+            this.bTestButton.Name = "bTestButton";
+            this.bTestButton.Size = new System.Drawing.Size(100, 50);
+            this.bTestButton.TabIndex = 31;
+            this.bTestButton.Text = "Testowy";
+            this.bTestButton.UseVisualStyleBackColor = false;
+            this.bTestButton.Click += new System.EventHandler(this.bTestButton_Click);
+            // 
+            // SearchBar
+            // 
+            this.SearchBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.SearchBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SearchBar.ForeColor = System.Drawing.Color.Black;
+            this.SearchBar.IsBussy = true;
+            this.SearchBar.Location = new System.Drawing.Point(0, 30);
+            this.SearchBar.MinimumSize = new System.Drawing.Size(920, 106);
+            this.SearchBar.Name = "SearchBar";
+            this.SearchBar.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
+            propertiesClass1.GenButtonExist = false;
+            this.SearchBar.Properties = propertiesClass1;
+            this.SearchBar.Size = new System.Drawing.Size(920, 106);
+            this.SearchBar.TabIndex = 6;
+            this.SearchBar.NewEntSelected += new NaturalnieApp.Forms.Common.SearchBarTemplate.NewEntSelectedEventHandler(this.SearchBar_NewEntSelected);
+            this.SearchBar.GenericButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.GenericButtonClickEventHandler(this.SearchBar_GenericButtonClick);
             // 
             // PrintBarcode
             // 
@@ -150,7 +166,6 @@ namespace NaturalnieApp.Forms
             this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.Enabled = false;
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "PrintBarcode";
             this.Size = new System.Drawing.Size(920, 690);
@@ -174,5 +189,6 @@ namespace NaturalnieApp.Forms
         private Common.SearchBarTemplate SearchBar;
         private System.Windows.Forms.Panel panel2;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
+        private System.Windows.Forms.Button bTestButton;
     }
 }

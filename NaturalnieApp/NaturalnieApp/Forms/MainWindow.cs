@@ -142,11 +142,11 @@ namespace NaturalnieApp.Forms
         {
             if((bool)e.Result == true)
             {
-                this.statusBar.UpdateStatusFrom_Db(Common.GeneralStatus.Online);
+                if(this.statusBar != null) this.statusBar.UpdateStatusFrom_Db(Common.GeneralStatus.Online);
             }
             else
             {
-                this.statusBar.UpdateStatusFrom_Db(Common.GeneralStatus.Offline);
+                if (this.statusBar != null) this.statusBar.UpdateStatusFrom_Db(Common.GeneralStatus.Offline);
             }
         }
 

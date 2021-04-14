@@ -413,8 +413,7 @@ namespace NaturalnieApp.Forms
             //Set variable informing Bar code read corrected
             this.BarcodeValidEventGenerated = true;
         }
-        #endregion
-        
+        #endregion     
         //====================================================================================================
         //MArigin events
         #region Marigin events
@@ -647,7 +646,6 @@ namespace NaturalnieApp.Forms
             UpdateControl(ref tbDummyForCtrl);
         }
         #endregion
-
         //====================================================================================================
         //Search bar events
         #region Search bar events

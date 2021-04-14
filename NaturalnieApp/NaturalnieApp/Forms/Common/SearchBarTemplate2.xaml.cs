@@ -201,7 +201,7 @@ namespace NaturalnieApp.Forms.Common
         //Public methods
         public void UpdateCurrentEntity()
         {
-            this.DbBackgroundWorker.RunWorkerAsync();
+            if (!this.DbBackgroundWorker.IsBusy) this.DbBackgroundWorker.RunWorkerAsync();
         }
 
         public void SelectBarcode(string barcodeValue)
@@ -225,8 +225,7 @@ namespace NaturalnieApp.Forms.Common
 
         private void SearchBarTemplate_Load(object sender, EventArgs e)
         {
-            this.DbBackgroundWorker.RunWorkerAsync();
-            ;
+            if (!this.DbBackgroundWorker.IsBusy) this.DbBackgroundWorker.RunWorkerAsync();
         }
 
         private void cbManufacturers_SelectedIndexChanged(object sender, EventArgs e)

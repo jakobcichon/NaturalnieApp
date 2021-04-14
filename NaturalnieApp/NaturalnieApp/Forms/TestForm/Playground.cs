@@ -99,8 +99,7 @@ namespace NaturalnieApp.Forms
 
         private void bTestButton_Click(object sender, EventArgs e)
         {
-            this.testWorker.RunWorkerAsync();
-
+            //this.testWorker.RunWorkerAsync();
 
             ;
         }

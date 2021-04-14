@@ -736,7 +736,6 @@ namespace NaturalnieApp.Forms
             //Call update event
             bUpdate_Click(sender, e);
         }
-
         private void bClose_Click(object sender, EventArgs e)
         {
             this.Parent.Show();

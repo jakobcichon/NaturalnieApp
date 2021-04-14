@@ -364,6 +364,7 @@ namespace NaturalnieApp
         public struct LabelDataSourceColumnNames
         {
             public string No { get; set; }
+            public string ProductName { get; set; }
             public string LabelText { get; set; }
             public string LabelBarcode { get; set; }
             public string LabelFinalPrice { get; set; }

@@ -107,7 +107,7 @@ namespace NaturalnieApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + ex.InnerException + ex.StackTrace);
                 Debug.WriteLine(ex.ToString());
             }
 
