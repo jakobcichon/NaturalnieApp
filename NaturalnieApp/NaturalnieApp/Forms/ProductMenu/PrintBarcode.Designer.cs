@@ -29,31 +29,17 @@ namespace NaturalnieApp.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            NaturalnieApp.Forms.Common.SearchBarTemplate.PropertiesClass propertiesClass1 = new NaturalnieApp.Forms.Common.SearchBarTemplate.PropertiesClass();
             this.pHeader = new System.Windows.Forms.Panel();
             this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.bPrint = new System.Windows.Forms.Button();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
             this.bClose = new System.Windows.Forms.Button();
-            this.gbProductSelection = new System.Windows.Forms.GroupBox();
-            this.bAdd = new System.Windows.Forms.Button();
-            this.pBarCode = new System.Windows.Forms.TableLayoutPanel();
-            this.cbBarcodes = new System.Windows.Forms.ComboBox();
-            this.lBarcode = new System.Windows.Forms.Label();
-            this.pProductName = new System.Windows.Forms.TableLayoutPanel();
-            this.cbProductsList = new System.Windows.Forms.ComboBox();
-            this.lProductName = new System.Windows.Forms.Label();
-            this.pManufacturer = new System.Windows.Forms.TableLayoutPanel();
-            this.cbManufacturers = new System.Windows.Forms.ComboBox();
-            this.lManufacturer = new System.Windows.Forms.Label();
+            this.SearchBar = new NaturalnieApp.Forms.Common.SearchBarTemplate();
             this.panel2 = new System.Windows.Forms.Panel();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.pHeader.SuspendLayout();
             this.pButtonsPanel.SuspendLayout();
-            this.gbProductSelection.SuspendLayout();
-            this.pBarCode.SuspendLayout();
-            this.pProductName.SuspendLayout();
-            this.pManufacturer.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -61,7 +47,6 @@ namespace NaturalnieApp.Forms
             // pHeader
             // 
             this.pHeader.Controls.Add(this.tbDummyForCtrl);
-            this.pHeader.Controls.Add(this.panel1);
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
@@ -76,13 +61,6 @@ namespace NaturalnieApp.Forms
             this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
             this.tbDummyForCtrl.TabIndex = 7;
             this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
-            // 
-            // panel1
-            // 
-            this.panel1.Location = new System.Drawing.Point(0, 36);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 100);
-            this.panel1.TabIndex = 4;
             // 
             // bPrint
             // 
@@ -99,6 +77,7 @@ namespace NaturalnieApp.Forms
             // 
             // pButtonsPanel
             // 
+            this.pButtonsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
             this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Controls.Add(this.bPrint);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -121,189 +100,29 @@ namespace NaturalnieApp.Forms
             this.bClose.UseVisualStyleBackColor = false;
             this.bClose.Click += new System.EventHandler(this.bClose_Click);
             // 
-            // gbProductSelection
+            // SearchBar
             // 
-            this.gbProductSelection.Controls.Add(this.bAdd);
-            this.gbProductSelection.Controls.Add(this.pBarCode);
-            this.gbProductSelection.Controls.Add(this.pProductName);
-            this.gbProductSelection.Controls.Add(this.pManufacturer);
-            this.gbProductSelection.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gbProductSelection.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.gbProductSelection.Location = new System.Drawing.Point(0, 30);
-            this.gbProductSelection.Name = "gbProductSelection";
-            this.gbProductSelection.Size = new System.Drawing.Size(920, 106);
-            this.gbProductSelection.TabIndex = 1;
-            this.gbProductSelection.TabStop = false;
-            this.gbProductSelection.Text = "Wybór produktu";
-            // 
-            // bAdd
-            // 
-            this.bAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bAdd.Location = new System.Drawing.Point(842, 28);
-            this.bAdd.Margin = new System.Windows.Forms.Padding(5);
-            this.bAdd.Name = "bAdd";
-            this.bAdd.Size = new System.Drawing.Size(70, 70);
-            this.bAdd.TabIndex = 3;
-            this.bAdd.Text = "Dodaj";
-            this.bAdd.UseVisualStyleBackColor = false;
-            this.bAdd.Click += new System.EventHandler(this.bAdd_Click);
-            // 
-            // pBarCode
-            // 
-            this.pBarCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
-            this.pBarCode.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.pBarCode.ColumnCount = 1;
-            this.pBarCode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.pBarCode.Controls.Add(this.cbBarcodes, 0, 1);
-            this.pBarCode.Controls.Add(this.lBarcode, 0, 0);
-            this.pBarCode.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.pBarCode.Location = new System.Drawing.Point(657, 28);
-            this.pBarCode.Margin = new System.Windows.Forms.Padding(5);
-            this.pBarCode.Name = "pBarCode";
-            this.pBarCode.RowCount = 2;
-            this.pBarCode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.pBarCode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.pBarCode.Size = new System.Drawing.Size(175, 70);
-            this.pBarCode.TabIndex = 2;
-            // 
-            // cbBarcodes
-            // 
-            this.cbBarcodes.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.cbBarcodes.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.cbBarcodes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbBarcodes.DropDownHeight = 200;
-            this.cbBarcodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.cbBarcodes.FormattingEnabled = true;
-            this.cbBarcodes.IntegralHeight = false;
-            this.cbBarcodes.ItemHeight = 20;
-            this.cbBarcodes.Location = new System.Drawing.Point(6, 37);
-            this.cbBarcodes.Margin = new System.Windows.Forms.Padding(5);
-            this.cbBarcodes.Name = "cbBarcodes";
-            this.cbBarcodes.Size = new System.Drawing.Size(163, 28);
-            this.cbBarcodes.TabIndex = 1;
-            this.cbBarcodes.SelectedIndexChanged += new System.EventHandler(this.cbBarcodes_SelectedIndexChanged);
-            // 
-            // lBarcode
-            // 
-            this.lBarcode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.lBarcode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lBarcode.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lBarcode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lBarcode.Location = new System.Drawing.Point(6, 6);
-            this.lBarcode.Margin = new System.Windows.Forms.Padding(5);
-            this.lBarcode.Name = "lBarcode";
-            this.lBarcode.Size = new System.Drawing.Size(163, 20);
-            this.lBarcode.TabIndex = 0;
-            this.lBarcode.Text = "Kod kreskowy";
-            this.lBarcode.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pProductName
-            // 
-            this.pProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
-            this.pProductName.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.pProductName.ColumnCount = 1;
-            this.pProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.pProductName.Controls.Add(this.cbProductsList, 0, 1);
-            this.pProductName.Controls.Add(this.lProductName, 0, 0);
-            this.pProductName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.pProductName.Location = new System.Drawing.Point(261, 28);
-            this.pProductName.Margin = new System.Windows.Forms.Padding(5);
-            this.pProductName.Name = "pProductName";
-            this.pProductName.RowCount = 2;
-            this.pProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.pProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.pProductName.Size = new System.Drawing.Size(386, 70);
-            this.pProductName.TabIndex = 1;
-            // 
-            // cbProductsList
-            // 
-            this.cbProductsList.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.cbProductsList.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.cbProductsList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbProductsList.DropDownHeight = 200;
-            this.cbProductsList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.cbProductsList.FormattingEnabled = true;
-            this.cbProductsList.IntegralHeight = false;
-            this.cbProductsList.ItemHeight = 20;
-            this.cbProductsList.Location = new System.Drawing.Point(4, 35);
-            this.cbProductsList.Name = "cbProductsList";
-            this.cbProductsList.Size = new System.Drawing.Size(378, 28);
-            this.cbProductsList.TabIndex = 1;
-            this.cbProductsList.SelectedIndexChanged += new System.EventHandler(this.cbProductsList_SelectedIndexChanged);
-            // 
-            // lProductName
-            // 
-            this.lProductName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.lProductName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lProductName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lProductName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lProductName.Location = new System.Drawing.Point(6, 6);
-            this.lProductName.Margin = new System.Windows.Forms.Padding(5);
-            this.lProductName.Name = "lProductName";
-            this.lProductName.Size = new System.Drawing.Size(374, 20);
-            this.lProductName.TabIndex = 0;
-            this.lProductName.Text = "Nazwa produktu";
-            this.lProductName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pManufacturer
-            // 
-            this.pManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(199)))), ((int)(((byte)(102)))));
-            this.pManufacturer.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.pManufacturer.ColumnCount = 1;
-            this.pManufacturer.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.pManufacturer.Controls.Add(this.cbManufacturers, 0, 1);
-            this.pManufacturer.Controls.Add(this.lManufacturer, 0, 0);
-            this.pManufacturer.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.pManufacturer.Location = new System.Drawing.Point(5, 28);
-            this.pManufacturer.Margin = new System.Windows.Forms.Padding(5);
-            this.pManufacturer.Name = "pManufacturer";
-            this.pManufacturer.RowCount = 2;
-            this.pManufacturer.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.pManufacturer.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.pManufacturer.Size = new System.Drawing.Size(250, 70);
-            this.pManufacturer.TabIndex = 0;
-            // 
-            // cbManufacturers
-            // 
-            this.cbManufacturers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.cbManufacturers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.cbManufacturers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbManufacturers.DropDownHeight = 200;
-            this.cbManufacturers.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.cbManufacturers.FormattingEnabled = true;
-            this.cbManufacturers.IntegralHeight = false;
-            this.cbManufacturers.ItemHeight = 20;
-            this.cbManufacturers.Items.AddRange(new object[] {
-            "Wszyscy"});
-            this.cbManufacturers.Location = new System.Drawing.Point(6, 37);
-            this.cbManufacturers.Margin = new System.Windows.Forms.Padding(5);
-            this.cbManufacturers.Name = "cbManufacturers";
-            this.cbManufacturers.Size = new System.Drawing.Size(238, 28);
-            this.cbManufacturers.TabIndex = 1;
-            this.cbManufacturers.SelectedIndexChanged += new System.EventHandler(this.cbManufacturers_SelectedIndexChanged);
-            // 
-            // lManufacturer
-            // 
-            this.lManufacturer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.lManufacturer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lManufacturer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lManufacturer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lManufacturer.Location = new System.Drawing.Point(6, 6);
-            this.lManufacturer.Margin = new System.Windows.Forms.Padding(5);
-            this.lManufacturer.Name = "lManufacturer";
-            this.lManufacturer.Size = new System.Drawing.Size(238, 20);
-            this.lManufacturer.TabIndex = 0;
-            this.lManufacturer.Text = "Producent";
-            this.lManufacturer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.SearchBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.SearchBar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SearchBar.ForeColor = System.Drawing.Color.Black;
+            this.SearchBar.IsBussy = true;
+            this.SearchBar.Location = new System.Drawing.Point(0, 30);
+            this.SearchBar.MinimumSize = new System.Drawing.Size(920, 106);
+            this.SearchBar.Name = "SearchBar";
+            this.SearchBar.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
+            propertiesClass1.GenButtonExist = false;
+            this.SearchBar.Properties = propertiesClass1;
+            this.SearchBar.Size = new System.Drawing.Size(920, 106);
+            this.SearchBar.TabIndex = 6;
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.advancedDataGridView1);
-            this.panel2.Location = new System.Drawing.Point(0, 142);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(0, 136);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(920, 362);
+            this.panel2.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.panel2.Size = new System.Drawing.Size(920, 484);
             this.panel2.TabIndex = 5;
             // 
             // advancedDataGridView1
@@ -313,11 +132,11 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView1.FilterAndSortEnabled = true;
-            this.advancedDataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.advancedDataGridView1.Location = new System.Drawing.Point(0, 5);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.ReadOnly = true;
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(920, 362);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(920, 479);
             this.advancedDataGridView1.TabIndex = 5;
             // 
             // PrintBarcode
@@ -326,27 +145,20 @@ namespace NaturalnieApp.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(920, 690);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.gbProductSelection);
+            this.Controls.Add(this.SearchBar);
             this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Enabled = false;
             this.ForeColor = System.Drawing.Color.Black;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.KeyPreview = true;
             this.Name = "PrintBarcode";
-            this.Text = "PrintBarcode";
+            this.Size = new System.Drawing.Size(920, 690);
             this.Load += new System.EventHandler(this.PrintBarcode_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PrintBarcode_KeyDown);
             this.pHeader.ResumeLayout(false);
             this.pHeader.PerformLayout();
             this.pButtonsPanel.ResumeLayout(false);
-            this.gbProductSelection.ResumeLayout(false);
-            this.pBarCode.ResumeLayout(false);
-            this.pProductName.ResumeLayout(false);
-            this.pManufacturer.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.ResumeLayout(false);
@@ -355,23 +167,12 @@ namespace NaturalnieApp.Forms
 
         #endregion
         private System.Windows.Forms.Panel pHeader;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button bPrint;
         private System.Windows.Forms.Panel pButtonsPanel;
-        private System.Windows.Forms.GroupBox gbProductSelection;
-        private System.Windows.Forms.TableLayoutPanel pBarCode;
-        private System.Windows.Forms.Label lBarcode;
-        private System.Windows.Forms.TableLayoutPanel pProductName;
-        private System.Windows.Forms.Label lProductName;
-        private System.Windows.Forms.TableLayoutPanel pManufacturer;
-        private System.Windows.Forms.Label lManufacturer;
-        private System.Windows.Forms.Button bAdd;
-        private System.Windows.Forms.ComboBox cbManufacturers;
-        private System.Windows.Forms.ComboBox cbBarcodes;
-        private System.Windows.Forms.ComboBox cbProductsList;
         private System.Windows.Forms.Button bClose;
+        private System.Windows.Forms.TextBox tbDummyForCtrl;
+        private Common.SearchBarTemplate SearchBar;
         private System.Windows.Forms.Panel panel2;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
-        private System.Windows.Forms.TextBox tbDummyForCtrl;
     }
 }

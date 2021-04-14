@@ -34,9 +34,6 @@ namespace NaturalnieApp.Forms
 
         //Printer instance
         Printer DymoPrinter;
-        bool CancelPrinting;
-
-
         #endregion
 
         #region Class constructor
@@ -66,9 +63,6 @@ namespace NaturalnieApp.Forms
             this.DataSoruce = new DataTable();
 
             InitializeAdvancedDataGridView();
-
-            //List of the product to print
-            this.CancelPrinting = false;
 
             //Set custom format for data time picker
             this.dpDateTo.CustomFormat = "dd/MM/yy HH:mm:ss";

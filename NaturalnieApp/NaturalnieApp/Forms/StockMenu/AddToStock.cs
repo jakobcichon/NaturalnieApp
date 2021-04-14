@@ -19,11 +19,8 @@ namespace NaturalnieApp.Forms
         private DatabaseCommands databaseCommands { get; set; }
 
         //Global variables
-        private string SelectedProductName { get; set; }
-
         private Product ProductEntity { get; set; }
         private Tax TaxEntity { get; set; }
-        private Stock StockEntity { get; set; }
 
         //Marigin related
         private int LastValidValueOfMarigin { get; set; }
@@ -386,12 +383,7 @@ namespace NaturalnieApp.Forms
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        /*
-        private void AddToStock_Paint(object sender, PaintEventArgs e)
-        {
-            this.SelectNextControl(this, true, true, true, true);
-        }
-        */
+
         private void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
         {
             if (e.Ready && e.Valid)

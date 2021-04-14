@@ -177,17 +177,6 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         public bool ConnectionStatus { get; set; }
 
-
-
-
-        //====================================================================================================
-        //Class constructor
-        //====================================================================================================
-        public DatabaseCommands()
-        {
-            this.CheckConnection(false);
-        }
-
         //====================================================================================================
         //Method used to check if given element exist in database
         //Product name and barcode or supplier code are obligatory
