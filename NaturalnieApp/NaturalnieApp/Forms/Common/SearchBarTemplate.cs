@@ -57,6 +57,20 @@ namespace NaturalnieApp.Forms.Common
         }
 
         public event GenericButtonClickEventHandler GenericButtonClick;
+
+        //New Ent selected by additional request (by calling SelectEntAdditionalRequest)
+        public delegate void NewEntSelectedByAdditionalRequestEventHandler(Object sender, NewEntSelectedEventArgs e);
+
+        protected virtual void OnNewEntSelectedByAdditionalRequest(NewEntSelectedEventArgs e)
+        {
+            NewEntSelectedByAdditionalRequestEventHandler handler = NewEntSelectedByAdditionalRequest;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        public event NewEntSelectedByAdditionalRequestEventHandler NewEntSelectedByAdditionalRequest;
         #endregion
 
         //Properties class
@@ -228,6 +242,7 @@ namespace NaturalnieApp.Forms.Common
 
         //Auiliary variables to  bypass calling selected index chnaged if entity was selected by program
         private bool UpdatingDataSources { get; set; }
+        private bool SelectEntByAdditionalRequest { get; set; }
 
         //Database context
         DatabaseCommands DatabaseCommands;
@@ -504,7 +519,8 @@ namespace NaturalnieApp.Forms.Common
                 args.SelectedProduct = this.ProductEntity;
                 args.SelectedManufacturer = this.ManufacturerEntity;
                 args.SelectedTax = this.TaxEntity;
-                OnNewEntSelected(args);
+                if (this.SelectEntByAdditionalRequest) OnNewEntSelectedByAdditionalRequest(args);
+                else OnNewEntSelected(args);
             }
             else
             {
@@ -555,7 +571,6 @@ namespace NaturalnieApp.Forms.Common
                 dataToList.Sort();
                 dataToList.Insert(0, "Wszyscy");
                 this.cbManufacturers.DataSource = dataToList;
-
             }
 
             //Update products list
@@ -566,6 +581,7 @@ namespace NaturalnieApp.Forms.Common
                 dataToList = productsData.Keys.ToList();
                 dataToList.Sort();
                 this.cbProducts.DataSource = dataToList;
+                if(this.ActualSelectedEnt.ProductName != null) this.cbProducts.SelectedItem = this.ActualSelectedEnt.ProductName;
             }
 
             //Update barcodes list
@@ -599,6 +615,24 @@ namespace NaturalnieApp.Forms.Common
             //Update
             if(!this.DbBackgroundWorker.IsBusy) this.DbBackgroundWorker.RunWorkerAsync();
         }
+
+        /// <summary>
+        /// Method used to select given barcode and call OnNewEntSelectedByAdditionalRequest
+        /// instead of OnNewEntSelected.
+        /// </summary>
+        /// <param name="barcodeValue">Barcode value to select</param>
+        /// <returns>True - if barcode was found, else false</returns>
+        public bool SelectBarcodeByAdditionalRequest(string barcodeValue)
+        {
+            //Local variable
+            bool retVal;
+
+            this.SelectEntByAdditionalRequest = true;
+            retVal = SelectBarcode(barcodeValue);
+            this.SelectEntByAdditionalRequest = false;
+
+            return retVal;
+        }
         public bool SelectBarcode(string barcodeValue)
         {
             //Get actual entity
@@ -609,9 +643,6 @@ namespace NaturalnieApp.Forms.Common
                 //Set found entity as actual one
                 this.ActualSelectedEnt = entToSelect;
 
-                //Select entity on the other combo boxes
-                this.SelectEntity(this.ActualSelectedEnt);
-
                 //Get manufacturer id
                 int manufacturerId = entToSelect.ManufacturerId;
 
@@ -621,6 +652,9 @@ namespace NaturalnieApp.Forms.Common
 
                 //Reset dicts
                 this.UpdateDataSources(productsData: this.ProductsToDisplayDict, barcodesData: this.BarcodesToDisplayDict);
+
+                //Select entity on the other combo boxes
+                this.SelectEntity(this.ActualSelectedEnt);
 
                 return true;
             }
@@ -636,9 +670,6 @@ namespace NaturalnieApp.Forms.Common
                 //Set found entity as actual one
                 this.ActualSelectedEnt = entToSelect;
 
-                //Select entity on the other combo boxes
-                this.SelectEntity(this.ActualSelectedEnt);
-
                 //Get manufacturer id
                 int manufacturerId = entToSelect.ManufacturerId;
 
@@ -648,6 +679,9 @@ namespace NaturalnieApp.Forms.Common
 
                 //Reset dicts
                 this.UpdateDataSources(productsData: this.ProductsToDisplayDict, barcodesData: this.BarcodesToDisplayDict);
+
+                //Select entity on the other combo boxes
+                this.SelectEntity(this.ActualSelectedEnt);
 
                 return true;
             }

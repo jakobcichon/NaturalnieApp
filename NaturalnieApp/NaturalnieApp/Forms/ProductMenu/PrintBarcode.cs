@@ -15,7 +15,7 @@ namespace NaturalnieApp.Forms
         #region Object fields
 
         //Data source for advanced data grid view
-        DataTable DataSoruce;
+        DataTable DataSource { get; set; }
         DataSourceRelated.LabelDataSourceColumnNames ColumnNames;
 
         //List of the product to print
@@ -38,12 +38,13 @@ namespace NaturalnieApp.Forms
 
             //Initialize daa grid view
             this.ColumnNames.No = "Lp.";
+            this.ColumnNames.ProductId = "Numer produktu w kasie Elzab";
             this.ColumnNames.ProductName = "Nazwa produktu";
             this.ColumnNames.LabelBarcode = "Kod kreskowy";
             this.ColumnNames.LabelFinalPrice = "Cena klienta";
             this.ColumnNames.LabelText = "Tekst etykiety";
             this.ColumnNames.NumberOfCopies = "Liczba kopii";
-            this.DataSoruce = new DataTable();
+            this.DataSource = new DataTable();
             InitializeAdvancedDataGridView();
 
             //List of the product to print
@@ -58,7 +59,6 @@ namespace NaturalnieApp.Forms
             //Search bar events
         }
         #endregion
-
         //====================================================================================================
         //General methods
         #region General methods
@@ -93,11 +93,18 @@ namespace NaturalnieApp.Forms
 
             column.ColumnName = this.ColumnNames.No;
             column.DataType = Type.GetType("System.String");
-            column.ReadOnly = true;
             column.AutoIncrement = true;
             column.AutoIncrementSeed = 1;
             column.Unique = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.ProductId;
+            column.DataType = Type.GetType("System.Int32");
+            column.ReadOnly = true;
+            column.Unique = true;
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
@@ -105,7 +112,7 @@ namespace NaturalnieApp.Forms
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
             column.Unique = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
@@ -113,7 +120,7 @@ namespace NaturalnieApp.Forms
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
             column.Unique = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
@@ -121,30 +128,96 @@ namespace NaturalnieApp.Forms
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
             column.Unique = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.LabelFinalPrice;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.NumberOfCopies;
             column.DataType = Type.GetType("System.Int32");
             column.ReadOnly = false;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
-            this.advancedDataGridView1.DataSource = this.DataSoruce;
+            this.advancedDataGridView1.DataSource = this.DataSource;
 
             this.advancedDataGridView1.AutoResizeColumns();
         }
-        private void AdvancedDataGridView1_UserDeletingRow(object sender, System.Windows.Forms.DataGridViewRowCancelEventArgs e)
+        private void advancedDataGridView1_FilterStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.FilterEventArgs e)
         {
-            this.ListOfTheProductToPrint.RemoveAt(e.Row.Index);
+            this.DataSource.DefaultView.RowFilter = e.FilterString;
+        }
+
+        private void advancedDataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            //Remove product from additional list
+            int i = 0;
+            foreach(DataRow row in this.DataSource.Rows)
+            {
+                if (row.Field<int>(this.ColumnNames.ProductId) != this.ListOfTheProductToPrint[i].ElzabProductId)
+                {
+                    this.ListOfTheProductToPrint.RemoveAt(i);
+                }
+                i++;
+            }
+
+            //Renumber no column values if necessary
+            UpdateNoColumnValues(this.DataSource, this.ColumnNames.No);
+        }
+
+
+        private void AdvancedDataGridView1_SortStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.SortEventArgs e)
+        {
+            Zuby.ADGV.AdvancedDataGridView fdgv = advancedDataGridView1;
+            DataTable dataTable = (DataTable)fdgv.DataSource;
+
+            if (fdgv.SortString.Length > 0)
+            {
+                dataTable.DefaultView.Sort = fdgv.SortString;
+            }
+            //Clear Filter
+            else
+            {
+                dataTable.DefaultView.Sort = dataTable.Columns[0].ColumnName + " asc";
+            }
+
+        }
+        private void advancedDataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //Local variables
+            string entityName = "";
+
+            //Get the name of current entity from data grid view
+            if (this.DataSource.Columns[e.ColumnIndex].ColumnName == this.ColumnNames.ProductName)
+            {
+                entityName = this.DataSource.Rows[e.RowIndex].Field<string>(e.ColumnIndex);
+                this.SearchBar.SelectEntityByName(entityName);
+            }
+
+
+        }
+        private void UpdateNoColumnValues(DataTable dataTable, string noColumnName)
+        {
+            //Get number of rows in data source
+            int numberOfRows = dataTable.Rows.Count;
+
+            //Get value of No column in last row
+            int noValueOfLastRow = dataTable.Rows[numberOfRows - 1].Field<int>(noColumnName);
+
+            //Check if equal. If not renumbere all
+            if (numberOfRows != noValueOfLastRow)
+            {
+                for (int i = 1; i <= numberOfRows; i++)
+                {
+                    dataTable.Rows[i - 1].SetField<int>(noColumnName, i);
+                }
+            }
         }
         #endregion
         //====================================================================================================
@@ -180,7 +253,7 @@ namespace NaturalnieApp.Forms
             if (e.Ready && e.Valid)
             {
                 //Get index
-                if (!this.SearchBar.SelectBarcode(e.RecognizedBarcodeValue))
+                if (!this.SearchBar.SelectBarcodeByAdditionalRequest(e.RecognizedBarcodeValue))
                 {
                     MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych", "Brak kodu",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -191,13 +264,12 @@ namespace NaturalnieApp.Forms
             this.BarcodeValidEventGenerated = true;
         }
         #endregion
-
         //====================================================================================================
         //Buttons events
         #region Buttons events
         private void bPrint_Click(object sender, EventArgs e)
         {
-            if (this.DataSoruce.Rows.Count == 0)
+            if (this.DataSource.Rows.Count == 0)
             {
                 MessageBox.Show("Brak wybranch elementów do druku!");
             }
@@ -224,7 +296,7 @@ namespace NaturalnieApp.Forms
                     {
                         //Get number of copies from data grid view
                         int index = this.ListOfTheProductToPrint.IndexOf(element);
-                        int numberOfCopies = this.DataSoruce.Rows[index].Field<Int32>(this.ColumnNames.NumberOfCopies);
+                        int numberOfCopies = this.DataSource.Rows[index].Field<Int32>(this.ColumnNames.NumberOfCopies);
 
                         for (int i = 1; i <= numberOfCopies; i++)
                         {
@@ -260,7 +332,6 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
-
         //====================================================================================================
         //Buttons events
         #region Buttons events
@@ -272,12 +343,13 @@ namespace NaturalnieApp.Forms
             }
         }
 
-        private void SearchBar_NewEntSelected(object sender, Common.SearchBarTemplate.NewEntSelectedEventArgs e)
+        private void SearchBar_NewEntSelectedByAdditionalRequest(object sender, Common.SearchBarTemplate.NewEntSelectedEventArgs e)
         {
-
+            if (e.SelectedProduct != null)
+            {
+                AddToDataGrid(e.SelectedProduct, e.SelectedManufacturer, e.SelectedTax);
+            }
         }
-
-
         private void AddToDataGrid(Product product, Manufacturer manufaturer, Tax tax)
         {
             if (product != null && manufaturer != null && tax != null)
@@ -289,11 +361,11 @@ namespace NaturalnieApp.Forms
                     bool productAlreadyOnTheList = false;
 
                     //Check if product already exist on list
-                    foreach (DataRow rowElement in this.DataSoruce.Rows)
+                    foreach (DataRow rowElement in this.DataSource.Rows)
                     {
                         if (rowElement.Field<string>(this.ColumnNames.LabelText).Contains(product.ElzabProductName))
                         {
-                            indexOfExistingRow = this.DataSoruce.Rows.IndexOf(rowElement);
+                            indexOfExistingRow = this.DataSource.Rows.IndexOf(rowElement);
                             productAlreadyOnTheList = true;
                             break;
                         }
@@ -302,17 +374,18 @@ namespace NaturalnieApp.Forms
                     //Increment number of copies if product already exist on the list
                     if (productAlreadyOnTheList)
                     {
-                        this.DataSoruce.Rows[indexOfExistingRow].SetField(this.ColumnNames.NumberOfCopies,
-                            this.DataSoruce.Rows[indexOfExistingRow].Field<Int32>(this.ColumnNames.NumberOfCopies) + 1);
+                        this.DataSource.Rows[indexOfExistingRow].SetField(this.ColumnNames.NumberOfCopies,
+                            this.DataSource.Rows[indexOfExistingRow].Field<Int32>(this.ColumnNames.NumberOfCopies) + 1);
                     }
                     else
                     {
                         //New data row type
                         DataRow row;
-                        row = this.DataSoruce.NewRow();
+                        row = this.DataSource.NewRow();
 
                         //Set requred fields
-                        row.SetField(this.ColumnNames.No, this.DataSoruce.Rows.Count + 1);
+                        row.SetField(this.ColumnNames.No, this.DataSource.Rows.Count + 1);
+                        row.SetField(this.ColumnNames.ProductId, product.ElzabProductId);
                         row.SetField(this.ColumnNames.ProductName, product.ProductName);
                         row.SetField(this.ColumnNames.LabelBarcode, product.BarCodeShort);
                         row.SetField(this.ColumnNames.LabelText, product.ElzabProductName);
@@ -320,7 +393,7 @@ namespace NaturalnieApp.Forms
                         row.SetField(this.ColumnNames.NumberOfCopies, 1.ToString());
 
                         //Assign values to the proper rows
-                        this.DataSoruce.Rows.Add(row);
+                        this.DataSource.Rows.Add(row);
 
                         //Add entity to the list
                         this.ListOfTheProductToPrint.Add(product);
