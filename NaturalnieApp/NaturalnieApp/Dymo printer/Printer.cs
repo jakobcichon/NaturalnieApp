@@ -7,6 +7,8 @@ using System.IO;
 using NaturalnieApp.Database;
 using DymoSDK.Implementations;
 using DymoSDK.Interfaces;
+using System.Management;
+using System.Printing;
 
 namespace NaturalnieApp.Dymo_Printer
 {

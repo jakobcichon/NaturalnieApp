@@ -78,6 +78,71 @@ namespace NaturalnieApp.Forms
                 localSender.Text = "";
             }
         }
+        private void AddToDataGrid(Product product, Manufacturer manufaturer, Tax tax)
+        {
+            if (product != null && manufaturer != null && tax != null)
+            {
+                try
+                {
+                    //Index of existing row
+                    int indexOfExistingRow = -1;
+                    bool productAlreadyOnTheList = false;
+
+                    //If filter applied, reset it.
+                    if (this.DataSource.DefaultView.RowFilter != "") this.advancedDataGridView1.CleanFilter(true);
+
+                    //Check if product already exist on list
+                    foreach (DataRow rowElement in this.DataSource.Rows)
+                    {
+                        if (rowElement.Field<string>(this.ColumnNames.LabelText).Contains(product.ElzabProductName))
+                        {
+                            indexOfExistingRow = this.DataSource.Rows.IndexOf(rowElement);
+                            productAlreadyOnTheList = true;
+                            break;
+                        }
+                    }
+
+                    //Increment number of copies if product already exist on the list
+                    if (productAlreadyOnTheList)
+                    {
+                        this.DataSource.Rows[indexOfExistingRow].SetField(this.ColumnNames.NumberOfCopies,
+                            this.DataSource.Rows[indexOfExistingRow].Field<Int32>(this.ColumnNames.NumberOfCopies) + 1);
+                    }
+                    else
+                    {
+                        //New data row type
+                        DataRow row;
+                        row = this.DataSource.NewRow();
+
+                        //Set requred fields
+                        row.SetField(this.ColumnNames.No, this.DataSource.Rows.Count + 1);
+                        row.SetField(this.ColumnNames.ProductId, product.ElzabProductId);
+                        row.SetField(this.ColumnNames.ProductName, product.ProductName);
+                        row.SetField(this.ColumnNames.LabelBarcode, product.BarCodeShort);
+                        row.SetField(this.ColumnNames.LabelText, product.ElzabProductName);
+                        row.SetField(this.ColumnNames.LabelFinalPrice, string.Format("{0:0.00}", product.FinalPrice));
+                        row.SetField(this.ColumnNames.NumberOfCopies, 1.ToString());
+
+                        //Assign values to the proper rows
+                        this.DataSource.Rows.Add(row);
+
+                        //Add entity to the list
+                        this.ListOfTheProductToPrint.Add(product);
+                    }
+
+                    //AutoResize Columns
+                    advancedDataGridView1.AutoResizeColumns();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + ex.InnerException);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
+            }
+        }
         #endregion
         //====================================================================================================
         //Advanced data gid view
@@ -291,16 +356,28 @@ namespace NaturalnieApp.Forms
                     //Local variables
                     List<Product> localList = new List<Product>();
 
+                    //Local data source
+                    DataTable localDataSource;
+
+                    //Check if data source was filtered
+                    if (this.DataSource.DefaultView.RowFilter != "")
+                    {
+                        localDataSource = this.DataSource.Select(this.DataSource.DefaultView.RowFilter).CopyToDataTable();
+                    }
+                    else localDataSource = this.DataSource.Copy();
+
                     //Loop through the list of the product to print and create temporary list contains elements multiple by number of copies
-                    foreach (Product element in this.ListOfTheProductToPrint)
+                    foreach (DataRow row in localDataSource.Rows)
                     {
                         //Get number of copies from data grid view
-                        int index = this.ListOfTheProductToPrint.IndexOf(element);
-                        int numberOfCopies = this.DataSource.Rows[index].Field<Int32>(this.ColumnNames.NumberOfCopies);
+                        int productNumber = row.Field<Int32>(this.ColumnNames.ProductId);
+                        int numberOfCopies = row.Field<Int32>(this.ColumnNames.NumberOfCopies);
+
+                        Product product = this.ListOfTheProductToPrint.Find(p => p.ElzabProductId == productNumber);
 
                         for (int i = 1; i <= numberOfCopies; i++)
                         {
-                            localList.Add(element);
+                            localList.Add(product);
                         }
                     }
 
@@ -334,7 +411,7 @@ namespace NaturalnieApp.Forms
         #endregion
         //====================================================================================================
         //Buttons events
-        #region Buttons events
+        #region Search bar events
         private void SearchBar_GenericButtonClick(object sender, Common.SearchBarTemplate.GenericButtonClickEventArgs e)
         {
             if(e.SelectedProduct != null)
@@ -350,70 +427,6 @@ namespace NaturalnieApp.Forms
                 AddToDataGrid(e.SelectedProduct, e.SelectedManufacturer, e.SelectedTax);
             }
         }
-        private void AddToDataGrid(Product product, Manufacturer manufaturer, Tax tax)
-        {
-            if (product != null && manufaturer != null && tax != null)
-            {
-                try
-                {
-                    //Index of existing row
-                    int indexOfExistingRow = -1;
-                    bool productAlreadyOnTheList = false;
-
-                    //Check if product already exist on list
-                    foreach (DataRow rowElement in this.DataSource.Rows)
-                    {
-                        if (rowElement.Field<string>(this.ColumnNames.LabelText).Contains(product.ElzabProductName))
-                        {
-                            indexOfExistingRow = this.DataSource.Rows.IndexOf(rowElement);
-                            productAlreadyOnTheList = true;
-                            break;
-                        }
-                    }
-
-                    //Increment number of copies if product already exist on the list
-                    if (productAlreadyOnTheList)
-                    {
-                        this.DataSource.Rows[indexOfExistingRow].SetField(this.ColumnNames.NumberOfCopies,
-                            this.DataSource.Rows[indexOfExistingRow].Field<Int32>(this.ColumnNames.NumberOfCopies) + 1);
-                    }
-                    else
-                    {
-                        //New data row type
-                        DataRow row;
-                        row = this.DataSource.NewRow();
-
-                        //Set requred fields
-                        row.SetField(this.ColumnNames.No, this.DataSource.Rows.Count + 1);
-                        row.SetField(this.ColumnNames.ProductId, product.ElzabProductId);
-                        row.SetField(this.ColumnNames.ProductName, product.ProductName);
-                        row.SetField(this.ColumnNames.LabelBarcode, product.BarCodeShort);
-                        row.SetField(this.ColumnNames.LabelText, product.ElzabProductName);
-                        row.SetField(this.ColumnNames.LabelFinalPrice, string.Format("{0:0.00}", product.FinalPrice));
-                        row.SetField(this.ColumnNames.NumberOfCopies, 1.ToString());
-
-                        //Assign values to the proper rows
-                        this.DataSource.Rows.Add(row);
-
-                        //Add entity to the list
-                        this.ListOfTheProductToPrint.Add(product);
-                    }
-
-                    //AutoResize Columns
-                    advancedDataGridView1.AutoResizeColumns();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message + ex.InnerException);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Żaden produkt nie został wybrany! Nie mozna było dodać produktu do listy!");
-            }
-        }
-
-
         #endregion
 
         private void bTestButton_Click(object sender, EventArgs e)
