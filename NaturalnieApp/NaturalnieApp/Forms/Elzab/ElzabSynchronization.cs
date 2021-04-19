@@ -34,6 +34,22 @@ namespace NaturalnieApp.Forms
         private DataTable DataSoruce { get; set; }
         private DataSourceRelated.CashRegisterProductColumnNames ColumnNames;
 
+        //Backgroundworker for elzab communication
+        BackgroundWorker BwElzabCommunication { get; set; }
+        class BwElzabCommunicationProgressUpdate
+        {
+            public enum MessageType
+            {
+                Update,
+                Error,
+                UserPrompt
+            }
+
+            public MessageType TypeOfMessage { get; set; }
+            public string Text { get; set; }
+            
+        }
+
         public ElzabSynchronization(ref DatabaseCommands commandsObj)
         {
             InitializeComponent();
@@ -68,8 +84,13 @@ namespace NaturalnieApp.Forms
             this.ColumnNames.AdditionaBarcode = "Dodatkowy kod kreskowy";
             this.DataSoruce = new DataTable();
 
+            //Initialize advanced data grid view
             InitializeAdvancedDataGridView();
 
+            //Initialize backgorund worker
+            InitializeBackgroundWorker();
+
+            //Start timer
             StartTimer();
         }
         //====================================================================================================
@@ -135,14 +156,39 @@ namespace NaturalnieApp.Forms
 
         #endregion
 
-        private void bReadingFromCashRegister_Click(object sender, EventArgs e)
+        //=============================================================================
+        //                              Background worker
+        //=============================================================================
+        // Set up the BackgroundWorker object by attaching event handlers. 
+        #region Backgroundworker
+        private void InitializeBackgroundWorker()
         {
+            this.BwElzabCommunication = new BackgroundWorker();
+            // here you have also to implement the necessary events
+            // this event will define what the worker is actually supposed to do
+            this.BwElzabCommunication.DoWork += this.BwElzabCommunication_DoWork;
+            // this event will define what the worker will do when finished
+            this.BwElzabCommunication.RunWorkerCompleted += this.BwElzabCommunication_RunWorkerCompleted;
+
+            //Enable progress change update and assigne event
+            this.BwElzabCommunication.WorkerReportsProgress = true;
+            this.BwElzabCommunication.ProgressChanged += BwElzabCommunication_ProgressChanged;
+
+        }
+
+        // This event handler is where the actual, potentially time-consuming work is done.
+        private void BwElzabCommunication_DoWork(object sender, DoWorkEventArgs e)
+        {
+            //Local variables
+            BwElzabCommunicationProgressUpdate communicationProgressUpdate = new BwElzabCommunicationProgressUpdate();
+
             try
             {
-                this.DataSoruce.Clear();
-
                 //ChangeStatus
-                this.StatusBox.Text = "1.Generowanie listy produktów";
+                communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
+                communicationProgressUpdate.Text = "1.Generowanie listy produktów do odczytu";
+                (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+
                 //Generate all product numbers
                 List<int> productToReadList = GenerateProductNumbers(1, 4095);
                 this.AllProductsReading.DataToElzab.Element.RemoveAllElements();
@@ -154,42 +200,58 @@ namespace NaturalnieApp.Forms
                     this.AllProductsReading.DataToElzab.AddElement(element.ToString());
                 }
 
-                //ChangeStatus
-                this.StatusBox.Text = "2.Odczyt produktów z kasy";
-                this.StatusBox.Update();
+                //ChangeStatus 
+                communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
+                communicationProgressUpdate.Text = "2.Odczyt produktów z kasy";
+                (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+
+                this.AllProductsReading.Config.ChangeCashRegisterConnectionData
+                    (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
                 CommandExecutionStatus status = this.AllProductsReading.ExecuteCommand();
 
 
                 if (status.ErrorNumber == 0 && status.ErrorText != null)
                 {
-                    this.StatusBox.Text = "3.Parsowanie odczytanych produktów";
-                    this.StatusBox.Update();
+                    communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
+                    communicationProgressUpdate.Text = "3.Parsowanie odczytanych produktów";
+                    (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+
                     List<Product> allProductFromElzab = ElzabRelated.ParseElzabProductDataToDbObject(this.databaseCommands, this.AllProductsReading.DataFromElzab);
 
-                    this.StatusBox.Text = "4.Odczyt dodatkowych kodów z kasy";
-                    this.StatusBox.Update();
+                    communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
+                    communicationProgressUpdate.Text = "4.Odczyt dodatkowych kodów z kasy";
+                    (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+
+                    this.AdditionBarcodesReading.Config.ChangeCashRegisterConnectionData
+                        (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
                     status = this.AdditionBarcodesReading.ExecuteCommand();
                     if (status.ErrorNumber == 0 && status.ErrorText != null)
                     {
-                        this.StatusBox.Text = "5.Parsowanie odczytanych produktów";
-                        this.StatusBox.Update();
+                        communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
+                        communicationProgressUpdate.Text = "5.Parsowanie odczytanych produktów";
+                        (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+
                         List<Product> allAdditionaBarcodesFromElzab = ElzabRelated.ParseElzabAddBarcodesToDbObject(this.databaseCommands, this.AdditionBarcodesReading.DataFromElzab);
 
                         //Compare db product data with Elzab data
                         //Get all products from DB
-                        this.StatusBox.Text = "6.Pobieranie nazw wszystkich produktów z bazy danych";
-                        this.StatusBox.Update();
 
-                        this.StatusBox.Text = "7.Pobieranie z bazy danych informacji o wszystkich produktach";
-                        this.StatusBox.Update();
+                        communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
+                        communicationProgressUpdate.Text = "7.Pobieranie z bazy danych informacji o wszystkich produktach";
+                        (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+
                         List<Product> dbProductList = this.databaseCommands.GetAllProductsEnts();
 
-                        this.StatusBox.Text = "8.Porównywanie informacji z bazy danych i kasy fiskalnej";
-                        this.StatusBox.Update();
+                        communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
+                        communicationProgressUpdate.Text = "8.Porównywanie informacji z bazy danych i kasy fiskalnej";
+                        (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+
                         List<Product> diffProductList = ElzabRelated.ComapreDbProductDataWithElzab(allProductFromElzab, dbProductList);
 
-                        this.StatusBox.Text = "9.Przygotowanie danych do wyświetlenia";
-                        this.StatusBox.Update();
+                        communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
+                        communicationProgressUpdate.Text = "9.Przygotowanie danych do wyświetlenia";
+                        (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+
                         //Show on the list
                         foreach (Product productEnt in diffProductList)
                         {
@@ -210,32 +272,38 @@ namespace NaturalnieApp.Forms
 
                         if (diffProductList.Count == 0)
                         {
-                            MessageBox.Show("Nie znaleziono żadnych różnic między bazą danych a kasą fiskalną:).");
+                            communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.UserPrompt;
+                            communicationProgressUpdate.Text = "Nie znaleziono żadnych różnic między bazą danych a kasą fiskalną:).";
+                            (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
                         }
                         else
                         {
-                            this.StatusBox.Text = "9.Oczekiwanie na akcję użytkownika";
-                            this.StatusBox.Update();
-                            MessageBox.Show(string.Format("Znaleziono {0} różnic.", diffProductList.Count()));
+                            communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
+                            communicationProgressUpdate.Text = "9.Oczekiwanie na akcję użytkownika";
+                            (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+
+                            communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.UserPrompt;
+                            communicationProgressUpdate.Text = string.Format("Znaleziono {0} różnic.", diffProductList.Count());
+                            (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
                         }
 
                     }
                     else
                     {
-                        MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
-                        status.ErrorNumber, status.ErrorText),
-                        "Błąd komunikacji z kasą Elzab!",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Error;
+                        communicationProgressUpdate.Text = string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
+                        status.ErrorNumber, status.ErrorText);
+                        (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
                     }
 
                 }
                 else
                 {
-                    MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
-                        status.ErrorNumber, status.ErrorText),
-                        "Błąd komunikacji z kasą Elzab!",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Error;
+                    communicationProgressUpdate.Text = string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
+                        status.ErrorNumber, status.ErrorText);
+                    (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
                 }
 
 
@@ -244,6 +312,43 @@ namespace NaturalnieApp.Forms
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+
+        private void BwElzabCommunication_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            //Cast an object
+            BwElzabCommunicationProgressUpdate update = e.UserState as BwElzabCommunicationProgressUpdate;
+
+            switch (update.TypeOfMessage)
+            {
+                case BwElzabCommunicationProgressUpdate.MessageType.Error:
+                    MessageBox.Show(update.Text, " ", MessageBoxIcon.Error);
+                    break;
+                case BwElzabCommunicationProgressUpdate.MessageType.Update:
+                    this.StatusBox.Text = update.Text;
+                    break;
+                case BwElzabCommunicationProgressUpdate.MessageType.UserPrompt:
+                    MessageBox.Show(update.Text);
+                    break;
+            }
+
+
+        }
+
+        // This event handler is where the actual, potentially time-consuming work is done.
+        private void BwElzabCommunication_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+           
+        }
+        #endregion
+
+        private void bReadingFromCashRegister_Click(object sender, EventArgs e)
+        {
+
+            this.DataSoruce.Clear();
+
+
         }
 
         private void bSave_Click(object sender, EventArgs e)
@@ -264,9 +369,13 @@ namespace NaturalnieApp.Forms
                     this.ProductWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabProductData(this.databaseCommands, productsToSave, this.ProductWriting.DataToElzab);
                     this.AdditionBarcodesWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabAddBarcodes(this.databaseCommands, productsToSave, this.AdditionBarcodesWriting.DataToElzab);
 
+                    this.ProductWriting.Config.ChangeCashRegisterConnectionData
+                        (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
                     CommandExecutionStatus status = this.ProductWriting.ExecuteCommand();
                     if (status.ErrorNumber == 0 && status.ErrorText != null)
                     {
+                        this.AdditionBarcodesWriting.Config.ChangeCashRegisterConnectionData
+                            (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
                         status = this.AdditionBarcodesWriting.ExecuteCommand();
                         if (status.ErrorNumber == 0 && status.ErrorText != null)
                         {
@@ -368,37 +477,5 @@ namespace NaturalnieApp.Forms
             this.tbElapsedTime.Text = (this.ProgressTimerMinutes.ToString("00") + ":" + this.ProgressTimerSeconds.ToString("00"));
         }
         #endregion
-
-        private void bReadingFromSaleBuffor_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                this.DataSoruce.Clear();
-
-                this.SaleBufforReading.DataToElzab.Element.RemoveAllElements();
-                this.SaleBufforReading.DataFromElzab.Element.RemoveAllElements();
-
-                //ChangeStatus
-                this.StatusBox.Text = "1. Odczyt bufora sprzedaży z kasy";
-                this.StatusBox.Update();
-                CommandExecutionStatus status = this.SaleBufforReading.ExecuteCommand();
-                
-                //Get list of element type
-                List<int> elementsTypeList = this.SaleBufforReading.DataFromElzab.GetListOfElementTypes();
-                List<Sales> listOfElementsToAdd = new List<Sales>();
-                foreach (int type in elementsTypeList)
-                {
-                    //Get list of all elements of given type
-                    List<AttributeValueObject> elementsList = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
-                    listOfElementsToAdd.AddRange(ElzabRelated.ParseElzabBufferToDbObject(elementsList));
-                }
-                this.databaseCommands.AddToSales(listOfElementsToAdd);
-                ;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
     }
 }

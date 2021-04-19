@@ -159,6 +159,9 @@ namespace NaturalnieApp.Forms
                 this.DataGridViewsList.Clear();
                 this.DataSource.Clear();
 
+                this.SaleBufforReading.Config.ChangeCashRegisterConnectionData
+                    (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
+
                 //Reset to default path
                 this.SaleBufforReading.DataFromElzab.RestoreDefaultPath();
 

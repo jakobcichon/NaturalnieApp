@@ -127,8 +127,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="DymoSDK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DYMO.Connect.SDK.1.3.1.115\lib\netstandard2.0\DymoSDK.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\packages\DYMO.Connect.SDK.1.3.2.124-alpha\lib\netstandard2.0\DymoSDK.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
@@ -322,7 +321,6 @@
     <Compile Include="Forms\ProductMenu\AddManufacturer.Designer.cs">
       <DependentUpon>AddManufacturer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ProductMenu\Manufacturers.cs" />
     <Compile Include="Forms\ProductMenu\PricesRelatedUpdate.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -505,10 +503,10 @@
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
     <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets'))" />
     <Error Condition="!Exists('..\packages\SkiaSharp.1.68.0\build\net45\SkiaSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.1.68.0\build\net45\SkiaSharp.targets'))" />
-    <Error Condition="!Exists('..\packages\DYMO.Connect.SDK.1.3.1.115\build\DYMO.Connect.SDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\DYMO.Connect.SDK.1.3.1.115\build\DYMO.Connect.SDK.targets'))" />
+    <Error Condition="!Exists('..\packages\DYMO.Connect.SDK.1.3.2.124-alpha\build\DYMO.Connect.SDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\DYMO.Connect.SDK.1.3.2.124-alpha\build\DYMO.Connect.SDK.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <Import Project="..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
   <Import Project="..\packages\SkiaSharp.1.68.0\build\net45\SkiaSharp.targets" Condition="Exists('..\packages\SkiaSharp.1.68.0\build\net45\SkiaSharp.targets')" />
-  <Import Project="..\packages\DYMO.Connect.SDK.1.3.1.115\build\DYMO.Connect.SDK.targets" Condition="Exists('..\packages\DYMO.Connect.SDK.1.3.1.115\build\DYMO.Connect.SDK.targets')" />
+  <Import Project="..\packages\DYMO.Connect.SDK.1.3.2.124-alpha\build\DYMO.Connect.SDK.targets" Condition="Exists('..\packages\DYMO.Connect.SDK.1.3.2.124-alpha\build\DYMO.Connect.SDK.targets')" />
 </Project>

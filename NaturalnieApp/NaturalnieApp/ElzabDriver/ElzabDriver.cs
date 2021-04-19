@@ -502,9 +502,19 @@ namespace ElzabDriver
                     break;
                 }
             }
-            if(tempProcess != null) if(!tempProcess.HasExited) tempProcess.Kill();
-            if (this.BackgroundProcess != null) if (!this.BackgroundProcess.HasExited) this.BackgroundProcess.Kill();
-        }
+            if (tempProcess != null) if (!tempProcess.HasExited)
+                {
+
+                    tempProcess.Kill();
+                    tempProcess.WaitForExit(5000);
+                }
+
+            if (this.BackgroundProcess != null) if (!this.BackgroundProcess.HasExited)
+                {
+                    this.BackgroundProcess.Kill();
+                    this.BackgroundProcess.WaitForExit(5000);
+                }
+    }
 
         //Method used to prepare data from object, save it to file and run command
         public bool RunCommand()

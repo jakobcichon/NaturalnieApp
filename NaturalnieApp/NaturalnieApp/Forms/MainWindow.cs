@@ -259,12 +259,7 @@ namespace NaturalnieApp.Forms
         #region Hardware monitor
         private void HardwareHasHanged()
         {
-            if (!this.cashRegisterSerialPort.IsBusy()) this.cashRegisterSerialPort.Execute();
-            else
-            {
-                this.cashRegisterSerialPort.Cancel();
-                this.cashRegisterSerialPort.Execute();
-            }
+            this.cashRegisterSerialPort.Execute();
         }
         #endregion
 

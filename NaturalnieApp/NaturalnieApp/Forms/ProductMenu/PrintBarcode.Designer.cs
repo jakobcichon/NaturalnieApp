@@ -34,7 +34,6 @@ namespace NaturalnieApp.Forms
             this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.bPrint = new System.Windows.Forms.Button();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
-            this.bTestButton = new System.Windows.Forms.Button();
             this.bClose = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
@@ -80,7 +79,6 @@ namespace NaturalnieApp.Forms
             // pButtonsPanel
             // 
             this.pButtonsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
-            this.pButtonsPanel.Controls.Add(this.bTestButton);
             this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Controls.Add(this.bPrint);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -88,19 +86,6 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.Name = "pButtonsPanel";
             this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
             this.pButtonsPanel.TabIndex = 3;
-            // 
-            // bTestButton
-            // 
-            this.bTestButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bTestButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bTestButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bTestButton.Location = new System.Drawing.Point(410, 10);
-            this.bTestButton.Name = "bTestButton";
-            this.bTestButton.Size = new System.Drawing.Size(100, 50);
-            this.bTestButton.TabIndex = 31;
-            this.bTestButton.Text = "Testowy";
-            this.bTestButton.UseVisualStyleBackColor = false;
-            this.bTestButton.Click += new System.EventHandler(this.bTestButton_Click);
             // 
             // bClose
             // 
@@ -174,7 +159,6 @@ namespace NaturalnieApp.Forms
             this.Name = "PrintBarcode";
             this.Size = new System.Drawing.Size(920, 690);
             this.Load += new System.EventHandler(this.PrintBarcode_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PrintBarcode_KeyDown);
             this.pHeader.ResumeLayout(false);
             this.pHeader.PerformLayout();
             this.pButtonsPanel.ResumeLayout(false);
@@ -193,6 +177,5 @@ namespace NaturalnieApp.Forms
         private Common.SearchBarTemplate SearchBar;
         private System.Windows.Forms.Panel panel2;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
-        private System.Windows.Forms.Button bTestButton;
     }
 }

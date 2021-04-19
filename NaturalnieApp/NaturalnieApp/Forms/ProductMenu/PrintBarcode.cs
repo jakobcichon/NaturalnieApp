@@ -294,24 +294,26 @@ namespace NaturalnieApp.Forms
             UpdateControl(ref tbDummyForCtrl);
 
         }
-        private void PrintBarcode_KeyDown(object sender, KeyEventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             this.BarcodeValidEventGenerated = false;
-            this.BarcodeReader.CheckIfBarcodeFromReader(e.KeyCode);
+            this.BarcodeReader.CheckIfBarcodeFromReader(keyData);
 
-            if (e.KeyCode == Keys.Enter && !this.BarcodeValidEventGenerated)
+            if ((keyData == Keys.Enter) && (!this.BarcodeValidEventGenerated))
             {
                 //Update control
                 UpdateControl(ref tbDummyForCtrl);
 
             }
-            else if (e.KeyCode == Keys.Escape)
+            else if (keyData == Keys.Escape)
             {
-
                 //Update control
                 UpdateControl(ref tbDummyForCtrl);
             }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
+
         public void BarcodeValidAction(object sender, BarcodeRelated.BarcodeReader.BarcodeValidEventArgs e)
         {
 
@@ -410,7 +412,7 @@ namespace NaturalnieApp.Forms
         }
         #endregion
         //====================================================================================================
-        //Buttons events
+        //Search bar events
         #region Search bar events
         private void SearchBar_GenericButtonClick(object sender, Common.SearchBarTemplate.GenericButtonClickEventArgs e)
         {
@@ -428,16 +430,6 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
-
-        private void bTestButton_Click(object sender, EventArgs e)
-        {
-            BarcodeRelated.BarcodeReader.BarcodeValidEventArgs test = new BarcodeRelated.BarcodeReader.BarcodeValidEventArgs();
-            test.Ready = true;
-            test.Valid = true;
-            test.RecognizedBarcodeValue = "5900168907348";
-
-            this.BarcodeValidAction(sender, test);
-        }
 
 
     }

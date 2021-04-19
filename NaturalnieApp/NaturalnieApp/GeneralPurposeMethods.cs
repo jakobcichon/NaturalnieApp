@@ -959,6 +959,7 @@ namespace NaturalnieApp
 
             //Backgorund workers
             BackgroundWorker bwMonitorComPortChange { get; set; }
+            bool BackgroundWorkerRetry { get; set; }
 
             public CashRegisterSerialPort()
             {
@@ -969,32 +970,26 @@ namespace NaturalnieApp
                 this.cashRegisterNumber = new ElzabCommands.ElzabCommand_ONRUNIK(Program.GlobalVariables.ElzabCommandPath, 1,
                     Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
 
+                this.BackgroundWorkerRetry = false;
+
                 //Initialize backgroundworker
                 InitializeBackgroundWorker();
-            }
-
-            private void AbortBackgroundWorker()
-            {
-                this.cashRegisterNumber.CancelCommandExecution();
-                this.bwMonitorComPortChange.CancelAsync();
             }
 
             /// <summary>
             /// Method used to execute COM port check. 
             /// After progress change or work done appropriate event will be call.
             /// </summary>
-            public void Execute()
+            public void Execute(bool retry = true)
             {
                 if (!bwMonitorComPortChange.IsBusy) bwMonitorComPortChange.RunWorkerAsync();
+                else if (retry)
+                {
+                    this.BackgroundWorkerRetry = true;
+                    bwMonitorComPortChange.CancelAsync();
+                }
             }
 
-            /// <summary>
-            /// Method used to cancel Execution of the COM port check.
-            /// </summary>
-            public void Cancel()
-            {
-                AbortBackgroundWorker();
-            }
 
             /// <summary>
             /// Method used to check if Cash register communication check is already running. 
@@ -1047,92 +1042,113 @@ namespace NaturalnieApp
             void bwMonitorComPortChange_DoWork(object sender, DoWorkEventArgs e)
             {
                 //Local variables
-                List<string> verifiedComPorts = new List<string>();
+                bool elzabConnectionTested = Program.GlobalVariables.ElzabConnectionTested;
+                SerialPort serialPortToWrite = null;
 
                 //Object to return
                 MonitorComPortChangeRetunrValues retVal = new MonitorComPortChangeRetunrValues();
 
-                //Local variables
-                bool elzabConnectionTested = Program.GlobalVariables.ElzabConnectionTested;
-                SerialPort serialPortToWrite = null;
+                //Make time-window for debauced if hub was connected
+                Thread.Sleep(200);
 
-                //Get list of the available COM ports
-                List<string> listOfTheAvailablePortComs = new List<string>();
-                listOfTheAvailablePortComs.AddRange(SerialPort.GetPortNames());
-
-                //Check if previous selected port is still available
-                bool portExist = listOfTheAvailablePortComs.Exists(el => el.Equals(Program.GlobalVariables.ElzabPortCom.PortName));
-
-                //If port exist, check if connection to Elzab was tested
-                if (portExist)
+                if(!(sender as BackgroundWorker).CancellationPending)
                 {
-                    if (!elzabConnectionTested)
+                    //Local variables
+                    List<string> verifiedComPorts = new List<string>();
+
+                    //Get list of the available COM ports
+                    List<string> listOfTheAvailablePortComs = new List<string>();
+                    listOfTheAvailablePortComs.AddRange(SerialPort.GetPortNames());
+
+                    //Check if previous selected port is still available
+                    bool portExist = listOfTheAvailablePortComs.Exists(el => el.Equals(Program.GlobalVariables.ElzabPortCom.PortName));
+
+                    //If port exist, check if connection to Elzab was tested
+                    if (portExist)
                     {
-                        //Set image
-                        retVal.CashRegisterStatus = GeneralStatus.Transfering;
-                        (sender as BackgroundWorker).ReportProgress(0, retVal);
-
-                        //Check if serial port not opened
-                        SerialPort dummyPort = new SerialPort(Program.GlobalVariables.ElzabPortCom.PortName);
-
-                        if (!dummyPort.IsOpen && !(sender as BackgroundWorker).CancellationPending)
+                        if (!elzabConnectionTested)
                         {
-                            //Data exchange
-                            this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(dummyPort.PortName, dummyPort.BaudRate, timeout: 1);
-                            CommandExecutionStatus status = this.cashRegisterNumber.ExecuteCommand(false);
-
-                            if (status.ErrorNumber == 0 && status.CommandName != null)
-                            {
-                                elzabConnectionTested = true;
-                                verifiedComPorts.Add(dummyPort.PortName);
-                            }
-                            else
-                            {
-                                //Remove previous port from list, to not check it twice
-                                listOfTheAvailablePortComs.Remove(Program.GlobalVariables.ElzabPortCom.PortName);
-                                elzabConnectionTested = false;
-                            }
-                        }
-                        else elzabConnectionTested = false;
-                    }
-                }
-
-                if ((elzabConnectionTested == false || !portExist) && !(sender as BackgroundWorker).CancellationPending)
-                {
-                    if (!portExist) elzabConnectionTested = false;
-
-                    //Loop through all available com ports and find cash register
-                    foreach (string comPortName in listOfTheAvailablePortComs)
-                    {
-                        //Check if serial port not opened
-                        SerialPort dummyPort = new SerialPort(Program.GlobalVariables.ElzabPortCom.PortName);
-
-                        if (!dummyPort.IsOpen && !(sender as BackgroundWorker).CancellationPending)
-                        {
-
                             //Set image
                             retVal.CashRegisterStatus = GeneralStatus.Transfering;
                             (sender as BackgroundWorker).ReportProgress(0, retVal);
-                            elzabConnectionTested = false;
 
-                            //Execute command to check if cash register exist at the end of the wire
-                            int lastBaudRate = Program.GlobalVariables.ElzabPortCom.BaudRate;
-                            this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(comPortName, lastBaudRate, timeout: 3);
-                            CommandExecutionStatus status = this.cashRegisterNumber.ExecuteCommand(false);
+                            //Check if serial port not opened
+                            SerialPort dummyPort = new SerialPort(Program.GlobalVariables.ElzabPortCom.PortName);
 
-                            if (status.ErrorNumber == 0 && status.CommandName != null)
+                            if (!dummyPort.IsOpen && !(sender as BackgroundWorker).CancellationPending)
                             {
-                                SerialPort portToWrite = Program.GlobalVariables.ElzabPortCom;
-                                portToWrite.PortName = comPortName;
-                                serialPortToWrite = portToWrite;
-                                elzabConnectionTested = true;
-                                break;
-                            }
-                            //Set image
-                            retVal.CashRegisterStatus = GeneralStatus.Offline;
+                                //Data exchange
+                                this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(dummyPort.PortName, dummyPort.BaudRate, timeout: 1);
+                                CommandExecutionStatus status;
+                                if (dummyPort.PortName != "COM7") status = this.cashRegisterNumber.ExecuteCommand(false);
+                                else
+                                {
+                                    status = new CommandExecutionStatus();
+                                    status.ErrorNumber = 0;
+                                    status.CommandName = "Test!";
+                                }
 
+                                if (status.ErrorNumber == 0 && status.CommandName != null)
+                                {
+                                    elzabConnectionTested = true;
+                                    verifiedComPorts.Add(dummyPort.PortName);
+                                }
+                                else
+                                {
+                                    //Remove previous port from list, to not check it twice
+                                    listOfTheAvailablePortComs.Remove(Program.GlobalVariables.ElzabPortCom.PortName);
+                                    elzabConnectionTested = false;
+                                }
+                            }
+                            else elzabConnectionTested = false;
                         }
                     }
+
+                    if ((elzabConnectionTested == false || !portExist) && !(sender as BackgroundWorker).CancellationPending)
+                    {
+                        if (!portExist) elzabConnectionTested = false;
+
+                        //Loop through all available com ports and find cash register
+                        foreach (string comPortName in listOfTheAvailablePortComs)
+                        {
+                            //Check if serial port not opened
+                            SerialPort dummyPort = new SerialPort(comPortName);
+
+                            if (!dummyPort.IsOpen && !(sender as BackgroundWorker).CancellationPending)
+                            {
+
+                                //Set image
+                                retVal.CashRegisterStatus = GeneralStatus.Transfering;
+                                (sender as BackgroundWorker).ReportProgress(0, retVal);
+                                elzabConnectionTested = false;
+
+                                //Execute command to check if cash register exist at the end of the wire
+                                int lastBaudRate = Program.GlobalVariables.ElzabPortCom.BaudRate;
+                                this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(comPortName, lastBaudRate, timeout: 1);
+                                CommandExecutionStatus status;
+                                if (dummyPort.PortName != "COM7") status = this.cashRegisterNumber.ExecuteCommand(false);
+                                else
+                                {
+                                    status = new CommandExecutionStatus();
+                                    status.ErrorNumber = 0;
+                                    status.CommandName = "Test!";
+                                }
+
+                                if (status.ErrorNumber == 0 && status.CommandName != null)
+                                {
+                                    SerialPort portToWrite = Program.GlobalVariables.ElzabPortCom;
+                                    portToWrite.PortName = comPortName;
+                                    serialPortToWrite = portToWrite;
+                                    elzabConnectionTested = true;
+                                    break;
+                                }
+                                //Set image
+                                retVal.CashRegisterStatus = GeneralStatus.Offline;
+
+                            }
+                        }
+                    }
+
                 }
 
                 //Write data to the global variables
@@ -1140,7 +1156,7 @@ namespace NaturalnieApp
                 Program.GlobalVariables.ElzabConnectionTested = elzabConnectionTested;
 
                 //Set proper Image
-                if (elzabConnectionTested == false)
+                if (!elzabConnectionTested)
                     retVal.CashRegisterStatus = GeneralStatus.Offline;
                 else retVal.CashRegisterStatus = GeneralStatus.Online;
 
@@ -1151,16 +1167,32 @@ namespace NaturalnieApp
 
             private void bwMonitorComPortChange_ProgressChanged(object sender, ProgressChangedEventArgs e)
             {
-                StatusUpdateEventArgs retVal = new StatusUpdateEventArgs();
-                retVal.Status = (MonitorComPortChangeRetunrValues)e.UserState;
-                this.ProgressChanged?.Invoke(sender, retVal);
+                    StatusUpdateEventArgs retVal = new StatusUpdateEventArgs();
+                    retVal.Status = (MonitorComPortChangeRetunrValues)e.UserState;
+                    this.ProgressChanged?.Invoke(sender, retVal);
             }
 
             private void bwMonitorComPortChange_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
             {
-                StatusUpdateEventArgs retVal = new StatusUpdateEventArgs();
-                retVal.Status = (MonitorComPortChangeRetunrValues)e.Result;
-                this.WorkDone?.Invoke(sender, retVal);
+
+                if (!e.Cancelled)
+                {
+                    this.BackgroundWorkerRetry = false;
+                    StatusUpdateEventArgs retVal = new StatusUpdateEventArgs();
+                    retVal.Status = (MonitorComPortChangeRetunrValues)e.Result;
+                    this.WorkDone?.Invoke(sender, retVal);
+                }
+                else if (this.BackgroundWorkerRetry)
+                {
+                    this.bwMonitorComPortChange.RunWorkerAsync();
+                    this.BackgroundWorkerRetry = false;
+                }
+                else
+                {
+                    StatusUpdateEventArgs retVal = new StatusUpdateEventArgs();
+                    retVal.Status.CashRegisterStatus = GeneralStatus.Offline;
+                    this.WorkDone?.Invoke(sender, retVal);
+                }    
             }
 #endregion
         }
