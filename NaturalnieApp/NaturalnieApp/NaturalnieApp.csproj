@@ -264,6 +264,12 @@
     <Compile Include="ElzabDriver\ElzabCommands.cs" />
     <Compile Include="ElzabDriver\IElzabCommandInterface.cs" />
     <Compile Include="Forms\Common\IStatusBar.cs" />
+    <Compile Include="Forms\Common\ProgressBarTemplate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Common\ProgressBarTemplate.Designer.cs">
+      <DependentUpon>ProgressBarTemplate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Common\SearchBarTemplate.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -334,7 +340,7 @@
       <DependentUpon>AddNewProductFromExcel.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ProductMenu\PrintBarcode.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\ProductMenu\PrintBarcode.Designer.cs">
       <DependentUpon>PrintBarcode.cs</DependentUpon>
@@ -383,6 +389,9 @@
     <Compile Include="PdfToExcel\IExcel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\Common\ProgressBarTemplate.resx">
+      <DependentUpon>ProgressBarTemplate.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Common\SearchBarTemplate.resx">
       <DependentUpon>SearchBarTemplate.cs</DependentUpon>
     </EmbeddedResource>
@@ -493,6 +502,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
