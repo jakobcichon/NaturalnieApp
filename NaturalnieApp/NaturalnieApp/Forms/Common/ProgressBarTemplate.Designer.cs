@@ -45,7 +45,7 @@ namespace NaturalnieApp.Forms.Common
             this.tpProgress.ColumnCount = 3;
             this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
             this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpProgress.Controls.Add(this.lElapsedTime, 0, 0);
             this.tpProgress.Controls.Add(this.pbProgress, 2, 0);
             this.tpProgress.Controls.Add(this.lElapsedTimeValues, 1, 0);
@@ -60,7 +60,6 @@ namespace NaturalnieApp.Forms.Common
             // 
             // lElapsedTime
             // 
-            this.lElapsedTime.AutoSize = true;
             this.lElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lElapsedTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lElapsedTime.Location = new System.Drawing.Point(4, 1);
@@ -81,7 +80,6 @@ namespace NaturalnieApp.Forms.Common
             // 
             // lElapsedTimeValues
             // 
-            this.lElapsedTimeValues.AutoSize = true;
             this.lElapsedTimeValues.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lElapsedTimeValues.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lElapsedTimeValues.Location = new System.Drawing.Point(114, 1);
@@ -93,14 +91,12 @@ namespace NaturalnieApp.Forms.Common
             // 
             // tProgressTime
             // 
-            this.tProgressTime.Enabled = false;
             this.tProgressTime.Interval = 1000D;
             this.tProgressTime.SynchronizingObject = this;
             this.tProgressTime.Elapsed += new System.Timers.ElapsedEventHandler(this.tProgressTime_Tick);
             // 
             // tStatusTimer
             // 
-            this.tStatusTimer.Enabled = false;
             this.tStatusTimer.SynchronizingObject = this;
             this.tStatusTimer.Elapsed += new System.Timers.ElapsedEventHandler(this.tStatusTimer_Tick);
             // 
@@ -114,8 +110,8 @@ namespace NaturalnieApp.Forms.Common
             this.MinimumSize = new System.Drawing.Size(340, 30);
             this.Name = "ProgressBarTemplate";
             this.Size = new System.Drawing.Size(346, 50);
+            this.Resize += new System.EventHandler(this.ProgressBarTemplate_Resize);
             this.tpProgress.ResumeLayout(false);
-            this.tpProgress.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tProgressTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tStatusTimer)).EndInit();
             this.ResumeLayout(false);

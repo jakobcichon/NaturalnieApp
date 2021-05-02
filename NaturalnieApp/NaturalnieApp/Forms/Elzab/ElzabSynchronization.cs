@@ -39,6 +39,7 @@ namespace NaturalnieApp.Forms
             {
                 return new List<string>() 
                 {
+                    "0. Błąd:(",
                     "1.Generowanie listy produktów do odczytu",
                     "2.Odczyt produktów z kasy",
                     "3.Parsowanie odczytanych produktów",
@@ -46,7 +47,8 @@ namespace NaturalnieApp.Forms
                     "5.Parsowanie odczytanych produktów",
                     "6.Pobieranie z bazy danych informacji o wszystkich produktach",
                     "7.Porównywanie informacji z bazy danych i kasy fiskalnej",
-                    "8.Przygotowanie danych do wyświetlenia"
+                    "8.Przygotowanie danych do wyświetlenia",
+                    "9. Oczekiwanie na akcję użytkownika"
                 };
             }
         }
@@ -114,16 +116,6 @@ namespace NaturalnieApp.Forms
         class BwElzabCommunicationRunWorkCompleted
         {
             DataTable Data { get; set; }
-
-            public BwElzabCommunicationRunWorkCompleted()
-            {
-                this.Data = new DataTable();
-            }
-
-            public BwElzabCommunicationRunWorkCompleted(DataTable refData)
-            {
-                this.Data = refData.Clone();
-            }
         }
         #endregion
 
@@ -221,8 +213,8 @@ namespace NaturalnieApp.Forms
             {
                 //ChangeStatus
                 communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(0);
-                communicationProgressUpdate.ProgressBarTime = 2.0;
+                communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(1);
+                communicationProgressUpdate.ProgressBarTime = 1.0;
                 (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
                 //Generate all product numbers
@@ -238,7 +230,7 @@ namespace NaturalnieApp.Forms
 
                 //ChangeStatus 
                 communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(1);
+                communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(2);
                 communicationProgressUpdate.ProgressBarTime = 120.0;
                 (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
@@ -250,14 +242,14 @@ namespace NaturalnieApp.Forms
                 if (status.ErrorNumber == 0 && status.ErrorText != null)
                 {
                     communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                    communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(2);
+                    communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(3);
                     communicationProgressUpdate.ProgressBarTime = 1.0;
                     (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
                     List<Product> allProductFromElzab = ElzabRelated.ParseElzabProductDataToDbObject(this.databaseCommands, this.AllProductsReading.DataFromElzab);
 
                     communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                    communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(3);
+                    communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(4);
                     communicationProgressUpdate.ProgressBarTime = 1.0;
                     (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
@@ -267,7 +259,7 @@ namespace NaturalnieApp.Forms
                     if (status.ErrorNumber == 0 && status.ErrorText != null)
                     {
                         communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                        communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(4);
+                        communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(5);
                         communicationProgressUpdate.ProgressBarTime = 1.0;
                         (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
@@ -277,21 +269,21 @@ namespace NaturalnieApp.Forms
                         //Get all products from DB
 
                         communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                        communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(5);
+                        communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(6);
                         communicationProgressUpdate.ProgressBarTime = 1.0;
                         (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
                         List<Product> dbProductList = this.databaseCommands.GetAllProductsEnts();
 
                         communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                        communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(6);
+                        communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(7);
                         communicationProgressUpdate.ProgressBarTime = 1.0;
                         (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
                         List<Product> diffProductList = ElzabRelated.ComapreDbProductDataWithElzab(allProductFromElzab, dbProductList);
 
                         communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                        communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(7);
+                        communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(8);
                         communicationProgressUpdate.ProgressBarTime = 1.0;
                         (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
@@ -322,7 +314,7 @@ namespace NaturalnieApp.Forms
                         else
                         {
                             communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                            communicationProgressUpdate.Text = "9.Oczekiwanie na akcję użytkownika";
+                            communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(9); ;
                             (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
                             communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.UserPrompt;
@@ -357,7 +349,9 @@ namespace NaturalnieApp.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Error;
+                communicationProgressUpdate.Text = ex.Message + ex.InnerException;
+                (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
             }
         }
 
@@ -372,7 +366,9 @@ namespace NaturalnieApp.Forms
                 case BwElzabCommunicationProgressUpdate.MessageType.Error:
                     this.progressBarTemplate1.Reset();
                     string[] splittedText = update.Text.Split('|');
-                    MessageBox.Show(splittedText[0], splittedText[1],MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (splittedText.Count() > 1) MessageBox.Show(splittedText[0], splittedText[1], MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else MessageBox.Show(splittedText[0], "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.StatusBox.Text = this.BwStepsDescription.ElementAt(0);
                     break;
                 case BwElzabCommunicationProgressUpdate.MessageType.Update:
                     this.StatusBox.Text = update.Text;
@@ -390,12 +386,13 @@ namespace NaturalnieApp.Forms
         private void BwElzabCommunication_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             this.DataSoruce = (e.Result as DataTable).Clone();
+            this.bReadingFromCashRegister.Enabled = true;
         }
         #endregion
 
         private void bReadingFromCashRegister_Click(object sender, EventArgs e)
         {
-
+            (sender as Button).Enabled = false;
             this.DataSoruce.Clear();
             this.BwElzabCommunication.RunWorkerAsync(this.DataSoruce);
 

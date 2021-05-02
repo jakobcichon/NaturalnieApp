@@ -40,6 +40,9 @@ namespace NaturalnieApp.Forms
             this.cbTest = new System.Windows.Forms.ComboBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.testTextBox = new System.Windows.Forms.TextBox();
+            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
             this.pButtonsPanel.SuspendLayout();
             this.SuspendLayout();
@@ -150,6 +153,30 @@ namespace NaturalnieApp.Forms
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 8;
             // 
+            // testTextBox
+            // 
+            this.testTextBox.Location = new System.Drawing.Point(255, 191);
+            this.testTextBox.Name = "testTextBox";
+            this.testTextBox.Size = new System.Drawing.Size(401, 20);
+            this.testTextBox.TabIndex = 9;
+            // 
+            // maskedTextBox1
+            // 
+            this.maskedTextBox1.Location = new System.Drawing.Point(679, 295);
+            this.maskedTextBox1.Name = "maskedTextBox1";
+            this.maskedTextBox1.Size = new System.Drawing.Size(100, 20);
+            this.maskedTextBox1.TabIndex = 10;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(269, 503);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(254, 54);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Playground
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -157,6 +184,9 @@ namespace NaturalnieApp.Forms
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.maskedTextBox1);
+            this.Controls.Add(this.testTextBox);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.cbTest);
             this.Controls.Add(this.pTest);
@@ -186,5 +216,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.ComboBox cbTest;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox testTextBox;
+        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
+        private System.Windows.Forms.Button button1;
     }
 }

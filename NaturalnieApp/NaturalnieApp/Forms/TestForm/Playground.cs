@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using NaturalnieApp.Database;
 using NaturalnieApp.Dymo_Printer;
@@ -47,17 +48,21 @@ namespace NaturalnieApp.Forms
 
         private void TestWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            foreach (string item in cbTest.Items)
+            int i = 0;
+            while (true)
             {
-                (sender as BackgroundWorker).ReportProgress(cbTest.Items.IndexOf(item));
-                System.Threading.Thread.Sleep(100);
 
+                //this.testTextBox.Invoke(new Action(delegate () { this.testTextBox.Text = i.ToString(); }));
+                i++;
+                (sender as BackgroundWorker).ReportProgress(i);
+                if (i > 100) i = 0;
+                Thread.Sleep(1);
             }
         }
 
         private void TestWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            this.TestSearchBar.SelectBarcode(cbTest.Items[e.ProgressPercentage].ToString());
+            this.testTextBox.Text = e.ProgressPercentage.ToString();
         }
 
         private void TestSearchBar_GenericButtonClick(object sender, SearchBarTemplate.GenericButtonClickEventArgs e)
@@ -99,6 +104,13 @@ namespace NaturalnieApp.Forms
 
         private void bTestButton_Click(object sender, EventArgs e)
         {
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (!this.testWorker.IsBusy) this.testWorker.RunWorkerAsync();
+            if (this.textBox1.Text == "1") this.textBox1.Text = "0";
+            else this.textBox1.Text = "1";
         }
     }
 }

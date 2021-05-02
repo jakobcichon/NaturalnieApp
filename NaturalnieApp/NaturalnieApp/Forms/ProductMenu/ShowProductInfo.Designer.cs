@@ -1066,6 +1066,7 @@ namespace NaturalnieApp.Forms
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.Black;
+            this.Margin = new System.Windows.Forms.Padding(0);
             this.MinimumSize = new System.Drawing.Size(920, 690);
             this.Name = "ShowProductInfo";
             this.Size = new System.Drawing.Size(920, 690);

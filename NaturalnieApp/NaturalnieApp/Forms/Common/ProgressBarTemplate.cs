@@ -144,10 +144,11 @@ namespace NaturalnieApp.Forms.Common
         private void AdjustSearchBarAppearance()
         {
             //Basic layout settings
+            this.tpProgress.ColumnStyles[0].Width = 110;
+            this.tpProgress.ColumnStyles[1].Width = 60;
             this.tpProgress.ColumnStyles[2].Width = this.Width - this.tpProgress.ColumnStyles[0].Width - this.tpProgress.ColumnStyles[1].Width;
 
             //Progress bar settings
-            this.pbProgress.MarqueeAnimationSpeed = 1;
             this.pbProgress.Step = 1;
         }
 
@@ -208,5 +209,9 @@ namespace NaturalnieApp.Forms.Common
         }
         #endregion
 
+        private void ProgressBarTemplate_Resize(object sender, EventArgs e)
+        {
+            AdjustSearchBarAppearance();
+        }
     }
 }

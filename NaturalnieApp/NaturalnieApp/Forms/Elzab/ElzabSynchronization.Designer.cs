@@ -113,6 +113,7 @@
             this.tbDummyForCtrl.Name = "tbDummyForCtrl";
             this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
             this.tbDummyForCtrl.TabIndex = 7;
+            this.tbDummyForCtrl.Visible = false;
             // 
             // gbSynchronization
             // 

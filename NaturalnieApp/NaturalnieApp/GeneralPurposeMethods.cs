@@ -1080,13 +1080,7 @@ namespace NaturalnieApp
                                 //Data exchange
                                 this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(dummyPort.PortName, dummyPort.BaudRate, timeout: 1);
                                 CommandExecutionStatus status;
-                                if (dummyPort.PortName != "COM7") status = this.cashRegisterNumber.ExecuteCommand(false);
-                                else
-                                {
-                                    status = new CommandExecutionStatus();
-                                    status.ErrorNumber = 0;
-                                    status.CommandName = "Test!";
-                                }
+                                status = this.cashRegisterNumber.ExecuteCommand(false);
 
                                 if (status.ErrorNumber == 0 && status.CommandName != null)
                                 {
@@ -1126,13 +1120,7 @@ namespace NaturalnieApp
                                 int lastBaudRate = Program.GlobalVariables.ElzabPortCom.BaudRate;
                                 this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(comPortName, lastBaudRate, timeout: 1);
                                 CommandExecutionStatus status;
-                                if (dummyPort.PortName != "COM7") status = this.cashRegisterNumber.ExecuteCommand(false);
-                                else
-                                {
-                                    status = new CommandExecutionStatus();
-                                    status.ErrorNumber = 0;
-                                    status.CommandName = "Test!";
-                                }
+                                status = this.cashRegisterNumber.ExecuteCommand(false);
 
                                 if (status.ErrorNumber == 0 && status.CommandName != null)
                                 {

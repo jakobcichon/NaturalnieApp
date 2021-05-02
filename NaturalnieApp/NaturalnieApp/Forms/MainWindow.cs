@@ -40,7 +40,6 @@ namespace NaturalnieApp.Forms
         public Common.StatusBar statusBar { get; set; }
         public ElzabRelated.CashRegisterSerialPort cashRegisterSerialPort { get; set; }
 
-
         //Creat EF databse connection object
         DatabaseCommands databaseCommands;
 

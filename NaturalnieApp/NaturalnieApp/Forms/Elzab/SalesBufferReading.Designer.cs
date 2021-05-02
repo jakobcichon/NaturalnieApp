@@ -28,32 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.pButtonsPanel = new System.Windows.Forms.Panel();
-            this.bReadingFromSaleBuffor = new System.Windows.Forms.Button();
-            this.bClose = new System.Windows.Forms.Button();
+            this.bReadingSaleBufforFromFile = new System.Windows.Forms.Button();
             this.pHeader = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.gbSynchronization = new System.Windows.Forms.GroupBox();
-            this.tpProgress = new System.Windows.Forms.TableLayoutPanel();
-            this.lElapsedTime = new System.Windows.Forms.Label();
-            this.tbElapsedTime = new System.Windows.Forms.TextBox();
-            this.pbProgress = new System.Windows.Forms.ProgressBar();
+            this.progressBarTemplate1 = new NaturalnieApp.Forms.Common.ProgressBarTemplate();
             this.tpProductNameToEdit = new System.Windows.Forms.TableLayoutPanel();
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.lStatus = new System.Windows.Forms.Label();
-            this.bReadingFromCashRegister = new System.Windows.Forms.Button();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.tProgressTime = new System.Windows.Forms.Timer(this.components);
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.bReadingSaleBufforFromCashRegister = new System.Windows.Forms.Button();
             this.tcDataFromFile = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.pButtonsPanel.SuspendLayout();
             this.pHeader.SuspendLayout();
             this.gbSynchronization.SuspendLayout();
-            this.tpProgress.SuspendLayout();
             this.tpProductNameToEdit.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,8 +53,7 @@
             // 
             this.pButtonsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
             this.pButtonsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pButtonsPanel.Controls.Add(this.bReadingFromSaleBuffor);
-            this.pButtonsPanel.Controls.Add(this.bClose);
+            this.pButtonsPanel.Controls.Add(this.bReadingSaleBufforFromFile);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pButtonsPanel.Location = new System.Drawing.Point(0, 620);
             this.pButtonsPanel.Margin = new System.Windows.Forms.Padding(5);
@@ -70,32 +61,19 @@
             this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
             this.pButtonsPanel.TabIndex = 6;
             // 
-            // bReadingFromSaleBuffor
+            // bReadingSaleBufforFromFile
             // 
-            this.bReadingFromSaleBuffor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bReadingFromSaleBuffor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bReadingFromSaleBuffor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bReadingFromSaleBuffor.Location = new System.Drawing.Point(18, 7);
-            this.bReadingFromSaleBuffor.Name = "bReadingFromSaleBuffor";
-            this.bReadingFromSaleBuffor.Size = new System.Drawing.Size(155, 50);
-            this.bReadingFromSaleBuffor.TabIndex = 27;
-            this.bReadingFromSaleBuffor.Text = "Odczyt bufora sprzedaży z pliku";
-            this.bReadingFromSaleBuffor.UseVisualStyleBackColor = false;
-            this.bReadingFromSaleBuffor.Click += new System.EventHandler(this.bReadingFromSaleBuffor_Click);
-            // 
-            // bClose
-            // 
-            this.bClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bClose.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bClose.Location = new System.Drawing.Point(989, 10);
-            this.bClose.Name = "bClose";
-            this.bClose.Padding = new System.Windows.Forms.Padding(5);
-            this.bClose.Size = new System.Drawing.Size(100, 50);
-            this.bClose.TabIndex = 6;
-            this.bClose.Text = "Zamknij";
-            this.bClose.UseMnemonic = false;
-            this.bClose.UseVisualStyleBackColor = false;
+            this.bReadingSaleBufforFromFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bReadingSaleBufforFromFile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bReadingSaleBufforFromFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bReadingSaleBufforFromFile.Location = new System.Drawing.Point(11, 7);
+            this.bReadingSaleBufforFromFile.Margin = new System.Windows.Forms.Padding(5);
+            this.bReadingSaleBufforFromFile.Name = "bReadingSaleBufforFromFile";
+            this.bReadingSaleBufforFromFile.Size = new System.Drawing.Size(261, 50);
+            this.bReadingSaleBufforFromFile.TabIndex = 29;
+            this.bReadingSaleBufforFromFile.Text = "Odczyt danych o sprzedaży z pliku";
+            this.bReadingSaleBufforFromFile.UseVisualStyleBackColor = false;
+            this.bReadingSaleBufforFromFile.Click += new System.EventHandler(this.bReadingSaleBufforFromFile_Click);
             // 
             // pHeader
             // 
@@ -124,9 +102,9 @@
             // 
             // gbSynchronization
             // 
-            this.gbSynchronization.Controls.Add(this.tpProgress);
+            this.gbSynchronization.Controls.Add(this.progressBarTemplate1);
             this.gbSynchronization.Controls.Add(this.tpProductNameToEdit);
-            this.gbSynchronization.Controls.Add(this.bReadingFromCashRegister);
+            this.gbSynchronization.Controls.Add(this.bReadingSaleBufforFromCashRegister);
             this.gbSynchronization.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbSynchronization.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.gbSynchronization.ForeColor = System.Drawing.Color.Black;
@@ -137,52 +115,16 @@
             this.gbSynchronization.TabStop = false;
             this.gbSynchronization.Text = "Synchronizacja z kasą";
             // 
-            // tpProgress
+            // progressBarTemplate1
             // 
-            this.tpProgress.ColumnCount = 3;
-            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 165F));
-            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tpProgress.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tpProgress.Controls.Add(this.lElapsedTime, 0, 0);
-            this.tpProgress.Controls.Add(this.tbElapsedTime, 1, 0);
-            this.tpProgress.Controls.Add(this.pbProgress, 2, 0);
-            this.tpProgress.Location = new System.Drawing.Point(12, 85);
-            this.tpProgress.Name = "tpProgress";
-            this.tpProgress.RowCount = 1;
-            this.tpProgress.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tpProgress.Size = new System.Drawing.Size(898, 30);
-            this.tpProgress.TabIndex = 29;
-            // 
-            // lElapsedTime
-            // 
-            this.lElapsedTime.AutoSize = true;
-            this.lElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lElapsedTime.Location = new System.Drawing.Point(3, 0);
-            this.lElapsedTime.Name = "lElapsedTime";
-            this.lElapsedTime.Size = new System.Drawing.Size(159, 30);
-            this.lElapsedTime.TabIndex = 0;
-            this.lElapsedTime.Text = "Czas trwania";
-            this.lElapsedTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tbElapsedTime
-            // 
-            this.tbElapsedTime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
-            this.tbElapsedTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbElapsedTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbElapsedTime.Location = new System.Drawing.Point(168, 5);
-            this.tbElapsedTime.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
-            this.tbElapsedTime.Name = "tbElapsedTime";
-            this.tbElapsedTime.Size = new System.Drawing.Size(94, 19);
-            this.tbElapsedTime.TabIndex = 1;
-            this.tbElapsedTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // pbProgress
-            // 
-            this.pbProgress.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbProgress.Location = new System.Drawing.Point(268, 3);
-            this.pbProgress.Name = "pbProgress";
-            this.pbProgress.Size = new System.Drawing.Size(627, 24);
-            this.pbProgress.TabIndex = 2;
+            this.progressBarTemplate1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.progressBarTemplate1.ForeColor = System.Drawing.Color.Black;
+            this.progressBarTemplate1.Location = new System.Drawing.Point(12, 81);
+            this.progressBarTemplate1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.progressBarTemplate1.MinimumSize = new System.Drawing.Size(510, 46);
+            this.progressBarTemplate1.Name = "progressBarTemplate1";
+            this.progressBarTemplate1.Size = new System.Drawing.Size(898, 50);
+            this.progressBarTemplate1.TabIndex = 29;
             // 
             // tpProductNameToEdit
             // 
@@ -223,28 +165,19 @@
             this.lStatus.Text = "Status";
             this.lStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // bReadingFromCashRegister
+            // bReadingSaleBufforFromCashRegister
             // 
-            this.bReadingFromCashRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bReadingFromCashRegister.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bReadingFromCashRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bReadingFromCashRegister.Location = new System.Drawing.Point(12, 27);
-            this.bReadingFromCashRegister.Margin = new System.Windows.Forms.Padding(5);
-            this.bReadingFromCashRegister.Name = "bReadingFromCashRegister";
-            this.bReadingFromCashRegister.Size = new System.Drawing.Size(261, 50);
-            this.bReadingFromCashRegister.TabIndex = 27;
-            this.bReadingFromCashRegister.Text = "Odczyt danych o sprzedaży z kasy fiskalnej";
-            this.bReadingFromCashRegister.UseVisualStyleBackColor = false;
-            this.bReadingFromCashRegister.Click += new System.EventHandler(this.bReadingFromCashRegister_Click);
-            // 
-            // tProgressTime
-            // 
-            this.tProgressTime.Interval = 1000;
-            this.tProgressTime.Tick += new System.EventHandler(this.tProgressTime_Tick);
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.bReadingSaleBufforFromCashRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bReadingSaleBufforFromCashRegister.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bReadingSaleBufforFromCashRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bReadingSaleBufforFromCashRegister.Location = new System.Drawing.Point(12, 27);
+            this.bReadingSaleBufforFromCashRegister.Margin = new System.Windows.Forms.Padding(5);
+            this.bReadingSaleBufforFromCashRegister.Name = "bReadingSaleBufforFromCashRegister";
+            this.bReadingSaleBufforFromCashRegister.Size = new System.Drawing.Size(261, 50);
+            this.bReadingSaleBufforFromCashRegister.TabIndex = 27;
+            this.bReadingSaleBufforFromCashRegister.Text = "Odczyt danych o sprzedaży z kasy fiskalnej";
+            this.bReadingSaleBufforFromCashRegister.UseVisualStyleBackColor = false;
+            this.bReadingSaleBufforFromCashRegister.Click += new System.EventHandler(this.bReadingSaleBufforFromCashRegister_Click);
             // 
             // tcDataFromFile
             // 
@@ -275,6 +208,10 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // SalesBufferReading
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -294,8 +231,6 @@
             this.pHeader.ResumeLayout(false);
             this.pHeader.PerformLayout();
             this.gbSynchronization.ResumeLayout(false);
-            this.tpProgress.ResumeLayout(false);
-            this.tpProgress.PerformLayout();
             this.tpProductNameToEdit.ResumeLayout(false);
             this.tpProductNameToEdit.PerformLayout();
             this.ResumeLayout(false);
@@ -305,25 +240,19 @@
         #endregion
 
         private System.Windows.Forms.Panel pButtonsPanel;
-        private System.Windows.Forms.Button bClose;
         private System.Windows.Forms.Panel pHeader;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox tbDummyForCtrl;
         private System.Windows.Forms.GroupBox gbSynchronization;
-        private System.Windows.Forms.Button bReadingFromCashRegister;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Button bReadingSaleBufforFromCashRegister;
         private System.Windows.Forms.TableLayoutPanel tpProductNameToEdit;
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.Label lStatus;
-        private System.Windows.Forms.TableLayoutPanel tpProgress;
-        private System.Windows.Forms.Label lElapsedTime;
-        private System.Windows.Forms.ProgressBar pbProgress;
-        private System.Windows.Forms.TextBox tbElapsedTime;
-        private System.Windows.Forms.Timer tProgressTime;
-        private System.Windows.Forms.Button bReadingFromSaleBuffor;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.TabControl tcDataFromFile;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button bReadingSaleBufforFromFile;
+        private Common.ProgressBarTemplate progressBarTemplate1;
     }
 }
