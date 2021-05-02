@@ -20,11 +20,108 @@ namespace NaturalnieApp.Forms
 
     public partial class SalesBufferReading : UserControl
     {
+
+        #region Sales read dump data
+        private class SalesReadDumpData
+        {
+            public List<string> ListOfElementNotDetermined { get; set; }
+            public List<string> ListOfElementDeleted { get; set; }
+            public List<string> ListOfElementAdded { get; set; }
+            public List<string> ListOfElementAlreadyUpdatedInDb { get; set; }
+
+            public SalesReadDumpData()
+            {
+                this.ListOfElementNotDetermined = new List<string>();
+                this.ListOfElementDeleted = new List<string>();
+                this.ListOfElementAdded = new List<string>();
+                this.ListOfElementAlreadyUpdatedInDb = new List<string>();
+            }
+
+            /// <summary>
+            /// Method used to save to file summary data from read sales buffer
+            /// </summary>
+            public void SaveToFile()
+            {
+                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string fullPath = folderBrowserDialog.SelectedPath + @"\dump.txt";
+                    try
+                    {
+
+                        string deliminer = "\n";
+                        for (int i = 0; i < 30; i++) deliminer += "*";
+                        deliminer += "\n";
+
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: false);
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string>
+                    { "Podsumowanie raportu:" }, append: true);
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                        string text = string.Format("Raport dodania pozycji sprzedaży do bazy danych:" +
+                                "\n\tLiczba produktów których nie można było odnaleźć w bazie danych: {0}" +
+                                "\n\tLiczba produktów których nie odaleziono w bazie danych z uwagi na usunięty produkt: {1}" +
+                                "\n\tLiczba produktów, których stany magazynowe zostały zaktualizowane: {2}" +
+                                "\n\tLiczba produktów pominięty (produkt o identycznym numerze Id został już użyty do aktualizacji stanów): {3}",
+                                this.ListOfElementNotDetermined.Count(), this.ListOfElementDeleted.Count(), this.ListOfElementAdded.Count(),
+                                this.ListOfElementAlreadyUpdatedInDb.Count());
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string> { text }, append: true);
+
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string>
+                    { "Liczba produktów których nie można było odnaleźć w bazie danych" }, append: true);
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                        FileWriteRelated.WriteToTextFile(fullPath, this.ListOfElementNotDetermined, append: true);
+
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string>
+                    { "Liczba produktów których nie odaleziono w bazie danych z uwagi na usunięty produkt" }, append: true);
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                        FileWriteRelated.WriteToTextFile(fullPath, this.ListOfElementDeleted, append: true);
+
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string>
+                    { "Liczba produktów, których stany magazynowe zostały zaktualizowane" }, append: true);
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                        FileWriteRelated.WriteToTextFile(fullPath, this.ListOfElementAdded, append: true);
+
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string>
+                    { "Liczba produktów pominięty (produkt o identycznym numerze Id został już użyty do aktualizacji stanów)" }, append: true);
+                        FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
+                        FileWriteRelated.WriteToTextFile(fullPath, this.ListOfElementAlreadyUpdatedInDb, append: true);
+
+                        MessageBox.Show(string.Format("Pomyślnie zapisano dane do pliku: {0}!", fullPath));
+                    }
+                    catch
+                    {
+                        MessageBox.Show(string.Format("Błąd!. Nie udało się zapisać danych do pliku: {0}!", fullPath), "Błąd zapisu", 
+                            MessageBoxButtons.OK ,MessageBoxIcon.Error);
+                    }
+                   
+                }
+
+            }
+
+            /// <summary>
+            /// Method used to clear all summary data
+            /// </summary>
+            public void ClearAllData()
+            {
+                this.ListOfElementAdded.Clear();
+                this.ListOfElementAlreadyUpdatedInDb.Clear();
+                this.ListOfElementDeleted.Clear();
+                this.ListOfElementNotDetermined.Clear();
+            }
+        }
+        #endregion class
+
         //Declaration of used elzab commands
         ElzabCommand_OPSPROZ4 SaleBufforReading { get; set; }
 
         DatabaseCommands databaseCommands;
         TextBox StatusBox { get; set; }
+
+        SalesReadDumpData ReadSalesSummaryData {get; set;}
 
         //Readonly fields with backgroundworker steps description
         #region Readonly fields with backgroundworker steps description
@@ -35,11 +132,11 @@ namespace NaturalnieApp.Forms
                 return new List<string>()
                 {
                     "0. Błąd:(",
-                    "1. Odczyt bufora sprzedaży z kasy",
-                    "2. Odczytywanie typów sprzedaży",
+                    "1. Odczytywanie danych z kasy fiskalnej",
+                    "2. Pobieranie wartości sprzedaży oraz ich typów",
                     "3. Sprawdzanie unikalności elementów sprzedaży",
                     "4. Dodawanie do bazy danych unikalnych elementów sprzedaży ({0} pozycji)",
-                    "5. Ładowanie danych",
+                    "5. Generowanie danych do wyświetlenia",
                     "6. Aktualizacja stanów magazynowych",
                     "7. Zakończono!:)"
                 };
@@ -52,18 +149,17 @@ namespace NaturalnieApp.Forms
                 return new List<string>()
                 {
                     "0. Błąd:(",
-                    "1. Odczyt z pliku danych sprzedaży kasy",
-                    "2. Odczytywanie typów sprzedaży",
+                    "1. Pobieranie danych z podanego pliku",
+                    "2. Pobieranie wartości sprzedaży oraz ich typów",
                     "3. Sprawdzanie unikalności elementów sprzedaży",
                     "4. Dodawanie do bazy danych unikalnych elementów sprzedaży ({0} pozycji)",
-                    "5. Ładowanie danych",
+                    "5. Generowanie danych do wyświetlenia",
                     "6. Aktualizacja stanów magazynowych",
                     "7. Zakończono!:)"
                 };
             }
         }
         #endregion
-
         //Backgroundworker for elzab communication
         #region Backgroundworker return classes
         BackgroundWorker BwElzabCommunication { get; set; }
@@ -160,6 +256,8 @@ namespace NaturalnieApp.Forms
             //Grid view
             this.DataGridViewsList = new List<Zuby.ADGV.AdvancedDataGridView>();
 
+            this.ReadSalesSummaryData = new SalesReadDumpData();
+
             //Tab control
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
@@ -220,7 +318,8 @@ namespace NaturalnieApp.Forms
         {
             AddDataGridToTabPage();
 
-            this.bReadingSaleBufforFromCashRegister.Enabled = true;
+            //Unlock buttons
+            UnlockButtons();
         }
         #endregion
 
@@ -234,13 +333,12 @@ namespace NaturalnieApp.Forms
             if (!BwElzabCommunication.IsBusy)
             {
                 //Clear data
-                this.tcDataFromFile.TabPages.Clear();
-                this.DataGridViewsList.Clear();
-                this.DataSource.Clear();
+                ClearAllDataSources();
 
-                //Disable page control
-                this.tcDataFromFile.Enabled = false;
+                //Lock buttons
+                LockButtons();
 
+                //Run work
                 BwElzabCommunication.RunWorkerAsync(sender);
             }
         }
@@ -253,12 +351,46 @@ namespace NaturalnieApp.Forms
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                if (!BwElzabCommunication.IsBusy) BwElzabCommunication.RunWorkerAsync(openFileDialog1);
+
+                if (!BwElzabCommunication.IsBusy)
+                {
+                    //Clear data
+                    ClearAllDataSources();
+
+                    //Lock buttons
+                    LockButtons();
+
+                    //Run work
+                    BwElzabCommunication.RunWorkerAsync(openFileDialog1);
+                }
             }
+        }
+        private void bSaveSummaryData_Click(object sender, EventArgs e)
+        {
+            this.ReadSalesSummaryData.SaveToFile();
         }
         #endregion
 
         #region Private methods
+        private void LockButtons()
+        {
+            this.bReadingSaleBufforFromCashRegister.Enabled = false;
+            this.bReadingSaleBufforFromFile.Enabled = false;
+            this.bSaveSummaryData.Enabled = false;
+        }
+        private void UnlockButtons()
+        {
+            this.bReadingSaleBufforFromCashRegister.Enabled = true;
+            this.bReadingSaleBufforFromFile.Enabled = true;
+            this.bSaveSummaryData.Enabled = true;
+        }
+        private void ClearAllDataSources()
+        {
+            this.DataGridViewsList.Clear();
+            this.tcDataFromFile.TabPages.Clear();
+            this.DataSource.Clear();
+            this.ReadSalesSummaryData.ClearAllData();
+        }
         private void ReadSalesBufferFromCashRegister(object sender)
         {
             //Local variables
@@ -266,141 +398,67 @@ namespace NaturalnieApp.Forms
 
             try
             {
-
-                this.SaleBufforReading.Config.ChangeCashRegisterConnectionData
-                    (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
-
-                //Reset to default path
-                this.SaleBufforReading.DataFromElzab.RestoreDefaultPath();
-
-                this.SaleBufforReading.DataToElzab.Element.RemoveAllElements();
-                this.SaleBufforReading.DataFromElzab.Element.RemoveAllElements();
-
                 //ChangeStatus
-                communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(1);
-                communicationProgressUpdate.ProgressBarTime = 10.0;
+                communicationProgressUpdate.GenerateMessage(this.BwStepsDescription.ElementAt(1), 2.0);
                 (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
-                CommandExecutionStatus status = this.SaleBufforReading.ExecuteCommand();
+                //Action - Get data from Cash register
+                CommandExecutionStatus status = GetSaleDataFromCashRegister();
 
                 if ((status.ErrorNumber != 0) || (status.ErrorText == null))
                 {
-
-                    communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Error;
-                    communicationProgressUpdate.Text = string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}" +
+                    string text = string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}" +
                         "|Błąd komunikacji",
-                    status.ErrorNumber, status.ErrorText);
+                        status.ErrorNumber, status.ErrorText);
+                    communicationProgressUpdate.GenerateMessage(text, 2.0, 
+                        BwElzabCommunicationProgressUpdate.MessageType.Error);
                     (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
                 }
                 else
                 {
                     //ChangeStatus
-                    communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                    communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(2);
-                    communicationProgressUpdate.ProgressBarTime = 2.0;
+                    communicationProgressUpdate.GenerateMessage(this.BwStepsDescription.ElementAt(2), 2.0);
                     (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
-                    //Get list of element type
-                    List<int> elementsTypeList = this.SaleBufforReading.DataFromElzab.GetListOfElementTypes();
-                    List<Sales> listOfElementsToAdd = new List<Sales>();
-                    foreach (int type in elementsTypeList)
-                    {
-                        //Get list of all elements of given type
-                        List<AttributeValueObject> elementsList = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
-                        listOfElementsToAdd.AddRange(ElzabRelated.ParseElzabBufferToDbObject(elementsList));
-                    }
+                    //Action - Get element type and values list
+                    List<int> elementsTypeList;
+                    List<Sales> listOfElementsToAdd;
+                    (elementsTypeList, listOfElementsToAdd) = GetElementsAndTypesFromSaleBuffer();
 
                     //ChangeStatus
-                    communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                    communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(3);
-                    communicationProgressUpdate.ProgressBarTime = 5.0;
+                    communicationProgressUpdate.GenerateMessage(this.BwStepsDescription.ElementAt(3), 2.0);
                     (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
-                    //List of unique idetifiers
-                    List<string> uniqueIdetifiers = listOfElementsToAdd.Select(u => u.EntryUniqueIdentifier).ToList();
-
-                    //Check what exist in DB
-                    List<string> uniqueIdetifiersNotInDb = this.databaseCommands.CheckIfUniqueIdExist(uniqueIdetifiers);
-
-                    //Get only those object that are not exist in db
-                    List<Sales> modifiedListOfElementsToAdd = new List<Sales>();
-                    foreach (string element in uniqueIdetifiersNotInDb)
-                    {
-                        modifiedListOfElementsToAdd.Add(listOfElementsToAdd.Where(w => w.EntryUniqueIdentifier == element).
-                            Select(l => l).FirstOrDefault());
-                    }
+                    //Action - Get list of unique entries
+                    List<Sales> modifiedListOfElementsToAdd;
+                    modifiedListOfElementsToAdd = GetListOfUniqueEntries(listOfElementsToAdd);
 
                     //ChangeStatus
-                    communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                    communicationProgressUpdate.Text = string.Format(this.BwStepsDescription.ElementAt(4)
-                        , modifiedListOfElementsToAdd.Count());
-                    communicationProgressUpdate.ProgressBarTime = 2.0;
+                    communicationProgressUpdate.GenerateMessage(string.Format(this.BwStepsDescription.ElementAt(4),
+                        modifiedListOfElementsToAdd.Count()),
+                        2.0);
                     (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
-                    //Add to DB
+                    //Action - Add data to DB
                     this.databaseCommands.AddToSales(modifiedListOfElementsToAdd);
 
-                    //Create pages
-                    foreach (int type in elementsTypeList)
-                    {
-                        //Get attributes names for given type
-                        List<string> attributesNamesOfType = this.SaleBufforReading.DataFromElzab.GetAttributesNamesOfType(type);
-                        List<string> columNames = new List<string>();
-                        foreach (string attibuteName in attributesNamesOfType)
-                        {
-                            columNames.Add(this.SaleBufforReading.GetTranslationForGivenAttributeName(attibuteName));
-                        }
-
-                        //Variables for page creation
-                        string pageName = this.SaleBufforReading.GetTheNameOfGivenElementType(type);
-                        int pageIndex = -1;
-
-                        //Add page
-                        this.tcDataFromFile.TabPages.Add(pageName);
-
-                        pageIndex = this.tcDataFromFile.TabPages.Count - 1;
-
-                        //AddDataGridToTabPage(this.tcDataFromFile.TabPages[pageIndex], columNames);
-
-                    }
-
-                    this.tcDataFromFile.Update();
-
                     //ChangeStatus
-                    communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                    communicationProgressUpdate.Text = string.Format(this.BwStepsDescription.ElementAt(5)
-                        , modifiedListOfElementsToAdd.Count());
-                    communicationProgressUpdate.ProgressBarTime = 4.0;
+                    communicationProgressUpdate.GenerateMessage(this.BwStepsDescription.ElementAt(5), 2.0);
                     (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
-                    foreach (int type in elementsTypeList)
-                    {
-                        //Add data to data source
-                        List<AttributeValueObject> dataToAdd = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
-                        //AddDataFromElzabToDataSource(dataToAdd, elementsTypeList.IndexOf(type));
-                    }
-
+                    //Action - Creat data sources for given data
+                    GenerateDataSourcesAdFillWithData(elementsTypeList);
 
                     //ChangeStatus
-                    communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                    communicationProgressUpdate.Text = string.Format(this.BwStepsDescription.ElementAt(6)
-                        , modifiedListOfElementsToAdd.Count());
-                    communicationProgressUpdate.ProgressBarTime = 2.0;
+                    communicationProgressUpdate.GenerateMessage(this.BwStepsDescription.ElementAt(6), 2.0);
                     (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
-                    //Update sales table
+                    //Action - Update sales table
                     UpdateSalesQuantityInStock(this.SaleBufforReading.DataFromElzab, NORMAL_SALE_INDEX);
 
-
                     //ChangeStatus
-                    communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                    communicationProgressUpdate.Text = string.Format(this.BwStepsDescription.ElementAt(7)
-                        , modifiedListOfElementsToAdd.Count());
-                    communicationProgressUpdate.ProgressBarTime = 0.0;
+                    communicationProgressUpdate.GenerateMessage(this.BwStepsDescription.ElementAt(7), 2.0);
                     (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
-
-                    this.tcDataFromFile.Enabled = true;
                 }
 
             }
@@ -438,7 +496,7 @@ namespace NaturalnieApp.Forms
                 communicationProgressUpdate.GenerateMessage(this.BwStepsDescriptionFromFile.ElementAt(3), 2.0);
                 (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
-                //Action - Get element type and values list
+                //Action - Get list of unique entries
                 List<Sales> modifiedListOfElementsToAdd;
                 modifiedListOfElementsToAdd = GetListOfUniqueEntries(listOfElementsToAdd);
 
@@ -456,25 +514,7 @@ namespace NaturalnieApp.Forms
                 (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
                 //Action - Creat data sources for given data
-                foreach (int type in elementsTypeList)
-                {
-                    //Get attributes names for given type
-                    List<string> attributesNamesOfType = this.SaleBufforReading.DataFromElzab.GetAttributesNamesOfType(type);
-                    List<string> columNames = new List<string>();
-                    foreach (string attibuteName in attributesNamesOfType)
-                    {
-                        columNames.Add(this.SaleBufforReading.GetTranslationForGivenAttributeName(attibuteName));
-                    }
-
-                    //Variables for page creation
-                    string tableName = this.SaleBufforReading.GetTheNameOfGivenElementType(type);
-
-                    //Add data to data source
-                    List<AttributeValueObject> dataToAdd = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
-
-                    AddDataFromElzabToDataSource(dataToAdd, tableName, columNames);
-
-                }
+                GenerateDataSourcesAdFillWithData(elementsTypeList);
 
                 //ChangeStatus
                 communicationProgressUpdate.GenerateMessage(this.BwStepsDescriptionFromFile.ElementAt(6), 2.0);
@@ -483,12 +523,37 @@ namespace NaturalnieApp.Forms
                 //Action - Update sales table
                 UpdateSalesQuantityInStock(this.SaleBufforReading.DataFromElzab, NORMAL_SALE_INDEX);
 
+                //ChangeStatus
+                communicationProgressUpdate.GenerateMessage(this.BwStepsDescriptionFromFile.ElementAt(7), 2.0);
+                (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+
             }
             catch (Exception ex)
             {
                 communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Error;
                 communicationProgressUpdate.Text = ex.Message + ex.InnerException;
                 (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+            }
+        }
+        private void GenerateDataSourcesAdFillWithData(List<int> elementsTypeList)
+        {
+            foreach (int type in elementsTypeList)
+            {
+                //Get attributes names for given type
+                List<string> attributesNamesOfType = this.SaleBufforReading.DataFromElzab.GetAttributesNamesOfType(type);
+                List<string> columNames = new List<string>();
+                foreach (string attibuteName in attributesNamesOfType)
+                {
+                    columNames.Add(this.SaleBufforReading.GetTranslationForGivenAttributeName(attibuteName));
+                }
+
+                //Variables for page creation
+                string tableName = this.SaleBufforReading.GetTheNameOfGivenElementType(type);
+
+                //Add data to data source
+                List<AttributeValueObject> dataToAdd = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
+
+                AddDataFromElzabToDataSource(dataToAdd, tableName, columNames);
             }
         }
         private void AddDataGridToTabPage()
@@ -506,6 +571,7 @@ namespace NaturalnieApp.Forms
                 this.DataGridViewsList.Last().Dock = DockStyle.Fill;
                 this.DataGridViewsList.Last().ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 this.DataGridViewsList.Last().AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                this.DataGridViewsList.Last().AllowUserToAddRows = false;
 
                 this.DataGridViewsList.Last().AutoResizeColumns();
 
@@ -552,14 +618,17 @@ namespace NaturalnieApp.Forms
 
             foreach (AttributeValueObject data in dataToAdd)
             {
-                //Exclude first attribute (which is element type
+                //Exclude first attribute (which is element type)
                 List<string> dataMod = data.AttributeValue.Skip(1).ToList();
 
                 //Create new row
                 DataRow newRow = this.DataSource[index].NewRow();
+
+                int i = 0;
                 foreach (string attributeValue in dataMod)
                 {
-                    newRow.SetField<string>(dataMod.IndexOf(attributeValue), attributeValue);
+                    newRow.SetField<string>(i, attributeValue);
+                    i++;
                 }
 
                 //Add row to data source
@@ -567,7 +636,6 @@ namespace NaturalnieApp.Forms
             }
 
         }
-
         private void GetSaleDataFromFile(OpenFileDialog openFileDialog)
         {
             //Try cast the sender
@@ -587,22 +655,22 @@ namespace NaturalnieApp.Forms
             //Generate object data from file
             this.SaleBufforReading.DataFromElzab.GenerateObjectFromRawData();
         }
-
-        private (List<int> elementsTypeList, List<Sales> listOfElementsToAdd) GetElementsAndTypesFromSaleBuffer()
+        private CommandExecutionStatus GetSaleDataFromCashRegister()
         {
-            //Get list of element type
-            List<int> elementsTypeList = this.SaleBufforReading.DataFromElzab.GetListOfElementTypes();
-            List<Sales> listOfElementsToAdd = new List<Sales>();
-            foreach (int type in elementsTypeList)
-            {
-                //Get list of all elements of given type
-                List<AttributeValueObject> elementsList = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
-                listOfElementsToAdd.AddRange(ElzabRelated.ParseElzabBufferToDbObject(elementsList));
-            }
+            this.SaleBufforReading.Config.ChangeCashRegisterConnectionData
+                (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
+            //Reset to default path
+            this.SaleBufforReading.DataFromElzab.RestoreDefaultPath();
 
-            return (elementsTypeList, listOfElementsToAdd);
+            //Clear object data
+            this.SaleBufforReading.DataToElzab.Element.RemoveAllElements();
+            this.SaleBufforReading.DataFromElzab.Element.RemoveAllElements();
+
+            //Execute command
+            CommandExecutionStatus status = this.SaleBufforReading.ExecuteCommand();
+
+            return status;
         }
-
         private List<Sales> GetListOfUniqueEntries(List<Sales> listOfElementsToAdd)
         {
             //List of unique idetifiers
@@ -620,6 +688,20 @@ namespace NaturalnieApp.Forms
             }
 
             return modifiedListOfElementsToAdd;
+        }
+        private (List<int> elementsTypeList, List<Sales> listOfElementsToAdd) GetElementsAndTypesFromSaleBuffer()
+        {
+            //Get list of element type
+            List<int> elementsTypeList = this.SaleBufforReading.DataFromElzab.GetListOfElementTypes();
+            List<Sales> listOfElementsToAdd = new List<Sales>();
+            foreach (int type in elementsTypeList)
+            {
+                //Get list of all elements of given type
+                List<AttributeValueObject> elementsList = this.SaleBufforReading.DataFromElzab.GetElementsOfTypeAllValues(type);
+                listOfElementsToAdd.AddRange(ElzabRelated.ParseElzabBufferToDbObject(elementsList));
+            }
+
+            return (elementsTypeList, listOfElementsToAdd);
         }
         #endregion
 
@@ -691,56 +773,15 @@ namespace NaturalnieApp.Forms
                 }
             }
 
-            DialogResult result = MessageBox.Show(string.Format("Raport dodania pozycji sprzedaży do bazy danych:" +
-                "\n Liczba produktów których nie można było odnaleźć w bazie danych: {0}" +
-                "\n Liczba produktów których nie odaleziono w bazie danych z uwagi na usunięty produkt: {1}" +
-                "\n Liczba produktów, których stany magazynowe zostały zaktualizowane: {2}" +
-                "\n Liczba produktów pominięty (produkt o identycznym numerze Id został już użyty do aktualizacji stanów):{3}" +
-                "\n Czy chcesz zapisać raport szczegółowy?",
-                listOfElementNotDetermined.Count(), listOfElementDeleted.Count(), listOfElementAdded.Count(),
-                listOfElementAlreadyUpdatedInDb.Count()),
-                "Raport", MessageBoxButtons.YesNo);
-            if (result == DialogResult.Yes)
-            {
-                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string fullPath = folderBrowserDialog.SelectedPath + @"\dump.txt";
-                    string deliminer = "\n";
-                    for (int i = 0; i < 30; i++) deliminer += "*";
-                    deliminer += "\n";
-
-
-                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: false);
-                    FileWriteRelated.WriteToTextFile(fullPath, new List<string>
-                    { "Liczba produktów których nie można było odnaleźć w bazie danych" }, append: true);
-                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
-                    FileWriteRelated.WriteToTextFile(fullPath, listOfElementNotDetermined, append: true);
-
-                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
-                    FileWriteRelated.WriteToTextFile(fullPath, new List<string>
-                    { "Liczba produktów których nie odaleziono w bazie danych z uwagi na usunięty produkt" }, append: true);
-                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
-                    FileWriteRelated.WriteToTextFile(fullPath, listOfElementDeleted, append: true);
-
-                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
-                    FileWriteRelated.WriteToTextFile(fullPath, new List<string>
-                    { "Liczba produktów, których stany magazynowe zostały zaktualizowane" }, append: true);
-                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
-                    FileWriteRelated.WriteToTextFile(fullPath, listOfElementAdded, append: true);
-
-                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
-                    FileWriteRelated.WriteToTextFile(fullPath, new List<string>
-                    { "Liczba produktów pominięty (produkt o identycznym numerze Id został już użyty do aktualizacji stanów)" }, append: true);
-                    FileWriteRelated.WriteToTextFile(fullPath, new List<string> { deliminer }, append: true);
-                    FileWriteRelated.WriteToTextFile(fullPath, listOfElementAlreadyUpdatedInDb, append: true);
-                }
-            }
+            //Write data to the summary class
+            this.ReadSalesSummaryData.ListOfElementAdded = listOfElementAdded;
+            this.ReadSalesSummaryData.ListOfElementAlreadyUpdatedInDb = listOfElementAlreadyUpdatedInDb;
+            this.ReadSalesSummaryData.ListOfElementDeleted = listOfElementDeleted;
+            this.ReadSalesSummaryData.ListOfElementNotDetermined = listOfElementNotDetermined;
 
 
         }
-
-
         #endregion
+
     }
 }
