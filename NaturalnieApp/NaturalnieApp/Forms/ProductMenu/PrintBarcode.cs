@@ -55,8 +55,8 @@ namespace NaturalnieApp.Forms
             this.BarcodeReader.BarcodeValid += BarcodeValidAction;
             this.BarcodeValidEventGenerated = false;
 
-
-            //Search bar events
+            //Initialize name of current user control
+            this.lName.Text = "Drukuj kod kreskowy";
         }
         #endregion
         //====================================================================================================
@@ -218,7 +218,6 @@ namespace NaturalnieApp.Forms
         {
             this.DataSource.DefaultView.RowFilter = e.FilterString;
         }
-
         private void advancedDataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
         {
             //Remove product from additional list
@@ -235,8 +234,6 @@ namespace NaturalnieApp.Forms
             //Renumber no column values if necessary
             UpdateNoColumnValues(this.DataSource, this.ColumnNames.No);
         }
-
-
         private void AdvancedDataGridView1_SortStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.SortEventArgs e)
         {
             Zuby.ADGV.AdvancedDataGridView fdgv = advancedDataGridView1;

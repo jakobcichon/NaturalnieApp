@@ -29,39 +29,46 @@ namespace NaturalnieApp.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            NaturalnieApp.Forms.Common.SearchBarTemplate.PropertiesClass propertiesClass1 = new NaturalnieApp.Forms.Common.SearchBarTemplate.PropertiesClass();
-            this.pHeader = new System.Windows.Forms.Panel();
-            this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
-            this.bPrint = new System.Windows.Forms.Button();
-            this.pButtonsPanel = new System.Windows.Forms.Panel();
-            this.bClose = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
+            NaturalnieApp.Forms.Common.SearchBarTemplate.PropertiesClass propertiesClass3 = new NaturalnieApp.Forms.Common.SearchBarTemplate.PropertiesClass();
             this.SearchBar = new NaturalnieApp.Forms.Common.SearchBarTemplate();
-            this.pHeader.SuspendLayout();
-            this.pButtonsPanel.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
+            this.bPrint = new System.Windows.Forms.Button();
+            this.bClose = new System.Windows.Forms.Button();
+            this.pButtonsPanel = new System.Windows.Forms.Panel();
+            this.pHeader = new System.Windows.Forms.Panel();
+            this.lName = new System.Windows.Forms.Label();
+            this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
+            this.pButtonsPanel.SuspendLayout();
+            this.pHeader.SuspendLayout();
             this.SuspendLayout();
             // 
-            // pHeader
+            // SearchBar
             // 
-            this.pHeader.Controls.Add(this.tbDummyForCtrl);
-            this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pHeader.Location = new System.Drawing.Point(0, 0);
-            this.pHeader.Name = "pHeader";
-            this.pHeader.Size = new System.Drawing.Size(920, 30);
-            this.pHeader.TabIndex = 0;
+            this.SearchBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.SearchBar.ForeColor = System.Drawing.Color.Black;
+            this.SearchBar.IsBussy = false;
+            this.SearchBar.Location = new System.Drawing.Point(0, 36);
+            this.SearchBar.MinimumSize = new System.Drawing.Size(920, 106);
+            this.SearchBar.Name = "SearchBar";
+            this.SearchBar.ShowGenericButton();
+            this.SearchBar.Size = new System.Drawing.Size(920, 106);
+            this.SearchBar.TabIndex = 6;
+            this.SearchBar.GenericButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.GenericButtonClickEventHandler(this.SearchBar_GenericButtonClick);
+            this.SearchBar.NewEntSelectedByAdditionalRequest += new NaturalnieApp.Forms.Common.SearchBarTemplate.NewEntSelectedByAdditionalRequestEventHandler(this.SearchBar_NewEntSelectedByAdditionalRequest);
             // 
-            // tbDummyForCtrl
+            // advancedDataGridView1
             // 
-            this.tbDummyForCtrl.Dock = System.Windows.Forms.DockStyle.Left;
-            this.tbDummyForCtrl.Location = new System.Drawing.Point(0, 0);
-            this.tbDummyForCtrl.Name = "tbDummyForCtrl";
-            this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 20);
-            this.tbDummyForCtrl.TabIndex = 7;
-            this.tbDummyForCtrl.Visible = false;
-            this.tbDummyForCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDummyForCtrl_KeyDown);
+            this.advancedDataGridView1.AllowUserToAddRows = false;
+            this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.advancedDataGridView1.FilterAndSortEnabled = true;
+            this.advancedDataGridView1.Location = new System.Drawing.Point(0, 148);
+            this.advancedDataGridView1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
+            this.advancedDataGridView1.Name = "advancedDataGridView1";
+            this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.advancedDataGridView1.Size = new System.Drawing.Size(920, 470);
+            this.advancedDataGridView1.TabIndex = 7;
             // 
             // bPrint
             // 
@@ -75,17 +82,6 @@ namespace NaturalnieApp.Forms
             this.bPrint.Text = "Drukuj";
             this.bPrint.UseVisualStyleBackColor = false;
             this.bPrint.Click += new System.EventHandler(this.bPrint_Click);
-            // 
-            // pButtonsPanel
-            // 
-            this.pButtonsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
-            this.pButtonsPanel.Controls.Add(this.bClose);
-            this.pButtonsPanel.Controls.Add(this.bPrint);
-            this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pButtonsPanel.Location = new System.Drawing.Point(0, 620);
-            this.pButtonsPanel.Name = "pButtonsPanel";
-            this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
-            this.pButtonsPanel.TabIndex = 3;
             // 
             // bClose
             // 
@@ -101,48 +97,58 @@ namespace NaturalnieApp.Forms
             this.bClose.UseVisualStyleBackColor = false;
             this.bClose.Click += new System.EventHandler(this.bClose_Click);
             // 
-            // panel2
+            // pButtonsPanel
             // 
-            this.panel2.Controls.Add(this.advancedDataGridView1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 136);
-            this.panel2.Name = "panel2";
-            this.panel2.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.panel2.Size = new System.Drawing.Size(920, 484);
-            this.panel2.TabIndex = 5;
+            this.pButtonsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
+            this.pButtonsPanel.Controls.Add(this.bClose);
+            this.pButtonsPanel.Controls.Add(this.bPrint);
+            this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pButtonsPanel.Location = new System.Drawing.Point(0, 620);
+            this.pButtonsPanel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 3);
+            this.pButtonsPanel.Name = "pButtonsPanel";
+            this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
+            this.pButtonsPanel.TabIndex = 3;
             // 
-            // advancedDataGridView1
+            // pHeader
             // 
-            this.advancedDataGridView1.AllowUserToAddRows = false;
-            this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.advancedDataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.advancedDataGridView1.FilterAndSortEnabled = true;
-            this.advancedDataGridView1.Location = new System.Drawing.Point(0, 5);
-            this.advancedDataGridView1.Name = "advancedDataGridView1";
-            this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(920, 479);
-            this.advancedDataGridView1.TabIndex = 5;
-            this.advancedDataGridView1.SortStringChanged += new System.EventHandler<Zuby.ADGV.AdvancedDataGridView.SortEventArgs>(this.AdvancedDataGridView1_SortStringChanged);
-            this.advancedDataGridView1.FilterStringChanged += new System.EventHandler<Zuby.ADGV.AdvancedDataGridView.FilterEventArgs>(this.advancedDataGridView1_FilterStringChanged);
-            this.advancedDataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellDoubleClick);
-            this.advancedDataGridView1.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.advancedDataGridView1_UserDeletedRow);
+            this.pHeader.Controls.Add(this.lName);
+            this.pHeader.Controls.Add(this.tbDummyForCtrl);
+            this.pHeader.Controls.Add(this.panel1);
+            this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pHeader.Location = new System.Drawing.Point(0, 0);
+            this.pHeader.Name = "pHeader";
+            this.pHeader.Padding = new System.Windows.Forms.Padding(2);
+            this.pHeader.Size = new System.Drawing.Size(920, 30);
+            this.pHeader.TabIndex = 8;
             // 
-            // SearchBar
+            // lName
             // 
-            this.SearchBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
-            this.SearchBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.SearchBar.ForeColor = System.Drawing.Color.Black;
-            this.SearchBar.IsBussy = true;
-            this.SearchBar.Location = new System.Drawing.Point(0, 30);
-            this.SearchBar.MinimumSize = new System.Drawing.Size(920, 106);
-            this.SearchBar.Name = "SearchBar";
-            this.SearchBar.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-            propertiesClass1.GenButtonExist = false;
-            this.SearchBar.Properties = propertiesClass1;
-            this.SearchBar.Size = new System.Drawing.Size(920, 106);
-            this.SearchBar.TabIndex = 6;
-            this.SearchBar.GenericButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.GenericButtonClickEventHandler(this.SearchBar_GenericButtonClick);
-            this.SearchBar.NewEntSelectedByAdditionalRequest += new NaturalnieApp.Forms.Common.SearchBarTemplate.NewEntSelectedByAdditionalRequestEventHandler(this.SearchBar_NewEntSelectedByAdditionalRequest);
+            this.lName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lName.Location = new System.Drawing.Point(22, 2);
+            this.lName.Margin = new System.Windows.Forms.Padding(3);
+            this.lName.Name = "lName";
+            this.lName.Size = new System.Drawing.Size(896, 26);
+            this.lName.TabIndex = 7;
+            this.lName.Text = "lName";
+            this.lName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tbDummyForCtrl
+            // 
+            this.tbDummyForCtrl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tbDummyForCtrl.Location = new System.Drawing.Point(2, 2);
+            this.tbDummyForCtrl.Multiline = true;
+            this.tbDummyForCtrl.Name = "tbDummyForCtrl";
+            this.tbDummyForCtrl.Size = new System.Drawing.Size(20, 26);
+            this.tbDummyForCtrl.TabIndex = 6;
+            this.tbDummyForCtrl.Visible = false;
+            // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(0, 36);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(200, 100);
+            this.panel1.TabIndex = 4;
             // 
             // PrintBarcode
             // 
@@ -150,32 +156,32 @@ namespace NaturalnieApp.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.SearchBar);
             this.Controls.Add(this.pHeader);
+            this.Controls.Add(this.SearchBar);
             this.Controls.Add(this.pButtonsPanel);
+            this.Controls.Add(this.advancedDataGridView1);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "PrintBarcode";
             this.Size = new System.Drawing.Size(920, 690);
             this.Load += new System.EventHandler(this.PrintBarcode_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
+            this.pButtonsPanel.ResumeLayout(false);
             this.pHeader.ResumeLayout(false);
             this.pHeader.PerformLayout();
-            this.pButtonsPanel.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.Panel pHeader;
-        private System.Windows.Forms.Button bPrint;
-        private System.Windows.Forms.Panel pButtonsPanel;
-        private System.Windows.Forms.Button bClose;
-        private System.Windows.Forms.TextBox tbDummyForCtrl;
         private Common.SearchBarTemplate SearchBar;
-        private System.Windows.Forms.Panel panel2;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
+        private System.Windows.Forms.Button bPrint;
+        private System.Windows.Forms.Button bClose;
+        private System.Windows.Forms.Panel pButtonsPanel;
+        private System.Windows.Forms.Panel pHeader;
+        private System.Windows.Forms.Label lName;
+        private System.Windows.Forms.TextBox tbDummyForCtrl;
+        private System.Windows.Forms.Panel panel1;
     }
 }

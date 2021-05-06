@@ -160,12 +160,14 @@ namespace NaturalnieApp.Database
         public Product ProductEnt { get; set; }
         public Manufacturer ManufacturerEnt { get; set; }
         public Tax TaxEnt { get; set; }
+        public Supplier SupplierEnt { get; set; }
 
         public FullProductInfo()
         {
             this.ProductEnt = new Product();
             this.ManufacturerEnt = new Manufacturer();
             this.TaxEnt = new Tax();
+            this.SupplierEnt = new Supplier();
         }
 
     }
@@ -1240,17 +1242,25 @@ namespace NaturalnieApp.Database
                 var query = from p in contextDB.Products
                             join m in contextDB.Manufacturers on p.ManufacturerId equals m.Id
                             join t in contextDB.Tax on p.TaxId equals t.Id
+                            join s in contextDB.Suppliers on p.SupplierId equals s.Id
                             where p.ProductName == productName
                             select new
                             {
                                 p,
                                 m,
-                                t
+                                t,
+                                s
                             };
 
-                localProduct.ProductEnt = query.FirstOrDefault().p;
-                localProduct.ManufacturerEnt = query.FirstOrDefault().m;
-                localProduct.TaxEnt = query.FirstOrDefault().t;
+                if (query.FirstOrDefault() != null)
+                {
+                    localProduct.ProductEnt = query.FirstOrDefault().p;
+                    localProduct.ManufacturerEnt = query.FirstOrDefault().m;
+                    localProduct.TaxEnt = query.FirstOrDefault().t;
+                    localProduct.SupplierEnt = query.FirstOrDefault().s;
+                }
+                else localProduct = null;
+
 
             }
             return localProduct;

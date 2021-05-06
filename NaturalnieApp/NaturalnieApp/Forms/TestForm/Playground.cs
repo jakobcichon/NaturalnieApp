@@ -81,7 +81,7 @@ namespace NaturalnieApp.Forms
 
         private void TestSearchBar_NewEntSelected(object sender, SearchBarTemplate.NewEntSelectedEventArgs e)
         {
-            textBox1.Text = e.SelectedProduct.BarCode;
+            this.textBox1.Text = e.SelectedProduct.BarCode;
         }
 
         #endregion

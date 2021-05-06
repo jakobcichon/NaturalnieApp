@@ -20,8 +20,6 @@ namespace NaturalnieApp.Forms
         //Class fields
         #region Class fields
         DatabaseCommands databaseCommands;
-        BackgroundWorker backgroundWorker1;
-        backgroundWorkerTasks ActualTaskType;
 
         private Product ProductEntity { get; set; }
         private Supplier SupplierEntity { get; set; }
@@ -33,20 +31,6 @@ namespace NaturalnieApp.Forms
         //Barcode reader
         private BarcodeRelated.BarcodeReader BarcodeReader { get; set; }
         private bool BarcodeValidEventGenerated { get; set; }
-
-        //Global variables
-        private List<string> ProductsList { get; set; }
-        private List<string> ManufacturersList { get; set; }
-        private List<string> BarcodesList { get; set; }
-        private List<string> SupplierList { get; set; }
-        private List<string> TaxList { get; set; }
-
-        //Auto complete string collections
-        AutoCompleteStringCollection ProductListCollection;
-        AutoCompleteStringCollection ManufacturerListCollection;
-        AutoCompleteStringCollection BarcodeListCollection;
-        AutoCompleteStringCollection SupplierListCollection;
-        AutoCompleteStringCollection TaxListCollection;
         #endregion
         //====================================================================================================
         //Class constructor
@@ -54,9 +38,7 @@ namespace NaturalnieApp.Forms
         public ShowProductInfo(ref DatabaseCommands commandsObj)
         {
             InitializeComponent();
-            InitializeBackgroundWorker();
             this.databaseCommands = commandsObj;
-            ActualTaskType = backgroundWorkerTasks.None;
 
             //Barcode reader class
             this.BarcodeReader = new BarcodeRelated.BarcodeReader(100);
@@ -67,137 +49,18 @@ namespace NaturalnieApp.Forms
             this.ProductEntity = new Product();
             this.SupplierEntity = new Supplier();
             this.ManufacturerEntity = new Manufacturer();
+            this.TaxEntity = new Tax();
 
+            //Initialize name of current user control
+            this.lName.Text = "Znajdź produkt";
+
+            //Search bar settings
+            this.ucSearchBar.HideGenericButton();
+
+            //Fetch data to fill out combo boxes
+            FillWithInitialDataFromObject();
         }
         #endregion
-        //=============================================================================
-        //                              Background worker
-        //=============================================================================
-        // Set up the BackgroundWorker object by attaching event handlers. 
-        #region Backgroundworker
-        private void InitializeBackgroundWorker()
-        {
-            this.backgroundWorker1 = new BackgroundWorker();
-            // here you have also to implement the necessary events
-            // this event will define what the worker is actually supposed to do
-            this.backgroundWorker1.DoWork += backgroundWorker1_DoWork;
-            // this event will define what the worker will do when finished
-            this.backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
-        }
-        // This event handler is where the actual, potentially time-consuming work is done.
-        void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            //Local vaiable
-            backgroundWorkerTasks taskType;
-            taskType = this.ActualTaskType;
-            List<List<string>> returnList = new List<List<string>>();
-
-            try
-            {
-                //check if Database reachable 
-                this.databaseCommands.CheckConnection(true);
-
-                //Do action depending of task type
-                switch (taskType)
-                {
-                    case backgroundWorkerTasks.Init:
-                        if (this.databaseCommands.ConnectionStatus)
-                        {
-                            List<string> productNameList = this.databaseCommands.GetProductsNameList();
-                            List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
-                            List<string> productSupplierList = this.databaseCommands.GetSupplierNameList();
-                            List<string> barcodesList = this.databaseCommands.GetBarcodeList();
-                            List<string> taxList = this.databaseCommands.GetTaxList();
-                            returnList.Add(productNameList);
-                            returnList.Add(productManufacturerList);
-                            returnList.Add(productSupplierList);
-                            returnList.Add(barcodesList);
-                            returnList.Add(taxList);
-                            e.Result = returnList;
-                        }
-                        break;
-                    case backgroundWorkerTasks.Update:
-                        if (this.databaseCommands.ConnectionStatus)
-                        {
-                            List<string> productNameList = this.databaseCommands.GetProductsNameList();
-                            List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
-                            List<string> productSupplierList = this.databaseCommands.GetSupplierNameList();
-                            List<string> barcodesList = this.databaseCommands.GetBarcodeList();
-                            List<string> taxList = this.databaseCommands.GetTaxList();
-                            returnList.Add(productNameList);
-                            returnList.Add(productManufacturerList);
-                            returnList.Add(productSupplierList);
-                            returnList.Add(barcodesList);
-                            returnList.Add(taxList);
-                            e.Result = returnList;
-                        }
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-  
-        }
-        // This event handler is where the actual, potentially time-consuming work is done.
-        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            //Local vaiable
-            backgroundWorkerTasks taskType;
-            taskType = this.ActualTaskType;
-
-            if (e.Error != null)
-            {
-                MessageBox.Show(e.Error.Message);
-            }
-            else
-            {
-                //Do action depending of task type
-                switch (taskType)
-                {
-                    case backgroundWorkerTasks.Init:
-                        if (this.databaseCommands.ConnectionStatus)
-                        {
-                            //Get product name list and product suppliers
-                            //check if Database reachable 
-                            List<List<string>> returnList = new List<List<string>>();
-                            returnList = (List<List<string>>)e.Result;
-                            FillWithInitialDataFromObject(returnList[0], returnList[1], returnList[2], returnList[3], returnList[4]);
-
-                        }
-                        break;
-                    case backgroundWorkerTasks.Update:
-                        if (this.databaseCommands.ConnectionStatus)
-                        {
-                            //Get product name list and product suppliers
-                            //check if Database reachable 
-                            List<List<string>> returnList = new List<List<string>>();
-                            returnList = (List<List<string>>)e.Result;
-                            FillWithInitialDataFromObject(returnList[0], returnList[1], returnList[2], returnList[3], returnList[4]);
-                            if (this.SelectedProductId >= 0)
-                            {
-                                this.cbProductList.SelectedItem = this.databaseCommands.GetProductNameById(this.SelectedProductId);
-                                this.ProductEntity = this.databaseCommands.GetProductEntityById(this.SelectedProductId);
-                            }
-                            else ClearProductentity();
-                            //Call event
-                            cbProductList_SelectedIndexChanged(this.cbProductList, EventArgs.Empty);
-
-                        }
-                        break;
-                }
-
-                //Enable panel after work done
-                if (this.databaseCommands.ConnectionStatus) this.Enabled = true;
-
-
-                this.Focus();
-            }
-        }
-        //=============================================================================
-        #endregion
-        //====================================================================================================
         //General methods
         #region General methods
         //Method used to verify if all requred fields are uniqe
@@ -247,29 +110,23 @@ namespace NaturalnieApp.Forms
             this.ProductEntity = p;
             this.SupplierEntity = s;
 
-            //Supplier name
-            this.cbSupplierName.Text = s.Name.ToString();
-
-            FindTextInComboBoxAndSelect(ref this.cbProductList, p.ProductName);
-            FindTextInComboBoxAndSelect(ref this.cbBarcodes, p.BarCode);
-            FindTextInComboBoxAndSelect(ref this.cbManufacturerToEdit, m.Name);
-
             //Elzab product number
-            this.tbElzabProductNumber.Text = p.ElzabProductId.ToString();
-            this.tbPrice.Text = String.Format("{0:0.00}", p.PriceNet);
             FindTextInComboBoxAndSelect(ref this.cbTax, t.TaxValue.ToString());
             FindTextInComboBoxAndSelect(ref this.cbSupplierName, s.Name.ToString());
+            FindTextInComboBoxAndSelect(ref this.cbManufacturer, m.Name.ToString());
+
+            this.tbElzabProductNumber.Text = p.ElzabProductId.ToString();
+            this.tbPrice.Text = String.Format("{0:0.00}", p.PriceNet);
             this.tbMarigin.Text = p.Marigin.ToString();
             this.rtbProductInfo.Text = p.ProductInfo.ToString();
-            this.cbManufacturer.SelectedIndex = this.cbManufacturer.Items.IndexOf(m.Name);
             this.tbElzabProductName.Text = p.ElzabProductName;
             this.tbFinalPrice.Text = String.Format("{0:0.00}", p.FinalPrice);
             this.tbShortBarcode.Text = p.BarCodeShort;
             this.tbSupplierCode.Text = p.SupplierCode;
             this.tbDiscount.Text = p.Discount.ToString();
             this.tbPriceNetWithDiscount.Text = String.Format("{0:0.00}", p.PriceNetWithDiscount);
-            this.tbBarcodeToEdit.Text = p.BarCode;
-            this.tbProductNameToEdit.Text = p.ProductName;
+            this.tbBarcode.Text = p.BarCode;
+            this.tbProductName.Text = p.ProductName;
             this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
                 Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
             this.lElzabNameLength.Text = this.tbElzabProductName.Text.Length.ToString();
@@ -278,74 +135,25 @@ namespace NaturalnieApp.Forms
             this.PriceWithTax = Calculations.CalculatePriceWithTaxFromPriceNetAndTax(p.PriceNetWithDiscount, t.TaxValue);
             this.tbPriceWithTax.Text = String.Format("{0:0.00}", this.PriceWithTax);
         }
-        private void FillWithInitialDataFromObject(List<string> productList, List<string> manufacturerList, List<string> barcodeList, List<string> supplierList, List<string> taxList)
+        private void FillWithInitialDataFromObject()
         {
-            //Add fetched data to proper combo box
-            this.ProductListCollection = new AutoCompleteStringCollection();
-            this.ProductsList = this.databaseCommands.GetProductsNameList();
-            this.ProductListCollection.Clear();
-            string[] sorted = this.ProductsList.ToArray();
-            Array.Sort(sorted);
-            this.ProductListCollection.AddRange(sorted);
-            this.cbProductList.AutoCompleteCustomSource = this.ProductListCollection;
-            this.cbProductList.Items.Clear();
-            sorted = this.ProductsList.ToArray();
-            Array.Sort(sorted);
-            this.cbProductList.Items.AddRange(sorted);
+            string[] sorted;
 
             //Add fetched data to proper combo box
-            this.ManufacturerListCollection = new AutoCompleteStringCollection();
-            this.ManufacturersList = this.databaseCommands.GetManufacturersNameList();
-            this.ManufacturerListCollection.AddRange(this.ManufacturersList.ToArray());
-            this.ManufacturerListCollection.Clear();
-            this.cbManufacturer.AutoCompleteCustomSource = this.ManufacturerListCollection;
             this.cbManufacturer.Items.Clear();
-            sorted = this.ManufacturersList.ToArray();
+            sorted = this.databaseCommands.GetManufacturersNameList().ToArray();
             Array.Sort(sorted);
             this.cbManufacturer.Items.AddRange(sorted);
 
             //Add fetched data to proper combo box
-            this.cbManufacturerToEdit.Items.Clear();
-            sorted = manufacturerList.ToArray();
-            Array.Sort(sorted);
-            this.cbManufacturerToEdit.Items.AddRange(sorted);
-
-            //Add fetched data to proper combo box
-            this.BarcodeListCollection = new AutoCompleteStringCollection();
-            this.BarcodesList = this.databaseCommands.GetBarcodeList();
-            this.BarcodeListCollection.Clear();
-            sorted = this.BarcodesList.ToArray();
-            Array.Sort(sorted);
-            this.BarcodeListCollection.AddRange(sorted);
-            this.cbBarcodes.AutoCompleteCustomSource = this.BarcodeListCollection;
-            this.cbBarcodes.Items.Clear();
-            sorted = this.BarcodesList.ToArray();
-            Array.Sort(sorted);
-            this.cbBarcodes.Items.AddRange(sorted);
-
-            //Add fetched data to proper combo box
-            this.SupplierListCollection = new AutoCompleteStringCollection();
-            this.SupplierList = this.databaseCommands.GetSupplierNameList();
-            this.SupplierListCollection.Clear();
-            sorted = this.SupplierList.ToArray();
-            Array.Sort(sorted);
-            this.SupplierListCollection.AddRange(sorted);
-            this.cbSupplierName.AutoCompleteCustomSource = this.SupplierListCollection;
             this.cbSupplierName.Items.Clear();
-            sorted = this.SupplierList.ToArray();
+            sorted = this.databaseCommands.GetSupplierNameList().ToArray();
             Array.Sort(sorted);
             this.cbSupplierName.Items.AddRange(sorted);
 
             //Add fetched data to proper combo box
-            this.TaxListCollection = new AutoCompleteStringCollection();
-            this.TaxList = this.databaseCommands.GetTaxList();
-            this.TaxListCollection.Clear();
-            sorted = this.TaxList.ToArray();
-            Array.Sort(sorted);
-            this.TaxListCollection.AddRange(sorted);
-            this.cbTax.AutoCompleteCustomSource = this.TaxListCollection;
             this.cbTax.Items.Clear();
-            sorted = this.TaxList.ToArray();
+            sorted = this.databaseCommands.GetTaxList().ToArray();
             Array.Sort(sorted);
             this.cbTax.Items.AddRange(sorted);
         }
@@ -356,8 +164,8 @@ namespace NaturalnieApp.Forms
             try
             {
 
-                if (this.cbSupplierName.SelectedItem != null && this.cbProductList.SelectedItem != null &&
-                    this.cbBarcodes.SelectedItem != null && this.cbManufacturer.Text != null &&
+                if (this.cbSupplierName.SelectedItem != null && this.tbProductName.Text != "" &&
+                    this.tbBarcode.Text != "" && this.cbManufacturer.Text != null &&
                     this.tbElzabProductNumber.Text != "" && this.tbElzabProductName.Text != "" &&
                     this.tbPrice.Text != "" && this.cbTax.SelectedItem != null &&
                     this.tbMarigin.Text != "" && this.tbShortBarcode.Text != "")
@@ -368,12 +176,12 @@ namespace NaturalnieApp.Forms
 
                     //Call eachh of validating method
                     Validation.SupplierNameValidation(this.cbSupplierName.SelectedItem.ToString());
-                    Validation.ProductNameValidation(this.cbProductList.SelectedItem.ToString());
+                    Validation.ProductNameValidation(this.tbProductName.Text);
 
-                    if (this.cbBarcodes.Text.Length == 13) Validation.BarcodeEan13Validation(this.cbBarcodes.Text);
-                    else if (this.cbBarcodes.Text.Length == 8) Validation.BarcodeEan8Validation(this.cbBarcodes.Text);
-                    else if (this.cbBarcodes.Text.Length == 12) Validation.GeneralNumberValidation(this.cbBarcodes.Text);
-                    else Validation.BarcodeEan13Validation(this.cbBarcodes.Text);
+                    if (this.tbBarcode.Text.Length == 13) Validation.BarcodeEan13Validation(this.tbBarcode.Text);
+                    else if (this.tbBarcode.Text.Length == 8) Validation.BarcodeEan8Validation(this.tbBarcode.Text);
+                    else if (this.tbBarcode.Text.Length == 12) Validation.GeneralNumberValidation(this.tbBarcode.Text);
+                    else Validation.BarcodeEan13Validation(this.tbBarcode.Text);
 
                     Validation.ManufacturerNameValidation(this.cbManufacturer.Text);
 
@@ -413,25 +221,21 @@ namespace NaturalnieApp.Forms
             //Supplier name
             this.cbSupplierName.Text = "";
             this.cbManufacturer.Items.Clear();
-            this.cbManufacturerToEdit.Items.Clear();
 
             //Elzab product number
-            this.cbProductList.Items.Clear();
             this.tbElzabProductNumber.Text = "";
             this.tbPrice.Text = "";
             this.cbTax.Items.Clear();
             this.tbMarigin.Text = "";
-            this.cbBarcodes.Text = "";
             this.rtbProductInfo.Text = "";
             this.tbElzabProductName.Text = "";
             this.tbFinalPrice.Text = "";
             this.tbShortBarcode.Text = "";
             this.tbSupplierCode.Text = "";
-            this.cbBarcodes.Items.Clear();
             this.tbDiscount.Text = "";
             this.tbPriceNetWithDiscount.Text = "";
-            this.tbBarcodeToEdit.Text = "";
-            this.tbProductNameToEdit.Text = "";
+            this.tbBarcode.Text = "";
+            this.tbProductName.Text = "";
             this.tbPriceWithTax.Text = "";
             this.lElzabProductNumberRange.Text = "Wolne: ";
             this.lElzabNameLength.Text = "0";
@@ -531,23 +335,12 @@ namespace NaturalnieApp.Forms
 
             if (e.Ready && e.Valid)
             {
-                string barcodeToSearch;
-                //If short barcode try to get full barcode
-                if (e.RecognizedBarcodeValue.Length == 8)
-                {
-                    barcodeToSearch = this.databaseCommands.GetEAN13FromShortBarcode(e.RecognizedBarcodeValue);
-                    if (barcodeToSearch == "" || barcodeToSearch == null) barcodeToSearch = e.RecognizedBarcodeValue;
-                }
-                else barcodeToSearch = e.RecognizedBarcodeValue;
-
                 //Get index
-                int index = this.cbBarcodes.Items.IndexOf(barcodeToSearch);
-                if (index >= 0) 
+                if (!this.ucSearchBar.SelectBarcodeByAdditionalRequest(e.RecognizedBarcodeValue))
                 {
-                    this.cbBarcodes.SelectedIndex = index;
-                    this.cbBarcodes_SelectedIndexChanged(this.cbBarcodes, EventArgs.Empty);
+                    MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych", "Brak kodu",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                else MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych");
             }
 
             //Set variable informing Bar code read corrected
@@ -559,42 +352,12 @@ namespace NaturalnieApp.Forms
             this.Focus();
             dummyForControl.Select();
         }
-        private void tbDummyForCtrl_KeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
-        //Method used to clear given entity
-        private void ClearProductentity()
-        {
-            this.ProductEntity.BarCode = "";
-            this.ProductEntity.BarCodeShort = "";
-            this.ProductEntity.Discount = 0;
-            this.ProductEntity.ElzabProductId = 0;
-            this.ProductEntity.ElzabProductName = "";
-            this.ProductEntity.FinalPrice = 0;
-            this.ProductEntity.Id = 0;
-            this.ProductEntity.ManufacturerId = 0;
-            this.ProductEntity.Marigin = 0;
-            this.ProductEntity.PriceNet = 0;
-            this.ProductEntity.PriceNetWithDiscount = 0;
-            this.ProductEntity.ProductInfo = "";
-            this.ProductEntity.ProductName = "";
-            this.ProductEntity.SupplierCode = "";
-            this.ProductEntity.SupplierId = 0;
-            this.ProductEntity.TaxId = 0;
-        }
         #endregion
         //====================================================================================================
         //Current window events
         #region Current window events
         private void ShowProductInfo_Load(object sender, EventArgs e)
         {
-            //Disable panel and wait until data from db will be fetched
-            this.Enabled = false;
-
-            //Call background worker
-            this.ActualTaskType = backgroundWorkerTasks.Init;
-            this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
 
             //Enable text box
             this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
@@ -678,15 +441,21 @@ namespace NaturalnieApp.Forms
         {
             errorProvider1.Clear();
 
-            //Clear all data from current form
-            ClearAllObjectsData();
-
             //Disable panel and wait until data from db will be fetched
             this.Enabled = false;
 
-            //Call background worker
-            this.ActualTaskType = backgroundWorkerTasks.Update;
-            this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
+            //Clear all data from current form
+            ClearAllObjectsData();
+
+            //Fill combo boxes with initial data
+            FillWithInitialDataFromObject();
+
+            //Update search bar entity
+            this.ucSearchBar.UpdateCurrentEntity();
+
+            //Disable panel and wait until data from db will be fetched
+            this.Enabled = true;
+
         }
         private void bDelete_Click(object sender, EventArgs e)
         {
@@ -743,70 +512,6 @@ namespace NaturalnieApp.Forms
         }
         #endregion
         //====================================================================================================
-        //Manufacturer events
-        #region Manufacturer events
-        private void cbManufacturer_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            //Cast the sender for an object
-            ComboBox localSender = (ComboBox)sender;
-            if (this.cbManufacturer.SelectedIndex != 0)
-            {
-                //Fetch filtered information from database
-                List<string> filteredProductNames = this.databaseCommands.GetProductsNameListByManufacturer(cbManufacturer.SelectedItem.ToString());
-                cbProductList.Items.Clear();
-                cbProductList.Items.AddRange(filteredProductNames.ToArray());
-                this.ManufacturerEntity.Name = localSender.SelectedItem.ToString();
-            }
-            else
-            {
-                //Fetch filtered information from database
-                List<string> productNames = this.databaseCommands.GetProductsNameList();
-                cbProductList.Items.Clear();
-                cbProductList.Items.AddRange(productNames.ToArray());
-            }
-
-            //Update control
-            UpdateControl(ref tbDummyForCtrl);
-        }
-        private void cbManufacturer_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //Cast an object
-            ComboBox localSender = (ComboBox)sender;
-
-            cbManufacturer_SelectionChangeCommitted(sender, e);
-            localSender.Select();
-            UpdateControl(ref tbDummyForCtrl);
-        }
-        private void cbManufacturer_Validating(object sender, EventArgs e)
-        {
-            //Cast the sender for an object
-            ComboBox localSender = (ComboBox)sender;
-
-            //Check if input match to define pattern
-            try
-            {
-                Validation.ManufacturerNameValidation(localSender.Text);
-                this.ManufacturerEntity.Name = localSender.Text;
-                errorProvider1.Clear();
-            }
-            catch (Validation.ValidatingFailed ex)
-            {
-                localSender.Text = "";
-                errorProvider1.SetError(localSender, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        private void cbManufacturer_MouseHover(object sender, EventArgs e)
-        {
-            ComboBox localSender = (ComboBox)sender;
-            ToolTip toolTip = new ToolTip();
-            toolTip.SetToolTip(localSender, localSender.Text);
-        }
-        #endregion
-        //====================================================================================================
         //ManufacturerToEdit events
         #region Manufacturer to edit events
         private void cbManufacturerToEdit_Validating(object sender, EventArgs e)
@@ -854,44 +559,6 @@ namespace NaturalnieApp.Forms
                 }
             }
 
-        }
-        #endregion
-        //====================================================================================================
-        //Product list events
-        #region Product List
-        private void cbProductList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //Cast an object
-            ComboBox localSender = (ComboBox)sender;
-
-            try
-            {
-                if (this.cbProductList.SelectedItem != null)
-                {
-                    this.ProductEntity = this.databaseCommands.GetProductEntityByProductName(this.cbProductList.SelectedItem.ToString());
-                    this.SupplierEntity = this.databaseCommands.GetSupplierByProductName(this.cbProductList.SelectedItem.ToString());
-                    this.ManufacturerEntity = this.databaseCommands.GetManufacturerByProductName(this.cbProductList.SelectedItem.ToString());
-                    this.TaxEntity = this.databaseCommands.GetTaxByProductName(this.cbProductList.SelectedItem.ToString());
-
-                    this.FillWithDataFromObject(this.ProductEntity, this.SupplierEntity, this.ManufacturerEntity, this.TaxEntity);
-
-                    //Update calss field
-                    this.SelectedProductId = this.databaseCommands.GetProductIdByName(this.cbProductList.SelectedItem.ToString());
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            //cbProductList_SelectionChangeCommitted(sender, e);
-            localSender.Select();
-            UpdateControl(ref tbDummyForCtrl);
-        }
-        private void cbProductList_MouseHover(object sender, EventArgs e)
-        {
-            ComboBox localSender = (ComboBox)sender;
-            ToolTip toolTip = new ToolTip();
-            toolTip.SetToolTip(localSender, localSender.Text);
         }
         #endregion
         //====================================================================================================
@@ -1276,27 +943,6 @@ namespace NaturalnieApp.Forms
         #endregion
         //====================================================================================================
         //Barcode events
-        #region Barcode events
-        private void cbBarcodes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //Cast an object
-            ComboBox localSender = (ComboBox)sender;
-
-            this.ProductEntity = this.databaseCommands.GetProductEntityByBarcode(this.cbBarcodes.SelectedItem.ToString());
-            this.SupplierEntity = this.databaseCommands.GetSupplierByProductName(this.ProductEntity.ProductName);
-            this.ManufacturerEntity = this.databaseCommands.GetManufacturerByProductName(this.ProductEntity.ProductName);
-            this.TaxEntity = this.databaseCommands.GetTaxByProductName(this.ProductEntity.ProductName);
-
-            this.cbBarcodes.SelectedItem = this.ProductEntity.BarCode;
-
-            this.FillWithDataFromObject(this.ProductEntity, this.SupplierEntity, this.ManufacturerEntity, this.TaxEntity);
-
-            localSender.Select();
-            UpdateControl(ref tbDummyForCtrl);
-        }
-        #endregion
-        //====================================================================================================
-        //Barcode events
         #region BarcodeToEdit events
         private void tbBarcodeToEdit_Validating(object sender, EventArgs e)
         {
@@ -1362,8 +1008,18 @@ namespace NaturalnieApp.Forms
                 MessageBox.Show(ex.Message);
             }
         }
-
         #endregion
+        //====================================================================================================
+        //Search bar events
+        #region Search bar events
+        private void ucSearchBar_NewEntSelected(object sender, Common.SearchBarTemplate.NewEntSelectedEventArgs e)
+        {
+            if (this.Enabled == false) this.Enabled = true;
+
+            FillWithDataFromObject(e.SelectedProduct, e.SelectedSupplier, e.SelectedManufacturer, e.SelectedTax);
+        }
+        #endregion
+
 
 
     }

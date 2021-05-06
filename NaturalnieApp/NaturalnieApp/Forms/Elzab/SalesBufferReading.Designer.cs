@@ -29,11 +29,13 @@
         private void InitializeComponent()
         {
             this.pButtonsPanel = new System.Windows.Forms.Panel();
+            this.bSaveSummaryData = new System.Windows.Forms.Button();
             this.bReadingSaleBufforFromFile = new System.Windows.Forms.Button();
             this.pHeader = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.gbSynchronization = new System.Windows.Forms.GroupBox();
+            this.progressBarTemplate1 = new NaturalnieApp.Forms.Common.ProgressBarTemplate();
             this.tpProductNameToEdit = new System.Windows.Forms.TableLayoutPanel();
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.lStatus = new System.Windows.Forms.Label();
@@ -42,8 +44,6 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.bSaveSummaryData = new System.Windows.Forms.Button();
-            this.progressBarTemplate1 = new NaturalnieApp.Forms.Common.ProgressBarTemplate();
             this.pButtonsPanel.SuspendLayout();
             this.pHeader.SuspendLayout();
             this.gbSynchronization.SuspendLayout();
@@ -62,6 +62,20 @@
             this.pButtonsPanel.Name = "pButtonsPanel";
             this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
             this.pButtonsPanel.TabIndex = 6;
+            // 
+            // bSaveSummaryData
+            // 
+            this.bSaveSummaryData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bSaveSummaryData.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bSaveSummaryData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bSaveSummaryData.Location = new System.Drawing.Point(723, 7);
+            this.bSaveSummaryData.Margin = new System.Windows.Forms.Padding(5);
+            this.bSaveSummaryData.Name = "bSaveSummaryData";
+            this.bSaveSummaryData.Size = new System.Drawing.Size(180, 50);
+            this.bSaveSummaryData.TabIndex = 30;
+            this.bSaveSummaryData.Text = "Zapisz dane sumaryczne do pliku";
+            this.bSaveSummaryData.UseVisualStyleBackColor = false;
+            this.bSaveSummaryData.Click += new System.EventHandler(this.bSaveSummaryData_Click);
             // 
             // bReadingSaleBufforFromFile
             // 
@@ -117,6 +131,17 @@
             this.gbSynchronization.TabIndex = 8;
             this.gbSynchronization.TabStop = false;
             this.gbSynchronization.Text = "Synchronizacja z kasą";
+            // 
+            // progressBarTemplate1
+            // 
+            this.progressBarTemplate1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.progressBarTemplate1.ForeColor = System.Drawing.Color.Black;
+            this.progressBarTemplate1.Location = new System.Drawing.Point(12, 81);
+            this.progressBarTemplate1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.progressBarTemplate1.MinimumSize = new System.Drawing.Size(510, 46);
+            this.progressBarTemplate1.Name = "progressBarTemplate1";
+            this.progressBarTemplate1.Size = new System.Drawing.Size(898, 50);
+            this.progressBarTemplate1.TabIndex = 29;
             // 
             // tpProductNameToEdit
             // 
@@ -203,31 +228,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // bSaveSummaryData
-            // 
-            this.bSaveSummaryData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bSaveSummaryData.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.bSaveSummaryData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSaveSummaryData.Location = new System.Drawing.Point(723, 7);
-            this.bSaveSummaryData.Margin = new System.Windows.Forms.Padding(5);
-            this.bSaveSummaryData.Name = "bSaveSummaryData";
-            this.bSaveSummaryData.Size = new System.Drawing.Size(180, 50);
-            this.bSaveSummaryData.TabIndex = 30;
-            this.bSaveSummaryData.Text = "Zapisz dane sumaryczne do pliku";
-            this.bSaveSummaryData.UseVisualStyleBackColor = false;
-            this.bSaveSummaryData.Click += new System.EventHandler(this.bSaveSummaryData_Click);
-            // 
-            // progressBarTemplate1
-            // 
-            this.progressBarTemplate1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
-            this.progressBarTemplate1.ForeColor = System.Drawing.Color.Black;
-            this.progressBarTemplate1.Location = new System.Drawing.Point(12, 81);
-            this.progressBarTemplate1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.progressBarTemplate1.MinimumSize = new System.Drawing.Size(510, 46);
-            this.progressBarTemplate1.Name = "progressBarTemplate1";
-            this.progressBarTemplate1.Size = new System.Drawing.Size(898, 50);
-            this.progressBarTemplate1.TabIndex = 29;
             // 
             // SalesBufferReading
             // 

@@ -22,6 +22,7 @@ namespace NaturalnieApp.Forms.Common
             public Product SelectedProduct { get; set; }
             public Manufacturer SelectedManufacturer { get; set; }
             public Tax SelectedTax { get; set; }
+            public Supplier SelectedSupplier{ get; set; }
         }
 
         public delegate void NewEntSelectedEventHandler(Object sender, NewEntSelectedEventArgs e);
@@ -43,6 +44,7 @@ namespace NaturalnieApp.Forms.Common
             public Product SelectedProduct { get; set; }
             public Manufacturer SelectedManufacturer { get; set; }
             public Tax SelectedTax { get; set; }
+            public Supplier SelectedSupplier { get; set; }
         }
 
         public delegate void GenericButtonClickEventHandler(Object sender, GenericButtonClickEventArgs e);
@@ -224,6 +226,7 @@ namespace NaturalnieApp.Forms.Common
         private Manufacturer ManufacturerEntity { get; set; }
         private Product ProductEntity { get; set; }
         private Tax TaxEntity { get; set; }
+        private Supplier SupplierEntity { get; set; }
         private SelectedEnt ActualSelectedEnt { get; set; }
         private EntsRelations AllEntsRelation { get; set; }
 
@@ -251,7 +254,7 @@ namespace NaturalnieApp.Forms.Common
         BackgroundWorker DbBackgroundWorker;
 
         //Properties
-        public PropertiesClass Properties { get; set; }
+        private PropertiesClass Properties { get; set; }
 
         //Public fields
         //Show if search bar busy
@@ -507,22 +510,34 @@ namespace NaturalnieApp.Forms.Common
 
                 //Select entity
                 FullProductInfo fullProductInfo = this.DatabaseCommands.GetFullProductInfoByName(entityToSelect.ProductName);
-                this.ProductEntity = fullProductInfo.ProductEnt;
-                this.ManufacturerEntity = fullProductInfo.ManufacturerEnt;
-                this.TaxEntity = fullProductInfo.TaxEnt;
+                if(fullProductInfo != null)
+                {
+                    this.ProductEntity = fullProductInfo.ProductEnt;
+                    this.ManufacturerEntity = fullProductInfo.ManufacturerEnt;
+                    this.TaxEntity = fullProductInfo.TaxEnt;
+                    this.SupplierEntity = fullProductInfo.SupplierEnt;
 
-                //Reset flag to bypass events action
-                this.UpdatingDataSources = false;
+                    //Reset flag to bypass events action
+                    this.UpdatingDataSources = false;
 
-                //Fire an event
-                NewEntSelectedEventArgs args = new NewEntSelectedEventArgs();
-                args.SelectedProduct = this.ProductEntity;
-                args.SelectedManufacturer = this.ManufacturerEntity;
-                args.SelectedTax = this.TaxEntity;
-                if (this.SelectEntByAdditionalRequest) OnNewEntSelectedByAdditionalRequest(args);
-                else OnNewEntSelected(args);
+                    //Fire an event
+                    NewEntSelectedEventArgs args = new NewEntSelectedEventArgs();
+                    args.SelectedProduct = this.ProductEntity;
+                    args.SelectedManufacturer = this.ManufacturerEntity;
+                    args.SelectedTax = this.TaxEntity;
+                    args.SelectedSupplier = this.SupplierEntity;
+                    if (this.SelectEntByAdditionalRequest) OnNewEntSelectedByAdditionalRequest(args);
+                    else OnNewEntSelected(args);
+                }
+                else
+                {
+                    entityToSelect = null;
+                }
+
+
             }
-            else
+
+            if (entityToSelect == null)
             {
 
                 //Set flag to bypass events action
@@ -532,8 +547,10 @@ namespace NaturalnieApp.Forms.Common
                 this.cbBarcodes.SelectedItem = null;
 
                 this.ManufacturerEntity = null;
+                this.cbManufacturers.SelectedIndex = 0;
                 this.ProductEntity = null;
                 this.TaxEntity = null;
+                this.SupplierEntity = null;
 
                 //Reset flag to bypass events action
                 this.UpdatingDataSources = false;
@@ -614,6 +631,18 @@ namespace NaturalnieApp.Forms.Common
 
             //Update
             if(!this.DbBackgroundWorker.IsBusy) this.DbBackgroundWorker.RunWorkerAsync();
+        }
+
+        public void ShowGenericButton()
+        {
+            this.Properties.GenButtonExist = true;
+            AdjustSearchBarAppearance();
+        }
+
+        public void HideGenericButton()
+        {
+            this.Properties.GenButtonExist = false;
+            AdjustSearchBarAppearance();
         }
 
         /// <summary>
