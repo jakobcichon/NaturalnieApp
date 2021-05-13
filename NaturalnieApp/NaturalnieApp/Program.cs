@@ -69,7 +69,7 @@ namespace NaturalnieApp
             static public string LibraryPath { get; set; }
             static public string DbBackupPath { get; set; }
             static public int CashRegisterFirstPossibleId { get { return 280; } }
-            static public int CashRegisterLastPossibleId {  get {  return 4095; } }
+            static public int CashRegisterLastPossibleId {  get {  return 3810; } }
 
         }
         /// <summary>

@@ -472,6 +472,7 @@ namespace NaturalnieApp.Forms
             this.pLogo.Size = new System.Drawing.Size(283, 114);
             this.pLogo.TabIndex = 0;
             this.pLogo.Click += new System.EventHandler(this.pLogo_Click);
+            this.pLogo.Paint += new System.Windows.Forms.PaintEventHandler(this.pLogo_Click);
             // 
             // pHeader
             // 

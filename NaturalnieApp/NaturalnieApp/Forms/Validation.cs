@@ -159,6 +159,7 @@ namespace NaturalnieApp.Forms
             return validatingResult;
         }
 
+
         //Method used to validate of product name in elzab
         static public bool ElzabProductNameValidation(string input)
         {
@@ -251,10 +252,12 @@ namespace NaturalnieApp.Forms
         }
 
         //Method used to validate cash register number
-        static public bool ElzabProductNumberValidation(int input, int startNumber, int lastNumber)
+        static public bool ElzabProductNumberValidation(int input)
         {
             //Local variables
             bool validatingResult;
+            int startNumber = Program.GlobalVariables.CashRegisterFirstPossibleId, lastNumber = Program.GlobalVariables.CashRegisterLastPossibleId;
+
             string text = "Dla podanego producenta, numer w kasie musi zawierać się między " + startNumber + "-" + lastNumber + "!";
 
             if ((input < startNumber) || (input > lastNumber)) validatingResult = false;

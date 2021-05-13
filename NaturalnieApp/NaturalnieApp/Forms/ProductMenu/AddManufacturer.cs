@@ -25,9 +25,6 @@ namespace NaturalnieApp.Forms
         BackgroundWorker backgroundWorker1;
         backgroundWorkerTasks ActualTaskType;
 
-        static private int FIRST_ELZAB_NUMBER { get; set; }
-        static private int LAST_ELZAB_NUMBER { get; set; }
-
         private Supplier SupplierEntity { get; set; }
         private Manufacturer ManufacturerEntity { get; set; }
 
@@ -45,11 +42,6 @@ namespace NaturalnieApp.Forms
             //Initialize object fields
             this.SupplierEntity = new Supplier();
             this.ManufacturerEntity = new Manufacturer();
-
-            //Initialize static fields
-            FIRST_ELZAB_NUMBER = 1;
-            LAST_ELZAB_NUMBER = 4096;
-
         }
         #endregion
         //=============================================================================
@@ -166,8 +158,7 @@ namespace NaturalnieApp.Forms
             try
             {
 
-                if (this.tbManufacturerName.Text != "" && this.tbBarcodePrefix.Text != "" && this.tbMaxNumberOfProducts.Text != ""
-                    && this.tbFirstNumberInCashRegister.Text != "" && this.tbLastNumberInCashRegister.Text != "")
+                if (this.tbManufacturerName.Text != "" && this.tbBarcodePrefix.Text != "")
                 {
 
                     //Set local variable to true
@@ -175,9 +166,6 @@ namespace NaturalnieApp.Forms
 
                     Validation.ManufacturerNameValidation(this.tbManufacturerName.Text);
                     Validation.GeneralNumberValidation(this.tbBarcodePrefix.Text);
-                    Validation.GeneralNumberValidation(this.tbMaxNumberOfProducts.Text);
-                    Validation.GeneralNumberValidation(this.tbFirstNumberInCashRegister.Text);
-                    Validation.GeneralNumberValidation(this.tbLastNumberInCashRegister.Text);
                 }
                 else
                 {
@@ -241,9 +229,6 @@ namespace NaturalnieApp.Forms
             //Supplier name
             this.tbManufacturerName.Text = "";
             this.tbBarcodePrefix.Text = "";
-            this.tbMaxNumberOfProducts.Text = "";
-            this.tbFirstNumberInCashRegister.Text = "";
-            this.tbLastNumberInCashRegister.Text = "";
             this.rtbManufacturerInfo.Text = "";
             this.tbSupplierName.Text = "";
             this.rtbSupplierInfo.Text = "";
@@ -387,7 +372,7 @@ namespace NaturalnieApp.Forms
         #endregion
         //====================================================================================================
         //Manufacturer name events
-        #region Manifacturer name events
+        #region Manufacturer name events
         private void tbManufacturerName_Validating(object sender, EventArgs e)
         {
             //Cast the sender for an object
@@ -462,76 +447,6 @@ namespace NaturalnieApp.Forms
         }
         #endregion
         //====================================================================================================
-        //Maximal number of products events
-        #region Maximal number of products events
-        private void tbMaxNumberOfProducts_Validating(object sender, EventArgs e)
-        {
-            //Cast the sender for an object
-            TextBox localSender = (TextBox)sender;
-
-            //Check if input match to define pattern
-            try
-            {
-                Validation.GeneralNumberValidation(localSender.Text);
-                this.ManufacturerEntity.MaxNumberOfProducts = Convert.ToInt32(localSender.Text);
-                errorProvider1.Clear();
-
-
-            }
-            catch (Validation.ValidatingFailed ex)
-            {
-                localSender.Text = "";
-                errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        private void tbMaxNumberOfProducts_MouseHover(object sender, EventArgs e)
-        {
-            TextBox localSender = (TextBox)sender;
-            ToolTip toolTip = new ToolTip();
-            toolTip.SetToolTip(localSender, localSender.Text);
-        }
-        #endregion
-        //====================================================================================================
-        //First number in cash register events
-        #region First number in cash register events
-        private void tbFirstNumberInCashRegister_Validating(object sender, EventArgs e)
-        {
-            //Cast the sender for an object
-            TextBox localSender = (TextBox)sender;
-
-            //Check if input match to define pattern
-            try
-            {
-                Validation.GeneralNumberValidation(localSender.Text);
-                this.ManufacturerEntity.FirstNumberInCashRegister = Convert.ToInt32(localSender.Text);
-                errorProvider1.Clear();
-
-
-            }
-            catch (Validation.ValidatingFailed ex)
-            {
-                localSender.Text = "";
-                errorProvider1.SetError(localSender, ex.Message);
-                MessageBox.Show(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        private void tbFirstNumberInCashRegister_MouseHover(object sender, EventArgs e)
-        {
-            TextBox localSender = (TextBox)sender;
-            ToolTip toolTip = new ToolTip();
-            toolTip.SetToolTip(localSender, localSender.Text);
-        }
-        #endregion
-        //====================================================================================================
         //ProductInfo events
         #region Manufacturer Info events
         private void rtbManufacturerInfo_Validating(object sender, EventArgs e)
@@ -597,7 +512,7 @@ namespace NaturalnieApp.Forms
         #endregion
         //====================================================================================================
         //ProductInfo events
-        #region Manufacturer Info events
+        #region Supplier Info events
         private void rtbSupplierInfo_Validating(object sender, EventArgs e)
         {
             //Local variables

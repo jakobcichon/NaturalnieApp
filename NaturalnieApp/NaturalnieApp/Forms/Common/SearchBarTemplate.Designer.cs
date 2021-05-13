@@ -32,9 +32,7 @@ namespace NaturalnieApp.Forms.Common
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchBarTemplate));
             this.gbProductSelection = new System.Windows.Forms.GroupBox();
-            this.bGenericButton = new System.Windows.Forms.Button();
             this.tpLoadingBar = new System.Windows.Forms.TableLayoutPanel();
-            this.pbLoadingBar = new System.Windows.Forms.PictureBox();
             this.lLoadingBar = new System.Windows.Forms.Label();
             this.tbDummyForCtrl = new System.Windows.Forms.TextBox();
             this.pBarCode = new System.Windows.Forms.TableLayoutPanel();
@@ -47,16 +45,20 @@ namespace NaturalnieApp.Forms.Common
             this.pManufacturer = new System.Windows.Forms.TableLayoutPanel();
             this.lManufacturer = new System.Windows.Forms.Label();
             this.cbManufacturers = new System.Windows.Forms.ComboBox();
+            this.bCopy = new System.Windows.Forms.Button();
+            this.bGenericButton = new System.Windows.Forms.Button();
+            this.pbLoadingBar = new System.Windows.Forms.PictureBox();
             this.gbProductSelection.SuspendLayout();
             this.tpLoadingBar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLoadingBar)).BeginInit();
             this.pBarCode.SuspendLayout();
             this.pProductName.SuspendLayout();
             this.pManufacturer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLoadingBar)).BeginInit();
             this.SuspendLayout();
             // 
             // gbProductSelection
             // 
+            this.gbProductSelection.Controls.Add(this.bCopy);
             this.gbProductSelection.Controls.Add(this.bGenericButton);
             this.gbProductSelection.Controls.Add(this.tpLoadingBar);
             this.gbProductSelection.Controls.Add(this.tbDummyForCtrl);
@@ -73,17 +75,6 @@ namespace NaturalnieApp.Forms.Common
             this.gbProductSelection.TabStop = false;
             this.gbProductSelection.Text = "Wybór produktu";
             // 
-            // bGenericButton
-            // 
-            this.bGenericButton.Image = ((System.Drawing.Image)(resources.GetObject("bGenericButton.Image")));
-            this.bGenericButton.Location = new System.Drawing.Point(864, 36);
-            this.bGenericButton.Margin = new System.Windows.Forms.Padding(5);
-            this.bGenericButton.Name = "bGenericButton";
-            this.bGenericButton.Size = new System.Drawing.Size(51, 70);
-            this.bGenericButton.TabIndex = 11;
-            this.bGenericButton.UseVisualStyleBackColor = true;
-            this.bGenericButton.Click += new System.EventHandler(this.bGenericButton_Click);
-            // 
             // tpLoadingBar
             // 
             this.tpLoadingBar.ColumnCount = 2;
@@ -99,19 +90,6 @@ namespace NaturalnieApp.Forms.Common
             this.tpLoadingBar.Size = new System.Drawing.Size(344, 30);
             this.tpLoadingBar.TabIndex = 10;
             // 
-            // pbLoadingBar
-            // 
-            this.pbLoadingBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
-            this.pbLoadingBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbLoadingBar.Image = ((System.Drawing.Image)(resources.GetObject("pbLoadingBar.Image")));
-            this.pbLoadingBar.Location = new System.Drawing.Point(314, 0);
-            this.pbLoadingBar.Margin = new System.Windows.Forms.Padding(0);
-            this.pbLoadingBar.Name = "pbLoadingBar";
-            this.pbLoadingBar.Size = new System.Drawing.Size(30, 30);
-            this.pbLoadingBar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbLoadingBar.TabIndex = 3;
-            this.pbLoadingBar.TabStop = false;
-            // 
             // lLoadingBar
             // 
             this.lLoadingBar.AutoSize = true;
@@ -125,9 +103,9 @@ namespace NaturalnieApp.Forms.Common
             // 
             // tbDummyForCtrl
             // 
-            this.tbDummyForCtrl.Location = new System.Drawing.Point(820, 0);
+            this.tbDummyForCtrl.Location = new System.Drawing.Point(745, 0);
             this.tbDummyForCtrl.Name = "tbDummyForCtrl";
-            this.tbDummyForCtrl.Size = new System.Drawing.Size(100, 26);
+            this.tbDummyForCtrl.Size = new System.Drawing.Size(25, 26);
             this.tbDummyForCtrl.TabIndex = 9;
             this.tbDummyForCtrl.Visible = false;
             this.tbDummyForCtrl.Enter += new System.EventHandler(this.tbDummyForCtrl_Enter);
@@ -288,6 +266,44 @@ namespace NaturalnieApp.Forms.Common
             this.cbManufacturers.SelectedIndexChanged += new System.EventHandler(this.cbManufacturers_SelectedIndexChanged);
             this.cbManufacturers.TextChanged += new System.EventHandler(this.cbManufacturers_TextChanged);
             // 
+            // bCopy
+            // 
+            this.bCopy.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.bCopy.FlatAppearance.BorderSize = 0;
+            this.bCopy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bCopy.ForeColor = System.Drawing.Color.Transparent;
+            this.bCopy.Image = global::NaturalnieApp.Properties.Resources.copy;
+            this.bCopy.Location = new System.Drawing.Point(889, 2);
+            this.bCopy.Name = "bCopy";
+            this.bCopy.Size = new System.Drawing.Size(30, 30);
+            this.bCopy.TabIndex = 12;
+            this.bCopy.UseVisualStyleBackColor = true;
+            this.bCopy.Click += new System.EventHandler(this.bCopy_Click);
+            // 
+            // bGenericButton
+            // 
+            this.bGenericButton.Image = ((System.Drawing.Image)(resources.GetObject("bGenericButton.Image")));
+            this.bGenericButton.Location = new System.Drawing.Point(864, 36);
+            this.bGenericButton.Margin = new System.Windows.Forms.Padding(5);
+            this.bGenericButton.Name = "bGenericButton";
+            this.bGenericButton.Size = new System.Drawing.Size(51, 70);
+            this.bGenericButton.TabIndex = 11;
+            this.bGenericButton.UseVisualStyleBackColor = true;
+            this.bGenericButton.Click += new System.EventHandler(this.bGenericButton_Click);
+            // 
+            // pbLoadingBar
+            // 
+            this.pbLoadingBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.pbLoadingBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbLoadingBar.Image = ((System.Drawing.Image)(resources.GetObject("pbLoadingBar.Image")));
+            this.pbLoadingBar.Location = new System.Drawing.Point(314, 0);
+            this.pbLoadingBar.Margin = new System.Windows.Forms.Padding(0);
+            this.pbLoadingBar.Name = "pbLoadingBar";
+            this.pbLoadingBar.Size = new System.Drawing.Size(30, 30);
+            this.pbLoadingBar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbLoadingBar.TabIndex = 3;
+            this.pbLoadingBar.TabStop = false;
+            // 
             // SearchBarTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -304,10 +320,10 @@ namespace NaturalnieApp.Forms.Common
             this.gbProductSelection.PerformLayout();
             this.tpLoadingBar.ResumeLayout(false);
             this.tpLoadingBar.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLoadingBar)).EndInit();
             this.pBarCode.ResumeLayout(false);
             this.pProductName.ResumeLayout(false);
             this.pManufacturer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbLoadingBar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -330,5 +346,6 @@ namespace NaturalnieApp.Forms.Common
         private System.Windows.Forms.PictureBox pbLoadingBar;
         private System.Windows.Forms.Label lLoadingBar;
         private System.Windows.Forms.Button bGenericButton;
+        private System.Windows.Forms.Button bCopy;
     }
 }

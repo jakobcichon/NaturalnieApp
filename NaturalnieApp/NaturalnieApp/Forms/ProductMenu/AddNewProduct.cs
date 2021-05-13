@@ -57,6 +57,9 @@ namespace NaturalnieApp.Forms
             this.TaxEntity = new Tax();
             ClearProductEntity();
             ClearTaxEntity();
+
+            //Initialize name of current user control
+            this.lName.Text = "Dodaj nowy produkt";
         }
         #endregion
         //=============================================================================
@@ -201,6 +204,13 @@ namespace NaturalnieApp.Forms
             cbTax.Items.Clear();
             cbTax.Items.AddRange(this.databaseCommands.GetTaxListRetString().ToArray());
         }
+        private void FillWitDataFromCopiedObject(Product productEntity, Manufacturer manufacturerEntity, Supplier supplierEntity, Tax taxEntity)
+        {
+            this.cbManufacturer.SelectedItem= manufacturerEntity.Name;
+            this.tbProductName.Text = productEntity.ProductName;
+        }
+
+
         private bool ValidateAllInputFields()
         {
             //Local variable
@@ -231,9 +241,7 @@ namespace NaturalnieApp.Forms
                     Validation.ManufacturerNameValidation(this.cbManufacturer.Text);
 
                     int productNumber = Convert.ToInt32(this.tbElzabProductNumber.Text);
-                    Validation.ElzabProductNumberValidation(productNumber,
-                        Program.GlobalVariables.CashRegisterFirstPossibleId,
-                        Program.GlobalVariables.CashRegisterLastPossibleId);
+                    Validation.ElzabProductNumberValidation(productNumber);
 
                     Validation.ElzabProductNameValidation(this.tbElzabProductName.Text);
                     Validation.PriceNetValueValidation(this.tbPrice.Text);
@@ -771,9 +779,7 @@ namespace NaturalnieApp.Forms
             try
             {
                 int productNumber = Convert.ToInt32(localSender.Text);
-                Validation.ElzabProductNumberValidation(productNumber,
-                    this.ManufacturerEntity.FirstNumberInCashRegister,
-                    this.ManufacturerEntity.LastNumberInCashRegister);
+                Validation.ElzabProductNumberValidation(productNumber);
                 this.ProductEntity.ElzabProductId = Convert.ToInt32(localSender.Text);
                 errorProvider1.Clear();
 
@@ -1106,5 +1112,12 @@ namespace NaturalnieApp.Forms
             }
         }
         #endregion
+
+        private void bPast_Click(object sender, EventArgs e)
+        {
+            CopiedProduct p = CopiedProduct.GetInstance();
+            FillWitDataFromCopiedObject(p.GetEnts().productEntity, p.GetEnts().manufacturerEntity,
+                p.GetEnts().supplierEntity, p.GetEnts().taxEntity);
+        }
     }
 }

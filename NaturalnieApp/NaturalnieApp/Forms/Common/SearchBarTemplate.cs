@@ -38,6 +38,29 @@ namespace NaturalnieApp.Forms.Common
 
         public event NewEntSelectedEventHandler NewEntSelected;
 
+
+        //Copy button pressed event
+        public class CopyButtonClickEventArgs : EventArgs
+        {
+            public Product SelectedProduct { get; set; }
+            public Manufacturer SelectedManufacturer { get; set; }
+            public Tax SelectedTax { get; set; }
+            public Supplier SelectedSupplier { get; set; }
+        }
+
+        public delegate void CopyButtonClickEventHandler(Object sender, CopyButtonClickEventArgs e);
+
+        protected virtual void OnCopyButtonClick(CopyButtonClickEventArgs e)
+        {
+            CopyButtonClickEventHandler handler = CopyButtonClick;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        public event CopyButtonClickEventHandler CopyButtonClick;
+
         //Generic button click event
         public class GenericButtonClickEventArgs : EventArgs
         {
@@ -869,7 +892,21 @@ namespace NaturalnieApp.Forms.Common
                 OnGenericButtonClick(args);
             }
         }
+        private void bCopy_Click(object sender, EventArgs e)
+        {
+            if (this.ProductEntity != null)
+            {
+                CopyButtonClickEventArgs args = new CopyButtonClickEventArgs
+                {
+                    SelectedManufacturer = this.ManufacturerEntity,
+                    SelectedProduct = this.ProductEntity,
+                    SelectedSupplier = this.SupplierEntity,
+                    SelectedTax = this.TaxEntity
+                };
 
+                this.OnCopyButtonClick(args);
+            }
+        }
     }
 
 

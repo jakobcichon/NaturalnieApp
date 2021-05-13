@@ -14,8 +14,6 @@ using Microsoft.Win32;
 
 namespace NaturalnieApp.Forms
 {
-
-
     public partial class MainWindow : Form
     {
         private ConfigFileObject ConfigFileOjbInst;
@@ -602,8 +600,47 @@ namespace NaturalnieApp.Forms
             this.Select();
             this.BringToFront();
             this.Show();
-
         }
 
+
+    }
+    public class CopiedProduct
+    {
+        //Class fields
+        static Product ProductEntity;
+        static Manufacturer ManufacturerEntity;
+        static Supplier SupplierEntity;
+        static Tax TaxEntity;
+
+        private CopiedProduct()
+        {
+            ProductEntity = new Product();
+            ManufacturerEntity = new Manufacturer();
+            SupplierEntity = new Supplier();
+            TaxEntity = new Tax();
+        }
+        private static CopiedProduct _instance;
+        public static CopiedProduct GetInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new CopiedProduct();
+            }
+            return _instance;
+        }
+
+        public void SetEnts(Product productEntity, Manufacturer manufacturerEntity,
+            Supplier supplierEntity, Tax taxEntity)
+        {
+            ProductEntity = productEntity;
+            ManufacturerEntity = manufacturerEntity;
+            SupplierEntity = supplierEntity;
+            TaxEntity = taxEntity;
+        }
+
+        public (Product productEntity, Manufacturer manufacturerEntity, Supplier supplierEntity, Tax taxEntity) GetEnts()
+        {
+            return (ProductEntity, ManufacturerEntity, SupplierEntity, TaxEntity);
+        }
     }
 }

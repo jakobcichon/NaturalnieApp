@@ -185,10 +185,7 @@ namespace NaturalnieApp.Forms
 
                     Validation.ManufacturerNameValidation(this.cbManufacturer.Text);
 
-                    int productNumber = Convert.ToInt32(this.tbElzabProductNumber.Text);
-                    Validation.ElzabProductNumberValidation(productNumber,
-                        Program.GlobalVariables.CashRegisterFirstPossibleId,
-                        Program.GlobalVariables.CashRegisterLastPossibleId);
+                    Validation.GeneralNumberValidation(this.tbElzabProductNumber.Text);
 
                     Validation.ElzabProductNameValidation(this.tbElzabProductName.Text);
                     Validation.PriceNetValueValidation(this.tbPrice.Text);
@@ -652,10 +649,7 @@ namespace NaturalnieApp.Forms
                 int elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
                 if(elzabFirstFreeId > 0)
                 {
-                    int productNumber = Convert.ToInt32(localSender.Text);
-                    Validation.ElzabProductNumberValidation(productNumber,
-                        elzabFirstFreeId,
-                        this.ManufacturerEntity.LastNumberInCashRegister);
+                    Validation.GeneralNumberValidation(localSender.Text);
 
                     this.ProductEntity.ElzabProductId = Convert.ToInt32(localSender.Text);
                     errorProvider1.Clear();
@@ -1018,9 +1012,14 @@ namespace NaturalnieApp.Forms
 
             FillWithDataFromObject(e.SelectedProduct, e.SelectedSupplier, e.SelectedManufacturer, e.SelectedTax);
         }
+
+
         #endregion
 
-
-
+        private void ucSearchBar_CopyButtonClick(object sender, Common.SearchBarTemplate.CopyButtonClickEventArgs e)
+        {
+            CopiedProduct p = CopiedProduct.GetInstance();
+            p.SetEnts(e.SelectedProduct, e.SelectedManufacturer, e.SelectedSupplier, e.SelectedTax);
+        }
     }
 }

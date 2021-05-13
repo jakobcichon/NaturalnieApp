@@ -745,11 +745,8 @@ namespace NaturalnieApp.Forms
                                 }
                                 else if (!productForManufacturerExhausted)
                                 {
-                                    int numberOfProductPerManufacuturer = this.databaseCommands.GetManufacturerEntityByName(rowManufacturerNameValue)
-                                                                          .MaxNumberOfProducts;
-                                    DialogResult dialogResult = MessageBox.Show("Nie można określić numery produktu dla kasy Elzab! Dla producenta '"
-                                        + rowManufacturerNameValue
-                                        + "' zdefiniowano już " + numberOfProductPerManufacuturer + " produktów!"
+                                    DialogResult dialogResult = MessageBox.Show("Nie można określić numery produktu dla kasy Elzab! " +
+                                        "W kasie zdefiniowano już " + Program.GlobalVariables.CashRegisterLastPossibleId + " produktów!"
                                         , "Liczba dostępnych numerów produtków Elzab została osiągnięta!");
                                     manufacturersWithExNumberOfProduct.Add(rowManufacturerNameValue);
                                     savedSuccessfully = 0;

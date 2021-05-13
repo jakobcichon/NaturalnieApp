@@ -449,7 +449,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Form</SubType>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -491,6 +491,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="mainIcon.ico" />
+    <None Include="Resources\past.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\copy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\CashRegisterOnline.png" />
     <None Include="Resources\cashRegisterOffline.png" />
     <None Include="Resources\cashRegisterExchange.gif" />

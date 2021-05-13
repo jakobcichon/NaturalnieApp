@@ -353,7 +353,6 @@ namespace NaturalnieApp.Database
         ///</summary>
         public int CalculateFreeElzabIdForGivenManufacturer(string manufacturerName)
         {
-            Manufacturer manufaturer;
             List<int> elzabProductIdList = new List<int>();
 
 
@@ -362,72 +361,58 @@ namespace NaturalnieApp.Database
 
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
-                var query = from m in contextDB.Manufacturers
-                            where m.Name == manufacturerName
-                            select m;
 
-                //Get manufaturer ID
-                manufaturer = query.FirstOrDefault();
+                //Calculate first Id for given manufacturer area
+                int firstElementId = GlobalVariables.CashRegisterFirstPossibleId;
+                int lastPossibleId = GlobalVariables.CashRegisterLastPossibleId;
 
-                if (manufaturer != null)
+                var query = from p in contextDB.Products
+                            where p.ElzabProductId >= firstElementId && p.ElzabProductId <= lastPossibleId
+                            select p.ElzabProductId;
+
+                elzabProductIdList = query.ToList();
+
+                //Sort the list
+                elzabProductIdList.Sort();
+
+                if (elzabProductIdList.Count() > 0)
                 {
-
-                    //Local settings
-                    int numberOfProductPerManufacturer = manufaturer.MaxNumberOfProducts;
-
-                    //Calculate first Id for given manufacturer area
-                    int firstElementId = manufaturer.FirstNumberInCashRegister;
-                    int lastPossibleId = manufaturer.LastNumberInCashRegister;
-
-                    var query2 = from p in contextDB.Products
-                                 where p.ElzabProductId >= firstElementId && p.ElzabProductId <= lastPossibleId
-                                 select p.ElzabProductId;
-
-                    elzabProductIdList = query2.ToList();
-
-
-                    //Sort the list
-                    elzabProductIdList.Sort();
-
-                    if (elzabProductIdList.Count() > 0)
+                    //Check if there are no gaps in received list and write available Id or return -1
+                    if (elzabProductIdList.Count() == 1)
                     {
-                        //Check if there are no gaps in received list and write available Id or return -1
-                        if (elzabProductIdList.Count() == 1)
+                        retVal = elzabProductIdList.Last() + 1;
+                        if (retVal > lastPossibleId) retVal = -1;
+                    }
+                    else if (elzabProductIdList.Count() == lastPossibleId)
+                    {
+                        retVal = -1;
+                    }
+                    else
+                    {
+                        //Check if any gap in actual sequence of IDs
+                        for (int i = 0; i < elzabProductIdList.Count(); i++)
+                        {
+                            //Recalculate theoretical value of product at given index. If not match use it
+                            int theoVal = firstElementId + i;
+
+                            //Check value and if not match, assign theoretical one
+                            if (elzabProductIdList[i] != theoVal)
+                            {
+                                retVal = theoVal;
+                                break;
+                            }
+                        }
+
+                        //If no gap, assign first free value
+                        if ((retVal == -1) && (elzabProductIdList.Count() < lastPossibleId))
                         {
                             retVal = elzabProductIdList.Last() + 1;
-                            if (retVal > lastPossibleId) retVal = -1;
-                        }
-                        else if (elzabProductIdList.Count() == numberOfProductPerManufacturer)
-                        {
-                            retVal = -1;
-                        }
-                        else
-                        {
-                            //Check if any gap in actual sequence of IDs
-                            for (int i = 0; i < elzabProductIdList.Count(); i++)
-                            {
-                                //Recalculate theoretical value of product at given index. If not match use it
-                                int theoVal = firstElementId + i;
-
-                                //Check value and if not match, assign theoretical one
-                                if (elzabProductIdList[i] != theoVal)
-                                {
-                                    retVal = theoVal;
-                                    break;
-                                }
-                            }
-
-                            //If no gap, assign first free value
-                            if ((retVal == -1) && (elzabProductIdList.Count() < numberOfProductPerManufacturer))
-                            {
-                                retVal = elzabProductIdList.Last() + 1;
-                            }
                         }
                     }
-                    else if (elzabProductIdList.Count() == 0)
-                    {
-                        retVal = firstElementId;
-                    }
+                }
+                else if (elzabProductIdList.Count() == 0)
+                {
+                    retVal = firstElementId;
                 }
 
             }
