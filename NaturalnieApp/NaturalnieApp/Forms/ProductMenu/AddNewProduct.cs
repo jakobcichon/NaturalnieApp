@@ -206,8 +206,22 @@ namespace NaturalnieApp.Forms
         }
         private void FillWitDataFromCopiedObject(Product productEntity, Manufacturer manufacturerEntity, Supplier supplierEntity, Tax taxEntity)
         {
+            this.ProductEntity = productEntity.DeepCopy();
+            this.ManufacturerEntity = manufacturerEntity.DeepCopy();
+            this.SupplierEntity = supplierEntity.DeepCopy();
+            this.TaxEntity = taxEntity.DeepCopy();
+
             this.cbManufacturer.SelectedItem= manufacturerEntity.Name;
+            this.cbSupplierName.SelectedItem = supplierEntity.Name;
+            this.cbTax.SelectedItem = taxEntity.TaxValue.ToString();
+
             this.tbProductName.Text = productEntity.ProductName;
+            this.tbPrice.Text = productEntity.PriceNet.ToString();
+            this.tbDiscount.Text = productEntity.Discount.ToString();
+            this.tbMarigin.Text = productEntity.Marigin.ToString();
+            this.rtbProductInfo.Text = productEntity.ProductInfo;
+
+
         }
 
 

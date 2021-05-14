@@ -107,6 +107,7 @@ namespace NaturalnieApp.Database
         public DateTime ModificationDate { get; set; }
         public DateTime ExpirationDate { get; set; }
         public string BarcodeWithDate { get; set; }
+
     }
 
     [Table("stock_history")]
@@ -158,6 +159,16 @@ namespace NaturalnieApp.Database
         public string Name { get; set; }
         public string Info { get; set; }
 
+        public Supplier DeepCopy()
+        {
+            Supplier supplier = (Supplier)this.MemberwiseClone();
+            supplier.Id = this.Id;
+            supplier.Name = this.Name;
+            supplier.Info = this.Info;
+
+            return supplier;
+        }
+
     }
 
     [Table("manufacturer")]
@@ -169,6 +180,17 @@ namespace NaturalnieApp.Database
         public string BarcodeEanPrefix { get; set; }
         public string Info { get; set; }
 
+        public Manufacturer DeepCopy()
+        {
+            Manufacturer manufacturer = (Manufacturer)this.MemberwiseClone();
+            manufacturer.Id = this.Id;
+            manufacturer.Name = this.Name;
+            manufacturer.BarcodeEanPrefix = this.BarcodeEanPrefix;
+            manufacturer.Info = this.Info;
+
+            return manufacturer;
+        }
+
     }
 
     [Table("tax")]
@@ -177,6 +199,15 @@ namespace NaturalnieApp.Database
         [Key]
         public int Id { get; set; }
         public int TaxValue { get; set; }
+
+        public Tax DeepCopy()
+        {
+            Tax tax = (Tax)this.MemberwiseClone();
+            tax.Id = this.Id;
+            tax.TaxValue = this.TaxValue;
+
+            return tax;
+        }
 
     }
 
