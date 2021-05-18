@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 
 namespace NaturalnieApp.Database
 {
@@ -191,6 +192,7 @@ namespace NaturalnieApp.Database
             return manufacturer;
         }
 
+       
     }
 
     [Table("tax")]

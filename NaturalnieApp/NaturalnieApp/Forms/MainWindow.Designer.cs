@@ -40,6 +40,7 @@ namespace NaturalnieApp.Forms
             this.bStock = new System.Windows.Forms.Button();
             this.pProductSubMenu = new System.Windows.Forms.Panel();
             this.bPriceRelatedUpdate = new System.Windows.Forms.Button();
+            this.bManufacturersList = new System.Windows.Forms.Button();
             this.bAddManufacturer = new System.Windows.Forms.Button();
             this.bPrintBarcode = new System.Windows.Forms.Button();
             this.AddProductFromPdf = new System.Windows.Forms.Button();
@@ -104,7 +105,7 @@ namespace NaturalnieApp.Forms
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 704);
+            this.panel1.Location = new System.Drawing.Point(0, 734);
             this.panel1.MinimumSize = new System.Drawing.Size(300, 10);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(300, 10);
@@ -119,7 +120,7 @@ namespace NaturalnieApp.Forms
             this.pStockSubMenu.Controls.Add(this.bAddToStock);
             this.pStockSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pStockSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pStockSubMenu.Location = new System.Drawing.Point(0, 614);
+            this.pStockSubMenu.Location = new System.Drawing.Point(0, 644);
             this.pStockSubMenu.Name = "pStockSubMenu";
             this.pStockSubMenu.Size = new System.Drawing.Size(283, 90);
             this.pStockSubMenu.TabIndex = 7;
@@ -184,7 +185,7 @@ namespace NaturalnieApp.Forms
             this.bStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bStock.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.bStock.Location = new System.Drawing.Point(0, 564);
+            this.bStock.Location = new System.Drawing.Point(0, 594);
             this.bStock.Name = "bStock";
             this.bStock.Size = new System.Drawing.Size(283, 50);
             this.bStock.TabIndex = 6;
@@ -197,6 +198,7 @@ namespace NaturalnieApp.Forms
             this.pProductSubMenu.AutoSize = true;
             this.pProductSubMenu.BackColor = System.Drawing.Color.DimGray;
             this.pProductSubMenu.Controls.Add(this.bPriceRelatedUpdate);
+            this.pProductSubMenu.Controls.Add(this.bManufacturersList);
             this.pProductSubMenu.Controls.Add(this.bAddManufacturer);
             this.pProductSubMenu.Controls.Add(this.bPrintBarcode);
             this.pProductSubMenu.Controls.Add(this.AddProductFromPdf);
@@ -206,7 +208,7 @@ namespace NaturalnieApp.Forms
             this.pProductSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pProductSubMenu.Location = new System.Drawing.Point(0, 384);
             this.pProductSubMenu.Name = "pProductSubMenu";
-            this.pProductSubMenu.Size = new System.Drawing.Size(283, 180);
+            this.pProductSubMenu.Size = new System.Drawing.Size(283, 210);
             this.pProductSubMenu.TabIndex = 5;
             // 
             // bPriceRelatedUpdate
@@ -218,13 +220,31 @@ namespace NaturalnieApp.Forms
             this.bPriceRelatedUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bPriceRelatedUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bPriceRelatedUpdate.ForeColor = System.Drawing.Color.White;
-            this.bPriceRelatedUpdate.Location = new System.Drawing.Point(0, 150);
+            this.bPriceRelatedUpdate.Location = new System.Drawing.Point(0, 180);
             this.bPriceRelatedUpdate.Name = "bPriceRelatedUpdate";
             this.bPriceRelatedUpdate.Size = new System.Drawing.Size(283, 30);
             this.bPriceRelatedUpdate.TabIndex = 10;
             this.bPriceRelatedUpdate.Text = "Aktualizacja (cen, podatku, itd.)";
             this.bPriceRelatedUpdate.UseVisualStyleBackColor = false;
             this.bPriceRelatedUpdate.Click += new System.EventHandler(this.bPriceRelatedUpdate_Click);
+            // 
+            // bManufacturersList
+            // 
+            this.bManufacturersList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bManufacturersList.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bManufacturersList.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bManufacturersList.FlatAppearance.BorderSize = 0;
+            this.bManufacturersList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bManufacturersList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bManufacturersList.ForeColor = System.Drawing.Color.White;
+            this.bManufacturersList.Location = new System.Drawing.Point(0, 150);
+            this.bManufacturersList.Name = "bManufacturersList";
+            this.bManufacturersList.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.bManufacturersList.Size = new System.Drawing.Size(283, 30);
+            this.bManufacturersList.TabIndex = 11;
+            this.bManufacturersList.Text = "Lista producentów";
+            this.bManufacturersList.UseVisualStyleBackColor = false;
+            this.bManufacturersList.Click += new System.EventHandler(this.bManufacturersList_Click);
             // 
             // bAddManufacturer
             // 
@@ -704,5 +724,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bMaximize;
         private System.Windows.Forms.Button bExit;
         private System.Windows.Forms.Panel pStatusBar;
+        private System.Windows.Forms.Button bManufacturersList;
     }
 }

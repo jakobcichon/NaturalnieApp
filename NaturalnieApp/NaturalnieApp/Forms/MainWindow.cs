@@ -35,6 +35,7 @@ namespace NaturalnieApp.Forms
         public ElzabSynchronization elzabSynchronization { get; set; }
         public SalesBufferReading salesBufferReading { get; set; }
         public PricesRelatedUpdate pricesRelatedUpdate { get; set; }
+        public ManufacturersList manufacturersList { get; set; }
         public Common.StatusBar statusBar { get; set; }
         public ElzabRelated.CashRegisterSerialPort cashRegisterSerialPort { get; set; }
 
@@ -88,6 +89,7 @@ namespace NaturalnieApp.Forms
             this.elzabSynchronization = new ElzabSynchronization(ref this.databaseCommands);
             this.salesBufferReading = new SalesBufferReading(ref this.databaseCommands);
             this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
+            this.manufacturersList = new ManufacturersList();
 
             //Add status bar
             this.statusBar = new Common.StatusBar();
@@ -518,6 +520,27 @@ namespace NaturalnieApp.Forms
                 this.pricesRelatedUpdate.Show();
             }
         }
+
+
+        private void bManufacturersList_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            try
+            {
+                this.pContainer.Controls.Add(this.manufacturersList);
+                this.manufacturersList.Select();
+                this.manufacturersList.BringToFront();
+                this.manufacturersList.Show();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.manufacturersList = new ManufacturersList();
+                this.pContainer.Controls.Add(this.manufacturersList);
+                this.manufacturersList.Select();
+                this.manufacturersList.BringToFront();
+                this.manufacturersList.Show();
+            }
+        }
         #endregion
 
         #region Stock submenu
@@ -602,7 +625,10 @@ namespace NaturalnieApp.Forms
             this.Show();
         }
 
+        private void pLogo_Click(object sender, PaintEventArgs e)
+        {
 
+        }
     }
     public class CopiedProduct
     {

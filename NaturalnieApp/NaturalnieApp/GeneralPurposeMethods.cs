@@ -405,6 +405,18 @@ namespace NaturalnieApp
         }
 
         /// <summary>
+        /// Structure used to describe column names for manufacturer full tabe
+        /// </summary>
+        public struct ManufacturersColumnNames
+        {
+            public string No { get; set; }
+            public string Id { get; set; }
+            public string Name { get; set; }
+            public string BarcodePrefix { get; set; }
+            public string Info { get; set; }
+        }
+
+        /// <summary>
         /// Structure used to describe column names for inventory data export
         /// </summary>
         public struct InventoryExportColumnNames
