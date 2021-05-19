@@ -12,6 +12,8 @@ using System.Text.RegularExpressions;
 using NaturalnieApp.Forms;
 using System.Data;
 using System.Reflection;
+using System.Linq;
+using System.Diagnostics;
 
 namespace NaturalnieApp.Forms
 {
@@ -24,10 +26,10 @@ namespace NaturalnieApp.Forms
         DatabaseCommands databaseCommands;
         BackgroundWorker backgroundWorker1;
         backgroundWorkerTasks ActualTaskType;
-        private Manufacturer ManufacturerEntity { get; set; }
 
         //Data source
         DataTable DataSource { get; set; }
+        DataTable OrginalDataFromDB { get; set; }
         BindingSource BindingDataSource { get; set; }
         DataSourceRelated.ManufacturersColumnNames ColumnNames;
 
@@ -38,18 +40,24 @@ namespace NaturalnieApp.Forms
         public ManufacturersList()
         {
             InitializeComponent();
-            InitializeBackgroundWorker();
 
+            //Initalize backgroundworker
+            InitializeBackgroundWorker();
             ActualTaskType = backgroundWorkerTasks.None;
 
+            //Initialize database
             this.databaseCommands = new DatabaseCommands();
 
+            //Initialize data source
             this.DataSource = new DataTable();
+            this.OrginalDataFromDB = this.DataSource.Clone();
+            this.ColumnNames = new DataSourceRelated.ManufacturersColumnNames();
+            InitializeDataTableSchema();
+
+            //Initialize data bindings
             this.BindingDataSource = new BindingSource { DataSource = this.DataSource };
 
-            //Initialize object fields
-            this.ManufacturerEntity = new Manufacturer();
-
+            //Initialize DataGridView
             InitializeDataGridView();
         }
         #endregion
@@ -73,9 +81,8 @@ namespace NaturalnieApp.Forms
         {
             //Local vaiable
             backgroundWorkerTasks taskType;
-            taskType = this.ActualTaskType;
-            DataTable returnDataTable = new DataTable();
-            returnDataTable = this.DataSource;
+            taskType = (backgroundWorkerTasks)e.Argument;
+            DataTable returnDataTable = this.DataSource.Clone();
 
             try
             {
@@ -112,7 +119,7 @@ namespace NaturalnieApp.Forms
                             //Convert to data row
                             foreach (Manufacturer manufacturer in productManufacturerList)
                             {
-                                DataRow dataRow = this.DataSource.NewRow();
+                                DataRow dataRow = returnDataTable.NewRow();
                                 dataRow.SetField<int>(this.ColumnNames.Id, manufacturer.Id);
                                 dataRow.SetField<string>(this.ColumnNames.Name, manufacturer.Name);
                                 dataRow.SetField<string>(this.ColumnNames.BarcodePrefix, manufacturer.BarcodeEanPrefix);
@@ -152,14 +159,18 @@ namespace NaturalnieApp.Forms
                         if (this.databaseCommands.ConnectionStatus)
                         {
                             //Get return data from DB
-                            this.DataSource = (e.Result as DataTable);
+                            this.DataSource.Clear();
+                            foreach (DataRow row in (e.Result as DataTable).Rows) this.DataSource.ImportRow(row);
+                            this.OrginalDataFromDB = this.DataSource.Copy();
                         }
                         break;
                     case backgroundWorkerTasks.Update:
                         if (this.databaseCommands.ConnectionStatus)
                         {
                             //Get return data from DB
-                            this.DataSource = (e.Result as DataTable);
+                            this.DataSource.Clear();
+                            foreach (DataRow row in (e.Result as DataTable).Rows) this.DataSource.ImportRow(row);
+                            this.OrginalDataFromDB = this.DataSource.Copy();
                         }
                         break;
                 }
@@ -173,13 +184,13 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //General methods
         #region General methods
-        private void UpdateControl(ref TextBox dummyForControl)
-        {
-            //this.Select();
-            this.Focus();
-            dummyForControl.Select();
-        }
         private void InitializeDataGridView()
+        {
+            this.advancedDataGridView1.DataSource = this.BindingDataSource;
+            this.advancedDataGridView1.AutoResizeColumns();
+            this.advancedDataGridView1.SetDoubleBuffered();
+        }
+        void InitializeDataTableSchema()
         {
             //Initialize daa grid view
             this.ColumnNames.Id = "Numer w bazie danych";
@@ -188,13 +199,14 @@ namespace NaturalnieApp.Forms
             this.ColumnNames.Info = "Informacje";
 
             //Create data source columns
-            DataColumn column = new DataColumn();
+            DataColumn column;
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.Id;
             column.DataType = Type.GetType("System.Int32");
             column.ReadOnly = false;
             column.Unique = true;
+            column.AllowDBNull = false;
             this.DataSource.Columns.Add(column);
             column.Dispose();
 
@@ -203,6 +215,7 @@ namespace NaturalnieApp.Forms
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = false;
             column.Unique = true;
+            column.AllowDBNull = false;
             this.DataSource.Columns.Add(column);
             column.Dispose();
 
@@ -210,6 +223,7 @@ namespace NaturalnieApp.Forms
             column.ColumnName = this.ColumnNames.BarcodePrefix;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = false;
+            column.AllowDBNull = true;
             this.DataSource.Columns.Add(column);
             column.Dispose();
 
@@ -217,14 +231,12 @@ namespace NaturalnieApp.Forms
             column.ColumnName = this.ColumnNames.Info;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = false;
+            column.AllowDBNull = true;
             this.DataSource.Columns.Add(column);
             column.Dispose();
 
-            this.advancedDataGridView1.DataSource = this.BindingDataSource;
-
-            this.advancedDataGridView1.AutoResizeColumns();
-            this.advancedDataGridView1.SetDoubleBuffered();
         }
+
         #endregion
         //====================================================================================================
         //Current window events
@@ -237,28 +249,141 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
-
-            //Update control
-            UpdateControl(ref tbDummyForCtrl);
-        }
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-
-            if ((keyData == Keys.Enter))
-            {
-                //Update control
-                UpdateControl(ref tbDummyForCtrl);
-
-            }
-            else if (keyData == Keys.Escape)
-            {
-                //Update control
-                UpdateControl(ref tbDummyForCtrl);
-                errorProvider1.Clear();
-            }
-
-            return base.ProcessCmdKey(ref msg, keyData);
         }
         #endregion
+
+        private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            //Cast the sender
+            Zuby.ADGV.AdvancedDataGridView localSender = sender as Zuby.ADGV.AdvancedDataGridView;
+
+            //Get column, row and cell
+            DataGridViewColumn column = localSender.Columns[e.ColumnIndex];
+            DataColumn dataSourceColumn = ((localSender.DataSource as BindingSource).DataSource as DataTable).Columns[e.ColumnIndex];
+            DataGridViewRow row = localSender.Rows[e.RowIndex];
+            DataGridViewCell cell = row.Cells[e.ColumnIndex];
+
+            //Validate if in edit mode
+            if (cell.IsInEditMode)
+            {
+                //If data empty, check if cell can be empty
+                if((e.FormattedValue.ToString() == "" || e.FormattedValue == null) && !dataSourceColumn.AllowDBNull)
+                {
+                    e.Cancel = true;
+                    row.ErrorText = String.Format("Wartość kolumny '{0}' nie może być pusta!", column.Name);
+                    return;
+                }
+
+                //Get validation method and validate
+                Func<string, bool> func = this.ColumnNames.GetValidationMethod(column.Name);
+                if (func != null)
+                {
+                    try
+                    {
+                        func.Invoke(e.FormattedValue.ToString());
+                    }
+                    catch (Validation.ValidatingFailed ex)
+                    {
+                        e.Cancel = true;
+                        row.ErrorText = ex.Message;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(String.Format("Nie można określić metody weryfikacji danych wprowadzonych w kolumnie '{0}'"
+                        , column.Name));
+                }
+            }
+        }
+
+        private void advancedDataGridView1_RowValidated(object sender, DataGridViewCellEventArgs e)
+        {
+            //Cast the sender
+            Zuby.ADGV.AdvancedDataGridView localSender = sender as Zuby.ADGV.AdvancedDataGridView;
+
+            //Get row
+            DataGridViewRow row = localSender.Rows[e.RowIndex];
+            row.ErrorText = "";
+        }
+
+        private void advancedDataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            //Cast the sender
+            Zuby.ADGV.AdvancedDataGridView localSender = sender as Zuby.ADGV.AdvancedDataGridView;
+
+            //Get row
+            DataGridViewRow row = localSender.Rows[e.RowIndex];
+            e.Cancel = true;
+            row.ErrorText = e.Exception.Message;
+
+        }
+
+        //====================================================================================================
+        //Buttons events
+        #region Buttons events
+        private void bSave_Click(object sender, EventArgs e)
+        {
+            DataTable edited = new DataTable();
+            DataTable added = new DataTable();
+            DataTable deleted = new DataTable();
+
+            GetTableDiff(this.OrginalDataFromDB, this.DataSource, ref edited, ref added, ref deleted);
+            ;
+        }
+        private void bUpdate_Click(object sender, EventArgs e)
+        {
+            //Disable panel and wait until data from db will be fetched
+            this.Enabled = false;
+
+            //Clear filters and sorting string
+            this.advancedDataGridView1.CleanFilterAndSort();
+
+            //Call background worker
+            this.ActualTaskType = backgroundWorkerTasks.Update;
+            this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Update);
+        }
+        private void bClose_Click(object sender, EventArgs e)
+        {
+            this.Parent.Show();
+            this.Dispose();
+        }
+        #endregion
+
+        /// <summary>
+        /// Compare a source and target datatables and return the row that are different, added, and removed
+        /// </summary>
+        /// <param name="dtOld">DataTable to compare</param>
+        /// <param name="dtNew">DataTable to compare to dtOld</param>
+        /// <param name="dtDifferences">DataTable that would give you the difference</param>
+        /// <param name="dtAdded">DataTable that would give you the rows added going from dtOld to dtNew</param>
+        /// <param name="dtRemoved">DataTable that would give you the rows removed going from dtOld to dtNew</param>
+        public static void GetTableDiff(DataTable dtOld, DataTable dtNew, ref DataTable dtDifferences, ref DataTable dtAdded, ref DataTable dtRemoved)
+        {
+            try
+            {
+                dtAdded = dtOld.Clone();
+                dtAdded.Clear();
+                dtRemoved = dtOld.Clone();
+                dtRemoved.Clear();
+                if (dtNew.Rows.Count > 0) dtDifferences.Merge(dtNew.AsEnumerable().Except(dtOld.AsEnumerable(), DataRowComparer.Default).CopyToDataTable<DataRow>());
+                foreach (DataRow row in dtDifferences.Rows)
+                {
+                    if (dtOld.AsEnumerable().Any(r => Enumerable.SequenceEqual(r.ItemArray, row.ItemArray))
+                        && !dtNew.AsEnumerable().Any(r => Enumerable.SequenceEqual(r.ItemArray, row.ItemArray)))
+                    {
+                        dtRemoved.Rows.Add(row.ItemArray);
+                    }
+                    else if (dtNew.AsEnumerable().Any(r => Enumerable.SequenceEqual(r.ItemArray, row.ItemArray))
+                        && !dtOld.AsEnumerable().Any(r => Enumerable.SequenceEqual(r.ItemArray, row.ItemArray)))
+                    {
+                        dtAdded.Rows.Add(row.ItemArray);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+        }
     }
 }
