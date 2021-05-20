@@ -36,6 +36,7 @@ namespace NaturalnieApp.Forms
         public SalesBufferReading salesBufferReading { get; set; }
         public PricesRelatedUpdate pricesRelatedUpdate { get; set; }
         public ManufacturersList manufacturersList { get; set; }
+        public SalesHistory salesHistory { get; set; }
         public Common.StatusBar statusBar { get; set; }
         public ElzabRelated.CashRegisterSerialPort cashRegisterSerialPort { get; set; }
 
@@ -90,6 +91,7 @@ namespace NaturalnieApp.Forms
             this.salesBufferReading = new SalesBufferReading(ref this.databaseCommands);
             this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
             this.manufacturersList = new ManufacturersList();
+            this.salesHistory = new SalesHistory();
 
             //Add status bar
             this.statusBar = new Common.StatusBar();
@@ -270,6 +272,7 @@ namespace NaturalnieApp.Forms
             pCashRegisterSubMenu.Visible = false;
             pProductSubMenu.Visible = false;
             pStockSubMenu.Visible = false;
+            pSalesSubMenu.Visible = false;
         }
         private void bExit_Click(object sender, EventArgs e)
         {
@@ -608,6 +611,33 @@ namespace NaturalnieApp.Forms
         }
         #endregion
 
+        #region Sales submenu
+        private void bSales_Click(object sender, EventArgs e)
+        {
+            toggleSubMenu(pSalesSubMenu);
+        }
+        private void bSalesHistory_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            try
+            {
+                this.pContainer.Controls.Add(this.salesHistory);
+                this.salesHistory.Select();
+                this.salesHistory.BringToFront();
+                this.salesHistory.Show();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.salesHistory = new SalesHistory();
+                this.pContainer.Controls.Add(this.salesHistory);
+                this.salesHistory.Select();
+                this.salesHistory.BringToFront();
+                this.salesHistory.Show();
+            }
+
+        }
+        #endregion
+
         #region Timer event
         private void timer5sTick_Tick(object sender, EventArgs e)
         {
@@ -630,6 +660,8 @@ namespace NaturalnieApp.Forms
 
         }
     }
+
+
     public class CopiedProduct
     {
         //Class fields

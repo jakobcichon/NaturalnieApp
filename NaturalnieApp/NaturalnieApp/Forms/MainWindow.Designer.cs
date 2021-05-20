@@ -32,6 +32,9 @@ namespace NaturalnieApp.Forms
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.pMenu = new System.Windows.Forms.Panel();
+            this.pSalesSubMenu = new System.Windows.Forms.Panel();
+            this.bSalesHistory = new System.Windows.Forms.Button();
+            this.bSales = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pStockSubMenu = new System.Windows.Forms.Panel();
             this.bShowStock = new System.Windows.Forms.Button();
@@ -69,6 +72,7 @@ namespace NaturalnieApp.Forms
             this.lVersion = new System.Windows.Forms.Label();
             this.timer1sTick = new System.Windows.Forms.Timer(this.components);
             this.pMenu.SuspendLayout();
+            this.pSalesSubMenu.SuspendLayout();
             this.pStockSubMenu.SuspendLayout();
             this.pProductSubMenu.SuspendLayout();
             this.pCashRegisterSubMenu.SuspendLayout();
@@ -85,6 +89,8 @@ namespace NaturalnieApp.Forms
             this.pMenu.AutoScroll = true;
             this.pMenu.AutoScrollMargin = new System.Drawing.Size(5, 5);
             this.pMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.pMenu.Controls.Add(this.pSalesSubMenu);
+            this.pMenu.Controls.Add(this.bSales);
             this.pMenu.Controls.Add(this.panel1);
             this.pMenu.Controls.Add(this.pStockSubMenu);
             this.pMenu.Controls.Add(this.bStock);
@@ -101,6 +107,52 @@ namespace NaturalnieApp.Forms
             this.pMenu.Size = new System.Drawing.Size(300, 698);
             this.pMenu.TabIndex = 0;
             // 
+            // pSalesSubMenu
+            // 
+            this.pSalesSubMenu.AutoSize = true;
+            this.pSalesSubMenu.BackColor = System.Drawing.Color.DimGray;
+            this.pSalesSubMenu.Controls.Add(this.bSalesHistory);
+            this.pSalesSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pSalesSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pSalesSubMenu.Location = new System.Drawing.Point(0, 784);
+            this.pSalesSubMenu.Name = "pSalesSubMenu";
+            this.pSalesSubMenu.Size = new System.Drawing.Size(283, 30);
+            this.pSalesSubMenu.TabIndex = 11;
+            // 
+            // bSalesHistory
+            // 
+            this.bSalesHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bSalesHistory.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bSalesHistory.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bSalesHistory.FlatAppearance.BorderSize = 0;
+            this.bSalesHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bSalesHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bSalesHistory.ForeColor = System.Drawing.Color.White;
+            this.bSalesHistory.Location = new System.Drawing.Point(0, 0);
+            this.bSalesHistory.Name = "bSalesHistory";
+            this.bSalesHistory.Size = new System.Drawing.Size(283, 30);
+            this.bSalesHistory.TabIndex = 8;
+            this.bSalesHistory.Text = "Historia sprzedaży";
+            this.bSalesHistory.UseVisualStyleBackColor = false;
+            this.bSalesHistory.Click += new System.EventHandler(this.bSalesHistory_Click);
+            // 
+            // bSales
+            // 
+            this.bSales.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
+            this.bSales.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bSales.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bSales.FlatAppearance.BorderSize = 0;
+            this.bSales.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bSales.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bSales.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.bSales.Location = new System.Drawing.Point(0, 734);
+            this.bSales.Name = "bSales";
+            this.bSales.Size = new System.Drawing.Size(283, 50);
+            this.bSales.TabIndex = 10;
+            this.bSales.Text = "Sprzedaż";
+            this.bSales.UseVisualStyleBackColor = false;
+            this.bSales.Click += new System.EventHandler(this.bSales_Click);
+            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
@@ -108,7 +160,7 @@ namespace NaturalnieApp.Forms
             this.panel1.Location = new System.Drawing.Point(0, 734);
             this.panel1.MinimumSize = new System.Drawing.Size(300, 10);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(300, 10);
+            this.panel1.Size = new System.Drawing.Size(300, 85);
             this.panel1.TabIndex = 8;
             // 
             // pStockSubMenu
@@ -672,6 +724,7 @@ namespace NaturalnieApp.Forms
             this.Text = "ElzabCommands";
             this.pMenu.ResumeLayout(false);
             this.pMenu.PerformLayout();
+            this.pSalesSubMenu.ResumeLayout(false);
             this.pStockSubMenu.ResumeLayout(false);
             this.pProductSubMenu.ResumeLayout(false);
             this.pCashRegisterSubMenu.ResumeLayout(false);
@@ -725,5 +778,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bExit;
         private System.Windows.Forms.Panel pStatusBar;
         private System.Windows.Forms.Button bManufacturersList;
+        private System.Windows.Forms.Panel pSalesSubMenu;
+        private System.Windows.Forms.Button bSalesHistory;
+        private System.Windows.Forms.Button bSales;
     }
 }

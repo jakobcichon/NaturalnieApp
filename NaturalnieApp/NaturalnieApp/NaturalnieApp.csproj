@@ -270,14 +270,17 @@
     <Compile Include="Forms\Common\ProgressBarTemplate.Designer.cs">
       <DependentUpon>ProgressBarTemplate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Common\SearchBarSalesTemplate.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Common\SearchBarSalesTemplate.Designer.cs">
+      <DependentUpon>SearchBarSalesTemplate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Common\SearchBarTemplate.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\Common\SearchBarTemplate.Designer.cs">
       <DependentUpon>SearchBarTemplate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Common\SearchBarTemplate2.xaml.cs">
-      <DependentUpon>SearchBarTemplate2.xaml</DependentUpon>
     </Compile>
     <Compile Include="Forms\Common\StatusBar.cs">
       <SubType>UserControl</SubType>
@@ -314,6 +317,12 @@
     </Compile>
     <Compile Include="Forms\ProductMenu\ManufacturersList.Designer.cs">
       <DependentUpon>ManufacturersList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Sales\SalesHistory.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Sales\SalesHistory.Designer.cs">
+      <DependentUpon>SalesHistory.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\TestForm\Playground.cs">
       <SubType>UserControl</SubType>
@@ -398,6 +407,9 @@
     <EmbeddedResource Include="Forms\Common\ProgressBarTemplate.resx">
       <DependentUpon>ProgressBarTemplate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Common\SearchBarSalesTemplate.resx">
+      <DependentUpon>SearchBarSalesTemplate.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Common\SearchBarTemplate.resx">
       <DependentUpon>SearchBarTemplate.cs</DependentUpon>
     </EmbeddedResource>
@@ -418,6 +430,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProductMenu\ManufacturersList.resx">
       <DependentUpon>ManufacturersList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Sales\SalesHistory.resx">
+      <DependentUpon>SalesHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TestForm\Playground.resx">
       <DependentUpon>Playground.cs</DependentUpon>
@@ -500,6 +515,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="mainIcon.ico" />
+    <None Include="Resources\icons8-search-50.png" />
     <None Include="Resources\past.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -511,12 +527,6 @@
     <None Include="Resources\cashRegisterExchange.gif" />
     <None Include="Resources\DbStatusNok.png" />
     <None Include="Resources\DbStatusOK.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Forms\Common\SearchBarTemplate2.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
