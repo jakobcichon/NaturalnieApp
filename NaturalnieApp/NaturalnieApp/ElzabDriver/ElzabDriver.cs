@@ -522,69 +522,61 @@ namespace ElzabDriver
             //Local variables
             bool retVal = false;
 
-            try
+            //Check if command file exist
+            string execFullFilePath = System.IO.Path.Combine(this.Path, this.CommandName + ".exe");
+            bool commandExist = File.Exists(execFullFilePath);
+
+            //If not exist try to copy one from command default path
+            if (!commandExist)
             {
-                //Check if command file exist
-                string execFullFilePath = System.IO.Path.Combine(this.Path, this.CommandName + ".exe");
-                bool commandExist = File.Exists(execFullFilePath);
-
-                //If not exist try to copy one from command default path
-                if (!commandExist)
-                {
-                    string defaultPathWithCommandName = System.IO.Path.Combine(GlobalVariables.ElzabCommandPath, "Commands", this.CommandName + ".exe");
-                    File.Copy(defaultPathWithCommandName, execFullFilePath);
-                }
-
-                //Check again
-                commandExist = File.Exists(execFullFilePath);
-
-                //Check if dll exist in command directory
-                string dllFullFilePath = System.IO.Path.Combine(this.Path, "WinIP.dll");
-                bool dllExist = File.Exists(dllFullFilePath);
-                if (!dllExist)
-                {
-                    string defaultPathWithDlls = System.IO.Path.Combine(this.Path, System.IO.Path.Combine(GlobalVariables.LibraryPath, "WinIP.dll"));
-                    File.Copy(defaultPathWithDlls, dllFullFilePath);
-                    dllExist = true;
-                }
-
-                if (commandExist && dllExist)
-                {
-                    //Generate command called in Windows command prompt
-                    string command = this.CommandName + ".exe" + " " + this.FileNameDependingOfType(this.CommandName, FileType.InputFile)
-                        + " " + this.FileNameDependingOfType(this.CommandName, FileType.OutputFile);
-
-                    var processStartInfo = new ProcessStartInfo();
-                    processStartInfo.WorkingDirectory = this.Path;
-                    processStartInfo.FileName = "cmd.exe";
-                    processStartInfo.Arguments = "/C " + command;
-                    processStartInfo.UseShellExecute = false;
-                    processStartInfo.CreateNoWindow = true;
-
-                    //Send report to DB before start
-                    ElzabCommunication elzabCommunicationEnt = new ElzabCommunication();
-                    elzabCommunicationEnt.DateOfCommunication = DateTime.Now;
-                    elzabCommunicationEnt.StatusOfCommunication = ElzabCommunication.CommunicationStatus.Started;
-                    elzabCommunicationEnt.ElzabCommandName = this.CommandName;
-                    this.DatabaseCommands.AddToElzabCommunication(elzabCommunicationEnt);
-
-                    //Start process
-                    Process proc = Process.Start(processStartInfo);
-                    this.BackgroundProcess = proc;
-                    proc.WaitForExit();
-                    if (proc.ExitCode >= 0 )retVal = true;
-                    else retVal = false;
-                }
-                else
-                {
-                    retVal = false;
-                    MessageBox.Show("Command with name: " + this.CommandName + " does not exist under: " + this.Path + " .Command was not executed!");
-                }
+                string defaultPathWithCommandName = System.IO.Path.Combine(GlobalVariables.ElzabCommandPath, "Commands", this.CommandName + ".exe");
+                File.Copy(defaultPathWithCommandName, execFullFilePath);
             }
-            catch (Exception ex)
+
+            //Check again
+            commandExist = File.Exists(execFullFilePath);
+
+            //Check if dll exist in command directory
+            string dllFullFilePath = System.IO.Path.Combine(this.Path, "WinIP.dll");
+            bool dllExist = File.Exists(dllFullFilePath);
+            if (!dllExist)
+            {
+                string defaultPathWithDlls = System.IO.Path.Combine(this.Path, System.IO.Path.Combine(GlobalVariables.LibraryPath, "WinIP.dll"));
+                File.Copy(defaultPathWithDlls, dllFullFilePath);
+                dllExist = true;
+            }
+
+            if (commandExist && dllExist)
+            {
+                //Generate command called in Windows command prompt
+                string command = this.CommandName + ".exe" + " " + this.FileNameDependingOfType(this.CommandName, FileType.InputFile)
+                    + " " + this.FileNameDependingOfType(this.CommandName, FileType.OutputFile);
+
+                var processStartInfo = new ProcessStartInfo();
+                processStartInfo.WorkingDirectory = this.Path;
+                processStartInfo.FileName = "cmd.exe";
+                processStartInfo.Arguments = "/C " + command;
+                processStartInfo.UseShellExecute = false;
+                processStartInfo.CreateNoWindow = true;
+
+                //Send report to DB before start
+                ElzabCommunication elzabCommunicationEnt = new ElzabCommunication();
+                elzabCommunicationEnt.DateOfCommunication = DateTime.Now;
+                elzabCommunicationEnt.StatusOfCommunication = ElzabCommunication.CommunicationStatus.Started;
+                elzabCommunicationEnt.ElzabCommandName = this.CommandName;
+                this.DatabaseCommands.AddToElzabCommunication(elzabCommunicationEnt);
+
+                //Start process
+                Process proc = Process.Start(processStartInfo);
+                this.BackgroundProcess = proc;
+                proc.WaitForExit();
+                if (proc.ExitCode >= 0) retVal = true;
+                else retVal = false;
+            }
+            else
             {
                 retVal = false;
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Command with name: " + this.CommandName + " does not exist under: " + this.Path + " .Command was not executed!");
             }
 
             return retVal;
@@ -599,65 +591,58 @@ namespace ElzabDriver
             string dummyString = "";
             bool returnValue = false;
 
-           try
+            if (this.TypeOfFile != FileType.ConfigFile)
             {
-                if (this.TypeOfFile != FileType.ConfigFile)
-                {
-                    //Convert header object to string list
-                    retValue.Add(ConvertFromListToString(this.Header.HeaderLine1.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
-                    retValue.Add(ConvertFromListToString(this.Header.HeaderLine2.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
-                    retValue.Add(ConvertFromListToString(this.Header.HeaderLine3.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
-                }
+                //Convert header object to string list
+                retValue.Add(ConvertFromListToString(this.Header.HeaderLine1.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
+                retValue.Add(ConvertFromListToString(this.Header.HeaderLine2.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
+                retValue.Add(ConvertFromListToString(this.Header.HeaderLine3.GetAllAttributeValue(0), this.HeaderMark, this.HeaderSeparator));
+            }
 
-                if(this.Element != null)
+            if (this.Element != null)
+            {
+                //Convert element object to string list
+                foreach (AttributeValueObject obj in this.Element)
                 {
-                    //Convert element object to string list
-                    foreach (AttributeValueObject obj in this.Element)
+                    //Get index of product name
+                    int indexOfProducNameAttribute = -1;
+                    foreach (string attributeName in this.Element.AttributesName[0])
                     {
-                        //Get index of product name
-                        int indexOfProducNameAttribute = -1;
-                        foreach (string attributeName in this.Element.AttributesName[0])
+                        if (attributeName == "naz_tow")
                         {
-                            if (attributeName == "naz_tow")
-                            {
-                                indexOfProducNameAttribute = this.Element.AttributesName[0].IndexOf("naz_tow");
-                                break;
-                            }
+                            indexOfProducNameAttribute = this.Element.AttributesName[0].IndexOf("naz_tow");
+                            break;
                         }
-                        int i = 0, j = 1;
-                        //Loop through all element attributes values. Add Element mark and attribute separator to it
-                        string elementAllValues = this.ElementMark;
-                        foreach (string attributeValue in obj)
-                        {
-                            if (j == obj.AttributeValue.Count())
-                            {
-                                elementAllValues += attributeValue;
-                            }
-                            else
-                            {
-                                if (indexOfProducNameAttribute > -1 && i == indexOfProducNameAttribute)
-                                {
-                                    dummyString = GenerateStringWithGivenChar(this.NrOfCharsInElementAttribute - attributeValue.Length, ' ');
-                                }
-                                else dummyString = "";
-                                elementAllValues += attributeValue + dummyString + this.AttributesSeparator;
-                            }
-                            i++;
-                            j++;
-
-                        }
-                        retValue.Add(elementAllValues);
                     }
+                    int i = 0, j = 1;
+                    //Loop through all element attributes values. Add Element mark and attribute separator to it
+                    string elementAllValues = this.ElementMark;
+                    foreach (string attributeValue in obj)
+                    {
+                        if (j == obj.AttributeValue.Count())
+                        {
+                            elementAllValues += attributeValue;
+                        }
+                        else
+                        {
+                            if (indexOfProducNameAttribute > -1 && i == indexOfProducNameAttribute)
+                            {
+                                dummyString = GenerateStringWithGivenChar(this.NrOfCharsInElementAttribute - attributeValue.Length, ' ');
+                            }
+                            else dummyString = "";
+                            elementAllValues += attributeValue + dummyString + this.AttributesSeparator;
+                        }
+                        i++;
+                        j++;
+
+                    }
+                    retValue.Add(elementAllValues);
                 }
-                //Assing created string list to internal variable
-                this.RawData = retValue;
-                returnValue = true;
             }
-            catch (Exception ex)
-            {
-                returnValue = false;
-                MessageBox.Show(ex.Message);
-            }
+            //Assing created string list to internal variable
+            this.RawData = retValue;
+            returnValue = true;
+
 
             return returnValue;
         }
@@ -888,31 +873,24 @@ namespace ElzabDriver
 
             if (this.TypeOfFile == FileType.ReportFile)
             {
-                try
-                {
-                    commandStatus.CashRegisterNumber = Int32.Parse(this.Header.HeaderLine1.GetAttributeValue(0, "cash_register_number"));
 
-                    string commData = this.Header.HeaderLine1.GetAttributeValue(0, "cash_register_comm_data");
-                    string[] commDataSplited = commData.Split(':');
-                    commandStatus.CashRegisterComPort = Int32.Parse(commDataSplited[0].Replace("COM", ""));
-                    commandStatus.CashRegisterBaudRate = Int32.Parse(commDataSplited[1]);
+                commandStatus.CashRegisterNumber = Int32.Parse(this.Header.HeaderLine1.GetAttributeValue(0, "cash_register_number"));
 
-                    commandStatus.TimeoutValue = Int32.Parse(this.Header.HeaderLine1.GetAttributeValue(0, "comm_timeout"));
-                    string dateTime = this.Header.HeaderLine1.GetAttributeValue(0, "execution_date") + " " + this.Header.HeaderLine1.GetAttributeValue(0, "execution_time");
-                    commandStatus.ExecutionDateAndTime = DateTime.Parse(dateTime);
-                    commandStatus.CommandName = this.Header.HeaderLine1.GetAttributeValue(0, "command_name");
-                    commandStatus.InFileName = this.Header.HeaderLine1.GetAttributeValue(0, "input_file_name");
-                    commandStatus.OutFileName = this.Header.HeaderLine1.GetAttributeValue(0, "output_file_name");
+                string commData = this.Header.HeaderLine1.GetAttributeValue(0, "cash_register_comm_data");
+                string[] commDataSplited = commData.Split(':');
+                commandStatus.CashRegisterComPort = Int32.Parse(commDataSplited[0].Replace("COM", ""));
+                commandStatus.CashRegisterBaudRate = Int32.Parse(commDataSplited[1]);
 
-                    commandStatus.ErrorNumber = Int32.Parse(this.Header.HeaderLine2.GetAttributeValue(0, "error_number"));
-                    commandStatus.ErrorText = this.Header.HeaderLine2.GetAttributeValue(0, "error_text");
+                commandStatus.TimeoutValue = Int32.Parse(this.Header.HeaderLine1.GetAttributeValue(0, "comm_timeout"));
+                string dateTime = this.Header.HeaderLine1.GetAttributeValue(0, "execution_date") + " " + this.Header.HeaderLine1.GetAttributeValue(0, "execution_time");
+                commandStatus.ExecutionDateAndTime = DateTime.Parse(dateTime);
+                commandStatus.CommandName = this.Header.HeaderLine1.GetAttributeValue(0, "command_name");
+                commandStatus.InFileName = this.Header.HeaderLine1.GetAttributeValue(0, "input_file_name");
+                commandStatus.OutFileName = this.Header.HeaderLine1.GetAttributeValue(0, "output_file_name");
 
+                commandStatus.ErrorNumber = Int32.Parse(this.Header.HeaderLine2.GetAttributeValue(0, "error_number"));
+                commandStatus.ErrorText = this.Header.HeaderLine2.GetAttributeValue(0, "error_text");
 
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
             }
 
             return commandStatus;
@@ -954,21 +932,14 @@ namespace ElzabDriver
             List<string> fileToArray = new List<string>();
 
             //Open file and read all lines to string array
-            try
+            using (var file = new StreamReader(fullPath))
             {
-                using (var file = new StreamReader(fullPath))
+                string line;
+                while ((line = file.ReadLine()) != null)
                 {
-                    string line;
-                    while ((line = file.ReadLine()) != null)
-                    {
-                        fileToArray.Add(line);
-                    }
-
+                    fileToArray.Add(line);
                 }
-            }
-            catch( Exception e)
-            {
-                MessageBox.Show(e.ToString());
+
             }
 
             return fileToArray;
@@ -1022,30 +993,22 @@ namespace ElzabDriver
         {
             //Local variable
             bool retVal = false;
-            try
-            {
-                //Use File stream to write data to file
-                FileStream stream = new FileStream(fullPath, FileMode.OpenOrCreate);
-                using (StreamWriter fs = new StreamWriter(stream, this.FileEncoding))
-                {
-                    foreach (string lineToWrite in data)
-                    {
-                       string decoded = EncodingConversionRelated.StringConverterCodepage(lineToWrite);
-                        fs.WriteLine(decoded);
-                    }
 
-                    //Close file
-                    fs.Close();
-                    retVal = true;
+            //Use File stream to write data to file
+            FileStream stream = new FileStream(fullPath, FileMode.OpenOrCreate);
+            using (StreamWriter fs = new StreamWriter(stream, this.FileEncoding))
+            {
+                foreach (string lineToWrite in data)
+                {
+                    string decoded = EncodingConversionRelated.StringConverterCodepage(lineToWrite);
+                    fs.WriteLine(decoded);
                 }
 
+                //Close file
+                fs.Close();
+                retVal = true;
             }
-            catch (Exception ex)
-            {
-                retVal = false;
-                //Message if exception
-                MessageBox.Show(ex.ToString());
-            }
+
 
             return retVal;
         }
@@ -1055,57 +1018,40 @@ namespace ElzabDriver
         {
             //Local variable
             bool retVal = false;
-            try
+
+            //Check if directory exist
+            bool dirExist = Directory.Exists(fullPath);
+            if (!dirExist)
             {
-                //Check if directory exist
-                bool dirExist = Directory.Exists(fullPath);
-                if (!dirExist)
-                {
-                    string dirName = Path.GetDirectoryName(fullPath);
-                    Directory.CreateDirectory(dirName);
-                }
-
-                //Use File stream to write data to file
-                FileStream stream = new FileStream(fullPath, FileMode.CreateNew);
-                using (StreamWriter fs = new StreamWriter(stream, this.FileEncoding))
-                {
-                    //Close file
-                    fs.Close();
-                    retVal = true;
-                }
-
+                string dirName = Path.GetDirectoryName(fullPath);
+                Directory.CreateDirectory(dirName);
             }
-            catch (Exception ex)
+
+            //Use File stream to write data to file
+            FileStream stream = new FileStream(fullPath, FileMode.CreateNew);
+            using (StreamWriter fs = new StreamWriter(stream, this.FileEncoding))
             {
-                retVal = false;
-                //Message if exception
-                MessageBox.Show(ex.ToString());
+                //Close file
+                fs.Close();
+                retVal = true;
             }
 
             return retVal;
-            
+
         }
 
         //Method use to make file backup and remove it. It has user control build in.
         private bool DeleteFile(string fullPath, string backupPath, bool executeBackup = true)
         {
             bool retVal = false;
-            try
+
+            string fileName = Path.GetFileName(fullPath);
+            bool backupDone = false;
+            if (executeBackup) backupDone = MakeFileBackup(fullPath, backupPath);
+            if (backupDone || !executeBackup)
             {
-                string fileName = Path.GetFileName(fullPath);
-                bool backupDone = false;
-                if (executeBackup) backupDone = MakeFileBackup(fullPath, backupPath);
-                if (backupDone || !executeBackup)
-                {
-                    File.Delete(fullPath);
-                    retVal = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                //Message if exception
-                MessageBox.Show(ex.ToString());
-                retVal = false;
+                File.Delete(fullPath);
+                retVal = true;
             }
 
             return retVal;
@@ -1115,18 +1061,10 @@ namespace ElzabDriver
         private bool DeleteFile(string fullPath)
         {
             bool retVal = false;
-            try
-            {
-                //Delete file
-                File.Delete(fullPath);
-                retVal = true;
-            }
-            catch (Exception ex)
-            {
-                //Message if exception
-                MessageBox.Show(ex.ToString());
-                retVal = false;
-            }
+
+            //Delete file
+            File.Delete(fullPath);
+            retVal = true;
 
             return retVal;
         }
@@ -1163,66 +1101,56 @@ namespace ElzabDriver
 
             string fileNameWithExtension = Path.GetFileName(fullPath);
 
-            try
+            //Check if file exist
+            bool exist = File.Exists(fullPath);
+
+            if (exist)
             {
-                //Check if file exist
-                bool exist = File.Exists(fullPath);
+                //Generate subdirectory name and check if exist
+                string date = DateTime.Now.Date.ToString("MM/dd/yyyy");
+                string time = DateTime.Now.TimeOfDay.Hours.ToString("00") + "." +
+                    DateTime.Now.TimeOfDay.Minutes.ToString("00");
+                string subDirName = Path.Combine(backupPath, date + "_" + time);
 
-                if (exist)
+                //Backup path with file
+                string backupPathWithFile = Path.Combine(subDirName, fileNameWithExtension);
+
+                //Check if backup directory exist
+                bool dirExist = File.Exists(backupPathWithFile);
+                if (!dirExist)
                 {
-                    //Generate subdirectory name and check if exist
-                    string date = DateTime.Now.Date.ToString("MM/dd/yyyy");
-                    string time = DateTime.Now.TimeOfDay.Hours.ToString("00") + "." +
-                        DateTime.Now.TimeOfDay.Minutes.ToString("00");
-                    string subDirName = Path.Combine(backupPath, date + "_" + time);
-
-                    //Backup path with file
-                    string backupPathWithFile = Path.Combine(subDirName, fileNameWithExtension);
-
-                    //Check if backup directory exist
-                    bool dirExist = File.Exists(backupPathWithFile);
-                    if (!dirExist)
+                    subFolderCreated = Directory.CreateDirectory(subDirName).Exists;
+                }
+                else
+                {
+                    //Try to create another name
+                    for (int i = 1; i <= 10; i++)
                     {
-                        subFolderCreated = Directory.CreateDirectory(subDirName).Exists;
-                    }
-                    else
-                    {
-                        //Try to create another name
-                        for (int i = 1; i <= 10; i++)
+                        string candidateDirName = subDirName;
+                        candidateDirName += " (" + i + ")";
+                        backupPathWithFile = Path.Combine(candidateDirName, fileNameWithExtension);
+                        dirExist = File.Exists(backupPathWithFile);
+                        if (!dirExist)
                         {
-                            string candidateDirName = subDirName;
-                            candidateDirName += " (" + i + ")";
-                            backupPathWithFile = Path.Combine(candidateDirName, fileNameWithExtension);
-                            dirExist = File.Exists(backupPathWithFile);
-                            if (!dirExist)
-                            {
-                                Directory.CreateDirectory(candidateDirName);
-                                subDirName = candidateDirName;
-                                subFolderCreated = true;
-                                break;
-                            }
+                            Directory.CreateDirectory(candidateDirName);
+                            subDirName = candidateDirName;
+                            subFolderCreated = true;
+                            break;
                         }
                     }
-                    if (subFolderCreated)
-                    {
-                        string fullPathToCopy = Path.Combine(subDirName, Path.GetFileName(fullPath));
-                        File.Copy(fullPath, fullPathToCopy);
-                        retVal = true;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Nie udało się utworzyć podfolderu!");
-                    }
                 }
-                else retVal = true;
+                if (subFolderCreated)
+                {
+                    string fullPathToCopy = Path.Combine(subDirName, Path.GetFileName(fullPath));
+                    File.Copy(fullPath, fullPathToCopy);
+                    retVal = true;
+                }
+                else
+                {
+                    MessageBox.Show("Nie udało się utworzyć podfolderu!");
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                MessageBox.Show(string.Format("Kopia zapasowa pliku {0} nie została wykonana!", Path.GetFileName(fullPath)));
-                retVal = false;
-
-            }
+            else retVal = true;
 
             return retVal;
         }
@@ -1286,7 +1214,7 @@ namespace ElzabDriver
             //If file/path not valid, show message box
             else
             {
-                MessageBox.Show("Specified file does not exist or cannot be opened. File: " + fullPath);
+                throw new FileNotFoundException(String.Format("Nie odnaleziono pliku {0}", fullPath));
             }
 
             //Return variable
@@ -1302,20 +1230,12 @@ namespace ElzabDriver
             bool fileExist = false;
             bool retVal;
 
-            try
-            {
-                //Generate full path to file
-                fullPath = ConsolidatePath(path, commandName, typeOfFile);
+            //Generate full path to file
+            fullPath = ConsolidatePath(path, commandName, typeOfFile);
 
-                //Check if given file exist
-                fileExist = CheckIfFileExist(fullPath);
-                retVal = true;
-            }
-            catch (Exception ex)
-            {
-                retVal = false;
-                MessageBox.Show(ex.Message);
-            }
+            //Check if given file exist
+            fileExist = CheckIfFileExist(fullPath);
+            retVal = true;
 
             if (fileExist && retVal)
             {
@@ -1775,102 +1695,80 @@ namespace ElzabDriver
             int elementType = 0;
             int elementTypeIndex = GetElementTypeIndex(elementType);
 
-            try
+            //Check if element with given ID exist
+            if (elementID > this.ElementsList[elementTypeIndex].Count - 1)
             {
-                //Check if element with given ID exist
-                if (elementID > this.ElementsList[elementTypeIndex].Count - 1)
+                throw new System.ArgumentException($"Given element ID does not exist. Element ID: {elementID}. Attribute name: {attributeName}");
+            }
+            else
+            {
+                //Loop through attribute name, to check if any of it element match given name
+                for (int i = 0; i < this.AttributesName[elementTypeIndex].Count; i++)
                 {
-                    throw new System.ArgumentException($"Given element ID does not exist. Element ID: {elementID}. Attribute name: {attributeName}");
-                }
-                else
-                {
-                    //Loop through attribute name, to check if any of it element match given name
-                    for (int i = 0; i < this.AttributesName[elementTypeIndex].Count; i++)
+                    //If attribueName match, save index and break;
+                    if (attributeName == this.AttributesName[elementTypeIndex].ElementAt(i))
                     {
-                        //If attribueName match, save index and break;
-                        if (attributeName == this.AttributesName[elementTypeIndex].ElementAt(i))
-                        {
-                            //Override value
-                            this.ElementsList[elementTypeIndex][elementID].AttributeValue[i] = newValue;
-                            break;
-                        }
-                    }
-                }
-
-                //Create identifier fo an elemement
-                if (uniqueIdetifierAttributes != null)
-                {
-                    string identifier = "";
-                    foreach (int attIndex in uniqueIdetifierAttributes)
-                    {
-                        if (attIndex - 1 >= 0)
-                        {
-                            identifier = CreateIdentifier(this.ElementsList[elementTypeIndex].Last().AttributeValue[attIndex - 1], identifier);
-                        }
-                        else throw new InvalidOperationException("Próba generowania numeru identyfikacyjnego obiektu nie udana! Indes atrybutu mniejszy od 0");
-
-                        this.ElementsList[elementTypeIndex].Last().UniqueIdentifier = identifier;
+                        //Override value
+                        this.ElementsList[elementTypeIndex][elementID].AttributeValue[i] = newValue;
+                        break;
                     }
                 }
             }
-            catch (Exception e)
+
+            //Create identifier fo an elemement
+            if (uniqueIdetifierAttributes != null)
             {
-                MessageBox.Show(e.Message);
+                string identifier = "";
+                foreach (int attIndex in uniqueIdetifierAttributes)
+                {
+                    if (attIndex - 1 >= 0)
+                    {
+                        identifier = CreateIdentifier(this.ElementsList[elementTypeIndex].Last().AttributeValue[attIndex - 1], identifier);
+                    }
+                    else throw new InvalidOperationException("Próba generowania numeru identyfikacyjnego obiektu nie udana! Indes atrybutu mniejszy od 0");
+
+                    this.ElementsList[elementTypeIndex].Last().UniqueIdentifier = identifier;
+                }
             }
-
-
-
-
         }
         internal void ChangeAttributeValue(List<int> uniqueIdetifierAttributes, int elementID, string attributeName, string newValue, int elementType = 0)
         {
             int elementTypeIndex = GetElementTypeIndex(elementType);
 
-            try
+            //Check if element with given ID exist
+            if (elementID > this.ElementsList[elementTypeIndex].Count - 1)
             {
-                //Check if element with given ID exist
-                if (elementID > this.ElementsList[elementTypeIndex].Count - 1)
+                throw new System.ArgumentException($"Given element ID does not exist. Element ID: {elementID}. Attribute name: {attributeName}");
+            }
+            else
+            {
+                //Loop through attribute name, to check if any of it element match given name
+                for (int i = 0; i < this.AttributesName[elementTypeIndex].Count; i++)
                 {
-                    throw new System.ArgumentException($"Given element ID does not exist. Element ID: {elementID}. Attribute name: {attributeName}");
-                }
-                else
-                {
-                    //Loop through attribute name, to check if any of it element match given name
-                    for (int i = 0; i < this.AttributesName[elementTypeIndex].Count; i++)
+                    //If attribueName match, save index and break;
+                    if (attributeName == this.AttributesName[elementTypeIndex].ElementAt(i))
                     {
-                        //If attribueName match, save index and break;
-                        if (attributeName == this.AttributesName[elementTypeIndex].ElementAt(i))
-                        {
-                            //Override value
-                            this.ElementsList[elementTypeIndex][elementID].AttributeValue[i] = newValue;
-                        }
+                        //Override value
+                        this.ElementsList[elementTypeIndex][elementID].AttributeValue[i] = newValue;
                     }
                 }
-
-                //Create identifier fo an elemement
-                if (uniqueIdetifierAttributes != null)
-                {
-                    string identifier = "";
-                    foreach (int attIndex in uniqueIdetifierAttributes)
-                    {
-                        if (attIndex - 1 >= 0)
-                        {
-                            identifier = CreateIdentifier(this.ElementsList[elementTypeIndex].Last().AttributeValue[attIndex - 1], identifier);
-                        }
-                        else throw new InvalidOperationException("Próba generowania numeru identyfikacyjnego obiektu nie udana! Indes atrybutu mniejszy od 0");
-
-                        this.ElementsList[elementTypeIndex].Last().UniqueIdentifier = identifier;
-                    }
-                }
-
             }
-            catch (Exception e)
+
+            //Create identifier fo an elemement
+            if (uniqueIdetifierAttributes != null)
             {
-                MessageBox.Show(e.Message);
+                string identifier = "";
+                foreach (int attIndex in uniqueIdetifierAttributes)
+                {
+                    if (attIndex - 1 >= 0)
+                    {
+                        identifier = CreateIdentifier(this.ElementsList[elementTypeIndex].Last().AttributeValue[attIndex - 1], identifier);
+                    }
+                    else throw new InvalidOperationException("Próba generowania numeru identyfikacyjnego obiektu nie udana! Indes atrybutu mniejszy od 0");
+
+                    this.ElementsList[elementTypeIndex].Last().UniqueIdentifier = identifier;
+                }
             }
-
-
-
 
         }
         //Method used to change all value of given element name
