@@ -1130,8 +1130,13 @@ namespace NaturalnieApp.Forms
         private void bPast_Click(object sender, EventArgs e)
         {
             CopiedProduct p = CopiedProduct.GetInstance();
-            FillWitDataFromCopiedObject(p.GetEnts().productEntity, p.GetEnts().manufacturerEntity,
-                p.GetEnts().supplierEntity, p.GetEnts().taxEntity);
+            if (p.GetEnts().productEntity.Id != 0 && p.GetEnts().manufacturerEntity.Id != 0
+                && p.GetEnts().supplierEntity.Id != 0 && p.GetEnts().taxEntity.Id != 0)
+            {
+                FillWitDataFromCopiedObject(p.GetEnts().productEntity, p.GetEnts().manufacturerEntity,
+                    p.GetEnts().supplierEntity, p.GetEnts().taxEntity);
+            }
+
         }
     }
 }

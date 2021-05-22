@@ -59,6 +59,9 @@ namespace NaturalnieApp.Forms
 
             //Initialize DataGridView
             InitializeDataGridView();
+
+            //Initialize name of current user control
+            this.lName.Text = "Lista producentów";
         }
         #endregion
         //=============================================================================
@@ -323,13 +326,14 @@ namespace NaturalnieApp.Forms
         #region Buttons events
         private void bSave_Click(object sender, EventArgs e)
         {
-            DataTable edited = new DataTable();
+ /*           DataTable edited = new DataTable();
             DataTable added = new DataTable();
             DataTable deleted = new DataTable();
 
             GetTableDiff(this.OrginalDataFromDB, this.DataSource, ref edited, ref added, ref deleted);
-            ;
+            ;*/
         }
+
         private void bUpdate_Click(object sender, EventArgs e)
         {
             //Disable panel and wait until data from db will be fetched
