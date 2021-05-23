@@ -385,7 +385,8 @@ namespace NaturalnieApp.Forms
         // This event handler is where the actual, potentially time-consuming work is done.
         private void BwElzabCommunication_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            foreach (DataRow row in (e.Result as DataTable).Rows) this.DataSource.ImportRow(row);
+            DataTable localDataTable = (e.Result as DataTable);
+            if(localDataTable != null) foreach (DataRow row in localDataTable.Rows) this.DataSource.ImportRow(row);
             this.bReadingFromCashRegister.Enabled = true;
         }
         #endregion
@@ -400,33 +401,43 @@ namespace NaturalnieApp.Forms
 
         private void bSave_Click(object sender, EventArgs e)
         {
-            if (this.DataSource.Rows.Count > 0)
+            try
             {
-
-                DialogResult result = MessageBox.Show("Czy na pewno chcesz nadpisać produkty w kasie Elzab?",
-                    "zmiana produtów", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
+                if (this.DataSource.Rows.Count > 0)
                 {
-                    List<Product> productsToSave = new List<Product>();
-                    foreach (DataRow element in this.DataSource.Rows)
-                    {
-                        productsToSave.Add(this.databaseCommands.GetProductEntityByElzabId(element.Field<int>(this.ColumnNames.ProductNumber)));
-                    }
 
-                    this.ProductWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabProductData(this.databaseCommands, productsToSave, this.ProductWriting.DataToElzab);
-                    this.AdditionBarcodesWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabAddBarcodes(this.databaseCommands, productsToSave, this.AdditionBarcodesWriting.DataToElzab);
-
-                    this.ProductWriting.Config.ChangeCashRegisterConnectionData
-                        (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
-                    CommandExecutionStatus status = this.ProductWriting.ExecuteCommand();
-                    if (status.ErrorNumber == 0 && status.ErrorText != null)
+                    DialogResult result = MessageBox.Show("Czy na pewno chcesz nadpisać produkty w kasie Elzab?",
+                        "zmiana produtów", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
                     {
-                        this.AdditionBarcodesWriting.Config.ChangeCashRegisterConnectionData
+                        List<Product> productsToSave = new List<Product>();
+                        foreach (DataRow element in this.DataSource.Rows)
+                        {
+                            productsToSave.Add(this.databaseCommands.GetProductEntityByElzabId(element.Field<int>(this.ColumnNames.ProductNumber)));
+                        }
+
+                        this.ProductWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabProductData(this.databaseCommands, productsToSave, this.ProductWriting.DataToElzab);
+                        this.AdditionBarcodesWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabAddBarcodes(this.databaseCommands, productsToSave, this.AdditionBarcodesWriting.DataToElzab);
+
+                        this.ProductWriting.Config.ChangeCashRegisterConnectionData
                             (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
-                        status = this.AdditionBarcodesWriting.ExecuteCommand();
+                        CommandExecutionStatus status = this.ProductWriting.ExecuteCommand();
                         if (status.ErrorNumber == 0 && status.ErrorText != null)
                         {
-                            MessageBox.Show("Zapisano!");
+                            this.AdditionBarcodesWriting.Config.ChangeCashRegisterConnectionData
+                                (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
+                            status = this.AdditionBarcodesWriting.ExecuteCommand();
+                            if (status.ErrorNumber == 0 && status.ErrorText != null)
+                            {
+                                MessageBox.Show("Zapisano!");
+                            }
+                            else
+                            {
+                                MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
+                                status.ErrorNumber, status.ErrorText),
+                                "Błąd komunikacji z kasą Elzab!",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
                         else
                         {
@@ -435,25 +446,23 @@ namespace NaturalnieApp.Forms
                             "Błąd komunikacji z kasą Elzab!",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
+
                     }
                     else
                     {
-                        MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
-                        status.ErrorNumber, status.ErrorText),
-                        "Błąd komunikacji z kasą Elzab!",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Anulowano..");
                     }
-
                 }
                 else
                 {
-                    MessageBox.Show("Anulowano..");
+                    MessageBox.Show("Nie wybrano produktów do zapisu!");
                 }
             }
-            else
+            catch(Exception ex)
             {
-                MessageBox.Show("Nie wybrano produktów do zapisu!");
+                MessageBox.Show(ex.Message + ex.InnerException);
             }
+           
 
         }
 

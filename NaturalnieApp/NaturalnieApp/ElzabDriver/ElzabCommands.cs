@@ -1125,7 +1125,11 @@ namespace ElzabCommands
             if (result) result = commandInstance.DataToElzab.WriteDataToFile();
 
             //Execute command
+#if !DEBUG
             if (result) result = commandInstance.DataToElzab.RunCommand();
+#else
+            MessageBox.Show(string.Format("DEBUG: Podmień plik dal komendy {0}", commandInstance.DataToElzab.CommandName));
+#endif
 
             if (result)
             {
