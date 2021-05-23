@@ -1105,7 +1105,8 @@ namespace NaturalnieApp
                             if (!dummyPort.IsOpen && !(sender as BackgroundWorker).CancellationPending)
                             {
                                 //Data exchange
-                                this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(dummyPort.PortName, dummyPort.BaudRate, timeout: 1);
+                                this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(dummyPort.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate
+                                    , timeout: 1);
                                 CommandExecutionStatus status;
                                 status = this.cashRegisterNumber.ExecuteCommand(false);
 
