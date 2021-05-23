@@ -28,7 +28,7 @@ namespace NaturalnieApp.Forms
         TextBox StatusBox { get; set; }
 
         //Data source for advanced data grid view
-        private DataTable DataSoruce { get; set; }
+        private DataTable DataSource { get; set; }
         private DataSourceRelated.CashRegisterProductColumnNames ColumnNames;
 
         //Readonly fields with backgroundworker steps description
@@ -87,7 +87,7 @@ namespace NaturalnieApp.Forms
             this.ColumnNames.FinalPrice = "Cena";
             this.ColumnNames.Barcode = "Kod kreskowy";
             this.ColumnNames.AdditionaBarcode = "Dodatkowy kod kreskowy";
-            this.DataSoruce = new DataTable();
+            this.DataSource = new DataTable();
 
             //Initialize advanced data grid view
             InitializeAdvancedDataGridView();
@@ -135,7 +135,7 @@ namespace NaturalnieApp.Forms
             column.DataType = Type.GetType("System.Int32");
             column.ReadOnly = true;
             column.Unique = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
@@ -143,39 +143,39 @@ namespace NaturalnieApp.Forms
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
             column.Unique = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.Tax;
             column.DataType = Type.GetType("System.Int32");
             column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.FinalPrice;
             column.DataType = Type.GetType("System.Single");
             column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.Barcode;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.AdditionaBarcode;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
-            this.DataSoruce.DefaultView.Sort = this.ColumnNames.ProductNumber + " asc";
-            advancedDataGridView1.DataSource = this.DataSoruce;
+            this.DataSource.DefaultView.Sort = this.ColumnNames.ProductNumber + " asc";
+            advancedDataGridView1.DataSource = this.DataSource;
 
             advancedDataGridView1.AutoResizeColumns();
         }
@@ -385,7 +385,8 @@ namespace NaturalnieApp.Forms
         // This event handler is where the actual, potentially time-consuming work is done.
         private void BwElzabCommunication_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.DataSoruce = (e.Result as DataTable).Clone();
+            DataTable localDataTable = (e.Result as DataTable);
+            if(localDataTable != null) foreach (DataRow row in localDataTable.Rows) this.DataSource.ImportRow(row);
             this.bReadingFromCashRegister.Enabled = true;
         }
         #endregion
@@ -393,40 +394,50 @@ namespace NaturalnieApp.Forms
         private void bReadingFromCashRegister_Click(object sender, EventArgs e)
         {
             (sender as Button).Enabled = false;
-            this.DataSoruce.Clear();
-            this.BwElzabCommunication.RunWorkerAsync(this.DataSoruce);
+            this.DataSource.Clear();
+            this.BwElzabCommunication.RunWorkerAsync(this.DataSource);
 
         }
 
         private void bSave_Click(object sender, EventArgs e)
         {
-            if (this.DataSoruce.Rows.Count > 0)
+            try
             {
-
-                DialogResult result = MessageBox.Show("Czy na pewno chcesz nadpisać produkty w kasie Elzab?",
-                    "zmiana produtów", MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
+                if (this.DataSource.Rows.Count > 0)
                 {
-                    List<Product> productsToSave = new List<Product>();
-                    foreach (DataRow element in this.DataSoruce.Rows)
-                    {
-                        productsToSave.Add(this.databaseCommands.GetProductEntityByElzabId(element.Field<int>(this.ColumnNames.ProductNumber)));
-                    }
 
-                    this.ProductWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabProductData(this.databaseCommands, productsToSave, this.ProductWriting.DataToElzab);
-                    this.AdditionBarcodesWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabAddBarcodes(this.databaseCommands, productsToSave, this.AdditionBarcodesWriting.DataToElzab);
-
-                    this.ProductWriting.Config.ChangeCashRegisterConnectionData
-                        (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
-                    CommandExecutionStatus status = this.ProductWriting.ExecuteCommand();
-                    if (status.ErrorNumber == 0 && status.ErrorText != null)
+                    DialogResult result = MessageBox.Show("Czy na pewno chcesz nadpisać produkty w kasie Elzab?",
+                        "zmiana produtów", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes)
                     {
-                        this.AdditionBarcodesWriting.Config.ChangeCashRegisterConnectionData
+                        List<Product> productsToSave = new List<Product>();
+                        foreach (DataRow element in this.DataSource.Rows)
+                        {
+                            productsToSave.Add(this.databaseCommands.GetProductEntityByElzabId(element.Field<int>(this.ColumnNames.ProductNumber)));
+                        }
+
+                        this.ProductWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabProductData(this.databaseCommands, productsToSave, this.ProductWriting.DataToElzab);
+                        this.AdditionBarcodesWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabAddBarcodes(this.databaseCommands, productsToSave, this.AdditionBarcodesWriting.DataToElzab);
+
+                        this.ProductWriting.Config.ChangeCashRegisterConnectionData
                             (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
-                        status = this.AdditionBarcodesWriting.ExecuteCommand();
+                        CommandExecutionStatus status = this.ProductWriting.ExecuteCommand();
                         if (status.ErrorNumber == 0 && status.ErrorText != null)
                         {
-                            MessageBox.Show("Zapisano!");
+                            this.AdditionBarcodesWriting.Config.ChangeCashRegisterConnectionData
+                                (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
+                            status = this.AdditionBarcodesWriting.ExecuteCommand();
+                            if (status.ErrorNumber == 0 && status.ErrorText != null)
+                            {
+                                MessageBox.Show("Zapisano!");
+                            }
+                            else
+                            {
+                                MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
+                                status.ErrorNumber, status.ErrorText),
+                                "Błąd komunikacji z kasą Elzab!",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
                         else
                         {
@@ -435,25 +446,23 @@ namespace NaturalnieApp.Forms
                             "Błąd komunikacji z kasą Elzab!",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
+
                     }
                     else
                     {
-                        MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
-                        status.ErrorNumber, status.ErrorText),
-                        "Błąd komunikacji z kasą Elzab!",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Anulowano..");
                     }
-
                 }
                 else
                 {
-                    MessageBox.Show("Anulowano..");
+                    MessageBox.Show("Nie wybrano produktów do zapisu!");
                 }
             }
-            else
+            catch(Exception ex)
             {
-                MessageBox.Show("Nie wybrano produktów do zapisu!");
+                MessageBox.Show(ex.Message + ex.InnerException);
             }
+           
 
         }
 

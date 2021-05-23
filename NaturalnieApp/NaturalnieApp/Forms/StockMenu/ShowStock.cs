@@ -31,7 +31,7 @@ namespace NaturalnieApp.Forms
         private AutoCompleteStringCollection ManufacturerListCollection { get; set; }
 
         //Data source for advanced data grid view
-        private DataTable DataSoruce { get; set; }
+        private DataTable DataSource { get; set; }
         private DataSourceRelated.AddToStockDataSourceColumnNames ColumnNames;
 
         //Data schema for exported invenotry list
@@ -61,7 +61,7 @@ namespace NaturalnieApp.Forms
             this.ColumnNames.AddDate = "Data dodania";
             this.ColumnNames.ExpirenceDate = "Data ważności";
             this.ColumnNames.NumberOfPieces = "Ilość";
-            this.DataSoruce = new DataTable();
+            this.DataSource = new DataTable();
 
             InitializeAdvancedDataGridView();
 
@@ -219,7 +219,7 @@ namespace NaturalnieApp.Forms
             column.AutoIncrement = true;
             column.AutoIncrementSeed = 1;
             column.Unique = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
@@ -227,7 +227,7 @@ namespace NaturalnieApp.Forms
             column.DataType = Type.GetType("System.Int32");
             column.ReadOnly = true;
             column.Unique = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
@@ -235,31 +235,31 @@ namespace NaturalnieApp.Forms
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
             column.Unique = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.NumberOfPieces;
             column.DataType = Type.GetType("System.Int32");
             column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.AddDate;
             column.DataType = Type.GetType("System.DateTime");
             column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.ExpirenceDate;
             column.DataType = Type.GetType("System.DateTime");
             column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
-            advancedDataGridView1.DataSource = this.DataSoruce;
+            advancedDataGridView1.DataSource = this.DataSource;
 
             advancedDataGridView1.AutoResizeColumns();
         }
@@ -443,7 +443,7 @@ namespace NaturalnieApp.Forms
                 if (cbManufacturers.SelectedIndex == 0)
                 {
                     //Cleardata
-                    this.DataSoruce.Rows.Clear();
+                    this.DataSource.Rows.Clear();
 
                     stockList = this.databaseCommands.GetAllStockEnts();
 
@@ -454,10 +454,10 @@ namespace NaturalnieApp.Forms
 
                         //Add data to table
                         DataRow rowElement;
-                        rowElement = this.DataSoruce.NewRow();
+                        rowElement = this.DataSource.NewRow();
 
                         //Set row fields
-                        rowElement.SetField<string>(this.ColumnNames.No, (this.DataSoruce.Rows.Count + 1).ToString());
+                        rowElement.SetField<string>(this.ColumnNames.No, (this.DataSource.Rows.Count + 1).ToString());
                         rowElement.SetField<int>(this.ColumnNames.ElzabNumber, productEnt.ElzabProductId);
                         rowElement.SetField<string>(this.ColumnNames.ProductName, productEnt.ProductName);
                         rowElement.SetField<DateTime>(this.ColumnNames.AddDate, element.ModificationDate);
@@ -466,12 +466,12 @@ namespace NaturalnieApp.Forms
 
                         quantity += element.ActualQuantity;
 
-                        this.DataSoruce.Rows.Add(rowElement);
+                        this.DataSource.Rows.Add(rowElement);
 
                     }
 
                     //Show number of product and quantity
-                    this.tbNumberOfProducts.Text = this.DataSoruce.Rows.Count.ToString();
+                    this.tbNumberOfProducts.Text = this.DataSource.Rows.Count.ToString();
                     this.tbStockQuantity.Text = quantity.ToString();
 
                     this.advancedDataGridView1.AutoResizeColumns();
@@ -484,7 +484,7 @@ namespace NaturalnieApp.Forms
                     if (manufacturerId > 0)
                     {
                         //Cleardata
-                        this.DataSoruce.Rows.Clear();
+                        this.DataSource.Rows.Clear();
 
                         stockList = this.databaseCommands.GetStockEntsWithManufacturerId(manufacturerId);
                         
@@ -495,10 +495,10 @@ namespace NaturalnieApp.Forms
 
                             //Add data to table
                             DataRow rowElement;
-                            rowElement = this.DataSoruce.NewRow();
+                            rowElement = this.DataSource.NewRow();
 
                             //Set row fields
-                            rowElement.SetField<string>(this.ColumnNames.No, (this.DataSoruce.Rows.Count + 1).ToString());
+                            rowElement.SetField<string>(this.ColumnNames.No, (this.DataSource.Rows.Count + 1).ToString());
                             rowElement.SetField<int>(this.ColumnNames.ElzabNumber, productEnt.ElzabProductId);
                             rowElement.SetField<string>(this.ColumnNames.ProductName, productEnt.ProductName);
                             rowElement.SetField<DateTime>(this.ColumnNames.AddDate, element.ModificationDate);
@@ -507,12 +507,12 @@ namespace NaturalnieApp.Forms
 
                             quantity += element.ActualQuantity;
 
-                            this.DataSoruce.Rows.Add(rowElement);
+                            this.DataSource.Rows.Add(rowElement);
 
                         }
 
                         //Show number of product and quantity
-                        this.tbNumberOfProducts.Text = this.DataSoruce.Rows.Count.ToString();
+                        this.tbNumberOfProducts.Text = this.DataSource.Rows.Count.ToString();
                         this.tbStockQuantity.Text = quantity.ToString();
 
                         this.advancedDataGridView1.AutoResizeColumns();
@@ -571,7 +571,7 @@ namespace NaturalnieApp.Forms
                     }
 
                     List<int> productsIds = new List<int>();
-                    foreach (DataRow row in this.DataSoruce.Rows)
+                    foreach (DataRow row in this.DataSource.Rows)
                     {
                         int productId = this.databaseCommands.GetProductIdByName(row.Field<string>(this.ColumnNames.ProductName));
                         productsIds.Add(productId);

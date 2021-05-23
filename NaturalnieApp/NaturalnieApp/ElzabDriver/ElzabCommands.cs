@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows;
 using ElzabDriver;
 using NaturalnieApp.Database;
 using NaturalnieApp.ElzabDriver;
@@ -1057,8 +1058,11 @@ namespace ElzabCommands
             if (result) result = commandInstance.DataToElzab.WriteDataToFile(executeBackup);
 
             //Execute command
+#if !DEBUG
             if (result) result = commandInstance.DataToElzab.RunCommand();
-
+#else
+            MessageBox.Show(string.Format("DEBUG: Podmień plik dal komendy {0}", commandInstance.DataToElzab.CommandName));
+#endif
             if (result)
             {
 
@@ -1121,7 +1125,11 @@ namespace ElzabCommands
             if (result) result = commandInstance.DataToElzab.WriteDataToFile();
 
             //Execute command
+#if !DEBUG
             if (result) result = commandInstance.DataToElzab.RunCommand();
+#else
+            MessageBox.Show(string.Format("DEBUG: Podmień plik dal komendy {0}", commandInstance.DataToElzab.CommandName));
+#endif
 
             if (result)
             {
