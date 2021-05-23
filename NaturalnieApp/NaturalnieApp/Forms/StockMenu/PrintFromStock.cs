@@ -29,7 +29,7 @@ namespace NaturalnieApp.Forms
         private AutoCompleteStringCollection ManufacturerListCollection { get; set; }
 
         //Data source for advanced data grid view
-        private DataTable DataSoruce { get; set; }
+        private DataTable DataSource { get; set; }
         private DataSourceRelated.LabelDataSourceColumnNames ColumnNames;
 
         //Printer instance
@@ -60,7 +60,7 @@ namespace NaturalnieApp.Forms
             this.ColumnNames.LabelText = "Tekst etykiety";
             this.ColumnNames.NumberOfCopies = "Liczba kopii";
             this.ColumnNames.ModificationDate = "Data modyfikacji";
-            this.DataSoruce = new DataTable();
+            this.DataSource = new DataTable();
 
             InitializeAdvancedDataGridView();
 
@@ -209,7 +209,7 @@ namespace NaturalnieApp.Forms
             int quantity = 0;
 
             //Get rows to print
-            DataRow[] rowsToPrint = this.DataSoruce.Select(this.DataSoruce.DefaultView.RowFilter);
+            DataRow[] rowsToPrint = this.DataSource.Select(this.DataSource.DefaultView.RowFilter);
 
             if (rowsToPrint.Length > 0)
             {
@@ -242,53 +242,53 @@ namespace NaturalnieApp.Forms
             column.AutoIncrement = true;
             column.AutoIncrementSeed = 1;
             column.Unique = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.ProductId;
             column.DataType = Type.GetType("System.Int32");
             column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.LabelBarcode;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.LabelText;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.LabelFinalPrice;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.NumberOfCopies;
             column.DataType = Type.GetType("System.Int32");
             column.ReadOnly = false;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.ModificationDate;
             column.DataType = Type.GetType("System.DateTime");
             column.ReadOnly = false;
-            this.DataSoruce.Columns.Add(column);
+            this.DataSource.Columns.Add(column);
             column.Dispose();
 
-            advancedDataGridView1.DataSource = this.DataSoruce;
-            this.DataSoruce.DefaultView.Sort = this.ColumnNames.ProductId + " asc";
+            advancedDataGridView1.DataSource = this.DataSource;
+            this.DataSource.DefaultView.Sort = this.ColumnNames.ProductId + " asc";
             advancedDataGridView1.AutoResizeColumns();
         }
         private void AdvancedDataGridView1_FilterStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.FilterEventArgs e)
@@ -400,7 +400,7 @@ namespace NaturalnieApp.Forms
                 }
 
                 //Cleardata
-                this.DataSoruce.Rows.Clear();
+                this.DataSource.Rows.Clear();
 
                 foreach (int manufacturerId in manufacturersIdList)
                 {
@@ -417,10 +417,10 @@ namespace NaturalnieApp.Forms
 
                                 //Add data to table
                                 DataRow rowElement;
-                                rowElement = this.DataSoruce.NewRow();
+                                rowElement = this.DataSource.NewRow();
 
                                 //Set row fields
-                                rowElement.SetField<string>(this.ColumnNames.No, (this.DataSoruce.Rows.Count + 1).ToString());
+                                rowElement.SetField<string>(this.ColumnNames.No, (this.DataSource.Rows.Count + 1).ToString());
                                 rowElement.SetField<int>(this.ColumnNames.ProductId, productEnt.Id);
                                 rowElement.SetField<string>(this.ColumnNames.LabelBarcode, productEnt.BarCodeShort);
                                 rowElement.SetField<string>(this.ColumnNames.LabelText, productEnt.ElzabProductName);
@@ -428,7 +428,7 @@ namespace NaturalnieApp.Forms
                                 rowElement.SetField<int>(this.ColumnNames.NumberOfCopies, element.ActualQuantity);
                                 rowElement.SetField<DateTime>(this.ColumnNames.ModificationDate, element.ModificationDate);
 
-                                this.DataSoruce.Rows.Add(rowElement);
+                                this.DataSource.Rows.Add(rowElement);
                             }
                         }
                         else
@@ -442,10 +442,10 @@ namespace NaturalnieApp.Forms
 
                                 //Add data to table
                                 DataRow rowElement;
-                                rowElement = this.DataSoruce.NewRow();
+                                rowElement = this.DataSource.NewRow();
 
                                 //Set row fields
-                                rowElement.SetField<string>(this.ColumnNames.No, (this.DataSoruce.Rows.Count + 1).ToString());
+                                rowElement.SetField<string>(this.ColumnNames.No, (this.DataSource.Rows.Count + 1).ToString());
                                 rowElement.SetField<int>(this.ColumnNames.ProductId, productEnt.Id);
                                 rowElement.SetField<string>(this.ColumnNames.LabelBarcode, productEnt.BarCodeShort);
                                 rowElement.SetField<string>(this.ColumnNames.LabelText, productEnt.ElzabProductName);
@@ -453,7 +453,7 @@ namespace NaturalnieApp.Forms
                                 rowElement.SetField<int>(this.ColumnNames.NumberOfCopies, element.Quantity);
                                 rowElement.SetField<DateTime>(this.ColumnNames.ModificationDate, element.DateAndTime);
 
-                                this.DataSoruce.Rows.Add(rowElement);
+                                this.DataSource.Rows.Add(rowElement);
 
                             }
                         }
@@ -477,10 +477,10 @@ namespace NaturalnieApp.Forms
 
         private void bPrint_Click(object sender, EventArgs e)
         {
-            DataRow[] rowsToPrint = this.DataSoruce.Select(this.DataSoruce.DefaultView.RowFilter);
+            DataRow[] rowsToPrint = this.DataSource.Select(this.DataSource.DefaultView.RowFilter);
 
-            PrinterRelated.PrintFromRowsByProductId(this.DymoPrinter, rowsToPrint, this.DataSoruce.Columns[ColumnNames.ProductId].Ordinal,
-                this.DataSoruce.Columns[ColumnNames.NumberOfCopies].Ordinal, this.databaseCommands);
+            PrinterRelated.PrintFromRowsByProductId(this.DymoPrinter, rowsToPrint, this.DataSource.Columns[ColumnNames.ProductId].Ordinal,
+                this.DataSource.Columns[ColumnNames.NumberOfCopies].Ordinal, this.databaseCommands);
 
             this.DymoPrinter = null;
 
