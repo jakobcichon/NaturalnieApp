@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -352,6 +353,12 @@ namespace NaturalnieApp.Forms.Common
 
             //Initialize properties
             this.Properties = new PropertiesClass();
+
+            //Test
+            EventManager testClass = new EventManager("SelectedIndexChanged", typeof(ComboBox));
+            testClass.RegisterObject(this.cbBarcodes);
+
+            //EndTest
         }
 
         //Mathod used to adjusted search bar appearance
@@ -514,6 +521,7 @@ namespace NaturalnieApp.Forms.Common
         //Method used to select entity
         private void SelectEntity(SelectedEnt entityToSelect)
         {
+            BlockDelegates();
 
             if (entityToSelect != null)
             {
@@ -559,6 +567,8 @@ namespace NaturalnieApp.Forms.Common
 
 
             }
+
+            UnblockDelegates();
 
             if (entityToSelect == null)
             {
@@ -741,6 +751,20 @@ namespace NaturalnieApp.Forms.Common
         }
 
         //Private methods
+        //Test!!!
+        private void BlockDelegates()
+        {
+            this.cbBarcodes.SelectedIndexChanged -= cbBarcodes_SelectedIndexChanged;
+            this.cbManufacturers.SelectedIndexChanged -= cbManufacturers_SelectedIndexChanged;
+        }
+
+        private void UnblockDelegates()
+        {
+            this.cbBarcodes.SelectedIndexChanged += cbBarcodes_SelectedIndexChanged;
+            this.cbManufacturers.SelectedIndexChanged += cbManufacturers_SelectedIndexChanged;
+        }
+
+        //End test !!
         private void ShowLoadingBar()
         {
             this.cbManufacturers.Enabled = false;
@@ -905,6 +929,59 @@ namespace NaturalnieApp.Forms.Common
                 };
 
                 this.OnCopyButtonClick(args);
+            }
+        }
+    }
+
+    class EventManager
+    {
+        string EventName { get; set; }
+        Type SupervisedType { get; set; }
+        List<object> RegisteredObjectsList { get; set; } 
+
+        public EventManager(string eventName, Type supervisedType)
+        {
+            this.EventName = eventName;
+            this.SupervisedType = supervisedType;
+            this.RegisteredObjectsList = new List<object>();
+
+        }
+
+        public void RegisterObject(object objectToRegister)
+        {
+            //Check object type
+            this.CheckObjectType(objectToRegister);
+
+            //Add object to the list
+            this.RegisteredObjectsList.Add(objectToRegister);
+
+            GetDelegateInvocationList(objectToRegister, this.EventName);
+
+        }
+
+        private static void GetDelegateInvocationList(object objectToWorkOn, string eventName)
+        {
+            // Fetch the MethodInfo array using reflection API
+            EventInfo searchEvent = objectToWorkOn.GetType().GetRuntimeEvent(eventName);
+            Type eventType = searchEvent.EventHandlerType;
+            FieldInfo fieldInfo = objectToWorkOn.GetType().GetField(("Event_" + eventName).ToUpper(), BindingFlags.NonPublic | BindingFlags.Static);
+            object eventKey = fieldInfo.GetValue(objectToWorkOn);
+            PropertyInfo propertyInfo = objectToWorkOn.GetType().GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
+            EventHandlerList eventHandlerList = propertyInfo.GetValue(objectToWorkOn, new object[] { }) as EventHandlerList;
+            var eventHandler = eventHandlerList[eventKey] as Delegate;
+            Delegate[] invocationList = eventHandler.GetInvocationList();
+            ;
+        }
+
+
+        private void CheckObjectType(object objectToCheck)
+        {
+            if (objectToCheck == null) throw new ArgumentNullException();
+            else if (objectToCheck.GetType() != this.SupervisedType)
+            {
+                string text = String.Format("Wrong object type! Expected: {0}; Given: {1}", this.SupervisedType.ToString(),
+                    objectToCheck.GetType().ToString());
+                throw new ArgumentException(text);
             }
         }
     }
