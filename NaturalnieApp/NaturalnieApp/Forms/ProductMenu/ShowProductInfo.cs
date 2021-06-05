@@ -1012,14 +1012,19 @@ namespace NaturalnieApp.Forms
 
             FillWithDataFromObject(e.SelectedProduct, e.SelectedSupplier, e.SelectedManufacturer, e.SelectedTax);
         }
-
-
-        #endregion
-
         private void ucSearchBar_CopyButtonClick(object sender, Common.SearchBarTemplate.CopyButtonClickEventArgs e)
         {
             CopiedProduct p = CopiedProduct.GetInstance();
             p.SetEnts(e.SelectedProduct, e.SelectedManufacturer, e.SelectedSupplier, e.SelectedTax);
         }
+
+        private void ucSearchBar_PasteButtonClick(object sender, EventArgs e)
+        {
+            CopiedProduct p = CopiedProduct.GetInstance();
+            (sender as Common.SearchBarTemplate).SelectEntityByName(p.GetEnts().productEntity.ProductName);
+        }
+
+
+        #endregion
     }
 }

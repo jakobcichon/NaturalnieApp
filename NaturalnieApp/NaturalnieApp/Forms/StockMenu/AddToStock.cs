@@ -37,9 +37,6 @@ namespace NaturalnieApp.Forms
 
         //Printer instance
         Printer DymoPrinter;
-
-        //Search bard
-        private SearchBarTemplate SearchBar { get; set; }
         #endregion
 
         #region Class constructor
@@ -47,12 +44,6 @@ namespace NaturalnieApp.Forms
         {
             //Call init component
             InitializeComponent();
-
-            //Initialize search bard template
-            this.SearchBar = new SearchBarTemplate(true);
-            this.pSearchBar.Controls.Add(this.SearchBar);
-            this.SearchBar.GenericButtonClick += SearchBar_GenericButtonClick;
-            this.SearchBar.NewEntSelected += SearchBar_NewEntSelected;
 
             //Initialize database comands
             this.databaseCommands = commandsObj;
@@ -320,7 +311,7 @@ namespace NaturalnieApp.Forms
             if (this.DataSource.Columns[e.ColumnIndex].ColumnName == this.ColumnNames.ProductName)
             {
                 entityName = this.DataSource.Rows[e.RowIndex].Field<string>(e.ColumnIndex);
-                this.SearchBar.SelectEntityByName(entityName);
+                this.ucSearchBar.SelectEntityByName(entityName);
             }
 
 
@@ -402,7 +393,7 @@ namespace NaturalnieApp.Forms
                     this.SelectedFromBarcode = true;
                 }
                 //Get index
-                if (!this.SearchBar.SelectBarcode(barcodeToSearch))
+                if (!this.ucSearchBar.SelectBarcode(barcodeToSearch))
                 {
                     MessageBox.Show("Brak kodu '" + e.RecognizedBarcodeValue + "' na liście kodów kreskowych", "Brak kodu", 
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -617,7 +608,7 @@ namespace NaturalnieApp.Forms
         }
         private void bUpdate_Click(object sender, EventArgs e)
         {
-            this.SearchBar.UpdateCurrentEntity();
+            this.ucSearchBar.UpdateCurrentEntity();
 
             cbAddWithEveryScanCycle.Checked = false;
 
@@ -649,7 +640,7 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Search bar events
         #region Search bar events
-        private void SearchBar_NewEntSelected(object sender, SearchBarTemplate.NewEntSelectedEventArgs e)
+        private void ucSearchBar_NewEntSelected(object sender, SearchBarTemplate.NewEntSelectedEventArgs e)
         {
             //Set local variables
             this.ProductEntity = e.SelectedProduct;
@@ -679,7 +670,7 @@ namespace NaturalnieApp.Forms
             this.SelectedFromBarcode = false;
 
         }
-        private void SearchBar_GenericButtonClick(object sender, SearchBarTemplate.GenericButtonClickEventArgs e)
+        private void ucSearchBar_GenericButtonClick(object sender, SearchBarTemplate.GenericButtonClickEventArgs e)
         {
             try
             {
@@ -701,6 +692,11 @@ namespace NaturalnieApp.Forms
 
             //Select next control
             UpdateControl(ref tbDummyForCtrl);
+        }
+        private void ucSearchBar_CopyButtonClick(object sender, SearchBarTemplate.CopyButtonClickEventArgs e)
+        {
+            CopiedProduct p = CopiedProduct.GetInstance();
+            p.SetEnts(e.SelectedProduct, e.SelectedManufacturer, e.SelectedSupplier, e.SelectedTax);
         }
         #endregion
     }

@@ -418,13 +418,17 @@ namespace NaturalnieApp.Forms
                 AddToDataGrid(e.SelectedProduct, e.SelectedManufacturer, e.SelectedTax);
             }
         }
-
         private void SearchBar_NewEntSelectedByAdditionalRequest(object sender, Common.SearchBarTemplate.NewEntSelectedEventArgs e)
         {
             if (e.SelectedProduct != null)
             {
                 AddToDataGrid(e.SelectedProduct, e.SelectedManufacturer, e.SelectedTax);
             }
+        }
+        private void ucSearchBar_CopyButtonClick(object sender, Common.SearchBarTemplate.CopyButtonClickEventArgs e)
+        {
+            CopiedProduct p = CopiedProduct.GetInstance();
+            p.SetEnts(e.SelectedProduct, e.SelectedManufacturer, e.SelectedSupplier, e.SelectedTax);
         }
         #endregion
 

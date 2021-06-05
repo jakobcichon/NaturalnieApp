@@ -912,6 +912,7 @@ namespace NaturalnieApp.Forms
             this.ucSearchBar.TabIndex = 8;
             this.ucSearchBar.NewEntSelected += new NaturalnieApp.Forms.Common.SearchBarTemplate.NewEntSelectedEventHandler(this.ucSearchBar_NewEntSelected);
             this.ucSearchBar.CopyButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.CopyButtonClickEventHandler(this.ucSearchBar_CopyButtonClick);
+            this.ucSearchBar.PasteButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.PasteButtonClickEventHandler(this.ucSearchBar_PasteButtonClick);
             // 
             // ShowProductInfo
             // 

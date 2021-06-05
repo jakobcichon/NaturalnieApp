@@ -29,7 +29,6 @@ namespace NaturalnieApp.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            NaturalnieApp.Forms.Common.SearchBarTemplate.PropertiesClass propertiesClass3 = new NaturalnieApp.Forms.Common.SearchBarTemplate.PropertiesClass();
             this.SearchBar = new NaturalnieApp.Forms.Common.SearchBarTemplate();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.bPrint = new System.Windows.Forms.Button();
@@ -52,9 +51,9 @@ namespace NaturalnieApp.Forms
             this.SearchBar.Location = new System.Drawing.Point(0, 36);
             this.SearchBar.MinimumSize = new System.Drawing.Size(920, 106);
             this.SearchBar.Name = "SearchBar";
-            this.SearchBar.ShowGenericButton();
             this.SearchBar.Size = new System.Drawing.Size(920, 106);
             this.SearchBar.TabIndex = 6;
+            this.SearchBar.CopyButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.CopyButtonClickEventHandler(this.ucSearchBar_CopyButtonClick);
             this.SearchBar.GenericButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.GenericButtonClickEventHandler(this.SearchBar_GenericButtonClick);
             this.SearchBar.NewEntSelectedByAdditionalRequest += new NaturalnieApp.Forms.Common.SearchBarTemplate.NewEntSelectedByAdditionalRequestEventHandler(this.SearchBar_NewEntSelectedByAdditionalRequest);
             // 

@@ -62,6 +62,21 @@ namespace NaturalnieApp.Forms.Common
 
         public event CopyButtonClickEventHandler CopyButtonClick;
 
+        //Paste button pressed event
+
+        public delegate void PasteButtonClickEventHandler(Object sender, EventArgs e);
+
+        protected virtual void OnPasteButtonClick(EventArgs e)
+        {
+            PasteButtonClickEventHandler handler = PasteButtonClick;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        public event PasteButtonClickEventHandler PasteButtonClick;
+
         //Generic button click event
         public class GenericButtonClickEventArgs : EventArgs
         {
@@ -264,11 +279,9 @@ namespace NaturalnieApp.Forms.Common
         private Dictionary<string, int> BarcodesToDisplayDict { get; set; }
 
         //Add auxiliary variables to check if selected new index of combo box
-        private string PreviouslySelectedManufacturer { get; set; }
         private string PreviouslySelectedProduct { get; set; }
 
         //Auiliary variables to  bypass calling selected index chnaged if entity was selected by program
-        private bool UpdatingDataSources { get; set; }
         private bool SelectEntByAdditionalRequest { get; set; }
 
         //Database context
@@ -331,7 +344,6 @@ namespace NaturalnieApp.Forms.Common
             InitializeBackgroundWorker();
 
             //Initialize auxiliary variables
-            this.PreviouslySelectedManufacturer = "";
             this.PreviouslySelectedProduct = "";
             this.ActualSelectedEnt = new SelectedEnt();
 
@@ -354,11 +366,6 @@ namespace NaturalnieApp.Forms.Common
             //Initialize properties
             this.Properties = new PropertiesClass();
 
-            //Test
-            EventManager testClass = new EventManager("SelectedIndexChanged", typeof(ComboBox));
-            testClass.RegisterObject(this.cbBarcodes);
-
-            //EndTest
         }
 
         //Mathod used to adjusted search bar appearance
@@ -445,6 +452,8 @@ namespace NaturalnieApp.Forms.Common
         // This event handler is where the actual, potentially time-consuming work is done.
         private void DbBackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            this.BlockAllDelegates();
+
             try
             {
                 //Get all data from DB
@@ -489,6 +498,8 @@ namespace NaturalnieApp.Forms.Common
             {
                 MessageBox.Show(ex.Message);
             }
+
+            this.UnblockDelegates();
         }
         #endregion
 
@@ -519,9 +530,9 @@ namespace NaturalnieApp.Forms.Common
         }
 
         //Method used to select entity
-        private void SelectEntity(SelectedEnt entityToSelect)
+        private void SelectEntity(SelectedEnt entityToSelect, bool withoutManufacturer = false)
         {
-            BlockDelegates();
+            this.BlockAllDelegates();
 
             if (entityToSelect != null)
             {
@@ -529,10 +540,8 @@ namespace NaturalnieApp.Forms.Common
                 string manufacturerName = this.FullManufacturersDict.Where(e => e.Value == entityToSelect.ManufacturerId)
                     .Select(e => e.Key).FirstOrDefault();
 
-                //Set flag to bypass events action
-                this.UpdatingDataSources = true;
-
-                if (this.cbManufacturers.SelectedItem == null || manufacturerName != this.cbManufacturers.SelectedItem.ToString())
+                if ((this.cbManufacturers.SelectedItem == null || manufacturerName != this.cbManufacturers.SelectedItem.ToString()) 
+                    && !withoutManufacturer)
                     this.cbManufacturers.SelectedItem = manufacturerName;
                 if (this.cbProducts.SelectedItem == null || entityToSelect.ProductName != this.cbProducts.SelectedItem.ToString())
                     this.cbProducts.SelectedItem = entityToSelect.ProductName;
@@ -548,9 +557,6 @@ namespace NaturalnieApp.Forms.Common
                     this.TaxEntity = fullProductInfo.TaxEnt;
                     this.SupplierEntity = fullProductInfo.SupplierEnt;
 
-                    //Reset flag to bypass events action
-                    this.UpdatingDataSources = false;
-
                     //Fire an event
                     NewEntSelectedEventArgs args = new NewEntSelectedEventArgs();
                     args.SelectedProduct = this.ProductEntity;
@@ -564,17 +570,10 @@ namespace NaturalnieApp.Forms.Common
                 {
                     entityToSelect = null;
                 }
-
-
             }
-
-            UnblockDelegates();
 
             if (entityToSelect == null)
             {
-
-                //Set flag to bypass events action
-                this.UpdatingDataSources = true;
 
                 this.cbProducts.SelectedItem = null;
                 this.cbBarcodes.SelectedItem = null;
@@ -584,10 +583,9 @@ namespace NaturalnieApp.Forms.Common
                 this.ProductEntity = null;
                 this.TaxEntity = null;
                 this.SupplierEntity = null;
-
-                //Reset flag to bypass events action
-                this.UpdatingDataSources = false;
             }
+
+            this.UnblockDelegates();
 
             //Update control
             this.UpdateControl(ref this.tbDummyForCtrl);
@@ -608,8 +606,7 @@ namespace NaturalnieApp.Forms.Common
         {
             List<string> dataToList;
 
-            //Set flag to bypass events action
-            this.UpdatingDataSources = true;
+            this.BlockAllDelegates();
 
             //Update manufacturers list
             if (manufacturersData != null)
@@ -644,8 +641,7 @@ namespace NaturalnieApp.Forms.Common
                 this.cbBarcodes.DataSource = dataToList;
             }
 
-            //Reset flag to bypass events action
-            this.UpdatingDataSources = false;
+            this.UnblockDelegates();
 
             //Update control
             this.UpdateControl(ref this.tbDummyForCtrl);
@@ -665,13 +661,11 @@ namespace NaturalnieApp.Forms.Common
             //Update
             if(!this.DbBackgroundWorker.IsBusy) this.DbBackgroundWorker.RunWorkerAsync();
         }
-
         public void ShowGenericButton()
         {
             this.Properties.GenButtonExist = true;
             AdjustSearchBarAppearance();
         }
-
         public void HideGenericButton()
         {
             this.Properties.GenButtonExist = false;
@@ -752,19 +746,25 @@ namespace NaturalnieApp.Forms.Common
 
         //Private methods
         //Test!!!
-        private void BlockDelegates()
+        private void BlockDelegatesExcept(object excludedObject)
         {
-            this.cbBarcodes.SelectedIndexChanged -= cbBarcodes_SelectedIndexChanged;
-            this.cbManufacturers.SelectedIndexChanged -= cbManufacturers_SelectedIndexChanged;
+            if(this.cbBarcodes != excludedObject) this.cbBarcodes.SelectedIndexChanged -= cbBarcodes_SelectedIndexChanged;
+            if(this.cbManufacturers != excludedObject) this.cbManufacturers.SelectedIndexChanged -= cbManufacturers_SelectedIndexChanged;
+            if (this.cbProducts != excludedObject) this.cbProducts.SelectedIndexChanged -= cbProducts_SelectedIndexChanged;
         }
-
+        private void BlockAllDelegates()
+        {
+            this.cbBarcodes.SelectedIndexChanged -= this.cbBarcodes_SelectedIndexChanged;
+            this.cbManufacturers.SelectedIndexChanged -= this.cbManufacturers_SelectedIndexChanged;
+            this.cbProducts.SelectedIndexChanged -= this.cbProducts_SelectedIndexChanged;
+            ;
+        }
         private void UnblockDelegates()
         {
-            this.cbBarcodes.SelectedIndexChanged += cbBarcodes_SelectedIndexChanged;
-            this.cbManufacturers.SelectedIndexChanged += cbManufacturers_SelectedIndexChanged;
+            this.cbBarcodes.SelectedIndexChanged += this.cbBarcodes_SelectedIndexChanged;
+            this.cbManufacturers.SelectedIndexChanged += this.cbManufacturers_SelectedIndexChanged;
+            this.cbProducts.SelectedIndexChanged += this.cbProducts_SelectedIndexChanged;
         }
-
-        //End test !!
         private void ShowLoadingBar()
         {
             this.cbManufacturers.Enabled = false;
@@ -801,41 +801,42 @@ namespace NaturalnieApp.Forms.Common
             ComboBox localSender = (ComboBox)sender;
 
             //Check if data source exist
-            if (localSender.DataSource != null && !this.UpdatingDataSources)
+            if (localSender.DataSource != null)
             {
                 string selectedItem = localSender.SelectedItem.ToString();
 
-                //Check auxiliary variables
-                if (this.PreviouslySelectedManufacturer != selectedItem)
+                //If selected index has changed, filter barcodes and product names
+                if (selectedItem == "Wszyscy")
                 {
-
-                    //If selected index has changed, filter barcodes and product names
-                    if (selectedItem == "Wszyscy")
-                    {
-                        UpdateDataSources(this.FullManufacturersDict, this.FullProductsDict, this.FullBarcodesDict);
-                    }
-                    else
-                    {
-                        //Get manufacturer id
-                        int manufacturerId;
-                        this.FullManufacturersDict.TryGetValue(selectedItem, out manufacturerId);
-
-                        //Filter dictionaries
-                        this.ProductsToDisplayDict = this.FullProductsDict.Where(el => el.Value == manufacturerId).ToDictionary(i => i.Key, i => i.Value);
-                        this.BarcodesToDisplayDict = this.FullBarcodesDict.Where(el => el.Value == manufacturerId).ToDictionary(i => i.Key, i => i.Value);
-
-                        //Update data sources
-                        UpdateDataSources(productsData: this.ProductsToDisplayDict, barcodesData: this.BarcodesToDisplayDict);
-
-                    }
-
-                    //Assgine new value to the auxiliary variable
-                    this.PreviouslySelectedManufacturer = selectedItem;
+                    UpdateDataSources(this.FullManufacturersDict, this.FullProductsDict, this.FullBarcodesDict);
 
                     //Get actual entity
                     this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(this.cbProducts.SelectedItem.ToString());
-                    this.SelectEntity(null);
+
+                    //Select entity on the other combo boxes
+                    this.SelectEntity(this.ActualSelectedEnt, true);
                 }
+                else
+                {
+                    //Get manufacturer id
+                    int manufacturerId;
+                    this.FullManufacturersDict.TryGetValue(selectedItem, out manufacturerId);
+
+                    //Filter dictionaries
+                    this.ProductsToDisplayDict = this.FullProductsDict.Where(el => el.Value == manufacturerId).ToDictionary(i => i.Key, i => i.Value);
+                    this.BarcodesToDisplayDict = this.FullBarcodesDict.Where(el => el.Value == manufacturerId).ToDictionary(i => i.Key, i => i.Value);
+
+                    //Update data sources
+                    UpdateDataSources(productsData: this.ProductsToDisplayDict, barcodesData: this.BarcodesToDisplayDict);
+
+                    //Get actual entity
+                    this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(this.cbProducts.SelectedItem.ToString());
+
+                    //Select entity on the other combo boxes
+                    this.SelectEntity(this.ActualSelectedEnt);
+
+                }
+
             }
            
         }
@@ -853,16 +854,14 @@ namespace NaturalnieApp.Forms.Common
             //Cast sender
             ComboBox localSender = (ComboBox)sender;
 
-            if (!this.UpdatingDataSources)
-            {
-                string selectedItem = localSender.SelectedItem.ToString();
+            string selectedItem = localSender.SelectedItem.ToString();
 
-                //Get actual entity
-                this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(selectedItem);
+            //Get actual entity
+            this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(selectedItem);
 
-                //Select entity on the other combo boxes
-                this.SelectEntity(this.ActualSelectedEnt);
-            }
+            //Select entity on the other combo boxes
+            this.SelectEntity(this.ActualSelectedEnt);
+
         }
         private void cbProducts_TextChanged(object sender, EventArgs e)
         {
@@ -878,16 +877,15 @@ namespace NaturalnieApp.Forms.Common
             //Cast sender
             ComboBox localSender = (ComboBox)sender;
 
-            if (!this.UpdatingDataSources)
-            {
-                string selectedItem = localSender.SelectedItem.ToString();
 
-                //Get actual entity
-                this.ActualSelectedEnt = this.AllEntsRelation.GetFullEntByBarcode(selectedItem);
+            string selectedItem = localSender.SelectedItem.ToString();
 
-                //Select entity on the other combo boxes
-                this.SelectEntity(this.ActualSelectedEnt);
-            }
+            //Get actual entity
+            this.ActualSelectedEnt = this.AllEntsRelation.GetFullEntByBarcode(selectedItem);
+
+            //Select entity on the other combo boxes
+            this.SelectEntity(this.ActualSelectedEnt);
+
         }
         private void cbBarcodes_TextChanged(object sender, EventArgs e)
         {
@@ -931,60 +929,10 @@ namespace NaturalnieApp.Forms.Common
                 this.OnCopyButtonClick(args);
             }
         }
-    }
-
-    class EventManager
-    {
-        string EventName { get; set; }
-        Type SupervisedType { get; set; }
-        List<object> RegisteredObjectsList { get; set; } 
-
-        public EventManager(string eventName, Type supervisedType)
+        private void bPast_Click(object sender, EventArgs e)
         {
-            this.EventName = eventName;
-            this.SupervisedType = supervisedType;
-            this.RegisteredObjectsList = new List<object>();
-
-        }
-
-        public void RegisterObject(object objectToRegister)
-        {
-            //Check object type
-            this.CheckObjectType(objectToRegister);
-
-            //Add object to the list
-            this.RegisteredObjectsList.Add(objectToRegister);
-
-            GetDelegateInvocationList(objectToRegister, this.EventName);
-
-        }
-
-        private static void GetDelegateInvocationList(object objectToWorkOn, string eventName)
-        {
-            // Fetch the MethodInfo array using reflection API
-            EventInfo searchEvent = objectToWorkOn.GetType().GetRuntimeEvent(eventName);
-            Type eventType = searchEvent.EventHandlerType;
-            FieldInfo fieldInfo = objectToWorkOn.GetType().GetField(("Event_" + eventName).ToUpper(), BindingFlags.NonPublic | BindingFlags.Static);
-            object eventKey = fieldInfo.GetValue(objectToWorkOn);
-            PropertyInfo propertyInfo = objectToWorkOn.GetType().GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
-            EventHandlerList eventHandlerList = propertyInfo.GetValue(objectToWorkOn, new object[] { }) as EventHandlerList;
-            var eventHandler = eventHandlerList[eventKey] as Delegate;
-            Delegate[] invocationList = eventHandler.GetInvocationList();
-            ;
-        }
-
-
-        private void CheckObjectType(object objectToCheck)
-        {
-            if (objectToCheck == null) throw new ArgumentNullException();
-            else if (objectToCheck.GetType() != this.SupervisedType)
-            {
-                string text = String.Format("Wrong object type! Expected: {0}; Given: {1}", this.SupervisedType.ToString(),
-                    objectToCheck.GetType().ToString());
-                throw new ArgumentException(text);
-            }
+            this.OnPasteButtonClick(EventArgs.Empty);
         }
     }
-
 
 }

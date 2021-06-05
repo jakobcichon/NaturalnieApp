@@ -276,9 +276,6 @@
     <Compile Include="Forms\Common\SearchBarTemplate.Designer.cs">
       <DependentUpon>SearchBarTemplate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Common\SearchBarTemplate2.xaml.cs">
-      <DependentUpon>SearchBarTemplate2.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Common\StatusBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -511,12 +508,6 @@
     <None Include="Resources\cashRegisterExchange.gif" />
     <None Include="Resources\DbStatusNok.png" />
     <None Include="Resources\DbStatusOK.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Forms\Common\SearchBarTemplate2.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />

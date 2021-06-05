@@ -48,6 +48,7 @@ namespace NaturalnieApp.Forms.Common
             this.pManufacturer = new System.Windows.Forms.TableLayoutPanel();
             this.lManufacturer = new System.Windows.Forms.Label();
             this.cbManufacturers = new System.Windows.Forms.ComboBox();
+            this.bPast = new System.Windows.Forms.Button();
             this.gbProductSelection.SuspendLayout();
             this.tpLoadingBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoadingBar)).BeginInit();
@@ -59,6 +60,7 @@ namespace NaturalnieApp.Forms.Common
             // gbProductSelection
             // 
             this.gbProductSelection.Controls.Add(this.bCopy);
+            this.gbProductSelection.Controls.Add(this.bPast);
             this.gbProductSelection.Controls.Add(this.bGenericButton);
             this.gbProductSelection.Controls.Add(this.tpLoadingBar);
             this.gbProductSelection.Controls.Add(this.tbDummyForCtrl);
@@ -82,7 +84,8 @@ namespace NaturalnieApp.Forms.Common
             this.bCopy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bCopy.ForeColor = System.Drawing.Color.Transparent;
             this.bCopy.Image = global::NaturalnieApp.Properties.Resources.copy;
-            this.bCopy.Location = new System.Drawing.Point(889, 2);
+            this.bCopy.Location = new System.Drawing.Point(889, 0);
+            this.bCopy.MaximumSize = new System.Drawing.Size(30, 30);
             this.bCopy.Name = "bCopy";
             this.bCopy.Size = new System.Drawing.Size(30, 30);
             this.bCopy.TabIndex = 12;
@@ -304,6 +307,18 @@ namespace NaturalnieApp.Forms.Common
             this.cbManufacturers.SelectedIndexChanged += new System.EventHandler(this.cbManufacturers_SelectedIndexChanged);
             this.cbManufacturers.TextChanged += new System.EventHandler(this.cbManufacturers_TextChanged);
             // 
+            // bPast
+            // 
+            this.bPast.FlatAppearance.BorderSize = 0;
+            this.bPast.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bPast.Image = global::NaturalnieApp.Properties.Resources.past;
+            this.bPast.Location = new System.Drawing.Point(860, 0);
+            this.bPast.Name = "bPast";
+            this.bPast.Size = new System.Drawing.Size(30, 30);
+            this.bPast.TabIndex = 9;
+            this.bPast.UseVisualStyleBackColor = true;
+            this.bPast.Click += new System.EventHandler(this.bPast_Click);
+            // 
             // SearchBarTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -347,5 +362,6 @@ namespace NaturalnieApp.Forms.Common
         private System.Windows.Forms.Label lLoadingBar;
         private System.Windows.Forms.Button bGenericButton;
         private System.Windows.Forms.Button bCopy;
+        private System.Windows.Forms.Button bPast;
     }
 }

@@ -40,7 +40,6 @@ namespace NaturalnieApp.Forms
             this.bClose = new System.Windows.Forms.Button();
             this.cbAddWithEveryScanCycle = new System.Windows.Forms.CheckBox();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.pSearchBar = new System.Windows.Forms.Panel();
             this.tpMainLayout = new System.Windows.Forms.TableLayoutPanel();
             this.pBottomPanel = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -64,6 +63,7 @@ namespace NaturalnieApp.Forms
             this.lQuantity = new System.Windows.Forms.Label();
             this.tbQuantity = new System.Windows.Forms.TextBox();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
+            this.ucSearchBar = new NaturalnieApp.Forms.Common.SearchBarTemplate();
             this.pHeader.SuspendLayout();
             this.pButtonsPanel.SuspendLayout();
             this.tpMainLayout.SuspendLayout();
@@ -193,7 +193,7 @@ namespace NaturalnieApp.Forms
             this.cbAddWithEveryScanCycle.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbAddWithEveryScanCycle.Location = new System.Drawing.Point(584, 4);
             this.cbAddWithEveryScanCycle.Name = "cbAddWithEveryScanCycle";
-            this.cbAddWithEveryScanCycle.Size = new System.Drawing.Size(157, 24);
+            this.cbAddWithEveryScanCycle.Size = new System.Drawing.Size(152, 24);
             this.cbAddWithEveryScanCycle.TabIndex = 3;
             this.cbAddWithEveryScanCycle.Text = "Dodaj przy odczycie";
             this.cbAddWithEveryScanCycle.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -209,15 +209,6 @@ namespace NaturalnieApp.Forms
             this.panel5.Size = new System.Drawing.Size(298, 10);
             this.panel5.TabIndex = 0;
             // 
-            // pSearchBar
-            // 
-            this.pSearchBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pSearchBar.Location = new System.Drawing.Point(0, 30);
-            this.pSearchBar.Margin = new System.Windows.Forms.Padding(5);
-            this.pSearchBar.Name = "pSearchBar";
-            this.pSearchBar.Size = new System.Drawing.Size(920, 106);
-            this.pSearchBar.TabIndex = 36;
-            // 
             // tpMainLayout
             // 
             this.tpMainLayout.ColumnCount = 1;
@@ -225,7 +216,6 @@ namespace NaturalnieApp.Forms
             this.tpMainLayout.Controls.Add(this.pBottomPanel, 0, 2);
             this.tpMainLayout.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tpMainLayout.Controls.Add(this.advancedDataGridView1, 0, 1);
-            this.tpMainLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tpMainLayout.Location = new System.Drawing.Point(0, 136);
             this.tpMainLayout.Name = "tpMainLayout";
             this.tpMainLayout.RowCount = 3;
@@ -438,7 +428,7 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 124F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 65F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 106F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 111F));
             this.tableLayoutPanel4.Controls.Add(this.chbExpDateReq, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.dtpExpirationDate, 3, 0);
             this.tableLayoutPanel4.Controls.Add(this.lDateOfAccept, 0, 0);
@@ -520,7 +510,7 @@ namespace NaturalnieApp.Forms
             this.lQuantity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
             this.lQuantity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lQuantity.Location = new System.Drawing.Point(747, 3);
+            this.lQuantity.Location = new System.Drawing.Point(742, 3);
             this.lQuantity.Margin = new System.Windows.Forms.Padding(2);
             this.lQuantity.Name = "lQuantity";
             this.lQuantity.Size = new System.Drawing.Size(61, 26);
@@ -532,10 +522,10 @@ namespace NaturalnieApp.Forms
             // 
             this.tbQuantity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbQuantity.Location = new System.Drawing.Point(813, 3);
+            this.tbQuantity.Location = new System.Drawing.Point(808, 3);
             this.tbQuantity.Margin = new System.Windows.Forms.Padding(2);
             this.tbQuantity.Name = "tbQuantity";
-            this.tbQuantity.Size = new System.Drawing.Size(102, 26);
+            this.tbQuantity.Size = new System.Drawing.Size(107, 26);
             this.tbQuantity.TabIndex = 2;
             this.tbQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbQuantity.Validating += new System.ComponentModel.CancelEventHandler(this.tbQuantity_Validating);
@@ -559,6 +549,21 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.advancedDataGridView1_RowsAdded);
             this.advancedDataGridView1.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.advancedDataGridView1_UserDeletedRow);
             // 
+            // ucSearchBar
+            // 
+            this.ucSearchBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
+            this.ucSearchBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ucSearchBar.ForeColor = System.Drawing.Color.Black;
+            this.ucSearchBar.IsBussy = false;
+            this.ucSearchBar.Location = new System.Drawing.Point(0, 30);
+            this.ucSearchBar.MinimumSize = new System.Drawing.Size(920, 106);
+            this.ucSearchBar.Name = "ucSearchBar";
+            this.ucSearchBar.Size = new System.Drawing.Size(920, 660);
+            this.ucSearchBar.TabIndex = 39;
+            this.ucSearchBar.NewEntSelected += new NaturalnieApp.Forms.Common.SearchBarTemplate.NewEntSelectedEventHandler(this.ucSearchBar_NewEntSelected);
+            this.ucSearchBar.CopyButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.CopyButtonClickEventHandler(this.ucSearchBar_CopyButtonClick);
+            this.ucSearchBar.GenericButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.GenericButtonClickEventHandler(this.ucSearchBar_GenericButtonClick);
+            // 
             // AddToStock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -567,7 +572,7 @@ namespace NaturalnieApp.Forms
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Controls.Add(this.tpMainLayout);
             this.Controls.Add(this.pButtonsPanel);
-            this.Controls.Add(this.pSearchBar);
+            this.Controls.Add(this.ucSearchBar);
             this.Controls.Add(this.pHeader);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.DoubleBuffered = true;
@@ -611,7 +616,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TextBox tbDummyForCtrl;
         private System.Windows.Forms.Button bUpdate;
         private System.Windows.Forms.Button bPrint;
-        private System.Windows.Forms.Panel pSearchBar;
         private System.Windows.Forms.Label lName;
         private System.Windows.Forms.TableLayoutPanel tpMainLayout;
         private System.Windows.Forms.Panel pBottomPanel;
@@ -636,5 +640,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lQuantity;
         private System.Windows.Forms.TextBox tbQuantity;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
+        private Common.SearchBarTemplate ucSearchBar;
     }
 }
