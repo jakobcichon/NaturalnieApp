@@ -54,6 +54,7 @@ namespace NaturalnieApp.Forms
             this.SearchBar.Size = new System.Drawing.Size(920, 106);
             this.SearchBar.TabIndex = 6;
             this.SearchBar.CopyButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.CopyButtonClickEventHandler(this.ucSearchBar_CopyButtonClick);
+            this.SearchBar.PasteButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.PasteButtonClickEventHandler(this.ucSearchBar_PasteButtonClick);
             this.SearchBar.GenericButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.GenericButtonClickEventHandler(this.SearchBar_GenericButtonClick);
             this.SearchBar.NewEntSelectedByAdditionalRequest += new NaturalnieApp.Forms.Common.SearchBarTemplate.NewEntSelectedByAdditionalRequestEventHandler(this.SearchBar_NewEntSelectedByAdditionalRequest);
             // 

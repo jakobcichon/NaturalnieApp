@@ -129,6 +129,7 @@ namespace NaturalnieApp.Forms.Common
         public class SelectedEnt
         {
             public int ManufacturerId { get; set; }
+            public int ProductId { get; set; }
             public string ProductName { get; set; }
             public string Barcode { get; set; }
             public string AdditionalBarcode { get; set; }
@@ -211,10 +212,11 @@ namespace NaturalnieApp.Forms.Common
             /// <param name="productName">Product name</param>
             /// <param name="manufacurerId">Manufacturer Id</param>
             /// <param name="barcode">Barcode</param>
-            public void AddEntWithRelations(string productName, int manufacurerId, string barcode, string additionalBarcode)
+            public void AddEntWithRelations(int productId, string productName, int manufacurerId, string barcode, string additionalBarcode)
             {
                 //Prepare object to add
                 SelectedEnt localEnt = new SelectedEnt();
+                localEnt.ProductId = productId;
                 localEnt.ProductName = productName;
                 localEnt.ManufacturerId = manufacurerId;
                 localEnt.Barcode = barcode;
@@ -228,10 +230,19 @@ namespace NaturalnieApp.Forms.Common
             /// Method use to get full ent by product name
             /// </summary>
             /// <param name="productName">Product name/param>
-            /// <returns></returns>
+            /// <returns>SelectedEnt. If not found, returns null</returns>
             public SelectedEnt GetFullEnt(string productName)
             {
                 return this.EntsList.Find(e => e.ProductName == productName);
+            }
+            /// <summary>
+            /// Method use to get full ent by product Id from DB
+            /// </summary>
+            /// <param name="productId">Product name/param>
+            /// <returns>SelectedEnt. If not found, returns null</returns>
+            public SelectedEnt GetFullEnt(int productId)
+            {
+                return this.EntsList.Find(e => e.ProductId == productId);
             }
             /// <summary>
             /// Method use to get full ent by barcode
@@ -243,6 +254,13 @@ namespace NaturalnieApp.Forms.Common
                 SelectedEnt retVal = this.EntsList.Find(e => e.Barcode == barcodeValue);
                 if(retVal == null) retVal = this.EntsList.Find(e => e.AdditionalBarcode == barcodeValue);
                 return retVal;
+            }
+            /// <summary>
+            /// Method used to clear list of all ents
+            /// </summary>
+            public void ClearAll()
+            {
+                this.EntsList.Clear();
             }
         }
         #endregion
@@ -256,9 +274,6 @@ namespace NaturalnieApp.Forms.Common
             public Dictionary<string, int> ManufacturersDict { get; set; }
             //Dictionary for barcodes list <key = manufacturerId, value = barcode>
             public Dictionary<string, int> BarcodesDict { get; set; }
-
-            //List of the tuples
-            public List<(string products, int manufacturersId, string barcodes)> EntsRelaction { get; set; }
         }
 
         //Private fields        
@@ -279,7 +294,7 @@ namespace NaturalnieApp.Forms.Common
         private Dictionary<string, int> BarcodesToDisplayDict { get; set; }
 
         //Add auxiliary variables to check if selected new index of combo box
-        private string PreviouslySelectedProduct { get; set; }
+        private int PreviouslySelectedProductId { get; set; }
 
         //Auiliary variables to  bypass calling selected index chnaged if entity was selected by program
         private bool SelectEntByAdditionalRequest { get; set; }
@@ -344,7 +359,7 @@ namespace NaturalnieApp.Forms.Common
             InitializeBackgroundWorker();
 
             //Initialize auxiliary variables
-            this.PreviouslySelectedProduct = "";
+            this.PreviouslySelectedProductId = -1;
             this.ActualSelectedEnt = new SelectedEnt();
 
             //Initialize autocomplete source
@@ -414,7 +429,6 @@ namespace NaturalnieApp.Forms.Common
         // This event handler is where the actual, potentially time-consuming work is done.
         private void DbBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         { 
-
             try
             {
                 CompleteProductDataFromDatabase productData = new CompleteProductDataFromDatabase();
@@ -427,12 +441,14 @@ namespace NaturalnieApp.Forms.Common
                 List<Manufacturer> manufacturersList = this.DatabaseCommands.GetAllManufacturersEnts();
 
                 //Assigne product data from DB to dictionares
+                this.AllEntsRelation.ClearAll();
                 foreach (Product product in productsList)
                 {
                     productData.ProductsDict.Add(product.ProductName, product.ManufacturerId);
                     productData.BarcodesDict.Add(product.BarCode, product.ManufacturerId);
 
-                    this.AllEntsRelation.AddEntWithRelations(product.ProductName, product.ManufacturerId, product.BarCode, product.BarCodeShort);         
+                    this.AllEntsRelation.AddEntWithRelations(product.Id, product.ProductName, product.ManufacturerId, 
+                        product.BarCode, product.BarCodeShort);         
                 }
 
                 //Assigne manufacturer data from DB to dictionares
@@ -452,8 +468,6 @@ namespace NaturalnieApp.Forms.Common
         // This event handler is where the actual, potentially time-consuming work is done.
         private void DbBackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.BlockAllDelegates();
-
             try
             {
                 //Get all data from DB
@@ -474,16 +488,16 @@ namespace NaturalnieApp.Forms.Common
                 UpdateDataSources(this.ManufacturersToDisplayDict, this.ProductsToDisplayDict, this.BarcodesToDisplayDict);
 
                 //Update current selected entity
-                if (this.PreviouslySelectedProduct == "")
+                if (this.PreviouslySelectedProductId == -1)
                 {
                     //Get actual entity
                     this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(this.cbProducts.SelectedItem.ToString());
-                    this.PreviouslySelectedProduct = this.ActualSelectedEnt.ProductName;
+                    if(this.ActualSelectedEnt != null) this.PreviouslySelectedProductId = this.ActualSelectedEnt.ProductId;
                 }
                 else
                 {
                     //Get actual entity
-                    this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(this.PreviouslySelectedProduct);
+                    this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(this.PreviouslySelectedProductId);
 
                 }
 
@@ -498,8 +512,6 @@ namespace NaturalnieApp.Forms.Common
             {
                 MessageBox.Show(ex.Message);
             }
-
-            this.UnblockDelegates();
         }
         #endregion
 
@@ -656,7 +668,7 @@ namespace NaturalnieApp.Forms.Common
             ShowLoadingBar();
 
             //Write down currently selected enityt
-            this.PreviouslySelectedProduct = this.ActualSelectedEnt.ProductName;
+            this.PreviouslySelectedProductId = this.ActualSelectedEnt.ProductId;
 
             //Update
             if(!this.DbBackgroundWorker.IsBusy) this.DbBackgroundWorker.RunWorkerAsync();
@@ -748,22 +760,21 @@ namespace NaturalnieApp.Forms.Common
         //Test!!!
         private void BlockDelegatesExcept(object excludedObject)
         {
-            if(this.cbBarcodes != excludedObject) this.cbBarcodes.SelectedIndexChanged -= cbBarcodes_SelectedIndexChanged;
-            if(this.cbManufacturers != excludedObject) this.cbManufacturers.SelectedIndexChanged -= cbManufacturers_SelectedIndexChanged;
-            if (this.cbProducts != excludedObject) this.cbProducts.SelectedIndexChanged -= cbProducts_SelectedIndexChanged;
+            if(this.cbBarcodes != excludedObject) this.cbBarcodes.SelectedIndexChanged -= this.cbBarcodes_SelectedIndexChanged;
+            if(this.cbManufacturers != excludedObject) this.cbManufacturers.SelectedIndexChanged -= this.cbManufacturers_SelectedIndexChanged;
+            if (this.cbProducts != excludedObject) this.cbProducts.SelectedIndexChanged -= this.cbProducts_SelectedIndexChanged;
         }
         private void BlockAllDelegates()
         {
             this.cbBarcodes.SelectedIndexChanged -= this.cbBarcodes_SelectedIndexChanged;
             this.cbManufacturers.SelectedIndexChanged -= this.cbManufacturers_SelectedIndexChanged;
             this.cbProducts.SelectedIndexChanged -= this.cbProducts_SelectedIndexChanged;
-            ;
         }
         private void UnblockDelegates()
         {
-            this.cbBarcodes.SelectedIndexChanged += this.cbBarcodes_SelectedIndexChanged;
-            this.cbManufacturers.SelectedIndexChanged += this.cbManufacturers_SelectedIndexChanged;
-            this.cbProducts.SelectedIndexChanged += this.cbProducts_SelectedIndexChanged;
+            this.cbBarcodes.SelectedIndexChanged += new EventHandler(this.cbBarcodes_SelectedIndexChanged);
+            this.cbManufacturers.SelectedIndexChanged += new EventHandler(this.cbManufacturers_SelectedIndexChanged);
+            this.cbProducts.SelectedIndexChanged += new EventHandler(this.cbProducts_SelectedIndexChanged);
         }
         private void ShowLoadingBar()
         {

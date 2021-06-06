@@ -430,6 +430,11 @@ namespace NaturalnieApp.Forms
             CopiedProduct p = CopiedProduct.GetInstance();
             p.SetEnts(e.SelectedProduct, e.SelectedManufacturer, e.SelectedSupplier, e.SelectedTax);
         }
+        private void ucSearchBar_PasteButtonClick(object sender, EventArgs e)
+        {
+            CopiedProduct p = CopiedProduct.GetInstance();
+            (sender as Common.SearchBarTemplate).SelectEntityByName(p.GetEnts().productEntity.ProductName);
+        }
         #endregion
 
 
