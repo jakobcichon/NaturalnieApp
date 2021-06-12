@@ -14,6 +14,7 @@ using System.Data;
 using System.Reflection;
 using System.Linq;
 using System.Diagnostics;
+using System.Collections;
 
 namespace NaturalnieApp.Forms
 {
@@ -101,17 +102,16 @@ namespace NaturalnieApp.Forms
                             List<Manufacturer> productManufacturerList = this.databaseCommands.GetAllManufacturersEnts();
 
                             //Convert to data row
-                            foreach(Manufacturer manufacturer in productManufacturerList)
+                            foreach (Manufacturer manufacturer in productManufacturerList)
                             {
                                 DataRow dataRow = returnDataTable.NewRow();
-                                dataRow.SetField<int>(this.ColumnNames.Id, manufacturer.Id);
                                 dataRow.SetField<string>(this.ColumnNames.Name, manufacturer.Name);
                                 dataRow.SetField<string>(this.ColumnNames.BarcodePrefix, manufacturer.BarcodeEanPrefix);
                                 dataRow.SetField<string>(this.ColumnNames.Info, manufacturer.Info);
                                 returnDataTable.Rows.Add(dataRow);
                             }
 
-                           e.Result = returnDataTable;
+                            e.Result = returnDataTable;
                         }
                         break;
                     case backgroundWorkerTasks.Update:
@@ -123,7 +123,6 @@ namespace NaturalnieApp.Forms
                             foreach (Manufacturer manufacturer in productManufacturerList)
                             {
                                 DataRow dataRow = returnDataTable.NewRow();
-                                dataRow.SetField<int>(this.ColumnNames.Id, manufacturer.Id);
                                 dataRow.SetField<string>(this.ColumnNames.Name, manufacturer.Name);
                                 dataRow.SetField<string>(this.ColumnNames.BarcodePrefix, manufacturer.BarcodeEanPrefix);
                                 dataRow.SetField<string>(this.ColumnNames.Info, manufacturer.Info);
@@ -196,22 +195,12 @@ namespace NaturalnieApp.Forms
         void InitializeDataTableSchema()
         {
             //Initialize daa grid view
-            this.ColumnNames.Id = "Numer w bazie danych";
             this.ColumnNames.Name = "Nazwa";
             this.ColumnNames.BarcodePrefix = "Prefix kodu kreskowego";
             this.ColumnNames.Info = "Informacje";
 
             //Create data source columns
             DataColumn column;
-
-            column = new DataColumn();
-            column.ColumnName = this.ColumnNames.Id;
-            column.DataType = Type.GetType("System.Int32");
-            column.ReadOnly = false;
-            column.Unique = true;
-            column.AllowDBNull = false;
-            this.DataSource.Columns.Add(column);
-            column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.Name;
@@ -254,7 +243,6 @@ namespace NaturalnieApp.Forms
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
         }
         #endregion
-
         private void advancedDataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             //Cast the sender
@@ -270,7 +258,7 @@ namespace NaturalnieApp.Forms
             if (cell.IsInEditMode)
             {
                 //If data empty, check if cell can be empty
-                if((e.FormattedValue.ToString() == "" || e.FormattedValue == null) && !dataSourceColumn.AllowDBNull)
+                if ((e.FormattedValue.ToString() == "" || e.FormattedValue == null) && !dataSourceColumn.AllowDBNull)
                 {
                     e.Cancel = true;
                     row.ErrorText = String.Format("Wartość kolumny '{0}' nie może być pusta!", column.Name);
@@ -298,7 +286,6 @@ namespace NaturalnieApp.Forms
                 }
             }
         }
-
         private void advancedDataGridView1_RowValidated(object sender, DataGridViewCellEventArgs e)
         {
             //Cast the sender
@@ -308,7 +295,6 @@ namespace NaturalnieApp.Forms
             DataGridViewRow row = localSender.Rows[e.RowIndex];
             row.ErrorText = "";
         }
-
         private void advancedDataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             //Cast the sender
@@ -326,12 +312,27 @@ namespace NaturalnieApp.Forms
         #region Buttons events
         private void bSave_Click(object sender, EventArgs e)
         {
- /*           DataTable edited = new DataTable();
-            DataTable added = new DataTable();
-            DataTable deleted = new DataTable();
+            DataTable edited = this.OrginalDataFromDB.Clone();
+            DataTable added = this.OrginalDataFromDB.Clone();
+            DataTable deleted = this.OrginalDataFromDB.Clone();
 
-            GetTableDiff(this.OrginalDataFromDB, this.DataSource, ref edited, ref added, ref deleted);
-            ;*/
+            //Get all differences
+            GetTableDiff(this.ColumnNames.Name, this.OrginalDataFromDB, this.DataSource, ref edited, ref added, ref deleted);
+
+            if(edited.Rows.Count > 0 || added.Rows.Count > 0 || deleted.Rows.Count > 0)
+            {
+                DialogResult result = MessageBox.Show(string.Format("Uwaga! Znaleziono następujące różnice:\n" +
+                    "Zmodifikowano: {0}\n" +
+                    "Usunięto: {1}\n" +
+                    "Dodano: {2}\n" +
+                    "Czy chcesz kontynuować?", edited.Rows.Count.ToString(), deleted.Rows.Count.ToString(), added.Rows.Count.ToString()),
+                    "Modyfikacja producentów", MessageBoxButtons.YesNo);
+
+                if(result == DialogResult.Yes)
+                {
+                    SaveManufacturerTableChangestoDB(edited, added, deleted);
+                }
+            }
         }
 
         private void bUpdate_Click(object sender, EventArgs e)
@@ -361,33 +362,105 @@ namespace NaturalnieApp.Forms
         /// <param name="dtDifferences">DataTable that would give you the difference</param>
         /// <param name="dtAdded">DataTable that would give you the rows added going from dtOld to dtNew</param>
         /// <param name="dtRemoved">DataTable that would give you the rows removed going from dtOld to dtNew</param>
-        public static void GetTableDiff(DataTable dtOld, DataTable dtNew, ref DataTable dtDifferences, ref DataTable dtAdded, ref DataTable dtRemoved)
+        public static void GetTableDiff(string mainIndexName, DataTable dtOld, DataTable dtNew, ref DataTable dtDifferences, ref DataTable dtAdded, ref DataTable dtRemoved)
         {
-            try
+
+            //Temporary variables
+            bool matched;
+
+            dtAdded = dtOld.Clone();
+            dtAdded.Clear();
+            dtRemoved = dtOld.Clone();
+            dtRemoved.Clear();
+
+            //Get index of ID
+            int idColumnIndex = dtOld.Columns.IndexOf(mainIndexName);
+
+            //Throw an exception if no column named "Id" found
+            if (idColumnIndex < 0) throw new MissingMemberException(
+                string.Format("Column named 'Id' does not exist in the {0} table", dtOld.TableName));
+
+            //Loop throught the rows and find deleted or differences
+            foreach (DataRow oldRow in dtOld.Rows)
             {
-                dtAdded = dtOld.Clone();
-                dtAdded.Clear();
-                dtRemoved = dtOld.Clone();
-                dtRemoved.Clear();
-                if (dtNew.Rows.Count > 0) dtDifferences.Merge(dtNew.AsEnumerable().Except(dtOld.AsEnumerable(), DataRowComparer.Default).CopyToDataTable<DataRow>());
-                foreach (DataRow row in dtDifferences.Rows)
+                matched = false;
+
+                //Find deleted
+                foreach (DataRow newRow in dtNew.Rows)
                 {
-                    if (dtOld.AsEnumerable().Any(r => Enumerable.SequenceEqual(r.ItemArray, row.ItemArray))
-                        && !dtNew.AsEnumerable().Any(r => Enumerable.SequenceEqual(r.ItemArray, row.ItemArray)))
+                    if (newRow.ItemArray[idColumnIndex].ToString() == oldRow.ItemArray[idColumnIndex].ToString())
                     {
-                        dtRemoved.Rows.Add(row.ItemArray);
-                    }
-                    else if (dtNew.AsEnumerable().Any(r => Enumerable.SequenceEqual(r.ItemArray, row.ItemArray))
-                        && !dtOld.AsEnumerable().Any(r => Enumerable.SequenceEqual(r.ItemArray, row.ItemArray)))
-                    {
-                        dtAdded.Rows.Add(row.ItemArray);
+                        //Check if not modiefied
+                        if(!oldRow.ItemArray.SequenceEqual(newRow.ItemArray))
+                        {
+                            dtDifferences.Rows.Add(newRow.ItemArray);
+                        }
+
+                        matched = true;
+                        break;
                     }
                 }
+
+                if(!matched) dtRemoved.Rows.Add(oldRow.ItemArray);
             }
-            catch (Exception ex)
+
+            //Loop throught the rows and find added new
+            foreach (DataRow newRow in dtNew.Rows)
             {
-                Debug.WriteLine(ex.ToString());
+                matched = false;
+
+                //Find deleted
+                foreach (DataRow oldRow in dtOld.Rows)
+                {
+                    if (newRow.ItemArray[idColumnIndex].ToString() == oldRow.ItemArray[idColumnIndex].ToString())
+                    {
+                        matched = true;
+                        break;
+                    }
+                }
+
+                if (!matched) dtAdded.Rows.Add(newRow.ItemArray);
             }
+
         }
+
+
+        void SaveManufacturerTableChangestoDB(DataTable dtDifferences, DataTable dtAdded, DataTable dtRemoved)
+        {
+            //Remove first
+            foreach(DataRow row in dtRemoved.Rows)
+            {
+                this.databaseCommands.DeleteManufacturer(row[this.ColumnNames.Name].ToString());
+            }
+
+            //Modifie existing
+            foreach (DataRow row in dtDifferences.Rows)
+            {
+                //Get original entity
+                Manufacturer localEntity = this.databaseCommands.GetManufacturerEntityByName(row[this.ColumnNames.Name].ToString());
+
+                //Override with new values
+                localEntity.Info = row.Field<string>(this.ColumnNames.Info);
+                localEntity.BarcodeEanPrefix = row.Field<string>(this.ColumnNames.BarcodePrefix);
+
+                this.databaseCommands.EditManufacturer(localEntity);
+            }
+
+            //Add new
+            foreach (DataRow row in dtAdded.Rows)
+            {
+                //Local entity
+                Manufacturer localEntity = new Manufacturer();
+                
+                //Write values
+                localEntity.Name = row.Field<string>(this.ColumnNames.Name);
+                localEntity.Info = row.Field<string>(this.ColumnNames.Info);
+                localEntity.BarcodeEanPrefix = row.Field<string>(this.ColumnNames.BarcodePrefix);
+
+                this.databaseCommands.AddManufacturer(localEntity);
+            }
+
+        }
+
     }
 }

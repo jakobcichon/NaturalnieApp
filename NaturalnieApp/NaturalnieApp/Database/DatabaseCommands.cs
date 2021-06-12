@@ -549,76 +549,6 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
-        //Method used to retrieve from DB product name list, fitered by a specific manufacturer
-        //====================================================================================================
-        public List<string> GetProductsNameListByManufacturer(string manufacturerName)
-        {
-            List<string> productList = new List<string>();
-
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                //Create query to database
-                var query = from p in contextDB.Products
-                            join m in contextDB.Manufacturers
-                            on p.ManufacturerId equals m.Id
-                            where m.Name == manufacturerName
-                            select p;
-
-                //Add product names to the list
-                foreach (var products in query)
-                {
-                    productList.Add(products.ProductName);
-                }
-
-            }
-            return productList;
-        }
-
-        //====================================================================================================
-        //Method used to retrieve from DB barcode list, fitered by a specific manufacturer
-        //====================================================================================================
-        public List<string> GetBarcodesListByManufacturer(string manufacturerName)
-        {
-            List<string> productList = new List<string>();
-
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                //Create query to database
-                var query = from p in contextDB.Products
-                            join m in contextDB.Manufacturers
-                            on p.ManufacturerId equals m.Id
-                            where m.Name == manufacturerName
-                            select p;
-
-                //Add product names to the list
-                foreach (var products in query)
-                {
-                    productList.Add(products.BarCode);
-                }
-
-            }
-            return productList;
-        }
-
-        //====================================================================================================
-        //Method used to retrieve from DB Manufacturer name list
-        //====================================================================================================
-        public List<string> GetManufacturersNameList()
-        {
-            List<string> manufacturersList = new List<string>();
-
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                foreach (var Manufacturer in contextDB.Manufacturers)
-                {
-                    manufacturersList.Add(Manufacturer.Name);
-                }
-            }
-
-            return manufacturersList;
-        }
-
-        //====================================================================================================
         //Method used to retrieve from DB Supplier name list
         //====================================================================================================
         public List<string> GetSupplierNameList()
@@ -634,27 +564,6 @@ namespace NaturalnieApp.Database
             }
 
             return supplierList;
-        }
-
-        //====================================================================================================
-        //Method used to check  if in DB specified Manufacturer Name exist
-        //====================================================================================================
-        public bool CheckIfManufacturerNameExist(string manufacturerName)
-        {
-            bool result = false;
-
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                var query = from m in contextDB.Manufacturers
-                            where m.Name == manufacturerName
-                            select m;
-
-                if (query.FirstOrDefault() != null) result = true;
-                else result = false;
-
-            }
-
-            return result;
         }
 
         //====================================================================================================
@@ -989,42 +898,6 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
-        //Method used to retrieve from DB Manufacturer value using Manufacturer name
-        //====================================================================================================
-        public int GetManufacturerIdByName(string manufacturerName)
-        {
-            int manufacturerId = -1;
-
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                var query = from m in contextDB.Manufacturers
-                            where m.Name == manufacturerName
-                            select m.Id;
-
-                manufacturerId = query.SingleOrDefault();
-            }
-
-            return manufacturerId;
-        }
-
-        //====================================================================================================
-        //Method used to retrieve from DB all Manufacturers Ids
-        //====================================================================================================
-        public List<int> GetAllManufacturersId()
-        {
-            List<int> manufacturesrList = new List<int>();
-
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                foreach (var manufacturer in contextDB.Manufacturers)
-                {
-                    manufacturesrList.Add(manufacturer.Id);
-                }
-            }
-            return manufacturesrList;
-        }
-
-        //====================================================================================================
         //Method used to retrieve from DB all Products ents
         //====================================================================================================
         public List<Product> GetAllProductsEnts()
@@ -1039,41 +912,6 @@ namespace NaturalnieApp.Database
                 }
             }
             return productsList;
-        }
-
-        //====================================================================================================
-        //Method used to retrieve from DB all Manufacturers ents
-        //====================================================================================================
-        public List<Manufacturer> GetAllManufacturersEnts()
-        {
-            List<Manufacturer> manufacturersList = new List<Manufacturer>();
-
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                foreach (var manufacturer in contextDB.Manufacturers)
-                {
-                    manufacturersList.Add(manufacturer);
-                }
-            }
-            return manufacturersList;
-        }
-
-        //====================================================================================================
-        //Method used to retrieve from DB manufacturer EAN barcode prefix, if exist
-        //====================================================================================================
-        public string GetManufacturerEanPrefixByName(string manufacturerName)
-        {
-            string eanPrefix = "";
-
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                var query = from m in contextDB.Manufacturers
-                            where m.Name == manufacturerName
-                            select m.BarcodeEanPrefix;
-
-                eanPrefix = query.SingleOrDefault();
-            }
-            return eanPrefix;
         }
 
         //====================================================================================================
@@ -1289,23 +1127,6 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
-        //Method used to retrieve from DB Manufacturer entity
-        //====================================================================================================
-        public Manufacturer GetManufacturerEntityByName(string manufacturerName)
-        {
-            Manufacturer localManufacturer = new Manufacturer();
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                var query = from m in contextDB.Manufacturers
-                            where m.Name == manufacturerName
-                            select m;
-
-                localManufacturer = query.SingleOrDefault();
-            }
-            return localManufacturer;
-        }
-
-        //====================================================================================================
         //Method used to retrieve from DB Supplier entity
         //====================================================================================================
         public Supplier GetSupplierEntityByName(string supplierName)
@@ -1322,75 +1143,7 @@ namespace NaturalnieApp.Database
             return localSupplier;
         }
 
-        //====================================================================================================
-        //Method used to retrieve from DB Manufacturer entity by ID
-        //====================================================================================================
-        public Manufacturer GetManufacturerEntityById(int manufacturerId)
-        {
-            Manufacturer localManufacturer = new Manufacturer();
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                var query = from m in contextDB.Manufacturers
-                            where m.Id == manufacturerId
-                            select m;
 
-                localManufacturer = query.SingleOrDefault();
-            }
-            return localManufacturer;
-        }
-
-        //====================================================================================================
-        //Method used to retrieve from DB Product entity
-        //====================================================================================================
-
-        public Manufacturer GetManufacturerByProductName(string productName)
-        {
-            Manufacturer localManufacturer = new Manufacturer();
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                var query = from p in contextDB.Products
-                            join m in contextDB.Manufacturers
-                            on p.ManufacturerId equals m.Id
-                            where p.ProductName == productName
-                            select new
-                            {
-                                m
-                            };
-
-                foreach (var element in query)
-                {
-                    localManufacturer = element.m;
-                }
-
-            }
-            return localManufacturer;
-        }
-        //====================================================================================================
-        //Method used to retrieve from DB Manufacturer entity
-        //====================================================================================================
-
-        public Manufacturer GetManufacturerByBarcode(string barcode)
-        {
-            Manufacturer localManufacturer = new Manufacturer();
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                var query = from p in contextDB.Products
-                            join m in contextDB.Manufacturers
-                            on p.ManufacturerId equals m.Id
-                            where p.BarCode == barcode
-                            select new
-                            {
-                                m
-                            };
-
-                foreach (var element in query)
-                {
-                    localManufacturer = element.m;
-                }
-
-            }
-            return localManufacturer;
-        }
         //====================================================================================================
         //Method used to retrieve from DB Product entity
         //====================================================================================================
@@ -1473,19 +1226,6 @@ namespace NaturalnieApp.Database
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 contextDB.Suppliers.Add(supplier);
-                int retVal = contextDB.SaveChanges();
-
-            }
-        }
-
-        //====================================================================================================
-        //Method used to add new manufacturer
-        //====================================================================================================
-        public void AddManufacturer(Manufacturer manufacturer)
-        {
-            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
-            {
-                contextDB.Manufacturers.Add(manufacturer);
                 int retVal = contextDB.SaveChanges();
 
             }
@@ -1599,6 +1339,290 @@ namespace NaturalnieApp.Database
             }
             this.ConnectionStatus = state;
         }
+
+
+        // **********************************************************************************************************
+        #region Manufacturer table related
+
+        //====================================================================================================
+        //Method used to add new manufacturer
+        //====================================================================================================
+        public void AddManufacturer(Manufacturer manufacturer)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                contextDB.Manufacturers.Add(manufacturer);
+                int retVal = contextDB.SaveChanges();
+
+            }
+        }
+
+        //====================================================================================================
+        //Method used to remove manufacturer
+        //====================================================================================================
+        public bool DeleteManufacturer(string manufacturerName)
+        {
+            bool retVal = false;
+
+            Manufacturer localEntity = this.GetManufacturerEntityByName(manufacturerName);
+            
+            if(localEntity != null)
+            {
+                using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+                {
+                    Manufacturer productToDelete = new Manufacturer { Id = localEntity.Id };
+                    contextDB.Entry(productToDelete).State = EntityState.Deleted;
+                    int retValInt = contextDB.SaveChanges();
+                    if (retValInt > 0) retVal = true;
+                }
+            }
+
+            return retVal;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Manufacturer name list
+        //====================================================================================================
+        public List<string> GetManufacturersNameList()
+        {
+            List<string> manufacturersList = new List<string>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                foreach (var Manufacturer in contextDB.Manufacturers)
+                {
+                    manufacturersList.Add(Manufacturer.Name);
+                }
+            }
+
+            return manufacturersList;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Manufacturer entity
+        //====================================================================================================
+        public Manufacturer GetManufacturerEntityByName(string manufacturerName)
+        {
+            Manufacturer localManufacturer = new Manufacturer();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from m in contextDB.Manufacturers
+                            where m.Name == manufacturerName
+                            select m;
+
+                localManufacturer = query.SingleOrDefault();
+            }
+            return localManufacturer;
+        }
+        //====================================================================================================
+        //Method used to retrieve from DB Manufacturer entity by ID
+        //====================================================================================================
+        public Manufacturer GetManufacturerEntityById(int manufacturerId)
+        {
+            Manufacturer localManufacturer = new Manufacturer();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from m in contextDB.Manufacturers
+                            where m.Id == manufacturerId
+                            select m;
+
+                localManufacturer = query.SingleOrDefault();
+            }
+            return localManufacturer;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Product entity
+        //====================================================================================================
+        public Manufacturer GetManufacturerByProductName(string productName)
+        {
+            Manufacturer localManufacturer = new Manufacturer();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            join m in contextDB.Manufacturers
+                            on p.ManufacturerId equals m.Id
+                            where p.ProductName == productName
+                            select new
+                            {
+                                m
+                            };
+
+                foreach (var element in query)
+                {
+                    localManufacturer = element.m;
+                }
+
+            }
+            return localManufacturer;
+        }
+        //====================================================================================================
+        //Method used to retrieve from DB Manufacturer entity
+        //====================================================================================================
+
+        public Manufacturer GetManufacturerByBarcode(string barcode)
+        {
+            Manufacturer localManufacturer = new Manufacturer();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            join m in contextDB.Manufacturers
+                            on p.ManufacturerId equals m.Id
+                            where p.BarCode == barcode
+                            select new
+                            {
+                                m
+                            };
+
+                foreach (var element in query)
+                {
+                    localManufacturer = element.m;
+                }
+
+            }
+            return localManufacturer;
+        }
+        //====================================================================================================
+        //Method used to retrieve from DB all Manufacturers ents
+        //====================================================================================================
+        public List<Manufacturer> GetAllManufacturersEnts()
+        {
+            List<Manufacturer> manufacturersList = new List<Manufacturer>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                foreach (var manufacturer in contextDB.Manufacturers)
+                {
+                    manufacturersList.Add(manufacturer);
+                }
+            }
+            return manufacturersList;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB manufacturer EAN barcode prefix, if exist
+        //====================================================================================================
+        public string GetManufacturerEanPrefixByName(string manufacturerName)
+        {
+            string eanPrefix = "";
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from m in contextDB.Manufacturers
+                            where m.Name == manufacturerName
+                            select m.BarcodeEanPrefix;
+
+                eanPrefix = query.SingleOrDefault();
+            }
+            return eanPrefix;
+        }
+        //====================================================================================================
+        //Method used to retrieve from DB product name list, fitered by a specific manufacturer
+        //====================================================================================================
+        public List<string> GetProductsNameListByManufacturer(string manufacturerName)
+        {
+            List<string> productList = new List<string>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                //Create query to database
+                var query = from p in contextDB.Products
+                            join m in contextDB.Manufacturers
+                            on p.ManufacturerId equals m.Id
+                            where m.Name == manufacturerName
+                            select p;
+
+                //Add product names to the list
+                foreach (var products in query)
+                {
+                    productList.Add(products.ProductName);
+                }
+
+            }
+            return productList;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB barcode list, fitered by a specific manufacturer
+        //====================================================================================================
+        public List<string> GetBarcodesListByManufacturer(string manufacturerName)
+        {
+            List<string> productList = new List<string>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                //Create query to database
+                var query = from p in contextDB.Products
+                            join m in contextDB.Manufacturers
+                            on p.ManufacturerId equals m.Id
+                            where m.Name == manufacturerName
+                            select p;
+
+                //Add product names to the list
+                foreach (var products in query)
+                {
+                    productList.Add(products.BarCode);
+                }
+
+            }
+            return productList;
+        }
+        //====================================================================================================
+        //Method used to retrieve from DB Manufacturer value using Manufacturer name
+        //====================================================================================================
+        public int GetManufacturerIdByName(string manufacturerName)
+        {
+            int manufacturerId = -1;
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from m in contextDB.Manufacturers
+                            where m.Name == manufacturerName
+                            select m.Id;
+
+                manufacturerId = query.SingleOrDefault();
+            }
+
+            return manufacturerId;
+        }
+
+        //====================================================================================================
+        //Method used to retrieve from DB all Manufacturers Ids
+        //====================================================================================================
+        public List<int> GetAllManufacturersId()
+        {
+            List<int> manufacturesrList = new List<int>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                foreach (var manufacturer in contextDB.Manufacturers)
+                {
+                    manufacturesrList.Add(manufacturer.Id);
+                }
+            }
+            return manufacturesrList;
+        }
+        //====================================================================================================
+        //Method used to check  if in DB specified Manufacturer Name exist
+        //====================================================================================================
+        public bool CheckIfManufacturerNameExist(string manufacturerName)
+        {
+            bool result = false;
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from m in contextDB.Manufacturers
+                            where m.Name == manufacturerName
+                            select m;
+
+                if (query.FirstOrDefault() != null) result = true;
+                else result = false;
+
+            }
+
+            return result;
+        }
+        #endregion
 
 
         // **********************************************************************************************************
