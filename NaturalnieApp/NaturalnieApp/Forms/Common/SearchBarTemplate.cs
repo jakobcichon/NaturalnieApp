@@ -591,7 +591,6 @@ namespace NaturalnieApp.Forms.Common
                 this.cbBarcodes.SelectedItem = null;
 
                 this.ManufacturerEntity = null;
-                this.cbManufacturers.SelectedIndex = 0;
                 this.ProductEntity = null;
                 this.TaxEntity = null;
                 this.SupplierEntity = null;
@@ -841,10 +840,18 @@ namespace NaturalnieApp.Forms.Common
                     UpdateDataSources(productsData: this.ProductsToDisplayDict, barcodesData: this.BarcodesToDisplayDict);
 
                     //Get actual entity
-                    this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(this.cbProducts.SelectedItem.ToString());
+                    if(this.cbProducts.Items.Count > 0)
+                    {
+                        this.ActualSelectedEnt = this.AllEntsRelation.GetFullEnt(this.cbProducts.SelectedItem.ToString());
 
-                    //Select entity on the other combo boxes
-                    this.SelectEntity(this.ActualSelectedEnt);
+                        //Select entity on the other combo boxes
+                        this.SelectEntity(this.ActualSelectedEnt);
+                    }
+                    else
+                    {
+                        //Select entity on the other combo boxes
+                        this.SelectEntity(null);
+                    }
 
                 }
 

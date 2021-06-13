@@ -324,12 +324,6 @@
     <Compile Include="Forms\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ProductMenu\AddManufacturer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\ProductMenu\AddManufacturer.Designer.cs">
-      <DependentUpon>AddManufacturer.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\ProductMenu\PricesRelatedUpdate.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -421,9 +415,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ProductMenu\AddManufacturer.resx">
-      <DependentUpon>AddManufacturer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProductMenu\PricesRelatedUpdate.resx">
       <DependentUpon>PricesRelatedUpdate.cs</DependentUpon>

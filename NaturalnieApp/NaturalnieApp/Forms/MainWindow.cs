@@ -27,7 +27,6 @@ namespace NaturalnieApp.Forms
         public ShowProductInfo showProductInfo { get; set; }
         public AddNewProduct addNewProduct { get; set; }
         public AddToStock addToStock { get; set; }
-        public AddManufacturer addManufacturer { get; set; }
         public PrintFromStock printFromStock { get; set; }
         public ShowStock showStock { get; set; }
         public Playground playground { get; set; }
@@ -81,7 +80,6 @@ namespace NaturalnieApp.Forms
             this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) ;
             this.addNewProduct = new AddNewProduct(ref this.databaseCommands);
             this.addToStock = new AddToStock(ref this.databaseCommands);
-            this.addManufacturer = new AddManufacturer(ref this.databaseCommands);
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.playground = new Playground();
@@ -372,7 +370,6 @@ namespace NaturalnieApp.Forms
             }
 
         }
-
         private void bSalesBufferReading_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
@@ -482,25 +479,6 @@ namespace NaturalnieApp.Forms
             }
 
         }
-        private void bAddManufacturer_Click(object sender, EventArgs e)
-        {
-            this.pContainer.Controls.Clear();
-            try
-            {
-                this.pContainer.Controls.Add(this.addManufacturer);
-                this.addManufacturer.Select();
-                this.addManufacturer.BringToFront();
-                this.addManufacturer.Show();
-            }
-            catch (ObjectDisposedException)
-            {
-                this.addManufacturer = new AddManufacturer(ref this.databaseCommands);
-                this.pContainer.Controls.Add(this.addManufacturer);
-                this.addManufacturer.Select();
-                this.addManufacturer.BringToFront();
-                this.addManufacturer.Show();
-            }
-        }
         private void bPriceRelatedUpdate_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();
@@ -520,8 +498,6 @@ namespace NaturalnieApp.Forms
                 this.pricesRelatedUpdate.Show();
             }
         }
-
-
         private void bManufacturersList_Click(object sender, EventArgs e)
         {
             this.pContainer.Controls.Clear();

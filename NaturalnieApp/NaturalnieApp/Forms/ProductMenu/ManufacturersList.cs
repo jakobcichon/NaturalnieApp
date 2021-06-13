@@ -105,6 +105,7 @@ namespace NaturalnieApp.Forms
                             foreach (Manufacturer manufacturer in productManufacturerList)
                             {
                                 DataRow dataRow = returnDataTable.NewRow();
+                                dataRow.SetField<int>(this.ColumnNames.Id, manufacturer.Id);
                                 dataRow.SetField<string>(this.ColumnNames.Name, manufacturer.Name);
                                 dataRow.SetField<string>(this.ColumnNames.BarcodePrefix, manufacturer.BarcodeEanPrefix);
                                 dataRow.SetField<string>(this.ColumnNames.Info, manufacturer.Info);
@@ -123,6 +124,7 @@ namespace NaturalnieApp.Forms
                             foreach (Manufacturer manufacturer in productManufacturerList)
                             {
                                 DataRow dataRow = returnDataTable.NewRow();
+                                dataRow.SetField<int>(this.ColumnNames.Id, manufacturer.Id);
                                 dataRow.SetField<string>(this.ColumnNames.Name, manufacturer.Name);
                                 dataRow.SetField<string>(this.ColumnNames.BarcodePrefix, manufacturer.BarcodeEanPrefix);
                                 dataRow.SetField<string>(this.ColumnNames.Info, manufacturer.Info);
@@ -195,12 +197,23 @@ namespace NaturalnieApp.Forms
         void InitializeDataTableSchema()
         {
             //Initialize daa grid view
+            this.ColumnNames.Id = "Numer w bazie danych";
             this.ColumnNames.Name = "Nazwa";
             this.ColumnNames.BarcodePrefix = "Prefix kodu kreskowego";
             this.ColumnNames.Info = "Informacje";
 
             //Create data source columns
             DataColumn column;
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.Id;
+            column.DataType = Type.GetType("System.Int32");
+            column.ReadOnly = false;
+            column.Unique = true;
+            column.AllowDBNull = false;
+            column.AutoIncrement = true;
+            this.DataSource.Columns.Add(column);
+            column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.Name;
@@ -258,11 +271,15 @@ namespace NaturalnieApp.Forms
             if (cell.IsInEditMode)
             {
                 //If data empty, check if cell can be empty
-                if ((e.FormattedValue.ToString() == "" || e.FormattedValue == null) && !dataSourceColumn.AllowDBNull)
+                if (e.FormattedValue.ToString() == "" || e.FormattedValue == null)
                 {
-                    e.Cancel = true;
-                    row.ErrorText = String.Format("Wartość kolumny '{0}' nie może być pusta!", column.Name);
-                    return;
+                    if (!dataSourceColumn.AllowDBNull)
+                    {
+                        e.Cancel = true;
+                        row.ErrorText = String.Format("Wartość kolumny '{0}' nie może być pusta!", column.Name);
+                        return;
+                    }
+                    else return;
                 }
 
                 //Get validation method and validate
@@ -316,25 +333,34 @@ namespace NaturalnieApp.Forms
             DataTable added = this.OrginalDataFromDB.Clone();
             DataTable deleted = this.OrginalDataFromDB.Clone();
 
-            //Get all differences
-            GetTableDiff(this.ColumnNames.Name, this.OrginalDataFromDB, this.DataSource, ref edited, ref added, ref deleted);
-
-            if(edited.Rows.Count > 0 || added.Rows.Count > 0 || deleted.Rows.Count > 0)
+            try
             {
-                DialogResult result = MessageBox.Show(string.Format("Uwaga! Znaleziono następujące różnice:\n" +
-                    "Zmodifikowano: {0}\n" +
-                    "Usunięto: {1}\n" +
-                    "Dodano: {2}\n" +
-                    "Czy chcesz kontynuować?", edited.Rows.Count.ToString(), deleted.Rows.Count.ToString(), added.Rows.Count.ToString()),
-                    "Modyfikacja producentów", MessageBoxButtons.YesNo);
+                //Get all differences
+                GetTableDiff(this.ColumnNames.Id, this.OrginalDataFromDB, this.DataSource, ref edited, ref added, ref deleted);
 
-                if(result == DialogResult.Yes)
+                if (edited.Rows.Count > 0 || added.Rows.Count > 0 || deleted.Rows.Count > 0)
                 {
-                    SaveManufacturerTableChangestoDB(edited, added, deleted);
+                    DialogResult result = MessageBox.Show(string.Format("Uwaga! Znaleziono następujące różnice:\n" +
+                        "Zmodifikowano: {0}\n" +
+                        "Usunięto: {1}\n" +
+                        "Dodano: {2}\n" +
+                        "Czy chcesz kontynuować?", edited.Rows.Count.ToString(), deleted.Rows.Count.ToString(), added.Rows.Count.ToString()),
+                        "Modyfikacja producentów", MessageBoxButtons.YesNo);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        SaveManufacturerTableChangestoDB(edited, added, deleted);
+                        MessageBox.Show("Zapisano!");
+                    }
                 }
             }
-        }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + ex.InnerException + ex.StackTrace);
+            }
 
+            this.bUpdate_Click(sender, e);
+        }
         private void bUpdate_Click(object sender, EventArgs e)
         {
             //Disable panel and wait until data from db will be fetched
@@ -378,7 +404,7 @@ namespace NaturalnieApp.Forms
 
             //Throw an exception if no column named "Id" found
             if (idColumnIndex < 0) throw new MissingMemberException(
-                string.Format("Column named 'Id' does not exist in the {0} table", dtOld.TableName));
+                string.Format("Column named '{0}' does not exist in the {1} table", mainIndexName, dtOld.TableName));
 
             //Loop throught the rows and find deleted or differences
             foreach (DataRow oldRow in dtOld.Rows)
@@ -424,22 +450,47 @@ namespace NaturalnieApp.Forms
 
         }
 
-
+        
         void SaveManufacturerTableChangestoDB(DataTable dtDifferences, DataTable dtAdded, DataTable dtRemoved)
         {
             //Remove first
             foreach(DataRow row in dtRemoved.Rows)
             {
-                this.databaseCommands.DeleteManufacturer(row[this.ColumnNames.Name].ToString());
+                string manufacturerName = row.Field<string>(this.ColumnNames.Name);
+
+                //Get Manufacturer product count
+                List<string> productsList = this.databaseCommands.GetProductsNameListByManufacturer(manufacturerName);
+
+                //Make sure if allowed to remove related products
+                if(productsList.Count() > 0)
+                {
+                    string message = string.Format("Uwaga! W bazie danych istnieją produkty związane z producentem {0}. " +
+                        "Czy chcesz kontynuować i usunąć produkty oraz stany magazynowe? Dane zostaną usunięte nieodwracalnie!\n" +
+                        "Yes - produkty zostaną usunięte dla tego producenta.\n" +
+                        "No - produkty NIE zostaną usunięte dla tego producenta i program będzie kontynuował.\n" +
+                        "Cancel - produkty NIE zostaną usunięte dla tego producenta i program NIE będzie kontynuował.\n", manufacturerName);
+                    string title = "Potwierdzenie usunięcie produktów";
+
+                    DialogResult result = MessageBox.Show(message, title, MessageBoxButtons.YesNoCancel);
+
+                    //TODO!!!!!!!!
+                    MessageBox.Show("Kuba nie dokończył tego zadania;) Nie usunięto niczego! ;)");
+                }
+                else
+                {
+                    this.databaseCommands.DeleteManufacturer(row[this.ColumnNames.Name].ToString());
+                }
+
             }
 
             //Modifie existing
             foreach (DataRow row in dtDifferences.Rows)
             {
                 //Get original entity
-                Manufacturer localEntity = this.databaseCommands.GetManufacturerEntityByName(row[this.ColumnNames.Name].ToString());
+                Manufacturer localEntity = this.databaseCommands.GetManufacturerEntityById(Convert.ToInt32(row[this.ColumnNames.Id]));
 
                 //Override with new values
+                localEntity.Name = row.Field<string>(this.ColumnNames.Name);
                 localEntity.Info = row.Field<string>(this.ColumnNames.Info);
                 localEntity.BarcodeEanPrefix = row.Field<string>(this.ColumnNames.BarcodePrefix);
 

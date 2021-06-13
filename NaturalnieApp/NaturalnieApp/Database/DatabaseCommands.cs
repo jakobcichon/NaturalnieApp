@@ -840,6 +840,30 @@ namespace NaturalnieApp.Database
             return productId;
         }
 
+
+        //====================================================================================================
+        //Method used to retrieve from DB all Product Ids by manufacturer ID
+        //====================================================================================================
+        public List<int> GetProductAllIdsByManufacturerId(int manufacturerId)
+        {
+            List<int> productId = new List<int>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            where p.ManufacturerId == manufacturerId
+                            select p.Id;
+
+                //Add product names to the list
+                foreach (int id in query)
+                {
+                    productId.Add(id);
+                }
+            }
+
+            return productId;
+        }
+
         //====================================================================================================
         //Method used to retrieve from DB Product Id value using Elzab product number
         //====================================================================================================
@@ -1019,6 +1043,27 @@ namespace NaturalnieApp.Database
             return localProduct;
         }
 
+
+        //====================================================================================================
+        //Method used to retrieve from DB Product entities by manufacturer ID
+        //====================================================================================================
+        public List<Product> GetProductEntitiesByManufacturerId(int manufacturerId)
+        {
+            List<Product> localProduct = new List<Product>();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            where p.ManufacturerId == manufacturerId
+                            select p;
+
+                foreach(Product product in query)
+                {
+                    localProduct.Add(product);
+                }
+            }
+            return localProduct;
+        }
+
         //====================================================================================================
         //Method used to retrieve from DB Product entity by Barcode value
         //====================================================================================================
@@ -1143,7 +1188,6 @@ namespace NaturalnieApp.Database
             return localSupplier;
         }
 
-
         //====================================================================================================
         //Method used to retrieve from DB Product entity
         //====================================================================================================
@@ -1196,7 +1240,6 @@ namespace NaturalnieApp.Database
             }
             return localSupplier;
         }
-
 
         //====================================================================================================
         //Method used to add new product
@@ -1273,6 +1316,36 @@ namespace NaturalnieApp.Database
 
             if (localProduct == null) AddProductToChangelog(product, ProductOperationType.Delete);
             else AddProductToChangelog(localProduct, ProductOperationType.Delete);
+
+            return retVal;
+        }
+
+        //====================================================================================================
+        //Method used to delete products by id
+        //====================================================================================================
+        public bool DeleteProductsByManufacturerId(int manufacturerId)
+        {
+            //Local variables
+            List<Product> localProduct = this.GetProductEntitiesByManufacturerId(manufacturerId);
+            List<Product> productListToChangelog = new List<Product>();
+
+            bool retVal = false;
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                foreach(Product product in localProduct)
+                {
+                    Product productToDelete = new Product { Id = product.Id };
+                    contextDB.Entry(productToDelete).State = EntityState.Deleted;
+                    productListToChangelog.Add(product);
+                }
+
+                int retValInt = contextDB.SaveChanges();
+                if (retValInt > 0) retVal = true;
+                var entries = contextDB.ChangeTracker.Entries();
+            }
+
+            //if (localProduct == null) AddProductToChangelog(product, ProductOperationType.Delete);
+            //else AddProductToChangelog(localProduct, ProductOperationType.Delete);
 
             return retVal;
         }
