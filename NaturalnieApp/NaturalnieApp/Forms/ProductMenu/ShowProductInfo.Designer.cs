@@ -1032,6 +1032,5 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Label lName;
         private System.Windows.Forms.TextBox tbDummyForCtrl;
         private System.Windows.Forms.Panel panel1;
-        private Common.SearchBarTemplate searchBarTemplate1;
     }
 }

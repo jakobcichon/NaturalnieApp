@@ -432,6 +432,31 @@ namespace NaturalnieApp
         }
 
         /// <summary>
+        /// Structure used to describe column names for supplier full tabe
+        /// </summary>
+        public class SupplierColumnNames
+        {
+            public string No { get; set; }
+            public string Id { get; set; }
+            public string Name { get; set; }
+            public string Info { get; set; }
+
+            public Func<string, bool> GetValidationMethod(string columnName)
+            {
+                //Delegate function
+                Func<string, bool> func = null;
+
+                if (columnName == this.No) func = Forms.Validation.GeneralNumberValidation;
+                else if (columnName == this.Id) func = Forms.Validation.GeneralNumberValidation;
+                else if (columnName == this.Name) func = Forms.Validation.ManufacturerNameValidation;
+                else if (columnName == this.Info) func = Forms.Validation.GeneralInfoValidation;
+                else func = null;
+
+                return func;
+            }
+        }
+
+        /// <summary>
         /// Structure used to describe column names for inventory data export
         /// </summary>
         public struct InventoryExportColumnNames

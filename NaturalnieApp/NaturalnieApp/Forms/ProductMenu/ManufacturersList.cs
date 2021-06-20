@@ -350,7 +350,7 @@ namespace NaturalnieApp.Forms
                     if (result == DialogResult.Yes)
                     {
                         SaveManufacturerTableChangestoDB(edited, added, deleted);
-                        MessageBox.Show("Zapisano!");
+                        MessageBox.Show("Zakończono!");
                     }
                 }
             }
@@ -450,7 +450,12 @@ namespace NaturalnieApp.Forms
 
         }
 
-        
+        /// <summary>
+        /// Method used to save changes into DB
+        /// </summary>
+        /// <param name="dtDifferences">DataTable contains user changes</param>
+        /// <param name="dtAdded">DataTable contains user added</param>
+        /// <param name="dtRemoved">DataTable contains user removed</param>
         void SaveManufacturerTableChangestoDB(DataTable dtDifferences, DataTable dtAdded, DataTable dtRemoved)
         {
             //Remove first
@@ -465,16 +470,10 @@ namespace NaturalnieApp.Forms
                 if(productsList.Count() > 0)
                 {
                     string message = string.Format("Uwaga! W bazie danych istnieją produkty związane z producentem {0}. " +
-                        "Czy chcesz kontynuować i usunąć produkty oraz stany magazynowe? Dane zostaną usunięte nieodwracalnie!\n" +
-                        "Yes - produkty zostaną usunięte dla tego producenta.\n" +
-                        "No - produkty NIE zostaną usunięte dla tego producenta i program będzie kontynuował.\n" +
-                        "Cancel - produkty NIE zostaną usunięte dla tego producenta i program NIE będzie kontynuował.\n", manufacturerName);
+                        "Najpierw należy usunąć produkty powiązane z tym producentem.", manufacturerName);
                     string title = "Potwierdzenie usunięcie produktów";
 
-                    DialogResult result = MessageBox.Show(message, title, MessageBoxButtons.YesNoCancel);
-
-                    //TODO!!!!!!!!
-                    MessageBox.Show("Kuba nie dokończył tego zadania;) Nie usunięto niczego! ;)");
+                    MessageBox.Show(message, title, MessageBoxButtons.OK);
                 }
                 else
                 {

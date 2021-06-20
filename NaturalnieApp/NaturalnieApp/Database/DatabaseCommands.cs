@@ -1413,6 +1413,89 @@ namespace NaturalnieApp.Database
             this.ConnectionStatus = state;
         }
 
+        // **********************************************************************************************************
+        #region Manufacturer table related
+
+        //====================================================================================================
+        //Method used to retrieve from DB all supplier ents
+        //====================================================================================================
+        public List<Supplier> GetAllSupplierEnts()
+        {
+            List<Supplier> supplierList = new List<Supplier>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                foreach (var supplier in contextDB.Suppliers)
+                {
+                    supplierList.Add(supplier);
+                }
+            }
+            return supplierList;
+        }
+        //====================================================================================================
+        //Method used to retrieve from DB product name list, fitered by a specific supplier
+        //====================================================================================================
+        public List<string> GetProductsNameListBySupplier(string supplierName)
+        {
+            List<string> productList = new List<string>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                //Create query to database
+                var query = from p in contextDB.Products
+                            join m in contextDB.Suppliers
+                            on p.SupplierId equals m.Id
+                            where m.Name == supplierName
+                            select p;
+
+                //Add product names to the list
+                foreach (var products in query)
+                {
+                    productList.Add(products.ProductName);
+                }
+
+            }
+            return productList;
+        }
+        //====================================================================================================
+        //Method used to remove supplier
+        //====================================================================================================
+        public bool DeleteSupplier(string supplierName)
+        {
+            bool retVal = false;
+
+            Supplier localEntity = this.GetSupplierEntityByName(supplierName);
+
+            if (localEntity != null)
+            {
+                using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+                {
+                    Supplier supplierToDelete = new Supplier { Id = localEntity.Id };
+                    contextDB.Entry(supplierToDelete).State = EntityState.Deleted;
+                    int retValInt = contextDB.SaveChanges();
+                    if (retValInt > 0) retVal = true;
+                }
+            }
+
+            return retVal;
+        }
+        //====================================================================================================
+        //Method used to retrieve from DB supplier entity by ID
+        //====================================================================================================
+        public Supplier GetSupplierEntityById(int supplierId)
+        {
+            Supplier localSupplier= new Supplier();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from m in contextDB.Suppliers
+                            where m.Id == supplierId
+                            select m;
+
+                localSupplier = query.SingleOrDefault();
+            }
+            return localSupplier;
+        }
+        #endregion
 
         // **********************************************************************************************************
         #region Manufacturer table related
@@ -1443,8 +1526,8 @@ namespace NaturalnieApp.Database
             {
                 using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
                 {
-                    Manufacturer productToDelete = new Manufacturer { Id = localEntity.Id };
-                    contextDB.Entry(productToDelete).State = EntityState.Deleted;
+                    Manufacturer manufacturerToDelete = new Manufacturer { Id = localEntity.Id };
+                    contextDB.Entry(manufacturerToDelete).State = EntityState.Deleted;
                     int retValInt = contextDB.SaveChanges();
                     if (retValInt > 0) retVal = true;
                 }

@@ -35,6 +35,7 @@ namespace NaturalnieApp.Forms
         public SalesBufferReading salesBufferReading { get; set; }
         public PricesRelatedUpdate pricesRelatedUpdate { get; set; }
         public ManufacturersList manufacturersList { get; set; }
+        public SupplierList supplierList { get; set; }
         public Common.StatusBar statusBar { get; set; }
         public ElzabRelated.CashRegisterSerialPort cashRegisterSerialPort { get; set; }
 
@@ -88,6 +89,7 @@ namespace NaturalnieApp.Forms
             this.salesBufferReading = new SalesBufferReading(ref this.databaseCommands);
             this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
             this.manufacturersList = new ManufacturersList();
+            this.supplierList = new SupplierList();
 
             //Add status bar
             this.statusBar = new Common.StatusBar();
@@ -515,6 +517,25 @@ namespace NaturalnieApp.Forms
                 this.manufacturersList.Select();
                 this.manufacturersList.BringToFront();
                 this.manufacturersList.Show();
+            }
+        }
+        private void bSupplierList_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            try
+            {
+                this.pContainer.Controls.Add(this.supplierList);
+                this.supplierList.Select();
+                this.supplierList.BringToFront();
+                this.supplierList.Show();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.supplierList = new SupplierList();
+                this.pContainer.Controls.Add(this.supplierList);
+                this.supplierList.Select();
+                this.supplierList.BringToFront();
+                this.supplierList.Show();
             }
         }
         #endregion
