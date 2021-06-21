@@ -294,6 +294,12 @@
     <Compile Include="Forms\Elzab\SalesBufferReading.Designer.cs">
       <DependentUpon>SalesBufferReading.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\History of sales\DisplayHistoryOfProductSale.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\History of sales\DisplayHistoryOfProductSale.Designer.cs">
+      <DependentUpon>DisplayHistoryOfProductSale.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MainMenu\GeneralSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -406,6 +412,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Elzab\SalesBufferReading.resx">
       <DependentUpon>SalesBufferReading.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\History of sales\DisplayHistoryOfProductSale.resx">
+      <DependentUpon>DisplayHistoryOfProductSale.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainMenu\GeneralSettings.resx">
       <DependentUpon>GeneralSettings.cs</DependentUpon>

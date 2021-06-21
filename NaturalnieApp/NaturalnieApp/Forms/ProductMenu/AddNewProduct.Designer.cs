@@ -125,7 +125,7 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.Controls.Add(this.bUpdate);
             this.pButtonsPanel.Controls.Add(this.bSave);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pButtonsPanel.Location = new System.Drawing.Point(0, 620);
+            this.pButtonsPanel.Location = new System.Drawing.Point(0, 613);
             this.pButtonsPanel.Margin = new System.Windows.Forms.Padding(5);
             this.pButtonsPanel.Name = "pButtonsPanel";
             this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
@@ -196,7 +196,7 @@ namespace NaturalnieApp.Forms
             this.gbProductInfo.ForeColor = System.Drawing.Color.Black;
             this.gbProductInfo.Location = new System.Drawing.Point(0, 30);
             this.gbProductInfo.Name = "gbProductInfo";
-            this.gbProductInfo.Size = new System.Drawing.Size(920, 590);
+            this.gbProductInfo.Size = new System.Drawing.Size(920, 583);
             this.gbProductInfo.TabIndex = 7;
             this.gbProductInfo.TabStop = false;
             this.gbProductInfo.Text = "Dane produktu";
@@ -208,7 +208,7 @@ namespace NaturalnieApp.Forms
             this.tpElzabProductName.ColumnCount = 3;
             this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 112F));
+            this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 113F));
             this.tpElzabProductName.Controls.Add(this.lElzabProductName, 0, 0);
             this.tpElzabProductName.Controls.Add(this.tbElzabProductName, 1, 0);
             this.tpElzabProductName.Controls.Add(this.lElzabNameLength, 2, 0);
@@ -216,7 +216,7 @@ namespace NaturalnieApp.Forms
             this.tpElzabProductName.Location = new System.Drawing.Point(464, 161);
             this.tpElzabProductName.Name = "tpElzabProductName";
             this.tpElzabProductName.RowCount = 1;
-            this.tpElzabProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 108F));
+            this.tpElzabProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 109F));
             this.tpElzabProductName.Size = new System.Drawing.Size(450, 40);
             this.tpElzabProductName.TabIndex = 12;
             // 
@@ -930,7 +930,7 @@ namespace NaturalnieApp.Forms
             this.Enabled = false;
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "AddNewProduct";
-            this.Size = new System.Drawing.Size(920, 690);
+            this.Size = new System.Drawing.Size(920, 683);
             this.Load += new System.EventHandler(this.AddNewProduct_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.pButtonsPanel.ResumeLayout(false);
