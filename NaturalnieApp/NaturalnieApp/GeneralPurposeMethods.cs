@@ -457,6 +457,22 @@ namespace NaturalnieApp
         }
 
         /// <summary>
+        /// Structure used to describe column names for product sales history
+        /// </summary>
+        public class ProductSalesHistoryColumnNames
+        {
+            public string No { get; set; }
+            public string ProductName { get; set; }
+            public string DateAndTimeOfSales { get; set; }
+            public string DailyReportNumber { get; set; }
+            public string ReceiptNumber { get; set; }
+            public string PositionOnReceipt { get; set; }
+            public string Quantity { get; set; }
+            public string PriceOfSales { get; set; }
+
+        }
+
+        /// <summary>
         /// Structure used to describe column names for inventory data export
         /// </summary>
         public struct InventoryExportColumnNames
@@ -968,6 +984,17 @@ namespace NaturalnieApp
 
             return retVal;
 
+        }
+        public static string ConvertElzabDateFormat(string date)
+        {
+            //Check format first
+            Regex reg = new Regex(@"^\d{2}[.]\d{2}[.]\d{2}$");
+            if (!reg.IsMatch(date)) throw new FormatException("Format daty podany do fukcji konwersji daty Elzab jest błędny!");
+
+            List<string> localValue = date.Split('.').ToList();
+            localValue.Reverse();
+
+            return localValue.Aggregate((i, j) => i + '.' + j);
         }
 
         public class CashRegisterSerialPort

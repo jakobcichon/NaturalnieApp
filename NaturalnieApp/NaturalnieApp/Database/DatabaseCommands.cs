@@ -2211,16 +2211,19 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         //Method used to retrieve from DB Sales entity by Id
         //====================================================================================================
-        public Sales GetSalesEntityById(int salesId)
+        public List<Sales> GetSalesEntitiesByCashRegisterId(int cashRegisterId)
         {
-            Sales localSale = new Sales();
+            List<Sales> localSale = new List<Sales>();
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = from s in contextDB.Sales
-                            where s.Id == salesId
+                            where s.Attribute6 == cashRegisterId.ToString()
                             select s;
 
-                localSale = query.SingleOrDefault();
+                foreach (var element in query)
+                {
+                    localSale.Add(element);
+                }
             }
             return localSale;
         }
@@ -2390,6 +2393,27 @@ namespace NaturalnieApp.Database
                 var query = from ec in contextDB.ElzabCommunication
                             where ec.ElzabCommandName == commandName &&
                             ec.StatusOfCommunication == ElzabCommunication.CommunicationStatus.FinishSuccess
+                            orderby ec.DateOfCommunication descending
+                            select ec;
+
+                localElzabCommunication = query.FirstOrDefault();
+            }
+
+            return localElzabCommunication;
+        }
+
+        public ElzabCommunication GetLastSynchroFromTheGivenDate(DateTime startingDate)
+        {
+            //Local variable
+            ElzabCommunication localElzabCommunication = new ElzabCommunication();
+            string commandName = "ZTOWAR";
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from ec in contextDB.ElzabCommunication
+                            where ec.ElzabCommandName == commandName &&
+                            ec.StatusOfCommunication == ElzabCommunication.CommunicationStatus.FinishSuccess &&
+                            ec.DateOfCommunication <= startingDate
                             orderby ec.DateOfCommunication descending
                             select ec;
 

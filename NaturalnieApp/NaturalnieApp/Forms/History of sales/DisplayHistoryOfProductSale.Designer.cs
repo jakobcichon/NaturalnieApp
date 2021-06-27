@@ -37,8 +37,10 @@ namespace NaturalnieApp.Forms
             this.bClose = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
             this.searchBarTemplate1 = new NaturalnieApp.Forms.Common.SearchBarTemplate();
+            this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             this.pHeader.SuspendLayout();
             this.pButtonsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel5
@@ -117,6 +119,7 @@ namespace NaturalnieApp.Forms
             this.bUpdate.TabIndex = 0;
             this.bUpdate.Text = "Odśwież";
             this.bUpdate.UseVisualStyleBackColor = false;
+            this.bUpdate.Click += new System.EventHandler(this.bUpdate_Click);
             // 
             // searchBarTemplate1
             // 
@@ -129,6 +132,17 @@ namespace NaturalnieApp.Forms
             this.searchBarTemplate1.Name = "searchBarTemplate1";
             this.searchBarTemplate1.Size = new System.Drawing.Size(920, 106);
             this.searchBarTemplate1.TabIndex = 8;
+            this.searchBarTemplate1.GenericButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.GenericButtonClickEventHandler(this.searchBarTemplate1_GenericButtonClick);
+            // 
+            // advancedDataGridView1
+            // 
+            this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.advancedDataGridView1.FilterAndSortEnabled = true;
+            this.advancedDataGridView1.Location = new System.Drawing.Point(6, 142);
+            this.advancedDataGridView1.Name = "advancedDataGridView1";
+            this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.advancedDataGridView1.Size = new System.Drawing.Size(908, 470);
+            this.advancedDataGridView1.TabIndex = 9;
             // 
             // DisplayHistoryOfProductSale
             // 
@@ -136,6 +150,7 @@ namespace NaturalnieApp.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.Controls.Add(this.advancedDataGridView1);
             this.Controls.Add(this.searchBarTemplate1);
             this.Controls.Add(this.pButtonsPanel);
             this.Controls.Add(this.pHeader);
@@ -147,6 +162,7 @@ namespace NaturalnieApp.Forms
             this.pHeader.ResumeLayout(false);
             this.pHeader.PerformLayout();
             this.pButtonsPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -165,5 +181,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bClose;
         private System.Windows.Forms.Button bUpdate;
         private Common.SearchBarTemplate searchBarTemplate1;
+        private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
     }
 }
