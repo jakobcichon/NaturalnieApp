@@ -270,6 +270,12 @@
     <Compile Include="Forms\Common\ProgressBarTemplate.Designer.cs">
       <DependentUpon>ProgressBarTemplate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Common\DateRelatedSearch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Common\DateRelatedSearch.Designer.cs">
+      <DependentUpon>DateRelatedSearch.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Common\SearchBarTemplate.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -294,11 +300,17 @@
     <Compile Include="Forms\Elzab\SalesBufferReading.Designer.cs">
       <DependentUpon>SalesBufferReading.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\History of sales\DisplayHistoryOfProductSale.cs">
+    <Compile Include="Forms\History of sales\FullSalesHistory.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\History of sales\DisplayHistoryOfProductSale.Designer.cs">
-      <DependentUpon>DisplayHistoryOfProductSale.cs</DependentUpon>
+    <Compile Include="Forms\History of sales\FullSalesHistory.Designer.cs">
+      <DependentUpon>FullSalesHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\History of sales\HistoryOfProductSale.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\History of sales\HistoryOfProductSale.Designer.cs">
+      <DependentUpon>HistoryOfProductSale.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MainMenu\GeneralSettings.cs">
       <SubType>UserControl</SubType>
@@ -401,6 +413,9 @@
     <EmbeddedResource Include="Forms\Common\ProgressBarTemplate.resx">
       <DependentUpon>ProgressBarTemplate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Common\DateRelatedSearch.resx">
+      <DependentUpon>DateRelatedSearch.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Common\SearchBarTemplate.resx">
       <DependentUpon>SearchBarTemplate.cs</DependentUpon>
     </EmbeddedResource>
@@ -413,8 +428,11 @@
     <EmbeddedResource Include="Forms\Elzab\SalesBufferReading.resx">
       <DependentUpon>SalesBufferReading.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\History of sales\DisplayHistoryOfProductSale.resx">
-      <DependentUpon>DisplayHistoryOfProductSale.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\History of sales\FullSalesHistory.resx">
+      <DependentUpon>FullSalesHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\History of sales\HistoryOfProductSale.resx">
+      <DependentUpon>HistoryOfProductSale.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainMenu\GeneralSettings.resx">
       <DependentUpon>GeneralSettings.cs</DependentUpon>

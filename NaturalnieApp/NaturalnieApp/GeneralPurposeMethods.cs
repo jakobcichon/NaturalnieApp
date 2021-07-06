@@ -1522,4 +1522,114 @@ namespace NaturalnieApp
         }
     }
 
+    static public class HistorySalesRelated
+    {
+        static public ProductChangelog GetSales(string dateOfSales, string timeOfSales,
+           DatabaseCommands databaseCommands)
+        {
+            //Get date and time suitable for comparision
+            string date = ElzabRelated.ConvertElzabDateFormat(dateOfSales);
+            DateTime dateAndTime = DateTime.Parse(date + " " + timeOfSales);
+
+            //Get last valid synchrnization fro given time
+            ElzabCommunication lastValidSynchronization = databaseCommands.GetLastSynchroFromTheGivenDate(dateAndTime);
+
+            //Get changelog, starting from last synchronization date
+            ProductChangelog changelog = databaseCommands.GetLastChangelogValueForGivenElzabProductIdLimitedByDate(cashRegisterProdNumber,
+                System.DateTime.MinValue, lastValidSynchronization.DateOfCommunication);
+
+            if (changelog != null)
+            {
+                if (changelog.OperationType == "Update")
+                {
+                    return changelog;
+                }
+                else return null;
+            }
+            else return null;
+        }
+
+        static public ProductChangelog GetSalesEntityIfNotActual(int cashRegisterProdNumber, string dateOfSales, string timeOfSales,
+            DatabaseCommands databaseCommands)
+        {
+            //Get date and time suitable for comparision
+            string date = ElzabRelated.ConvertElzabDateFormat(dateOfSales);
+            DateTime dateAndTime = DateTime.Parse(date + " " + timeOfSales);
+
+            //Get last valid synchrnization fro given time
+            ElzabCommunication lastValidSynchronization = databaseCommands.GetLastSynchroFromTheGivenDate(dateAndTime);
+
+            //Get changelog, starting from last synchronization date
+            ProductChangelog changelog = databaseCommands.GetLastChangelogValueForGivenElzabProductIdLimitedByDate(cashRegisterProdNumber,
+                System.DateTime.MinValue, lastValidSynchronization.DateOfCommunication);
+
+            if (changelog != null)
+            {
+                if (changelog.OperationType == "Update")
+                {
+                    return changelog;
+                }
+                else return null;
+            }
+            else return null;
+        }
+
+        public class ProductSalesObject
+        {
+            string ProductName { get; set; }
+            DateTime DateAndTimeOfSales { get; set; }
+            string DailyReportNumber { get; set; }
+            string ReceiptNumber { get; set; }
+            string PositionOnReceipt { get; set; }
+            string Quantity { get; set; }
+            float PriceOfSales { get; set; }
+
+
+            /// <summary>
+            /// Class constructors
+            /// </summary>
+            /// <param name="sale"></param>
+            /// <param name="productChangelog"></param>
+            public ProductSalesObject(Sales sale, ProductChangelog productChangelog)
+            {
+                this.ProductName = productChangelog.ProductName;
+
+                DateTime dateAndTime = DateTime.Parse(ElzabRelated.ConvertElzabDateFormat(sale.Attribute9) + " " + sale.Attribute10);
+                this.DateAndTimeOfSales = dateAndTime;
+
+                this.DailyReportNumber = sale.Attribute2;
+                this.ReceiptNumber = sale.Attribute3;
+                this.PositionOnReceipt = sale.Attribute4;
+                this.Quantity = sale.Attribute7;
+                this.PriceOfSales = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute8);
+            }
+
+            public ProductSalesObject(Sales sale, Product product)
+            {
+                this.ProductName = product.ProductName;
+
+                DateTime dateAndTime = DateTime.Parse(ElzabRelated.ConvertElzabDateFormat(sale.Attribute9) + " " + sale.Attribute10);
+                this.DateAndTimeOfSales = dateAndTime;
+
+                this.DailyReportNumber = sale.Attribute2;
+                this.ReceiptNumber = sale.Attribute3;
+                this.PositionOnReceipt = sale.Attribute4;
+                this.Quantity = sale.Attribute7;
+                this.PriceOfSales = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute8);
+            }
+
+            public void FillInDataRow(DataRow row)
+            {
+                row[0] = this.ProductName;
+                row[1] = this.DateAndTimeOfSales;
+                row[2] = this.DailyReportNumber;
+                row[3] = this.ReceiptNumber;
+                row[4] = this.PositionOnReceipt;
+                row[5] = this.Quantity;
+                row[6] = this.PriceOfSales;
+            }
+
+        }
+    }
+
 }

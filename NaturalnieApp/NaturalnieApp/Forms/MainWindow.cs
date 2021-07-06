@@ -38,7 +38,8 @@ namespace NaturalnieApp.Forms
         public SupplierList supplierList { get; set; }
         public Common.StatusBar statusBar { get; set; }
         public ElzabRelated.CashRegisterSerialPort cashRegisterSerialPort { get; set; }
-        public DisplayHistoryOfProductSale displayHistoryOfProductSale { get; set; }
+        public HistoryOfProductSale HistoryOfProductSale { get; set; }
+        public FullSalesHistory FullSalesHistory { get; set; }
 
         //Creat EF databse connection object
         DatabaseCommands databaseCommands;
@@ -91,7 +92,8 @@ namespace NaturalnieApp.Forms
             this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
             this.manufacturersList = new ManufacturersList();
             this.supplierList = new SupplierList();
-            this.displayHistoryOfProductSale = new DisplayHistoryOfProductSale();
+            this.HistoryOfProductSale = new HistoryOfProductSale();
+            this.FullSalesHistory = new FullSalesHistory();
 
             //Add status bar
             this.statusBar = new Common.StatusBar();
@@ -618,18 +620,38 @@ namespace NaturalnieApp.Forms
             this.pContainer.Controls.Clear();
             try
             {
-                this.pContainer.Controls.Add(this.displayHistoryOfProductSale);
-                this.displayHistoryOfProductSale.Select();
-                this.displayHistoryOfProductSale.BringToFront();
-                this.displayHistoryOfProductSale.Show();
+                this.pContainer.Controls.Add(this.HistoryOfProductSale);
+                this.HistoryOfProductSale.Select();
+                this.HistoryOfProductSale.BringToFront();
+                this.HistoryOfProductSale.Show();
             }
             catch (ObjectDisposedException)
             {
-                this.displayHistoryOfProductSale = new DisplayHistoryOfProductSale();
-                this.pContainer.Controls.Add(this.displayHistoryOfProductSale);
-                this.displayHistoryOfProductSale.Select();
-                this.displayHistoryOfProductSale.BringToFront();
-                this.displayHistoryOfProductSale.Show();
+                this.HistoryOfProductSale = new HistoryOfProductSale();
+                this.pContainer.Controls.Add(this.HistoryOfProductSale);
+                this.HistoryOfProductSale.Select();
+                this.HistoryOfProductSale.BringToFront();
+                this.HistoryOfProductSale.Show();
+            }
+
+        }
+        private void bFullSalesHistory_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            try
+            {
+                this.pContainer.Controls.Add(this.FullSalesHistory);
+                this.FullSalesHistory.Select();
+                this.FullSalesHistory.BringToFront();
+                this.FullSalesHistory.Show();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.FullSalesHistory = new FullSalesHistory();
+                this.pContainer.Controls.Add(this.FullSalesHistory);
+                this.FullSalesHistory.Select();
+                this.FullSalesHistory.BringToFront();
+                this.FullSalesHistory.Show();
             }
 
         }

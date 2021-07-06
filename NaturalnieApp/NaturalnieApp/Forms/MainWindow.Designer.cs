@@ -33,7 +33,8 @@ namespace NaturalnieApp.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.pMenu = new System.Windows.Forms.Panel();
             this.pHistoryOfSales = new System.Windows.Forms.Panel();
-            this.bDisplayHistoryOfProductSale = new System.Windows.Forms.Button();
+            this.bFullSalesHistory = new System.Windows.Forms.Button();
+            this.bHistoryOfProductSale = new System.Windows.Forms.Button();
             this.bHistoryOfSales = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pStockSubMenu = new System.Windows.Forms.Panel();
@@ -111,30 +112,48 @@ namespace NaturalnieApp.Forms
             // 
             this.pHistoryOfSales.AutoSize = true;
             this.pHistoryOfSales.BackColor = System.Drawing.Color.DimGray;
-            this.pHistoryOfSales.Controls.Add(this.bDisplayHistoryOfProductSale);
+            this.pHistoryOfSales.Controls.Add(this.bFullSalesHistory);
+            this.pHistoryOfSales.Controls.Add(this.bHistoryOfProductSale);
             this.pHistoryOfSales.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHistoryOfSales.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pHistoryOfSales.Location = new System.Drawing.Point(0, 784);
             this.pHistoryOfSales.Name = "pHistoryOfSales";
-            this.pHistoryOfSales.Size = new System.Drawing.Size(283, 30);
+            this.pHistoryOfSales.Size = new System.Drawing.Size(283, 60);
             this.pHistoryOfSales.TabIndex = 12;
             // 
-            // bDisplayHistoryOfProductSale
+            // bFullSalesHistory
             // 
-            this.bDisplayHistoryOfProductSale.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
-            this.bDisplayHistoryOfProductSale.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bDisplayHistoryOfProductSale.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.bDisplayHistoryOfProductSale.FlatAppearance.BorderSize = 0;
-            this.bDisplayHistoryOfProductSale.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bDisplayHistoryOfProductSale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bDisplayHistoryOfProductSale.ForeColor = System.Drawing.Color.White;
-            this.bDisplayHistoryOfProductSale.Location = new System.Drawing.Point(0, 0);
-            this.bDisplayHistoryOfProductSale.Name = "bDisplayHistoryOfProductSale";
-            this.bDisplayHistoryOfProductSale.Size = new System.Drawing.Size(283, 30);
-            this.bDisplayHistoryOfProductSale.TabIndex = 8;
-            this.bDisplayHistoryOfProductSale.Text = "Pokaż historię sprzedaży produktu";
-            this.bDisplayHistoryOfProductSale.UseVisualStyleBackColor = false;
-            this.bDisplayHistoryOfProductSale.Click += new System.EventHandler(this.bDisplayHistory_Click);
+            this.bFullSalesHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bFullSalesHistory.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bFullSalesHistory.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bFullSalesHistory.FlatAppearance.BorderSize = 0;
+            this.bFullSalesHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bFullSalesHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bFullSalesHistory.ForeColor = System.Drawing.Color.White;
+            this.bFullSalesHistory.Location = new System.Drawing.Point(0, 30);
+            this.bFullSalesHistory.Name = "bFullSalesHistory";
+            this.bFullSalesHistory.Size = new System.Drawing.Size(283, 30);
+            this.bFullSalesHistory.TabIndex = 9;
+            this.bFullSalesHistory.Text = "Pełna historia sprzedaży";
+            this.bFullSalesHistory.UseVisualStyleBackColor = false;
+            this.bFullSalesHistory.Click += new System.EventHandler(this.bFullSalesHistory_Click);
+            // 
+            // bHistoryOfProductSale
+            // 
+            this.bHistoryOfProductSale.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bHistoryOfProductSale.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bHistoryOfProductSale.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bHistoryOfProductSale.FlatAppearance.BorderSize = 0;
+            this.bHistoryOfProductSale.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bHistoryOfProductSale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bHistoryOfProductSale.ForeColor = System.Drawing.Color.White;
+            this.bHistoryOfProductSale.Location = new System.Drawing.Point(0, 0);
+            this.bHistoryOfProductSale.Name = "bHistoryOfProductSale";
+            this.bHistoryOfProductSale.Size = new System.Drawing.Size(283, 30);
+            this.bHistoryOfProductSale.TabIndex = 8;
+            this.bHistoryOfProductSale.Text = "Historia sprzedaży produktu";
+            this.bHistoryOfProductSale.UseVisualStyleBackColor = false;
+            this.bHistoryOfProductSale.Click += new System.EventHandler(this.bDisplayHistory_Click);
             // 
             // bHistoryOfSales
             // 
@@ -160,7 +179,7 @@ namespace NaturalnieApp.Forms
             this.panel1.Location = new System.Drawing.Point(0, 734);
             this.panel1.MinimumSize = new System.Drawing.Size(300, 10);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(300, 85);
+            this.panel1.Size = new System.Drawing.Size(300, 115);
             this.panel1.TabIndex = 8;
             // 
             // pStockSubMenu
@@ -781,6 +800,7 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bSupplierList;
         private System.Windows.Forms.Button bHistoryOfSales;
         private System.Windows.Forms.Panel pHistoryOfSales;
-        private System.Windows.Forms.Button bDisplayHistoryOfProductSale;
+        private System.Windows.Forms.Button bHistoryOfProductSale;
+        private System.Windows.Forms.Button bFullSalesHistory;
     }
 }
