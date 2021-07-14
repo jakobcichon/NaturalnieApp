@@ -2227,6 +2227,30 @@ namespace NaturalnieApp.Database
             }
             return localSale;
         }
+
+        //====================================================================================================
+        //Method used to retrieve from DB Sales entities by cash register data and time
+        //====================================================================================================
+        public List<Sales> GetSalesEntitiesByDate(DateTime startDateTime, DateTime endDateTime)
+        {
+            List<Sales> localSale = new List<Sales>();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                string sqlQuery = string.Format(@"SELECT * FROM shop.sales WHERE date_format('{0}', ' %Y %m %d') <= date_format(sales.Attribute9,' %Y %m %d') " +
+                    "AND date_format('{1}', ' %Y %m %d') >= date_format(sales.Attribute9,' %Y %m %d')", 
+                    ElzabRelated.ConvertToElzabDateFormat(startDateTime.Date).date, ElzabRelated.ConvertToElzabDateFormat(endDateTime.Date).date);
+
+
+                var query = contextDB.Sales.SqlQuery(sqlQuery);
+
+
+                foreach (var element in query)
+                {
+                    localSale.Add(element);
+                }
+            }
+            return localSale;
+        }
         #endregion
 
 

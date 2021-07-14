@@ -463,6 +463,7 @@ namespace NaturalnieApp
         {
             public string No { get; set; }
             public string ProductName { get; set; }
+            public string CashRegisterProductNumber { get; set; }
             public string DateAndTimeOfSales { get; set; }
             public string DailyReportNumber { get; set; }
             public string ReceiptNumber { get; set; }
@@ -985,16 +986,40 @@ namespace NaturalnieApp
             return retVal;
 
         }
-        public static string ConvertElzabDateFormat(string date)
+        /// <summary>
+        /// Method used to 
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static string ReverseElzabDateFormat(string date)
         {
             //Check format first
             Regex reg = new Regex(@"^\d{2}[.]\d{2}[.]\d{2}$");
-            if (!reg.IsMatch(date)) throw new FormatException("Format daty podany do fukcji konwersji daty Elzab jest błędny!");
+            Regex reg2 = new Regex(@"^\d{2}[.]\d{2}[.]\d{4}$");
+            if (!reg.IsMatch(date) && !reg2.IsMatch(date)) throw new FormatException("Format daty podany do fukcji konwersji daty Elzab jest błędny!");
 
             List<string> localValue = date.Split('.').ToList();
             localValue.Reverse();
+            if (reg2.IsMatch(date)) localValue[0] = localValue[0].Remove(0, 2);
 
             return localValue.Aggregate((i, j) => i + '.' + j);
+        }
+
+        public static DateTime ConvertFromElzabDateFormat(string date)
+        {
+            //Reverse format
+            DateTime localDate = DateTime.Parse(ReverseElzabDateFormat(date));
+
+            return localDate;
+        }
+
+        public static (string date, string time) ConvertToElzabDateFormat(DateTime date)
+        {
+            //Reverse format
+            string localDate = ReverseElzabDateFormat(date.Date.ToShortDateString());
+            string localTime = date.TimeOfDay.ToString();
+
+            return (localDate, localTime);
         }
 
         public class CashRegisterSerialPort
@@ -1524,37 +1549,32 @@ namespace NaturalnieApp
 
     static public class HistorySalesRelated
     {
-        static public ProductChangelog GetSales(string dateOfSales, string timeOfSales,
+        static public List<ProductSalesObject> GetSales(DateTime startDate, DateTime endDate,
            DatabaseCommands databaseCommands)
         {
-            //Get date and time suitable for comparision
-            string date = ElzabRelated.ConvertElzabDateFormat(dateOfSales);
-            DateTime dateAndTime = DateTime.Parse(date + " " + timeOfSales);
+            List<ProductSalesObject> localProductSalesList = new List<ProductSalesObject>();
 
-            //Get last valid synchrnization fro given time
-            ElzabCommunication lastValidSynchronization = databaseCommands.GetLastSynchroFromTheGivenDate(dateAndTime);
-
-            //Get changelog, starting from last synchronization date
-            ProductChangelog changelog = databaseCommands.GetLastChangelogValueForGivenElzabProductIdLimitedByDate(cashRegisterProdNumber,
-                System.DateTime.MinValue, lastValidSynchronization.DateOfCommunication);
-
-            if (changelog != null)
+            List<Sales> productsSales = databaseCommands.GetSalesEntitiesByDate(startDate, endDate);
+            foreach(Sales sale in productsSales)
             {
-                if (changelog.OperationType == "Update")
-                {
-                    return changelog;
-                }
-                else return null;
+                int productId = Convert.ToInt32(sale.Attribute6);
+
+                Product product = databaseCommands.GetProductEntityByElzabId(productId);
+                ProductChangelog changelog = GetSalesEntityIfNotActual(productId, sale.Attribute9, sale.Attribute10, databaseCommands);
+
+                if (changelog != null) localProductSalesList.Add(new ProductSalesObject(sale, changelog));
+                else if (product != null) localProductSalesList.Add(new ProductSalesObject(sale, product));
+                else localProductSalesList.Add(new ProductSalesObject(sale));
             }
-            else return null;
+            return localProductSalesList;
         }
 
         static public ProductChangelog GetSalesEntityIfNotActual(int cashRegisterProdNumber, string dateOfSales, string timeOfSales,
             DatabaseCommands databaseCommands)
         {
             //Get date and time suitable for comparision
-            string date = ElzabRelated.ConvertElzabDateFormat(dateOfSales);
-            DateTime dateAndTime = DateTime.Parse(date + " " + timeOfSales);
+            DateTime date = ElzabRelated.ConvertFromElzabDateFormat(dateOfSales);
+            DateTime dateAndTime = DateTime.Parse(date.Date.ToShortDateString() + " " + timeOfSales);
 
             //Get last valid synchrnization fro given time
             ElzabCommunication lastValidSynchronization = databaseCommands.GetLastSynchroFromTheGivenDate(dateAndTime);
@@ -1577,6 +1597,7 @@ namespace NaturalnieApp
         public class ProductSalesObject
         {
             string ProductName { get; set; }
+            string CashRegisterProductNumber { get; set; }
             DateTime DateAndTimeOfSales { get; set; }
             string DailyReportNumber { get; set; }
             string ReceiptNumber { get; set; }
@@ -1590,13 +1611,30 @@ namespace NaturalnieApp
             /// </summary>
             /// <param name="sale"></param>
             /// <param name="productChangelog"></param>
+            public ProductSalesObject(Sales sale)
+            {
+                this.ProductName = "-";
+
+                DateTime dateAndTime = DateTime.Parse(ElzabRelated.ConvertFromElzabDateFormat(sale.Attribute9).Date.ToShortDateString()
+                    + " " + sale.Attribute10);
+                this.DateAndTimeOfSales = dateAndTime;
+
+                this.CashRegisterProductNumber = sale.Attribute6;
+                this.DailyReportNumber = sale.Attribute2;
+                this.ReceiptNumber = sale.Attribute3;
+                this.PositionOnReceipt = sale.Attribute4;
+                this.Quantity = sale.Attribute7;
+                this.PriceOfSales = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute8);
+            }
             public ProductSalesObject(Sales sale, ProductChangelog productChangelog)
             {
                 this.ProductName = productChangelog.ProductName;
 
-                DateTime dateAndTime = DateTime.Parse(ElzabRelated.ConvertElzabDateFormat(sale.Attribute9) + " " + sale.Attribute10);
+                DateTime dateAndTime = DateTime.Parse(ElzabRelated.ConvertFromElzabDateFormat(sale.Attribute9).Date.ToShortDateString()
+                    + " " + sale.Attribute10);
                 this.DateAndTimeOfSales = dateAndTime;
 
+                this.CashRegisterProductNumber = sale.Attribute6;
                 this.DailyReportNumber = sale.Attribute2;
                 this.ReceiptNumber = sale.Attribute3;
                 this.PositionOnReceipt = sale.Attribute4;
@@ -1608,9 +1646,11 @@ namespace NaturalnieApp
             {
                 this.ProductName = product.ProductName;
 
-                DateTime dateAndTime = DateTime.Parse(ElzabRelated.ConvertElzabDateFormat(sale.Attribute9) + " " + sale.Attribute10);
+                DateTime dateAndTime = DateTime.Parse(ElzabRelated.ConvertFromElzabDateFormat(sale.Attribute9).Date.ToShortDateString()
+                    + " " + sale.Attribute10);
                 this.DateAndTimeOfSales = dateAndTime;
 
+                this.CashRegisterProductNumber = sale.Attribute6;
                 this.DailyReportNumber = sale.Attribute2;
                 this.ReceiptNumber = sale.Attribute3;
                 this.PositionOnReceipt = sale.Attribute4;
@@ -1621,12 +1661,13 @@ namespace NaturalnieApp
             public void FillInDataRow(DataRow row)
             {
                 row[0] = this.ProductName;
-                row[1] = this.DateAndTimeOfSales;
-                row[2] = this.DailyReportNumber;
-                row[3] = this.ReceiptNumber;
-                row[4] = this.PositionOnReceipt;
-                row[5] = this.Quantity;
-                row[6] = this.PriceOfSales;
+                row[1] = this.CashRegisterProductNumber;
+                row[2] = this.DateAndTimeOfSales;
+                row[3] = this.DailyReportNumber;
+                row[4] = this.ReceiptNumber;
+                row[5] = this.PositionOnReceipt;
+                row[6] = this.Quantity;
+                row[7] = this.PriceOfSales;
             }
 
         }

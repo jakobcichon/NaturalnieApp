@@ -60,6 +60,7 @@ namespace NaturalnieApp.Forms
             //Initialize daa grid view
             this.ColumnNames.No = "Numer";
             this.ColumnNames.ProductName = "Nazwa produktu";
+            this.ColumnNames.CashRegisterProductNumber = "Numer produktu w kasie";
             this.ColumnNames.DateAndTimeOfSales = "Data i czas sprzedaży";
             this.ColumnNames.DailyReportNumber = "Numer raportu dobowego";
             this.ColumnNames.ReceiptNumber = "Numer paragonu";
@@ -73,6 +74,13 @@ namespace NaturalnieApp.Forms
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.ProductName;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            this.DataSource.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.CashRegisterProductNumber;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
             this.DataSource.Columns.Add(column);
