@@ -463,6 +463,7 @@ namespace NaturalnieApp
         {
             public string No { get; set; }
             public string ProductName { get; set; }
+            public string Manufacturer { get; set; }
             public string CashRegisterProductNumber { get; set; }
             public string DateAndTimeOfSales { get; set; }
             public string DailyReportNumber { get; set; }
@@ -1554,6 +1555,9 @@ namespace NaturalnieApp
         {
             List<ProductSalesObject> localProductSalesList = new List<ProductSalesObject>();
 
+            //Get manufacturer list
+            List<Manufacturer> manufaturerList = databaseCommands.GetAllManufacturersEnts();
+
             List<Sales> productsSales = databaseCommands.GetSalesEntitiesByDate(startDate, endDate);
             foreach(Sales sale in productsSales)
             {
@@ -1562,8 +1566,10 @@ namespace NaturalnieApp
                 Product product = databaseCommands.GetProductEntityByElzabId(productId);
                 ProductChangelog changelog = GetSalesEntityIfNotActual(productId, sale.Attribute9, sale.Attribute10, databaseCommands);
 
-                if (changelog != null) localProductSalesList.Add(new ProductSalesObject(sale, changelog));
-                else if (product != null) localProductSalesList.Add(new ProductSalesObject(sale, product));
+                if (changelog != null) localProductSalesList.Add(new ProductSalesObject(sale, changelog, 
+                    manufaturerList.Find(m => m.Id == changelog.ManufacturerId)));
+                else if (product != null) localProductSalesList.Add(new ProductSalesObject(sale, product,
+                    manufaturerList.Find(m => m.Id == product.ManufacturerId)));
                 else localProductSalesList.Add(new ProductSalesObject(sale));
             }
             return localProductSalesList;
@@ -1597,6 +1603,7 @@ namespace NaturalnieApp
         public class ProductSalesObject
         {
             string ProductName { get; set; }
+            string ManufacturerName { get; set; }
             string CashRegisterProductNumber { get; set; }
             DateTime DateAndTimeOfSales { get; set; }
             string DailyReportNumber { get; set; }
@@ -1614,6 +1621,7 @@ namespace NaturalnieApp
             public ProductSalesObject(Sales sale)
             {
                 this.ProductName = "-";
+                this.ManufacturerName = "-";
 
                 DateTime dateAndTime = DateTime.Parse(ElzabRelated.ConvertFromElzabDateFormat(sale.Attribute9).Date.ToShortDateString()
                     + " " + sale.Attribute10);
@@ -1626,9 +1634,10 @@ namespace NaturalnieApp
                 this.Quantity = sale.Attribute7;
                 this.PriceOfSales = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute8);
             }
-            public ProductSalesObject(Sales sale, ProductChangelog productChangelog)
+            public ProductSalesObject(Sales sale, ProductChangelog productChangelog, Manufacturer manufacturer)
             {
                 this.ProductName = productChangelog.ProductName;
+                this.ManufacturerName = manufacturer.Name;
 
                 DateTime dateAndTime = DateTime.Parse(ElzabRelated.ConvertFromElzabDateFormat(sale.Attribute9).Date.ToShortDateString()
                     + " " + sale.Attribute10);
@@ -1642,9 +1651,10 @@ namespace NaturalnieApp
                 this.PriceOfSales = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute8);
             }
 
-            public ProductSalesObject(Sales sale, Product product)
+            public ProductSalesObject(Sales sale, Product product, Manufacturer manufacturer)
             {
                 this.ProductName = product.ProductName;
+                this.ManufacturerName = manufacturer.Name;
 
                 DateTime dateAndTime = DateTime.Parse(ElzabRelated.ConvertFromElzabDateFormat(sale.Attribute9).Date.ToShortDateString()
                     + " " + sale.Attribute10);
@@ -1660,14 +1670,15 @@ namespace NaturalnieApp
 
             public void FillInDataRow(DataRow row)
             {
-                row[0] = this.ProductName;
-                row[1] = this.CashRegisterProductNumber;
-                row[2] = this.DateAndTimeOfSales;
-                row[3] = this.DailyReportNumber;
-                row[4] = this.ReceiptNumber;
-                row[5] = this.PositionOnReceipt;
-                row[6] = this.Quantity;
-                row[7] = this.PriceOfSales;
+                row[0] = this.ManufacturerName;
+                row[1] = this.ProductName;
+                row[2] = this.CashRegisterProductNumber;
+                row[3] = this.DateAndTimeOfSales;
+                row[4] = this.DailyReportNumber;
+                row[5] = this.ReceiptNumber;
+                row[6] = this.PositionOnReceipt;
+                row[7] = this.Quantity;
+                row[8] = this.PriceOfSales;
             }
 
         }

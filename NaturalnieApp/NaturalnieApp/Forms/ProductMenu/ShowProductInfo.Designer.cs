@@ -913,6 +913,7 @@ namespace NaturalnieApp.Forms
             this.ucSearchBar.NewEntSelected += new NaturalnieApp.Forms.Common.SearchBarTemplate.NewEntSelectedEventHandler(this.ucSearchBar_NewEntSelected);
             this.ucSearchBar.CopyButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.CopyButtonClickEventHandler(this.ucSearchBar_CopyButtonClick);
             this.ucSearchBar.PasteButtonClick += new NaturalnieApp.Forms.Common.SearchBarTemplate.PasteButtonClickEventHandler(this.ucSearchBar_PasteButtonClick);
+            this.ucSearchBar.NewEntSelectedByAdditionalRequest += new NaturalnieApp.Forms.Common.SearchBarTemplate.NewEntSelectedByAdditionalRequestEventHandler(this.ucSearchBar_NewEntSelected);
             // 
             // ShowProductInfo
             // 

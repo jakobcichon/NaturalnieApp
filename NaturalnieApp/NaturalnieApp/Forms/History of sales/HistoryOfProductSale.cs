@@ -174,6 +174,9 @@ namespace NaturalnieApp.Forms
             //Get full list of given product sale
             List<Sales> sales = this.databaseCommands.GetSalesEntitiesByCashRegisterId(productNumberFromDb);
 
+            //Get manufacturer list
+            List<Manufacturer> manufaturerList = this.databaseCommands.GetAllManufacturersEnts();
+
             //Foreach product check changelog
             foreach(Sales sale in sales)
             {
@@ -185,12 +188,14 @@ namespace NaturalnieApp.Forms
             
             foreach(KeyValuePair<Sales, ProductChangelog> element in old)
             {
-                outList.Add(new HistorySalesRelated.ProductSalesObject(element.Key, element.Value));
+                outList.Add(new HistorySalesRelated.ProductSalesObject(element.Key, element.Value, 
+                    manufaturerList.Find(m => m.Id == element.Value.ManufacturerId)));
             }
 
             foreach (KeyValuePair<Sales, Product> element in actual)
             {
-                outList.Add(new HistorySalesRelated.ProductSalesObject(element.Key, element.Value));
+                outList.Add(new HistorySalesRelated.ProductSalesObject(element.Key, element.Value,
+                    manufaturerList.Find(m => m.Id == element.Value.ManufacturerId)));
             }
 
             foreach(HistorySalesRelated.ProductSalesObject obj in outList)
