@@ -1,8 +1,10 @@
 ﻿using NaturalnieApp.Database;
+using NaturalnieApp.PdfToExcel;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -67,6 +69,7 @@ namespace NaturalnieApp.Forms
             this.ColumnNames.PositionOnReceipt = "Numer pozycji na paragonie";
             this.ColumnNames.Quantity = "Ilość sprzedaży";
             this.ColumnNames.PriceOfSales = "Kwota sprzedaży";
+            this.ColumnNames.PriceOnCashRegister = "Cena na kasie";
 
 
             //Create data source columns
@@ -134,6 +137,13 @@ namespace NaturalnieApp.Forms
             column.ReadOnly = true;
             this.DataSource.Columns.Add(column);
             column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.PriceOnCashRegister;
+            column.DataType = Type.GetType("System.Single");
+            column.ReadOnly = true;
+            this.DataSource.Columns.Add(column);
+            column.Dispose();
         }
         #endregion
 
@@ -171,7 +181,8 @@ namespace NaturalnieApp.Forms
         private void dateRelatedSearch1_NewEntSelected(object sender, Common.DateRelatedSearch.NewEntSelectedEventArgs e)
         {
             this.DataSource.Rows.Clear();
-            List<HistorySalesRelated.ProductSalesObject> outList = HistorySalesRelated.GetSales(e.StartDate, e.EndDate, this.databaseCommands);
+            List<HistorySalesRelated.ProductSalesObject> outList = HistorySalesRelated.GetSales(
+                e.StartDate, e.EndDate, e.SelectedManufacturer, this.databaseCommands);
 
             foreach (HistorySalesRelated.ProductSalesObject obj in outList)
             {
@@ -181,6 +192,41 @@ namespace NaturalnieApp.Forms
             }
 
             this.advancedDataGridView1.AutoResizeColumns();
+        }
+
+        private void bSaveToFile_Click(object sender, EventArgs e)
+        {
+            string tempString = ("Sprzedaż " + DateTime.Now).Replace("/", "_");
+            tempString = tempString.Replace(":", "_");
+            saveFileDialog1.FileName = tempString;
+            saveFileDialog1.Filter = "Plik programu excel | *.xlsb";
+            saveFileDialog1.DefaultExt = "xlsb";
+            //Open folder dialog browser
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                //File string
+                string fileString = saveFileDialog1.FileName;
+
+                //Check extension
+                string extension = Path.GetExtension(fileString);
+                if (extension == "" || extension == ".xlsb")
+                {
+                    if (extension == "")
+                    {
+                        extension = ".xlsb";
+                        fileString += extension;
+                    }
+
+                    //Test purpose
+                    ExcelBase.ExportToExcel(this.DataSource, fileString);
+                }
+                else
+                {
+                    MessageBox.Show("Błąd! Dopuszczalne rozszerzenie pliku to .xlsb");
+                }
+            }
+
+
         }
     }
 

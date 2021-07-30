@@ -79,8 +79,8 @@ namespace NaturalnieApp.Forms
             this.timer1sTick.Start();
 
             this.addNewProductFromExcel = new AddNewProductFromExcel(ref this.databaseCommands) { TopLevel = false, TopMost = true };
-            this.printBarcode = new PrintBarcode() ;
-            this.showProductInfo = new ShowProductInfo(ref this.databaseCommands) ;
+            this.printBarcode = new PrintBarcode();
+            this.showProductInfo = new ShowProductInfo(ref this.databaseCommands);
             this.addNewProduct = new AddNewProduct(ref this.databaseCommands);
             this.addToStock = new AddToStock(ref this.databaseCommands);
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };

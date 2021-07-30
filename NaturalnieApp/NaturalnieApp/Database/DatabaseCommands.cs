@@ -2236,6 +2236,7 @@ namespace NaturalnieApp.Database
             List<Sales> localSale = new List<Sales>();
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
+
                 string sqlQuery = string.Format(@"SELECT * FROM shop.sales WHERE date_format('{0}', ' %Y %m %d') <= date_format(sales.Attribute9,' %Y %m %d') " +
                     "AND date_format('{1}', ' %Y %m %d') >= date_format(sales.Attribute9,' %Y %m %d')", 
                     ElzabRelated.ConvertToElzabDateFormat(startDateTime.Date).date, ElzabRelated.ConvertToElzabDateFormat(endDateTime.Date).date);

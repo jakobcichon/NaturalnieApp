@@ -139,23 +139,31 @@ namespace NaturalnieApp.Forms
         {
             string[] sorted;
 
-            //Add fetched data to proper combo box
-            this.cbManufacturer.Items.Clear();
-            sorted = this.databaseCommands.GetManufacturersNameList().ToArray();
-            Array.Sort(sorted);
-            this.cbManufacturer.Items.AddRange(sorted);
+            try
+            {
+                //Add fetched data to proper combo box
+                this.cbManufacturer.Items.Clear();
+                sorted = this.databaseCommands.GetManufacturersNameList().ToArray();
+                Array.Sort(sorted);
+                this.cbManufacturer.Items.AddRange(sorted);
 
-            //Add fetched data to proper combo box
-            this.cbSupplierName.Items.Clear();
-            sorted = this.databaseCommands.GetSupplierNameList().ToArray();
-            Array.Sort(sorted);
-            this.cbSupplierName.Items.AddRange(sorted);
+                //Add fetched data to proper combo box
+                this.cbSupplierName.Items.Clear();
+                sorted = this.databaseCommands.GetSupplierNameList().ToArray();
+                Array.Sort(sorted);
+                this.cbSupplierName.Items.AddRange(sorted);
 
-            //Add fetched data to proper combo box
-            this.cbTax.Items.Clear();
-            sorted = this.databaseCommands.GetTaxList().ToArray();
-            Array.Sort(sorted);
-            this.cbTax.Items.AddRange(sorted);
+                //Add fetched data to proper combo box
+                this.cbTax.Items.Clear();
+                sorted = this.databaseCommands.GetTaxList().ToArray();
+                Array.Sort(sorted);
+                this.cbTax.Items.AddRange(sorted);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
         }
         private bool ValidateAllInputFields()
         {

@@ -564,14 +564,29 @@ namespace ElzabDriver
                 elzabCommunicationEnt.DateOfCommunication = DateTime.Now;
                 elzabCommunicationEnt.StatusOfCommunication = ElzabCommunication.CommunicationStatus.Started;
                 elzabCommunicationEnt.ElzabCommandName = this.CommandName;
-                this.DatabaseCommands.AddToElzabCommunication(elzabCommunicationEnt);
+                try
+                {
+                    this.DatabaseCommands.AddToElzabCommunication(elzabCommunicationEnt);
 
-                //Start process
-                Process proc = Process.Start(processStartInfo);
-                this.BackgroundProcess = proc;
-                proc.WaitForExit();
-                if (proc.ExitCode >= 0) retVal = true;
-                else retVal = false;
+                    //Start process
+                    Process proc = Process.Start(processStartInfo);
+                    this.BackgroundProcess = proc;
+                    proc.WaitForExit();
+                    if (proc.ExitCode >= 0) retVal = true;
+                    else retVal = false;
+                }
+                catch(Exception e)
+                {
+                    string text = string.Format("Błąd podczas wykonywania komendy {0}. Czy chcesz zobaczyć więcej szczegółów?", this.CommandName);
+                    DialogResult decision = MessageBox.Show(text, "", MessageBoxButtons.YesNo);
+                    if(decision == DialogResult.Yes)
+                    {
+                        MessageBox.Show(e.Message + e.InnerException);
+                    }
+
+                    retVal = false;
+                }
+
             }
             else
             {

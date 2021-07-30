@@ -37,6 +37,8 @@ namespace NaturalnieApp.Forms
             this.bClose = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
             this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
+            this.bSaveToFile = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.dateRelatedSearch1 = new NaturalnieApp.Forms.Common.DateRelatedSearch();
             this.pHeader.SuspendLayout();
             this.pButtonsPanel.SuspendLayout();
@@ -85,6 +87,7 @@ namespace NaturalnieApp.Forms
             // 
             this.pButtonsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(178)))), ((int)(((byte)(148)))));
             this.pButtonsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pButtonsPanel.Controls.Add(this.bSaveToFile);
             this.pButtonsPanel.Controls.Add(this.bClose);
             this.pButtonsPanel.Controls.Add(this.bUpdate);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -128,8 +131,22 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.Location = new System.Drawing.Point(6, 142);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(908, 470);
+            this.advancedDataGridView1.Size = new System.Drawing.Size(908, 418);
             this.advancedDataGridView1.TabIndex = 9;
+            // 
+            // bSaveToFile
+            // 
+            this.bSaveToFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bSaveToFile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.bSaveToFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bSaveToFile.Location = new System.Drawing.Point(705, 7);
+            this.bSaveToFile.Name = "bSaveToFile";
+            this.bSaveToFile.Size = new System.Drawing.Size(100, 50);
+            this.bSaveToFile.TabIndex = 8;
+            this.bSaveToFile.Text = "Zapisz do pliku";
+            this.bSaveToFile.UseMnemonic = false;
+            this.bSaveToFile.UseVisualStyleBackColor = false;
+            this.bSaveToFile.Click += new System.EventHandler(this.bSaveToFile_Click);
             // 
             // dateRelatedSearch1
             // 
@@ -181,5 +198,7 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Button bUpdate;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
         private Common.DateRelatedSearch dateRelatedSearch1;
+        private System.Windows.Forms.Button bSaveToFile;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }

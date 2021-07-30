@@ -471,6 +471,7 @@ namespace NaturalnieApp
             public string PositionOnReceipt { get; set; }
             public string Quantity { get; set; }
             public string PriceOfSales { get; set; }
+            public string PriceOnCashRegister { get; set; }
 
         }
 
@@ -787,7 +788,8 @@ namespace NaturalnieApp
             }
             else localPrice = elzabPrice;
 
-            string formatedString = localPrice.Insert(localPrice.Length - 2, ".");
+            string formatedString = localPrice.Insert(localPrice.Length - 2, 
+                System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
             retVal = float.Parse(formatedString);
 
             return retVal;
@@ -1226,6 +1228,7 @@ namespace NaturalnieApp
                                 int lastBaudRate = Program.GlobalVariables.ElzabPortCom.BaudRate;
                                 this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(comPortName, lastBaudRate, timeout: 1);
                                 CommandExecutionStatus status;
+
                                 status = this.cashRegisterNumber.ExecuteCommand(false);
 
                                 if (status.ErrorNumber == 0 && status.CommandName != null)
@@ -1550,7 +1553,7 @@ namespace NaturalnieApp
 
     static public class HistorySalesRelated
     {
-        static public List<ProductSalesObject> GetSales(DateTime startDate, DateTime endDate,
+        static public List<ProductSalesObject> GetSales(DateTime startDate, DateTime endDate, Manufacturer manufacturer,
            DatabaseCommands databaseCommands)
         {
             List<ProductSalesObject> localProductSalesList = new List<ProductSalesObject>();
@@ -1566,12 +1569,18 @@ namespace NaturalnieApp
                 Product product = databaseCommands.GetProductEntityByElzabId(productId);
                 ProductChangelog changelog = GetSalesEntityIfNotActual(productId, sale.Attribute9, sale.Attribute10, databaseCommands);
 
-                if (changelog != null) localProductSalesList.Add(new ProductSalesObject(sale, changelog, 
+                if (changelog != null) localProductSalesList.Add(new ProductSalesObject(sale, changelog,
                     manufaturerList.Find(m => m.Id == changelog.ManufacturerId)));
                 else if (product != null) localProductSalesList.Add(new ProductSalesObject(sale, product,
                     manufaturerList.Find(m => m.Id == product.ManufacturerId)));
                 else localProductSalesList.Add(new ProductSalesObject(sale));
             }
+
+            if(manufacturer != null)
+            {
+                localProductSalesList = localProductSalesList.FindAll(e => e.ManufacturerName == manufacturer.Name);
+            }
+
             return localProductSalesList;
         }
 
@@ -1602,15 +1611,17 @@ namespace NaturalnieApp
 
         public class ProductSalesObject
         {
-            string ProductName { get; set; }
-            string ManufacturerName { get; set; }
-            string CashRegisterProductNumber { get; set; }
-            DateTime DateAndTimeOfSales { get; set; }
-            string DailyReportNumber { get; set; }
-            string ReceiptNumber { get; set; }
-            string PositionOnReceipt { get; set; }
-            string Quantity { get; set; }
-            float PriceOfSales { get; set; }
+            public int SaleType { get; set;}
+            public string ProductName { get; set; }
+            public string ManufacturerName { get; set; }
+            public string CashRegisterProductNumber { get; set; }
+            public DateTime DateAndTimeOfSales { get; set; }
+            public string DailyReportNumber { get; set; }
+            public string ReceiptNumber { get; set; }
+            public string PositionOnReceipt { get; set; }
+            public string Quantity { get; set; }
+            public float PriceOfSales { get; set; }
+            public float PriceOnCashRegister { get; set; }
 
 
             /// <summary>
@@ -1620,6 +1631,7 @@ namespace NaturalnieApp
             /// <param name="productChangelog"></param>
             public ProductSalesObject(Sales sale)
             {
+                this.SaleType = Convert.ToInt32(sale.Attribute1);
                 this.ProductName = "-";
                 this.ManufacturerName = "-";
 
@@ -1633,9 +1645,11 @@ namespace NaturalnieApp
                 this.PositionOnReceipt = sale.Attribute4;
                 this.Quantity = sale.Attribute7;
                 this.PriceOfSales = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute8);
+                this.PriceOnCashRegister = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute14);
             }
             public ProductSalesObject(Sales sale, ProductChangelog productChangelog, Manufacturer manufacturer)
             {
+                this.SaleType = Convert.ToInt32(sale.Attribute1);
                 this.ProductName = productChangelog.ProductName;
                 this.ManufacturerName = manufacturer.Name;
 
@@ -1649,10 +1663,12 @@ namespace NaturalnieApp
                 this.PositionOnReceipt = sale.Attribute4;
                 this.Quantity = sale.Attribute7;
                 this.PriceOfSales = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute8);
+                this.PriceOnCashRegister = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute14);
             }
 
             public ProductSalesObject(Sales sale, Product product, Manufacturer manufacturer)
             {
+                                this.SaleType = Convert.ToInt32(sale.Attribute1);
                 this.ProductName = product.ProductName;
                 this.ManufacturerName = manufacturer.Name;
 
@@ -1666,6 +1682,7 @@ namespace NaturalnieApp
                 this.PositionOnReceipt = sale.Attribute4;
                 this.Quantity = sale.Attribute7;
                 this.PriceOfSales = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute8);
+                this.PriceOnCashRegister = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute14);
             }
 
             public void FillInDataRow(DataRow row)
@@ -1679,6 +1696,7 @@ namespace NaturalnieApp
                 row[6] = this.PositionOnReceipt;
                 row[7] = this.Quantity;
                 row[8] = this.PriceOfSales;
+                row[9] = this.PriceOnCashRegister;
             }
 
         }
