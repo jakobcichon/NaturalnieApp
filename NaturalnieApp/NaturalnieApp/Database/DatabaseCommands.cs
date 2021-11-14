@@ -476,7 +476,7 @@ namespace NaturalnieApp.Database
                         }
 
                         //If no gap, assign first free value
-                        if ((retVal == -1) && (elzabProductIdList.Count() < lastPossibleId))
+                        if ((retVal == -1) && ((elzabProductIdList.Count() + firstElementId) < lastPossibleId))
                         {
                             retVal = elzabProductIdList.Last() + 1;
                         }
@@ -1189,7 +1189,7 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
-        //Method used to retrieve from DB Product entity
+        //Method used to get Tax value by product name
         //====================================================================================================
         public Tax GetTaxByProductName(string productName)
         {
@@ -1200,6 +1200,32 @@ namespace NaturalnieApp.Database
                             join t in contextDB.Tax
                             on p.TaxId equals t.Id
                             where p.ProductName == productName
+                            select new
+                            {
+                                t
+                            };
+
+                foreach (var element in query)
+                {
+                    localTax = element.t;
+                }
+
+            }
+            return localTax;
+        }
+
+        //====================================================================================================
+        //Method used to get Tax value by CashRegister Name
+        //====================================================================================================
+        public Tax GetTaxByElzabProductName(string elzabProductName)
+        {
+            Tax localTax = new Tax();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            join t in contextDB.Tax
+                            on p.TaxId equals t.Id
+                            where p.ElzabProductName == elzabProductName
                             select new
                             {
                                 t

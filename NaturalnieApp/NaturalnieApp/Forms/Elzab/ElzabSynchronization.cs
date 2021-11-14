@@ -20,6 +20,7 @@ namespace NaturalnieApp.Forms
         //Declaration of used elzab commands
         ElzabCommand_OTOWAR AllProductsReading { get; set; }
         ElzabCommand_ZTOWAR ProductWriting { get; set; }
+        ElzabCommand_KTOWAR ProductRemoving { get; set; }
         ElzabCommand_ODBARKOD AdditionBarcodesReading { get; set; }
         ElzabCommand_ZDBARKOD AdditionBarcodesWriting { get; set; }
         ElzabCommand_OPSPROZ4 SaleBufforReading { get; set; }
@@ -28,8 +29,12 @@ namespace NaturalnieApp.Forms
         TextBox StatusBox { get; set; }
 
         //Data source for advanced data grid view
-        private DataTable DataSource { get; set; }
+        private List<DataTable> DataSource { get; set; }
+        private DataTable ReferenceTable { get; set; }
         private DataSourceRelated.CashRegisterProductColumnNames ColumnNames;
+
+        //Data Grid View List
+        private List<Zuby.ADGV.AdvancedDataGridView> DataGridViewsList { get; set; }
 
         //Readonly fields with backgroundworker steps description
         #region Readonly fields with backgroundworker steps description
@@ -47,12 +52,46 @@ namespace NaturalnieApp.Forms
                     "5.Parsowanie odczytanych produktów",
                     "6.Pobieranie z bazy danych informacji o wszystkich produktach",
                     "7.Porównywanie informacji z bazy danych i kasy fiskalnej",
-                    "8.Przygotowanie danych do wyświetlenia",
-                    "9. Oczekiwanie na akcję użytkownika"
+                    "8. Sprawdzanie listy towarów do usunięcia w kasie Elzab",
+                    "9.Przygotowanie danych do wyświetlenia",
+                    "10. Oczekiwanie na akcję użytkownika"
                 };
             }
         }
         #endregion
+
+        //Advanced data grid view events
+        private void AdvancedDataGridView1_FilterStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.FilterEventArgs e)
+        {
+            Zuby.ADGV.AdvancedDataGridView fdgv = (Zuby.ADGV.AdvancedDataGridView)sender;
+            DataTable dataTable = (DataTable)fdgv.DataSource;
+
+            if (fdgv.FilterString.Length > 0)
+            {
+                dataTable.DefaultView.RowFilter = fdgv.FilterString;
+            }
+            //Clear Filter
+            else
+            {
+                dataTable.DefaultView.RowFilter = "";
+            }
+        }
+        private void AdvancedDataGridView1_SortStringChanged(object sender, Zuby.ADGV.AdvancedDataGridView.SortEventArgs e)
+        {
+            Zuby.ADGV.AdvancedDataGridView fdgv = (Zuby.ADGV.AdvancedDataGridView)sender;
+            DataTable dataTable = (DataTable)fdgv.DataSource;
+
+            if (fdgv.SortString.Length > 0)
+            {
+                dataTable.DefaultView.Sort = fdgv.SortString;
+            }
+            //Clear Filter
+            else
+            {
+                dataTable.DefaultView.Sort = dataTable.Columns[0].ColumnName + " asc";
+            }
+
+        }
 
         #region Class constructor
         public ElzabSynchronization(ref DatabaseCommands commandsObj)
@@ -69,6 +108,9 @@ namespace NaturalnieApp.Forms
             this.ProductWriting = new ElzabCommand_ZTOWAR(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId,
                 Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
             //Initialization of Elzab commands instances
+            this.ProductRemoving = new ElzabCommand_KTOWAR(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId,
+                Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
+            //Initialization of Elzab commands instances
             this.AdditionBarcodesWriting = new ElzabCommand_ZDBARKOD(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId,
                 Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
             //Initialization of Elzab commands instances
@@ -80,19 +122,23 @@ namespace NaturalnieApp.Forms
 
             this.databaseCommands = commandsObj;
 
-            //Initialize daa grid view
+            //Initialize data grid view
             this.ColumnNames.ProductName = "Nazwa";
             this.ColumnNames.ProductNumber = "Numer w kasie";
             this.ColumnNames.Tax = "Stawka VAT";
             this.ColumnNames.FinalPrice = "Cena";
             this.ColumnNames.Barcode = "Kod kreskowy";
             this.ColumnNames.AdditionaBarcode = "Dodatkowy kod kreskowy";
-            this.DataSource = new DataTable();
+            this.DataSource = new List<DataTable>();
+            this.ReferenceTable = new DataTable();
+            InitializeReferenceTable();
 
-            //Initialize advanced data grid view
-            InitializeAdvancedDataGridView();
+            //Grid view
+            this.DataGridViewsList = new List<Zuby.ADGV.AdvancedDataGridView>();
 
-            //Initialize backgorund worker
+            //Tab control
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+
             InitializeBackgroundWorker();
         }
         #endregion
@@ -126,7 +172,7 @@ namespace NaturalnieApp.Forms
         /// <summary>
         /// Method used to initialize advanced data grid view
         /// </summary>
-        private void InitializeAdvancedDataGridView()
+        private void InitializeReferenceTable()
         {
             //Create data source columns
             DataColumn column = new DataColumn();
@@ -135,7 +181,7 @@ namespace NaturalnieApp.Forms
             column.DataType = Type.GetType("System.Int32");
             column.ReadOnly = true;
             column.Unique = true;
-            this.DataSource.Columns.Add(column);
+            this.ReferenceTable.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
@@ -143,44 +189,42 @@ namespace NaturalnieApp.Forms
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
             column.Unique = true;
-            this.DataSource.Columns.Add(column);
+            this.ReferenceTable.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.Tax;
             column.DataType = Type.GetType("System.Int32");
             column.ReadOnly = true;
-            this.DataSource.Columns.Add(column);
+            this.ReferenceTable.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.FinalPrice;
             column.DataType = Type.GetType("System.Single");
             column.ReadOnly = true;
-            this.DataSource.Columns.Add(column);
+            this.ReferenceTable.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.Barcode;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
-            this.DataSource.Columns.Add(column);
+            this.ReferenceTable.Columns.Add(column);
             column.Dispose();
 
             column = new DataColumn();
             column.ColumnName = this.ColumnNames.AdditionaBarcode;
             column.DataType = Type.GetType("System.String");
             column.ReadOnly = true;
-            this.DataSource.Columns.Add(column);
+            this.ReferenceTable.Columns.Add(column);
             column.Dispose();
 
-            this.DataSource.DefaultView.Sort = this.ColumnNames.ProductNumber + " asc";
-            advancedDataGridView1.DataSource = this.DataSource;
-
-            advancedDataGridView1.AutoResizeColumns();
+            this.ReferenceTable.DefaultView.Sort = this.ColumnNames.ProductNumber + " asc";
         }
 
         #endregion
+
 
         //=============================================================================
         //                              Background worker
@@ -207,7 +251,8 @@ namespace NaturalnieApp.Forms
         {
             //Local variables
             BwElzabCommunicationProgressUpdate communicationProgressUpdate = new BwElzabCommunicationProgressUpdate();
-            DataTable localDataTable = (e.Argument as DataTable).Copy();
+            DataTable localDataTable = null;
+            DataTable productToRemoveDataTable = null;
 
             try
             {
@@ -287,9 +332,23 @@ namespace NaturalnieApp.Forms
                         communicationProgressUpdate.ProgressBarTime = 1.0;
                         (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
-                        //Show on the list
+                        //Find if any of the current Elzab product should be romeved
+                        List<Product> toRemoveProductList = ElzabRelated.GetElzabProductListToDelete(allProductFromElzab, dbProductList);
+
+                        communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
+                        communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(9);
+                        communicationProgressUpdate.ProgressBarTime = 1.0;
+                        (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+
+                        //Show differences on the list
                         foreach (Product productEnt in diffProductList)
                         {
+                            if (localDataTable == null)
+                            {
+                                localDataTable = (e.Argument as DataTable).Copy();
+                                localDataTable.TableName = "Tabela różnic";
+                            }
+
                             //Add data to table
                             DataRow rowElement;
                             rowElement = localDataTable.NewRow();
@@ -305,7 +364,31 @@ namespace NaturalnieApp.Forms
                             localDataTable.Rows.Add(rowElement);
                         }
 
-                        if (diffProductList.Count == 0)
+                        //Show product to remove on the list
+                        foreach (Product productEnt in toRemoveProductList)
+                        {
+                            if (productToRemoveDataTable == null)
+                            {
+                                productToRemoveDataTable = (e.Argument as DataTable).Copy();
+                                productToRemoveDataTable.TableName = "Tabela produktów do usunięcia z kasy";
+                            }
+
+                            //Add data to table
+                            DataRow rowElement;
+                            rowElement = productToRemoveDataTable.NewRow();
+
+                            //Set row fields
+                            rowElement.SetField<int>(this.ColumnNames.ProductNumber, productEnt.ElzabProductId);
+                            rowElement.SetField<string>(this.ColumnNames.ProductName, productEnt.ElzabProductName);
+                            int taxValue = this.databaseCommands.GetTaxByElzabProductName(productEnt.ProductName).TaxValue;
+                            rowElement.SetField<int>(this.ColumnNames.Tax, taxValue);
+                            rowElement.SetField<float>(this.ColumnNames.FinalPrice, productEnt.FinalPrice);
+                            rowElement.SetField<string>(this.ColumnNames.Barcode, productEnt.BarCode);
+                            rowElement.SetField<string>(this.ColumnNames.AdditionaBarcode, productEnt.BarCodeShort);
+                            productToRemoveDataTable.Rows.Add(rowElement);
+                        }
+
+                        if (diffProductList.Count() == 0 && toRemoveProductList.Count() == 0)
                         {
                             communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.UserPrompt;
                             communicationProgressUpdate.Text = "Nie znaleziono żadnych różnic między bazą danych a kasą fiskalną:).";
@@ -314,11 +397,12 @@ namespace NaturalnieApp.Forms
                         else
                         {
                             communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                            communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(9); ;
+                            communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(10); ;
                             (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
                             communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.UserPrompt;
-                            communicationProgressUpdate.Text = string.Format("Znaleziono {0} różnic.", diffProductList.Count());
+                            communicationProgressUpdate.Text = string.Format("Znaleziono {0} różnic.", 
+                                diffProductList.Count() + toRemoveProductList.Count());
                             (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
                         }
@@ -345,16 +429,16 @@ namespace NaturalnieApp.Forms
 
 
                 //Pass the local datatable
-                e.Result = localDataTable;
+                e.Result = new List<DataTable> { localDataTable, productToRemoveDataTable };
             }
             catch (Exception ex)
             {
                 communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Error;
                 communicationProgressUpdate.Text = ex.Message + ex.InnerException;
                 (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+                e.Result = new List<DataTable> { localDataTable, productToRemoveDataTable };
             }
         }
-
 
         private void BwElzabCommunication_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -385,17 +469,57 @@ namespace NaturalnieApp.Forms
         // This event handler is where the actual, potentially time-consuming work is done.
         private void BwElzabCommunication_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            DataTable localDataTable = (e.Result as DataTable);
-            if(localDataTable != null) foreach (DataRow row in localDataTable.Rows) this.DataSource.ImportRow(row);
+            List<DataTable> localDataTable = (e.Result as List<DataTable>);
+            if(localDataTable[0] != null)
+            {
+                this.DataSource.Add(localDataTable[0]);
+            }
+
+            if (localDataTable[1] != null)
+            {
+                this.DataSource.Add(localDataTable[1]);
+            }
+
+            this.AddDataGridToTabPage();
             this.bReadingFromCashRegister.Enabled = true;
         }
         #endregion
+
+        private void AddDataGridToTabPage()
+        {
+            foreach (DataTable dataSource in this.DataSource)
+            {
+                //Add new data grid to the collection
+                this.DataGridViewsList.Add(new Zuby.ADGV.AdvancedDataGridView());
+                this.DataGridViewsList.Last().SetDoubleBuffered();
+
+                //Attach data source
+                this.DataGridViewsList.Last().DataSource = dataSource;
+
+                //Make it look nice
+                this.DataGridViewsList.Last().Dock = DockStyle.Fill;
+                this.DataGridViewsList.Last().ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                this.DataGridViewsList.Last().AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                this.DataGridViewsList.Last().AllowUserToAddRows = false;
+
+                this.DataGridViewsList.Last().AutoResizeColumns();
+
+                //Add events
+                this.DataGridViewsList.Last().FilterStringChanged += AdvancedDataGridView1_FilterStringChanged;
+                this.DataGridViewsList.Last().SortStringChanged += AdvancedDataGridView1_SortStringChanged;
+
+                //Add grid view to the tab page
+                this.tcDataComparasionResults.TabPages.Add(new TabPage(dataSource.TableName));
+                int index = this.tcDataComparasionResults.TabPages.Count - 1;
+                this.tcDataComparasionResults.TabPages[index].Controls.Add(this.DataGridViewsList.Last());
+            }
+        }
 
         private void bReadingFromCashRegister_Click(object sender, EventArgs e)
         {
             (sender as Button).Enabled = false;
             this.DataSource.Clear();
-            this.BwElzabCommunication.RunWorkerAsync(this.DataSource);
+            this.BwElzabCommunication.RunWorkerAsync(this.ReferenceTable);
 
         }
 
@@ -403,15 +527,42 @@ namespace NaturalnieApp.Forms
         {
             try
             {
-                if (this.DataSource.Rows.Count > 0)
+                if (this.DataSource[0].Rows.Count > 0)
                 {
-
+                    bool operationResult = false;
                     DialogResult result = MessageBox.Show("Czy na pewno chcesz nadpisać produkty w kasie Elzab?",
                         "zmiana produtów", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
                     {
+
+                        List<int> productToRemove = new List<int>();
+                        foreach (DataRow element in this.DataSource[1].Rows)
+                        {
+                            productToRemove.Add(element.Field<int>(this.ColumnNames.ProductNumber));
+                        }
+
+                        this.ProductRemoving.DataToElzab = ElzabRelated.ParseDbObjectToElzabProductRemoveData(this.databaseCommands, productToRemove, this.ProductWriting.DataToElzab);
+
+                        //Remove old product data first, if necessary
+                        operationResult = false;
+                        this.ProductRemoving.Config.ChangeCashRegisterConnectionData
+                            (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
+                        CommandExecutionStatus status = this.ProductRemoving.ExecuteCommand();
+                        if (status.ErrorNumber == 0 && status.ErrorText != null)
+                        {
+                            operationResult = true;
+
+                        }
+                        else
+                        {
+                            MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
+                            status.ErrorNumber, status.ErrorText),
+                            "Błąd komunikacji z kasą Elzab!",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
                         List<Product> productsToSave = new List<Product>();
-                        foreach (DataRow element in this.DataSource.Rows)
+                        foreach (DataRow element in this.DataSource[0].Rows)
                         {
                             productsToSave.Add(this.databaseCommands.GetProductEntityByElzabId(element.Field<int>(this.ColumnNames.ProductNumber)));
                         }
@@ -419,17 +570,19 @@ namespace NaturalnieApp.Forms
                         this.ProductWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabProductData(this.databaseCommands, productsToSave, this.ProductWriting.DataToElzab);
                         this.AdditionBarcodesWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabAddBarcodes(this.databaseCommands, productsToSave, this.AdditionBarcodesWriting.DataToElzab);
 
-                        this.ProductWriting.Config.ChangeCashRegisterConnectionData
-                            (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
-                        CommandExecutionStatus status = this.ProductWriting.ExecuteCommand();
-                        if (status.ErrorNumber == 0 && status.ErrorText != null)
+
+                        // Write new data
+                        if (operationResult)
                         {
-                            this.AdditionBarcodesWriting.Config.ChangeCashRegisterConnectionData
+                            operationResult = false;
+                            //Write product data
+                            operationResult = false;
+                            this.ProductWriting.Config.ChangeCashRegisterConnectionData
                                 (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
-                            status = this.AdditionBarcodesWriting.ExecuteCommand();
+                            status = this.ProductWriting.ExecuteCommand();
                             if (status.ErrorNumber == 0 && status.ErrorText != null)
                             {
-                                MessageBox.Show("Zapisano!");
+                                operationResult = true;
                             }
                             else
                             {
@@ -439,13 +592,28 @@ namespace NaturalnieApp.Forms
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
-                        else
+
+                        //Write additiona barcodes
+                        if (operationResult)
                         {
-                            MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
-                            status.ErrorNumber, status.ErrorText),
-                            "Błąd komunikacji z kasą Elzab!",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            operationResult = false;
+                            this.AdditionBarcodesWriting.Config.ChangeCashRegisterConnectionData
+                                (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
+                            status = this.AdditionBarcodesWriting.ExecuteCommand();
+                            if (status.ErrorNumber == 0 && status.ErrorText != null)
+                            {
+                                operationResult = true;
+                            }
+                            else
+                            {
+                                MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
+                                status.ErrorNumber, status.ErrorText),
+                                "Błąd komunikacji z kasą Elzab!",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
+
+                        if (operationResult) MessageBox.Show("Zapisano!");
 
                     }
                     else

@@ -244,7 +244,7 @@ namespace NaturalnieApp.Forms
 
             this.databaseCommands = commandsObj;
 
-            //Initialize daa grid view
+            //Initialize data grid view
             this.ColumnNames.ProductName = "Nazwa";
             this.ColumnNames.ProductNumber = "Numer w kasie";
             this.ColumnNames.Tax = "Stawka VAT";

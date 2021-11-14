@@ -41,12 +41,11 @@
             this.lStatus = new System.Windows.Forms.Label();
             this.bReadingFromCashRegister = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
+            this.tcDataComparasionResults = new System.Windows.Forms.TabControl();
             this.pButtonsPanel.SuspendLayout();
             this.pHeader.SuspendLayout();
             this.gbSynchronization.SuspendLayout();
             this.tpProductNameToEdit.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // pButtonsPanel
@@ -194,18 +193,14 @@
             this.bReadingFromCashRegister.UseVisualStyleBackColor = false;
             this.bReadingFromCashRegister.Click += new System.EventHandler(this.bReadingFromCashRegister_Click);
             // 
-            // advancedDataGridView1
+            // tcDataComparasionResults
             // 
-            this.advancedDataGridView1.AllowUserToAddRows = false;
-            this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.advancedDataGridView1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
-            this.advancedDataGridView1.FilterAndSortEnabled = true;
-            this.advancedDataGridView1.Location = new System.Drawing.Point(0, 164);
-            this.advancedDataGridView1.Name = "advancedDataGridView1";
-            this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.advancedDataGridView1.Size = new System.Drawing.Size(920, 456);
-            this.advancedDataGridView1.TabIndex = 9;
+            this.tcDataComparasionResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tcDataComparasionResults.Location = new System.Drawing.Point(0, 164);
+            this.tcDataComparasionResults.Name = "tcDataComparasionResults";
+            this.tcDataComparasionResults.SelectedIndex = 0;
+            this.tcDataComparasionResults.Size = new System.Drawing.Size(920, 456);
+            this.tcDataComparasionResults.TabIndex = 10;
             // 
             // ElzabSynchronization
             // 
@@ -214,7 +209,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.Controls.Add(this.advancedDataGridView1);
+            this.Controls.Add(this.tcDataComparasionResults);
             this.Controls.Add(this.gbSynchronization);
             this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
@@ -228,7 +223,6 @@
             this.gbSynchronization.ResumeLayout(false);
             this.tpProductNameToEdit.ResumeLayout(false);
             this.tpProductNameToEdit.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -247,7 +241,7 @@
         private System.Windows.Forms.TableLayoutPanel tpProductNameToEdit;
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.Label lStatus;
-        private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
         private Common.ProgressBarTemplate progressBarTemplate1;
+        private System.Windows.Forms.TabControl tcDataComparasionResults;
     }
 }

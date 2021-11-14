@@ -693,6 +693,36 @@ namespace NaturalnieApp
             return retData;
         }
 
+        //Method used to parse from database product to elzab remove product
+        static public ElzabFileObject ParseDbObjectToElzabProductRemoveData(DatabaseCommands db, List<int> dataToElzab, ElzabFileObject elzabTemplate)
+        {
+            //Return list
+            ElzabFileObject retData = elzabTemplate;
+            retData.Element.RemoveAllElements();
+
+            foreach (int productNumber in dataToElzab)
+            {
+                try
+                {
+                    List<string> attributesValues = new List<string>();
+                    //nr_tow
+                    attributesValues.Add(productNumber.ToString());
+
+                    //Add data to elzab object
+                    retData.AddElement(productNumber.ToString());
+                    retData.ChangeAllElementValues(productNumber.ToString(), attributesValues.ToArray());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
+
+            return retData;
+        }
+
+
         //Method used to parse from database product object to elzab additional barcodes data
         static public ElzabFileObject ParseDbObjectToElzabAddBarcodes(DatabaseCommands db, List<Product> dataToElzab, ElzabFileObject elzabTemplate)
         {
@@ -769,6 +799,30 @@ namespace NaturalnieApp
             }
 
             return retList;
+        }
+
+        /// <summary>
+        /// Method used to find if any product from Elzab should be removed. 
+        /// Product to be removed is the product where name exist in DB but undr different product ID
+        /// </summary>
+        /// <param name="dataFromElzab"></param>
+        /// <param name="dataFromDb"></param>
+        static public List<Product> GetElzabProductListToDelete(List<Product> dataFromElzab, List<Product> dataFromDb)
+        {
+            List<Product> elzabProductToRemove = new List<Product>();
+            foreach (Product elabProduct in dataFromElzab)
+            {
+                Product product = dataFromDb.Find(p => p.ElzabProductName == elabProduct.ElzabProductName);
+                if (product != null)
+                {
+                    if (product.ElzabProductId != elabProduct.ElzabProductId)
+                    {
+                        elzabProductToRemove.Add(elabProduct);
+                    }
+                }
+            }
+
+            return elzabProductToRemove;
         }
 
         //Method used to convert from elzab price reprezentation to floating one
