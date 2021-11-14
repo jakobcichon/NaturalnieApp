@@ -40,6 +40,17 @@ namespace ElzabDriver
         public string OutFileName { get; set; }
         public int ErrorNumber { get; set; }
         public string ErrorText { get; set; }
+
+        public static CommandExecutionStatus GenerateOkStatus()
+        {
+            CommandExecutionStatus retVal = new CommandExecutionStatus();
+            retVal.ErrorNumber = 0;
+            retVal.ErrorText = "Ok";
+
+            return retVal;
+
+        }
+
     }
 
 

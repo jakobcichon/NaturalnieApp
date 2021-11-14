@@ -39,6 +39,7 @@ namespace ElzabCommands
         public ElzabFileObject Report { get; set; }
         public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
+        public bool OutputFileExist { get { return false; } }
         private string CommandName { get { return "KTOWAR"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -103,6 +104,7 @@ namespace ElzabCommands
         public ElzabFileObject Report { get; set; }
         public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
+        public bool OutputFileExist { get { return true; } }
         private string CommandName { get { return "ONRUNIK"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -437,6 +439,7 @@ namespace ElzabCommands
         public ElzabFileObject Report { get; set; }
         public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
+        public bool OutputFileExist { get { return true; } }
         private string CommandName { get { return "ODBARKOD"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -504,6 +507,7 @@ namespace ElzabCommands
         public ElzabFileObject Report { get; set; }
         public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
+        public bool OutputFileExist { get { return false; } }
         private string CommandName { get { return "ZDBARKOD"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -570,6 +574,7 @@ namespace ElzabCommands
         public ElzabFileObject Report { get; set; }
         public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
+        public bool OutputFileExist { get { return true; } }
         private string CommandName { get { return "OPSPRZED"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -636,6 +641,7 @@ namespace ElzabCommands
         public ElzabFileObject Report { get; set; }
         public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
+        public bool OutputFileExist { get { return false; } }
         private string CommandName { get { return "KGRUPA"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -700,6 +706,7 @@ namespace ElzabCommands
         public ElzabFileObject Report { get; set; }
         public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
+        public bool OutputFileExist { get { return false; } }
         private string CommandName { get { return "ZGRUPA"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -764,6 +771,7 @@ namespace ElzabCommands
         public ElzabFileObject Report { get; set; }
         public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
+        public bool OutputFileExist { get { return true; } }
         private string CommandName { get { return "OGRUPA"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -829,6 +837,7 @@ namespace ElzabCommands
         public ElzabFileObject Report { get; set; }
         public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
+        public bool OutputFileExist { get { return true; } }
         private string CommandName { get { return "OBAJTY"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -893,6 +902,7 @@ namespace ElzabCommands
         public ElzabFileObject Report { get; set; }
         public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
+        public bool OutputFileExist { get { return false; } }
         private string CommandName { get { return "ZTOWAR"; } }
         private string ElementAttributesPatternInFile
         {
@@ -948,6 +958,7 @@ namespace ElzabCommands
         public ElzabFileObject Report { get; set; }
         public CommandExecutionStatus ReportStatus { get; set; }
         public ElzabFileObject Config { get; set; }
+        public bool OutputFileExist { get { return true; } }
         private string CommandName { get { return "OTOWAR"; } }
         private string ElementAttributesPatternOutFile
         {
@@ -1105,7 +1116,7 @@ namespace ElzabCommands
             if(result) result = commandInstance.Config.WriteDataToFile(executeBackup);
 
             //If data from elzab are used, execute method
-            if (commandInstance.DataFromElzab != null)
+            if (commandInstance.OutputFileExist)
             {
                 //Check if out file exits. If yes, copy it to backup and remove orginal one.
                 result = commandInstance.DataFromElzab.BackupFileAndRemove(executeBackup);
@@ -1122,8 +1133,18 @@ namespace ElzabCommands
 
 #if DEBUG
             
-            MessageBox.Show(string.Format("Komunikacja z Elzab w trybie symulacji. Dodaj plik {0} oraz raport i naciśnij ok",
+            if (commandInstance.OutputFileExist)
+            {
+                MessageBox.Show(string.Format("Komunikacja z Elzab w trybie symulacji. Dodaj plik {0} oraz raport i naciśnij ok",
                 commandInstance.DataFromElzab.CommandName));
+            }
+            else
+            {
+                if (result) result = commandInstance.DataToElzab.RunCommand();
+                result = true;
+            }
+
+
 #else
             //Execute command
             if (result) result = commandInstance.DataToElzab.RunCommand();
@@ -1153,7 +1174,7 @@ namespace ElzabCommands
                 if (reportStatus.ErrorNumber == 0)
                 {
                     //Read data from files
-                    if (commandInstance.DataFromElzab != null)
+                    if (commandInstance.OutputFileExist)
                     {
                         commandInstance.DataFromElzab.GenerateObjectFromRawData();
                     }

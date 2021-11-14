@@ -26,6 +26,7 @@ namespace NaturalnieApp.ElzabDriver
         CommandExecutionStatus ReportStatus { get; set; }
         ElzabFileObject Config { get; set; }
         CommandExecutionStatus ExecuteCommand(bool executeBackup = true);
+        bool OutputFileExist { get;}
 
     }
 }
