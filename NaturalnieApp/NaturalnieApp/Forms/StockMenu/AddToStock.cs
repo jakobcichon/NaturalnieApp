@@ -561,8 +561,11 @@ namespace NaturalnieApp.Forms
                         }
                         else
                         {
+                            stockPiece.LastQuantity = 0;
                             this.databaseCommands.AddToStock(stockPiece);
                         }
+
+
 
                         //Add row to the remove list
                         rowsToRemove.Add(element);

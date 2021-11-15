@@ -371,6 +371,7 @@ namespace NaturalnieApp
             public string NumberOfCopies { get; set; }
             public string ProductId { get; set; }
             public string ModificationDate { get; set; }
+            public string Status { get; set; }
 
         }
 
@@ -813,6 +814,7 @@ namespace NaturalnieApp
             foreach (Product elabProduct in dataFromElzab)
             {
                 Product product = dataFromDb.Find(p => p.ElzabProductName == elabProduct.ElzabProductName);
+                if (product == null) product = dataFromDb.Find(p => p.BarCode == elabProduct.BarCode);
                 if (product != null)
                 {
                     if (product.ElzabProductId != elabProduct.ElzabProductId)

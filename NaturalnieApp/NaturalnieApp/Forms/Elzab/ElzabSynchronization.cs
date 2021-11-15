@@ -250,7 +250,7 @@ namespace NaturalnieApp.Forms
 
             //Enable progress change update and assigne event
             this.BwElzabCommunication.WorkerReportsProgress = true;
-            this.BwElzabCommunication.ProgressChanged += BwElzabCommunication_ProgressChanged;
+            this.BwElzabCommunication.ProgressChanged += this.BwElzabCommunication_ProgressChanged;
 
         }
 
@@ -271,7 +271,7 @@ namespace NaturalnieApp.Forms
                 (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
                 //Generate all product numbers
-                List<int> productToReadList = GenerateProductNumbers(1, 4095);
+                List<int> productToReadList = GenerateProductNumbers(GlobalVariables.CashRegisterFirstPossibleId, GlobalVariables.CashRegisterLastPossibleId);
                 this.AllProductsReading.DataToElzab.Element.RemoveAllElements();
                 this.AllProductsReading.DataFromElzab.Element.RemoveAllElements();
                 this.AdditionBarcodesReading.DataFromElzab.Element.RemoveAllElements();
@@ -401,6 +401,11 @@ namespace NaturalnieApp.Forms
                             communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.UserPrompt;
                             communicationProgressUpdate.Text = "Nie znaleziono żadnych różnic między bazą danych a kasą fiskalną:).";
                             (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+
+                            communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
+                            communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(10);
+                            communicationProgressUpdate.ProgressBarTime = 1.0;
+                            (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
                         }
                         else
                         {
@@ -409,10 +414,9 @@ namespace NaturalnieApp.Forms
                             (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
                             communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.UserPrompt;
-                            communicationProgressUpdate.Text = string.Format("Znaleziono {0} różnic.", 
+                            communicationProgressUpdate.Text = string.Format("Znaleziono {0} różnic.",
                                 diffProductList.Count() + toRemoveProductList.Count());
                             (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
-                            System.Threading.Thread.Sleep(100);
 
                         }
 
@@ -440,6 +444,7 @@ namespace NaturalnieApp.Forms
                 //Pass the local datatable
                 e.Result = new Dictionary<string, DataTable> { { "differences", localDataTable },
                     { "toRemove", productToRemoveDataTable } };
+
             }
             catch (Exception ex)
             {
@@ -453,28 +458,33 @@ namespace NaturalnieApp.Forms
 
         private void BwElzabCommunication_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            //Cast an object
-            BwElzabCommunicationProgressUpdate update = e.UserState as BwElzabCommunicationProgressUpdate;
 
-            switch (update.TypeOfMessage)
+            if (e.UserState != null)
             {
-                case BwElzabCommunicationProgressUpdate.MessageType.Error:
-                    this.progressBarTemplate1.Reset();
-                    string[] splittedText = update.Text.Split('|');
-                    if (splittedText.Count() > 1) MessageBox.Show(splittedText[0], splittedText[1], MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    else MessageBox.Show(splittedText[0], "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.StatusBox.Text = this.BwStepsDescription.ElementAt(0);
-                    break;
-                case BwElzabCommunicationProgressUpdate.MessageType.Update:
-                    this.StatusBox.Text = update.Text;
-                    this.progressBarTemplate1.StatusBarSettings(durationTime: update.ProgressBarTime);
-                    this.progressBarTemplate1.StartByTimer();
-                    break;
-                case BwElzabCommunicationProgressUpdate.MessageType.UserPrompt:
-                    this.progressBarTemplate1.Reset();
-                    MessageBox.Show(update.Text);
-                    break;
+                //Cast an object
+                BwElzabCommunicationProgressUpdate update = e.UserState as BwElzabCommunicationProgressUpdate;
+
+                switch (update.TypeOfMessage)
+                {
+                    case BwElzabCommunicationProgressUpdate.MessageType.Error:
+                        this.progressBarTemplate1.Reset();
+                        string[] splittedText = update.Text.Split('|');
+                        if (splittedText.Count() > 1) MessageBox.Show(splittedText[0], splittedText[1], MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        else MessageBox.Show(splittedText[0], "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.StatusBox.Text = this.BwStepsDescription.ElementAt(0);
+                        break;
+                    case BwElzabCommunicationProgressUpdate.MessageType.Update:
+                        this.StatusBox.Text = update.Text;
+                        this.progressBarTemplate1.StatusBarSettings(durationTime: update.ProgressBarTime);
+                        this.progressBarTemplate1.StartByTimer();
+                        break;
+                    case BwElzabCommunicationProgressUpdate.MessageType.UserPrompt:
+                        this.progressBarTemplate1.Reset();
+                        //MessageBox.Show(this, update.Text);
+                        break;
+                }
             }
+
         }
 
         // This event handler is where the actual, potentially time-consuming work is done.
@@ -509,29 +519,32 @@ namespace NaturalnieApp.Forms
         {
             foreach (KeyValuePair<string, DataTable> dataSource in this.DataSource)
             {
-                //Add new data grid to the collection
-                this.DataGridViewsList.Add(new Zuby.ADGV.AdvancedDataGridView());
-                this.DataGridViewsList.Last().SetDoubleBuffered();
+                if (dataSource.Value != null)
+                {
+                    //Add new data grid to the collection
+                    this.DataGridViewsList.Add(new Zuby.ADGV.AdvancedDataGridView());
+                    this.DataGridViewsList.Last().SetDoubleBuffered();
 
-                //Attach data source
-                this.DataGridViewsList.Last().DataSource = dataSource.Value;
+                    //Attach data source
+                    this.DataGridViewsList.Last().DataSource = dataSource.Value;
 
-                //Make it look nice
-                this.DataGridViewsList.Last().Dock = DockStyle.Fill;
-                this.DataGridViewsList.Last().ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                this.DataGridViewsList.Last().AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-                this.DataGridViewsList.Last().AllowUserToAddRows = false;
+                    //Make it look nice
+                    this.DataGridViewsList.Last().Dock = DockStyle.Fill;
+                    this.DataGridViewsList.Last().ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    this.DataGridViewsList.Last().AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                    this.DataGridViewsList.Last().AllowUserToAddRows = false;
 
-                this.DataGridViewsList.Last().AutoResizeColumns();
+                    this.DataGridViewsList.Last().AutoResizeColumns();
 
-                //Add events
-                this.DataGridViewsList.Last().FilterStringChanged += AdvancedDataGridView1_FilterStringChanged;
-                this.DataGridViewsList.Last().SortStringChanged += AdvancedDataGridView1_SortStringChanged;
+                    //Add events
+                    this.DataGridViewsList.Last().FilterStringChanged += AdvancedDataGridView1_FilterStringChanged;
+                    this.DataGridViewsList.Last().SortStringChanged += AdvancedDataGridView1_SortStringChanged;
 
-                //Add grid view to the tab page
-                this.tcDataComparasionResults.TabPages.Add(new TabPage(dataSource.Value.TableName));
-                int index = this.tcDataComparasionResults.TabPages.Count - 1;
-                this.tcDataComparasionResults.TabPages[index].Controls.Add(this.DataGridViewsList.Last());
+                    //Add grid view to the tab page
+                    this.tcDataComparasionResults.TabPages.Add(new TabPage(dataSource.Value.TableName));
+                    int index = this.tcDataComparasionResults.TabPages.Count - 1;
+                    this.tcDataComparasionResults.TabPages[index].Controls.Add(this.DataGridViewsList.Last());
+                }
             }
         }
 

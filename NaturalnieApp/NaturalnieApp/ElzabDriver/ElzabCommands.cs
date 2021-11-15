@@ -1131,7 +1131,7 @@ namespace ElzabCommands
             //Write raw data to the file
             if (result) result = commandInstance.DataToElzab.WriteDataToFile(executeBackup);
 
-#if DEBUG
+#if DEBUG && true
             
             if (commandInstance.OutputFileExist)
             {

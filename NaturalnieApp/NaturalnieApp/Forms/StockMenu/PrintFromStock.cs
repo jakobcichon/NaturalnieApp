@@ -30,6 +30,8 @@ namespace NaturalnieApp.Forms
 
         //Data source for advanced data grid view
         private DataTable DataSource { get; set; }
+        private DataTable ActualStock { get; set; }
+        private DataTable HistoricalStock { get; set; }
         private DataSourceRelated.LabelDataSourceColumnNames ColumnNames;
 
         //Printer instance
@@ -60,7 +62,10 @@ namespace NaturalnieApp.Forms
             this.ColumnNames.LabelText = "Tekst etykiety";
             this.ColumnNames.NumberOfCopies = "Liczba kopii";
             this.ColumnNames.ModificationDate = "Data modyfikacji";
+            this.ColumnNames.Status = "Status";
             this.DataSource = new DataTable();
+            this.ActualStock = new DataTable();
+            this.HistoricalStock = new DataTable();
 
             InitializeAdvancedDataGridView();
 
@@ -287,6 +292,16 @@ namespace NaturalnieApp.Forms
             this.DataSource.Columns.Add(column);
             column.Dispose();
 
+            this.ActualStock = this.DataSource.Clone();
+            this.HistoricalStock = this.DataSource.Clone();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.Status;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            this.HistoricalStock.Columns.Add(column);
+            column.Dispose();
+
             advancedDataGridView1.DataSource = this.DataSource;
             this.DataSource.DefaultView.Sort = this.ColumnNames.ProductId + " asc";
             advancedDataGridView1.AutoResizeColumns();
@@ -400,7 +415,8 @@ namespace NaturalnieApp.Forms
                 }
 
                 //Cleardata
-                this.DataSource.Rows.Clear();
+                this.ActualStock.Rows.Clear();
+                this.HistoricalStock.Rows.Clear();
 
                 foreach (int manufacturerId in manufacturersIdList)
                 {
@@ -417,10 +433,10 @@ namespace NaturalnieApp.Forms
 
                                 //Add data to table
                                 DataRow rowElement;
-                                rowElement = this.DataSource.NewRow();
+                                rowElement = this.ActualStock.NewRow();
 
                                 //Set row fields
-                                rowElement.SetField<string>(this.ColumnNames.No, (this.DataSource.Rows.Count + 1).ToString());
+                                rowElement.SetField<string>(this.ColumnNames.No, (this.ActualStock.Rows.Count + 1).ToString());
                                 rowElement.SetField<int>(this.ColumnNames.ProductId, productEnt.Id);
                                 rowElement.SetField<string>(this.ColumnNames.LabelBarcode, productEnt.BarCodeShort);
                                 rowElement.SetField<string>(this.ColumnNames.LabelText, productEnt.ElzabProductName);
@@ -428,8 +444,9 @@ namespace NaturalnieApp.Forms
                                 rowElement.SetField<int>(this.ColumnNames.NumberOfCopies, element.ActualQuantity);
                                 rowElement.SetField<DateTime>(this.ColumnNames.ModificationDate, element.ModificationDate);
 
-                                this.DataSource.Rows.Add(rowElement);
+                                this.ActualStock.Rows.Add(rowElement);
                             }
+                            this.DataSource = this.ActualStock;
                         }
                         else
                         {
@@ -442,20 +459,22 @@ namespace NaturalnieApp.Forms
 
                                 //Add data to table
                                 DataRow rowElement;
-                                rowElement = this.DataSource.NewRow();
+                                rowElement = this.HistoricalStock.NewRow();
 
                                 //Set row fields
-                                rowElement.SetField<string>(this.ColumnNames.No, (this.DataSource.Rows.Count + 1).ToString());
+                                rowElement.SetField<string>(this.ColumnNames.No, (this.HistoricalStock.Rows.Count + 1).ToString());
                                 rowElement.SetField<int>(this.ColumnNames.ProductId, productEnt.Id);
                                 rowElement.SetField<string>(this.ColumnNames.LabelBarcode, productEnt.BarCodeShort);
                                 rowElement.SetField<string>(this.ColumnNames.LabelText, productEnt.ElzabProductName);
                                 rowElement.SetField<string>(this.ColumnNames.LabelFinalPrice, string.Format("{0:0.00}", productEnt.FinalPrice));
                                 rowElement.SetField<int>(this.ColumnNames.NumberOfCopies, element.Quantity);
                                 rowElement.SetField<DateTime>(this.ColumnNames.ModificationDate, element.DateAndTime);
+                                rowElement.SetField<string>(this.ColumnNames.Status, element.OperationType);
 
-                                this.DataSource.Rows.Add(rowElement);
+                                this.HistoricalStock.Rows.Add(rowElement);
 
                             }
+                            this.DataSource = this.HistoricalStock;
                         }
                     }
                     else
@@ -473,6 +492,11 @@ namespace NaturalnieApp.Forms
 
             //Update control
             UpdateControl(ref tbDummyForCtrl);
+
+            //Update advanced data grid view
+            advancedDataGridView1.DataSource = null;
+            advancedDataGridView1.DataSource = this.DataSource;
+
         }
 
         private void bPrint_Click(object sender, EventArgs e)
