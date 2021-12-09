@@ -473,6 +473,9 @@ namespace NaturalnieApp
             public string Quantity { get; set; }
             public string PriceOfSales { get; set; }
             public string PriceOnCashRegister { get; set; }
+            public string PriceNetWithDiscount { get; set; }
+            public string Discount { get; set; }
+            public string Profit { get; set; }
 
         }
 
@@ -1609,6 +1612,18 @@ namespace NaturalnieApp
 
     static public class HistorySalesRelated
     {
+        static public decimal CalculateDiscount(decimal basePrice, decimal discountedPrice)
+        {
+            return (decimal)100.0 - Math.Round(discountedPrice * 100 / basePrice, 2);
+        }
+
+        static public decimal CalculateProfit(float finalPrice, float netPrice, int taxValue)
+        {
+            float taxInPercentage = 1 + (Convert.ToSingle(taxValue) / (float)100.0);
+            decimal val_to_return = Math.Round((decimal)((finalPrice / taxInPercentage) - netPrice), 2);
+            return val_to_return;
+        }
+
         static public List<ProductSalesObject> GetSales(DateTime startDate, DateTime endDate, Manufacturer manufacturer,
            DatabaseCommands databaseCommands)
         {
@@ -1616,19 +1631,26 @@ namespace NaturalnieApp
 
             //Get manufacturer list
             List<Manufacturer> manufaturerList = databaseCommands.GetAllManufacturersEnts();
+            List<Tax> taxList = databaseCommands.GetAllTaxEnts();
 
             List<Sales> productsSales = databaseCommands.GetSalesEntitiesByDate(startDate, endDate);
             foreach(Sales sale in productsSales)
             {
+                // Skip sale for everything else than normal sale
+                if (sale.Attribute1 != "1")
+                {
+                    continue;
+                }
+
                 int productId = Convert.ToInt32(sale.Attribute6);
 
                 Product product = databaseCommands.GetProductEntityByElzabId(productId);
                 ProductChangelog changelog = GetSalesEntityIfNotActual(productId, sale.Attribute9, sale.Attribute10, databaseCommands);
 
                 if (changelog != null) localProductSalesList.Add(new ProductSalesObject(sale, changelog,
-                    manufaturerList.Find(m => m.Id == changelog.ManufacturerId)));
+                    manufaturerList.Find(m => m.Id == changelog.ManufacturerId), taxList.Find(t => t.Id == changelog.TaxId) ));
                 else if (product != null) localProductSalesList.Add(new ProductSalesObject(sale, product,
-                    manufaturerList.Find(m => m.Id == product.ManufacturerId)));
+                    manufaturerList.Find(m => m.Id == product.ManufacturerId), taxList.Find(t => t.Id == product.TaxId)));
                 else localProductSalesList.Add(new ProductSalesObject(sale));
             }
 
@@ -1678,6 +1700,10 @@ namespace NaturalnieApp
             public string Quantity { get; set; }
             public float PriceOfSales { get; set; }
             public float PriceOnCashRegister { get; set; }
+            public float NetPriceInDB { get; set; }
+            public int TaxValue { get; set; }
+            public decimal Profit { get; set; }
+            public decimal Discount { get; set; }
 
 
             /// <summary>
@@ -1702,12 +1728,19 @@ namespace NaturalnieApp
                 this.Quantity = sale.Attribute7;
                 this.PriceOfSales = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute8);
                 this.PriceOnCashRegister = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute14);
+
+                decimal _basePrice = Convert.ToDecimal(this.PriceOfSales);
+                decimal _discountedPrice = Convert.ToDecimal(this.PriceOnCashRegister);
+
+                this.Discount = CalculateDiscount(_discountedPrice, _basePrice);
             }
-            public ProductSalesObject(Sales sale, ProductChangelog productChangelog, Manufacturer manufacturer)
+            public ProductSalesObject(Sales sale, ProductChangelog productChangelog, Manufacturer manufacturer, Tax tax)
             {
                 this.SaleType = Convert.ToInt32(sale.Attribute1);
                 this.ProductName = productChangelog.ProductName;
                 this.ManufacturerName = manufacturer.Name;
+                this.NetPriceInDB = productChangelog.PriceNetWithDiscount;
+                this.TaxValue = tax.TaxValue;
 
                 DateTime dateAndTime = DateTime.Parse(ElzabRelated.ConvertFromElzabDateFormat(sale.Attribute9).Date.ToShortDateString()
                     + " " + sale.Attribute10);
@@ -1718,15 +1751,25 @@ namespace NaturalnieApp
                 this.ReceiptNumber = sale.Attribute3;
                 this.PositionOnReceipt = sale.Attribute4;
                 this.Quantity = sale.Attribute7;
+                float _quantityOfSale = Convert.ToSingle(this.Quantity);
                 this.PriceOfSales = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute8);
                 this.PriceOnCashRegister = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute14);
+
+                this.Profit = CalculateProfit(this.PriceOfSales, this.NetPriceInDB * _quantityOfSale, this.TaxValue);
+
+                decimal _basePrice = Convert.ToDecimal(this.PriceOfSales);
+                decimal _discountedPrice = Convert.ToDecimal(this.PriceOnCashRegister);
+
+                this.Discount = CalculateDiscount(_discountedPrice, _basePrice);
             }
 
-            public ProductSalesObject(Sales sale, Product product, Manufacturer manufacturer)
+            public ProductSalesObject(Sales sale, Product product, Manufacturer manufacturer, Tax tax)
             {
-                                this.SaleType = Convert.ToInt32(sale.Attribute1);
+                this.SaleType = Convert.ToInt32(sale.Attribute1);
                 this.ProductName = product.ProductName;
                 this.ManufacturerName = manufacturer.Name;
+                this.NetPriceInDB = product.PriceNetWithDiscount;
+                this.TaxValue = tax.TaxValue;
 
                 DateTime dateAndTime = DateTime.Parse(ElzabRelated.ConvertFromElzabDateFormat(sale.Attribute9).Date.ToShortDateString()
                     + " " + sale.Attribute10);
@@ -1737,8 +1780,16 @@ namespace NaturalnieApp
                 this.ReceiptNumber = sale.Attribute3;
                 this.PositionOnReceipt = sale.Attribute4;
                 this.Quantity = sale.Attribute7;
+                float _quantityOfSale = Convert.ToSingle(this.Quantity);
                 this.PriceOfSales = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute8);
                 this.PriceOnCashRegister = ElzabRelated.ConvertFromElzabPriceToFloat(sale.Attribute14);
+
+                this.Profit = CalculateProfit(this.PriceOfSales, this.NetPriceInDB * _quantityOfSale, this.TaxValue);
+
+                decimal _basePrice = Convert.ToDecimal(this.PriceOfSales);
+                decimal _discountedPrice = Convert.ToDecimal(this.PriceOnCashRegister);
+
+                this.Discount = CalculateDiscount(_discountedPrice, _basePrice);
             }
 
             public void FillInDataRow(DataRow row)
@@ -1753,6 +1804,9 @@ namespace NaturalnieApp
                 row[7] = this.Quantity;
                 row[8] = this.PriceOfSales;
                 row[9] = this.PriceOnCashRegister;
+                row[10] = this.NetPriceInDB;
+                row[11] = this.Discount;
+                row[12] = this.Profit;
             }
 
         }

@@ -68,8 +68,11 @@ namespace NaturalnieApp.Forms
             this.ColumnNames.ReceiptNumber = "Numer paragonu";
             this.ColumnNames.PositionOnReceipt = "Numer pozycji na paragonie";
             this.ColumnNames.Quantity = "Ilość sprzedaży";
-            this.ColumnNames.PriceOfSales = "Kwota sprzedaży";
-            this.ColumnNames.PriceOnCashRegister = "Cena na kasie";
+            this.ColumnNames.PriceOfSales = "Sumaryczna kwota sprzedaży";
+            this.ColumnNames.PriceOnCashRegister = "Cena produktu przed rabatami";
+            this.ColumnNames.PriceNetWithDiscount = "Cena netto (po zniżkach)";
+            this.ColumnNames.Discount = "Udzielony rabat %";
+            this.ColumnNames.Profit = "Zysk";
 
 
             //Create data source columns
@@ -144,6 +147,27 @@ namespace NaturalnieApp.Forms
             column.ReadOnly = true;
             this.DataSource.Columns.Add(column);
             column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.PriceNetWithDiscount;
+            column.DataType = Type.GetType("System.Single");
+            column.ReadOnly = true;
+            this.DataSource.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.Discount;
+            column.DataType = Type.GetType("System.Single");
+            column.ReadOnly = true;
+            this.DataSource.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.Profit;
+            column.DataType = Type.GetType("System.Single");
+            column.ReadOnly = true;
+            this.DataSource.Columns.Add(column);
+            column.Dispose();
         }
         #endregion
 
@@ -184,12 +208,19 @@ namespace NaturalnieApp.Forms
             List<HistorySalesRelated.ProductSalesObject> outList = HistorySalesRelated.GetSales(
                 e.StartDate, e.EndDate, e.SelectedManufacturer, this.databaseCommands);
 
+            decimal _summarizedProfit = (decimal)0.0;
             foreach (HistorySalesRelated.ProductSalesObject obj in outList)
             {
                 DataRow row = this.DataSource.NewRow();
                 obj.FillInDataRow(row);
                 this.DataSource.Rows.Add(row);
+
+                _summarizedProfit += obj.Profit;
             }
+
+            DataRow _row = this.DataSource.NewRow();
+            _row.SetField<decimal>(this.ColumnNames.Profit, _summarizedProfit);
+            this.DataSource.Rows.Add(_row);
 
             this.advancedDataGridView1.AutoResizeColumns();
         }

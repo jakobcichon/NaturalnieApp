@@ -1241,6 +1241,23 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to retrieve from DB all Tax ents
+        //====================================================================================================
+        public List<Tax> GetAllTaxEnts()
+        {
+            List<Tax> taxList = new List<Tax>();
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                foreach (var tax in contextDB.Tax)
+                {
+                    taxList.Add(tax);
+                }
+            }
+            return taxList;
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB Product and supplier entity
         //====================================================================================================
         public Supplier GetSupplierByProductName(string productName)
