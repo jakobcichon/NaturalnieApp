@@ -1612,6 +1612,8 @@ namespace NaturalnieApp
 
     static public class HistorySalesRelated
     {
+        public delegate void UpdateGetSalesProgress(int progress, object userState);
+
         static public decimal CalculateDiscount(decimal basePrice, decimal discountedPrice)
         {
             return (decimal)100.0 - Math.Round(discountedPrice * 100 / basePrice, 2);
@@ -1624,8 +1626,24 @@ namespace NaturalnieApp
             return val_to_return;
         }
 
+        static public DateTime GetDeltaTime(float secondsToAdd)
+        {
+            return DateTime.Now.AddSeconds(secondsToAdd);
+        }
+
+        static public bool CheckIfCurrentTimeGratherOrEqual(DateTime deadlineTime)
+        {
+            if (DateTime.Now > deadlineTime) return true;
+            return false;
+        }
+
+        static public decimal EvaluateProgressInPercentage(int actual, int total)
+        {
+            return Math.Round((decimal) actual * 100/ (decimal)total, 2);
+        }
+
         static public List<ProductSalesObject> GetSales(DateTime startDate, DateTime endDate, Manufacturer manufacturer,
-           DatabaseCommands databaseCommands)
+           DatabaseCommands databaseCommands, UpdateGetSalesProgress delegateToCall=null, float updateFrequency= (float)2.0)
         {
             List<ProductSalesObject> localProductSalesList = new List<ProductSalesObject>();
 
@@ -1633,7 +1651,11 @@ namespace NaturalnieApp
             List<Manufacturer> manufaturerList = databaseCommands.GetAllManufacturersEnts();
             List<Tax> taxList = databaseCommands.GetAllTaxEnts();
 
+            DateTime _endTime = GetDeltaTime(updateFrequency);
+
             List<Sales> productsSales = databaseCommands.GetSalesEntitiesByDate(startDate, endDate);
+
+            int i = 0;
             foreach(Sales sale in productsSales)
             {
                 // Skip sale for everything else than normal sale
@@ -1652,6 +1674,16 @@ namespace NaturalnieApp
                 else if (product != null) localProductSalesList.Add(new ProductSalesObject(sale, product,
                     manufaturerList.Find(m => m.Id == product.ManufacturerId), taxList.Find(t => t.Id == product.TaxId)));
                 else localProductSalesList.Add(new ProductSalesObject(sale));
+
+
+                if (CheckIfCurrentTimeGratherOrEqual(_endTime))
+                {
+                    decimal _actualProgress = EvaluateProgressInPercentage(i, productsSales.Count);
+                    if (delegateToCall != null) delegateToCall.Invoke(0, _actualProgress);
+                    _endTime = GetDeltaTime((float)2.0);
+                }
+
+                i++;
             }
 
             if(manufacturer != null)
@@ -1674,11 +1706,11 @@ namespace NaturalnieApp
 
             //Get changelog, starting from last synchronization date
             ProductChangelog changelog = databaseCommands.GetLastChangelogValueForGivenElzabProductIdLimitedByDate(cashRegisterProdNumber,
-                System.DateTime.MinValue, lastValidSynchronization.DateOfCommunication);
+                System.DateTime.MinValue, lastValidSynchronization.DateOfCommunication, ascendingOrder: false);
 
             if (changelog != null)
             {
-                if (changelog.OperationType == "Update")
+                if (changelog.OperationType != ProductOperationType.Delete.ToString())
                 {
                     return changelog;
                 }
@@ -1738,6 +1770,8 @@ namespace NaturalnieApp
             {
                 this.SaleType = Convert.ToInt32(sale.Attribute1);
                 this.ProductName = productChangelog.ProductName;
+
+                if (manufacturer == null) manufacturer = new Manufacturer() { Name = "--Nieznany--" };
                 this.ManufacturerName = manufacturer.Name;
                 this.NetPriceInDB = productChangelog.PriceNetWithDiscount;
                 this.TaxValue = tax.TaxValue;

@@ -527,6 +527,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="mainIcon.ico" />
+    <None Include="Resources\loading.gif" />
+    <None Include="Resources\Wedges-3s-30px.gif" />
     <None Include="Resources\past.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

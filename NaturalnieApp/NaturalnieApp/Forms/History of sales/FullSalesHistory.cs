@@ -2,15 +2,15 @@
 using NaturalnieApp.PdfToExcel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
-using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
-
+using static NaturalnieApp.HistorySalesRelated;
 
 namespace NaturalnieApp.Forms
 {
-  
+    
     public partial class FullSalesHistory : UserControl
     {
         /// <summary>
@@ -22,12 +22,14 @@ namespace NaturalnieApp.Forms
 
         DataTable DataSource { get; set; }
         BindingSource BindingDataSource { get; set; }
+        public BackgroundWorker DbBackgroundWorker { get; private set; }
+        public bool UpdateSummarizedResults { get; set; } = false;
 
         /// <summary>
         /// Class constructor
         /// </summary>
         public FullSalesHistory()
-       {
+        {
             //Initialize component
             InitializeComponent();
 
@@ -47,14 +49,170 @@ namespace NaturalnieApp.Forms
 
             //Initialize DataGridView
             InitializeDataGridView();
+
+            //Initialize backgroundworker
+            InitializeBackgroundWorker();
+
+            //Hide progress panel
+            HideProgressPanel();
         }
 
+        //=============================================================================
+        //                              Background worker
+        //=============================================================================
+        // Set up the BackgroundWorker object by attaching event handlers. 
+        #region Backgroundworker
+        private void InitializeBackgroundWorker()
+        {
+            this.DbBackgroundWorker = new BackgroundWorker();
+            // here you have also to implement the necessary events
+            // this event will define what the worker is actually supposed to do
+            this.DbBackgroundWorker.DoWork += this.DbBackgroundWorker_DoWork;
+            // this event will define what the worker will do when finished
+            this.DbBackgroundWorker.RunWorkerCompleted += this.DbBackgroundWorker_RunWorkerCompleted;
+
+            //
+            this.DbBackgroundWorker.WorkerReportsProgress = true;
+            this.DbBackgroundWorker.ProgressChanged += this.DbBackgroundWorker_ProgressChanged;
+
+        }
+
+        private void DbBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            UpdateProgress _updateObject = e.UserState as UpdateProgress;
+
+            if (_updateObject != null)
+            {
+                UpdateProgressPanelValues(_updateObject.progressText, _updateObject.percentageValue);
+                return;
+            }
+
+            if (e.UserState is decimal)
+            {
+                string _value = Convert.ToString((decimal)e.UserState);
+                UpdateProgressPanelValues(percentages: _value);
+                return;
+            }
+
+        }
+
+        private void DbBackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            BackgroundWorkerResultData resultData = e.Result as BackgroundWorkerResultData;
+
+            this.BindingDataSource.DataSource = null;
+            this.DataSource = resultData.DataToReturn;
+            this.BindingDataSource.DataSource = this.DataSource;
+
+            this.advancedDataGridView1.AutoResizeColumns();
+
+            UpdateSummarizedData(resultData.SummarizedData);
+
+            EnableDataGridView();
+
+            HideProgressPanel();
+        }
+
+        // This event handler is where the actual, potentially time-consuming work is done.
+        private void DbBackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            UpdateGetSalesProgress reportProgressMethod = (sender as BackgroundWorker).ReportProgress;
+            BackgroundWorkerInputData _inputData = e.Argument as BackgroundWorkerInputData;
+            DatabaseCommands _databaseCommands = _inputData.DatabaseCommand;
+
+            UpdateProgress _updateObject = new UpdateProgress() { percentageValue = "0.0", progressText = "Pobieranie informacji o sprzedaży z bazy danych" };
+
+            reportProgressMethod.Invoke(0, _updateObject);
+
+            List<HistorySalesRelated.ProductSalesObject> outList = HistorySalesRelated.GetSales(
+                _inputData.EventData.StartDate, _inputData.EventData.EndDate, _inputData.EventData.SelectedManufacturer, _databaseCommands,
+                reportProgressMethod);
+
+            SummarizedData _summarizedData = new SummarizedData();
+
+            _updateObject.progressText = "Dodawanie pobranych informacji do widoku danych...";
+            _updateObject.percentageValue = "0.0";
+            reportProgressMethod.Invoke(0, _updateObject);
+
+            DataTable _dataSource = new DataTable();
+            _dataSource = _inputData.DataSource.Clone();
+ 
+
+            DateTime _endTime = GetDeltaTime((float)2.0);
+
+            int i = 0;
+            foreach (ProductSalesObject obj in outList)
+            {
+                DataRow row = _dataSource.NewRow();
+                obj.FillInDataRow(row);
+                _dataSource.Rows.Add(row);
+
+                _summarizedData.SummarizedProfit += obj.Profit;
+                _summarizedData.NumberOfSales += 1;
+                _summarizedData.NumberOfProducts += Convert.ToDecimal(obj.Quantity);
+                _summarizedData.SummarizedSale += Convert.ToDecimal(obj.PriceOfSales);
+                _summarizedData.SummarizedDiscount += Math.Round(Convert.ToDecimal(obj.PriceOnCashRegister - obj.PriceOfSales),2);
+
+                if (CheckIfCurrentTimeGratherOrEqual(_endTime))
+                {
+                    decimal _actualProgress = EvaluateProgressInPercentage(i, outList.Count);
+                    reportProgressMethod.Invoke(0, _actualProgress);
+                    _endTime = GetDeltaTime((float)2.0);
+                }
+
+                i++;
+
+            }
+
+            e.Result = new BackgroundWorkerResultData { SummarizedData = _summarizedData, DataToReturn = _dataSource};
+        }
+        #endregion
+
         #region General methods
+        private void ShowProgressPanel()
+        {
+            this.pProgressPanel.Visible = true;
+        }
+
+        private void HideProgressPanel()
+        {
+            this.pProgressPanel.Visible = false;
+        }
+
+        private void UpdateProgressPanelValues(string text=null, string percentages=null)
+        {
+            if (percentages != null )this.lPercentageProgress.Text = percentages + " %";
+            if (text != null) this.lProgressText.Text = text;
+        }
+
+        private void UpdateSummarizedData(SummarizedData summarized)
+        {
+            this.tbSummarizedProfit.Text = Convert.ToString(summarized.SummarizedProfit);
+            this.tbNumberOfSales.Text = Convert.ToString(summarized.NumberOfSales);
+            string _numberOfProducts = Convert.ToString(summarized.NumberOfProducts);
+            this.tbNumberOfProducts.Text = _numberOfProducts.Split('.')[0];
+            this.tbSummarizedSale.Text = Convert.ToString(summarized.SummarizedSale);
+            this.tbSummarizedDiscount.Text = Convert.ToString(summarized.SummarizedDiscount);
+
+        }
+
+        private void DisableDataGridView()
+        {
+            this.advancedDataGridView1.Enabled = false;
+        }
+
+        private void EnableDataGridView()
+        {
+            this.advancedDataGridView1.Enabled = true;
+        }
+
         private void InitializeDataGridView()
         {
             this.advancedDataGridView1.DataSource = this.BindingDataSource;
             this.advancedDataGridView1.AutoResizeColumns();
             this.advancedDataGridView1.SetDoubleBuffered();
+            this.advancedDataGridView1.AllowUserToAddRows = false;
+            this.advancedDataGridView1.AllowUserToDeleteRows = true;
         }
         void InitializeDataTableSchema()
         {
@@ -192,37 +350,62 @@ namespace NaturalnieApp.Forms
             }
 
         }
+        private void advancedDataGridView1_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            Zuby.ADGV.AdvancedDataGridView _localSender = sender as Zuby.ADGV.AdvancedDataGridView;
+            if (this.UpdateSummarizedResults)
+            {
+                SummarizedData _summarizedData = GetSummarizedGridViewData((_localSender.DataSource as BindingSource).DataSource as DataTable);
+                UpdateSummarizedData(_summarizedData);
+                this.UpdateSummarizedResults = false;
+            }
+        }
+        private void advancedDataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            Zuby.ADGV.AdvancedDataGridView _localSender = sender as Zuby.ADGV.AdvancedDataGridView;
+
+            int i = 1;
+            foreach (DataGridViewRow row in _localSender.SelectedRows)
+            {
+
+                if (row == e.Row)
+                {
+                    if (i >= _localSender.SelectedRows.Count) this.UpdateSummarizedResults = true;
+                }
+                i++;
+            }
+        }
         #endregion
 
         private void bUpdate_Click(object sender, System.EventArgs e)
         {
 
-
+            EnableDataGridView();
 
         }
 
-       
+
         private void dateRelatedSearch1_NewEntSelected(object sender, Common.DateRelatedSearch.NewEntSelectedEventArgs e)
         {
-            this.DataSource.Rows.Clear();
-            List<HistorySalesRelated.ProductSalesObject> outList = HistorySalesRelated.GetSales(
-                e.StartDate, e.EndDate, e.SelectedManufacturer, this.databaseCommands);
+            DisableDataGridView();
 
-            decimal _summarizedProfit = (decimal)0.0;
-            foreach (HistorySalesRelated.ProductSalesObject obj in outList)
+            BackgroundWorkerInputData _dataToWorker = new BackgroundWorkerInputData();
+            _dataToWorker.DataSource = this.DataSource;
+            _dataToWorker.DatabaseCommand = this.databaseCommands;
+            _dataToWorker.EventData = e;
+
+            if (this.DbBackgroundWorker.IsBusy == false)
             {
-                DataRow row = this.DataSource.NewRow();
-                obj.FillInDataRow(row);
-                this.DataSource.Rows.Add(row);
-
-                _summarizedProfit += obj.Profit;
+                UpdateProgressPanelValues("Uruchamianie procesów...", "0.00");
+                ShowProgressPanel();
+                this.DbBackgroundWorker.RunWorkerAsync(_dataToWorker);
+            }
+            else
+            {
+                MessageBox.Show("Trwa pobieranie danych z bazy. Poczekaj na zakończenie tego procesu...");
             }
 
-            DataRow _row = this.DataSource.NewRow();
-            _row.SetField<decimal>(this.ColumnNames.Profit, _summarizedProfit);
-            this.DataSource.Rows.Add(_row);
 
-            this.advancedDataGridView1.AutoResizeColumns();
         }
 
         private void bSaveToFile_Click(object sender, EventArgs e)
@@ -259,6 +442,59 @@ namespace NaturalnieApp.Forms
 
 
         }
+
+        private SummarizedData GetSummarizedGridViewData(DataTable dataToCheck)
+        {
+            SummarizedData _summarizedData = new SummarizedData();
+
+            int i = 0;
+            foreach (DataRow row in dataToCheck.Rows)
+            {
+                _summarizedData.SummarizedProfit += Convert.ToDecimal(row.Field<Single>(this.ColumnNames.Profit));
+                _summarizedData.NumberOfSales += 1;
+                _summarizedData.NumberOfProducts += Convert.ToDecimal(row.Field<string>(this.ColumnNames.Quantity));
+                _summarizedData.SummarizedSale += Convert.ToDecimal(row.Field<Single>(this.ColumnNames.PriceOfSales));
+                _summarizedData.SummarizedDiscount += Convert.ToDecimal(Math.Round(
+                    row.Field<Single>(this.ColumnNames.PriceOnCashRegister) - row.Field<Single>(this.ColumnNames.PriceOfSales),
+                    2));
+
+                i++;
+            }
+
+            return _summarizedData;
+        }
     }
+
+    public class BackgroundWorkerInputData
+    {
+        public Common.DateRelatedSearch.NewEntSelectedEventArgs EventData { get; set; }
+        public DataTable DataSource { get; set; }
+        public DatabaseCommands DatabaseCommand { get; set; }
+
+    }
+
+    public class SummarizedData
+    {
+
+        public decimal SummarizedProfit { get; set; } = (decimal)0.0;
+        public int NumberOfSales { get; set; } = 0;
+        public decimal NumberOfProducts { get; set; } = 0;
+        public decimal SummarizedSale { get; set; } = (decimal)0.0;
+        public decimal SummarizedDiscount { get; set; } = (decimal)0.0;
+    }
+
+    public class BackgroundWorkerResultData
+    {
+        public SummarizedData SummarizedData { get; set; }
+        public DataTable DataToReturn { get; set; }
+    }
+
+    public class UpdateProgress
+    {
+        public string percentageValue { get; set; } = "0.0";
+        public string progressText { get; set; } = "Default text";
+    }
+
+
 
 }
