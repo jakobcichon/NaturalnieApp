@@ -1456,8 +1456,21 @@ namespace NaturalnieApp.Database
             this.ConnectionStatus = state;
         }
 
+        public List<string> GetAllBarcodeShort()
+        {
+            List<string> retVal;
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            select p.BarCodeShort;
+                retVal = query.ToList<string>();
+            }
+
+            return retVal;
+        }
+
         // **********************************************************************************************************
-        #region Manufacturer table related
+        #region Supplier table related
 
         //====================================================================================================
         //Method used to retrieve from DB all supplier ents

@@ -363,7 +363,6 @@ namespace NaturalnieApp.Forms
         #region Current window events
         private void ShowProductInfo_Load(object sender, EventArgs e)
         {
-
             //Enable text box
             this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
                 Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
@@ -397,6 +396,9 @@ namespace NaturalnieApp.Forms
         #region Buttons events
         private void bSave_Click(object sender, EventArgs e)
         {
+            var test = this.databaseCommands.GetAllBarcodeShort();
+            var resTest = BarcodeRelated.FindFirstFreeInternalBarcodeFromList(test);
+
             //Local variables
             bool validatingSuccess;
             int id = -1;

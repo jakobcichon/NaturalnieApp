@@ -163,6 +163,80 @@ namespace NaturalnieApp
             return retVal;
         }
 
+        public static string FindFirstFreeInternalBarcodeFromList(List<string> existingBarcodes)
+        {
+            (List<string> firstList, List<string> midList, List<string> thirdList) = DivideBarcodeList(existingBarcodes);
+
+            if (IsFreeSpaceInList(firstList))
+            {
+                if(firstList.Count == 2) return ConvertBarcodeFromUintToString(ExtractInternalBarcodeDataPart(firstList[0]) + 1);
+                return FindFirstFreeInternalBarcodeFromList(firstList);
+            }
+            if (IsFreeSpaceInList(midList))
+            {
+                return ConvertBarcodeFromUintToString(ExtractInternalBarcodeDataPart(midList[0]) + 1);
+            }
+            if (IsFreeSpaceInList(thirdList))
+            {
+                if (firstList.Count == 2) return ConvertBarcodeFromUintToString(ExtractInternalBarcodeDataPart(thirdList[0]) + 1);
+                return FindFirstFreeInternalBarcodeFromList(thirdList);
+            }
+
+            return null;
+        }
+
+        private static (List<string>, List<string>, List<string>) DivideBarcodeList(List<string> barcodesList)
+        {
+            if (barcodesList.Count <= 1) throw new Exception($"List of {barcodesList.Count} element cannot be divided more.");
+
+            int numberOfFirstPartElements = barcodesList.Count / 2;
+
+            List<string> firstList = barcodesList.GetRange(0, numberOfFirstPartElements);
+            List<string> midList = barcodesList.GetRange(numberOfFirstPartElements -1 , 2);
+            List<string> thirdList = barcodesList.GetRange(numberOfFirstPartElements, barcodesList.Count - numberOfFirstPartElements);
+
+            return (firstList, midList, thirdList);
+
+        }
+
+        private static bool IsFreeSpaceInList(List<string> inputList)
+        {
+            if (inputList.Count <= 1) return false;
+
+            // Sort the list
+            inputList.Sort();
+            if (inputList.Distinct().Count() != inputList.Count()) throw new Exception("Only list with distinct values are allowed!");
+
+            uint lowerElement = ExtractInternalBarcodeDataPart(inputList.ElementAt(0));
+            uint higherElement = ExtractInternalBarcodeDataPart(inputList.ElementAt(inputList.Count -1));
+
+            uint sum = lowerElement + (uint)inputList.Count - 1;
+
+            if (sum == higherElement) return false;
+            return true;
+
+        }
+
+        private static uint ExtractInternalBarcodeDataPart(string barcodeShort)
+        {
+            // Remove check sum character from EAN8 barcode
+            uint dataPart = Convert.ToUInt32(barcodeShort.Remove(barcodeShort.Length - 1, 1));
+
+            return dataPart;
+        }
+
+        private static string ConvertBarcodeFromUintToString(uint barcode)
+        {
+            string barcodeToReturn = barcode.ToString();
+
+            if (barcodeToReturn.Length > 7) throw new Exception("Barcode number to big to convert. " +
+                $"Maximum barcode value is 7 digits. Given {barcodeToReturn.Length} digits");
+
+            // If value lower than 7 digits, add leading zeros
+            if (barcodeToReturn.Length < 7) return  new string('0', 7 - barcodeToReturn.Length) + barcodeToReturn;
+
+            return barcodeToReturn;
+        }
         #endregion
         /// <summary>
         /// Class used to handle information received from Bar code reader
