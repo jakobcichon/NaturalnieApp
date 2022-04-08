@@ -65,6 +65,9 @@ namespace NaturalnieApp
         }
         #endregion
 
+        public const uint MinBarcodeValue = 1;
+        public const uint MaxBarcodeValue = 9999999;
+
         /// <summary>
         /// Method used to create EAN8. First 2 digits are the manufacturer id from DB.
         /// Last 5 digits of EAN8 are product ID from cash register.
@@ -163,7 +166,40 @@ namespace NaturalnieApp
             return retVal;
         }
 
-        public static string FindFirstFreeInternalBarcodeFromList(List<string> existingBarcodes)
+        public static string GenerateInternalBarcodeData(List<string> existingBarcodes)
+        {
+            string value = GetMinBarcodeValueIfAvailable(existingBarcodes.First());
+            if (value != null) return value;
+
+            value = FindFirstFreeInternalBarcodeFromList(existingBarcodes);
+            if (value != null) return value;
+
+            value = GetMaxBarcodeValueIfAvailable(existingBarcodes.Last());
+            if (value != null) return value;
+
+            return null;
+        }
+
+
+        private static string GetMinBarcodeValueIfAvailable(string currentMinBarcodeValue)
+        {
+            uint currentMinValue = ExtractInternalBarcodeDataPart(currentMinBarcodeValue);
+
+            if (currentMinValue > MinBarcodeValue + 1) return ConvertBarcodeFromUintToString(MinBarcodeValue);
+            return null;
+            
+        }
+
+        private static string GetMaxBarcodeValueIfAvailable(string currentMaxBarcodeValue)
+        {
+            uint currentMaxValue = ExtractInternalBarcodeDataPart(currentMaxBarcodeValue);
+
+            if (currentMaxValue > MaxBarcodeValue + 1) return ConvertBarcodeFromUintToString(MaxBarcodeValue);
+            return null;
+
+        }
+
+        private static string FindFirstFreeInternalBarcodeFromList(List<string> existingBarcodes)
         {
             (List<string> firstList, List<string> midList, List<string> thirdList) = DivideBarcodeList(existingBarcodes);
 
@@ -574,6 +610,19 @@ namespace NaturalnieApp
 
     static public class ElzabRelated
     {
+
+        static public int? FindFirstAvailableElzabId(List<int> listOfCurrentIdsInUse)
+        {
+            foreach (int elzabId in listOfCurrentIdsInUse)
+            {
+                int possibleId = elzabId + 1;
+                int index = listOfCurrentIdsInUse.IndexOf(elzabId) + 1;
+
+                if (possibleId < listOfCurrentIdsInUse.ElementAt(index)) return possibleId;
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Method used convert numeric tax value cash register group

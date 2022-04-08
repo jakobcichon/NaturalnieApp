@@ -1469,6 +1469,62 @@ namespace NaturalnieApp.Database
             return retVal;
         }
 
+        public List<int> GetAllElzabProductIds()
+        {
+            List<int> retVal;
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            select p.ElzabProductId;
+                retVal = query.ToList<int>();
+            }
+
+            return retVal;
+        }
+
+        public List<(Product, Stock)> GetAllElzabProductNumbersToClean()
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            join s in contextDB.Stock
+                            on p.Id equals s.ProductId
+                            where p.CanRemoveFromCashRegister == true &&
+                            s.ActualQuantity <= 0
+                            select new
+                            {
+                                p,
+                                s
+                            };
+
+                try
+                {
+                    var retVal = query.ToList();
+                    List<(Product, Stock)> retList = new List<(Product, Stock)>();
+                    foreach (var joined in retVal)
+                    {
+                        retList.Add((joined.p, joined.s));
+                    }
+                    return retList;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public void CleanAllElzabProductNumberOutOfStock(List<Product> productToClean)
+        {
+            foreach (Product product in productToClean)
+            {
+                product.ElzabProductId = -1;
+                product.ExistsInCashRegister = false;
+                EditProduct(product);
+            }
+            
+        }
+
         // **********************************************************************************************************
         #region Supplier table related
 

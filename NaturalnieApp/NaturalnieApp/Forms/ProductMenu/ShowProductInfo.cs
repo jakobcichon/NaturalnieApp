@@ -396,9 +396,6 @@ namespace NaturalnieApp.Forms
         #region Buttons events
         private void bSave_Click(object sender, EventArgs e)
         {
-            var test = this.databaseCommands.GetAllBarcodeShort();
-            var resTest = BarcodeRelated.FindFirstFreeInternalBarcodeFromList(test);
-
             //Local variables
             bool validatingSuccess;
             int id = -1;

@@ -33,6 +33,8 @@ namespace NaturalnieApp.Database
         public string BarCodeShort { get; set; }
         public string SupplierCode { get; set; }
         public string ProductInfo { get; set; }
+        public bool CanRemoveFromCashRegister { get; set; }
+        public bool ExistsInCashRegister { get; set; }
 
         public Product DeepCopy()
         {
@@ -53,6 +55,8 @@ namespace NaturalnieApp.Database
             product.BarCodeShort = this.BarCodeShort;
             product.SupplierCode = this.SupplierCode;
             product.ProductInfo = this.ProductInfo;
+            product.CanRemoveFromCashRegister = this.CanRemoveFromCashRegister;
+            product.ExistsInCashRegister = this.ExistsInCashRegister;
             return product;
         }
     }

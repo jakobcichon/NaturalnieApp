@@ -362,7 +362,7 @@ namespace NaturalnieApp.Forms
                             rowElement = localDataTable.NewRow();
 
                             //Set row fields
-                            rowElement.SetField<int>(this.ColumnNames.ProductNumber, productEnt.ElzabProductId);
+                            rowElement.SetField<int?>(this.ColumnNames.ProductNumber, productEnt.ElzabProductId);
                             rowElement.SetField<string>(this.ColumnNames.ProductName, productEnt.ElzabProductName);
                             int taxValue = this.databaseCommands.GetTaxByProductName(productEnt.ProductName).TaxValue;
                             rowElement.SetField<int>(this.ColumnNames.Tax, taxValue);

@@ -208,7 +208,7 @@ namespace NaturalnieApp.Forms
             this.tpElzabProductName.ColumnCount = 3;
             this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 113F));
+            this.tpElzabProductName.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
             this.tpElzabProductName.Controls.Add(this.lElzabProductName, 0, 0);
             this.tpElzabProductName.Controls.Add(this.tbElzabProductName, 1, 0);
             this.tpElzabProductName.Controls.Add(this.lElzabNameLength, 2, 0);
@@ -216,7 +216,7 @@ namespace NaturalnieApp.Forms
             this.tpElzabProductName.Location = new System.Drawing.Point(464, 161);
             this.tpElzabProductName.Name = "tpElzabProductName";
             this.tpElzabProductName.RowCount = 1;
-            this.tpElzabProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 109F));
+            this.tpElzabProductName.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 113F));
             this.tpElzabProductName.Size = new System.Drawing.Size(450, 40);
             this.tpElzabProductName.TabIndex = 12;
             // 
@@ -339,6 +339,7 @@ namespace NaturalnieApp.Forms
             this.tbElzabProductNumber.Location = new System.Drawing.Point(217, 6);
             this.tbElzabProductNumber.Margin = new System.Windows.Forms.Padding(5);
             this.tbElzabProductNumber.Name = "tbElzabProductNumber";
+            this.tbElzabProductNumber.ReadOnly = true;
             this.tbElzabProductNumber.Size = new System.Drawing.Size(120, 26);
             this.tbElzabProductNumber.TabIndex = 0;
             this.tbElzabProductNumber.Validating += new System.ComponentModel.CancelEventHandler(this.tbElzabProductNumber_Validating);

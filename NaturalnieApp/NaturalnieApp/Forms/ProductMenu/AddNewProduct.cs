@@ -83,7 +83,7 @@ namespace NaturalnieApp.Forms
             //Local vaiable
             backgroundWorkerTasks taskType;
             taskType = this.ActualTaskType;
-            List<List<string>> returnList = new List<List<string>>();
+            List<object> returnList = new List<object>();
 
             try
             {
@@ -98,8 +98,10 @@ namespace NaturalnieApp.Forms
                         {
                             List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
                             List<string> productSupplierList = this.databaseCommands.GetSupplierNameList();
+                            List<int> usedElzabProductNumbers = this.databaseCommands.GetAllElzabProductIds();
                             returnList.Add(productManufacturerList);
                             returnList.Add(productSupplierList);
+                            returnList.Add(usedElzabProductNumbers);
                             e.Result = returnList;
                         }
                         break;
@@ -108,8 +110,10 @@ namespace NaturalnieApp.Forms
                         {
                             List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
                             List<string> productSupplierList = this.databaseCommands.GetSupplierNameList();
+                            List<int> usedElzabProductNumbers = this.databaseCommands.GetAllElzabProductIds();
                             returnList.Add(productManufacturerList);
                             returnList.Add(productSupplierList);
+                            returnList.Add(usedElzabProductNumbers);
                             e.Result = returnList;
                         }
                         break;
@@ -153,9 +157,8 @@ namespace NaturalnieApp.Forms
                         {
                             //Get product name list and product suppliers
                             //check if Database reachable 
-                            List<List<string>> returnList = new List<List<string>>();
-                            returnList = (List<List<string>>)e.Result;
-                            FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1]);
+                            List<object> returnList = (List<object>)e.Result;
+                            FillWithInitialDataFromObject((List<string>)returnList[0], (List<string>)returnList[1], (List<int>)returnList[2]);
                         }
                         break;
                     case backgroundWorkerTasks.Update:
@@ -163,9 +166,8 @@ namespace NaturalnieApp.Forms
                         {
                             //Get product name list and product suppliers
                             //check if Database reachable 
-                            List<List<string>> returnList = new List<List<string>>();
-                            returnList = (List<List<string>>)e.Result;
-                            FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1]);
+                            List<object> returnList = (List<object>)e.Result;
+                            FillWithInitialDataFromObject((List<string>)returnList[0], (List<string>)returnList[1], (List<int>)returnList[2]);
                         }
                         break;
                     case backgroundWorkerTasks.CheckIfExist:
@@ -191,7 +193,7 @@ namespace NaturalnieApp.Forms
         //General methods
         #region General methods
 
-        private void FillWithInitialDataFromObject(List<string> manufacturerList, List<string> supplierList)
+        private void FillWithInitialDataFromObject(List<string> manufacturerList, List<string> supplierList, List<int> elzabUsedIdsList)
         {
             cbManufacturer.Items.Clear();
             string[] sorted = manufacturerList.ToArray();
@@ -203,6 +205,10 @@ namespace NaturalnieApp.Forms
             cbSupplierName.Items.AddRange(sorted);
             cbTax.Items.Clear();
             cbTax.Items.AddRange(this.databaseCommands.GetTaxListRetString().ToArray());
+
+            tbElzabProductNumber.Text = Convert.ToString(ElzabRelated.FindFirstAvailableElzabId(elzabUsedIdsList));
+
+
         }
         private void FillWitDataFromCopiedObject(Product productEntity, Manufacturer manufacturerEntity, Supplier supplierEntity, Tax taxEntity)
         {
@@ -475,9 +481,6 @@ namespace NaturalnieApp.Forms
             //Call background worker
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
-
-            //Disable Elzab product number. Manifacturer must be selected first
-            tbElzabProductNumber.Enabled = false;
 
             this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
                 Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
