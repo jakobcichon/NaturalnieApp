@@ -552,8 +552,7 @@ namespace NaturalnieApp.Forms
                     this.ProductEntity.ElzabProductId = Convert.ToInt32(this.tbElzabProductNumber.Text);
 
                     //Generate EAN8
-                    this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
-                        Convert.ToInt32(this.tbElzabProductNumber.Text));
+                    this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8();
                     this.ProductEntity.BarCodeShort = this.tbShortBarcode.Text;
 
                 }
@@ -653,7 +652,7 @@ namespace NaturalnieApp.Forms
             try
             {
                 //Get first free Id and check if given number match
-                int elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
+                int? elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
                 if(elzabFirstFreeId > 0)
                 {
                     Validation.GeneralNumberValidation(localSender.Text);
@@ -662,8 +661,7 @@ namespace NaturalnieApp.Forms
                     errorProvider1.Clear();
 
                     //Generate EAN8
-                    this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
-                        Convert.ToInt32(this.tbElzabProductNumber.Text));
+                    this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8();
                     this.ProductEntity.BarCodeShort = this.tbShortBarcode.Text;
                 }
                 else

@@ -52,6 +52,7 @@ namespace NaturalnieApp.Forms
             this.bShowProductInfo = new System.Windows.Forms.Button();
             this.bProductMenu = new System.Windows.Forms.Button();
             this.pCashRegisterSubMenu = new System.Windows.Forms.Panel();
+            this.bCleanProductOutOfStock = new System.Windows.Forms.Button();
             this.bSalesBufforReading = new System.Windows.Forms.Button();
             this.bElzabSynchronization = new System.Windows.Forms.Button();
             this.bCashRegister = new System.Windows.Forms.Button();
@@ -116,7 +117,7 @@ namespace NaturalnieApp.Forms
             this.pHistoryOfSales.Controls.Add(this.bHistoryOfProductSale);
             this.pHistoryOfSales.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHistoryOfSales.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pHistoryOfSales.Location = new System.Drawing.Point(0, 784);
+            this.pHistoryOfSales.Location = new System.Drawing.Point(0, 814);
             this.pHistoryOfSales.Name = "pHistoryOfSales";
             this.pHistoryOfSales.Size = new System.Drawing.Size(283, 60);
             this.pHistoryOfSales.TabIndex = 12;
@@ -164,7 +165,7 @@ namespace NaturalnieApp.Forms
             this.bHistoryOfSales.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bHistoryOfSales.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bHistoryOfSales.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.bHistoryOfSales.Location = new System.Drawing.Point(0, 734);
+            this.bHistoryOfSales.Location = new System.Drawing.Point(0, 764);
             this.bHistoryOfSales.Name = "bHistoryOfSales";
             this.bHistoryOfSales.Size = new System.Drawing.Size(283, 50);
             this.bHistoryOfSales.TabIndex = 10;
@@ -176,7 +177,7 @@ namespace NaturalnieApp.Forms
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 734);
+            this.panel1.Location = new System.Drawing.Point(0, 764);
             this.panel1.MinimumSize = new System.Drawing.Size(300, 10);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(300, 115);
@@ -191,7 +192,7 @@ namespace NaturalnieApp.Forms
             this.pStockSubMenu.Controls.Add(this.bAddToStock);
             this.pStockSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pStockSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pStockSubMenu.Location = new System.Drawing.Point(0, 644);
+            this.pStockSubMenu.Location = new System.Drawing.Point(0, 674);
             this.pStockSubMenu.Name = "pStockSubMenu";
             this.pStockSubMenu.Size = new System.Drawing.Size(283, 90);
             this.pStockSubMenu.TabIndex = 7;
@@ -256,7 +257,7 @@ namespace NaturalnieApp.Forms
             this.bStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bStock.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.bStock.Location = new System.Drawing.Point(0, 594);
+            this.bStock.Location = new System.Drawing.Point(0, 624);
             this.bStock.Name = "bStock";
             this.bStock.Size = new System.Drawing.Size(283, 50);
             this.bStock.TabIndex = 6;
@@ -277,7 +278,7 @@ namespace NaturalnieApp.Forms
             this.pProductSubMenu.Controls.Add(this.bShowProductInfo);
             this.pProductSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pProductSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.pProductSubMenu.Location = new System.Drawing.Point(0, 384);
+            this.pProductSubMenu.Location = new System.Drawing.Point(0, 414);
             this.pProductSubMenu.Name = "pProductSubMenu";
             this.pProductSubMenu.Size = new System.Drawing.Size(283, 210);
             this.pProductSubMenu.TabIndex = 5;
@@ -413,7 +414,7 @@ namespace NaturalnieApp.Forms
             this.bProductMenu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bProductMenu.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bProductMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.bProductMenu.Location = new System.Drawing.Point(0, 334);
+            this.bProductMenu.Location = new System.Drawing.Point(0, 364);
             this.bProductMenu.Name = "bProductMenu";
             this.bProductMenu.Size = new System.Drawing.Size(283, 50);
             this.bProductMenu.TabIndex = 4;
@@ -425,14 +426,33 @@ namespace NaturalnieApp.Forms
             // 
             this.pCashRegisterSubMenu.AutoSize = true;
             this.pCashRegisterSubMenu.BackColor = System.Drawing.Color.DimGray;
+            this.pCashRegisterSubMenu.Controls.Add(this.bCleanProductOutOfStock);
             this.pCashRegisterSubMenu.Controls.Add(this.bSalesBufforReading);
             this.pCashRegisterSubMenu.Controls.Add(this.bElzabSynchronization);
             this.pCashRegisterSubMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pCashRegisterSubMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pCashRegisterSubMenu.Location = new System.Drawing.Point(0, 274);
             this.pCashRegisterSubMenu.Name = "pCashRegisterSubMenu";
-            this.pCashRegisterSubMenu.Size = new System.Drawing.Size(283, 60);
+            this.pCashRegisterSubMenu.Size = new System.Drawing.Size(283, 90);
             this.pCashRegisterSubMenu.TabIndex = 3;
+            // 
+            // bCleanProductOutOfStock
+            // 
+            this.bCleanProductOutOfStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
+            this.bCleanProductOutOfStock.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.bCleanProductOutOfStock.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bCleanProductOutOfStock.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.bCleanProductOutOfStock.FlatAppearance.BorderSize = 0;
+            this.bCleanProductOutOfStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bCleanProductOutOfStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bCleanProductOutOfStock.ForeColor = System.Drawing.Color.White;
+            this.bCleanProductOutOfStock.Location = new System.Drawing.Point(0, 60);
+            this.bCleanProductOutOfStock.Name = "bCleanProductOutOfStock";
+            this.bCleanProductOutOfStock.Size = new System.Drawing.Size(283, 30);
+            this.bCleanProductOutOfStock.TabIndex = 6;
+            this.bCleanProductOutOfStock.Text = "Czyszczenie produktów";
+            this.bCleanProductOutOfStock.UseVisualStyleBackColor = false;
+            this.bCleanProductOutOfStock.Click += new System.EventHandler(this.bCleanProductOutOfStock_Click);
             // 
             // bSalesBufforReading
             // 
@@ -802,5 +822,6 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Panel pHistoryOfSales;
         private System.Windows.Forms.Button bHistoryOfProductSale;
         private System.Windows.Forms.Button bFullSalesHistory;
+        private System.Windows.Forms.Button bCleanProductOutOfStock;
     }
 }

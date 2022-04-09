@@ -327,6 +327,12 @@
     <Compile Include="Forms\Elzab\ElzabSynchronization.Designer.cs">
       <DependentUpon>ElzabSynchronization.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Elzab\CleanProductOutOfStock.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Elzab\CleanProductOutOfStock.Designer.cs">
+      <DependentUpon>CleanProductOutOfStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ProductMenu\SupplierList.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -442,6 +448,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Elzab\ElzabSynchronization.resx">
       <DependentUpon>ElzabSynchronization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Elzab\CleanProductOutOfStock.resx">
+      <DependentUpon>CleanProductOutOfStock.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProductMenu\SupplierList.resx">
       <DependentUpon>SupplierList.cs</DependentUpon>

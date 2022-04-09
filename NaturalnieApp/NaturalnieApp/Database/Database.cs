@@ -19,7 +19,7 @@ namespace NaturalnieApp.Database
         [Key]
         public int Id { get; set; }
         public int SupplierId { get; set; }
-        public int ElzabProductId { get; set; }
+        public int? ElzabProductId { get; set; }
         public int ManufacturerId { get; set; }
         public string ProductName { get; set; }
         public string ElzabProductName { get; set; }
@@ -33,8 +33,7 @@ namespace NaturalnieApp.Database
         public string BarCodeShort { get; set; }
         public string SupplierCode { get; set; }
         public string ProductInfo { get; set; }
-        public bool CanRemoveFromCashRegister { get; set; }
-        public bool ExistsInCashRegister { get; set; }
+        public bool CanBeRemoveFromCashRegister { get; set; }
 
         public Product DeepCopy()
         {
@@ -55,8 +54,7 @@ namespace NaturalnieApp.Database
             product.BarCodeShort = this.BarCodeShort;
             product.SupplierCode = this.SupplierCode;
             product.ProductInfo = this.ProductInfo;
-            product.CanRemoveFromCashRegister = this.CanRemoveFromCashRegister;
-            product.ExistsInCashRegister = this.ExistsInCashRegister;
+            product.CanBeRemoveFromCashRegister = this.CanBeRemoveFromCashRegister;
             return product;
         }
     }
@@ -83,7 +81,7 @@ namespace NaturalnieApp.Database
         public int Id { get; set; }
         public int ProductId { get; set; }
         public int SupplierId { get; set; }
-        public int ElzabProductId { get; set; }
+        public int? ElzabProductId { get; set; }
         public int ManufacturerId { get; set; }
         public string ProductName { get; set; }
         public string ElzabProductName { get; set; }

@@ -181,6 +181,8 @@ namespace NaturalnieApp.Forms
                         break;
                 }
 
+                UpdateAvailableElzabProductIds();
+
                 //Enable panel after work done
                 if (this.databaseCommands.ConnectionStatus) this.Enabled = true;
 
@@ -482,11 +484,17 @@ namespace NaturalnieApp.Forms
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
 
-            this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
-                Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
+            UpdateAvailableElzabProductIds();
 
             //Update control
             UpdateControl(ref tbDummyForCtrl);
+        }
+
+        private void UpdateAvailableElzabProductIds()
+        {
+
+            this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
+                Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -652,7 +660,7 @@ namespace NaturalnieApp.Forms
                 try
                 {
                     //If epmty assign first free value
-                    int elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
+                    int? elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
                     if (elzabFirstFreeId > 0)
                     {
                         //Get manufacturer entity
@@ -665,8 +673,7 @@ namespace NaturalnieApp.Forms
                         this.tbElzabProductNumber.Enabled = true;
 
                         //Generate EAN8
-                        this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
-                            Convert.ToInt32(this.tbElzabProductNumber.Text));
+                        this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8();
                         this.ProductEntity.BarCodeShort = this.tbShortBarcode.Text;
 
                         this.tbElzabProductNumber.Text = elzabFirstFreeId.ToString();
@@ -801,8 +808,7 @@ namespace NaturalnieApp.Forms
                 errorProvider1.Clear();
 
                 //Generate EAN8
-                this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
-                    Convert.ToInt32(this.tbElzabProductNumber.Text));
+                this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8();
                 this.ProductEntity.BarCodeShort = this.tbShortBarcode.Text;
             }
             catch (Validation.ValidatingFailed ex)

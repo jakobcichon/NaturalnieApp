@@ -558,6 +558,12 @@ namespace NaturalnieApp.Forms
                             localStock.LastQuantity = localStock.ActualQuantity;
                             localStock.ActualQuantity += stockPiece.ActualQuantity;
                             this.databaseCommands.EditInStock(localStock);
+
+                            // Assigne elzab product id, if was removed from cash register
+                            if (localStock.LastQuantity <= 0 && localStock.ActualQuantity > 0)
+                            {
+                                this.databaseCommands.AssigneNewElzabProductId(stockPiece.ProductId);
+                            }
                         }
                         else
                         {

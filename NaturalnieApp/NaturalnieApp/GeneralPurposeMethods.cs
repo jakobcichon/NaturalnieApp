@@ -17,6 +17,7 @@ using System.IO.Ports;
 using System.ComponentModel;
 using System.Threading;
 using System.Diagnostics;
+using static NaturalnieApp.Program;
 
 namespace NaturalnieApp
 {
@@ -77,30 +78,39 @@ namespace NaturalnieApp
         /// <param name="productId">PRoduct ID in cash register, taked from DB</param>
         /// <returns>Valid EAN8 code</returns>
         #region Barcode methods
-        public static string GenerateEan8(int manufacturerId, int productId)
+        public static string GenerateEan8()
         {
-            //Local variables
-            string retVal = "";
-            string stringValue = "";
+            DatabaseCommands database = new DatabaseCommands();
+            List<string> barcodes = database.GetAllBarcodeShort();
 
-            if (manufacturerId >= 1 && manufacturerId <= 99)
-            {
-                if (productId >= 1 && productId <= 99999)
-                {
-                    stringValue = string.Format("{0,2}", manufacturerId.ToString()) + string.Format("{0,5}", productId.ToString());
-                    stringValue = stringValue.Replace(" ", "0");
-                    if (stringValue.Length == 7)
-                    {
-                        //Calculate checksum digit and add it to new code
-                        retVal = CalcucateChekcSumOfBarcode(stringValue);
-                    }
-                    else MessageBox.Show("Błąd! Wygenerowany kod EAN8 nie ma 7 znaków!");
-                }
-                else MessageBox.Show("Błąd! Identyfikator produkty jest spoza zakresu 1-99999!");
-            }
-            else MessageBox.Show("Błąd! Identyfikator producenta jest spoza zakresu 1-99!");
+            string barcodeData = GenerateInternalBarcodeData(barcodes);
+            
+            string barcode = GenerateInternalBarcode(barcodeData);
 
-            return retVal;
+            return barcode;
+
+        }
+
+        /// <summary>
+        /// Method used to generate EAN8 code from given 7 digit data part
+        /// </summary>
+        /// <param name="dataPartOfTheBarcode">7 digit barcode data part</param>
+        /// <returns></returns>
+        public static string GenerateInternalBarcode(string dataPartOfTheBarcode)
+        {
+            ValidateBarcodeValuePart(dataPartOfTheBarcode);
+
+            return CalcucateChekcSumOfBarcode(dataPartOfTheBarcode);
+        }
+
+        private static bool ValidateBarcodeValuePart(string dataPartOfTheBarcode)
+        {
+            if (dataPartOfTheBarcode == null) throw new ArgumentNullException(nameof(dataPartOfTheBarcode));
+
+            if (dataPartOfTheBarcode.Length != 7) throw new WrongBarcodeSeries("Zła długość wartości kodu EAN8. Wymagana długość to 7 znaków." +
+                $"Podano {dataPartOfTheBarcode.Length} znaków");
+
+            return true;
         }
 
         /// <summary>
@@ -567,6 +577,20 @@ namespace NaturalnieApp
             }
         }
 
+                /// <summary>
+        /// Structure used to describe column names for the clean products out of stock screen
+        /// </summary>
+        public class CleanProductOutOfStockColumnNames
+        {
+            public string No { get; set; }
+            public string Id { get; set; }
+            public string Manufacturer { get; set; }
+            public string ProductName { get; set; }
+            public string ActualElzabNumber { get; set; }
+            public string ActualStockQuantity { get; set; }
+
+        }
+
         /// <summary>
         /// Structure used to describe column names for product sales history
         /// </summary>
@@ -610,18 +634,68 @@ namespace NaturalnieApp
 
     static public class ElzabRelated
     {
-
-        static public int? FindFirstAvailableElzabId(List<int> listOfCurrentIdsInUse)
+        static public int FindFirstAvailableElzabId(List<int> elzabProductIdList)
         {
-            foreach (int elzabId in listOfCurrentIdsInUse)
-            {
-                int possibleId = elzabId + 1;
-                int index = listOfCurrentIdsInUse.IndexOf(elzabId) + 1;
+            /*           foreach (int elzabId in listOfCurrentIdsInUse)
+                       {
+                           int possibleId = elzabId + 1;
+                           int index = listOfCurrentIdsInUse.IndexOf(elzabId) + 1;
 
-                if (possibleId < listOfCurrentIdsInUse.ElementAt(index)) return possibleId;
+                           if (possibleId < listOfCurrentIdsInUse.ElementAt(index)) return possibleId;
+                       }
+
+                       return null;*/
+
+            int firstElementId = GlobalVariables.CashRegisterFirstPossibleId;
+            int lastPossibleId = GlobalVariables.CashRegisterLastPossibleId;
+
+            //Return value
+            int retVal = -1;
+
+            //Sort the list
+            elzabProductIdList.Sort();
+
+            if (elzabProductIdList.Count() > 0)
+            {
+                //Check if there are no gaps in received list and write available Id or return -1
+                if (elzabProductIdList.Count() == 1)
+                {
+                    retVal = (int)elzabProductIdList.Last() + 1;
+                    if (retVal > lastPossibleId) retVal = -1;
+                }
+                else if (elzabProductIdList.Count() == lastPossibleId)
+                {
+                    retVal = -1;
+                }
+                else
+                {
+                    //Check if any gap in actual sequence of IDs
+                    for (int i = 0; i < elzabProductIdList.Count(); i++)
+                    {
+                        //Recalculate theoretical value of product at given index. If not match use it
+                        int theoVal = firstElementId + i;
+
+                        //Check value and if not match, assign theoretical one
+                        if (elzabProductIdList[i] != theoVal)
+                        {
+                            retVal = theoVal;
+                            break;
+                        }
+                    }
+
+                    //If no gap, assign first free value
+                    if ((retVal == -1) && ((elzabProductIdList.Count() + firstElementId) < lastPossibleId))
+                    {
+                        retVal = (int)elzabProductIdList.Last() + 1;
+                    }
+                }
+            }
+            else if (elzabProductIdList.Count() == 0)
+            {
+                retVal = firstElementId;
             }
 
-            return null;
+            return retVal;
         }
 
         /// <summary>
@@ -1095,7 +1169,7 @@ namespace NaturalnieApp
                 else
                 {
                     lastProductEntityFromDb = databaseCommands.GetProductEntityById(lastCertainDbProductNumber);
-                    return lastProductEntityFromDb.ElzabProductId;
+                    return (int)lastProductEntityFromDb.ElzabProductId;
                 }
 
             }
@@ -1817,14 +1891,14 @@ namespace NaturalnieApp
             return localProductSalesList;
         }
 
-        static public ProductChangelog GetSalesEntityIfNotActual(int cashRegisterProdNumber, string dateOfSales, string timeOfSales,
+        static public ProductChangelog GetSalesEntityIfNotActual(int? cashRegisterProdNumber, string dateOfSales, string timeOfSales,
             DatabaseCommands databaseCommands)
         {
             //Get date and time suitable for comparision
             DateTime date = ElzabRelated.ConvertFromElzabDateFormat(dateOfSales);
             DateTime dateAndTime = DateTime.Parse(date.Date.ToShortDateString() + " " + timeOfSales);
 
-            //Get last valid synchrnization fro given time
+            //Get last valid synchrnization for given time
             ElzabCommunication lastValidSynchronization = databaseCommands.GetLastSynchroFromTheGivenDate(dateAndTime);
 
             //Get changelog, starting from last synchronization date
@@ -1919,7 +1993,6 @@ namespace NaturalnieApp
 
                 this.Discount = CalculateDiscount(_discountedPrice, _basePrice);
             }
-
             public ProductSalesObject(Sales sale, Product product, Manufacturer manufacturer, Tax tax)
             {
                 this.SaleType = Convert.ToInt32(sale.Attribute1);
@@ -1948,7 +2021,6 @@ namespace NaturalnieApp
 
                 this.Discount = CalculateDiscount(_discountedPrice, _basePrice);
             }
-
             public void FillInDataRow(DataRow row)
             {
                 row[0] = this.ManufacturerName;

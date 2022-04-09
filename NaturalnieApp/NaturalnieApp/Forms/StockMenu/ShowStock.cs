@@ -226,7 +226,7 @@ namespace NaturalnieApp.Forms
             column.ColumnName = this.ColumnNames.ElzabNumber;
             column.DataType = Type.GetType("System.Int32");
             column.ReadOnly = true;
-            column.Unique = true;
+            column.Unique = false;
             this.DataSource.Columns.Add(column);
             column.Dispose();
 
@@ -458,7 +458,7 @@ namespace NaturalnieApp.Forms
 
                         //Set row fields
                         rowElement.SetField<string>(this.ColumnNames.No, (this.DataSource.Rows.Count + 1).ToString());
-                        rowElement.SetField<int>(this.ColumnNames.ElzabNumber, productEnt.ElzabProductId);
+                        rowElement.SetField<int?>(this.ColumnNames.ElzabNumber, productEnt.ElzabProductId);
                         rowElement.SetField<string>(this.ColumnNames.ProductName, productEnt.ProductName);
                         rowElement.SetField<DateTime>(this.ColumnNames.AddDate, element.ModificationDate);
                         rowElement.SetField<DateTime>(this.ColumnNames.ExpirenceDate, element.ExpirationDate);
@@ -499,7 +499,7 @@ namespace NaturalnieApp.Forms
 
                             //Set row fields
                             rowElement.SetField<string>(this.ColumnNames.No, (this.DataSource.Rows.Count + 1).ToString());
-                            rowElement.SetField<int>(this.ColumnNames.ElzabNumber, productEnt.ElzabProductId);
+                            rowElement.SetField<int?>(this.ColumnNames.ElzabNumber, productEnt.ElzabProductId);
                             rowElement.SetField<string>(this.ColumnNames.ProductName, productEnt.ProductName);
                             rowElement.SetField<DateTime>(this.ColumnNames.AddDate, element.ModificationDate);
                             rowElement.SetField<DateTime>(this.ColumnNames.ExpirenceDate, element.ExpirationDate);

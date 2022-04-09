@@ -704,7 +704,7 @@ namespace NaturalnieApp.Forms
                             if (rowBarcodeValue == "") barcodeExist = false;
                             else barcodeExist = this.databaseCommands.CheckIfBarcodeExist(rowBarcodeValue);
                             bool supplierCodeExist = this.databaseCommands.CheckIfSupplierNameExist(rowSupplierCodeValue);
-                            int elzabProductFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
+                            int? elzabProductFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
                             bool productForManufacturerExhausted = manufacturersWithExNumberOfProduct.Any(m => m == rowManufacturerNameValue);
 
                             if (!productNameExist && !barcodeExist && !supplierCodeExist && !elzabProductNameExist)
@@ -721,7 +721,7 @@ namespace NaturalnieApp.Forms
                                     product.PriceNet = rowPriceNetValue;
                                     product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
                                     product.Marigin = rowMariginValue;
-                                    product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, elzabProductFirstFreeId);
+                                    product.BarCodeShort = BarcodeRelated.GenerateEan8();
                                     product.Discount = rowDiscountValue;
                                     product.PriceNetWithDiscount = rowPriceNetWithDiscount;
                                     if (rowBarcodeValue == "") product.BarCode = product.BarCodeShort;
@@ -776,7 +776,7 @@ namespace NaturalnieApp.Forms
                                         product.PriceNet = rowPriceNetValue;
                                         product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
                                         product.Marigin = rowMariginValue;
-                                        product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, product.ElzabProductId);
+                                        product.BarCodeShort = BarcodeRelated.GenerateEan8();
                                         product.Discount = rowDiscountValue;
                                         product.PriceNetWithDiscount = rowPriceNetWithDiscount;
                                         if (rowBarcodeValue != "") product.BarCode = rowBarcodeValue;
@@ -818,7 +818,7 @@ namespace NaturalnieApp.Forms
                                         product.PriceNet = rowPriceNetValue;
                                         product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
                                         product.Marigin = rowMariginValue;
-                                        product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, product.ElzabProductId);
+                                        product.BarCodeShort = BarcodeRelated.GenerateEan8();
                                         product.Discount = rowDiscountValue;
                                         product.PriceNetWithDiscount = rowPriceNetWithDiscount;
                                         product.ProductName = rowProductNameValue;
@@ -860,7 +860,7 @@ namespace NaturalnieApp.Forms
                                         product.PriceNet = rowPriceNetValue;
                                         product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
                                         product.Marigin = rowMariginValue;
-                                        product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, product.ElzabProductId);
+                                        product.BarCodeShort = BarcodeRelated.GenerateEan8();
                                         product.Discount = rowDiscountValue;
                                         product.PriceNetWithDiscount = rowPriceNetWithDiscount;
                                         product.ProductName = rowProductNameValue;
@@ -1006,6 +1006,12 @@ namespace NaturalnieApp.Forms
                                 pieceFromStock.LastQuantity = quantityInStock;
                                 pieceFromStock.ModificationDate = DateTime.Now;
                                 this.databaseCommands.EditInStock(pieceFromStock);
+
+                                // Assigne elzab product id, if was removed from cash register
+                                if (pieceFromStock.LastQuantity <=0 && pieceFromStock.ActualQuantity > 0)
+                                {
+                                    this.databaseCommands.AssigneNewElzabProductId(stockPiece.ProductId);
+                                }
 
                             }
                             else
