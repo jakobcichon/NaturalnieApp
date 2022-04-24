@@ -27,6 +27,7 @@ namespace NaturalnieApp.Forms
         private Tax TaxEntity { get; set; }
         private float PriceWithTax { get; set; }
         private int SelectedProductId { get; set; }
+        private List<int> ElzabUsedIds { get; set; }
 
         //Barcode reader
         private BarcodeRelated.BarcodeReader BarcodeReader { get; set; }
@@ -91,7 +92,7 @@ namespace NaturalnieApp.Forms
                 if (exist) throw new BarcodeRelated.ElementAlreadyExist("Nazwa produktu '" +
                     this.ProductEntity.ProductName + "' już istnieje w bazie danych");
             }
-            if (orginalEntity.ElzabProductId != this.ProductEntity.ElzabProductId)
+            if ((orginalEntity.ElzabProductId != this.ProductEntity.ElzabProductId) && (this.ProductEntity.ElzabProductId != null))
             {
                 exist = this.databaseCommands.CheckIfElzabProductIdExist(this.ProductEntity.ElzabProductId);
                 if (exist) throw new BarcodeRelated.ElementAlreadyExist("Produkt z numerem kasy Elzab '" +
@@ -174,7 +175,7 @@ namespace NaturalnieApp.Forms
 
                 if (this.cbSupplierName.SelectedItem != null && this.tbProductName.Text != "" &&
                     this.tbBarcode.Text != "" && this.cbManufacturer.Text != null &&
-                    this.tbElzabProductNumber.Text != "" && this.tbElzabProductName.Text != "" &&
+                    this.tbElzabProductName.Text != "" &&
                     this.tbPrice.Text != "" && this.cbTax.SelectedItem != null &&
                     this.tbMarigin.Text != "" && this.tbShortBarcode.Text != "")
                 {
@@ -657,7 +658,15 @@ namespace NaturalnieApp.Forms
                 {
                     Validation.GeneralNumberValidation(localSender.Text);
 
-                    this.ProductEntity.ElzabProductId = Convert.ToInt32(localSender.Text);
+                    if (localSender.Text == "")
+                    {
+                        this.ProductEntity.ElzabProductId = null;
+                    }
+                    else
+                    {
+                        this.ProductEntity.ElzabProductId = Convert.ToInt32(localSender.Text);
+                    }
+
                     errorProvider1.Clear();
 
                     //Generate EAN8
@@ -1031,5 +1040,20 @@ namespace NaturalnieApp.Forms
 
 
         #endregion
+
+        private void bGenerateElzabId_Click(object sender, EventArgs e)
+        {
+            List<int> usedElzabProductNumbers = this.databaseCommands.GetAllElzabProductIds();
+            var number =  ElzabRelated.FindFirstAvailableElzabId(usedElzabProductNumbers);
+            if (number < 0 )
+            {
+                tbElzabProductNumber.Text = string.Empty;
+                this.ProductEntity.ElzabProductId = null;
+                return;
+            }
+
+            tbElzabProductNumber.Text = number.ToString();
+            this.ProductEntity.ElzabProductId = number;
+        }
     }
 }

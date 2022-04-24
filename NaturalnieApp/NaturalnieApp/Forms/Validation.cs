@@ -241,7 +241,7 @@ namespace NaturalnieApp.Forms
             string text = "Podana warość musi być liczbą całkowitą!";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^[0-9]+$";
+            string regPattern = @"^[0-9]+$|^$";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);

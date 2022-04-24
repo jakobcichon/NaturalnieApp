@@ -929,6 +929,12 @@ namespace NaturalnieApp.Database
             if (product != null && product.ElzabProductId == null)
             {
                 int newId = CalculateFreeElzabId();
+
+                if (newId <= 0)
+                {
+                    throw new ElzabRelated.NoMoreCashRegisterIdsAvailable("No more Cash Register Ids available!");
+                }
+
                 product.ElzabProductId = newId;
                 EditProduct(product);
             }

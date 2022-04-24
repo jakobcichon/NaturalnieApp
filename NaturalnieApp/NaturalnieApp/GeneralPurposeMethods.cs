@@ -215,7 +215,10 @@ namespace NaturalnieApp
 
             if (IsFreeSpaceInList(firstList))
             {
-                if(firstList.Count == 2) return ConvertBarcodeFromUintToString(ExtractInternalBarcodeDataPart(firstList[0]) + 1);
+                if (firstList.Count == 2)
+                {
+                    return ConvertBarcodeFromUintToString(ExtractInternalBarcodeDataPart(firstList[0]) + 1);
+                }
                 return FindFirstFreeInternalBarcodeFromList(firstList);
             }
             if (IsFreeSpaceInList(midList))
@@ -224,7 +227,10 @@ namespace NaturalnieApp
             }
             if (IsFreeSpaceInList(thirdList))
             {
-                if (firstList.Count == 2) return ConvertBarcodeFromUintToString(ExtractInternalBarcodeDataPart(thirdList[0]) + 1);
+                if (thirdList.Count == 2)
+                {
+                    return ConvertBarcodeFromUintToString(ExtractInternalBarcodeDataPart(thirdList[0]) + 1);
+                }
                 return FindFirstFreeInternalBarcodeFromList(thirdList);
             }
 
@@ -258,7 +264,10 @@ namespace NaturalnieApp
 
             uint sum = lowerElement + (uint)inputList.Count - 1;
 
-            if (sum == higherElement) return false;
+            if (sum == higherElement)
+            {
+                return false;
+            }
             return true;
 
         }
@@ -634,17 +643,25 @@ namespace NaturalnieApp
 
     static public class ElzabRelated
     {
+        public class NoMoreCashRegisterIdsAvailable : Exception
+        {
+            public NoMoreCashRegisterIdsAvailable()
+            {
+            }
+
+            public NoMoreCashRegisterIdsAvailable(string message)
+                : base(message)
+            {
+            }
+
+            public NoMoreCashRegisterIdsAvailable(string message, Exception inner)
+                : base(message, inner)
+            {
+            }
+        }
+
         static public int FindFirstAvailableElzabId(List<int> elzabProductIdList)
         {
-            /*           foreach (int elzabId in listOfCurrentIdsInUse)
-                       {
-                           int possibleId = elzabId + 1;
-                           int index = listOfCurrentIdsInUse.IndexOf(elzabId) + 1;
-
-                           if (possibleId < listOfCurrentIdsInUse.ElementAt(index)) return possibleId;
-                       }
-
-                       return null;*/
 
             int firstElementId = GlobalVariables.CashRegisterFirstPossibleId;
             int lastPossibleId = GlobalVariables.CashRegisterLastPossibleId;

@@ -562,12 +562,27 @@ namespace NaturalnieApp.Forms
                             // Assigne elzab product id, if was removed from cash register
                             if (localStock.LastQuantity <= 0 && localStock.ActualQuantity > 0)
                             {
-                                this.databaseCommands.AssigneNewElzabProductId(stockPiece.ProductId);
+                                try
+                                {
+                                    this.databaseCommands.AssigneNewElzabProductId(stockPiece.ProductId);
+                                }
+                                catch (ElzabRelated.NoMoreCashRegisterIdsAvailable ex)
+                                {
+                                    MessageBox.Show("Brak miejsca na kasie fiskalnej dla nowych produktóW.");
+                                }
                             }
                         }
                         else
                         {
                             stockPiece.LastQuantity = 0;
+                            try
+                            {
+                                this.databaseCommands.AssigneNewElzabProductId(stockPiece.ProductId);
+                            }
+                            catch (ElzabRelated.NoMoreCashRegisterIdsAvailable ex)
+                            {
+                                MessageBox.Show("Brak miejsca na kasie fiskalnej dla nowych produktóW.");
+                            }
                             this.databaseCommands.AddToStock(stockPiece);
                         }
 

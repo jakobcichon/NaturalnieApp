@@ -1,0 +1,24 @@
+;konfiguracja dla Wavecoma Fastrack
+;load factory configuration
+$AT&F0
+;enter PIN
+$AT+CPIN=2005
+;DTR always on
+$AT&S0
+;set answer to command
+$ATQ0
+;echo on
+$ATE1
+;set RTS-CTS flow control
+$AT+IFC=2,2
+;set communication paramiters
+$AT+CBST=0,0,1
+;ignore DTR
+$AT&D0
+;set DCD if carier present
+$AT&C1
+;set internal modem error correction
+;$AT\N5
+;turn off phonebook
+$AT+WAIP=1
+
