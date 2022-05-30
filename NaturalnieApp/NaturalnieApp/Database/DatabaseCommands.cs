@@ -730,17 +730,15 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         //Method used to check if in DB specified Elzab product ID already exist
         //====================================================================================================
-        public bool CheckIfElzabProductNameExist(string elzabProductName)
+        public bool CheckIfElzabProductNameExist(string elzabProductName, int id=-1)
         {
             bool result = false;
 
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
-                var query = from p in contextDB.Products
-                            where p.ElzabProductName == elzabProductName
-                            select p;
+                Product product = GetProductEntityByElzabName(elzabProductName, id);
 
-                if (query.FirstOrDefault() != null) result = true;
+                if (product != null) result = true;
                 else result = false;
 
             }
@@ -1026,7 +1024,6 @@ namespace NaturalnieApp.Database
             return localProduct;
         }
 
-
         //====================================================================================================
         //Method used to retrieve from DB Product entities by manufacturer ID
         //====================================================================================================
@@ -1057,6 +1054,25 @@ namespace NaturalnieApp.Database
             {
                 var query = from p in contextDB.Products
                             where p.BarCode == barcode
+                            select p;
+
+                localProduct = query.SingleOrDefault();
+            }
+            return localProduct;
+        }
+
+
+        //====================================================================================================
+        //Method used to retrieve from DB Product entity by Elzab name
+        //====================================================================================================
+        public Product GetProductEntityByElzabName(string elzabProductName, int id)
+        {
+            Product localProduct = new Product();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            where p.ElzabProductName.Replace(" ", "") == elzabProductName.Replace(" ", "")
+                            && p.Id != id
                             select p;
 
                 localProduct = query.SingleOrDefault();
@@ -1208,7 +1224,7 @@ namespace NaturalnieApp.Database
                 var query = from p in contextDB.Products
                             join t in contextDB.Tax
                             on p.TaxId equals t.Id
-                            where p.ElzabProductName == elzabProductName
+                            where p.ElzabProductName.Replace(" ", "") == elzabProductName.Replace(" ", "")
                             select new
                             {
                                 t

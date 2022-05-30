@@ -528,6 +528,21 @@ namespace NaturalnieApp.Forms
         #region Buttons events
         private void bSave_Click(object sender, EventArgs e)
         {
+
+            List<Product> products = databaseCommands.GetAllProductsEnts();
+            Dictionary<Product, Product> doubleElzabNames = new Dictionary<Product, Product>();
+
+            foreach (Product product in products)
+            {
+                bool result = databaseCommands.CheckIfElzabProductNameExist(product.ElzabProductName, product.Id);
+                if (result)
+                {
+                    Product product2 = databaseCommands.GetProductEntityByElzabName(product.ElzabProductName, product.Id);
+                    doubleElzabNames.Add(product, product2);
+                }
+            }
+
+
             //Local variables
             bool validatingSuccess;
             int id = -1;
