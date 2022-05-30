@@ -169,7 +169,7 @@ namespace NaturalnieApp.Forms
 
             List<HistorySalesRelated.ProductSalesObject> outList = new List<HistorySalesRelated.ProductSalesObject>();
 
-            int productNumberFromDb = e.SelectedProduct.ElzabProductId;
+            int? productNumberFromDb = e.SelectedProduct.ElzabProductId;
 
             //Get full list of given product sale
             List<Sales> sales = this.databaseCommands.GetSalesEntitiesByCashRegisterId(productNumberFromDb);

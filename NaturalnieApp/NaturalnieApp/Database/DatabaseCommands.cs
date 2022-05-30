@@ -351,13 +351,13 @@ namespace NaturalnieApp.Database
         ///That means, DB can consist maximum 100 product of one manufaturer
         ///Method will return first empty number from calculaten area
         ///</summary>
-        public int CalculateFreeElzabIdForGivenManufacturer(string manufacturerName)
+        public int? CalculateFreeElzabIdForGivenManufacturer(string manufacturerName)
         {
-            List<int> elzabProductIdList = new List<int>();
+            List<int?> elzabProductIdList = new List<int?>();
 
 
             //Return value
-            int retVal = -1;
+            int? retVal = -1;
 
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
@@ -423,9 +423,9 @@ namespace NaturalnieApp.Database
         ///<summary> Method used calculate Product number in Elzab
         ///Method will return first empty number from calculaten area
         ///</summary>
-        public int CalculateFreeElzabId(int firtElzabNumbertoSearch = 300, int lastNumberToSearch = 4095)
+        public int CalculateFreeElzabId()
         {
-            List<int> elzabProductIdList = new List<int>();
+            List<int?> elzabProductIdList = new List<int?>();
 
             //Return value
             int retVal = -1;
@@ -434,58 +434,20 @@ namespace NaturalnieApp.Database
             {
 
                 //Calculate first Id for given manufacturer area
-                int firstElementId = firtElzabNumbertoSearch;
-                int lastPossibleId = lastNumberToSearch;
+                int firstElementId = GlobalVariables.CashRegisterFirstPossibleId;
+                int lastPossibleId = GlobalVariables.CashRegisterLastPossibleId;
 
                 var query2 = from p in contextDB.Products
-                             where p.ElzabProductId >= firstElementId && p.ElzabProductId <= lastPossibleId
+                             where p.ElzabProductId >= firstElementId && p.ElzabProductId <= lastPossibleId && p.ElzabProductId != null
                              select p.ElzabProductId;
 
                 elzabProductIdList = query2.ToList();
 
+                List<int> elzabProductIdListNotNull;
 
-                //Sort the list
-                elzabProductIdList.Sort();
+                elzabProductIdListNotNull = elzabProductIdList.Where(e => e.HasValue).Select(e => e.Value).ToList();
 
-                if (elzabProductIdList.Count() > 0)
-                {
-                    //Check if there are no gaps in received list and write available Id or return -1
-                    if (elzabProductIdList.Count() == 1)
-                    {
-                        retVal = elzabProductIdList.Last() + 1;
-                        if (retVal > lastPossibleId) retVal = -1;
-                    }
-                    else if (elzabProductIdList.Count() == lastPossibleId)
-                    {
-                        retVal = -1;
-                    }
-                    else
-                    {
-                        //Check if any gap in actual sequence of IDs
-                        for (int i = 0; i < elzabProductIdList.Count(); i++)
-                        {
-                            //Recalculate theoretical value of product at given index. If not match use it
-                            int theoVal = firstElementId + i;
-
-                            //Check value and if not match, assign theoretical one
-                            if (elzabProductIdList[i] != theoVal)
-                            {
-                                retVal = theoVal;
-                                break;
-                            }
-                        }
-
-                        //If no gap, assign first free value
-                        if ((retVal == -1) && ((elzabProductIdList.Count() + firstElementId) < lastPossibleId))
-                        {
-                            retVal = elzabProductIdList.Last() + 1;
-                        }
-                    }
-                }
-                else if (elzabProductIdList.Count() == 0)
-                {
-                    retVal = firstElementId;
-                }
+                retVal = ElzabRelated.FindFirstAvailableElzabId(elzabProductIdListNotNull);
             }
             return retVal;
         }
@@ -494,7 +456,7 @@ namespace NaturalnieApp.Database
         ///<summary> Method used get number of free elzab Ids
         ///Method will return number of empty Ids
         ///</summary>
-        public int GetNumberOfFreeElzabIds(int firtElzabNumbertoSearch = 300, int lastNumberToSearch = 4095)
+        public int GetNumberOfFreeElzabIds(int firtElzabNumbertoSearch = 280, int lastNumberToSearch = 4095)
         {
             //Return value
             int retVal = -1;
@@ -502,6 +464,7 @@ namespace NaturalnieApp.Database
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
             {
                 var query = (from p in contextDB.Products
+                             where p.ElzabProductId != null
                              select p.ElzabProductId).Count();
 
                 retVal = query;
@@ -746,7 +709,7 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         //Method used to check if in DB specified Elzab product ID already exist
         //====================================================================================================
-        public bool CheckIfElzabProductIdExist(int elzabProductId)
+        public bool CheckIfElzabProductIdExist(int? elzabProductId)
         {
             bool result = false;
 
@@ -958,6 +921,26 @@ namespace NaturalnieApp.Database
         }
 
         //====================================================================================================
+        //Method used to assigne new ElzabProductId if not exits
+        //====================================================================================================
+        public void AssigneNewElzabProductId(int productId)
+        {
+            Product product = GetProductEntityById(productId);
+            if (product != null && product.ElzabProductId == null)
+            {
+                int newId = CalculateFreeElzabId();
+
+                if (newId <= 0)
+                {
+                    throw new ElzabRelated.NoMoreCashRegisterIdsAvailable("No more Cash Register Ids available!");
+                }
+
+                product.ElzabProductId = newId;
+                EditProduct(product);
+            }
+        }
+
+        //====================================================================================================
         //Method used to retrieve from DB Product entity taking product Id
         //====================================================================================================
         public Product GetProductEntityById(int productId)
@@ -972,7 +955,7 @@ namespace NaturalnieApp.Database
                 localProduct = query.SingleOrDefault();
             }
             return localProduct;
-            }
+        }
 
         //====================================================================================================
         //Method used to retrieve from DB Product entity
@@ -1165,7 +1148,7 @@ namespace NaturalnieApp.Database
                 foreach (Product element in query)
                 {
                     localProduct = element;
-                    localProduct.BarCodeShort = BarcodeRelated.GenerateEan8(element.ManufacturerId, element.ElzabProductId);
+                    localProduct.BarCodeShort = BarcodeRelated.GenerateEan8();
                     EditProduct(localProduct);
                 }
             }
@@ -1456,8 +1439,85 @@ namespace NaturalnieApp.Database
             this.ConnectionStatus = state;
         }
 
+        public List<string> GetAllBarcodeShort()
+        {
+            List<string> retVal;
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            select p.BarCodeShort;
+                retVal = query.ToList<string>();
+            }
+
+            return retVal;
+        }
+
+        public List<int> GetAllElzabProductIds()
+        {
+            List<int> retVal = new List<int>();
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            where p.ElzabProductId != null
+                            select p.ElzabProductId;
+                List<int?> temp = query.ToList<int?>();
+
+                foreach(int? v in temp)
+                {
+                    retVal.Add(v.Value);
+                }
+            }
+
+            return retVal;
+        }
+
+        public List<(Product, Stock, Manufacturer)> GetAllElzabProductNumbersToClean()
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            join s in contextDB.Stock
+                            on p.Id equals s.ProductId
+                            join m in contextDB.Manufacturers
+                            on p.ManufacturerId equals m.Id
+                            where p.CanBeRemoveFromCashRegister == true &&
+                            s.ActualQuantity <= 0
+                            select new
+                            {
+                                p,
+                                s,
+                                m
+                            };
+
+                try
+                {
+                    var retVal = query.ToList();
+                    List<(Product, Stock, Manufacturer)> retList = new List<(Product, Stock, Manufacturer)>();
+                    foreach (var joined in retVal)
+                    {
+                        retList.Add((joined.p, joined.s, joined.m));
+                    }
+                    return retList;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public void CleanAllElzabProductNumberOutOfStock(List<Product> productToClean)
+        {
+            foreach (Product product in productToClean)
+            {
+                product.ElzabProductId = null;
+                EditProduct(product);
+            }
+            
+        }
+
         // **********************************************************************************************************
-        #region Manufacturer table related
+        #region Supplier table related
 
         //====================================================================================================
         //Method used to retrieve from DB all supplier ents
@@ -2060,6 +2120,7 @@ namespace NaturalnieApp.Database
                 contextDB.Stock.Add(stockPiece);
                 contextDB.Entry(stockPiece).State = EntityState.Modified;
                 int retVal = contextDB.SaveChanges();
+
             }
 
             //Add item to stock history
@@ -2254,7 +2315,7 @@ namespace NaturalnieApp.Database
         //====================================================================================================
         //Method used to retrieve from DB Sales entity by Id
         //====================================================================================================
-        public List<Sales> GetSalesEntitiesByCashRegisterId(int cashRegisterId)
+        public List<Sales> GetSalesEntitiesByCashRegisterId(int? cashRegisterId)
         {
             List<Sales> localSale = new List<Sales>();
             using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
@@ -2348,7 +2409,7 @@ namespace NaturalnieApp.Database
         /// </summary>
         /// <param name="elzabProductId">Elzab product Id</param>
         /// <returns>List of the product changelog ordered descending by date (0 - newest, n - oldest)</returns>
-        public ProductChangelog GetLastChangelogValueForGivenElzabProductIdLimitedByDate(int elzabProductId, DateTime olderDate,
+        public ProductChangelog GetLastChangelogValueForGivenElzabProductIdLimitedByDate(int? elzabProductId, DateTime olderDate,
             DateTime newerDate, bool ascendingOrder = true)
         {
             ProductChangelog localProductChangelog = new ProductChangelog();

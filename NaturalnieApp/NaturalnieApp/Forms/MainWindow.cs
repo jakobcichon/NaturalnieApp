@@ -40,6 +40,7 @@ namespace NaturalnieApp.Forms
         public ElzabRelated.CashRegisterSerialPort cashRegisterSerialPort { get; set; }
         public HistoryOfProductSale HistoryOfProductSale { get; set; }
         public FullSalesHistory FullSalesHistory { get; set; }
+        public CleanProductsOutOfStock CleanProductsOutOfStock { get; set; }
 
         //Creat EF databse connection object
         DatabaseCommands databaseCommands;
@@ -94,6 +95,7 @@ namespace NaturalnieApp.Forms
             this.supplierList = new SupplierList();
             this.HistoryOfProductSale = new HistoryOfProductSale();
             this.FullSalesHistory = new FullSalesHistory();
+            this.CleanProductsOutOfStock = new CleanProductsOutOfStock();
 
             //Add status bar
             this.statusBar = new Common.StatusBar();
@@ -394,6 +396,27 @@ namespace NaturalnieApp.Forms
                 this.salesBufferReading.Select();
                 this.salesBufferReading.BringToFront();
                 this.salesBufferReading.Show();
+            }
+
+        }
+
+        private void bCleanProductOutOfStock_Click(object sender, EventArgs e)
+        {
+            this.pContainer.Controls.Clear();
+            try
+            {
+                this.pContainer.Controls.Add(this.CleanProductsOutOfStock);
+                this.CleanProductsOutOfStock.Select();
+                this.CleanProductsOutOfStock.BringToFront();
+                this.CleanProductsOutOfStock.Show();
+            }
+            catch (ObjectDisposedException)
+            {
+                this.CleanProductsOutOfStock = new CleanProductsOutOfStock();
+                this.pContainer.Controls.Add(this.CleanProductsOutOfStock);
+                this.CleanProductsOutOfStock.Select();
+                this.CleanProductsOutOfStock.BringToFront();
+                this.CleanProductsOutOfStock.Show();
             }
 
         }

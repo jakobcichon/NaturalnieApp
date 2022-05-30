@@ -704,53 +704,44 @@ namespace NaturalnieApp.Forms
                             if (rowBarcodeValue == "") barcodeExist = false;
                             else barcodeExist = this.databaseCommands.CheckIfBarcodeExist(rowBarcodeValue);
                             bool supplierCodeExist = this.databaseCommands.CheckIfSupplierNameExist(rowSupplierCodeValue);
-                            int elzabProductFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
+                            int? elzabProductFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
                             bool productForManufacturerExhausted = manufacturersWithExNumberOfProduct.Any(m => m == rowManufacturerNameValue);
 
                             if (!productNameExist && !barcodeExist && !supplierCodeExist && !elzabProductNameExist)
                             {
-                                if (elzabProductFirstFreeId > 0)
-                                {
-                                    //Write all data to the Product object
-                                    Product product = new Product();
-                                    product.SupplierId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
-                                    product.ElzabProductId = elzabProductFirstFreeId;
-                                    product.ManufacturerId = this.databaseCommands.GetManufacturerIdByName(rowManufacturerNameValue);
-                                    product.ProductName = rowProductNameValue;
-                                    product.ElzabProductName = rowElzabProductNameValue;
-                                    product.PriceNet = rowPriceNetValue;
-                                    product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
-                                    product.Marigin = rowMariginValue;
-                                    product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, elzabProductFirstFreeId);
-                                    product.Discount = rowDiscountValue;
-                                    product.PriceNetWithDiscount = rowPriceNetWithDiscount;
-                                    if (rowBarcodeValue == "") product.BarCode = product.BarCodeShort;
-                                    else product.BarCode = rowBarcodeValue;
-                                    product.ProductInfo = "Brak";
-                                    product.FinalPrice = (float)Calculations.FinalPrice(Convert.ToDouble(rowPriceNetWithDiscount), rowTaxValue, Convert.ToDouble(rowMariginValue));
-                                    if (rowSupplierCodeValue == "") product.SupplierCode = product.BarCode;
-                                    else product.SupplierCode = rowSupplierCodeValue;
 
-                                    //Add new object to the DB
-                                    this.databaseCommands.AddNewProduct(product);
+                                //Write all data to the Product object
+                                Product product = new Product();
+                                product.SupplierId = this.databaseCommands.GetSupplierIdByName(rowSupplierNameValue);
+                                product.ElzabProductId = null;
+                                product.ManufacturerId = this.databaseCommands.GetManufacturerIdByName(rowManufacturerNameValue);
+                                product.ProductName = rowProductNameValue;
+                                product.ElzabProductName = rowElzabProductNameValue;
+                                product.PriceNet = rowPriceNetValue;
+                                product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
+                                product.Marigin = rowMariginValue;
+                                product.BarCodeShort = BarcodeRelated.GenerateEan8();
+                                product.Discount = rowDiscountValue;
+                                product.PriceNetWithDiscount = rowPriceNetWithDiscount;
+                                if (rowBarcodeValue == "") product.BarCode = product.BarCodeShort;
+                                else product.BarCode = rowBarcodeValue;
+                                product.ProductInfo = "Brak";
+                                product.FinalPrice = (float)Calculations.FinalPrice(Convert.ToDouble(rowPriceNetWithDiscount), rowTaxValue, Convert.ToDouble(rowMariginValue));
+                                if (rowSupplierCodeValue == "") product.SupplierCode = product.BarCode;
+                                else product.SupplierCode = rowSupplierCodeValue;
 
-                                    //Add row to the collection of added rows, to remove it later
-                                    rowCollectionToRemoveFromList.Add(row);
+                                //Add new object to the DB
+                                this.databaseCommands.AddNewProduct(product);
 
-                                    //Add to the collection to add to stock
-                                    if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
+                                //Add row to the collection of added rows, to remove it later
+                                rowCollectionToRemoveFromList.Add(row);
 
-                                    //Set auxiliary bit
-                                    if (savedSuccessfully == -1) savedSuccessfully = 1;
-                                }
-                                else if (!productForManufacturerExhausted)
-                                {
-                                    DialogResult dialogResult = MessageBox.Show("Nie można określić numery produktu dla kasy Elzab! " +
-                                        "W kasie zdefiniowano już " + Program.GlobalVariables.CashRegisterLastPossibleId + " produktów!"
-                                        , "Liczba dostępnych numerów produtków Elzab została osiągnięta!");
-                                    manufacturersWithExNumberOfProduct.Add(rowManufacturerNameValue);
-                                    savedSuccessfully = 0;
-                                }
+                                //Add to the collection to add to stock
+                                if (rowQuantityValue > 0) rowCollectionToAddQuantityToStockList.Add(row);
+
+                                //Set auxiliary bit
+                                if (savedSuccessfully == -1) savedSuccessfully = 1;
+
                             }
                             else if (cbAllowOverrideProduct.Checked)
                             {
@@ -776,7 +767,7 @@ namespace NaturalnieApp.Forms
                                         product.PriceNet = rowPriceNetValue;
                                         product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
                                         product.Marigin = rowMariginValue;
-                                        product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, product.ElzabProductId);
+                                        product.BarCodeShort = BarcodeRelated.GenerateEan8();
                                         product.Discount = rowDiscountValue;
                                         product.PriceNetWithDiscount = rowPriceNetWithDiscount;
                                         if (rowBarcodeValue != "") product.BarCode = rowBarcodeValue;
@@ -818,7 +809,7 @@ namespace NaturalnieApp.Forms
                                         product.PriceNet = rowPriceNetValue;
                                         product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
                                         product.Marigin = rowMariginValue;
-                                        product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, product.ElzabProductId);
+                                        product.BarCodeShort = BarcodeRelated.GenerateEan8();
                                         product.Discount = rowDiscountValue;
                                         product.PriceNetWithDiscount = rowPriceNetWithDiscount;
                                         product.ProductName = rowProductNameValue;
@@ -860,7 +851,7 @@ namespace NaturalnieApp.Forms
                                         product.PriceNet = rowPriceNetValue;
                                         product.TaxId = this.databaseCommands.GetTaxIdByValue(rowTaxValue);
                                         product.Marigin = rowMariginValue;
-                                        product.BarCodeShort = BarcodeRelated.GenerateEan8(product.ManufacturerId, product.ElzabProductId);
+                                        product.BarCodeShort = BarcodeRelated.GenerateEan8();
                                         product.Discount = rowDiscountValue;
                                         product.PriceNetWithDiscount = rowPriceNetWithDiscount;
                                         product.ProductName = rowProductNameValue;
@@ -1006,6 +997,20 @@ namespace NaturalnieApp.Forms
                                 pieceFromStock.LastQuantity = quantityInStock;
                                 pieceFromStock.ModificationDate = DateTime.Now;
                                 this.databaseCommands.EditInStock(pieceFromStock);
+
+                                // Assigne elzab product id, if was removed from cash register
+                                if (pieceFromStock.LastQuantity <=0 && pieceFromStock.ActualQuantity > 0)
+                                {
+                                    try
+                                    {
+                                        this.databaseCommands.AssigneNewElzabProductId(stockPiece.ProductId);
+                                    }
+                                    catch (ElzabRelated.NoMoreCashRegisterIdsAvailable ex)
+                                    {
+                                        MessageBox.Show("Brak miejsca na kasie fiskalnej dla nowych produktóW.");
+                                        break;
+                                    }
+                                }
 
                             }
                             else

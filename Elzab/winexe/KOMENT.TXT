@@ -1,0 +1,285 @@
+  1	brak nazwy pliku wejœciowego
+  2	zastrze¿ona nazwa pliku wejœciowego
+  3	brak nazwy pliku wyjœciowego
+  4	zastrze¿ona nazwa pliku wyjœciowego
+  5	jednakowe nazwy plików wejœciowego i wyjœciowego
+  6	nie mo¿na otworzyæ pliku wejœciowego
+  7	nie mo¿na otworzyæ pliku konfiguracji
+  8	nie mo¿na otworzyæ pliku wyjœciowego
+  9	nie mo¿na otworzyæ pliku raportu
+ 10	niekompletne dane w pliku wejœciowym
+ 11	niepoprawny format pliku wejœciowego
+ 12	niepoprawne dane w pliku wejœciowym
+ 13	niekompletne dane w pliku konfiguracji
+ 14	brak skojarzenia w pliku konfiguracji
+ 15	niepoprawne dane w pliku konfiguracji
+ 16	niepoprawny format pliku konfiguracji
+ 17	nie mo¿na pisaæ do pliku wyjœciowego
+ 18	nie mo¿na pisaæ do pliku raportu
+ 19	numer kasy poza zakresem
+ 20	timeout nadawania
+ 21	timeout odbierania
+ 22	pod podanym skojarzeniem kasa o innym numerze
+ 23	niepoprawna odpowiedŸ z kasy
+ 24	kasa odpowiedzia³a NAK na sekwencje steruj¹c¹
+ 25	rozkaz niedostêpny w tej wersji programu kasy
+ 26	nie w³¹czona opcja "serwis z PC"
+ 27	nie mo¿na otworzyæ pliku konfiguracji modemu
+ 28	niepoprawny format pliku konfiguracji modemu
+ 29	ci¹gle zestawione po³¹czenie miedzy modemami
+ 30	brak po³¹czenia miedzy modemami
+ 31	timeout obs³ugi sekwencji AT
+ 32	timeout nadawania do modemu/Elpack
+ 33	timeout odbierania z modemu/Elpack
+ 34	b³¹d sumy CRC w ramce z modemu kasowego/Elpack
+ 35	b³¹d sumy CRC w ramce do modemu kasowego/Elpack
+ 36	b³¹d rozkazu dla modemu kasowego/Elpack
+ 37	b³¹d ochrony pamiêci konfiguracji modemu kasowego/Elpack
+ 38	b³¹d w pamiêci konfiguracji modemu kasowego/Elpack
+ 39	brak autoryzacji dla modemu kasowego/Elpack
+ 40	niezdefiniowany timeout nadawania w modemie kasowym/Elpack
+ 41	niezdefiniowany timeout odbierania w modemie kasowym/Elpack
+ 42	b³¹d parzystoœci miedzy kas¹ i modemem kasowym/Elpack
+ 43	modem kasowy/Elpack zg³osi³ b³¹d spoza dopuszczalnego zakresu
+ 44	nie mo¿na odblokowaæ transmisji w Windows
+ 45	kontroler modemu/Elpack nie obs³uguje poprawnie drugiej odpowiedzi
+ 46	niezgodna suma kontrolna
+ 47	awaria drukarki
+ 48	brak papieru
+ 49	nadpisanie bajtu odebranego przez komputer (overrun)
+ 50	b³¹d parzystoœci bajtu odebranego przez komputer (parity error)
+ 51	b³¹d ramki bajtu odebranego przez komputer (framing error)
+ 52	nie mo¿na prze³¹czyæ kana³u multipleksera
+ 53	dane nie mieszcz¹ siê w pojedynczej ramce
+ 54	b³¹d serwera kasowego - strona serwera
+ 55	b³¹d serwera kasowego - strona klienta
+ 56	zakoñczono dzia³anie na ¿¹danie serwera kasowego
+ 57	nie mo¿na wykonaæ funkcji specjalnej dla kasy Teta
+ 58	uszkodzony obszar pamiêci fiskalnej przeznaczony na rekordy fiskalne
+ 59	nie mo¿na otworzyæ pliku buforuj¹cego typy kas
+ 60	niepoprawny format pliku buforuj¹cego typy kas
+ 61	niemo¿liwy zapis do pliku buforuj¹cego typy kas
+ 62	nie mo¿na otworzyæ portu szeregowego
+ 63	timeout nadawania dla operacji TCP/IP
+ 64	timeout odbierania dla operacji TCP/IP
+ 65	inny b³¹d dla operacji TCP/IP
+ 66	odpowiedz o zmiennej d³ugoœci niezgodna z deklaracj¹
+ 67	niepoprawna nazwa hosta lub niedostêpny serwer DNS
+ 68	b³¹d rozkazu interfejsu sieciowego
+ 69	operacja niemo¿liwa w trybie szkoleniowym (wymagany tryb fiskalny)
+ 70	niepoprawny zakres raportów
+ 71	brak raportów w podanym zakresie
+ 72	operacja niemo¿liwa dla niezakoñczonego miesi¹ca
+ 73	operacja niemo¿liwa w trybie ZAPIS/ODCZYT (wymagany tryb TYLKO ODCZYT)
+ 74	operacja niemo¿liwa poniewa¿ inny wydruk jest w toku
+ 75	operacja niemo¿liwa poniewa¿ zwora serwisowa jest w pozycji serwisowej
+ 76	podano niew³aœciw¹ datê lub has³o
+ 77	inny b³¹d dla raportów okresowych
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101	niemo¿liwe do wykonania poniewa¿ pamiêæ CMOS zosta³a skasowana (wezwij serwis)
+102	b³¹d w nazwie towaru
+103	b³¹d w stawce podatkowej towaru
+104	brak miejsca na opakowanie (max. 64 opakowañ)
+105	b³êdny numer towaru
+106
+107	brak miejsca w buforze na towary wi¹zane (max. 256 wi¹zañ)
+108	za du¿y kod kreskowy
+109	za du¿a cena
+110	numer grupy towarowej poza dozwolonym zakresem
+111	numer jednostki poza dozwolonym zakresem
+112	b³êdna iloœæ miejsc po przecinku
+113	b³¹d w informacji o blokadzie towaru (nie 0 lub 1)
+114	b³¹d w informacji o opakowaniu (nie 0 lub 1)
+115	numer p³atnoœci poza dozwolonym zakresem
+116	numer pozycji karty rabatowej poza zakresem
+117	brak miejsca na kartê rabatow¹
+118	dane karty na pozycji s¹ inne ni¿ podane
+119
+120	powtórzony kod kreskowy
+121
+122	trwa kasowanie wszystkich dodatkowych kodów kreskowych
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200	pod podanym numerem towaru jest nowa nazwa lub stawka
+201	niemo¿liwe do wykonania poniewa¿ nie wszystkie dane zosta³y przeczytane
+202	pod podanym numerem towaru brak danych
+203	numer kasjera poza dozwolonym zakresem
+204	pod podanym numerem kasjera brak danych
+205	kasjer do skasowania ma otwart¹ zmianê
+206	w ci¹gu który ma byæ znakami tekstu jest kod mniejszy od 20H
+207	rabat albo narzut zbyt du¿y
+208	parametr N poza dozwolonym zakresem
+209	towar do skasowania lub zast¹pienia ma niezerow¹ sprzeda¿ lub zwroty je¿eli jest opakowaniem
+210	liczba wierszy do wysuniêcia poza dozwolonym zakresem
+211	brak miejsca na barkod
+212	kasjer pracuje
+213	otwarty paragon
+214
+215	numer pojemnika poza dozwolonym zakresem
+216
+217	waga pojemnika poza dozwolonym zakresem
+218
+219
+220	w nazwie towaru wystêpuj¹ same spacje lub znaki niewa¿ne
+221	numer PLU zajêty przez inny towar
+222	wprowadzana nazwa istnieje ju¿ w bazie
+223	niezerowy licznik paragonów
+224	towar oznaczony jako nowo zdefiniowany
+225	towar oznaczony jako skasowany
+226	towar ma ju¿ raz zmienion¹ stawkê
+227	zwora serwisowa w pozycji normalnej
+228	klawisz nie mo¿e byæ definiowany i odczytywany
+229	brak miejsca na kwoty dla p³atnoœci z klawisza
+230	wartoœæ wprowadzanej kwoty ograniczenia jest wiêksza ni¿ maksymalna dopuszczalna
+231	doba jest otwarta
+232	towar do zmiany lub skasowania jest u¿yty w bie¿¹cym paragonie
+233
+234	b³¹d rozszerzony
+235	b³¹d %s ramki protoko³u ElzabSTX
+236	b³¹d nr %s sekcji dane protoko³u ElzabSTX
+237	b³¹d nr %s operacji na pliku tymczasowym
+238	operacja niedostêpna w protokole ElzabSTX
+239	wymagany protokó³ ElzabSTX
+240	b³¹d autoryzacji
+241	paragon zosta³ uniewa¿niony (przyczyna uniewa¿nienia %s)
+242	b³¹d nr %s operacji na pliku statusu SDBackup
+243	wprowadzany kod kreskowy istnieje ju¿ w bazie
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+
+; bledy rozszerzone 6CXX (wiadomosci kasjerskie)
+6C01	numer wiadomoœci zerowy lub za wysoki
+6C02	brak wiadomoœci o takim numerze
+6C03	wiadomoœci zosta³y zmienione lub usuniête od czasu rozpoczêcia operacji
+6C04	b³êdna kolejnoœæ operacji dla wiadomoœci kasjera
+6C05	brak miejsca na nowa wiadomoœæ
+6C06	numer kasjera w wiadomoœci poza dozwolonym zakresem
+6C07	b³¹d w dacie lub czasie wa¿noœci wiadomoœci
+6C08	b³¹d w statusie wiadomoœci
+6C09	w tekœcie wiadomoœci jest znak mniejszy od 20h
+6C0A	nie ma wiadomoœci o takiej treœci do skasowania
+6C0B	wiadomoœæ nie zosta³a zapisana poniewa¿ system wiadomoœci kasjerskich jest wy³¹czony
+6C0C	nie mo¿na skasowaæ wiadomoœci poniewa¿ trwa odczyt przez kasjera
+
+; bledy rozszerzone D4XX (rabaty/narzuty automatyczne)
+D401	b³êdna wartoœæ indeksu X
+D402	b³êdna zawartoœæ TYP
+D403	b³êdna zawartoœæ ZAKRES
+D404	b³êdna zawartoœæ RN
+D405	b³êdna zawartoœæ PK
+D406	b³êdna zawartoœæ PW
+D407	b³êdna zawartoœæ PG
+D408	b³êdna zawartoœæ PR
+D409	b³êdna zawartoœæ CZAS
+D40A	b³êdna zawartoœæ NAZWA
+D40B	rabat/narzut na paragon dla ka¿dego towaru jest ju¿ zdefiniowany
+D40C	rabat/narzut na paragon dla tej grupy ju¿ zdefiniowano, lub dla tego PLU zdefiniowano ju¿ promocje
+D40D	dla promocji je¿eli progi s¹ iloœciowe to tylko dopuszczalne s¹ tylko rabaty procentowe
+D40E	b³êdne dane daty lub czasu obowi¹zywania

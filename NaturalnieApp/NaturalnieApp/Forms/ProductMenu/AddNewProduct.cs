@@ -31,6 +31,8 @@ namespace NaturalnieApp.Forms
         private float PriceWithTax { get; set; }
         private string BarcodeToCheck { get; set; }
 
+        private List<int> ElzabUsedIds { get; set; }
+
         //Barcode reader
         private BarcodeRelated.BarcodeReader BarcodeReader { get; set; }
         private bool BarcodeValidEventGenerated { get; set; }
@@ -83,7 +85,7 @@ namespace NaturalnieApp.Forms
             //Local vaiable
             backgroundWorkerTasks taskType;
             taskType = this.ActualTaskType;
-            List<List<string>> returnList = new List<List<string>>();
+            List<object> returnList = new List<object>();
 
             try
             {
@@ -98,8 +100,10 @@ namespace NaturalnieApp.Forms
                         {
                             List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
                             List<string> productSupplierList = this.databaseCommands.GetSupplierNameList();
+                            List<int> usedElzabProductNumbers = this.databaseCommands.GetAllElzabProductIds();
                             returnList.Add(productManufacturerList);
                             returnList.Add(productSupplierList);
+                            returnList.Add(usedElzabProductNumbers);
                             e.Result = returnList;
                         }
                         break;
@@ -108,8 +112,10 @@ namespace NaturalnieApp.Forms
                         {
                             List<string> productManufacturerList = this.databaseCommands.GetManufacturersNameList();
                             List<string> productSupplierList = this.databaseCommands.GetSupplierNameList();
+                            List<int> usedElzabProductNumbers = this.databaseCommands.GetAllElzabProductIds();
                             returnList.Add(productManufacturerList);
                             returnList.Add(productSupplierList);
+                            returnList.Add(usedElzabProductNumbers);
                             e.Result = returnList;
                         }
                         break;
@@ -153,9 +159,8 @@ namespace NaturalnieApp.Forms
                         {
                             //Get product name list and product suppliers
                             //check if Database reachable 
-                            List<List<string>> returnList = new List<List<string>>();
-                            returnList = (List<List<string>>)e.Result;
-                            FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1]);
+                            List<object> returnList = (List<object>)e.Result;
+                            FillWithInitialDataFromObject((List<string>)returnList[0], (List<string>)returnList[1], (List<int>)returnList[2]);
                         }
                         break;
                     case backgroundWorkerTasks.Update:
@@ -163,9 +168,8 @@ namespace NaturalnieApp.Forms
                         {
                             //Get product name list and product suppliers
                             //check if Database reachable 
-                            List<List<string>> returnList = new List<List<string>>();
-                            returnList = (List<List<string>>)e.Result;
-                            FillWithInitialDataFromObject((List<string>)returnList[0], returnList[1]);
+                            List<object> returnList = (List<object>)e.Result;
+                            FillWithInitialDataFromObject((List<string>)returnList[0], (List<string>)returnList[1], (List<int>)returnList[2]);
                         }
                         break;
                     case backgroundWorkerTasks.CheckIfExist:
@@ -179,6 +183,8 @@ namespace NaturalnieApp.Forms
                         break;
                 }
 
+                UpdateAvailableElzabProductIds();
+
                 //Enable panel after work done
                 if (this.databaseCommands.ConnectionStatus) this.Enabled = true;
 
@@ -191,7 +197,7 @@ namespace NaturalnieApp.Forms
         //General methods
         #region General methods
 
-        private void FillWithInitialDataFromObject(List<string> manufacturerList, List<string> supplierList)
+        private void FillWithInitialDataFromObject(List<string> manufacturerList, List<string> supplierList, List<int> elzabUsedIdsList)
         {
             cbManufacturer.Items.Clear();
             string[] sorted = manufacturerList.ToArray();
@@ -203,6 +209,10 @@ namespace NaturalnieApp.Forms
             cbSupplierName.Items.AddRange(sorted);
             cbTax.Items.Clear();
             cbTax.Items.AddRange(this.databaseCommands.GetTaxListRetString().ToArray());
+
+            ElzabUsedIds = elzabUsedIdsList;
+
+
         }
         private void FillWitDataFromCopiedObject(Product productEntity, Manufacturer manufacturerEntity, Supplier supplierEntity, Tax taxEntity)
         {
@@ -234,7 +244,7 @@ namespace NaturalnieApp.Forms
 
                 if(this.cbSupplierName.SelectedItem != null && this.tbProductName.Text != "" &&
                     this.tbBarcode.Text != "" && this.cbManufacturer.Text !=  null &&
-                    this.tbElzabProductNumber.Text != "" && this.tbElzabProductName.Text != "" &&
+                    this.tbElzabProductName.Text != "" &&
                     this.tbPrice.Text != "" && this.cbTax.SelectedItem != null &&
                     this.tbMarigin.Text != "" && this.tbShortBarcode.Text != "" &&
                     this.tbDiscount.Text != "" && this.tbPriceNetWithDiscount.Text != "")
@@ -254,8 +264,12 @@ namespace NaturalnieApp.Forms
 
                     Validation.ManufacturerNameValidation(this.cbManufacturer.Text);
 
-                    int productNumber = Convert.ToInt32(this.tbElzabProductNumber.Text);
-                    Validation.ElzabProductNumberValidation(productNumber);
+                    if(this.tbElzabProductNumber.Text != "")
+                    {
+                        int productNumber = Convert.ToInt32(this.tbElzabProductNumber.Text);
+                        Validation.ElzabProductNumberValidation(productNumber);
+                    }
+
 
                     Validation.ElzabProductNameValidation(this.tbElzabProductName.Text);
                     Validation.PriceNetValueValidation(this.tbPrice.Text);
@@ -476,14 +490,17 @@ namespace NaturalnieApp.Forms
             this.ActualTaskType = backgroundWorkerTasks.Init;
             this.backgroundWorker1.RunWorkerAsync(backgroundWorkerTasks.Init);
 
-            //Disable Elzab product number. Manifacturer must be selected first
-            tbElzabProductNumber.Enabled = false;
-
-            this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
-                Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
+            UpdateAvailableElzabProductIds();
 
             //Update control
             UpdateControl(ref tbDummyForCtrl);
+        }
+
+        private void UpdateAvailableElzabProductIds()
+        {
+
+            this.lElzabProductNumberRange.Text = "Wolne: " + (Program.GlobalVariables.CashRegisterLastPossibleId -
+                Program.GlobalVariables.CashRegisterFirstPossibleId - this.databaseCommands.GetNumberOfFreeElzabIds()).ToString();
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -531,9 +548,13 @@ namespace NaturalnieApp.Forms
                     if (exist) throw new BarcodeRelated.ElementAlreadyExist("Nazwa produktu '" +
                         this.ProductEntity.ProductName + "' już istnieje w bazie danych");
 
-                    exist = this.databaseCommands.CheckIfElzabProductIdExist(this.ProductEntity.ElzabProductId);
-                    if (exist) throw new BarcodeRelated.ElementAlreadyExist("Produkt z numerem kasy Elzab '" +
-                        this.ProductEntity.ElzabProductId + "' już istnieje w bazie danych");
+                    if (this.ProductEntity.ElzabProductId != null)
+                    {
+                        exist = this.databaseCommands.CheckIfElzabProductIdExist(this.ProductEntity.ElzabProductId);
+                        if (exist) throw new BarcodeRelated.ElementAlreadyExist("Produkt z numerem kasy Elzab '" +
+                            this.ProductEntity.ElzabProductId + "' już istnieje w bazie danych");
+                    }
+
 
                     exist = this.databaseCommands.CheckIfBarcodeExist(this.ProductEntity.BarCode);
                     if (exist) throw new BarcodeRelated.ElementAlreadyExist("Kod kreskowy produktu '" +
@@ -649,7 +670,7 @@ namespace NaturalnieApp.Forms
                 try
                 {
                     //If epmty assign first free value
-                    int elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
+                    int? elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
                     if (elzabFirstFreeId > 0)
                     {
                         //Get manufacturer entity
@@ -662,8 +683,7 @@ namespace NaturalnieApp.Forms
                         this.tbElzabProductNumber.Enabled = true;
 
                         //Generate EAN8
-                        this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
-                            Convert.ToInt32(this.tbElzabProductNumber.Text));
+                        this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8();
                         this.ProductEntity.BarCodeShort = this.tbShortBarcode.Text;
 
                         this.tbElzabProductNumber.Text = elzabFirstFreeId.ToString();
@@ -792,15 +812,33 @@ namespace NaturalnieApp.Forms
             //Check if input match to define pattern
             try
             {
-                int productNumber = Convert.ToInt32(localSender.Text);
-                Validation.ElzabProductNumberValidation(productNumber);
-                this.ProductEntity.ElzabProductId = Convert.ToInt32(localSender.Text);
-                errorProvider1.Clear();
+                //Get first free Id and check if given number match
+                int? elzabFirstFreeId = this.databaseCommands.CalculateFreeElzabId();
+                if (elzabFirstFreeId > 0)
+                {
+                    Validation.GeneralNumberValidation(localSender.Text);
 
-                //Generate EAN8
-                this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8(this.ManufacturerEntity.Id,
-                    Convert.ToInt32(this.tbElzabProductNumber.Text));
-                this.ProductEntity.BarCodeShort = this.tbShortBarcode.Text;
+                    if (localSender.Text == "")
+                    {
+                        this.ProductEntity.ElzabProductId = null;
+                    }
+                    else
+                    {
+                        this.ProductEntity.ElzabProductId = Convert.ToInt32(localSender.Text);
+                    }
+
+                    errorProvider1.Clear();
+
+                    //Generate EAN8
+                    this.tbShortBarcode.Text = BarcodeRelated.GenerateEan8();
+                    this.ProductEntity.BarCodeShort = this.tbShortBarcode.Text;
+                }
+                else
+                {
+                    MessageBox.Show(String.Format("Nie można dodać więcej produktów dla \"{0}\"! Zdefiniowany limit dla producenta został osiągnięty."
+                    , this.ManufacturerEntity.Name));
+                }
+
             }
             catch (Validation.ValidatingFailed ex)
             {
@@ -1137,6 +1175,20 @@ namespace NaturalnieApp.Forms
                     p.GetEnts().supplierEntity, p.GetEnts().taxEntity);
             }
 
+        }
+        private void bGenerateElzabId_Click(object sender, EventArgs e)
+        {
+            List<int> usedElzabProductNumbers = ElzabUsedIds;
+            var number = ElzabRelated.FindFirstAvailableElzabId(usedElzabProductNumbers);
+            if (number < 0)
+            {
+                tbElzabProductNumber.Text = string.Empty;
+                this.ProductEntity.ElzabProductId = null;
+                return;
+            }
+
+            tbElzabProductNumber.Text = number.ToString();
+            this.ProductEntity.ElzabProductId = number;
         }
     }
 }

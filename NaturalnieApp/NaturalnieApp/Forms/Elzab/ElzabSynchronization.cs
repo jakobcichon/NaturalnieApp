@@ -326,7 +326,10 @@ namespace NaturalnieApp.Forms
                         communicationProgressUpdate.ProgressBarTime = 1.0;
                         (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
-                        List<Product> dbProductList = this.databaseCommands.GetAllProductsEnts();
+                        List<Product> allDbProductList = this.databaseCommands.GetAllProductsEnts();
+
+                        //Get only ents with ElzabProductId
+                        List<Product> dbProductList = allDbProductList.Where(p => p.ElzabProductId != null).ToList();
 
                         communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
                         communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(7);
@@ -362,7 +365,7 @@ namespace NaturalnieApp.Forms
                             rowElement = localDataTable.NewRow();
 
                             //Set row fields
-                            rowElement.SetField<int>(this.ColumnNames.ProductNumber, productEnt.ElzabProductId);
+                            rowElement.SetField<int?>(this.ColumnNames.ProductNumber, productEnt.ElzabProductId);
                             rowElement.SetField<string>(this.ColumnNames.ProductName, productEnt.ElzabProductName);
                             int taxValue = this.databaseCommands.GetTaxByProductName(productEnt.ProductName).TaxValue;
                             rowElement.SetField<int>(this.ColumnNames.Tax, taxValue);
@@ -386,7 +389,7 @@ namespace NaturalnieApp.Forms
                             rowElement = productToRemoveDataTable.NewRow();
 
                             //Set row fields
-                            rowElement.SetField<int>(this.ColumnNames.ProductNumber, productEnt.ElzabProductId);
+                            rowElement.SetField<int?>(this.ColumnNames.ProductNumber, productEnt.ElzabProductId);
                             rowElement.SetField<string>(this.ColumnNames.ProductName, productEnt.ElzabProductName);
                             int taxValue = this.databaseCommands.GetTaxByElzabProductName(productEnt.ProductName).TaxValue;
                             rowElement.SetField<int>(this.ColumnNames.Tax, taxValue);

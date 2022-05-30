@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NaturalnieApp.PdfToExcel;
+using NaturalnieApp;
 
 namespace NaturalnieApp.Forms
 {
@@ -165,14 +166,15 @@ namespace NaturalnieApp.Forms
         {
             //Local variables
             bool validatingResult;
-            string text = "Nazwa dostawcy dla kasy Elzab musi mieć maksymalnie 34 znaki oraz może zawierać jedynie cyfry, litery i nastepujące znaki specjalne: _-+";
+            string text = $"Nazwa dostawcy dla kasy Elzab musi mieć maksymalnie {Program.GlobalVariables.CashRegisterNameMaxCharacters} " +
+                $"znaki oraz może zawierać jedynie cyfry, litery i nastepujące znaki specjalne: _-+";
 
             //Accept only letters an numbers with maximal length of 255 chars
             string regPattern = @"^([a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9'_+-.%()/;:–&]+\s)*[a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9'_+-.%()/:;–&]+$";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
-            if (input.Length > 34) validatingResult = false;
+            if (input.Length > Program.GlobalVariables.CashRegisterNameMaxCharacters) validatingResult = false;
 
             if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
 
@@ -241,7 +243,7 @@ namespace NaturalnieApp.Forms
             string text = "Podana warość musi być liczbą całkowitą!";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^[0-9]+$";
+            string regPattern = @"^[0-9]+$|^$";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);

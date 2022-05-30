@@ -17,6 +17,7 @@ using System.IO.Ports;
 using System.ComponentModel;
 using System.Threading;
 using System.Diagnostics;
+using static NaturalnieApp.Program;
 
 namespace NaturalnieApp
 {
@@ -65,6 +66,9 @@ namespace NaturalnieApp
         }
         #endregion
 
+        public const uint MinBarcodeValue = 1;
+        public const uint MaxBarcodeValue = 9999999;
+
         /// <summary>
         /// Method used to create EAN8. First 2 digits are the manufacturer id from DB.
         /// Last 5 digits of EAN8 are product ID from cash register.
@@ -74,30 +78,39 @@ namespace NaturalnieApp
         /// <param name="productId">PRoduct ID in cash register, taked from DB</param>
         /// <returns>Valid EAN8 code</returns>
         #region Barcode methods
-        public static string GenerateEan8(int manufacturerId, int productId)
+        public static string GenerateEan8()
         {
-            //Local variables
-            string retVal = "";
-            string stringValue = "";
+            DatabaseCommands database = new DatabaseCommands();
+            List<string> barcodes = database.GetAllBarcodeShort();
 
-            if (manufacturerId >= 1 && manufacturerId <= 99)
-            {
-                if (productId >= 1 && productId <= 99999)
-                {
-                    stringValue = string.Format("{0,2}", manufacturerId.ToString()) + string.Format("{0,5}", productId.ToString());
-                    stringValue = stringValue.Replace(" ", "0");
-                    if (stringValue.Length == 7)
-                    {
-                        //Calculate checksum digit and add it to new code
-                        retVal = CalcucateChekcSumOfBarcode(stringValue);
-                    }
-                    else MessageBox.Show("Błąd! Wygenerowany kod EAN8 nie ma 7 znaków!");
-                }
-                else MessageBox.Show("Błąd! Identyfikator produkty jest spoza zakresu 1-99999!");
-            }
-            else MessageBox.Show("Błąd! Identyfikator producenta jest spoza zakresu 1-99!");
+            string barcodeData = GenerateInternalBarcodeData(barcodes);
+            
+            string barcode = GenerateInternalBarcode(barcodeData);
 
-            return retVal;
+            return barcode;
+
+        }
+
+        /// <summary>
+        /// Method used to generate EAN8 code from given 7 digit data part
+        /// </summary>
+        /// <param name="dataPartOfTheBarcode">7 digit barcode data part</param>
+        /// <returns></returns>
+        public static string GenerateInternalBarcode(string dataPartOfTheBarcode)
+        {
+            ValidateBarcodeValuePart(dataPartOfTheBarcode);
+
+            return CalcucateChekcSumOfBarcode(dataPartOfTheBarcode);
+        }
+
+        private static bool ValidateBarcodeValuePart(string dataPartOfTheBarcode)
+        {
+            if (dataPartOfTheBarcode == null) throw new ArgumentNullException(nameof(dataPartOfTheBarcode));
+
+            if (dataPartOfTheBarcode.Length != 7) throw new WrongBarcodeSeries("Zła długość wartości kodu EAN8. Wymagana długość to 7 znaków." +
+                $"Podano {dataPartOfTheBarcode.Length} znaków");
+
+            return true;
         }
 
         /// <summary>
@@ -163,6 +176,122 @@ namespace NaturalnieApp
             return retVal;
         }
 
+        public static string GenerateInternalBarcodeData(List<string> existingBarcodes)
+        {
+            string value = GetMinBarcodeValueIfAvailable(existingBarcodes.First());
+            if (value != null) return value;
+
+            value = FindFirstFreeInternalBarcodeFromList(existingBarcodes);
+            if (value != null) return value;
+
+            value = GetMaxBarcodeValueIfAvailable(existingBarcodes.Last());
+            if (value != null) return value;
+
+            return null;
+        }
+
+
+        private static string GetMinBarcodeValueIfAvailable(string currentMinBarcodeValue)
+        {
+            uint currentMinValue = ExtractInternalBarcodeDataPart(currentMinBarcodeValue);
+
+            if (currentMinValue > MinBarcodeValue + 1) return ConvertBarcodeFromUintToString(MinBarcodeValue);
+            return null;
+            
+        }
+
+        private static string GetMaxBarcodeValueIfAvailable(string currentMaxBarcodeValue)
+        {
+            uint currentMaxValue = ExtractInternalBarcodeDataPart(currentMaxBarcodeValue);
+
+            if (currentMaxValue > MaxBarcodeValue + 1) return ConvertBarcodeFromUintToString(MaxBarcodeValue);
+            return null;
+
+        }
+
+        private static string FindFirstFreeInternalBarcodeFromList(List<string> existingBarcodes)
+        {
+            (List<string> firstList, List<string> midList, List<string> thirdList) = DivideBarcodeList(existingBarcodes);
+
+            if (IsFreeSpaceInList(firstList))
+            {
+                if (firstList.Count == 2)
+                {
+                    return ConvertBarcodeFromUintToString(ExtractInternalBarcodeDataPart(firstList[0]) + 1);
+                }
+                return FindFirstFreeInternalBarcodeFromList(firstList);
+            }
+            if (IsFreeSpaceInList(midList))
+            {
+                return ConvertBarcodeFromUintToString(ExtractInternalBarcodeDataPart(midList[0]) + 1);
+            }
+            if (IsFreeSpaceInList(thirdList))
+            {
+                if (thirdList.Count == 2)
+                {
+                    return ConvertBarcodeFromUintToString(ExtractInternalBarcodeDataPart(thirdList[0]) + 1);
+                }
+                return FindFirstFreeInternalBarcodeFromList(thirdList);
+            }
+
+            return null;
+        }
+
+        private static (List<string>, List<string>, List<string>) DivideBarcodeList(List<string> barcodesList)
+        {
+            if (barcodesList.Count <= 1) throw new Exception($"List of {barcodesList.Count} element cannot be divided more.");
+
+            int numberOfFirstPartElements = barcodesList.Count / 2;
+
+            List<string> firstList = barcodesList.GetRange(0, numberOfFirstPartElements);
+            List<string> midList = barcodesList.GetRange(numberOfFirstPartElements -1 , 2);
+            List<string> thirdList = barcodesList.GetRange(numberOfFirstPartElements, barcodesList.Count - numberOfFirstPartElements);
+
+            return (firstList, midList, thirdList);
+
+        }
+
+        private static bool IsFreeSpaceInList(List<string> inputList)
+        {
+            if (inputList.Count <= 1) return false;
+
+            // Sort the list
+            inputList.Sort();
+            if (inputList.Distinct().Count() != inputList.Count()) throw new Exception("Only list with distinct values are allowed!");
+
+            uint lowerElement = ExtractInternalBarcodeDataPart(inputList.ElementAt(0));
+            uint higherElement = ExtractInternalBarcodeDataPart(inputList.ElementAt(inputList.Count -1));
+
+            uint sum = lowerElement + (uint)inputList.Count - 1;
+
+            if (sum == higherElement)
+            {
+                return false;
+            }
+            return true;
+
+        }
+
+        private static uint ExtractInternalBarcodeDataPart(string barcodeShort)
+        {
+            // Remove check sum character from EAN8 barcode
+            uint dataPart = Convert.ToUInt32(barcodeShort.Remove(barcodeShort.Length - 1, 1));
+
+            return dataPart;
+        }
+
+        private static string ConvertBarcodeFromUintToString(uint barcode)
+        {
+            string barcodeToReturn = barcode.ToString();
+
+            if (barcodeToReturn.Length > 7) throw new Exception("Barcode number to big to convert. " +
+                $"Maximum barcode value is 7 digits. Given {barcodeToReturn.Length} digits");
+
+            // If value lower than 7 digits, add leading zeros
+            if (barcodeToReturn.Length < 7) return  new string('0', 7 - barcodeToReturn.Length) + barcodeToReturn;
+
+            return barcodeToReturn;
+        }
         #endregion
         /// <summary>
         /// Class used to handle information received from Bar code reader
@@ -457,6 +586,20 @@ namespace NaturalnieApp
             }
         }
 
+                /// <summary>
+        /// Structure used to describe column names for the clean products out of stock screen
+        /// </summary>
+        public class CleanProductOutOfStockColumnNames
+        {
+            public string No { get; set; }
+            public string Id { get; set; }
+            public string Manufacturer { get; set; }
+            public string ProductName { get; set; }
+            public string ActualElzabNumber { get; set; }
+            public string ActualStockQuantity { get; set; }
+
+        }
+
         /// <summary>
         /// Structure used to describe column names for product sales history
         /// </summary>
@@ -500,6 +643,77 @@ namespace NaturalnieApp
 
     static public class ElzabRelated
     {
+        public class NoMoreCashRegisterIdsAvailable : Exception
+        {
+            public NoMoreCashRegisterIdsAvailable()
+            {
+            }
+
+            public NoMoreCashRegisterIdsAvailable(string message)
+                : base(message)
+            {
+            }
+
+            public NoMoreCashRegisterIdsAvailable(string message, Exception inner)
+                : base(message, inner)
+            {
+            }
+        }
+
+        static public int FindFirstAvailableElzabId(List<int> elzabProductIdList)
+        {
+
+            int firstElementId = GlobalVariables.CashRegisterFirstPossibleId;
+            int lastPossibleId = GlobalVariables.CashRegisterLastPossibleId;
+
+            //Return value
+            int retVal = -1;
+
+            //Sort the list
+            elzabProductIdList.Sort();
+
+            if (elzabProductIdList.Count() > 0)
+            {
+                //Check if there are no gaps in received list and write available Id or return -1
+                if (elzabProductIdList.Count() == 1)
+                {
+                    retVal = (int)elzabProductIdList.Last() + 1;
+                    if (retVal > lastPossibleId) retVal = -1;
+                }
+                else if (elzabProductIdList.Count() == lastPossibleId)
+                {
+                    retVal = -1;
+                }
+                else
+                {
+                    //Check if any gap in actual sequence of IDs
+                    for (int i = 0; i < elzabProductIdList.Count(); i++)
+                    {
+                        //Recalculate theoretical value of product at given index. If not match use it
+                        int theoVal = firstElementId + i;
+
+                        //Check value and if not match, assign theoretical one
+                        if (elzabProductIdList[i] != theoVal)
+                        {
+                            retVal = theoVal;
+                            break;
+                        }
+                    }
+
+                    //If no gap, assign first free value
+                    if ((retVal == -1) && ((elzabProductIdList.Count() + firstElementId) < lastPossibleId))
+                    {
+                        retVal = (int)elzabProductIdList.Last() + 1;
+                    }
+                }
+            }
+            else if (elzabProductIdList.Count() == 0)
+            {
+                retVal = firstElementId;
+            }
+
+            return retVal;
+        }
 
         /// <summary>
         /// Method used convert numeric tax value cash register group
@@ -820,7 +1034,9 @@ namespace NaturalnieApp
                 if (product == null) product = dataFromDb.Find(p => p.BarCode == elabProduct.BarCode);
                 if (product != null)
                 {
-                    if (product.ElzabProductId != elabProduct.ElzabProductId)
+                    if (product.ElzabProductId != elabProduct.ElzabProductId || 
+                        product.BarCode != elabProduct.BarCode ||
+                        product.ElzabProductName.ToLower() != elabProduct.ElzabProductName.ToLower())
                     {
                         elzabProductToRemove.Add(elabProduct);
                     }
@@ -972,7 +1188,7 @@ namespace NaturalnieApp
                 else
                 {
                     lastProductEntityFromDb = databaseCommands.GetProductEntityById(lastCertainDbProductNumber);
-                    return lastProductEntityFromDb.ElzabProductId;
+                    return (int)lastProductEntityFromDb.ElzabProductId;
                 }
 
             }
@@ -1694,14 +1910,14 @@ namespace NaturalnieApp
             return localProductSalesList;
         }
 
-        static public ProductChangelog GetSalesEntityIfNotActual(int cashRegisterProdNumber, string dateOfSales, string timeOfSales,
+        static public ProductChangelog GetSalesEntityIfNotActual(int? cashRegisterProdNumber, string dateOfSales, string timeOfSales,
             DatabaseCommands databaseCommands)
         {
             //Get date and time suitable for comparision
             DateTime date = ElzabRelated.ConvertFromElzabDateFormat(dateOfSales);
             DateTime dateAndTime = DateTime.Parse(date.Date.ToShortDateString() + " " + timeOfSales);
 
-            //Get last valid synchrnization fro given time
+            //Get last valid synchrnization for given time
             ElzabCommunication lastValidSynchronization = databaseCommands.GetLastSynchroFromTheGivenDate(dateAndTime);
 
             //Get changelog, starting from last synchronization date
@@ -1796,7 +2012,6 @@ namespace NaturalnieApp
 
                 this.Discount = CalculateDiscount(_discountedPrice, _basePrice);
             }
-
             public ProductSalesObject(Sales sale, Product product, Manufacturer manufacturer, Tax tax)
             {
                 this.SaleType = Convert.ToInt32(sale.Attribute1);
@@ -1825,7 +2040,6 @@ namespace NaturalnieApp
 
                 this.Discount = CalculateDiscount(_discountedPrice, _basePrice);
             }
-
             public void FillInDataRow(DataRow row)
             {
                 row[0] = this.ManufacturerName;
