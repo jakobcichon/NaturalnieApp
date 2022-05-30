@@ -281,7 +281,7 @@ namespace ElzabDriver
             if(this.TypeOfFile == FileType.ConfigFile)
             {
                 //Generate conenction data
-                string connData = this.GenerateConnectionData(comPortName, baudRate);
+                string connData = this.GenerateConnectionData(comPortName, baudRate, "192.168.1.150");
 
                 if(connData != "")
                 {
@@ -295,30 +295,38 @@ namespace ElzabDriver
         }
 
         //Method used only for config file
-        private string GenerateConnectionData(string comPortName, int baudRate)
+        private string GenerateConnectionData(string comPortName, int baudRate, string ip = "")
         {
             //Local variable
             string retVal = "";
 
             //Check if given com port match pattern
             Regex reg = new Regex(@"^COM\d+$");
-            bool checkComPortName = reg.IsMatch(comPortName);
 
-            bool checkBaudRate = CheckBaudRateValue(baudRate);
-
-            if (checkComPortName && checkBaudRate)
+            if (ip == "")
             {
-                string connectionData = comPortName + ":" + baudRate + ":" + "MUX0:1";
-                retVal = connectionData;
+                bool checkComPortName = reg.IsMatch(comPortName);
+
+                bool checkBaudRate = CheckBaudRateValue(baudRate);
+
+                if (checkComPortName && checkBaudRate)
+                {
+                    string connectionData = comPortName + ":" + baudRate + ":" + "MUX0:12222";
+                    retVal = connectionData;
+                }
+                else
+                {
+                    if (!checkComPortName) throw new ArgumentOutOfRangeException(string.Format("Podana nazwa portu COM nie jest prawidłowa (podana wartość: '{0}')! " +
+                         "Nazwa portu musi mieć postać 'COMxxx', gdzie 'x' to numer portu.", comPortName));
+                    else throw new ArgumentOutOfRangeException(string.Format("Podana wartość Baud Rate nie jest prawidłowa (podana wartość: '{0}')! " +
+                         "Dopuszczalne wartości: '{1}'", baudRate, string.Join(",", BaudRatesList)));
+                }
             }
             else
             {
-                if (!checkComPortName) throw new ArgumentOutOfRangeException(string.Format("Podana nazwa portu COM nie jest prawidłowa (podana wartość: '{0}')! " +
-                     "Nazwa portu musi mieć postać 'COMxxx', gdzie 'x' to numer portu.", comPortName));
-                else throw new ArgumentOutOfRangeException(string.Format("Podana wartość Baud Rate nie jest prawidłowa (podana wartość: '{0}')! " +
-                     "Dopuszczalne wartości: '{1}'", baudRate, string.Join(",", BaudRatesList)));
+                string connectionData = $"COM255:1:STX6:1	5	Naturalnie	Naturalnie:1002:{ip}:1001:11111111:5:5";
+                retVal = connectionData;
             }
-
             return retVal;
 
         }

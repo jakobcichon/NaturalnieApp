@@ -1034,7 +1034,9 @@ namespace NaturalnieApp
                 if (product == null) product = dataFromDb.Find(p => p.BarCode == elabProduct.BarCode);
                 if (product != null)
                 {
-                    if (product.ElzabProductId != elabProduct.ElzabProductId)
+                    if (product.ElzabProductId != elabProduct.ElzabProductId || 
+                        product.BarCode != elabProduct.BarCode ||
+                        product.ElzabProductName.ToLower() != elabProduct.ElzabProductName.ToLower())
                     {
                         elzabProductToRemove.Add(elabProduct);
                     }

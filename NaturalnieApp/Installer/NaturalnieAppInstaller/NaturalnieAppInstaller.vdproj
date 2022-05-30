@@ -3135,15 +3135,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:NaturalnieApp"
-        "ProductCode" = "8:{7E2A42EA-D2F0-4765-B0C5-2426CC448876}"
-        "PackageCode" = "8:{5F48C05F-9429-4403-8B21-3ACB18BAA847}"
+        "ProductCode" = "8:{3C1B1153-63B6-4E72-8DC0-BEBB42480FEF}"
+        "PackageCode" = "8:{32EF3A6A-F07C-4EA0-8326-DAF141235BBA}"
         "UpgradeCode" = "8:{D7D2EBC5-3115-42C4-AB2D-6DDD92027690}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.50"
+        "ProductVersion" = "8:1.0.51"
         "Manufacturer" = "8:Naturalnie"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -3685,7 +3685,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C3062B90E5FE4389922B8B7AF6F80198"
             {
-            "SourcePath" = "8:..\\..\\NaturalnieApp\\obj\\Release\\NaturalnieApp.exe"
+            "SourcePath" = "8:"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5F662A595D04A2593D09418C621B2E2"
