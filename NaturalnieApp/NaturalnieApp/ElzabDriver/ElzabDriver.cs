@@ -949,7 +949,7 @@ namespace ElzabDriver
         //Set encoding type
         protected void SetEncoding()
         {
-            this.FileEncoding = Encoding.Default;
+            this.FileEncoding = Encoding.GetEncoding(852);
         }
 
         //Method used to add Elzab command name
@@ -1034,8 +1034,9 @@ namespace ElzabDriver
             {
                 foreach (string lineToWrite in data)
                 {
-                    string decoded = EncodingConversionRelated.StringConverterCodepage(lineToWrite);
-                    fs.WriteLine(decoded);
+                    /*                    string decoded = EncodingConversionRelated.StringConverterCodepage(lineToWrite);
+                                        fs.WriteLine(decoded);*/
+                    fs.WriteLine(lineToWrite);
                 }
 
                 //Close file

@@ -162,7 +162,7 @@ namespace NaturalnieApp.Forms
 
 
         //Method used to validate of product name in elzab
-        static public bool ElzabProductNameValidation(string input)
+        static public bool ElzabProductNameValidation(string input, bool throwException=true)
         {
             //Local variables
             bool validatingResult;
@@ -170,13 +170,13 @@ namespace NaturalnieApp.Forms
                 $"znaki oraz może zawierać jedynie cyfry, litery i nastepujące znaki specjalne: _-+";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^([a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9'_+-.%()/;:–&]+\s)*[a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9'_+-.%()/:;–&]+$";
+            string regPattern = @"^([a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9.%,/\()]+\s)*[a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9.%,/\()]+$";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
             if (input.Length > Program.GlobalVariables.CashRegisterNameMaxCharacters) validatingResult = false;
 
-            if (!validatingResult) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
+            if (!validatingResult && throwException) throw new ValidatingFailed("Błąd podczas weryfikacji '" + input + "'! " + text);
 
             return validatingResult;
         }

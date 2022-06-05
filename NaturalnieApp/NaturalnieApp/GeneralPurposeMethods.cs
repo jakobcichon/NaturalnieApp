@@ -660,6 +660,24 @@ namespace NaturalnieApp
             }
         }
 
+        public static List<string> FindUnspecifiedCharacters(string stringToSearch, string acceptedCharacters)
+        {
+            string pattern = $"(?<BadChars>[^{acceptedCharacters}])";
+            Regex re = new Regex(pattern);
+
+            MatchCollection mathches = re.Matches(stringToSearch);
+
+            List<string> retList = new List<string>();
+
+            foreach (Match m in mathches)
+            {
+                retList.Add(m.Groups["BadChars"].Value);
+            }
+
+            return retList;
+
+        }
+
         static public int FindFirstAvailableElzabId(List<int> elzabProductIdList)
         {
 
@@ -1581,7 +1599,7 @@ namespace NaturalnieApp
 
     static public class EncodingConversionRelated
     {
-        public static string StringConverterCodepage(string sText, string sCodepageIn = "ISO-8859-8", string sCodepageOut = "UTF-8")
+        public static string StringConverterCodepage(string sText, string sCodepageIn = "ISO-8859-8", string sCodepageOut = "ISO-8859-8")
         {
             string sResultado = string.Empty;
             try

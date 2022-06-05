@@ -1,0 +1,17 @@
+;konfiguracja dla SIEMENS TC35iTerminal
+;load factory configuration
+$AT&F0
+;enter PIN
+$AT+CPIN=4321
+;enable answer to command
+$ATQ0
+;set echo
+$ATE1
+;set RTS-CTS flow control
+$AT\Q3
+;set communication paramiters
+$AT+CBST=0,0,1
+;ignore DTR
+$AT&D0
+;set DCD if carier present
+$AT&C1

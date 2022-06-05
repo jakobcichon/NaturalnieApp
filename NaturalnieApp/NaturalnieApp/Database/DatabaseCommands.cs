@@ -9,6 +9,7 @@ using System.IO;
 using static NaturalnieApp.Program;
 using System.Diagnostics;
 using System.Reflection;
+using NaturalnieApp.Forms;
 
 namespace NaturalnieApp.Database
 {
@@ -1060,7 +1061,6 @@ namespace NaturalnieApp.Database
             }
             return localProduct;
         }
-
 
         //====================================================================================================
         //Method used to retrieve from DB Product entity by Elzab name

@@ -444,6 +444,48 @@ namespace NaturalnieApp.Forms
         }
         private void bUpdate_Click(object sender, EventArgs e)
         {
+
+            //!!!!!!!!!!!!!!!!!!!!!!!!!
+            List<Product> products = databaseCommands.GetAllProductsEnts();
+            List<Product> noPassValidationProducts = new List<Product>();
+            string acceptedChars = "a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9.%,/\\()\\s";
+
+
+            foreach (Product product in products)
+            {
+                if (!Validation.ElzabProductNameValidation(product.ElzabProductName, throwException: false))
+                {
+                    noPassValidationProducts.Add(product);
+
+                }
+            }
+
+            foreach(Product product in noPassValidationProducts)
+            {
+                List<string> charsToReplace = ElzabRelated.FindUnspecifiedCharacters(product.ElzabProductName, acceptedChars);
+                foreach(string charToRemove in charsToReplace)
+                {
+                    product.ElzabProductName = product.ElzabProductName.Replace(charToRemove, "/");
+                }
+
+
+                if (!Validation.ElzabProductNameValidation(product.ElzabProductName, throwException: false))
+                {
+                    ;
+                }
+
+            }
+
+            foreach (Product product in noPassValidationProducts)
+            {
+                databaseCommands.EditProduct(product);
+            }
+
+            ;
+
+            //!!!!!!!!!!!!!!!!!!!!!!!11
+
+
             errorProvider1.Clear();
 
             //Disable panel and wait until data from db will be fetched
