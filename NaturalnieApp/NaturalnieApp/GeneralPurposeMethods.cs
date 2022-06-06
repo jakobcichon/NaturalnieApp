@@ -1022,8 +1022,10 @@ namespace NaturalnieApp
                         dbBarcodeString = element.BarCode;
                     }
                     //Convert without polish sings
-                    string localProductNameFromDb = EncodingConversionRelated.StringConverterCodepage(CleanInput(element.ElzabProductName)).ToUpper().Replace("-", "");
-                    string localProductNameFromElzab = EncodingConversionRelated.StringConverterCodepage(CleanInput(product.ElzabProductName));
+                    /*                    string localProductNameFromDb = EncodingConversionRelated.StringConverterCodepage(CleanInput(element.ElzabProductName)).ToUpper().Replace("-", "");
+                                        string localProductNameFromElzab = EncodingConversionRelated.StringConverterCodepage(CleanInput(product.ElzabProductName));*/
+                    string localProductNameFromDb = element.ElzabProductName.ToUpper();
+                    string localProductNameFromElzab = product.ElzabProductName;
                     if ((elzabBarcodeString != dbBarcodeString) || (localProductNameFromDb != localProductNameFromElzab) ||
                         (element.TaxId != product.TaxId) || (element.FinalPrice != product.FinalPrice))
                     {

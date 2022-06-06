@@ -966,7 +966,7 @@ namespace ElzabDriver
             List<string> fileToArray = new List<string>();
 
             //Open file and read all lines to string array
-            using (var file = new StreamReader(fullPath))
+            using (var file = new StreamReader(fullPath, Encoding.GetEncoding(852)))
             {
                 string line;
                 while ((line = file.ReadLine()) != null)

@@ -170,7 +170,7 @@ namespace NaturalnieApp.Forms
                 $"znaki oraz może zawierać jedynie cyfry, litery i nastepujące znaki specjalne: _-+";
 
             //Accept only letters an numbers with maximal length of 255 chars
-            string regPattern = @"^([a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9.%,/\()]+\s)*[a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9.%,/\()]+$";
+            string regPattern = @"^([a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9.%,/\]+\s)*[a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9.%,/\]+$";
 
             //Check if input match to define pattern
             validatingResult = ValidateInput(input, regPattern);
