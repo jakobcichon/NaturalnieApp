@@ -15,8 +15,7 @@ namespace NaturalnieApp.Forms
         //====================================================================================================
         //Class fields
         #region Class fields
-        Common.SearchBarTemplate TestSearchBar;
-        BackgroundWorker testWorker;
+        DatabaseCommands databaseCommands;
         #endregion
         //====================================================================================================
         //Class constructor
@@ -34,62 +33,12 @@ namespace NaturalnieApp.Forms
                           ControlStyles.OptimizedDoubleBuffer |
                           ControlStyles.SupportsTransparentBackColor
                           , true);
-
-            this.TestSearchBar = new SearchBarTemplate(true);
-            pTest.Controls.Add(this.TestSearchBar);
-            this.TestSearchBar.NewEntSelected += TestSearchBar_NewEntSelected;
-            this.TestSearchBar.GenericButtonClick += TestSearchBar_GenericButtonClick;
-
-            this.testWorker = new BackgroundWorker();
-            this.testWorker.ProgressChanged += TestWorker_ProgressChanged;
-            this.testWorker.DoWork += TestWorker_DoWork;
-            this.testWorker.WorkerReportsProgress = true;
+            databaseCommands = new DatabaseCommands();
         }
 
-        private void TestWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            int i = 0;
-            while (true)
-            {
-
-                //this.testTextBox.Invoke(new Action(delegate () { this.testTextBox.Text = i.ToString(); }));
-                i++;
-                (sender as BackgroundWorker).ReportProgress(i);
-                if (i > 100) i = 0;
-                Thread.Sleep(1);
-            }
-        }
-
-        private void TestWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            this.testTextBox.Text = e.ProgressPercentage.ToString();
-        }
-
-        private void TestSearchBar_GenericButtonClick(object sender, SearchBarTemplate.GenericButtonClickEventArgs e)
-        {
-            ;
-        }
-
-        //General methods
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-
-            this.TestSearchBar.Select();
-
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-        private void TestSearchBar_NewEntSelected(object sender, SearchBarTemplate.NewEntSelectedEventArgs e)
-        {
-            this.textBox1.Text = e.SelectedProduct.BarCode;
-        }
 
         #endregion
 
-        private void bUpdate_Click(object sender, EventArgs e)
-        {
-            this.TestSearchBar.UpdateCurrentEntity();
-        }
 
         private void bSave_Click(object sender, EventArgs e)
         {
@@ -108,9 +57,65 @@ namespace NaturalnieApp.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (!this.testWorker.IsBusy) this.testWorker.RunWorkerAsync();
-            if (this.textBox1.Text == "1") this.textBox1.Text = "0";
-            else this.textBox1.Text = "1";
+
+            DialogResult result = MessageBox.Show("Czy na pewno chcesz zmienić nazwy produktów w Elzab?", "Zmiana nazw", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                //!!!!!!!!!!!!!!!!!!!!!!!!!
+                List<Product> products = databaseCommands.GetAllProductsEnts();
+                List<Product> noPassValidationProducts = new List<Product>();
+                string acceptedChars = "a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9%.,/\\\\s";
+                int fixedCounter = 0;
+                int notFixedCounter = 0;
+
+
+                foreach (Product product in products)
+                {
+                    if (!Validation.ElzabProductNameValidation(product.ElzabProductName, throwException: false))
+                    {
+                        noPassValidationProducts.Add(product);
+
+                    }
+                }
+
+                foreach (Product product in noPassValidationProducts)
+                {
+                    List<string> charsToReplace = ElzabRelated.FindUnspecifiedCharacters(product.ElzabProductName, acceptedChars);
+                    foreach (string charToRemove in charsToReplace)
+                    {
+                        product.ElzabProductName = product.ElzabProductName.Replace(charToRemove, ".");
+                        fixedCounter ++;
+                    }
+
+
+                    if (!Validation.ElzabProductNameValidation(product.ElzabProductName, throwException: false))
+                    {
+                        notFixedCounter++;
+                    }
+
+                }
+
+
+                result = MessageBox.Show($"Udało się naprawić: {fixedCounter} nazw.\nNie udało się naprawić: {notFixedCounter} nazw.\n" +
+                    $"Czy zapisać do bazy danych?", "Zapis do bazy danych", MessageBoxButtons.YesNo);
+
+                if (result == DialogResult.Yes)
+                {
+                    foreach (Product product in noPassValidationProducts)
+                    {
+                        databaseCommands.EditProduct(product);
+                    }
+
+                }
+
+                MessageBox.Show("Udało się zapisać do bazy danych!");
+
+
+            ;
+            }
+
+          
         }
     }
 }

@@ -66,7 +66,7 @@ namespace NaturalnieApp
         }
         #endregion
 
-        public const uint MinBarcodeValue = 1;
+        public const uint MinBarcodeValue = 1000000;
         public const uint MaxBarcodeValue = 9999999;
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace NaturalnieApp
         {
             uint currentMaxValue = ExtractInternalBarcodeDataPart(currentMaxBarcodeValue);
 
-            if (currentMaxValue > MaxBarcodeValue + 1) return ConvertBarcodeFromUintToString(MaxBarcodeValue);
+            if (currentMaxValue < MaxBarcodeValue + 1) return ConvertBarcodeFromUintToString(MaxBarcodeValue);
             return null;
 
         }

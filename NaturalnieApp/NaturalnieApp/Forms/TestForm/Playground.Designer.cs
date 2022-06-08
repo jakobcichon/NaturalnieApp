@@ -36,12 +36,7 @@ namespace NaturalnieApp.Forms
             this.bTestButton = new System.Windows.Forms.Button();
             this.bUpdate = new System.Windows.Forms.Button();
             this.bSave = new System.Windows.Forms.Button();
-            this.pTest = new System.Windows.Forms.Panel();
-            this.cbTest = new System.Windows.Forms.ComboBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.testTextBox = new System.Windows.Forms.TextBox();
-            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.pHeader.SuspendLayout();
             this.pButtonsPanel.SuspendLayout();
@@ -101,7 +96,6 @@ namespace NaturalnieApp.Forms
             this.bUpdate.TabIndex = 29;
             this.bUpdate.Text = "Odśwież";
             this.bUpdate.UseVisualStyleBackColor = false;
-            this.bUpdate.Click += new System.EventHandler(this.bUpdate_Click);
             // 
             // bSave
             // 
@@ -116,64 +110,19 @@ namespace NaturalnieApp.Forms
             this.bSave.UseVisualStyleBackColor = false;
             this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
-            // pTest
-            // 
-            this.pTest.AutoSize = true;
-            this.pTest.Location = new System.Drawing.Point(3, 36);
-            this.pTest.Name = "pTest";
-            this.pTest.Size = new System.Drawing.Size(200, 100);
-            this.pTest.TabIndex = 6;
-            // 
-            // cbTest
-            // 
-            this.cbTest.FormattingEnabled = true;
-            this.cbTest.ItemHeight = 13;
-            this.cbTest.Items.AddRange(new object[] {
-            "5903111747039",
-            "5900168907263",
-            "5900168907263",
-            "06012755",
-            "5711914159801",
-            "18029192"});
-            this.cbTest.Location = new System.Drawing.Point(60, 369);
-            this.cbTest.Name = "cbTest";
-            this.cbTest.Size = new System.Drawing.Size(566, 21);
-            this.cbTest.TabIndex = 7;
-            // 
             // imageList1
             // 
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(107, 448);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 8;
-            // 
-            // testTextBox
-            // 
-            this.testTextBox.Location = new System.Drawing.Point(255, 191);
-            this.testTextBox.Name = "testTextBox";
-            this.testTextBox.Size = new System.Drawing.Size(401, 20);
-            this.testTextBox.TabIndex = 9;
-            // 
-            // maskedTextBox1
-            // 
-            this.maskedTextBox1.Location = new System.Drawing.Point(679, 295);
-            this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.Size = new System.Drawing.Size(100, 20);
-            this.maskedTextBox1.TabIndex = 10;
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(269, 503);
+            this.button1.Location = new System.Drawing.Point(21, 61);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(254, 54);
             this.button1.TabIndex = 11;
-            this.button1.Text = "button1";
+            this.button1.Text = "Czyść nazwy produktów Elzab";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -185,11 +134,6 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.maskedTextBox1);
-            this.Controls.Add(this.testTextBox);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.cbTest);
-            this.Controls.Add(this.pTest);
             this.Controls.Add(this.pHeader);
             this.Controls.Add(this.pButtonsPanel);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
@@ -201,7 +145,6 @@ namespace NaturalnieApp.Forms
             this.pHeader.PerformLayout();
             this.pButtonsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -211,13 +154,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.TextBox tbDummyForCtrl;
         private System.Windows.Forms.Button bUpdate;
         private System.Windows.Forms.Button bSave;
-        private System.Windows.Forms.Panel pTest;
         private System.Windows.Forms.Button bTestButton;
-        private System.Windows.Forms.ComboBox cbTest;
         private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox testTextBox;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
         private System.Windows.Forms.Button button1;
     }
 }
