@@ -176,6 +176,12 @@ namespace NaturalnieApp.Forms
 
                     row.SetField<int>(this.QuantityColumnName, quantityValidatedValue);
 
+                    //Check if barcode or supplier code matches the one in DB
+                    if (cbGetNameIfNumberMatch.Checked)
+                    {
+                        GetNamesIfNumberMatch(row);
+                    }
+
                 }
 
                 dataFromExcel = ClearString(dataFromExcel, this.SupplierInvoice);
@@ -258,6 +264,40 @@ namespace NaturalnieApp.Forms
             advancedDataGridView1.Update();
             //Autosize columns
             advancedDataGridView1.AutoResizeColumns();
+        }
+
+        private void GetNamesIfNumberMatch(DataRow row)
+        {
+            string barcodeValue = row.Field<string>(this.BarcodeColumnName);
+            string supplierCode = row.Field<string>(this.SupplierCodeColumnName);
+            string tempProductName = row.Field<string>(this.ProductColumnName);
+
+            bool barcodeExist = this.databaseCommands.CheckIfBarcodeExist(barcodeValue);
+            bool supplierECodeExist = this.databaseCommands.CheckIfSupplierCodeExist(supplierCode);    
+
+            if (barcodeExist)
+            {
+                Product product = this.databaseCommands.GetProductEntityByBarcode(barcodeValue);
+
+                row.SetField<string>(this.ProductColumnName, product.ProductName);
+                row.SetField<string>(this.ElzabProductColumnName, product.ElzabProductName);
+                return;
+            }
+
+            if (supplierECodeExist)
+            {
+                Product product = this.databaseCommands.GetProductEntityBySupplierCode(supplierCode);
+                Manufacturer manufacturer = this.databaseCommands.GetManufacturerByProductName(product.ProductName);
+
+                if (manufacturer.Name.ToLower().Trim() == row.Field<string>(this.ManufacturerColumnName).ToLower().Trim())
+                {
+                    row.SetField<string>(this.ProductColumnName, product.ProductName);
+                    row.SetField<string>(this.ElzabProductColumnName, product.ElzabProductName);
+                    return;
+                }
+            }
+
+            ;
         }
 
         private void UpdateControl(ref TextBox dummyForControl)

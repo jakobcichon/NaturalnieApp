@@ -47,11 +47,15 @@ namespace NaturalnieApp.Forms
             this.pAllowOverrideProduct = new System.Windows.Forms.Panel();
             this.cbAllowOverrideProduct = new System.Windows.Forms.CheckBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.cbGetNameIfNumberMatch = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.tpMarigin.SuspendLayout();
             this.pButtonsPanel.SuspendLayout();
             this.pAllowOverrideProduct.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // pHeader
@@ -211,7 +215,7 @@ namespace NaturalnieApp.Forms
             this.tpMarigin.Location = new System.Drawing.Point(0, 578);
             this.tpMarigin.Name = "tpMarigin";
             this.tpMarigin.RowCount = 1;
-            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 44F));
+            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 47F));
             this.tpMarigin.Size = new System.Drawing.Size(147, 30);
             this.tpMarigin.TabIndex = 2;
             // 
@@ -233,7 +237,7 @@ namespace NaturalnieApp.Forms
             this.lMarigin.Location = new System.Drawing.Point(4, 4);
             this.lMarigin.Margin = new System.Windows.Forms.Padding(3);
             this.lMarigin.Name = "lMarigin";
-            this.lMarigin.Size = new System.Drawing.Size(64, 38);
+            this.lMarigin.Size = new System.Drawing.Size(64, 41);
             this.lMarigin.TabIndex = 0;
             this.lMarigin.Text = "Marża";
             this.lMarigin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -279,6 +283,42 @@ namespace NaturalnieApp.Forms
             this.cbAllowOverrideProduct.Text = "Nadpisz produkt, jeśli isnieje w bazie danych ";
             this.cbAllowOverrideProduct.UseVisualStyleBackColor = true;
             // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.cbGetNameIfNumberMatch);
+            this.panel2.Controls.Add(this.checkBox3);
+            this.panel2.Location = new System.Drawing.Point(162, 578);
+            this.panel2.Name = "panel2";
+            this.panel2.Padding = new System.Windows.Forms.Padding(3);
+            this.panel2.Size = new System.Drawing.Size(371, 30);
+            this.panel2.TabIndex = 13;
+            // 
+            // cbGetNameIfNumberMatch
+            // 
+            this.cbGetNameIfNumberMatch.AutoSize = true;
+            this.cbGetNameIfNumberMatch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbGetNameIfNumberMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.cbGetNameIfNumberMatch.Location = new System.Drawing.Point(3, 3);
+            this.cbGetNameIfNumberMatch.Name = "cbGetNameIfNumberMatch";
+            this.cbGetNameIfNumberMatch.Size = new System.Drawing.Size(363, 22);
+            this.cbGetNameIfNumberMatch.TabIndex = 1;
+            this.cbGetNameIfNumberMatch.Text = "Pobierz nazwę, jeśli numer pasuje";
+            this.cbGetNameIfNumberMatch.UseVisualStyleBackColor = true;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox3.Location = new System.Drawing.Point(3, 3);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(363, 22);
+            this.checkBox3.TabIndex = 0;
+            this.checkBox3.Text = "Nadpisz produkt, jeśli isnieje w bazie danych ";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
             // AddNewProductFromExcel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -286,6 +326,7 @@ namespace NaturalnieApp.Forms
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(920, 690);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.pAllowOverrideProduct);
             this.Controls.Add(this.pButtonsPanel);
             this.Controls.Add(this.tpMarigin);
@@ -306,6 +347,8 @@ namespace NaturalnieApp.Forms
             this.pButtonsPanel.ResumeLayout(false);
             this.pAllowOverrideProduct.ResumeLayout(false);
             this.pAllowOverrideProduct.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -329,5 +372,8 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.Panel pAllowOverrideProduct;
         private System.Windows.Forms.CheckBox cbAllowOverrideProduct;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.CheckBox cbGetNameIfNumberMatch;
+        private System.Windows.Forms.CheckBox checkBox3;
     }
 }

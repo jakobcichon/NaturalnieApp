@@ -1076,7 +1076,7 @@ namespace NaturalnieApp.Database
                             where p.SupplierCode == supplierCode
                             select p;
 
-                localProduct = query.SingleOrDefault();
+                localProduct = query.FirstOrDefault();
             }
             return localProduct;
         }
@@ -1707,7 +1707,7 @@ namespace NaturalnieApp.Database
                                 m
                             };
 
-                foreach (var element in query)
+                foreach (var element in query.ToList())
                 {
                     localManufacturer = element.m;
                 }
