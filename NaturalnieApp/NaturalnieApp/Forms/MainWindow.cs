@@ -79,6 +79,11 @@ namespace NaturalnieApp.Forms
             //Start the timer
             this.timer1sTick.Start();
 
+            //Cash register serial port instance
+            this.cashRegisterSerialPort = new ElzabRelated.CashRegisterSerialPort();
+            this.cashRegisterSerialPort.ProgressChanged += CashRegisterSerialPort_ProgressChanged;
+            this.cashRegisterSerialPort.WorkDone += CashRegisterSerialPort_WorkDone;
+
             this.addNewProductFromExcel = new AddNewProductFromExcel(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.printBarcode = new PrintBarcode();
             this.showProductInfo = new ShowProductInfo(ref this.databaseCommands);
@@ -87,7 +92,7 @@ namespace NaturalnieApp.Forms
             this.printFromStock = new PrintFromStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.showStock = new ShowStock(ref this.databaseCommands) { TopLevel = false, TopMost = true };
             this.playground = new Playground();
-            this.generalSettings = new GeneralSettings(this.ConfigFileOjbInst);
+            this.generalSettings = new GeneralSettings(this.ConfigFileOjbInst, this.cashRegisterSerialPort);
             this.elzabSynchronization = new ElzabSynchronization(ref this.databaseCommands);
             this.salesBufferReading = new SalesBufferReading(ref this.databaseCommands);
             this.pricesRelatedUpdate = new PricesRelatedUpdate(ref this.databaseCommands);
@@ -111,11 +116,6 @@ namespace NaturalnieApp.Forms
 
             //Set version
             lVersion.Text = typeof(Program).Assembly.GetName().Version.ToString();
-
-            //Cash register serial port instance
-            this.cashRegisterSerialPort = new ElzabRelated.CashRegisterSerialPort();
-            this.cashRegisterSerialPort.ProgressChanged += CashRegisterSerialPort_ProgressChanged;
-            this.cashRegisterSerialPort.WorkDone += CashRegisterSerialPort_WorkDone;
 
             //Check cash register serial ports for the first time
             if (!this.cashRegisterSerialPort.IsBusy()) this.cashRegisterSerialPort.Execute();
@@ -308,7 +308,7 @@ namespace NaturalnieApp.Forms
             }
             catch (ObjectDisposedException)
             {
-                this.generalSettings = new GeneralSettings(this.ConfigFileOjbInst);
+                this.generalSettings = new GeneralSettings(this.ConfigFileOjbInst, this.cashRegisterSerialPort);
                 this.pContainer.Controls.Add(this.generalSettings);
                 this.generalSettings.Select();
                 this.generalSettings.BringToFront();

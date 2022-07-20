@@ -2568,5 +2568,33 @@ namespace NaturalnieApp.Database
             return localElzabCommunication;
         }
         #endregion
+
+        #region Service commands
+
+        public List<Product> GetProductWithBarcodeStartingWithZero()
+        {
+            using(ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                var query = from p in contextDB.Products
+                            where p.BarCodeShort.StartsWith("0")
+                            select p;
+
+                return query.ToList<Product>();
+            }
+        }
+
+        public List<Product> GetProductsWithInternalBarcodeOutOfLimits()
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                List<Product> products = this.GetAllProductsEnts();
+
+                return products.Where(p => Convert.ToInt32(BarcodeRelated.ExtractInternalBarcodeDataPart(p.BarCodeShort)) < 
+                BarcodeRelated.MinBarcodeValue ||
+                Convert.ToInt32(BarcodeRelated.ExtractInternalBarcodeDataPart(p.BarCodeShort)) > BarcodeRelated.MaxBarcodeValue).ToList();
+
+            }
+        }
+        #endregion
     }
 }

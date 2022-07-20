@@ -61,6 +61,8 @@ namespace NaturalnieApp
             }
 
             static public string LabelPath { get; set; }
+            static public ElzabCommunicationOptions ElzabCommunicationOption { get; set; }
+            static public string ElzabIpAddress{ get; set; }
             static public string ElzabCommandPath { get; set; }
             static public int ElzabCashRegisterId { get; set; }
             static public string SqlServerName { get; set; }
@@ -132,6 +134,13 @@ namespace NaturalnieApp
 
             string path = ConfigFileInst.GetValueByVariableName("ElzabCommandPath");
             GlobalVariables.ElzabCommandPath = path;
+
+            ElzabCommunicationOptions selectedOption;
+            Enum.TryParse<ElzabCommunicationOptions>(ConfigFileInst.GetValueByVariableName("ElzabCommunicationOption"), out selectedOption);
+            GlobalVariables.ElzabCommunicationOption = selectedOption;
+
+            GlobalVariables.ElzabIpAddress = ConfigFileInst.GetValueByVariableName("ElzabIpAddress");
+
             GlobalVariables.ElzabCashRegisterId = 1;
 
             int baudRate = Int32.Parse(ConfigFileInst.GetValueByVariableName("ElzabBaudRate"));
@@ -147,8 +156,16 @@ namespace NaturalnieApp
             GlobalVariables.DbBackupPath = ConfigFileInst.GetValueByVariableName("DbBackupPath");
 
             //Printer selection
-            List<string> printersNames = PrinterMethods.GetPrintersNameList();
-            if (printersNames.Count > 0) GlobalVariables.DymoPrinterName = printersNames[0];
+            try
+            {
+                List<string> printersNames = PrinterMethods.GetPrintersNameList();
+                if (printersNames.Count > 0) GlobalVariables.DymoPrinterName = printersNames[0];
+            }
+            catch
+            {
+                MessageBox.Show("Nie można odnaleźć sterowników drukarki Dymo!");
+                GlobalVariables.DymoPrinterName = "null";
+            }
 
             return ConfigFileInst;
 

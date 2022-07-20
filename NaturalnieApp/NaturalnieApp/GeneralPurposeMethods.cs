@@ -178,13 +178,17 @@ namespace NaturalnieApp
 
         public static string GenerateInternalBarcodeData(List<string> existingBarcodes)
         {
-            string value = GetMinBarcodeValueIfAvailable(existingBarcodes.First());
+            // Limit existing barcode list to take only those within limits
+            List<string> limitedBarcodeList = existingBarcodes.Where(b => Convert.ToInt32(ExtractInternalBarcodeDataPart(b)) >= MinBarcodeValue && 
+            Convert.ToInt32(ExtractInternalBarcodeDataPart(b)) <= MaxBarcodeValue).ToList();
+
+            string value = GetMinBarcodeValueIfAvailable(limitedBarcodeList.First());
             if (value != null) return value;
 
-            value = FindFirstFreeInternalBarcodeFromList(existingBarcodes);
+            value = FindFirstFreeInternalBarcodeFromList(limitedBarcodeList);
             if (value != null) return value;
 
-            value = GetMaxBarcodeValueIfAvailable(existingBarcodes.Last());
+            value = GetMaxBarcodeValueIfAvailable(limitedBarcodeList.Last());
             if (value != null) return value;
 
             return null;
@@ -272,7 +276,7 @@ namespace NaturalnieApp
 
         }
 
-        private static uint ExtractInternalBarcodeDataPart(string barcodeShort)
+        public static uint ExtractInternalBarcodeDataPart(string barcodeShort)
         {
             // Remove check sum character from EAN8 barcode
             uint dataPart = Convert.ToUInt32(barcodeShort.Remove(barcodeShort.Length - 1, 1));
@@ -1358,6 +1362,7 @@ namespace NaturalnieApp
             private ElzabCommands.ElzabCommand_ONRUNIK cashRegisterNumber { get; set; }
             private static List<object> Instances = new List<object>();
             private static readonly object instancesLock = new object();
+            private bool changeCashRegisterDataOnTheNextCheck;
 
             //Backgorund workers
             BackgroundWorker bwMonitorComPortChange { get; set; }
@@ -1376,6 +1381,17 @@ namespace NaturalnieApp
 
                 //Initialize backgroundworker
                 InitializeBackgroundWorker();
+            }
+
+            public void ChangeCashRegisterData()
+            {
+                if(!bwMonitorComPortChange.IsBusy)
+                {
+                    this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(
+                        Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
+                    return;
+                }
+                changeCashRegisterDataOnTheNextCheck = true;
             }
 
             /// <summary>
@@ -1443,6 +1459,13 @@ namespace NaturalnieApp
             //Monitor COM port change background worker
             void bwMonitorComPortChange_DoWork(object sender, DoWorkEventArgs e)
             {
+                if(changeCashRegisterDataOnTheNextCheck)
+                {
+                    this.cashRegisterNumber.Config.ChangeCashRegisterConnectionData(
+                        Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
+                    changeCashRegisterDataOnTheNextCheck = false;
+                }
+
                 //Local variables
                 bool elzabConnectionTested = Program.GlobalVariables.ElzabConnectionTested;
                 SerialPort serialPortToWrite = null;
@@ -1566,25 +1589,30 @@ namespace NaturalnieApp
 
             private void bwMonitorComPortChange_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
             {
+                try
+                {
+                    if (!e.Cancelled)
+                    {
+                        this.BackgroundWorkerRetry = false;
+                        StatusUpdateEventArgs retVal = new StatusUpdateEventArgs();
+                        retVal.Status = (MonitorComPortChangeRetunrValues)e.Result;
+                        this.WorkDone?.Invoke(sender, retVal);
+                    }
+                    else if (this.BackgroundWorkerRetry)
+                    {
+                        this.bwMonitorComPortChange.RunWorkerAsync();
+                        this.BackgroundWorkerRetry = false;
+                    }
+                    else
+                    {
+                        StatusUpdateEventArgs retVal = new StatusUpdateEventArgs();
+                        retVal.Status.CashRegisterStatus = GeneralStatus.Offline;
+                        this.WorkDone?.Invoke(sender, retVal);
+                    }
+                }
+                catch
+                { }
 
-                if (!e.Cancelled)
-                {
-                    this.BackgroundWorkerRetry = false;
-                    StatusUpdateEventArgs retVal = new StatusUpdateEventArgs();
-                    retVal.Status = (MonitorComPortChangeRetunrValues)e.Result;
-                    this.WorkDone?.Invoke(sender, retVal);
-                }
-                else if (this.BackgroundWorkerRetry)
-                {
-                    this.bwMonitorComPortChange.RunWorkerAsync();
-                    this.BackgroundWorkerRetry = false;
-                }
-                else
-                {
-                    StatusUpdateEventArgs retVal = new StatusUpdateEventArgs();
-                    retVal.Status.CashRegisterStatus = GeneralStatus.Offline;
-                    this.WorkDone?.Invoke(sender, retVal);
-                }    
             }
 #endregion
         }

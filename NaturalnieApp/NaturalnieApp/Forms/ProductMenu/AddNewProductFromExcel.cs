@@ -1019,6 +1019,16 @@ namespace NaturalnieApp.Forms
                                 stockPiece.LastQuantity = 0;
                                 stockPiece.ModificationDate = DateTime.Now;
                                 this.databaseCommands.AddToStock(stockPiece);
+
+                                try
+                                {
+                                    this.databaseCommands.AssigneNewElzabProductId(stockPiece.ProductId);
+                                }
+                                catch (ElzabRelated.NoMoreCashRegisterIdsAvailable ex)
+                                {
+                                    MessageBox.Show("Brak miejsca na kasie fiskalnej dla nowych produktóW.");
+                                    break;
+                                }
                             }
                         }
                         else

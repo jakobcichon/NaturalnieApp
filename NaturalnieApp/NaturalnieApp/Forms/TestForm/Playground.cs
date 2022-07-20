@@ -65,7 +65,7 @@ namespace NaturalnieApp.Forms
                 //!!!!!!!!!!!!!!!!!!!!!!!!!
                 List<Product> products = databaseCommands.GetAllProductsEnts();
                 List<Product> noPassValidationProducts = new List<Product>();
-                string acceptedChars = "a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9%.,/\\\\s";
+                string acceptedChars = @"a-zA-ZęóąśłżźćńĘÓĄŚŁŻŹĆŃ0-9%.,/\s";
                 int fixedCounter = 0;
                 int notFixedCounter = 0;
 
@@ -85,7 +85,7 @@ namespace NaturalnieApp.Forms
                     foreach (string charToRemove in charsToReplace)
                     {
                         product.ElzabProductName = product.ElzabProductName.Replace(charToRemove, ".");
-                        fixedCounter ++;
+                        fixedCounter++;
                     }
 
 
@@ -96,7 +96,6 @@ namespace NaturalnieApp.Forms
 
                 }
 
-
                 result = MessageBox.Show($"Udało się naprawić: {fixedCounter} nazw.\nNie udało się naprawić: {notFixedCounter} nazw.\n" +
                     $"Czy zapisać do bazy danych?", "Zapis do bazy danych", MessageBoxButtons.YesNo);
 
@@ -105,17 +104,67 @@ namespace NaturalnieApp.Forms
                     foreach (Product product in noPassValidationProducts)
                     {
                         databaseCommands.EditProduct(product);
+
                     }
+                    MessageBox.Show("Udało się zapisać do bazy danych!");
 
                 }
 
-                MessageBox.Show("Udało się zapisać do bazy danych!");
+                MessageBox.Show("Anulowano!");
+
+                MessageBox.Show("Rozpoczne wyszukiwanie podwójnych nazw!");
+
+                // Check if no double names
+                Dictionary<Product, Product> doubleElzabNames = new Dictionary<Product, Product>();
+
+                foreach (Product product in products)
+                {
+                    bool resultDouble = databaseCommands.CheckIfElzabProductNameExist(product.ElzabProductName, product.Id);
+                    if (resultDouble)
+                    {
+                        Product product2 = databaseCommands.GetProductEntityByElzabName(product.ElzabProductName, product.Id);
+
+                        // Do not add, of already added
+                        bool doNotAdd = false;
+                        foreach (Product key in doubleElzabNames.Keys)
+                        {
+                            if (key.Id == product2.Id)
+                            {
+                                doNotAdd = true;
+                                break;
+                            }
+                        }
+                        if (!doNotAdd)
+                        {
+                            doubleElzabNames.Add(product, product2);
+                        }
+
+                    }
+                }
+
+                if(doubleElzabNames.Count > 0)
+                {
+                    string elementsString = "";
+                    foreach(var element in doubleElzabNames)
+                    {
+                        elementsString += "Nazwa :" + element.Key.ElzabProductName + "; DB Id numer 1: " + element.Key.Id.ToString() +
+                        "; DB Id numer 1: " + element.Value.Id.ToString() + "\n";
+                    }
+
+                    MessageBox.Show("Znaleziono podwojone nazwy !\n" + elementsString);
+                }
+
+
+                ;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            List<Product> badBarcodes = this.databaseCommands.GetProductsWithInternalBarcodeOutOfLimits();
 
 
             ;
-            }
-
-          
         }
     }
 }

@@ -280,8 +280,17 @@ namespace ElzabDriver
 
             if(this.TypeOfFile == FileType.ConfigFile)
             {
+                string connData;
                 //Generate conenction data
-                string connData = this.GenerateConnectionData(comPortName, baudRate, "192.168.1.150");
+                if (GlobalVariables.ElzabCommunicationOption == NaturalnieApp.Initialization.ElzabCommunicationOptions.LAN)
+                {
+                    connData = this.GenerateConnectionData(comPortName, baudRate,GlobalVariables.ElzabIpAddress);
+                }
+                else
+                {
+                    connData = this.GenerateConnectionData(comPortName, baudRate, String.Empty);
+                }
+
 
                 if(connData != "")
                 {
@@ -309,18 +318,18 @@ namespace ElzabDriver
 
                 bool checkBaudRate = CheckBaudRateValue(baudRate);
 
-                if (checkComPortName && checkBaudRate)
-                {
-                    string connectionData = comPortName + ":" + baudRate + ":" + "MUX0:12222";
-                    retVal = connectionData;
-                }
+/*                if (checkComPortName && checkBaudRate)
+                {*/
+                string connectionData = comPortName + ":" + baudRate + ":" + "MUX0:1";
+                retVal = connectionData;
+/*                }
                 else
                 {
-                    if (!checkComPortName) throw new ArgumentOutOfRangeException(string.Format("Podana nazwa portu COM nie jest prawidłowa (podana wartość: '{0}')! " +
-                         "Nazwa portu musi mieć postać 'COMxxx', gdzie 'x' to numer portu.", comPortName));
+*//*                    if (!checkComPortName) throw new ArgumentOutOfRangeException(string.Format("Podana nazwa portu COM nie jest prawidłowa (podana wartość: '{0}')! " +
+                         "Nazwa portu musi mieć postać 'COMxxx', gdzie 'x' to numer portu.", comPortName));*//*
                     else throw new ArgumentOutOfRangeException(string.Format("Podana wartość Baud Rate nie jest prawidłowa (podana wartość: '{0}')! " +
                          "Dopuszczalne wartości: '{1}'", baudRate, string.Join(",", BaudRatesList)));
-                }
+                }*/
             }
             else
             {

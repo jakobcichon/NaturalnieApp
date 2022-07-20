@@ -11,6 +11,8 @@ using NaturalnieApp.Initialization;
 using static NaturalnieApp.Program;
 using NaturalnieApp.Forms.Common;
 using NaturalnieApp.Dymo_Printer;
+using System.Net;
+using static NaturalnieApp.ElzabRelated;
 
 namespace NaturalnieApp.Forms
 {
@@ -26,12 +28,14 @@ namespace NaturalnieApp.Forms
         string LibraryPathLastValidText { get; set; }
 
         private ConfigFileObject ConfigFileObjInst;
+        private CashRegisterSerialPort cashRegisterSerialPort;
 
         //============================================================================================
         //Constructor
-        public GeneralSettings(ConfigFileObject conFileObj)
+        public GeneralSettings(ConfigFileObject conFileObj, CashRegisterSerialPort cashRegisterSerialPort)
         {
             this.ConfigFileObjInst = conFileObj;
+            this.cashRegisterSerialPort = cashRegisterSerialPort;
             InitializeComponent();
             UpdateView(conFileObj);
 
@@ -53,6 +57,13 @@ namespace NaturalnieApp.Forms
             //Elzab Path - add text and format it
             this.tbElzabPath.Text = conFileObj.GetValueByVariableName("ElzabCommandPath");
             TextBoxFormat(this.tbElzabPath);
+
+            this.cbElzabCommunicationOptions.DataSource = Enum.GetValues(typeof(ElzabCommunicationOptions));
+            ElzabCommunicationOptions selectedOption;
+            Enum.TryParse<ElzabCommunicationOptions>(conFileObj.GetValueByVariableName("ElzabCommunicationOptions"), out selectedOption);
+            this.cbElzabCommunicationOptions.SelectedItem = selectedOption;
+
+            this.rtbElzabIp.Text = conFileObj.GetValueByVariableName("ElzabIpAddress");
 
             //COM Ports - call method to choose proper COM port
             COMPortsFormat(conFileObj, false);
@@ -92,7 +103,8 @@ namespace NaturalnieApp.Forms
             foreach (string element in ports)
             {
                 cCOMPorts.Items.Add(element);
-                if (comPortFromFile == element && GlobalVariables.ElzabConnectionTested)
+                if (comPortFromFile == element && GlobalVariables.ElzabConnectionTested && 
+                    GlobalVariables.ElzabCommunicationOption == ElzabCommunicationOptions.COM)
                 {
                     cCOMPorts.SelectedItem = comPortFromFile;
                     result = true;
@@ -133,13 +145,27 @@ namespace NaturalnieApp.Forms
         {
             if (AllObjectSelected())
             {
-                //Update value of COM port
-                ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", ElzabRelated.CleanComPortName(cCOMPorts.SelectedItem.ToString()));
-                GlobalVariables.ElzabPortCom.PortName = ElzabRelated.CleanComPortName(cCOMPorts.SelectedItem.ToString());
+                //Update value of Elzab communication option
+                ConfigFileObjInst.ChangeVariableValue("ElzabCommunicationOptions", cbElzabCommunicationOptions.SelectedItem.ToString());
+                GlobalVariables.ElzabCommunicationOption = GetElzabCommunicationOption();
 
-                //Update value of Baud rate
-                ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", cBaudRate.SelectedItem.ToString());
-                GlobalVariables.ElzabPortCom.BaudRate = Int32.Parse(cBaudRate.SelectedItem.ToString());
+                if (GlobalVariables.ElzabCommunicationOption != ElzabCommunicationOptions.COM)
+                {
+                    //Update value of Elzab ip address
+                    ConfigFileObjInst.ChangeVariableValue("ElzabIpAddress", rtbElzabIp.Text);
+                    GlobalVariables.ElzabIpAddress = rtbElzabIp.Text;
+                }
+
+                if(GlobalVariables.ElzabCommunicationOption != ElzabCommunicationOptions.LAN)
+                {
+                    //Update value of COM port
+                    ConfigFileObjInst.ChangeVariableValue("ElzabCOMPort", ElzabRelated.CleanComPortName(cCOMPorts.SelectedItem.ToString()));
+                    GlobalVariables.ElzabPortCom.PortName = ElzabRelated.CleanComPortName(cCOMPorts.SelectedItem.ToString());
+
+                    //Update value of Baud rate
+                    ConfigFileObjInst.ChangeVariableValue("ElzabBaudRate", cBaudRate.SelectedItem.ToString());
+                    GlobalVariables.ElzabPortCom.BaudRate = Int32.Parse(cBaudRate.SelectedItem.ToString());
+                }
 
                 //Update value of path
                 ConfigFileObjInst.ChangeVariableValue("ElzabCommandPath", tbElzabPath.Text.ToString());
@@ -165,14 +191,19 @@ namespace NaturalnieApp.Forms
 
                 ConfigFileObjInst.SaveData();
 
+                this.cashRegisterSerialPort.ChangeCashRegisterData();
+                this.cashRegisterSerialPort.Execute();
+
                 MessageBox.Show("Zapisano zmiany!");
+
             }
         }
         private bool AllObjectSelected()
         {
             bool retVal = false;
             if (cCOMPorts.SelectedIndex != -1 && cBaudRate.SelectedIndex != -1 && tbElzabPath.Text != "" && rtbSqlServerName.Text != ""
-                && rtbLabelPath.Text != "" && rtbLibraryPath.Text != "" && rtbDbBackupPath.Text != "")
+                && rtbLabelPath.Text != "" && rtbLibraryPath.Text != "" && rtbDbBackupPath.Text != "" && rtbElzabIp.Text != "" 
+                && cbElzabCommunicationOptions.SelectedIndex != -1)
             {
                 retVal = true;
             }
@@ -195,11 +226,20 @@ namespace NaturalnieApp.Forms
         #region User control events
         private void GeneralSettings_Load(object sender, EventArgs e)
         {
-            //Get printers list
-            GetPrinterList();
+            try
+            {
+                //Get printers list
+                GetPrinterList();
+            }
+            catch
+            {
+                MessageBox.Show("Dymo printer drivers could not be found!");
+            }
 
             //Update com ports
             COMPortsFormat(this.ConfigFileObjInst, false);
+
+            UpdateElzabCommunicationOptionFields(this.ConfigFileObjInst);
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -225,6 +265,8 @@ namespace NaturalnieApp.Forms
         {
             //Udpate view of all properties
             UpdateView(ConfigFileObjInst);
+
+            UpdateElzabCommunicationOptionFields();
         }
         private void bSave_Click(object sender, EventArgs e)
         {
@@ -280,6 +322,10 @@ namespace NaturalnieApp.Forms
                         {
                             rtbDbBackupPath.Text = this.ConfigFileObjInst.DbBackupPathDefaultValue;
                         }
+                        if (rtbElzabIp.Text == "" || !isIP(rtbElzabIp.Text))
+                        {
+                            rtbElzabIp.Text = this.ConfigFileObjInst.ElzabIpAddressDefaultValue;
+                        }
 
 
                         SaveData();
@@ -325,11 +371,22 @@ namespace NaturalnieApp.Forms
             {
                 if (AllObjectSelected())
                 {
-                    //Update value of COM port
-                    GlobalVariables.ElzabPortCom.PortName = ElzabRelated.CleanComPortName(cCOMPorts.SelectedItem.ToString());
+                    //Update communication option
+                    GlobalVariables.ElzabCommunicationOption = GetElzabCommunicationOption();
 
-                    //Update value of Baud rate
-                    GlobalVariables.ElzabPortCom.BaudRate = Int32.Parse(cBaudRate.SelectedItem.ToString());
+                    if(GlobalVariables.ElzabCommunicationOption != ElzabCommunicationOptions.COM)
+                    {
+                        GlobalVariables.ElzabIpAddress = rtbElzabIp.Text;
+                    }
+
+                    if (GlobalVariables.ElzabCommunicationOption != ElzabCommunicationOptions.LAN)
+                    {
+                        //Update value of COM port
+                        GlobalVariables.ElzabPortCom.PortName = ElzabRelated.CleanComPortName(cCOMPorts.SelectedItem.ToString());
+
+                        //Update value of Baud rate
+                        GlobalVariables.ElzabPortCom.BaudRate = Int32.Parse(cBaudRate.SelectedItem.ToString());
+                    }
 
                     //Update value of path
                     GlobalVariables.ElzabCommandPath = tbElzabPath.Text.ToString();
@@ -348,6 +405,9 @@ namespace NaturalnieApp.Forms
                     GlobalVariables.ConnectionString = string.Format("server = {0}; port = 3306; database = shop;" +
                     "uid = admin; password = admin; Connection Timeout = 2", GlobalVariables.SqlServerName);
 
+                    this.cashRegisterSerialPort.ChangeCashRegisterData();
+                    this.cashRegisterSerialPort.Execute();
+
                     MessageBox.Show("Zastosowano zmiany!");
 
                 }
@@ -362,6 +422,82 @@ namespace NaturalnieApp.Forms
         #endregion
 
         #region Elzab settings
+        private void cbElzabCommunicationOptions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateElzabCommunicationOptionFields();
+        }
+
+        private void UpdateElzabCommunicationOptionFields(string selectedEnum)
+        {
+
+            ElzabCommunicationOptions selectedOption;
+            Enum.TryParse<ElzabCommunicationOptions>(selectedEnum, out selectedOption);
+
+            switch (selectedOption)
+            {
+                case (ElzabCommunicationOptions.LAN):
+                    ShowElzabCommunicationFeilds_Lan();
+                    HideElzabCommunicationFeilds_COM();
+                    break;
+                case (ElzabCommunicationOptions.COM):
+                    HideElzabCommunicationFeilds_Lan();
+                    ShowElzabCommunicationFeilds_COM();
+                    break;
+                default:
+                    ShowElzabCommunicationFeilds_Lan();
+                    ShowElzabCommunicationFeilds_COM();
+                    break;
+            }
+        }
+
+        private void UpdateElzabCommunicationOptionFields(ConfigFileObject conFileObj)
+        {
+            UpdateElzabCommunicationOptionFields(conFileObj.GetValueByVariableName("ElzabCommunicationOptions"));
+        }
+
+        private void UpdateElzabCommunicationOptionFields()
+        {
+            UpdateElzabCommunicationOptionFields(cbElzabCommunicationOptions.SelectedItem.ToString());
+        }
+
+        private ElzabCommunicationOptions GetElzabCommunicationOption()
+        {
+            ElzabCommunicationOptions selectedOption;
+            bool result = Enum.TryParse<ElzabCommunicationOptions>(cbElzabCommunicationOptions.SelectedItem.ToString(), out selectedOption);
+
+            if (result)
+            {
+                return selectedOption;
+            }
+
+            return ElzabCommunicationOptions.NONE;
+        }
+
+        private void ShowElzabCommunicationFeilds_Lan()
+        {
+            this.pElzabCommunicationLAN.Visible = true;
+        }
+
+        private void HideElzabCommunicationFeilds_Lan()
+        {
+            this.pElzabCommunicationLAN.Visible = false;
+        }
+
+        private void ShowElzabCommunicationFeilds_COM()
+        {
+            this.pElzabCommunicationCOM.Visible = true;
+        }
+        private void HideElzabCommunicationFeilds_COM()
+        {
+            this.pElzabCommunicationCOM.Visible = false;
+        }
+
+        bool isIP(string host)
+        {
+            IPAddress ip;
+            return IPAddress.TryParse(host, out ip);
+        }
+
         private void tbElzabPath_TextChanged(object sender, EventArgs e)
         {
             //Format text window
@@ -515,7 +651,7 @@ namespace NaturalnieApp.Forms
             //Udpate view of all properties
             UpdateControl(ref this.tbDummyForCtrl);
         }
-        #endregion
 
+        #endregion
     }
 }

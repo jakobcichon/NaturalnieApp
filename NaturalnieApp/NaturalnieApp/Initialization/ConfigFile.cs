@@ -6,11 +6,20 @@ using System.Collections.Generic;
 
 namespace NaturalnieApp.Initialization
 {
+    public enum ElzabCommunicationOptions
+    {
+        LAN,
+        COM,
+        NONE
+    }
+
     public class ConfigFileObject
     {
         private ConfigFile ConfigFileInst { get; set; }
         public List<ConfigElement> ConfigFileElements { get; set; }
         //Defaut values of config file
+        public ElzabCommunicationOptions ElzabCommunicationOptionsDefaultValue { get; set; }
+        public string ElzabIpAddressDefaultValue { get; set; }
         public string ElzabCommandPathDefaultValue { get; set; }
         public string ElzabCOMPortDefaultValue { get; set; }
         public string ElzabBaudRateDefaultValue { get; set; }
@@ -22,6 +31,8 @@ namespace NaturalnieApp.Initialization
         public ConfigFileObject()
         {
             //Defaut values of config file
+            this.ElzabCommunicationOptionsDefaultValue = ElzabCommunicationOptions.LAN;
+            this.ElzabIpAddressDefaultValue = "192.168.1.150";
             this.ElzabCommandPathDefaultValue = Directory.GetCurrentDirectory() + "\\Elzab commands\\";
             this.ElzabCOMPortDefaultValue = "COM1";
             this.ElzabBaudRateDefaultValue = "57600";
@@ -125,6 +136,12 @@ namespace NaturalnieApp.Initialization
 
             //Get current path of applciation and add "config" to it
             //Add first element to list
+            retList.Add(new ConfigElement("ElzabCommunicationOptions", this.ElzabCommunicationOptionsDefaultValue.ToString(), "Elzab communiation options"));
+
+            //Add next element to list
+            retList.Add(new ConfigElement("ElzabIpAddress", this.ElzabIpAddressDefaultValue, "Elzab IP address"));
+
+            //Add next element to list
             retList.Add(new ConfigElement("ElzabCommandPath", this.ElzabCommandPathDefaultValue, "Elzab command path"));
 
             //Add next element to list
