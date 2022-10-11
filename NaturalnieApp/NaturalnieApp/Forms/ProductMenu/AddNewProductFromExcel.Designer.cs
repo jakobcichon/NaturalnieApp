@@ -172,11 +172,13 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView1.FilterAndSortEnabled = true;
+            this.advancedDataGridView1.FilterStringChangedInvokeBeforeDatasourceUpdate = true;
             this.advancedDataGridView1.GridColor = System.Drawing.Color.Black;
             this.advancedDataGridView1.Location = new System.Drawing.Point(0, 27);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView1.Size = new System.Drawing.Size(920, 539);
+            this.advancedDataGridView1.SortStringChangedInvokeBeforeDatasourceUpdate = true;
             this.advancedDataGridView1.TabIndex = 0;
             this.advancedDataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellEndEdit);
             this.advancedDataGridView1.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellValidated);
@@ -211,7 +213,7 @@ namespace NaturalnieApp.Forms
             this.tpMarigin.Location = new System.Drawing.Point(0, 578);
             this.tpMarigin.Name = "tpMarigin";
             this.tpMarigin.RowCount = 1;
-            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 44F));
+            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 47F));
             this.tpMarigin.Size = new System.Drawing.Size(147, 30);
             this.tpMarigin.TabIndex = 2;
             // 
@@ -233,7 +235,7 @@ namespace NaturalnieApp.Forms
             this.lMarigin.Location = new System.Drawing.Point(4, 4);
             this.lMarigin.Margin = new System.Windows.Forms.Padding(3);
             this.lMarigin.Name = "lMarigin";
-            this.lMarigin.Size = new System.Drawing.Size(64, 38);
+            this.lMarigin.Size = new System.Drawing.Size(64, 41);
             this.lMarigin.TabIndex = 0;
             this.lMarigin.Text = "Marża";
             this.lMarigin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

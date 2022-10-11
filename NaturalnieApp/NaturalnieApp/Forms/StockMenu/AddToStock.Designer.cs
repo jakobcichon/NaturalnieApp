@@ -193,7 +193,7 @@ namespace NaturalnieApp.Forms
             this.cbAddWithEveryScanCycle.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbAddWithEveryScanCycle.Location = new System.Drawing.Point(584, 4);
             this.cbAddWithEveryScanCycle.Name = "cbAddWithEveryScanCycle";
-            this.cbAddWithEveryScanCycle.Size = new System.Drawing.Size(130, 24);
+            this.cbAddWithEveryScanCycle.Size = new System.Drawing.Size(129, 24);
             this.cbAddWithEveryScanCycle.TabIndex = 3;
             this.cbAddWithEveryScanCycle.Text = "Dodaj przy odczycie";
             this.cbAddWithEveryScanCycle.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -428,7 +428,7 @@ namespace NaturalnieApp.Forms
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 124F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 65F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 133F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 134F));
             this.tableLayoutPanel4.Controls.Add(this.chbExpDateReq, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.dtpExpirationDate, 3, 0);
             this.tableLayoutPanel4.Controls.Add(this.lDateOfAccept, 0, 0);
@@ -510,7 +510,7 @@ namespace NaturalnieApp.Forms
             this.lQuantity.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
             this.lQuantity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lQuantity.Location = new System.Drawing.Point(720, 3);
+            this.lQuantity.Location = new System.Drawing.Point(719, 3);
             this.lQuantity.Margin = new System.Windows.Forms.Padding(2);
             this.lQuantity.Name = "lQuantity";
             this.lQuantity.Size = new System.Drawing.Size(61, 26);
@@ -522,10 +522,10 @@ namespace NaturalnieApp.Forms
             // 
             this.tbQuantity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.tbQuantity.Location = new System.Drawing.Point(786, 3);
+            this.tbQuantity.Location = new System.Drawing.Point(785, 3);
             this.tbQuantity.Margin = new System.Windows.Forms.Padding(2);
             this.tbQuantity.Name = "tbQuantity";
-            this.tbQuantity.Size = new System.Drawing.Size(129, 26);
+            this.tbQuantity.Size = new System.Drawing.Size(130, 26);
             this.tbQuantity.TabIndex = 2;
             this.tbQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbQuantity.Validating += new System.ComponentModel.CancelEventHandler(this.tbQuantity_Validating);
@@ -537,11 +537,13 @@ namespace NaturalnieApp.Forms
             this.advancedDataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.advancedDataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnF2;
             this.advancedDataGridView1.FilterAndSortEnabled = true;
+            this.advancedDataGridView1.FilterStringChangedInvokeBeforeDatasourceUpdate = true;
             this.advancedDataGridView1.Location = new System.Drawing.Point(1, 33);
             this.advancedDataGridView1.Margin = new System.Windows.Forms.Padding(1);
             this.advancedDataGridView1.Name = "advancedDataGridView1";
             this.advancedDataGridView1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.advancedDataGridView1.Size = new System.Drawing.Size(918, 413);
+            this.advancedDataGridView1.SortStringChangedInvokeBeforeDatasourceUpdate = true;
             this.advancedDataGridView1.TabIndex = 3;
             this.advancedDataGridView1.SortStringChanged += new System.EventHandler<Zuby.ADGV.AdvancedDataGridView.SortEventArgs>(this.AdvancedDataGridView1_SortStringChanged);
             this.advancedDataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.advancedDataGridView1_CellDoubleClick);
