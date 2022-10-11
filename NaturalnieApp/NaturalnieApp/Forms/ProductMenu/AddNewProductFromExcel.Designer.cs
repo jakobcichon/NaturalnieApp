@@ -49,7 +49,6 @@ namespace NaturalnieApp.Forms
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.panel2 = new System.Windows.Forms.Panel();
             this.cbGetNameIfNumberMatch = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.pHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.advancedDataGridView1)).BeginInit();
             this.tpMarigin.SuspendLayout();
@@ -217,7 +216,7 @@ namespace NaturalnieApp.Forms
             this.tpMarigin.Location = new System.Drawing.Point(0, 578);
             this.tpMarigin.Name = "tpMarigin";
             this.tpMarigin.RowCount = 1;
-            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 47F));
+            this.tpMarigin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tpMarigin.Size = new System.Drawing.Size(147, 30);
             this.tpMarigin.TabIndex = 2;
             // 
@@ -234,12 +233,11 @@ namespace NaturalnieApp.Forms
             // 
             // lMarigin
             // 
-            this.lMarigin.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lMarigin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lMarigin.Location = new System.Drawing.Point(4, 4);
             this.lMarigin.Margin = new System.Windows.Forms.Padding(3);
             this.lMarigin.Name = "lMarigin";
-            this.lMarigin.Size = new System.Drawing.Size(64, 41);
+            this.lMarigin.Size = new System.Drawing.Size(64, 22);
             this.lMarigin.TabIndex = 0;
             this.lMarigin.Text = "Marża";
             this.lMarigin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -290,36 +288,22 @@ namespace NaturalnieApp.Forms
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(187)))), ((int)(((byte)(160)))));
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.cbGetNameIfNumberMatch);
-            this.panel2.Controls.Add(this.checkBox3);
-            this.panel2.Location = new System.Drawing.Point(162, 578);
+            this.panel2.Location = new System.Drawing.Point(270, 578);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(3);
-            this.panel2.Size = new System.Drawing.Size(371, 30);
+            this.panel2.Size = new System.Drawing.Size(273, 30);
             this.panel2.TabIndex = 13;
             // 
             // cbGetNameIfNumberMatch
             // 
             this.cbGetNameIfNumberMatch.AutoSize = true;
-            this.cbGetNameIfNumberMatch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbGetNameIfNumberMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.cbGetNameIfNumberMatch.Location = new System.Drawing.Point(3, 3);
             this.cbGetNameIfNumberMatch.Name = "cbGetNameIfNumberMatch";
-            this.cbGetNameIfNumberMatch.Size = new System.Drawing.Size(363, 22);
+            this.cbGetNameIfNumberMatch.Size = new System.Drawing.Size(265, 24);
             this.cbGetNameIfNumberMatch.TabIndex = 1;
             this.cbGetNameIfNumberMatch.Text = "Pobierz nazwę, jeśli numer pasuje";
             this.cbGetNameIfNumberMatch.UseVisualStyleBackColor = true;
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox3.Location = new System.Drawing.Point(3, 3);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(363, 22);
-            this.checkBox3.TabIndex = 0;
-            this.checkBox3.Text = "Nadpisz produkt, jeśli isnieje w bazie danych ";
-            this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // AddNewProductFromExcel
             // 
@@ -376,6 +360,5 @@ namespace NaturalnieApp.Forms
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.CheckBox cbGetNameIfNumberMatch;
-        private System.Windows.Forms.CheckBox checkBox3;
     }
 }

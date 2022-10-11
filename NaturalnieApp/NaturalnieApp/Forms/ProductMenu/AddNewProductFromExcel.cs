@@ -133,6 +133,7 @@ namespace NaturalnieApp.Forms
                 }
 
                 //Copy product name to the column with name of product in Elzab
+                List<Product> productsFromDb = new List<Product>();
                 foreach (DataRow row in dataFromExcel.Rows)
                 {
 
@@ -179,7 +180,11 @@ namespace NaturalnieApp.Forms
                     //Check if barcode or supplier code matches the one in DB
                     if (cbGetNameIfNumberMatch.Checked)
                     {
-                        GetNamesIfNumberMatch(row);
+                        Product product = GetNamesIfNumberMatch(row);
+                        if(product != null)
+                        {
+                            productsFromDb.Add(product);
+                        }
                     }
 
                 }
@@ -209,6 +214,7 @@ namespace NaturalnieApp.Forms
                 {
                     //Get all necessary indexes
                     int indexOfCurrentRow = this.advancedDataGridView1.Rows.IndexOf(row);
+                    int indexOfBarcodeColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.BarcodeColumnName].ColumnIndex;
                     int indexOfMariginColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.MariginColumnName].ColumnIndex;
                     int indexOfFinalPriceColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.FinalPriceColumnName].ColumnIndex;
                     int indexOfTaxColumn = this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[this.TaxColumnName].ColumnIndex;
@@ -218,6 +224,16 @@ namespace NaturalnieApp.Forms
 
                     //Set amrigin to the default value
                     this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = this.tbMarigin.Text;
+                    if (cbGetNameIfNumberMatch.Checked)
+                    {
+                        Product product = productsFromDb.Find(e => e.BarCode == this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfBarcodeColumn].Value?.ToString());
+
+                        if(product != null)
+                        {
+                            this.advancedDataGridView1.Rows[indexOfCurrentRow].Cells[indexOfMariginColumn].Value = product.Marigin.ToString();
+                        }
+
+                    }
 
                     try
                     {
@@ -266,14 +282,14 @@ namespace NaturalnieApp.Forms
             advancedDataGridView1.AutoResizeColumns();
         }
 
-        private void GetNamesIfNumberMatch(DataRow row)
+        private Product GetNamesIfNumberMatch(DataRow row)
         {
             string barcodeValue = row.Field<string>(this.BarcodeColumnName);
             string supplierCode = row.Field<string>(this.SupplierCodeColumnName);
             string tempProductName = row.Field<string>(this.ProductColumnName);
 
             bool barcodeExist = this.databaseCommands.CheckIfBarcodeExist(barcodeValue);
-            bool supplierECodeExist = this.databaseCommands.CheckIfSupplierCodeExist(supplierCode);    
+            bool supplierCodeExist = this.databaseCommands.CheckIfSupplierCodeExist(supplierCode);    
 
             if (barcodeExist)
             {
@@ -281,10 +297,10 @@ namespace NaturalnieApp.Forms
 
                 row.SetField<string>(this.ProductColumnName, product.ProductName);
                 row.SetField<string>(this.ElzabProductColumnName, product.ElzabProductName);
-                return;
+                return product;
             }
 
-            if (supplierECodeExist)
+            if (supplierCodeExist)
             {
                 Product product = this.databaseCommands.GetProductEntityBySupplierCode(supplierCode);
                 Manufacturer manufacturer = this.databaseCommands.GetManufacturerByProductName(product.ProductName);
@@ -293,10 +309,11 @@ namespace NaturalnieApp.Forms
                 {
                     row.SetField<string>(this.ProductColumnName, product.ProductName);
                     row.SetField<string>(this.ElzabProductColumnName, product.ElzabProductName);
-                    return;
+                    return product;
                 }
             }
 
+            return null;
             ;
         }
 
