@@ -99,6 +99,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_19E468DAAE494804A72CB8C6D915E80A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_294D82849F18DC74978571ED0A8E51FC"
         "OwnerKey" = "8:_8FE02318626ABF8DF97E6CD36D18430D"
         "MsmSig" = "8:_UNDEFINED"
@@ -1293,6 +1299,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_19E468DAAE494804A72CB8C6D915E80A"
+            {
+            "SourcePath" = "8:..\\..\\..\\Elzab commands\\KDBarkod.exe"
+            "TargetName" = "8:KDBarkod.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_889228EDB6334B36887187BDCBB91094"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_294D82849F18DC74978571ED0A8E51FC"
@@ -3141,15 +3167,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:NaturalnieApp"
-        "ProductCode" = "8:{CB50F7AF-854C-47C8-8FFF-A91BA71AF851}"
-        "PackageCode" = "8:{9CE32304-9C07-4404-9E96-985B59077A7D}"
+        "ProductCode" = "8:{C49FC677-AD94-42B2-B403-771F99EC19BD}"
+        "PackageCode" = "8:{F0A27E96-9970-4659-B2EF-EDBB35C3ADB3}"
         "UpgradeCode" = "8:{D7D2EBC5-3115-42C4-AB2D-6DDD92027690}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.54"
+        "ProductVersion" = "8:1.0.61"
         "Manufacturer" = "8:Naturalnie"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

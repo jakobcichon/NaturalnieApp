@@ -310,9 +310,7 @@
     <Compile Include="Forms\MainMenu\GeneralSettings.Designer.cs">
       <DependentUpon>GeneralSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Elzab\ElzabSynchronization.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Forms\Elzab\ElzabSynchronization.cs" />
     <Compile Include="Forms\Elzab\ElzabSynchronization.Designer.cs">
       <DependentUpon>ElzabSynchronization.cs</DependentUpon>
     </Compile>

@@ -963,6 +963,36 @@ namespace NaturalnieApp
         }
 
 
+        //Method used to parse from database product to elzab remove barcode
+        static public ElzabFileObject ParseDbObjectToElzabBarcodeRemoveData(DatabaseCommands db, List<string> dataToElzab, ElzabFileObject elzabTemplate)
+        {
+            //Return list
+            ElzabFileObject retData = elzabTemplate;
+            retData.Element.RemoveAllElements();
+
+            foreach (string additionalBarcode in dataToElzab)
+            {
+                try
+                {
+                    List<string> attributesValues = new List<string>();
+                    //bkodd
+                    attributesValues.Add(additionalBarcode);
+
+                    //Add data to elzab object
+                    retData.AddElement(additionalBarcode);
+                    retData.ChangeAllElementValues(additionalBarcode, attributesValues.ToArray());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+            }
+
+            return retData;
+        }
+
+
         //Method used to parse from database product object to elzab additional barcodes data
         static public ElzabFileObject ParseDbObjectToElzabAddBarcodes(DatabaseCommands db, List<Product> dataToElzab, ElzabFileObject elzabTemplate)
         {
@@ -1041,6 +1071,31 @@ namespace NaturalnieApp
             }
 
             return retList;
+        }
+
+        /// <summary>
+        /// Method used to find if any additional barcode from Elzab should be removed. 
+        /// </summary>
+        /// <param name="dataFromElzab"></param>
+        /// <param name="dataFromDb"></param>
+        static public List<Product> GetElzabAdditionaCodesToDelete(List<Product> dataFromElzab, List<Product> dataFromDb)
+        {
+            bool notExistPredicate(Product p) => !dataFromDb.Exists(e => e.BarCodeShort.Equals(p.BarCodeShort));
+            bool changedPredicate(Product p) => !dataFromDb.FirstOrDefault(e => e.BarCodeShort.Equals(p.BarCodeShort))?.ElzabProductId.Equals(p.ElzabProductId) ?? false;
+
+            return dataFromElzab.Where(p => notExistPredicate(p) || changedPredicate(p)).Distinct().ToList();
+        }
+
+        /// <summary>
+        /// Method used to find if any additional barcode from Elzab should be added.. 
+        /// </summary>
+        /// <param name="dataFromElzab"></param>
+        /// <param name="dataFromDb"></param>
+        static public List<Product> GetElzabAdditionaCodesToAdd(List<Product> dataFromElzab, List<Product> dataFromDb)
+        {
+            bool notExistPredicate(Product p) => p.ElzabProductId != null && !dataFromElzab.Exists(e => e.BarCodeShort.Equals(p.BarCodeShort));
+            
+            return dataFromDb.Where(p => notExistPredicate(p)).ToList();
         }
 
         /// <summary>

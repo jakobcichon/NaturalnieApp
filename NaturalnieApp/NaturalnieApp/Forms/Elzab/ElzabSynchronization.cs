@@ -15,12 +15,20 @@ using static NaturalnieApp.Program;
 namespace NaturalnieApp.Forms
 {
 
+    public class BackgroundWorkerArguments
+    {
+        public DataTable ProductTable { get; set; }
+        public DataTable AdditionaBarcodeToDeleteTable { get; set; }
+        public DataTable AdditionaBarcodeToAddTable { get; set; }
+    }
+
     public partial class ElzabSynchronization : UserControl
     {
         //Declaration of used elzab commands
         ElzabCommand_OTOWAR AllProductsReading { get; set; }
         ElzabCommand_ZTOWAR ProductWriting { get; set; }
         ElzabCommand_KTOWAR ProductRemoving { get; set; }
+        ElzabCommand_KDBARKOD BarcodeRemoving { get; set; }
         ElzabCommand_ODBARKOD AdditionBarcodesReading { get; set; }
         ElzabCommand_ZDBARKOD AdditionBarcodesWriting { get; set; }
         ElzabCommand_OPSPROZ4 SaleBufforReading { get; set; }
@@ -31,6 +39,8 @@ namespace NaturalnieApp.Forms
         //Data source for advanced data grid view
         private Dictionary<string, DataTable> DataSource { get; set; }
         private DataTable ReferenceTable { get; set; }
+        private DataTable AdditionalBarcodeToDeleteTable { get; set; }
+        private DataTable AdditionalBarcodeToAddTable { get; set; }
         private DataSourceRelated.CashRegisterProductColumnNames ColumnNames;
 
         //Data Grid View List
@@ -52,9 +62,10 @@ namespace NaturalnieApp.Forms
                     "5.Parsowanie odczytanych produktów",
                     "6.Pobieranie z bazy danych informacji o wszystkich produktach",
                     "7.Porównywanie informacji z bazy danych i kasy fiskalnej",
-                    "8. Sprawdzanie listy towarów do usunięcia w kasie Elzab",
-                    "9.Przygotowanie danych do wyświetlenia",
-                    "10. Oczekiwanie na akcję użytkownika"
+                    "8.Sprawdzanie listy towarów do usunięcia w kasie Elzab",
+                    "9.Sprawdzanie listy dodatkowych kodów do usunięcia w kasie Elzab",
+                    "10.Przygotowanie danych do wyświetlenia",
+                    "11. Oczekiwanie na akcję użytkownika"
                 };
             }
         }
@@ -116,6 +127,9 @@ namespace NaturalnieApp.Forms
             //Initialization of Elzab commands instances
             this.SaleBufforReading = new ElzabCommand_OPSPROZ4(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId,
                 Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
+            //Initialization of Elzab commands instances
+            this.BarcodeRemoving = new ElzabCommand_KDBARKOD(GlobalVariables.ElzabCommandPath, GlobalVariables.ElzabCashRegisterId,
+                Program.GlobalVariables.ElzabPortCom.PortName, Program.GlobalVariables.ElzabPortCom.BaudRate);
 
             //Status box
             this.StatusBox = this.tbStatus;
@@ -131,7 +145,11 @@ namespace NaturalnieApp.Forms
             this.ColumnNames.AdditionaBarcode = "Dodatkowy kod kreskowy";
             this.DataSource = new Dictionary<string, DataTable>();
             this.ReferenceTable = new DataTable();
+            this.AdditionalBarcodeToDeleteTable = new DataTable();
+            this.AdditionalBarcodeToAddTable = new DataTable();
             InitializeReferenceTable();
+            InitializeAdditionalBarcodesTable();
+            InitializeAdditionalBarcodesToAddTable();
 
             //Grid view
             this.DataGridViewsList = new List<Zuby.ADGV.AdvancedDataGridView>();
@@ -224,6 +242,50 @@ namespace NaturalnieApp.Forms
             this.ReferenceTable.DefaultView.Sort = this.ColumnNames.ProductNumber + " asc";
         }
 
+        private void InitializeAdditionalBarcodesTable()
+        {
+            //Create data source columns
+            DataColumn column = new DataColumn();
+
+            column.ColumnName = this.ColumnNames.ProductNumber;
+            column.DataType = Type.GetType("System.Int32");
+            column.ReadOnly = true;
+            column.Unique = true;
+            this.AdditionalBarcodeToDeleteTable.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.AdditionaBarcode;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            this.AdditionalBarcodeToDeleteTable.Columns.Add(column);
+            column.Dispose();
+
+            this.AdditionalBarcodeToDeleteTable.DefaultView.Sort = this.ColumnNames.ProductNumber + " asc";
+        }
+
+        private void InitializeAdditionalBarcodesToAddTable()
+        {
+            //Create data source columns
+            DataColumn column = new DataColumn();
+
+            column.ColumnName = this.ColumnNames.ProductNumber;
+            column.DataType = Type.GetType("System.Int32");
+            column.ReadOnly = true;
+            column.Unique = true;
+            this.AdditionalBarcodeToAddTable.Columns.Add(column);
+            column.Dispose();
+
+            column = new DataColumn();
+            column.ColumnName = this.ColumnNames.AdditionaBarcode;
+            column.DataType = Type.GetType("System.String");
+            column.ReadOnly = true;
+            this.AdditionalBarcodeToAddTable.Columns.Add(column);
+            column.Dispose();
+
+            this.AdditionalBarcodeToAddTable.DefaultView.Sort = this.ColumnNames.ProductNumber + " asc";
+        }
+
         private void ClearAllDataSources()
         {
             this.DataGridViewsList.Clear();
@@ -261,6 +323,9 @@ namespace NaturalnieApp.Forms
             BwElzabCommunicationProgressUpdate communicationProgressUpdate = new BwElzabCommunicationProgressUpdate();
             DataTable localDataTable = null;
             DataTable productToRemoveDataTable = null;
+            DataTable additionalBarcodeToRemoveDataTable = null;
+            DataTable additionalBarcodeToAddDataTable = null;
+            BackgroundWorkerArguments arguments = e.Argument as BackgroundWorkerArguments;
 
             try
             {
@@ -351,12 +416,24 @@ namespace NaturalnieApp.Forms
                         communicationProgressUpdate.ProgressBarTime = 1.0;
                         (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
+                        //Find if any of the additional barcode should be romeved
+                        List<Product> toRemoveAdditionalBarcodeList = ElzabRelated.GetElzabAdditionaCodesToDelete(allAdditionaBarcodesFromElzab, dbProductList);
+
+                        var elzabListWithoutThingstoDelete = allAdditionaBarcodesFromElzab.Except(toRemoveAdditionalBarcodeList).ToList();
+
+                        List<Product> toAddAdditionalBarcodeList = ElzabRelated.GetElzabAdditionaCodesToAdd(elzabListWithoutThingstoDelete, dbProductList);
+
+                        communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
+                        communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(10);
+                        communicationProgressUpdate.ProgressBarTime = 1.0;
+                        (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
+
                         //Show differences on the list
                         foreach (Product productEnt in diffProductList)
                         {
                             if (localDataTable == null)
                             {
-                                localDataTable = (e.Argument as DataTable).Copy();
+                                localDataTable = (arguments.ProductTable as DataTable).Copy();
                                 localDataTable.TableName = "Tabela różnic";
                             }
 
@@ -380,7 +457,7 @@ namespace NaturalnieApp.Forms
                         {
                             if (productToRemoveDataTable == null)
                             {
-                                productToRemoveDataTable = (e.Argument as DataTable).Copy();
+                                productToRemoveDataTable = (arguments.ProductTable as DataTable).Copy();
                                 productToRemoveDataTable.TableName = "Tabela produktów do usunięcia z kasy";
                             }
 
@@ -399,21 +476,60 @@ namespace NaturalnieApp.Forms
                             productToRemoveDataTable.Rows.Add(rowElement);
                         }
 
-                        if (diffProductList.Count() == 0 && toRemoveProductList.Count() == 0)
+                        //Show additional barcode to remove on the list
+                        foreach (Product productEnt in toRemoveAdditionalBarcodeList)
+                        {
+                            if (additionalBarcodeToRemoveDataTable == null)
+                            {
+                                additionalBarcodeToRemoveDataTable = (arguments.AdditionaBarcodeToDeleteTable as DataTable).Copy();
+                                additionalBarcodeToRemoveDataTable.TableName = "Tabela dodatkowych kodów do usunięcia z kasy";
+                            }
+
+                            //Add data to table
+                            DataRow rowElement;
+                            rowElement = additionalBarcodeToRemoveDataTable.NewRow();
+
+                            //Set row fields
+                            rowElement.SetField<int?>(this.ColumnNames.ProductNumber, productEnt.ElzabProductId);
+                            rowElement.SetField<string>(this.ColumnNames.AdditionaBarcode, productEnt.BarCodeShort);
+                            additionalBarcodeToRemoveDataTable.Rows.Add(rowElement);
+                        }
+
+                        //Show additional barcode to add on the list
+                        foreach (Product productEnt in toAddAdditionalBarcodeList)
+                        {
+                            if (additionalBarcodeToAddDataTable == null)
+                            {
+                                additionalBarcodeToAddDataTable = (arguments.AdditionaBarcodeToAddTable as DataTable).Copy();
+                                additionalBarcodeToAddDataTable.TableName = "Tabela dodatkowych do zapisu w kasie";
+                            }
+
+                            //Add data to table
+                            DataRow rowElement;
+                            rowElement = additionalBarcodeToAddDataTable.NewRow();
+
+                            //Set row fields
+                            rowElement.SetField<int?>(this.ColumnNames.ProductNumber, productEnt.ElzabProductId);
+                            rowElement.SetField<string>(this.ColumnNames.AdditionaBarcode, productEnt.BarCodeShort);
+                            additionalBarcodeToAddDataTable.Rows.Add(rowElement);
+                        }
+
+                        if (diffProductList.Count() == 0 && toRemoveProductList.Count() == 0 && 
+                            toRemoveAdditionalBarcodeList.Count() == 0 && toAddAdditionalBarcodeList.Count() == 0)
                         {
                             communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.UserPrompt;
                             communicationProgressUpdate.Text = "Nie znaleziono żadnych różnic między bazą danych a kasą fiskalną:).";
                             (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
                             communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                            communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(10);
+                            communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(11);
                             communicationProgressUpdate.ProgressBarTime = 1.0;
                             (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
                         }
                         else
                         {
                             communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Update;
-                            communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(10); ;
+                            communicationProgressUpdate.Text = this.BwStepsDescription.ElementAt(11); ;
                             (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
 
                             communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.UserPrompt;
@@ -445,17 +561,27 @@ namespace NaturalnieApp.Forms
 
 
                 //Pass the local datatable
-                e.Result = new Dictionary<string, DataTable> { { "differences", localDataTable },
-                    { "toRemove", productToRemoveDataTable } };
+                e.Result = new Dictionary<string, DataTable> 
+                { 
+                    { "differences", localDataTable },
+                    { "toRemove", productToRemoveDataTable },
+                    { "toRemoveBarcodes", additionalBarcodeToRemoveDataTable },
+                    { "toAddBarcodes", additionalBarcodeToAddDataTable }
+                };
 
             }
             catch (Exception ex)
             {
                 communicationProgressUpdate.TypeOfMessage = BwElzabCommunicationProgressUpdate.MessageType.Error;
-                communicationProgressUpdate.Text = ex.Message + ex.InnerException;
+                communicationProgressUpdate.Text = ex.Message + ex.InnerException + ex.StackTrace;
                 (sender as BackgroundWorker).ReportProgress(0, communicationProgressUpdate);
-                e.Result = new Dictionary<string, DataTable> { { "differences", localDataTable },
-                    { "toRemove", productToRemoveDataTable } };
+                e.Result = new Dictionary<string, DataTable> 
+                { 
+                    { "differences", localDataTable },
+                    { "toRemove", productToRemoveDataTable },
+                    { "toRemoveBarcodes", additionalBarcodeToRemoveDataTable },
+                    { "toAddBarcodes", additionalBarcodeToAddDataTable }
+                };
             }
         }
 
@@ -495,7 +621,7 @@ namespace NaturalnieApp.Forms
         {
             Dictionary<string, DataTable> localDataTable = (e.Result as Dictionary<string, DataTable>);
 
-            if(localDataTable["differences"] != null)
+            if(localDataTable.ContainsKey("differences") && localDataTable["differences"] != null)
             {
                 this.DataSource.Add("differences", localDataTable["differences"]);
             }
@@ -504,13 +630,31 @@ namespace NaturalnieApp.Forms
                 this.DataSource.Add("differences", null);
             }
 
-            if (localDataTable["toRemove"] != null)
+            if (localDataTable.ContainsKey("toRemove") && localDataTable["toRemove"] != null)
             {
                 this.DataSource.Add("toRemove", localDataTable["toRemove"]);
             }
             else
             {
                 this.DataSource.Add("toRemove", null);
+            }
+
+            if (localDataTable.ContainsKey("toRemoveBarcodes") && localDataTable["toRemoveBarcodes"] != null)
+            {
+                this.DataSource.Add("toRemoveBarcodes", localDataTable["toRemoveBarcodes"]);
+            }
+            else
+            {
+                this.DataSource.Add("toRemoveBarcodes", null);
+            }
+
+            if (localDataTable.ContainsKey("toAddBarcodes") && localDataTable["toAddBarcodes"] != null)
+            {
+                this.DataSource.Add("toAddBarcodes", localDataTable["toAddBarcodes"]);
+            }
+            else
+            {
+                this.DataSource.Add("toAddBarcodes", null);
             }
 
             this.AddDataGridToTabPage();
@@ -555,7 +699,14 @@ namespace NaturalnieApp.Forms
         {
             (sender as Button).Enabled = false;
             this.ClearAllDataSources();
-            this.BwElzabCommunication.RunWorkerAsync(this.ReferenceTable);
+
+
+            this.BwElzabCommunication.RunWorkerAsync(new BackgroundWorkerArguments() 
+            { 
+            ProductTable = ReferenceTable,
+            AdditionaBarcodeToDeleteTable = AdditionalBarcodeToDeleteTable,
+            AdditionaBarcodeToAddTable = AdditionalBarcodeToAddTable
+            });
 
         }
 
@@ -563,8 +714,10 @@ namespace NaturalnieApp.Forms
         {
             try
             {
-                if ((this.DataSource["differences"] != null && this.DataSource["differences"].Rows.Count > 0) |
-                    (this.DataSource["toRemove"] != null && this.DataSource["toRemove"].Rows.Count > 0))
+                if ((this.DataSource["differences"] != null && this.DataSource["differences"].Rows.Count > 0) ||
+                    (this.DataSource["toRemove"] != null && this.DataSource["toRemove"].Rows.Count > 0) ||
+                    (this.DataSource["toRemoveBarcodes"] != null && this.DataSource["toRemoveBarcodes"].Rows.Count > 0) ||
+                    (this.DataSource["toAddBarcodes"] != null && this.DataSource["toAddBarcodes"].Rows.Count > 0))
                 {
                     bool operationResult = false;
                     CommandExecutionStatus status;
@@ -611,6 +764,82 @@ namespace NaturalnieApp.Forms
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
 
+                        // Additional barcodes to remove
+                        List<string> barcodeToRemove = new List<string>();
+                        if (this.DataSource["toRemoveBarcodes"] != null)
+                        {
+                            foreach (DataRow element in this.DataSource["toRemoveBarcodes"].Rows)
+                            {
+                                barcodeToRemove.Add(element.Field<string>(this.ColumnNames.AdditionaBarcode));
+                            }
+
+                            this.BarcodeRemoving.DataToElzab = ElzabRelated.ParseDbObjectToElzabBarcodeRemoveData(this.databaseCommands,
+                                barcodeToRemove,
+                                this.BarcodeRemoving.DataToElzab);
+
+                            //Remove old product data first, if necessary
+                            operationResult = false;
+                            this.BarcodeRemoving.Config.ChangeCashRegisterConnectionData
+                                (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
+                            status = this.BarcodeRemoving.ExecuteCommand();
+                        }
+                        else
+                        {
+                            operationResult = true;
+                            status = CommandExecutionStatus.GenerateOkStatus();
+                        }
+
+                        if (status.ErrorNumber == 0 && status.ErrorText != null)
+                        {
+                            operationResult = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
+                            status.ErrorNumber, status.ErrorText),
+                            "Błąd komunikacji z kasą Elzab!",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
+                        // Additional barcodes to add
+                        List<Product> barcodeToAdd = new List<Product>();
+                        if (this.DataSource["toAddBarcodes"] != null)
+                        {
+                            foreach (DataRow element in this.DataSource["toAddBarcodes"].Rows)
+                            {
+                                Product product = new Product();
+                                product.ElzabProductId = element.Field<int>(this.ColumnNames.ProductNumber);
+                                product.BarCodeShort = element.Field<string>(this.ColumnNames.AdditionaBarcode);
+                                barcodeToAdd.Add(product);
+                            }
+
+                            this.AdditionBarcodesWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabAddBarcodes(this.databaseCommands, barcodeToAdd, this.AdditionBarcodesWriting.DataToElzab);
+
+                            //Remove old product data first, if necessary
+                            operationResult = false;
+                            this.AdditionBarcodesWriting.Config.ChangeCashRegisterConnectionData
+                                (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
+                            status = this.AdditionBarcodesWriting.ExecuteCommand();
+                        }
+                        else
+                        {
+                            operationResult = true;
+                            status = CommandExecutionStatus.GenerateOkStatus();
+                        }
+
+                        if (status.ErrorNumber == 0 && status.ErrorText != null)
+                        {
+                            operationResult = true;
+
+                        }
+                        else
+                        {
+                            MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
+                            status.ErrorNumber, status.ErrorText),
+                            "Błąd komunikacji z kasą Elzab!",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
                         if (this.DataSource["differences"] != null)
                         {
                             List<Product> productsToSave = new List<Product>();
@@ -620,50 +849,25 @@ namespace NaturalnieApp.Forms
                             }
 
                             this.ProductWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabProductData(this.databaseCommands, productsToSave, this.ProductWriting.DataToElzab);
-                            this.AdditionBarcodesWriting.DataToElzab = ElzabRelated.ParseDbObjectToElzabAddBarcodes(this.databaseCommands, productsToSave, this.AdditionBarcodesWriting.DataToElzab);
 
+                            //Write product data
+                            operationResult = false;
+                            this.ProductWriting.Config.ChangeCashRegisterConnectionData
+                                (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
+                            status = this.ProductWriting.ExecuteCommand();
 
-                            // Write new data
-                            if (operationResult)
+                            if (status.ErrorNumber == 0 && status.ErrorText != null)
                             {
-                                operationResult = false;
-                                //Write product data
-                                operationResult = false;
-                                this.ProductWriting.Config.ChangeCashRegisterConnectionData
-                                    (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
-                                status = this.ProductWriting.ExecuteCommand();
-                                if (status.ErrorNumber == 0 && status.ErrorText != null)
-                                {
-                                    operationResult = true;
-                                }
-                                else
-                                {
-                                    MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
-                                    status.ErrorNumber, status.ErrorText),
-                                    "Błąd komunikacji z kasą Elzab!",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
+                                operationResult = true;
                             }
-
-                            //Write additiona barcodes
-                            if (operationResult)
+                            else
                             {
-                                operationResult = false;
-                                this.AdditionBarcodesWriting.Config.ChangeCashRegisterConnectionData
-                                    (GlobalVariables.ElzabPortCom.PortName, GlobalVariables.ElzabPortCom.BaudRate);
-                                status = this.AdditionBarcodesWriting.ExecuteCommand();
-                                if (status.ErrorNumber == 0 && status.ErrorText != null)
-                                {
-                                    operationResult = true;
-                                }
-                                else
-                                {
-                                    MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
-                                    status.ErrorNumber, status.ErrorText),
-                                    "Błąd komunikacji z kasą Elzab!",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
+                                MessageBox.Show(string.Format("Nie udało się skomunikować z kasą Elzab. Kod błędu: {0}, Opis błędu : {1}",
+                                status.ErrorNumber, status.ErrorText),
+                                "Błąd komunikacji z kasą Elzab!",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
+                            
                         }
 
                         if (operationResult) MessageBox.Show("Zapisano!");
@@ -681,7 +885,7 @@ namespace NaturalnieApp.Forms
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.Message + ex.InnerException);
+                MessageBox.Show(ex.Message + ex.InnerException + ex.StackTrace);
             }
            
 

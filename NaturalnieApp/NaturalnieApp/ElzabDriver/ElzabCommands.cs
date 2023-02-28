@@ -31,6 +31,71 @@ namespace ElzabCommands
         EndOfDayWorkForCashier_StatisticInfo3 = 17,
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------
+    public class ElzabCommand_KDBARKOD : InitStructure, IElzabCommandInterface
+    {
+        //Local variable
+        public ElzabFileObject DataFromElzab { get; set; }
+        public ElzabFileObject DataToElzab { get; set; }
+        public ElzabFileObject Report { get; set; }
+        public CommandExecutionStatus ReportStatus { get; set; }
+        public ElzabFileObject Config { get; set; }
+        public bool OutputFileExist { get { return false; } }
+        private string CommandName { get { return "KDBARKOD"; } }
+        private string ElementAttributesPatternOutFile
+        {
+            get
+            {
+                return "";
+            }
+        }
+        private string ElementAttributesPatternInFile
+        {
+            get
+            {
+                return "$bkodd";
+            }
+        }
+        private string ElementAttributesPatternReportFile
+        {
+            get
+            {
+                return "";
+            }
+        }
+        private string ElementAttributesPatternConfigFile
+        {
+            get
+            {
+                return " device_number, connection_data, time_out";
+            }
+        }
+
+        //Class constructor
+        public ElzabCommand_KDBARKOD(string path, int cashRegisterID, string comPortName, int baudRate)
+        {
+            //Call method used to initialize base structure for data from Elzab
+            this.DataFromElzab = InitBaseStructuresDataFromElzab(path, cashRegisterID, CommandName, ElementAttributesPatternOutFile);
+
+            //Call method used to initialize base structure for data to Elzab
+            this.DataToElzab = InitBaseStructuresDataToElzab(path, cashRegisterID, CommandName, ElementAttributesPatternInFile);
+
+            //Call method used to initialize base structure for Report data
+            this.Report = InitBaseStructuresReport(path, cashRegisterID, CommandName, ElementAttributesPatternReportFile);
+
+            //Call method used to initialize base structure for Config data
+            this.Config = InitBaseStructuresConfig(path, cashRegisterID, CommandName, ElementAttributesPatternConfigFile);
+            this.Config.ChangeCashRegisterConnectionData(comPortName, baudRate);
+        }
+
+        //Execute command
+        public CommandExecutionStatus ExecuteCommand(bool executeBackup = true)
+        {
+            CommandExecutionStatus status = base.ExecuteCommand(this);
+            return status;
+        }
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------
     public class ElzabCommand_KTOWAR : InitStructure, IElzabCommandInterface
     {
         //Local variable
