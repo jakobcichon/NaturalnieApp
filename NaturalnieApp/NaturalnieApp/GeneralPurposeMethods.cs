@@ -1080,8 +1080,8 @@ namespace NaturalnieApp
         /// <param name="dataFromDb"></param>
         static public List<Product> GetElzabAdditionaCodesToDelete(List<Product> dataFromElzab, List<Product> dataFromDb)
         {
-            bool notExistPredicate(Product p) => !dataFromDb.Exists(e => e.BarCodeShort.Equals(p.BarCodeShort));
-            bool changedPredicate(Product p) => !dataFromDb.FirstOrDefault(e => e.BarCodeShort.Equals(p.BarCodeShort))?.ElzabProductId.Equals(p.ElzabProductId) ?? false;
+            bool notExistPredicate(Product p) => !dataFromDb.Exists(e => e.BarCodeShort.BarcodeShortEquals(p.BarCodeShort));
+            bool changedPredicate(Product p) => !dataFromDb.FirstOrDefault(e => e.BarCodeShort.BarcodeShortEquals(p.BarCodeShort))?.ElzabProductId.Equals(p.ElzabProductId) ?? false;
 
             return dataFromElzab.Where(p => notExistPredicate(p) || changedPredicate(p)).Distinct().ToList();
         }
@@ -1093,9 +1093,18 @@ namespace NaturalnieApp
         /// <param name="dataFromDb"></param>
         static public List<Product> GetElzabAdditionaCodesToAdd(List<Product> dataFromElzab, List<Product> dataFromDb)
         {
-            bool notExistPredicate(Product p) => p.ElzabProductId != null && !dataFromElzab.Exists(e => e.BarCodeShort.Equals(p.BarCodeShort));
+            bool notExistPredicate(Product p) => p.ElzabProductId != null && !dataFromElzab.Exists(e => e.BarCodeShort.BarcodeShortEquals(p.BarCodeShort));
             
             return dataFromDb.Where(p => notExistPredicate(p)).ToList();
+        }
+
+        static public bool BarcodeShortEquals(this string baseBarcode, string targetBarcode)
+        {
+            Regex reg = new Regex(@"^0+");
+            string baseStr = reg.Replace(baseBarcode, "");
+            string targetStr = reg.Replace(targetBarcode, "");
+
+            return baseStr.Equals(targetStr);
         }
 
         /// <summary>
