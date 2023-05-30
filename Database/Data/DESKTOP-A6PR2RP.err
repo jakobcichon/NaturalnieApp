@@ -1316,3 +1316,523 @@
 2023-03-21T19:01:26.739677Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
 2023-03-21T19:01:26.741536Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
 2023-03-21T19:01:26.866429Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-03-21T20:46:54.512774Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-03-21T20:46:55.382106Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-03-22T08:32:49.620903Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-03-22T08:32:49.625347Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4240
+2023-03-22T08:32:49.834045Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-03-22T08:32:52.902727Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-03-22T08:32:53.731243Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-03-22T08:32:54.259851Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-03-22T08:32:54.261720Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-03-22T08:32:54.375686Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-03-22T16:39:38.142468Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-03-22T16:39:38.969703Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-03-23T08:33:06.207890Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-03-23T08:33:06.212283Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4336
+2023-03-23T08:33:06.411011Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-03-23T08:33:09.871450Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-03-23T08:33:10.728471Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-03-23T08:33:11.128112Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-03-23T08:33:11.130078Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-03-23T08:33:11.310217Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-03-23T16:39:10.634139Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-03-23T16:39:11.174897Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-03-24T08:34:00.654313Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-03-24T08:34:00.659205Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4164
+2023-03-24T08:34:00.849177Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-03-24T08:34:03.869302Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-03-24T08:34:04.798094Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-03-24T08:34:05.255075Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-03-24T08:34:05.259020Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-03-24T08:34:05.413715Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-03-24T15:35:18.716103Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-03-24T15:35:19.467756Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-03-25T08:43:44.623874Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-03-25T08:43:44.628973Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4308
+2023-03-25T08:43:44.854981Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-03-25T08:43:48.209129Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-03-25T08:43:49.058023Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-03-25T08:43:49.566356Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-03-25T08:43:49.569461Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-03-25T08:43:49.756213Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-03-25T12:59:57.679012Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-03-25T12:59:58.938664Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-03-28T09:23:23.698252Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-03-28T09:23:23.702865Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4160
+2023-03-28T09:23:23.911006Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-03-28T09:23:26.765621Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-03-28T09:23:28.078562Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-03-28T09:23:28.653519Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-03-28T09:23:28.655512Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-03-28T09:23:28.788672Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-03-28T14:50:31.887930Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-03-28T14:50:33.159883Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-03-29T07:31:43.725721Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-03-29T07:31:43.730469Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4372
+2023-03-29T07:31:44.157398Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-03-29T07:31:47.300799Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-03-29T07:31:48.408530Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-03-29T07:31:48.901448Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-03-29T07:31:48.903268Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-03-29T07:31:49.012792Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-03-29T15:30:24.946162Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-03-29T15:30:25.916597Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-03-30T07:36:25.865281Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-03-30T07:36:25.870194Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4188
+2023-03-30T07:36:26.029203Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-03-30T07:36:28.620072Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-03-30T07:36:29.702622Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-03-30T07:36:30.273467Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-03-30T07:36:30.275318Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-03-30T07:36:30.381952Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-03-30T09:28:35.839417Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-03-30T09:28:37.099397Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-03-30T12:20:30.933390Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-03-30T12:20:30.938192Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4364
+2023-03-30T12:20:31.141940Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-03-30T12:20:33.385752Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-03-30T12:20:34.181655Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-03-30T12:20:34.630607Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-03-30T12:20:34.632514Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-03-30T12:20:34.763447Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-03-30T16:56:09.414185Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-03-30T16:56:10.166196Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-03-30T16:57:52.762671Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-03-30T16:57:52.770579Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4276
+2023-03-30T16:57:52.995075Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-03-30T16:57:55.229074Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-03-30T16:57:56.356637Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-03-30T16:57:56.881583Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-03-30T16:57:56.883461Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-03-30T16:57:57.026938Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-03-30T19:17:00.684968Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-03-30T19:17:01.221728Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-03-31T07:45:48.616896Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-03-31T07:45:48.621402Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4156
+2023-03-31T07:45:48.773345Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-03-31T07:45:51.749481Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-03-31T07:45:52.909513Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-03-31T07:45:53.515654Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-03-31T07:45:53.517701Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-03-31T07:45:53.674647Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-03-31T09:42:50.364331Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-03-31T09:42:51.664545Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-03-31T09:43:45.650086Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-03-31T09:43:45.654598Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4204
+2023-03-31T09:43:45.870051Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-03-31T09:43:49.072624Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-03-31T09:43:50.072272Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-03-31T09:43:50.683631Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-03-31T09:43:50.685482Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-03-31T09:43:50.820076Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-03-31T15:53:08.924757Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-03-31T15:53:09.618508Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-01T07:44:23.755386Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-01T07:44:23.761477Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4336
+2023-04-01T07:44:23.969011Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-01T07:44:27.179977Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-01T07:44:28.040731Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-01T07:44:28.414702Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-01T07:44:28.416608Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-01T07:44:28.610872Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-01T12:09:32.208332Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-01T12:09:33.404463Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-02T07:27:00.989674Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-02T07:27:00.993905Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4120
+2023-04-02T07:27:01.175797Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-02T07:27:03.954093Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-02T07:27:05.157858Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-02T07:27:05.549117Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-02T07:27:05.550928Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-02T07:27:05.720984Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-02T11:35:24.515168Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-02T11:35:25.583633Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-03T07:36:58.794049Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-03T07:36:58.798755Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4260
+2023-04-03T07:36:59.007808Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-03T07:37:02.094469Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-03T07:37:02.923695Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-03T07:37:03.256873Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-03T07:37:03.258785Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-03T07:37:03.386522Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-03T15:42:52.603501Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-03T15:42:53.324753Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-04T07:33:03.023692Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-04T07:33:03.028159Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4220
+2023-04-04T07:33:03.228945Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-04T07:33:05.739059Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-04T07:33:06.997679Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-04T07:33:07.694174Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-04T07:33:07.696078Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-04T07:33:07.825030Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-15T12:03:31.914200Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-15T12:03:32.932314Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-15T12:06:58.992172Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-15T12:06:58.996623Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 3984
+2023-04-15T12:06:59.124106Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-15T12:07:00.865117Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-15T12:07:01.496214Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-15T12:07:01.769532Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-15T12:07:01.771387Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-15T12:07:01.879486Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-15T12:08:21.549273Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-15T12:08:22.035313Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-17T07:32:54.106353Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-17T07:32:54.112195Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4300
+2023-04-17T07:32:54.332810Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-17T07:32:57.371219Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-17T07:32:58.515886Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-17T07:32:59.046510Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-17T07:32:59.048403Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-17T07:32:59.178282Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-17T12:44:56.632447Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-17T12:44:57.318787Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-17T12:46:42.727738Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-17T12:46:42.732747Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4172
+2023-04-17T12:46:42.903071Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-17T12:46:45.531531Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-17T12:46:46.482114Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-17T12:46:47.155573Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-17T12:46:47.157505Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-17T12:46:47.300855Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-17T15:51:24.805061Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-17T15:51:25.960696Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-18T07:34:29.886419Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-18T07:34:29.890613Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4248
+2023-04-18T07:34:30.087342Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-18T07:34:33.751554Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-18T07:34:34.747923Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-18T07:34:35.016745Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-18T07:34:35.018638Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-18T07:34:35.139271Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-18T15:44:20.675970Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-18T15:44:21.122780Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-19T07:34:43.782416Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-19T07:34:43.787410Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4200
+2023-04-19T07:34:43.904455Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-19T07:34:46.140141Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-19T07:34:47.219992Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-19T07:34:47.736726Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-19T07:34:47.738696Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-19T07:34:47.889527Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-19T15:52:29.217515Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-19T15:52:30.117338Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-20T07:29:13.802749Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-20T07:29:13.807151Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4276
+2023-04-20T07:29:14.043420Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-20T07:29:17.190167Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-20T07:29:18.021050Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-20T07:29:18.358031Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-20T07:29:18.360206Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-20T07:29:18.515496Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-20T15:45:08.369456Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-20T15:45:09.025381Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-21T07:29:12.827826Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-21T07:29:12.832043Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4228
+2023-04-21T07:29:13.121385Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-21T07:29:16.203197Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-21T07:29:17.064115Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-21T07:29:17.456021Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-21T07:29:17.457957Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-21T07:29:17.572120Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-21T15:48:16.468282Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-21T15:48:17.461303Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-22T07:46:09.803050Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-22T07:46:09.811729Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4120
+2023-04-22T07:46:10.019570Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-22T07:46:13.510043Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-22T07:46:14.520613Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-22T07:46:15.136051Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-22T07:46:15.138706Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-22T07:46:15.317722Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-22T12:14:12.241702Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-22T12:14:13.441031Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-24T07:31:30.137215Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-24T07:31:30.141611Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4232
+2023-04-24T07:31:30.344203Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-24T07:31:33.192220Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-24T07:31:34.252291Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-24T07:31:34.830458Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-24T07:31:34.832945Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-24T07:31:35.029414Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-24T15:23:50.771983Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-24T15:23:51.248199Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-25T07:37:27.667247Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-25T07:37:27.672001Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4308
+2023-04-25T07:37:27.843156Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-25T07:37:30.572651Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-25T07:37:31.449757Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-25T07:37:32.102435Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-25T07:37:32.104611Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-25T07:37:32.331280Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-25T15:39:21.990512Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-25T15:39:23.107562Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-26T07:33:37.241474Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-26T07:33:37.245868Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4292
+2023-04-26T07:33:37.454235Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-26T07:33:40.431052Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-26T07:33:41.428648Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-26T07:33:41.771952Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-26T07:33:41.773889Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-26T07:33:41.882281Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-27T13:41:01.411363Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-27T13:41:02.408330Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-27T13:44:30.905141Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-27T13:44:30.912003Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4260
+2023-04-27T13:44:31.092627Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-27T13:44:33.723181Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-27T13:44:34.717133Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-27T13:44:35.262357Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-27T13:44:35.265329Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-27T13:44:35.391326Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-27T15:38:22.942174Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-27T15:38:23.933741Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-28T07:42:36.075929Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-28T07:42:36.080443Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4184
+2023-04-28T07:42:36.304252Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-28T07:42:39.218037Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-28T07:42:40.164974Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-28T07:42:40.550077Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-28T07:42:40.551971Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-28T07:42:40.660190Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-28T15:47:31.009627Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-28T15:47:31.731836Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-04-29T07:23:32.869701Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-04-29T07:23:32.874307Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4156
+2023-04-29T07:23:33.091292Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-04-29T07:23:35.534698Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-04-29T07:23:36.738491Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-04-29T07:23:37.250774Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-04-29T07:23:37.252676Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-04-29T07:23:37.384852Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-04-29T11:41:08.735098Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-04-29T11:41:09.319914Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-04T07:34:29.148063Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-04T07:34:29.153035Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4188
+2023-05-04T07:34:29.323920Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-04T07:34:31.681496Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-04T07:34:32.718867Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-04T07:34:33.252687Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-04T07:34:33.254679Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-04T07:34:33.407927Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-04T15:38:49.857835Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-04T15:38:51.027039Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-05T07:35:10.011791Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-05T07:35:10.018222Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4236
+2023-05-05T07:35:10.196847Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-05T07:35:13.396242Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-05T07:35:14.375894Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-05T07:35:14.682982Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-05T07:35:14.684867Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-05T07:35:14.803139Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-05T15:45:36.128894Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-05T15:45:36.956247Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-06T08:40:27.010697Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-06T08:40:27.015431Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4188
+2023-05-06T08:40:27.227501Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-06T08:40:29.988610Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-06T08:40:31.309489Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-06T08:40:32.042656Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-06T08:40:32.044961Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-06T08:40:32.263318Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-06T11:50:58.784050Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-06T11:50:59.721521Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-08T07:43:20.844005Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-08T07:43:20.848946Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4224
+2023-05-08T07:43:21.050144Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-08T07:43:24.100794Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-08T07:43:25.067455Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-08T07:43:25.602347Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-08T07:43:25.604230Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-08T07:43:25.765389Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-08T15:45:02.846662Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-08T15:45:03.441288Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-09T07:26:41.080705Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-09T07:26:41.085901Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 3308
+2023-05-09T07:26:41.252335Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-09T07:26:42.562338Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-09T07:26:42.856545Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-09T07:26:43.490204Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-09T07:26:43.492169Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-09T07:26:43.645319Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-09T12:15:17.098028Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-09T12:15:17.945880Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-09T12:15:53.883502Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-09T12:15:53.887936Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4236
+2023-05-09T12:15:54.113795Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-09T12:15:57.139760Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-09T12:15:58.055351Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-09T12:15:58.484255Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-09T12:15:58.486144Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-09T12:15:58.597585Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-09T15:37:59.506195Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-09T15:38:00.628268Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-10T07:23:50.074157Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-10T07:23:50.079258Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4400
+2023-05-10T07:23:50.301067Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-10T07:23:52.778641Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-10T07:23:53.947152Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-10T07:23:54.285538Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-10T07:23:54.287612Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-10T07:23:54.399154Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-10T15:46:18.241331Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-10T15:46:18.712800Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-11T07:40:43.274192Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-11T07:40:43.280185Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4516
+2023-05-11T07:40:43.516679Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-11T07:40:46.667406Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-11T07:40:47.502720Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-11T07:40:48.219796Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-11T07:40:48.221733Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-11T07:40:48.363048Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-11T14:44:13.532694Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-11T14:44:14.298064Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-12T07:38:30.265354Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-12T07:38:30.269913Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4208
+2023-05-12T07:38:30.457934Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-12T07:38:33.152863Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-12T07:38:34.268711Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-12T07:38:34.691108Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-12T07:38:34.693041Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-12T07:38:34.807063Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-13T11:47:00.203672Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-13T11:47:01.481902Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-15T07:29:46.182207Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-15T07:29:46.187492Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4260
+2023-05-15T07:29:46.368413Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-15T07:29:49.037608Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-15T07:29:50.324772Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-15T07:29:51.415492Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-15T07:29:51.417806Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-15T07:29:51.565281Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-15T15:45:59.855943Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-15T15:46:00.656335Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-16T07:35:31.601748Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-16T07:35:31.606099Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 3940
+2023-05-16T07:35:31.780241Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-16T07:35:32.905292Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-16T07:35:33.736900Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-16T07:35:34.349414Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-16T07:35:34.352070Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-16T07:35:34.475754Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-17T15:33:37.897285Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-17T15:33:39.264448Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-17T15:34:26.761956Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-17T15:34:26.766857Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4364
+2023-05-17T15:34:27.045404Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-17T15:34:30.555570Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-17T15:34:31.690902Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-17T15:34:32.464445Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-17T15:34:32.466369Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-17T15:34:32.643507Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-17T18:04:19.853628Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-17T18:04:20.912365Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-18T07:33:10.232931Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-18T07:33:10.237241Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4196
+2023-05-18T07:33:10.483896Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-18T07:33:13.810682Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-18T07:33:14.767106Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-18T07:33:15.248040Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-18T07:33:15.250632Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-18T07:33:15.464891Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-18T15:45:13.468591Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-18T15:45:14.653724Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-19T07:31:29.920382Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-19T07:31:29.925630Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4192
+2023-05-19T07:31:30.134914Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-19T07:31:32.890672Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-19T07:31:33.789192Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-19T07:31:34.153983Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-19T07:31:34.156296Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-19T07:31:34.300398Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-20T07:40:48.982392Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-20T07:40:48.991305Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 3804
+2023-05-20T07:40:49.226816Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-20T07:40:51.926663Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-20T07:40:53.140780Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-20T07:40:53.654736Z 0 [System] [MY-010229] [Server] Starting XA crash recovery...
+2023-05-20T07:40:53.667080Z 0 [System] [MY-010232] [Server] XA crash recovery finished.
+2023-05-20T07:40:54.260473Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-20T07:40:54.262462Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-20T07:40:54.430866Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-20T12:41:32.467663Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-20T12:41:33.175480Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-22T07:33:07.783215Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-22T07:33:07.787569Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4296
+2023-05-22T07:33:08.006918Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-22T07:33:10.751942Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-22T07:33:11.827673Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-22T07:33:12.521773Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-22T07:33:12.524843Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-22T07:33:12.678195Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-22T15:37:20.758947Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-22T15:37:21.792234Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-23T07:42:52.478651Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-23T07:42:52.483469Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4312
+2023-05-23T07:42:52.614051Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-23T07:42:56.175397Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-23T07:42:57.123022Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-23T07:42:57.908351Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-23T07:42:57.910451Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-23T07:42:58.076574Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-23T15:26:37.982723Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-23T15:26:38.710387Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-24T07:30:00.526721Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-24T07:30:00.530993Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4160
+2023-05-24T07:30:00.766077Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-24T07:30:04.113824Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-24T07:30:04.945816Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-24T07:30:05.244931Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-24T07:30:05.246892Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-24T07:30:05.391919Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-24T14:44:38.323867Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-24T14:44:38.873681Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-25T07:54:43.794594Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-25T07:54:43.799081Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4340
+2023-05-25T07:54:44.003637Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-25T07:54:47.310971Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-25T07:54:48.478978Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-25T07:54:49.122944Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-25T07:54:49.124907Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-25T07:54:49.256315Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-25T16:13:30.111212Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-25T16:13:30.813317Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-26T07:59:14.824471Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-26T07:59:14.829006Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4144
+2023-05-26T07:59:15.011253Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-26T07:59:17.943809Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-26T07:59:18.959860Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-26T07:59:19.660240Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-26T07:59:19.662731Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-26T07:59:19.892829Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-26T15:43:51.831429Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-26T15:43:52.584070Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-27T07:48:23.766054Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-27T07:48:23.770713Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4428
+2023-05-27T07:48:24.001397Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-27T07:48:27.321142Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-27T07:48:28.231011Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-27T07:48:28.691732Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-27T07:48:28.694235Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-27T07:48:28.846720Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-27T12:04:57.849747Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-27T12:04:59.026593Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-29T07:32:28.009221Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-29T07:32:28.014005Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4404
+2023-05-29T07:32:28.154032Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-29T07:32:31.722354Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-29T07:32:32.847575Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-29T07:32:33.225097Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-29T07:32:33.226928Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-29T07:32:33.359236Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2023-05-29T15:47:29.120698Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2023-05-29T15:47:30.066905Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
+2023-05-30T07:26:59.090497Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2023-05-30T07:26:59.127713Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.22) starting as process 4208
+2023-05-30T07:26:59.446306Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2023-05-30T07:27:02.165310Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2023-05-30T07:27:02.987220Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2023-05-30T07:27:03.435354Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2023-05-30T07:27:03.437804Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2023-05-30T07:27:03.630610Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.22'  socket: ''  port: 3306  MySQL Community Server - GPL.
