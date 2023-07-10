@@ -57,10 +57,10 @@
             this.pButtonsPanel.Controls.Add(this.bSaveSummaryData);
             this.pButtonsPanel.Controls.Add(this.bReadingSaleBufforFromFile);
             this.pButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pButtonsPanel.Location = new System.Drawing.Point(0, 620);
+            this.pButtonsPanel.Location = new System.Drawing.Point(0, 668);
             this.pButtonsPanel.Margin = new System.Windows.Forms.Padding(5);
             this.pButtonsPanel.Name = "pButtonsPanel";
-            this.pButtonsPanel.Size = new System.Drawing.Size(920, 70);
+            this.pButtonsPanel.Size = new System.Drawing.Size(920, 75);
             this.pButtonsPanel.TabIndex = 6;
             // 
             // bSaveSummaryData
@@ -68,10 +68,10 @@
             this.bSaveSummaryData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bSaveSummaryData.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bSaveSummaryData.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bSaveSummaryData.Location = new System.Drawing.Point(723, 7);
+            this.bSaveSummaryData.Location = new System.Drawing.Point(723, 8);
             this.bSaveSummaryData.Margin = new System.Windows.Forms.Padding(5);
             this.bSaveSummaryData.Name = "bSaveSummaryData";
-            this.bSaveSummaryData.Size = new System.Drawing.Size(180, 50);
+            this.bSaveSummaryData.Size = new System.Drawing.Size(180, 54);
             this.bSaveSummaryData.TabIndex = 30;
             this.bSaveSummaryData.Text = "Zapisz dane sumaryczne do pliku";
             this.bSaveSummaryData.UseVisualStyleBackColor = false;
@@ -82,10 +82,10 @@
             this.bReadingSaleBufforFromFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bReadingSaleBufforFromFile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bReadingSaleBufforFromFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bReadingSaleBufforFromFile.Location = new System.Drawing.Point(11, 7);
+            this.bReadingSaleBufforFromFile.Location = new System.Drawing.Point(11, 8);
             this.bReadingSaleBufforFromFile.Margin = new System.Windows.Forms.Padding(5);
             this.bReadingSaleBufforFromFile.Name = "bReadingSaleBufforFromFile";
-            this.bReadingSaleBufforFromFile.Size = new System.Drawing.Size(261, 50);
+            this.bReadingSaleBufforFromFile.Size = new System.Drawing.Size(261, 54);
             this.bReadingSaleBufforFromFile.TabIndex = 29;
             this.bReadingSaleBufforFromFile.Text = "Odczyt danych o sprzedaży z pliku";
             this.bReadingSaleBufforFromFile.UseVisualStyleBackColor = false;
@@ -98,14 +98,14 @@
             this.pHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pHeader.Location = new System.Drawing.Point(0, 0);
             this.pHeader.Name = "pHeader";
-            this.pHeader.Size = new System.Drawing.Size(920, 30);
+            this.pHeader.Size = new System.Drawing.Size(920, 32);
             this.pHeader.TabIndex = 7;
             // 
             // panel1
             // 
-            this.panel1.Location = new System.Drawing.Point(0, 36);
+            this.panel1.Location = new System.Drawing.Point(0, 39);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 100);
+            this.panel1.Size = new System.Drawing.Size(200, 108);
             this.panel1.TabIndex = 0;
             // 
             // tbDummyForCtrl
@@ -125,9 +125,9 @@
             this.gbSynchronization.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbSynchronization.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.gbSynchronization.ForeColor = System.Drawing.Color.Black;
-            this.gbSynchronization.Location = new System.Drawing.Point(0, 30);
+            this.gbSynchronization.Location = new System.Drawing.Point(0, 32);
             this.gbSynchronization.Name = "gbSynchronization";
-            this.gbSynchronization.Size = new System.Drawing.Size(920, 134);
+            this.gbSynchronization.Size = new System.Drawing.Size(920, 144);
             this.gbSynchronization.TabIndex = 8;
             this.gbSynchronization.TabStop = false;
             this.gbSynchronization.Text = "Synchronizacja z kasą";
@@ -136,11 +136,11 @@
             // 
             this.progressBarTemplate1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
             this.progressBarTemplate1.ForeColor = System.Drawing.Color.Black;
-            this.progressBarTemplate1.Location = new System.Drawing.Point(12, 81);
+            this.progressBarTemplate1.Location = new System.Drawing.Point(12, 87);
             this.progressBarTemplate1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.progressBarTemplate1.MinimumSize = new System.Drawing.Size(510, 46);
+            this.progressBarTemplate1.MinimumSize = new System.Drawing.Size(510, 50);
             this.progressBarTemplate1.Name = "progressBarTemplate1";
-            this.progressBarTemplate1.Size = new System.Drawing.Size(898, 50);
+            this.progressBarTemplate1.Size = new System.Drawing.Size(898, 54);
             this.progressBarTemplate1.TabIndex = 29;
             // 
             // tpProductNameToEdit
@@ -152,11 +152,11 @@
             this.tpProductNameToEdit.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tpProductNameToEdit.Controls.Add(this.tbStatus, 0, 0);
             this.tpProductNameToEdit.Controls.Add(this.lStatus, 0, 0);
-            this.tpProductNameToEdit.Location = new System.Drawing.Point(277, 27);
+            this.tpProductNameToEdit.Location = new System.Drawing.Point(277, 29);
             this.tpProductNameToEdit.Name = "tpProductNameToEdit";
             this.tpProductNameToEdit.RowCount = 1;
             this.tpProductNameToEdit.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tpProductNameToEdit.Size = new System.Drawing.Size(633, 50);
+            this.tpProductNameToEdit.Size = new System.Drawing.Size(633, 54);
             this.tpProductNameToEdit.TabIndex = 28;
             // 
             // tbStatus
@@ -167,7 +167,7 @@
             this.tbStatus.Margin = new System.Windows.Forms.Padding(5);
             this.tbStatus.Multiline = true;
             this.tbStatus.Name = "tbStatus";
-            this.tbStatus.Size = new System.Drawing.Size(520, 38);
+            this.tbStatus.Size = new System.Drawing.Size(520, 42);
             this.tbStatus.TabIndex = 2;
             // 
             // lStatus
@@ -177,7 +177,7 @@
             this.lStatus.Location = new System.Drawing.Point(6, 6);
             this.lStatus.Margin = new System.Windows.Forms.Padding(5);
             this.lStatus.Name = "lStatus";
-            this.lStatus.Size = new System.Drawing.Size(90, 38);
+            this.lStatus.Size = new System.Drawing.Size(90, 42);
             this.lStatus.TabIndex = 1;
             this.lStatus.Text = "Status";
             this.lStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -187,10 +187,10 @@
             this.bReadingSaleBufforFromCashRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(154)))), ((int)(((byte)(121)))));
             this.bReadingSaleBufforFromCashRegister.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.bReadingSaleBufforFromCashRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bReadingSaleBufforFromCashRegister.Location = new System.Drawing.Point(12, 27);
+            this.bReadingSaleBufforFromCashRegister.Location = new System.Drawing.Point(12, 29);
             this.bReadingSaleBufforFromCashRegister.Margin = new System.Windows.Forms.Padding(5);
             this.bReadingSaleBufforFromCashRegister.Name = "bReadingSaleBufforFromCashRegister";
-            this.bReadingSaleBufforFromCashRegister.Size = new System.Drawing.Size(261, 50);
+            this.bReadingSaleBufforFromCashRegister.Size = new System.Drawing.Size(261, 54);
             this.bReadingSaleBufforFromCashRegister.TabIndex = 27;
             this.bReadingSaleBufforFromCashRegister.Text = "Odczyt danych o sprzedaży z kasy fiskalnej";
             this.bReadingSaleBufforFromCashRegister.UseVisualStyleBackColor = false;
@@ -199,10 +199,10 @@
             // tcDataFromFile
             // 
             this.tcDataFromFile.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tcDataFromFile.Location = new System.Drawing.Point(0, 164);
+            this.tcDataFromFile.Location = new System.Drawing.Point(0, 176);
             this.tcDataFromFile.Name = "tcDataFromFile";
             this.tcDataFromFile.SelectedIndex = 0;
-            this.tcDataFromFile.Size = new System.Drawing.Size(920, 456);
+            this.tcDataFromFile.Size = new System.Drawing.Size(920, 492);
             this.tcDataFromFile.TabIndex = 10;
             // 
             // tabPage1
@@ -231,7 +231,7 @@
             // 
             // SalesBufferReading
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(227)))), ((int)(((byte)(208)))));
@@ -243,7 +243,7 @@
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "SalesBufferReading";
-            this.Size = new System.Drawing.Size(920, 690);
+            this.Size = new System.Drawing.Size(920, 743);
             this.pButtonsPanel.ResumeLayout(false);
             this.pHeader.ResumeLayout(false);
             this.pHeader.PerformLayout();

@@ -10,6 +10,7 @@ using static NaturalnieApp.Program;
 using System.Diagnostics;
 using System.Reflection;
 using NaturalnieApp.Forms;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace NaturalnieApp.Database
 {
@@ -2593,6 +2594,27 @@ namespace NaturalnieApp.Database
                 BarcodeRelated.MinBarcodeValue ||
                 Convert.ToInt32(BarcodeRelated.ExtractInternalBarcodeDataPart(p.BarCodeShort)) > BarcodeRelated.MaxBarcodeValue).ToList();
 
+            }
+        }
+        #endregion
+
+        // **********************************************************************************************************
+        #region Inventory table related
+        public List<InventoryModel> GetInventories(DateTime? startDate = null)
+        {
+            if (startDate is null) startDate = DateTime.MinValue;
+
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                return contextDB.Inventories.Where(i => i.LastModificationDate >= startDate).ToList();
+            }
+        }
+
+        public bool CheckIfInventoryWasAcceptedAfterGivenDate(DateTime date)
+        {
+            using (ShopContext contextDB = new ShopContext(GlobalVariables.ConnectionString))
+            {
+                return contextDB.Inventories.Any(i => i.LastModificationDate > date);
             }
         }
         #endregion

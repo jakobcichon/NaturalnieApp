@@ -751,6 +751,9 @@ namespace NaturalnieApp.Forms
                         //Check if sales was not updated with given sales unique ID
                         if (!this.databaseCommands.CheckIfSalesUniqueIdExistInStockHistory(element.UniqueIdentifier))
                         {
+                            // Check if sales was done after inventory was accepted
+
+
                             //Get quantity
                             string stringQuantity = dataFromElzab.Element.GetAttributeValue(currentElementIndex, "il_sp", elementType);
                             int quantity = -1 * Convert.ToInt32(Single.Parse(stringQuantity));
@@ -780,6 +783,13 @@ namespace NaturalnieApp.Forms
             this.ReadSalesSummaryData.ListOfElementNotDetermined = listOfElementNotDetermined;
 
 
+        }
+
+        private void CheckIfSalesWasDoneAfterInventoryAccepted(DateTime salesDate)
+        {
+            this.databaseCommands.CheckIfInventoryWasAcceptedAfterGivenDate(salesDate);
+
+            ElzabRelated.CheckIfProductNumberHasChanged(ref this.databaseCommands, cashRegisterProductNumber, barcode, saleDateAndTimeConverted);
         }
         #endregion
 

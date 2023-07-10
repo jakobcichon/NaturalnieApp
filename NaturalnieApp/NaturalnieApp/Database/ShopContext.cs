@@ -19,6 +19,7 @@ namespace NaturalnieApp.Database
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<Tax> Tax { get; set; }
         public DbSet<ElzabCommunication> ElzabCommunication { get; set; }
+        public DbSet<InventoryModel> Inventories { get; set; }
 
         public ShopContext()
             : base("shop")
